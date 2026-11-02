@@ -60,7 +60,7 @@ export function claimReturn(s:SaveData):SaveData {
 export function dismissReveal(s:SaveData):SaveData { return {...s,reveal:null,radarMs:0}; }
 export function publicRadar(s:SaveData) {
   if (s.reveal) return {stage:'revealed' as const,progress:100,planet:planetById(s.reveal)!};
-  const stage=s.radarMs<60000?'searching':s.radarMs<90000?'anomaly':'locking';
+  const stage:'searching'|'anomaly'|'locking'=s.radarMs<60000?'searching':s.radarMs<90000?'anomaly':'locking';
   return {stage,progress:Math.floor(s.radarMs/1200)};
 }
 const finite=(x:unknown,max=1e12):x is number => typeof x==='number' && Number.isFinite(x) && x>=0 && x<=max;
