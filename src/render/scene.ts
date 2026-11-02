@@ -82,7 +82,7 @@ export class ExpeditionScene {
     c.fillStyle='#72dcff26';c.beginPath();c.ellipse(-w*.68,0,25+flame,9,0,0,Math.PI*2);c.fill();
     c.fillStyle='#5cdfff';c.fillRect(-w*.72,-3,24+flame,6);c.fillStyle='#dcffff';c.fillRect(-w*.53,-2,12,4);
     c.restore();c.rotate(p.bank);
-    // The nose follows the orbit through hand-drawn views. Only a small bank rotates
+    // The nose follows the orbit through independent directional sprites. Only a small bank rotates
     // the hull, so the cockpit never rolls upside-down. Blend across every seam.
     const first=Math.floor(p.direction),mix=Math.max(0,Math.min(1,(p.direction-first-.47)/.06)),indices=[0,1,2,3];
     const draw=(index:number,alpha:number)=>{c.globalAlpha=alpha;const cell=indices[index%4];c.drawImage(this.art.ship,cell%2*256,Math.floor(cell/2)*256,256,256,-w/2,-h/2,w,h);};

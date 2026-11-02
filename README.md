@@ -39,7 +39,9 @@ npm run preview -- --port 4173
 - [实测性能与资源](docs/10_PERFORMANCE.md)、[原始 JSON](artifacts/phase1/performance.json)。**桌面浏览器测量，不代表手机真机认证。**
 - [运行时美术源与内置 image_gen 提示词](assets/README.md)。没有从概念拼版硬抠角色，也不把 AI 图集称为手工逐帧定稿。
 
-当前证据以 `artifacts/phase1/` 为准，根目录原来的中文页面图和 12 秒视频为上一轮历史版本。
+Phase 1.5 按 PR #2 审核意见修订：[意见逐项对照与 15/30/60 分钟节奏](docs/12_PR2_REVIEW_RESPONSE.md)、[冷加载/字号/动作放大/音效审核页](artifacts/phase1-5/index.html)。首次默认基地，设置可改为远征；首轮之后自动收录居民联动日记，星际监听频道保持待接通。
+
+当前五页和连续视频以 `artifacts/phase1/` 为准，根目录原来的中文页面图和 12 秒视频为上一轮历史版本。
 
 ## 验证与复现
 
@@ -49,12 +51,13 @@ npx playwright install chromium webkit
 npm run check
 ```
 
-18 项引擎/运动/存储测试、32 项浏览器流程。覆盖 360×800、390×844、1440×1000 Chromium 与 390×844 WebKit，包括真实发现演出、首星完整图鉴、展柜、升级、迁移、存储故障、离线上限/防双领和导航安全区。
+24 项引擎/运动/存储测试、48 项浏览器流程。覆盖 360×800、390×844、1440×1000 Chromium 与 390×844 WebKit，包括真实发现演出、首星完整图鉴、展柜、升级、迁移、存储故障、离线上限/防双领和导航安全区。
 
 生产预览启动后，另一个终端重新录制、截图和实测：
 
 ```bash
 npm run capture
+npm run capture:review
 npm run report
 ```
 
@@ -77,6 +80,6 @@ artifacts/phase1/      当前五页截图、连续录屏、演出/遮挡帧和�
 design/reference/      真实原始设计 PNG/MP4、README/HTML，不进入构建
 ```
 
-`npm run assets:export` 从已提交源图确定性导出。当前源为透明 PNG、提示词及动画代码，没有手工 Aseprite 工程。发现音效通过 `loststar:sound-cue` 预留结构，目前不接音轨或外部 SDK。
+`npm run assets:export` 从已提交源图确定性导出。当前源为透明 PNG、提示词及动画代码，没有手工 Aseprite 工程。发现音效通过 `loststar:sound-cue` 接入原创 Web Audio 短音效，默认静音，可在设置显式开启；不接外部音频 SDK。
 
 最终主观视觉、手部接触、最小辅助文字、真实手机性能与长期节奏仍待审核。阶段二只有在用户确认首星标准后开始。
