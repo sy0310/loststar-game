@@ -11,6 +11,7 @@ test('新手无剧透，雷达实际定位后才揭晓，刷新保留发现', as
   await expect(page.getByText('正在聆听宇宙')).toBeVisible();
   await expect(page.locator('body')).not.toContainText(/回声菌星|倒置海星|钟摆荒原星|无人游乐星|未签收之星|六颗|6颗|\?/);
   await expect(page.locator('[data-signal]')).toHaveCount(0);
+  expect(await page.locator('body').ariaSnapshot()).not.toMatch(/回声菌星|倒置海星|钟摆荒原星|无人游乐星|未签收之星/);
   await passTime(page,61000);
   await expect(page.getByText('捕获异常信号')).toBeVisible();
   await expect(page.locator('[data-signal]')).toHaveCount(1);

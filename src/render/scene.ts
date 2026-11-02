@@ -36,7 +36,7 @@ export class ExpeditionScene {
   private sprite(img:HTMLImageElement,x:number,y:number,w:number,h:number,flip=false){const c=this.ctx;c.save();c.translate(Math.round(x),Math.round(y));if(flip)c.scale(-1,1);c.drawImage(img,Math.round(-w/2),-h,w,h);c.restore();}
   private shadow(x:number,y:number,w:number){const c=this.ctx;c.fillStyle='#45283e88';c.beginPath();c.ellipse(x,y+1,w,w*.25,0,0,Math.PI*2);c.fill();}
   private drawShip(t:number){const c=this.ctx,p=shipPose(t),w=108*p.scale,h=w*this.art.ship.height/this.art.ship.width;
-    c.save();c.translate(p.x,p.y);const direction=Math.cos(p.angle)>.0?-1:1;c.scale(direction,1);c.rotate(-.13);
+    c.save();c.translate(p.x,p.y);const direction=Math.sin(p.angle)>0?-1:1;c.scale(direction,1);c.rotate(-.13);
     c.fillStyle='#51e6ff44';c.beginPath();c.ellipse(-w*.65,-h*.37,26+Math.sin(t*30)*5,7,0,0,Math.PI*2);c.fill();
     c.fillStyle='#65eaff';c.fillRect(-w*.75,-h*.42,22+Math.sin(t*30)*6,4);c.fillStyle='#e6ffff';c.fillRect(-w*.55,-h*.41,10,3);
     c.drawImage(this.art.ship,-w/2,-h,w,h);c.restore();
@@ -48,7 +48,7 @@ export class ExpeditionScene {
     const bob=moving?Math.round(Math.sin(t*12)*1.4):p.action==='pickup'?4*Math.sin((f-.5)/.12*Math.PI):0;
     c.drawImage(img,0,0,img.width,split,-w/2,-h+bob,w,upperH);
     for(let foot=0;foot<2;foot++){const offset=moving?Math.round(Math.sin(t*12+foot*Math.PI)*3):0;c.drawImage(img,foot*img.width/2,split,img.width/2,img.height-split,-w/2+foot*w/2,-h+upperH+offset,w/2,h-upperH);}
-    if(p.carrying){this.parcel(8,-20,23);}
+    if(p.action==='return'){this.parcel(8,-20,23);}
     c.restore();
     if(p.action==='scan'){
       c.save();c.strokeStyle='#7df9e2';c.lineWidth=2;c.setLineDash([5,5]);c.beginPath();c.ellipse(p.x+40,p.y+8,26+Math.sin(t*6)*5,10,0,0,Math.PI*2);c.stroke();c.setLineDash([]);
@@ -57,7 +57,11 @@ export class ExpeditionScene {
     }
     if(p.action==='pickup'){c.fillStyle='#ffe6a6';for(let i=0;i<5;i++)c.fillRect(p.x+Math.cos(i*1.3+t)*26,p.y-36+Math.sin(i*1.3+t)*24,3,3);}
   }
-  private parcel(x:number,y:number,size:number){const c=this.ctx;c.save();c.translate(x,y);c.fillStyle='#633347';c.fillRect(-size/2-2,-size-2,size+4,size+4);c.fillStyle='#ed9e4e';c.fillRect(-size/2,-size,size,size);c.fillStyle='#ffe0a0';c.fillRect(-size/2,-size,size,5);c.fillStyle='#f7d1a5';c.fillRect(-3,-size,6,size);c.fillStyle='#82404a';c.fillRect(size/2-5,-size+5,3,9);c.restore();}
+  private parcel(x:number,y:number,size:number){const c=this.ctx;c.save();c.translate(Math.round(x),Math.round(y));const l=-size/2,r=size/2,top=-size;
+    c.fillStyle='#633347';c.fillRect(l-2,top-2,size+4,size+4);c.fillStyle='#e9a15b';c.fillRect(l,top,size,size);
+    c.fillStyle='#a95b45';c.beginPath();c.moveTo(r-6,top+5);c.lineTo(r,top);c.lineTo(r,0);c.lineTo(r-6,0);c.fill();
+    c.fillStyle='#ffe1a6';c.beginPath();c.moveTo(l,top);c.lineTo(r,top);c.lineTo(r-6,top+5);c.lineTo(l,top+5);c.fill();
+    c.fillStyle='#f7d1a5';c.fillRect(-4,top,5,size);c.fillStyle='#f7e1bf';c.fillRect(l+2,top+9,7,6);c.fillStyle='#7f4a53';c.fillRect(l+3,top+11,4,1);c.fillRect(l+3,top+13,3,1);c.restore();}
   private draw(now:number){if(!this.ready||!this.canvas.isConnected)return;
     const began=performance.now(),c=this.ctx,t=this.frozen??(now-this.start)/1000,s=this.getState(),fraction=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12;
     c.imageSmoothingEnabled=false;c.clearRect(0,0,768,730);c.drawImage(this.backdrop,0,0);
@@ -69,7 +73,8 @@ export class ExpeditionScene {
       {depth:435,draw:()=>{this.shadow(349,435,64);this.sprite(this.art.warehouse,349,435,148,139);c.fillStyle=Math.sin(t*2)>0?'#9affee':'#50c5ce';c.fillRect(310,357,14,3);}},
       {depth:p.y,draw:()=>this.drawRobot(t,fraction)},
       {depth:447,draw:()=>{this.shadow(544,447,22);this.sprite(this.art.mouse,544,447+Math.floor(Math.sin(t*4)*1.5),64,69);if(Math.floor(t*3)%5===0){c.fillStyle='#ffd998';c.fillRect(516,405,3,3);c.fillRect(512,399,2,2);}}},
-      {depth:477,draw:()=>this.parcel(439,477,27)},
+      {depth:447,draw:()=>this.parcel(439,447,27)},
+      {depth:449,draw:()=>{if(p.action==='unload'){const u=(fraction-.9)/.1;c.save();c.globalAlpha=1-Math.max(0,(u-.75)*4);this.parcel(274+u*49,414+u*5,23-u*8);c.restore();}}},
     ];entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
     // Flag is a separate environmental layer.
     c.fillStyle='#6b456b';c.fillRect(577,214,4,74);c.fillStyle='#f3ad5f';c.fillRect(576,210,6,6);c.fillStyle='#d16f63';c.beginPath();c.moveTo(581,217);c.lineTo(621,222+Math.sin(t*3)*3);c.lineTo(615,243+Math.sin(t*3)*3);c.lineTo(581,239);c.fill();c.fillStyle='#ffde9d';c.fillRect(591,224,10,8);

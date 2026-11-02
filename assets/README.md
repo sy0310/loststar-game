@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | `src/generated/parcel-globe.png` | 内置 image_gen 生成，透明闭合球体，地形/纸箱材质；不含角色和大仓库 | `runtime/parcel-globe.webp` |
 | `src/generated/units-sheet.png` | 内置 image_gen 生成，透明 2×2 独立机器人/飞船/仓库/拆封鼠 | 四个透明 WebP |
+| `src/generated/items-sheet.png` | 内置 image_gen 生成，透明 2×2 收据/胶带/套娃包裹/事件信封 | 四个透明 WebP |
 | `src/generated/station.png` | 内置 image_gen 生成，空展柜与基地背景 | `runtime/station.webp` |
 | `../src/render/scene.ts` | 本项目自绘/程序动画：机器人腿部切片、拾取姿态、扫描束、拾取物、喷焰、旗帜、光点、投影、星空 | 浏览器独立渲染层 |
 | `../src/icons.ts` | 本项目原创线性 UI 图标与奇物符号 | SVG DOM |

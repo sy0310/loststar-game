@@ -7,7 +7,7 @@ export function robotPose(fraction:number) {
   else if(f<.62){action='pickup';progress=1;}
   else if(f<.9){action='return';progress=1-(f-.62)/.28;}
   else{action='unload';progress=0;}
-  return {action,x:255+220*progress,y:432-57*progress,carrying:action==='return'||action==='unload'};
+  return {action,x:255+220*progress,y:432-77*progress,carrying:action==='return'||action==='unload'};
 }
 export function shipPose(seconds:number) {
   const angle=seconds/10*Math.PI*2-.8;

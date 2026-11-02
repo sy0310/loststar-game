@@ -8,6 +8,10 @@ import {robotPose,actionText} from './render/motion';
 import globeUrl from '../assets/runtime/parcel-globe.webp';
 import robotUrl from '../assets/runtime/robot.webp';
 import mouseUrl from '../assets/runtime/mouse.webp';
+import receiptUrl from '../assets/runtime/receipt.webp';
+import tapeUrl from '../assets/runtime/tape.webp';
+import nestedUrl from '../assets/runtime/nested.webp';
+import signalUrl from '../assets/runtime/signal.webp';
 
 const $=<T extends HTMLElement=HTMLElement>(s:string)=>document.querySelector<T>(s)!;
 let state:SaveData;let storageOK=true;
@@ -35,7 +39,8 @@ async function transact(fn:(s:SaveData)=>SaveData){
   if(navigator.locks)await navigator.locks.request('loststar-save',run);else run();
 }
 function go(id:string){tab=id;document.querySelectorAll<HTMLElement>('.view').forEach(v=>v.hidden=v.id!==id);document.querySelectorAll('[data-go]').forEach(b=>b.setAttribute('aria-current',b.getAttribute('data-go')===id?'page':'false'));window.scrollTo(0,0);update();}
-const itemImage=(id:string)=>id==='mouse'?`<img src="${mouseUrl}" alt="">`:icon(discoveryById(id)!.icon);
+const itemTextures:Record<string,string>={receipt:receiptUrl,tape:tapeUrl,nested:nestedUrl,mouse:mouseUrl,'return-request':signalUrl};
+const itemImage=(id:string)=>`<img src="${itemTextures[id]}" alt="">`;
 function renderCollection(){
   const list=state.collection.map(id=>discoveryById(id)!);
   const filtered=list.filter(d=>filter==='all'||d.kind===filter);

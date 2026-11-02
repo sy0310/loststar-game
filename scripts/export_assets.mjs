@@ -16,5 +16,15 @@ for(const [name,x,y] of entries){
   await sharp(buffer).resize({width:256,kernel:'nearest'}).webp({quality:95,alphaQuality:100}).toFile(output(name+'.webp'));
   info[name]=await sharp(output(name+'.webp')).metadata();
 }
-await writeFile(new URL('assets/runtime/metadata.json',root),JSON.stringify(info,null,2)+'\n');
 console.log('Exported globe, station, and 4 transparent sprites.');
+const itemSheet=input('items-sheet.png');
+const im=await sharp(itemSheet).metadata();
+for(const [name,x,y] of [['receipt',0,0],['tape',1,0],['nested',0,1],['signal',1,1]]){
+ const quadrant=await sharp(itemSheet).extract({left:x*im.width/2,top:y*im.height/2,width:im.width/2,height:im.height/2}).png().toBuffer();
+ const trimmed=await sharp(quadrant).trim({background:'#00000000',threshold:10}).png().toBuffer();
+ await sharp(trimmed).resize({width:192,kernel:'nearest'}).webp({quality:95,alphaQuality:100}).toFile(output(name+'.webp'));
+ info[name]=await sharp(output(name+'.webp')).metadata();
+}
+console.log('Exported 4 transparent collectible icons.');
+
+await writeFile(new URL('assets/runtime/metadata.json',root),JSON.stringify(info,null,2)+'\n');
