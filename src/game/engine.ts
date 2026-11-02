@@ -1,5 +1,7 @@
 import { discoveries, planets } from '../content/catalog';
 import { parcelSignals } from '../content/parcel';
+import { parcelJournal, journalShift } from '../content/parcel-journal';
+import { emptyInterstellar, interstellarView, radarPolicy, type InterstellarScan } from './radar';
 
 export type UpgradeId = 'radar' | 'scanner' | 'recycler' | 'cargo';
 export interface ReturnCargo { id: string; seconds: number; resources: number; discoveries: string[]; }
@@ -18,6 +20,8 @@ export interface SaveData {
   discoveryAt: Record<string, number>;
   upgrades: Record<UpgradeId, number>;
   pendingReturn: ReturnCargo | null;
+  journal: {entries:string[];shift:number};
+  interstellar: InterstellarScan;
 }
 // Keep the original key so the review build can migrate existing player progress.
 export const SAVE_KEY = 'loststar.save.v1';
@@ -30,6 +34,7 @@ export function newGame(now = Date.now()): SaveData {
     radarMs: 0, surveyCount: 0, surveyNotice: null, planets: ['parcel'],
     collection: [], seenDiscoveries: [], discoveryAt: {},
     upgrades: { radar: 0, scanner: 0, recycler: 0, cargo: 0 }, pendingReturn: null,
+    journal:{entries:[],shift:0}, interstellar:emptyInterstellar(),
   };
 }
 export function tuning(s: SaveData) {
@@ -65,6 +70,9 @@ export function advance(s: SaveData, now: number, offline = false): SaveData {
     next.discoveryAt[d.id] = s.lastAt + Math.max(0, (d.milestone - s.cycles) * values.scanner - s.cycleMs);
   }
   const resources = earned * values.recycler + surveys * 6;
+  const observed=new Set([...known,...found.map(d=>d.id)]);
+  next.journal.entries=[...new Set([...s.journal.entries,...parcelJournal.filter(note=>note.cycle<=next.cycles&&note.requires.every(id=>observed.has(id))).map(note=>note.id)])];
+  next.journal.shift=journalShift(next.cycles);
   if (offline && ms >= 30000) {
     const old = s.pendingReturn;
     next.pendingReturn = {
@@ -93,11 +101,17 @@ export function claimReturn(s: SaveData): SaveData {
   return next;
 }
 export function dismissSurvey(s: SaveData): SaveData { return { ...s, surveyNotice: null }; }
-export function publicRadar(s: SaveData) {
+function localRadar(s: SaveData) {
   if (s.surveyNotice) return { stage: 'surveyed' as const, progress: 100, signal: parcelSignals.find(r => r.id === s.surveyNotice)! };
   const phase = s.radarMs / SURVEY_DURATION;
   const stage: 'searching' | 'anomaly' | 'locking' = phase < .5 ? 'searching' : phase < .78 ? 'anomaly' : 'locking';
   return { stage, progress: Math.floor(phase * 100) };
+}
+export function publicRadar(s:SaveData):ReturnType<typeof localRadar>;
+export function publicRadar(s:SaveData,mode:'local'):ReturnType<typeof localRadar>;
+export function publicRadar(s:SaveData,mode:'interstellar'):ReturnType<typeof interstellarView>;
+export function publicRadar(s:SaveData,mode:'local'|'interstellar'='local') {
+  return mode==='local'?localRadar(s):interstellarView(s.interstellar,radarPolicy.interstellar);
 }
 const finite = (x: unknown, max = 1e12): x is number => typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= max;
 const ids = (x: unknown, valid: string[]): x is string[] => Array.isArray(x) && x.every(id => typeof id === 'string' && valid.includes(id)) && new Set(x).size === x.length;
@@ -122,6 +136,10 @@ export function restore(raw: string | null, now = Date.now()): SaveData {
         !input.discoveryAt || typeof input.discoveryAt !== 'object' || Array.isArray(input.discoveryAt) ||
         !Object.entries(input.discoveryAt).every(([id, time]) => validIds.includes(id) && finite(time, 1e15))) return newGame(now);
       s = input as SaveData;
+      if(input.journal!==undefined&&(!input.journal||!ids(input.journal.entries,parcelJournal.map(note=>note.id))||!finite(input.journal.shift,1e9)||!Number.isInteger(input.journal.shift)))return newGame(now);
+      if(input.interstellar!==undefined&&(!input.interstellar||!finite(input.interstellar.elapsed,90000)||
+        (input.interstellar.resolved!==null&&(input.interstellar.elapsed<90000||!planets.some(p=>p.id===input.interstellar.resolved?.id&&p.name===input.interstellar.resolved?.name)))))return newGame(now);
+      s={...s,journal:input.journal??{entries:[],shift:0},interstellar:input.interstellar??emptyInterstellar()};
     }
     return advance(s, now, now - s.lastAt >= 30000);
   } catch { return newGame(now); }

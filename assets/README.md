@@ -29,3 +29,10 @@
 | `src/generated/equipment-v2.png` | 雷达、扫描仪、回收装置、货舱四种设备像素图 |
 
 均使用内置 image_gen；机器人以本项目旧机器人透明精灵为编辑目标保持身份，其他为新制独立透明图集。完整提示词见 `src/phase1-generation-prompts.json` 和 `src/equipment-generation-prompt.json`。源文件、旧版参考与旧版运行时原图均保留。导出脚本使用标准图像处理做分格、最近邻缩放和压缩；程序动画另见 `src/render/`。当前仍没有手工 Aseprite 工程，不把 AI 图集宣称为手工逐帧定稿。
+
+## PR #2 Phase 1.5
+
+- `src/generated/ship-directions-v3.png`：基于原飞船编辑的四向透明图集，运行时按象限对齐为 `ship-directions-v3.webp`。保留舷侧、船首、另一舷侧、船尾视角，不用整张图倒转代替方向。
+- `src/generated/robot-empty-v3.png`：基于原八姿势图集去掉手内固化包裹，保留空手抓取/携带/递交姿态。`robot-empty-v3.webp` 固定 160px 单元；包裹位置由独立运动数据与 Canvas 层绘制。
+- 完整内置 image_gen 提示词：`src/phase1-5-generation-prompts.json`。旧源与旧图集保留；没有手工 Aseprite 工程。
+- 声音源：`../src/ui/audio.ts` 的原创振荡器/包络短音效；无第三方音源。`../artifacts/phase1-5/audio/` 是通过同一代码离线渲染的 WAV 审听样本。

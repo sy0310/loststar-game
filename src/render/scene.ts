@@ -1,6 +1,6 @@
 import globeUrl from '../../assets/runtime/parcel-globe.webp';
-import robotUrl from '../../assets/runtime/robot-actions-v2.webp';
-import shipUrl from '../../assets/runtime/ship.webp';
+import robotUrl from '../../assets/runtime/robot-empty-v3.webp';
+import shipUrl from '../../assets/runtime/ship-directions-v3.webp';
 import warehouseUrl from '../../assets/runtime/warehouse.webp';
 import mouseUrl from '../../assets/runtime/mouse.webp';
 import hermitUrl from '../../assets/runtime/hermit.webp';
@@ -26,7 +26,8 @@ export class ExpeditionScene {
   private drawTimes:number[]=[];
   private focusUntil=0;
   private focusKind='parcel';
-  private active=true;
+  private active=false;
+  private loading=false;
   ready=false;
 
   constructor(parent:HTMLElement,private getState:()=>SaveData) {
@@ -42,11 +43,14 @@ export class ExpeditionScene {
       c.fillStyle=i%13===0?'#d4b8dd':i%5===0?'#8885b7':'#4e456d';c.fillRect(x,y,size,size);
       if(i%23===0){c.fillStyle='#a68bc77a';c.fillRect(x-3,y+1,9,1);c.fillRect(x+1,y-3,1,9);}
     }
+  }
+  private load(){
+    if(this.loading)return;this.loading=true;
     Promise.all(Object.entries(urls).map(async([key,url])=>[key,await load(url)] as const)).then(entries=>{
       this.art=Object.fromEntries(entries) as Art;this.ready=true;this.canvas.dataset.ready='true';this.loop();
-    }).catch(()=>{parent.dataset.error='true';parent.insertAdjacentText('beforeend','通信暂时中断，请刷新恢复场景。');});
+    }).catch(()=>{const parent=this.canvas.parentElement!;parent.dataset.error='true';parent.insertAdjacentText('beforeend','通信暂时中断，请刷新恢复场景。');});
   }
-  setActive(active:boolean){this.active=active;this.lastFrame=0;}
+  setActive(active:boolean){this.active=active;this.lastFrame=0;if(active&&!this.ready)this.load();}
   celebrate(kind:string){this.focusKind=kind;this.focusUntil=performance.now()+2200;}
   freeze(seconds:number|null){this.frozen=seconds;this.draw(performance.now());}
   metrics(){
@@ -71,12 +75,18 @@ export class ExpeditionScene {
     if(Math.sin(t*2+x)>.25){c.fillStyle='#fff0bc';c.fillRect(x+1,y,3,1);}
   }
   private drawShip(t:number){
-    const c=this.ctx,p=shipPose(t),w=112*p.scale,h=w*this.art.ship.height/this.art.ship.width;
-    c.save();c.translate(p.x,p.y-h*.28);c.rotate(p.heading);
+    const c=this.ctx,p=shipPose(t),w=112*p.scale,h=w;
+    c.save();c.translate(p.x,p.y-h*.28);
     const flame=(Math.floor(t*16)%3)*3;
+    c.save();c.rotate(p.heading);
     c.fillStyle='#72dcff26';c.beginPath();c.ellipse(-w*.68,0,25+flame,9,0,0,Math.PI*2);c.fill();
     c.fillStyle='#5cdfff';c.fillRect(-w*.72,-3,24+flame,6);c.fillStyle='#dcffff';c.fillRect(-w*.53,-2,12,4);
-    c.drawImage(this.art.ship,-w/2,-h/2,w,h);c.restore();
+    c.restore();c.rotate(p.bank);
+    // The nose follows the orbit through hand-drawn views. Only a small bank rotates
+    // the hull, so the cockpit never rolls upside-down. Blend across every seam.
+    const first=Math.floor(p.direction),mix=Math.max(0,Math.min(1,(p.direction-first-.47)/.06)),indices=[0,1,2,3];
+    const draw=(index:number,alpha:number)=>{c.globalAlpha=alpha;const cell=indices[index%4];c.drawImage(this.art.ship,cell%2*256,Math.floor(cell/2)*256,256,256,-w/2,-h/2,w,h);};
+    draw(first,1-mix);draw(first+1,mix);c.restore();
   }
   private actor(frame:number,x:number,y:number,w:number,flip=false,carrying=false,t=0){
     const c=this.ctx,atlas=this.art.robot,cell=160,dx=-w*.54,dy=-w*.97;
@@ -92,21 +102,22 @@ export class ExpeditionScene {
     const c=this.ctx,p=robotPose(f),moving=p.action==='walk'||p.action==='return';
     this.shadow(p.x,p.y,31);
     const walkFrame=Math.floor(t*8)%4;
-    let frame=moving?walkFrame:p.action==='scan'?4:p.action==='pickup'?(f<.565?5:6):7;
+    let frame=moving?walkFrame:p.action==='scan'?4:p.action==='pickup'?(f<.575?5:6):7;
     if(p.action==='unload'&&f>.976)frame=1;
     const bob=moving?Math.round(Math.sin(t*16))*1:0;
-    this.actor(frame,p.x,p.y+bob,144,moving&&p.facing==='right',p.action==='return',t);
+    this.actor(frame,p.x,p.y+bob,144,p.action==='walk'&&p.facing==='right',p.action==='return',t);
+    if(p.parcel.visible)this.parcel(p.parcel.x,p.parcel.y+(p.action==='return'?bob:0),24);
     if(p.action==='scan'){
-      const tx=p.x-57,ty=p.y+3;
+      const tx=p.parcel.x,ty=p.parcel.y;
       c.save();c.fillStyle='#62ebd42d';c.beginPath();c.moveTo(p.x-48,p.y-76);c.lineTo(tx-26,ty);c.lineTo(tx+25,ty);c.fill();
       c.lineWidth=2;c.strokeStyle='#94fff0';c.setLineDash([5,4]);c.beginPath();c.ellipse(tx,ty,27+Math.sin(t*5)*4,10,0,0,Math.PI*2);c.stroke();c.setLineDash([]);
-      c.fillStyle='#c7fff2';c.fillRect(tx-2,ty-3,4,4);c.restore();this.parcel(tx,ty-1,24);
+      c.fillStyle='#c7fff2';c.fillRect(tx-2,ty-3,4,4);c.restore();
     }
     if(p.action==='pickup'){
       for(let i=0;i<7;i++){c.fillStyle=i%2?'#fff3bc':'#f4b66e';c.fillRect(p.x-35+Math.cos(i+t*2)*35,p.y-44+Math.sin(i+t*2)*25,3,3);}
     }
     if(p.action==='unload'){
-      const pulse=Math.sin((f-.91)/.09*Math.PI);c.fillStyle=`rgba(141,255,216,${pulse*.7})`;c.fillRect(277,374,20,3);c.fillRect(280,369,3,12);
+      const pulse=Math.sin((f-.91)/.09*Math.PI);c.fillStyle=`rgba(141,255,216,${pulse*.7})`;c.fillRect(277,438,29,3);c.fillRect(280,431,3,12);
     }
   }
   private parcel(x:number,y:number,size:number){
@@ -128,7 +139,7 @@ export class ExpeditionScene {
     this.lamp(345,634,'#e9ae70',t);this.lamp(488,610,'#94dcdb',t+.5);this.lamp(193,548,'#e9ae70',t+1);
     const entities=[
       {depth:294,draw:()=>{this.shadow(568,294,38);this.sprite(this.art.sorter,568,294,101,101);this.lamp(557,208,'#8ff3df',t);const step=Math.floor(t*3)%3;c.fillStyle='#d7b46d';for(let i=0;i<3;i++)c.fillRect(526+i*7+step,278+i*2,3,2);}},
-      {depth:417,draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);}},
+      {depth:417,draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);c.fillStyle='#624b66';c.fillRect(270,437,38,9);c.fillStyle='#bb957c';c.fillRect(270,434,38,5);c.fillStyle='#88d9c6';c.fillRect(277,438,24,2);}},
       {depth:p.y,draw:()=>this.drawRobot(t,f)},
       {depth:447,draw:()=>{this.shadow(553,447,30);this.sprite(this.art.mouse,553,447+(Math.floor(t*4)%4===2?1:0),83,89);if(Math.floor(t*4)%7<2){c.fillStyle='#f4d49d';for(let i=0;i<3;i++)c.fillRect(520+i*9+Math.floor(t*11)%4,405-i*5,3,2);}}},
       {depth:449,draw:()=>this.parcel(438,449,26)},

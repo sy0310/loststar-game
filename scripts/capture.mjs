@@ -9,8 +9,8 @@ await mkdir(out,{recursive:true});await mkdir('artifacts/raw-video',{recursive:t
 const report={date:new Date().toISOString(),phase:'first-planet-polish',host:{platform:os.platform(),release:os.release(),arch:os.arch(),cpu:os.cpus()[0].model},scope:'Desktop headless browsers at phone CSS viewports; no physical mobile certification.',samples:[]};
 const browser=await chromium.launch();
 const options={viewport:{width:390,height:844},deviceScaleFactor:2};
-const decode=async page=>page.locator('img').evaluateAll(images=>Promise.all(images.map(i=>i.decode().catch(()=>{}))));
-const screenshot=async(page,name,retina=false)=>{await decode(page);await page.screenshot({path:`${out}/${name}.png`,scale:'css'});if(retina)await page.screenshot({path:`${out}/${name}@2x.png`});};
+const decode=async page=>page.locator('img').evaluateAll(images=>Promise.all(images.filter(i=>i.getClientRects().length&&getComputedStyle(i).visibility!=='hidden').map(i=>i.decode().catch(()=>{}))));
+const screenshot=async(page,name,retina=false)=>{if(await page.locator('#base').isVisible()){await page.locator('.base-scene[data-background-state=ready]').waitFor();await page.locator('.base-scene').evaluate(el=>Promise.all(el.getAnimations().filter(a=>a.effect?.getTiming().iterations!==Infinity).map(a=>a.finished)));}await decode(page);await page.screenshot({path:`${out}/${name}.png`,scale:'css'});if(retina)await page.screenshot({path:`${out}/${name}@2x.png`});};
 async function passTime(page,ms){for(let left=ms;left>0;left-=10000){await page.clock.fastForward(Math.min(left,10000));await page.waitForFunction(()=>JSON.parse(localStorage.getItem('loststar.save.v1')).lastAt>=Date.now()-500);}}
 const reuse=process.argv.includes('--reuse-recording');
 const errors=reuse?JSON.parse(await readFile(`${out}/performance.json`,'utf8')).consoleErrors:[];
@@ -19,7 +19,7 @@ if(!reuse){
 const recording=await browser.newContext({...options,recordVideo:{dir:'artifacts/raw-video',size:{width:390,height:844}}});
 const began=Date.now(),live=await recording.newPage();
 live.on('pageerror',e=>errors.push(e.message));
-await live.goto(base+'/?review=1');await live.locator('canvas[data-ready]').waitFor();
+await live.goto(base+'/?review=1&start=expedition');await live.locator('canvas[data-ready]').waitFor();
 const ready=Date.now(),prefix=(ready-began)/1000;
 await live.waitForTimeout(Math.max(0,12500-(Date.now()-ready)));
 await live.locator('[data-presentation="receipt"]').waitFor({timeout:3000});await screenshot(live,'discovery-receipt');
@@ -33,7 +33,7 @@ console.log('Recorded 42s continuous runtime with two real discoveries, plus a 1
 }else console.log('Reusing the unchanged real-time recording; refreshing stills and measurement.');
 // Later-stage stills deliberately use a test clock. They do not represent a new save.
 const flowContext=await browser.newContext(options),flow=await flowContext.newPage();
-await flow.clock.install({time:new Date('2026-11-02T19:00:00Z')});await flow.goto(base+'/?review=1');await flow.locator('canvas[data-ready]').waitFor();
+await flow.clock.install({time:new Date('2026-11-02T19:00:00Z')});await flow.goto(base+'/?review=1&start=expedition');await flow.locator('canvas[data-ready]').waitFor();
 await flow.getByRole('button',{name:'图鉴',exact:true}).click();await passTime(flow,181000);
 await flow.getByRole('button',{name:'远征',exact:true}).click();await flow.locator('[data-presentation="night-shift"]').waitFor();await screenshot(flow,'discovery-night-shift');
 await flow.getByRole('button',{name:'收起发现提示'}).click();
@@ -55,12 +55,12 @@ console.log('Captured five exact 390×844 pages, discovery scenes, full ecology,
 for(const [name,width,height,throttle] of [['chromium-360',360,800,1],['chromium-390',390,844,1],['chromium-desktop',1440,1000,1],['chromium-390-cpu4x',390,844,4]]){
  const cx=await browser.newContext({viewport:{width,height},deviceScaleFactor:width<500?2:1}),p=await cx.newPage();
  const cdp=await cx.newCDPSession(p);await cdp.send('Performance.enable');if(throttle>1)await cdp.send('Emulation.setCPUThrottlingRate',{rate:throttle});
- await p.goto(base+'/?review=1');await p.locator('canvas[data-ready]').waitFor();await p.evaluate(()=>window.__review.scene.resetMetrics());await p.waitForTimeout(6000);
+ await p.goto(base+'/?review=1&start=expedition');await p.locator('canvas[data-ready]').waitFor();await p.evaluate(()=>window.__review.scene.resetMetrics());await p.waitForTimeout(6000);
  const data=await p.evaluate(()=>({scene:window.__review.scene.metrics(),resources:performance.getEntriesByType('resource').map(r=>({name:new URL(r.name).pathname,bytes:r.encodedBodySize,transfer:r.transferSize})),dpr:devicePixelRatio}));
  const metrics=await cdp.send('Performance.getMetrics');report.samples.push({name,viewport:{width,height},cpuThrottling:throttle,...data,heapBytes:metrics.metrics.find(m=>m.name==='JSHeapUsedSize')?.value});await cx.close();console.log(`Measured ${name}.`);
 }
 await browser.close();
-const safari=await webkit.launch(),w=await safari.newPage(options);await w.goto(base+'/?review=1');await w.locator('canvas[data-ready]').waitFor();await w.evaluate(()=>window.__review.scene.resetMetrics());await w.waitForTimeout(6000);
+const safari=await webkit.launch(),w=await safari.newPage(options);await w.goto(base+'/?review=1&start=expedition');await w.locator('canvas[data-ready]').waitFor();await w.evaluate(()=>window.__review.scene.resetMetrics());await w.waitForTimeout(6000);
 report.samples.push({name:'webkit-390',viewport:options.viewport,scene:await w.evaluate(()=>window.__review.scene.metrics())});await safari.close();
 report.buildFiles=await Promise.all((await readdir('dist/assets')).map(async name=>({name,bytes:(await stat(path.join('dist/assets',name))).size})));report.consoleErrors=errors;
 report.video=JSON.parse(execFileSync('ffprobe',['-v','error','-show_entries','format=duration','-show_entries','stream=width,height,avg_frame_rate','-of','json',`${out}/expedition-42s.mp4`]));

@@ -4,7 +4,7 @@ const hiddenWorlds=/回声菌星|倒置海星|钟摆荒原星|无人游乐星|�
 async function passTime(page:Page,ms:number){
   for(let left=ms;left>0;left-=10000){await page.clock.fastForward(Math.min(left,10000));await page.waitForFunction(k=>JSON.parse(localStorage.getItem(k)!).lastAt>=Date.now()-500,KEY);}
 }
-async function boot(page:Page){await page.clock.install({time:new Date('2026-11-02T19:00:00Z')});await page.goto('/');}
+async function boot(page:Page){await page.clock.install({time:new Date('2026-11-02T19:00:00Z')});await page.goto('/?start=expedition');}
 
 test('首星雷达只勘测真实现场，不引向未开放星球',async({page})=>{
   await boot(page);await page.getByRole('button',{name:'星图',exact:true}).click();

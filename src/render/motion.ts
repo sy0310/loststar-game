@@ -18,13 +18,22 @@ export function robotPose(fraction:number) {
   else if(f<.64){action='pickup';point={x:474,y:356,facing:'left'};}
   else if(f<.91){action='return';point=pointOnPath(INBOUND,(f-.64)/.27);}
   else{action='unload';point={x:327,y:454,facing:'left'};}
-  return {action,...point,carrying:action==='return'||action==='unload'};
+  const smooth=(u:number)=>{const t=Math.max(0,Math.min(1,u));return t*t*(3-2*t);};
+  const lift=smooth((f-.52)/.1),release=smooth((f-.915)/.055);
+  const hand={x:point.x-12,y:point.y-36};
+  const parcel=action==='walk'||action==='scan'?{x:465,y:357,held:false,delivered:false,visible:action==='scan'}:
+    action==='pickup'?{x:465+(hand.x-465)*lift,y:357+(hand.y-357)*lift,held:lift>.95,delivered:false,visible:true}:
+    action==='return'?{...hand,held:true,delivered:false,visible:true}:
+    {x:hand.x+(291-hand.x)*release,y:hand.y+(435-hand.y)*release,held:release<1,delivered:release===1,visible:f<.995};
+  return {action,...point,carrying:action==='return'||action==='unload',parcel,lift,release};
 }
 export function shipPose(seconds:number) {
   const angle=seconds/14*Math.PI*2-.8,rx=350,ry=175,tilt=-.18;
   const x=rx*Math.cos(angle),y=ry*Math.sin(angle);
   const dx=-rx*Math.sin(angle)*Math.cos(tilt)-ry*Math.cos(angle)*Math.sin(tilt);
   const dy=-rx*Math.sin(angle)*Math.sin(tilt)+ry*Math.cos(angle)*Math.cos(tilt);
-  return {x:384+x*Math.cos(tilt)-y*Math.sin(tilt),y:365+x*Math.sin(tilt)+y*Math.cos(tilt),back:Math.sin(angle)<0,scale:.78+Math.sin(angle)*.3,angle,heading:Math.atan2(dy,dx)};
+  const heading=Math.atan2(dy,dx),direction=(heading/(Math.PI/2)+4)%4;
+  const view=['starboard','bow','port','stern'][Math.round(direction)%4];
+  return {x:384+x*Math.cos(tilt)-y*Math.sin(tilt),y:365+x*Math.sin(tilt)+y*Math.cos(tilt),back:Math.sin(angle)<0,scale:.78+Math.sin(angle)*.3,angle,heading,view,direction,bank:Math.sin(angle*2)*.12};
 }
 export const actionText = {walk:'绕过仓库，寻找奇怪的小包裹',scan:'扫描中 · 这里面好像有回声',pickup:'轻轻捡起，暂时不要拆封',return:'带着新发现，从前庭返回',unload:'归舱卸货 · 奇物正在登记'};
