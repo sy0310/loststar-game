@@ -19,12 +19,14 @@ export function robotPose(fraction:number) {
   else if(f<.91){action='return';point=pointOnPath(INBOUND,(f-.64)/.27);}
   else{action='unload';point={x:327,y:454,facing:'left'};}
   const smooth=(u:number)=>{const t=Math.max(0,Math.min(1,u));return t*t*(3-2*t);};
-  const lift=smooth((f-.52)/.1),release=smooth((f-.915)/.055);
-  const hand={x:point.x-12,y:point.y-36};
+  const lift=smooth((f-.52)/.1),pass=smooth((f-.91)/.025),release=smooth((f-.935)/.04);
+  const hand={x:point.x-22,y:point.y-28};
+  const extended={x:293,y:419};
   const parcel=action==='walk'||action==='scan'?{x:465,y:357,held:false,delivered:false,visible:action==='scan'}:
     action==='pickup'?{x:465+(hand.x-465)*lift,y:357+(hand.y-357)*lift,held:lift>.95,delivered:false,visible:true}:
     action==='return'?{...hand,held:true,delivered:false,visible:true}:
-    {x:hand.x+(291-hand.x)*release,y:hand.y+(435-hand.y)*release,held:release<1,delivered:release===1,visible:f<.995};
+    {x:f<.935?hand.x+(extended.x-hand.x)*pass:extended.x+(291-extended.x)*release,
+      y:f<.935?hand.y+(extended.y-hand.y)*pass:extended.y+(435-extended.y)*release,held:release<1,delivered:release===1,visible:f<.995};
   return {action,...point,carrying:action==='return'||action==='unload',parcel,lift,release};
 }
 export function shipPose(seconds:number) {

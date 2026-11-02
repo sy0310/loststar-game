@@ -103,6 +103,7 @@ export class ExpeditionScene {
     this.shadow(p.x,p.y,31);
     const walkFrame=Math.floor(t*8)%4;
     let frame=moving?walkFrame:p.action==='scan'?4:p.action==='pickup'?(f<.575?5:6):7;
+    if(p.action==='unload'&&f<.925)frame=6;
     if(p.action==='unload'&&f>.976)frame=1;
     const bob=moving?Math.round(Math.sin(t*16))*1:0;
     this.actor(frame,p.x,p.y+bob,144,p.action==='walk'&&p.facing==='right',p.action==='return',t);
