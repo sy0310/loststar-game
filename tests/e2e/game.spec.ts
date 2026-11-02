@@ -4,7 +4,13 @@ const hiddenWorlds=/回声菌星|倒置海星|钟摆荒原星|无人游乐星|�
 async function passTime(page:Page,ms:number){
   for(let left=ms;left>0;left-=10000){await page.clock.fastForward(Math.min(left,10000));await page.waitForFunction(k=>JSON.parse(localStorage.getItem(k)!).lastAt>=Date.now()-500,KEY);}
 }
-async function boot(page:Page){await page.clock.install({time:new Date('2026-11-02T19:00:00Z')});await page.goto('/?start=expedition');}
+async function boot(page:Page){
+  await page.clock.install({time:new Date('2026-11-02T19:00:00Z')});
+  // Keep the three-second presentation window independent of navigation/CI CPU time.
+  // Pause before app creation; every subsequent game-time change uses passTime().
+  await page.clock.pauseAt(new Date('2026-11-02T19:00:10Z'));
+  await page.goto('/?start=expedition');
+}
 
 test('首星雷达只勘测真实现场，不引向未开放星球',async({page})=>{
   await boot(page);await page.getByRole('button',{name:'星图',exact:true}).click();
@@ -27,9 +33,9 @@ test('新奇物和新居民有独立发现演出，不阻断导航、刷新不�
   await boot(page);await passTime(page,12500);
   await expect(page.locator('[data-presentation="receipt"]')).toBeVisible();
   await expect(page.getByText('这张收据，先认识了你。')).toBeVisible();
-  await page.getByRole('button',{name:'收起发现提示'}).click();
+  await passTime(page,3100);await expect(page.locator('#discovery-stage')).toBeHidden();
   await page.reload();await expect(page.locator('[data-presentation="receipt"]')).toHaveCount(0);
-  await passTime(page,24000);await expect(page.locator('[data-presentation="mouse"][data-cue="resident"]')).toBeVisible();
+  await passTime(page,20900);await expect(page.locator('[data-presentation="mouse"][data-cue="resident"]')).toBeVisible();
   await page.getByRole('button',{name:'图鉴',exact:true}).click();await expect(page.getByRole('heading',{name:'宇宙图鉴'})).toBeVisible();
   await expect(page.locator('#discovery-stage')).toBeHidden();
 });
