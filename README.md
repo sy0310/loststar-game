@@ -6,7 +6,7 @@
 
 **当前只做第一阶段：退货箱星 / 退件平原质量基准打磨。** 6 件奇物、3 种居民、3 个事件，连续绕轨与自主探索，三类发现演出，图鉴、基地、工坊和离线归航。后续星球完整远征冻结，先由用户审核首星。
 
-工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不部署。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
+工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不发布正式版。2026-11-02 用户授权的 TapTap 开发自测上传见 [实机试玩记录](docs/13_TAPTAP_SELF_TEST.md)。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
 
 ## 本地运行
 
@@ -83,3 +83,7 @@ design/reference/      真实原始设计 PNG/MP4、README/HTML，不进入构�
 `npm run assets:export` 从已提交源图确定性导出。当前源为透明 PNG、提示词及动画代码，没有手工 Aseprite 工程。发现音效通过 `loststar:sound-cue` 接入原创 Web Audio 短音效，默认静音，可在设置显式开启；不接外部音频 SDK。
 
 最终主观视觉、手部接触、最小辅助文字、真实手机性能与长期节奏仍待审核。阶段二只有在用户确认首星标准后开始。
+
+## TapTap 开发测试包
+
+`npm run package:taptap` 构建可部署在子目录的 H5 ZIP，输出在忽略提交的 `releases/taptap/`。当前首星开发测试包已上传 TapTap，自测二维码通过会话交付；不是公开商店发布，PR 仍为 Draft。详见 [上传结果与实机试玩](docs/13_TAPTAP_SELF_TEST.md)。
