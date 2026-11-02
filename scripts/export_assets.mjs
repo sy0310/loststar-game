@@ -28,3 +28,36 @@ for(const [name,x,y] of [['receipt',0,0],['tape',1,0],['nested',0,1],['signal',1
 console.log('Exported 4 transparent collectible icons.');
 
 await writeFile(new URL('assets/runtime/metadata.json',root),JSON.stringify(info,null,2)+'\n');
+
+for (const [sheet, entries] of [
+ ['parcel-ecology-v2.png', [['hermit',0,0],['tagbird',1,0],['cosmic-parcel',0,1],['stamp',1,1]]],
+ ['parcel-props-v2.png', [['sorter',0,0],['bell',1,0],['night-clock',0,1],['blank-letter',1,1]]],
+]) {
+ const m=await sharp(input(sheet)).metadata();
+ for (const [name,x,y] of entries) {
+  const crop=await sharp(input(sheet)).extract({left:x*m.width/2,top:y*m.height/2,width:m.width/2,height:m.height/2}).png().toBuffer();
+  const trim=await sharp(crop).trim({background:'#00000000',threshold:10}).png().toBuffer();
+  await sharp(trim).resize({width:256,kernel:'nearest'}).webp({quality:94,alphaQuality:100}).toFile(output(name+'.webp'));
+  info[name]=await sharp(output(name+'.webp')).metadata();
+ }
+}
+const robotActions=await sharp(input('robot-actions-v2.png')).metadata();
+const cells=[];
+for(let i=0;i<8;i++){
+ const x=i%4,y=Math.floor(i/4),cw=robotActions.width/4,ch=robotActions.height/2;
+ const cell=await sharp(input('robot-actions-v2.png')).extract({left:Math.round(x*cw),top:Math.round(y*ch),width:Math.floor(cw),height:Math.floor(ch)}).resize(160,160,{fit:'fill',kernel:'nearest'}).png().toBuffer();
+ cells.push({input:cell,left:x*160,top:y*160});
+}
+await sharp({create:{width:640,height:320,channels:4,background:'#00000000'}}).composite(cells).webp({quality:95,alphaQuality:100}).toFile(output('robot-actions-v2.webp'));
+info['robot-actions-v2']=await sharp(output('robot-actions-v2.webp')).metadata();
+await writeFile(new URL('assets/runtime/metadata.json',root),JSON.stringify(info,null,2)+'\n');
+console.log('Exported phase 1 ecology, props, and aligned 8-pose robot sheet.');
+const em=await sharp(input('equipment-v2.png')).metadata();
+for(const [name,x,y] of [['radar',0,0],['scanner',1,0],['recycler',0,1],['cargo',1,1]]){
+ const crop=await sharp(input('equipment-v2.png')).extract({left:x*em.width/2,top:y*em.height/2,width:em.width/2,height:em.height/2}).png().toBuffer();
+ const trim=await sharp(crop).trim({background:'#00000000',threshold:10}).png().toBuffer();
+ await sharp(trim).resize({width:192,kernel:'nearest'}).webp({quality:94,alphaQuality:100}).toFile(output('equipment-'+name+'.webp'));
+ info['equipment-'+name]=await sharp(output('equipment-'+name+'.webp')).metadata();
+}
+await writeFile(new URL('assets/runtime/metadata.json',root),JSON.stringify(info,null,2)+'\n');
+console.log('Exported 4 original pixel equipment icons.');

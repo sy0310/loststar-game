@@ -1,7 +1,7 @@
 export type Action = 'walk' | 'scan' | 'pickup' | 'return' | 'unload';
 type Point = readonly [number, number];
-const OUTBOUND: Point[] = [[289,442],[225,435],[226,370],[310,340],[474,356]];
-const INBOUND: Point[] = [[474,356],[497,403],[448,471],[337,465],[289,442]];
+const OUTBOUND: Point[] = [[327,454],[225,435],[226,370],[310,340],[474,356]];
+const INBOUND: Point[] = [[474,356],[497,403],[448,471],[365,475],[327,454]];
 function pointOnPath(path: Point[], fraction: number) {
   const lengths=path.slice(1).map((p,i)=>Math.hypot(p[0]-path[i][0],p[1]-path[i][1]));
   let left=Math.max(0,Math.min(1,fraction))*lengths.reduce((a,b)=>a+b,0),index=0;
@@ -17,7 +17,7 @@ export function robotPose(fraction:number) {
   else if(f<.49){action='scan';point={x:474,y:356,facing:'left'};}
   else if(f<.64){action='pickup';point={x:474,y:356,facing:'left'};}
   else if(f<.91){action='return';point=pointOnPath(INBOUND,(f-.64)/.27);}
-  else{action='unload';point={x:289,y:442,facing:'right'};}
+  else{action='unload';point={x:327,y:454,facing:'left'};}
   return {action,...point,carrying:action==='return'||action==='unload'};
 }
 export function shipPose(seconds:number) {

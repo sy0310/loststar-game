@@ -1,101 +1,198 @@
 import './style.css';
-import {icon} from './icons';
-import {newGame,advance,restore,claimReturn,upgrade,cost,tuning,publicRadar,dismissReveal,upgradeIds,MAX_LEVEL,SAVE_KEY,type SaveData,type UpgradeId} from './game/engine';
-import {discoveries,discoveryById,planetById} from './content/catalog';
-import type {DiscoveryKind} from './content/types';
-import {ExpeditionScene} from './render/scene';
-import {robotPose,actionText} from './render/motion';
+import { icon } from './icons';
+import {openSave,commitSave,type StorageLike} from './game/persistence';
+import {newGame,advance,restore,claimReturn,upgrade,cost,tuning,publicRadar,dismissSurvey,upgradeIds,MAX_LEVEL,SAVE_KEY,pendingPresentations,markPresented,publicPlanets,type SaveData,type UpgradeId} from './game/engine';
+import { discoveries, discoveryById } from './content/catalog';
+import { parcelSignals } from './content/parcel';
+import type { DiscoveryKind } from './content/types';
+import { ExpeditionScene } from './render/scene';
+import { robotPose, actionText } from './render/motion';
+import { equipment, itemArt } from './ui/art';
+import { DiscoveryDirector, soundCue } from './ui/discovery';
 import globeUrl from '../assets/runtime/parcel-globe.webp';
 import robotUrl from '../assets/runtime/robot.webp';
-import mouseUrl from '../assets/runtime/mouse.webp';
-import receiptUrl from '../assets/runtime/receipt.webp';
-import tapeUrl from '../assets/runtime/tape.webp';
-import nestedUrl from '../assets/runtime/nested.webp';
-import signalUrl from '../assets/runtime/signal.webp';
+import shipUrl from '../assets/runtime/ship.webp';
 
-const $=<T extends HTMLElement=HTMLElement>(s:string)=>document.querySelector<T>(s)!;
-let state:SaveData;let storageOK=true;
-try{state=restore(localStorage.getItem(SAVE_KEY));localStorage.setItem(SAVE_KEY,JSON.stringify(state));}catch{state=newGame();storageOK=false;}
-let tab='expedition',filter:DiscoveryKind|'planet'|'all'='all',lastRadar='',lastCollection='',lastBase='';
-let interaction='';
+const $=<T extends HTMLElement=HTMLElement>(selector:string)=>document.querySelector<T>(selector)!;
+const storage:StorageLike={getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
+const initial=openSave(storage,Date.now());
+let state=initial.state,storageOK=initial.persisted;
+let tab='expedition';
+let filter:DiscoveryKind|'planet'|'all'='all';
+let lastRadar='',lastCollection='',lastBase='',lastRecent='';
+let modalKind='',presenting=false,ticking=false,reviewTime:number|null=null,toastTimer:ReturnType<typeof setTimeout>;
+const kindName={artifact:'奇物',creature:'居民',event:'异闻'};
+const heading=(eyebrow:string,title:string,subtitle:string,extra='')=>`<header class="page-heading"><div class="eyebrow">${eyebrow}</div><div class="heading-line"><h1>${title}</h1>${extra}</div><p>${subtitle}</p></header>`;
+const closeButton=(label:string)=>`<button class="icon-button" data-action="close" aria-label="${label}">${icon('close')}</button>`;
 const app=$('#app');
-app.innerHTML=`<aside class="desktop-intro"><div class="edition">LOST PROPERTY OFFICE / 01</div><div class="wordmark">失物<br>星球<span>LOSTSTAR</span></div><p>每一次归航，<br>都带回一点不明所以。</p><div class="intro-line"></div><small>宇宙很大。<br>总有一些东西，正在等你捡到。</small></aside>
-<div class="device"><header class="topbar"><a class="brand" href="#" aria-label="失物星球首页">${icon('planet')}<span>失物星球<small>宇宙失物招领处</small></span></a><div class="currency">${icon('cube')}<strong id="balance">120</strong><span>零件</span></div></header>
-<main>
-<section id="expedition" class="view"><div class="page-heading"><div><div class="eyebrow">EXPEDITION / 001</div><h1>退货箱星<span class="tiny-tag">已记录</span></h1><p>退件平原 · 一切都可以退回，除了好奇心。</p></div></div>
-<div class="scene-wrap"><div class="scene-top"><span><i class="live-dot"></i>自动探索中</span><span>LR–01 / 咔哒–07</span></div><div id="planet-scene"></div><div class="scene-bottom"><span>PARCEL RETURN PLANET</span><span>轨道通信正常 ${icon('signal')}</span></div></div>
-<div class="exploration-panel"><div class="status-head"><div class="unit-portrait"><img src="${robotUrl}" alt=""></div><div><small>咔哒–07 的工作日志</small><strong id="robot-action">沿球面寻找异常</strong></div><span class="pulse-bars"><i></i><i></i><i></i></span></div><div class="progress"><span id="cycle-progress"></span></div><div class="status-foot"><span>下一次归舱 <b id="cycle-remaining">12</b>s</span><span>已完成 <b id="cycles">0</b> 次回收</span></div></div>
-<div id="recent" class="recent"></div><button class="workshop-link" data-action="workshop">${icon('gear')}<span>设备工坊<small>让好奇心走得更远</small></span>${icon('arrow')}</button><p class="quiet-note">关掉屏幕也没关系，失物号会继续前行。</p></section>
-<section id="radar" class="view" hidden><div class="page-heading"><div class="eyebrow">THE UNKNOWN / RADAR</div><h1>星域雷达</h1><p>在宇宙回答之前，保持好奇。</p></div><div class="radar-screen"><div class="radar-rings"><i></i><i></i><i></i><div class="sweep"></div><div class="radar-origin"></div><div id="radar-signal"></div></div><span class="radar-corner">LR–01 · 深空频道</span><span class="radar-noise">· · · 接收中</span></div><div id="radar-status"></div><div class="section-title"><span>已记录的航路</span><small>永久星图</small></div><div id="known-planets"></div><p class="quiet-note">雷达只记录真实接收到的信号。</p></section>
-<section id="collection" class="view" hidden><div class="page-heading"><div class="eyebrow">ARCHIVE / LITTLE MYSTERIES</div><h1>宇宙图鉴<span class="tiny-tag" id="collection-count">0 个发现</span></h1><p>用途不明。来历不明。喜欢的理由也不明。</p></div><div class="filters" role="group" aria-label="图鉴分类">${[['all','全部'],['artifact','奇物'],['creature','生物'],['event','事件'],['planet','星球']].map(([id,name])=>`<button data-filter="${id}" aria-pressed="${id==='all'}">${name}</button>`).join('')}</div><div id="collection-items"></div></section>
-<section id="base" class="view" hidden><div class="page-heading"><div class="eyebrow">HOME / LOST PROPERTY OFFICE</div><h1>欢迎归航，管理员。</h1><p>这里有热茶，也有暂时无法解释的收藏。</p></div><div class="base-scene"><div id="display-items"></div><img class="base-robot" src="${robotUrl}" alt="咔哒机器人正在整理收藏"><span class="base-label">失物收藏室 / LR–01</span></div><div class="base-caption"><span><i class="live-dot"></i>失物号仍在自动探索</span><span id="display-count">展柜等待新发现</span></div><button class="primary" data-go="expedition">${icon('rocket')}继续远征${icon('arrow')}</button><button class="workshop-link" data-action="workshop">${icon('gear')}<span>设备工坊<small>雷达 · 扫描 · 回收 · 货舱</small></span>${icon('arrow')}</button><div id="base-collection"></div></section>
-</main><nav aria-label="主导航">${[['expedition','rocket','远征'],['radar','radar','星图'],['collection','book','图鉴'],['base','base','基地']].map(([id,img,name])=>`<button data-go="${id}" aria-current="${id===tab?'page':'false'}">${icon(img)}<span>${name}</span><i></i></button>`).join('')}</nav></div><aside class="desktop-note"><span class="orbit-mark">✦</span><p>你不必一直盯着宇宙。<br>它也会偷偷给你惊喜。</p><small>V0.1 · 退件平原<br>动态可玩样板</small></aside><dialog id="modal"><div id="modal-body"></div></dialog><div id="toast" role="status"></div>`;
+app.innerHTML=`
+<aside class="desktop-intro"><div class="edition">LR–01 / 宇宙失物招领处</div><div class="wordmark">失物<br>星球<span>LOSTSTAR</span></div><p>每一次归航，<br>都带回一点不明所以。</p><div class="intro-line"></div><small>有些地方，是因为你来过，<br>才有了收件人。</small><div class="postal-stamp">退件平原<br><b>航程进行中</b></div></aside>
+<div class="device">
+  <header class="topbar"><a class="brand" href="#" aria-label="失物星球首页">${icon('planet')}<span>失物星球<small>宇宙失物招领处</small></span></a><div class="currency">${icon('cube')}<span><strong id="balance">120</strong><small>可用零件</small></span></div></header>
+  <main id="page-scroll">
+    <section id="expedition" class="view">
+      ${heading('FIELD EXPEDITION / LR–01','退货箱星','退件平原 · 一切都能退回，除了好奇心。','<span class="tiny-tag">自动勘察</span>')}
+      <div class="scene-wrap"><div class="scene-top"><span><i class="live-dot"></i>地表通信正常</span><span class="scene-serial">KADA–07 / 自动探索</span></div><div id="planet-scene"></div><div class="scene-bottom"><span>退件平原 · 收件站</span><span>LR–01 ${icon('rocket')}</span></div></div>
+      <div class="exploration-panel game-panel"><div class="status-head"><div class="unit-portrait"><img src="${robotUrl}" alt=""></div><div><span class="micro-label">咔哒–07 的作业频道</span><strong id="robot-action"></strong></div><span class="pulse-bars" aria-hidden="true"><i></i><i></i><i></i></span></div><div class="action-track" aria-label="自动探索流程">${[['walk','行走'],['scan','扫描'],['pickup','拾取'],['return','回仓'],['unload','卸货']].map(([id,text])=>`<span data-phase="${id}"><i></i>${text}</span>`).join('')}</div><div class="progress"><span id="cycle-progress"></span></div><div class="status-foot"><span>下一次归舱 <b id="cycle-remaining">12</b>s</span><span>已完成 <b id="cycles">0</b> 次回收</span></div></div>
+      <div id="recent" class="recent game-panel"></div>
+      <div class="quick-actions"><button class="utility-button" data-action="workshop">${icon('gear')}<span>设备工坊<small>把零件变成好奇心</small></span>${icon('arrow')}</button><button class="utility-button" data-go="collection">${icon('book')}<span>首星档案<small id="field-count">正在记录</small></span>${icon('arrow')}</button></div>
+      <p class="quiet-note">关掉屏幕也没关系，失物号会继续前行。</p>
+    </section>
+    <section id="radar" class="view" hidden>
+      ${heading('SIGNAL ROOM / 本地勘测','星域雷达','先把脚下这颗星球，认真听清楚。','<span class="tiny-tag cyan-tag">信道已接通</span>')}
+      <div class="radar-screen game-panel"><div class="radar-top"><span>RETURNS PLAIN / 地表回波</span><span class="live-label"><i class="live-dot"></i>持续监听</span></div><div class="radar-rings"><i></i><i></i><i></i><div class="sweep"></div><img class="radar-planet" src="${globeUrl}" alt="已知退货箱星"><div id="radar-signal"></div></div><div class="radar-crosshair-x"></div><div class="radar-crosshair-y"></div><span class="radar-scale scale-left">01<br>··<br>02<br>··<br>03</span><span class="radar-corner">地表信道 / K–07</span><span class="radar-noise">RX <b>▂ ▅ ▃ ▆</b></span></div>
+      <div class="telemetry"><span>轨道 <b>稳定</b></span><span>地表 <b>有回应</b></span><span>自动 <b>归档中</b></span></div><div id="radar-status"></div>
+      <div class="section-title"><span>退件平原 · 现场记录</span><small id="survey-count"></small></div><div id="survey-records"></div>
+      <div class="section-title"><span>已记录的航路</span><small>归处始终在线</small></div><div id="known-planets"></div>
+    </section>
+    <section id="collection" class="view" hidden>
+      ${heading('PLANET ARCHIVE / 失物档案室','宇宙图鉴','用途不明。喜欢它的理由，也不明。','<span class="archive-seal">已收录</span>')}
+      <div class="archive-overview game-panel"><img src="${globeUrl}" alt=""><div><span class="micro-label">退件平原 · 首轮田野档案</span><strong id="archive-title">故事正在慢慢长出来</strong><div class="progress"><span id="archive-progress"></span></div><small id="collection-count"></small></div></div>
+      <div class="filters" role="group" aria-label="图鉴分类">${[['all','全部'],['artifact','奇物'],['creature','生物'],['event','事件'],['planet','星球']].map(([id,name])=>`<button data-filter="${id}" aria-pressed="${id==='all'}">${name}<small data-filter-count="${id}"></small></button>`).join('')}</div><div id="collection-items"></div>
+    </section>
+    <section id="base" class="view" hidden>
+      ${heading('HOME / 失物号收件站','欢迎归航，管理员。','有热茶，也有一些无法解释的收藏。')}
+      <div class="base-scene"><span class="base-window-light"></span><div id="display-items"></div><div class="base-rover"><div class="base-robot" role="img" aria-label="咔哒在基地整理收藏"></div><span class="rover-note">整理中 · · ·</span></div><span class="base-label">失物收藏室 <b>LR–01</b></span><span class="base-lamp"></span></div>
+      <div class="base-caption"><span><i class="live-dot"></i>失物号仍在自动探索</span><span id="display-count"></span></div><button class="primary" data-go="expedition">${icon('rocket')}继续远征${icon('arrow')}</button>
+      <div class="quick-actions"><button class="utility-button" data-action="workshop">${icon('gear')}<span>设备工坊<small>让每次出发更从容</small></span>${icon('arrow')}</button><button class="utility-button" data-go="collection">${icon('book')}<span>收藏档案<small>看看带回了什么</small></span>${icon('arrow')}</button></div><div class="section-title"><span>住在这里的邻居</span><small id="resident-count"></small></div><div id="base-collection"></div>
+    </section>
+  </main>
+  <nav aria-label="主导航">${[['expedition','rocket','远征'],['radar','radar','星图'],['collection','book','图鉴'],['base','base','基地']].map(([id,img,name])=>`<button data-go="${id}" aria-current="${id===tab?'page':'false'}"><span class="nav-icon">${icon(img)}</span><span>${name}</span><i></i></button>`).join('')}</nav>
+  <div id="discovery-stage" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+</div>
+<aside class="desktop-note"><span class="orbit-mark">✦</span><p>一只拆箱的小鼠。<br>一封没有地址的信。<br>宇宙的惊喜，往往很小。</p><small>退件平原 · 首轮田野档案<br>低频操作 / 自动探索</small></aside>
+<dialog id="modal"><div id="modal-body"></div></dialog><div id="toast" role="status"></div>`;
+
 const scene=new ExpeditionScene($('#planet-scene'),()=>state);
 const modal=$<HTMLDialogElement>('#modal');
-const showModal=(html:string)=>{$('#modal-body').innerHTML=html;if(!modal.open)modal.showModal();};
-function toast(text:string){$('#toast').textContent=text;$('#toast').classList.add('visible');setTimeout(()=>$('#toast').classList.remove('visible'),2800);}
+const director=new DiscoveryDirector($('#discovery-stage'),()=>{presenting=false;queueMicrotask(()=>void maybePresent());});
+function toast(text:string){clearTimeout(toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3000);}
+function showModal(kind:string,html:string){modalKind=kind;$('#modal-body').innerHTML=html;if(!modal.open)modal.showModal();}
+function closeModal(){modal.close();modalKind='';void maybePresent();}
+modal.addEventListener('cancel',()=>{modalKind='';setTimeout(()=>void maybePresent(),0);});
 async function transact(fn:(s:SaveData)=>SaveData){
-  const run=()=>{try{const latest=restore(localStorage.getItem(SAVE_KEY));state=fn(latest);localStorage.setItem(SAVE_KEY,JSON.stringify(state));}catch{state=fn(state);storageOK=false;}update();};
+  const run=()=>{
+    const result=commitSave(storage,state,fn,Date.now());state=result.state;
+    if(!result.persisted&&storageOK)toast('暂时只能保留本次打开的进度。请留意浏览器的存储空间。');
+    storageOK=result.persisted;
+    update();
+  };
   if(navigator.locks)await navigator.locks.request('loststar-save',run);else run();
 }
-function go(id:string){tab=id;document.querySelectorAll<HTMLElement>('.view').forEach(v=>v.hidden=v.id!==id);document.querySelectorAll('[data-go]').forEach(b=>b.setAttribute('aria-current',b.getAttribute('data-go')===id?'page':'false'));window.scrollTo(0,0);update();}
-const itemTextures:Record<string,string>={receipt:receiptUrl,tape:tapeUrl,nested:nestedUrl,mouse:mouseUrl,'return-request':signalUrl};
-const itemImage=(id:string)=>`<img src="${itemTextures[id]}" alt="">`;
+async function maybePresent(){
+  if(presenting||director.active||modal.open||tab!=='expedition')return;
+  const unseen=pendingPresentations(state),id=unseen.at(-1);if(!id)return;
+  presenting=true;let claimed=false;
+  await transact(s=>{claimed=pendingPresentations(s).includes(id);return claimed?unseen.reduce((next,key)=>markPresented(next,key),s):s;});
+  if(claimed&&tab==='expedition'&&!modal.open){const d=discoveryById(id)!;scene.celebrate(d.presentation.cue);director.show(d,unseen.length-1);}
+  else presenting=false;
+}
+function go(id:string){
+  if(!['expedition','radar','collection','base'].includes(id))return;
+  tab=id;document.querySelectorAll<HTMLElement>('.view').forEach(view=>view.hidden=view.id!==id);
+  document.querySelectorAll('[data-go]').forEach(button=>button.setAttribute('aria-current',button.getAttribute('data-go')===id?'page':'false'));
+  $('#page-scroll').scrollTo(0,0);scene.setActive(id==='expedition');if(id!=='expedition')director.hide();update();void maybePresent();
+}
 function renderCollection(){
   const list=state.collection.map(id=>discoveryById(id)!);
-  const filtered=list.filter(d=>filter==='all'||d.kind===filter);
-  $('#collection-count').textContent=`${list.length} 个发现`;
-  let html=filtered.map(d=>`<button class="discovery-card ${d.kind}" data-detail="${d.id}"><span class="artifact-art ${d.icon}">${itemImage(d.id)}</span><span><small>${d.kind==='artifact'?'宇宙奇物':d.kind==='creature'?'星球居民':'异常记录'} · ${d.rarity}</small><strong>${d.name}</strong><p>${d.description}</p></span>${icon('arrow')}</button>`).join('');
-  if(filter==='all'||filter==='planet')html+=state.planets.map(id=>{const p=planetById(id)!;return `<button class="discovery-card" data-planet="${id}"><span class="artifact-art planet-art">${id==='parcel'?`<img src="${globeUrl}" alt="">`:icon('planet')}</span><span><small>已发现星球</small><strong>${p.name}</strong><p>${p.subtitle}</p></span>${icon('arrow')}</button>`;}).join('');
-  $('#collection-items').innerHTML=html||`<div class="empty-state">${icon('book')}<h2>故事还在路上</h2><p>咔哒正在认真地寻找。<br>第一次归舱后，新的发现会留在这里。</p></div>`;
+  $('#collection-count').textContent=`${list.length} / ${discoveries.length} 份首星记录`;
+  $('#archive-title').textContent=list.length===discoveries.length?'这一回，不必退回。':list.length>=7?'这里的怪事，开始彼此回应。':list.length>=3?'认识这里，先认识它的邻居。':'故事正在慢慢长出来';
+  $('#archive-progress').style.width=`${list.length/discoveries.length*100}%`;
+  for(const id of ['all','artifact','creature','event','planet']){
+    $(`[data-filter-count="${id}"]`).textContent=String(id==='all'?list.length:id==='planet'?publicPlanets(state).length:list.filter(d=>d.kind===id).length);
+  }
+  let html=list.filter(d=>filter==='all'||filter===d.kind).map(d=>`<button class="discovery-card ${d.kind}" data-detail="${d.id}" aria-label="${d.name}，${kindName[d.kind]}"><span class="card-code">${kindName[d.kind]} <b>${String(d.milestone).padStart(2,'0')}</b></span><span class="artifact-art">${itemArt(d.id)}</span><span class="card-title">${d.name}</span><span class="card-rarity">${d.rarity}</span><p>${d.description}</p><span class="card-foot">退件平原 ${icon('arrow')}</span></button>`).join('');
+  if(filter==='all'||filter==='planet')html+=publicPlanets(state).map(p=>`<button class="discovery-card planet-card" data-planet="${p.id}"><span class="artifact-art"><img class="pixel-art" src="${globeUrl}" alt=""></span><span><small>已发现星球 · 现场档案</small><strong>${p.name}</strong><p>${p.subtitle}</p><span class="card-foot">返回退件平原 ${icon('arrow')}</span></span></button>`).join('');
+  $('#collection-items').innerHTML=html||`<div class="empty-state game-panel">${icon('book')}<span class="micro-label">空白的那一页，留给下一次发现</span><h2>故事还在路上</h2><p>咔哒正在认真寻找。<br>每次归舱，都会多懂这里一点。</p><span class="empty-stamp">等待宇宙回信</span></div>`;
 }
 function renderBase(){
   const artifacts=state.collection.filter(id=>discoveryById(id)!.kind==='artifact');
-  $('#display-items').innerHTML=artifacts.map((id,i)=>`<button class="display-object slot-${i}" aria-label="查看 ${discoveryById(id)!.name}" data-detail="${id}">${itemImage(id)}</button>`).join('');
-  $('#display-count').textContent=artifacts.length?`${artifacts.length} 件奇物已入柜`:'展柜等待新发现';
-  $('#base-collection').innerHTML=state.collection.includes('mouse')?`<div class="resident"><img src="${mouseUrl}" alt="拆封鼠"><span><small>新来的邻居</small><strong>拆封鼠住下了。</strong><p>它正在帮你检查每一个空箱子。</p></span></div>`:'';
+  $('#display-items').innerHTML=artifacts.map((id,i)=>`<button class="display-object slot-${i}" aria-label="查看 ${discoveryById(id)!.name}" data-detail="${id}">${itemArt(id)}</button>`).join('');
+  $('#display-count').textContent=artifacts.length?`${artifacts.length} 件奇物已安顿`:'给惊喜留了位置';
+  const residents=state.collection.filter(id=>discoveryById(id)!.kind==='creature');$('#resident-count').textContent=`${residents.length} 位邻居`;
+  $('#base-collection').innerHTML=residents.length?residents.map(id=>{const d=discoveryById(id)!;return `<button class="resident game-panel" data-detail="${id}">${itemArt(id)}<span><small>这里也是它的归处</small><strong>${d.name}</strong><p>${id==='mouse'?'正在帮你检查每一个空箱子。':id==='hermit'?'挑了一间刚好合身的纸箱小屋。':'它把今天的好天气贴在了窗外。'}</p></span>${icon('arrow')}</button>`;}).join(''):`<div class="home-note game-panel"><span class="micro-label">收件站的灯一直亮着</span><p>外面的居民偶尔会来。先留几个空纸箱，等它们慢慢熟悉这里。</p></div>`;
 }
-function renderRadar(){const r=publicRadar(state);const stage=r.stage;
-  const text={searching:['正在聆听宇宙','远方还很安静，扫描会自动继续。'],anomaly:['捕获异常信号','那里有什么正在回应。还无法判断是什么。'],locking:['正在锁定坐标','信号逐渐清晰，正在建立一条新航路。'],revealed:['发现一条新航路','这一次，宇宙回了信。']}[stage];
-  $('#radar-signal').innerHTML=stage==='anomaly'||stage==='locking'?`<span data-signal class="signal ${stage}"></span>`:'';
-  $('#radar-status').innerHTML=`<div class="radar-status"><div><i class="live-dot"></i><h2>${text[0]}</h2></div><p>${text[1]}</p>${stage==='revealed'&&r.planet?`<div class="reveal-planet">${icon('planet')}<h3>${r.planet.name}</h3><p>${r.planet.subtitle}</p><button class="primary" data-action="record">记录新航路${icon('arrow')}</button></div>`:`<div class="progress"><span style="width:${Math.max(3,r.progress)}%"></span></div><small>${stage==='searching'?'持续扫描中':`定位进度 ${r.progress}%`} · 雷达 Lv.${state.upgrades.radar+1}</small>`}</div>`;
-  $('#known-planets').innerHTML=state.planets.map(id=>{const p=planetById(id)!;return `<button class="known-planet" data-planet="${id}"><span class="planet-dot" style="--planet:${p.color}">${id==='parcel'?`<img src="${globeUrl}" alt="">`:icon('planet')}</span><span><strong>${p.name}</strong><small>${p.playable?'退件平原 · 正在探索':'已记录坐标 · 等待勘测'}</small></span>${icon('arrow')}</button>`;}).join('');
+function renderRadar(){
+  const radar=publicRadar(state),stage=radar.stage;
+  const text={searching:['正在监听退件平原','咔哒会自动核对地表回波，不必守着雷达。'],anomaly:['捕获本地异常','纸层与旧机器之间，传来一段不同寻常的回应。'],locking:['正在核对回波','正在分离现场杂音，记录只来自真实勘测。'],surveyed:['现场回波已归档','这颗小星球，刚刚多讲了一点自己的故事。']}[stage];
+  $('#radar-signal').innerHTML=stage==='anomaly'||stage==='locking'?`<span data-signal class="signal ${stage}" style="--signal-x:${54+(state.surveyCount%3)*7}%;--signal-y:${25+(state.surveyCount%2)*13}%"></span>`:'';
+  $('#radar-status').innerHTML=`<div class="radar-status game-panel"><span class="micro-label">K–07 地表勘测频道</span><div class="radar-status-heading"><i class="live-dot"></i><h2>${text[0]}</h2><span class="radar-level">Lv.${state.upgrades.radar+1}</span></div><p>${text[1]}</p>${stage==='surveyed'&&radar.signal?`<div class="survey-reveal"><small>退件平原 / 已核实现场</small><h3>${radar.signal.name}</h3><p>${radar.signal.description}</p><div class="survey-reward">${icon('cube')}勘测补给${state.pendingReturn?'待归航结算':'已自动入账'} <b>+6</b></div><button class="secondary" data-action="record">收录现场记录 ${icon('arrow')}</button></div>`:`<div class="progress"><span style="width:${Math.max(2,radar.progress)}%"></span></div><div class="status-foot"><span>${stage==='searching'?'自动勘测中':`核对进度 ${radar.progress}%`}</span><span>完成一次勘测 +6 零件</span></div>`}</div>`;
+  const recorded=parcelSignals.slice(0,Math.min(state.surveyCount,parcelSignals.length));
+  $('#survey-count').textContent=`${recorded.length} 份已核实`;
+  $('#survey-records').innerHTML=recorded.length?recorded.map((r,i)=>`<article class="survey-record"><span class="record-number">${String(i+1).padStart(2,'0')}</span><div><strong>${r.name}</strong><p>${r.description}</p><small>${r.fieldNote}</small></div><span class="record-check">✓</span></article>`).join(''):`<div class="local-note"><span class="record-number">··</span><p>尚无现场记录。<br><small>没有捕获的回波，不会被填进档案。</small></p></div>`;
+  $('#known-planets').innerHTML=publicPlanets(state).map(p=>`<button class="known-planet game-panel" data-planet="${p.id}"><span class="planet-dot"><img src="${globeUrl}" alt=""></span><span><strong>${p.name}</strong><small>退件平原 · 失物号正在工作</small></span>${icon('arrow')}</button>`).join('');
 }
-const upgradeInfo:Record<UpgradeId,{name:string;desc:string;icon:string;effect:(s:SaveData)=>string}>={
- radar:{name:'星域雷达',desc:'更快地捕获与定位真实信号',icon:'radar',effect:s=>`定位速度 ×${tuning(s).radar.toFixed(2)}`},
- scanner:{name:'扫描仪',desc:'缩短机器人每次探索的周期',icon:'radar',effect:s=>`${(tuning(s).scanner/1000).toFixed(1)} 秒 / 次探索`},
- recycler:{name:'回收装置',desc:'每次卸货带回更多可用零件',icon:'gear',effect:s=>`${tuning(s).recycler} 零件 / 次回收`},
- cargo:{name:'飞船货舱',desc:'让失物号在离线时航行更久',icon:'rocket',effect:s=>`${tuning(s).cargo/3600} 小时离线上限`},
+const upgradeInfo:Record<UpgradeId,{name:string;desc:string;effect:(s:SaveData)=>string}>={
+  radar:{name:'星域雷达',desc:'听见更多退件平原的现场回波。',effect:s=>`勘测速度 ×${tuning(s).radar.toFixed(2)}`},
+  scanner:{name:'扫描仪',desc:'让咔哒更快完成一轮地表探索。',effect:s=>`${(tuning(s).scanner/1000).toFixed(1)} 秒 / 次探索`},
+  recycler:{name:'回收装置',desc:'把废旧包装变成下一次航程的零件。',effect:s=>`${tuning(s).recycler} 零件 / 次回收`},
+  cargo:{name:'飞船货舱',desc:'屏幕关掉以后，仍能安心航行。',effect:s=>`${tuning(s).cargo/3600} 小时离线上限`},
 };
-function workshop(){showModal(`<div class="modal-heading"><div><div class="eyebrow">ENGINEERING / LR–01</div><h2>设备工坊</h2></div><button class="icon-button" data-action="close" aria-label="关闭工坊">${icon('close')}</button></div><p class="modal-subtitle">把捡来的零件，变成下一次发现的可能。</p><div class="workshop-balance">${icon('cube')}可用零件 <b>${Math.floor(state.resources)}</b></div>${upgradeIds.map(id=>{const info=upgradeInfo[id],lv=state.upgrades[id],max=lv>=MAX_LEVEL,next={...state,upgrades:{...state.upgrades,[id]:lv+1}};return `<div class="upgrade-row" data-upgrade="${id}"><span class="upgrade-icon">${icon(info.icon)}</span><div><h3>${info.name} <small>Lv.${lv+1}</small></h3><p>${info.effect(state)}</p><small>${max?'已达到当前设备上限':`下一级：${info.effect(next)}`}</small></div><button data-upgrade-buy="${id}" aria-label="升级${info.name}" ${max||state.resources<cost(state,id)?'disabled':''}>${max?'已满级':`${cost(state,id)} ${icon('cube')}`}</button></div>`;}).join('')}<p class="quiet-note">V0.1 体验数值，可随试玩反馈调整。</p>`);}
-function detail(id:string){const d=discoveryById(id);if(!d||!state.collection.includes(id))return;interaction='';showModal(`<div class="modal-heading"><span class="eyebrow">FIELD NOTES / ${d.rarity}</span><button class="icon-button" data-action="close" aria-label="关闭详情">${icon('close')}</button></div><div class="detail-art artifact-art ${d.icon}">${itemImage(id)}</div><small class="detail-kind">${d.kind==='artifact'?'用途不明的宇宙奇物':d.kind==='creature'?'来自远方的小居民':'一次难以解释的遭遇'}</small><h2 class="detail-title">${d.name}</h2><p class="detail-description">${d.description}</p><div class="detail-source">发现于：退货箱星 / 退件平原</div><div class="interaction" id="interaction">已收入图鉴与基地档案。</div><button class="primary" data-interact="${id}">试一试 ${icon('arrow')}</button>`);}
-function offline(){const cargo=state.pendingReturn;if(!cargo)return;showModal(`<div class="eyebrow">WELCOME BACK / LR–01</div><div class="return-emblem">${icon('rocket')}</div><h2 class="detail-title">离线归航</h2><p class="detail-description">你不在的时候，宇宙替你保管了一点惊喜。</p><div class="cargo-stats"><div><small>本次有效探索</small><b>${Math.floor(cargo.seconds/60)} 分钟</b></div><div><small>带回零件</small><b>+${cargo.resources}</b></div></div>${cargo.discoveries.length?`<p class="cargo-found">${cargo.discoveries.map(id=>discoveryById(id)!.name).join(' · ')}</p>`:''}<p class="quiet-note">货舱离线结算上限 ${tuning(state).cargo/3600} 小时</p><button class="primary" data-action="claim">收下这次远行${icon('arrow')}</button>`);}
+function workshop(){
+  showModal('workshop',`<div class="modal-heading"><div><div class="eyebrow">LR–01 / ENGINEERING BAY</div><h2>设备工坊</h2></div>${closeButton('关闭工坊')}</div><p class="modal-subtitle">捡来的小零件，会让下一次出发更从容。</p><div class="workshop-balance">${icon('cube')}工坊零件储备 <b>${Math.floor(state.resources)}</b></div><div class="upgrade-grid">${upgradeIds.map(id=>{
+    const info=upgradeInfo[id],level=state.upgrades[id],max=level>=MAX_LEVEL,next={...state,upgrades:{...state.upgrades,[id]:level+1}};
+    return `<article class="upgrade-card game-panel" data-upgrade="${id}"><header><h3>${info.name}</h3><span>Lv.${level+1}</span></header><img class="equipment-art pixel-art" src="${equipment[id]}" alt=""><div class="level-notches" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i class="${i<=level?'filled':''}"></i>`).join('')}</div><strong class="upgrade-effect">${info.effect(state)}</strong><p>${info.desc}</p><small class="upgrade-next">${max?'已达当前设备上限':`下一级 ${info.effect(next)}`}</small><button class="upgrade-buy" data-upgrade-buy="${id}" aria-label="升级${info.name}" ${max||state.resources<cost(state,id)?'disabled':''}>${max?'已满级':`${icon('cube')}${cost(state,id)} 零件 ${icon('arrow')}`}</button></article>`;
+  }).join('')}</div><p class="quiet-note">每一级都有实际效果，咔哒会认真使用。</p>`);
+}
+function detail(id:string){
+  const d=discoveryById(id);if(!d||!state.collection.includes(id))return;
+  director.hide();const recorded=state.discoveryAt[id];
+  showModal('detail',`<div class="modal-heading"><div><div class="eyebrow">FIELD ARCHIVE / ${kindName[d.kind]}</div><span class="detail-serial">RETURNS PLAIN · ${String(d.milestone).padStart(3,'0')}</span></div>${closeButton('关闭详情')}</div><div class="detail-art ${d.kind}"><div class="artifact-orbit"></div>${itemArt(id)}<span class="rarity-stamp">${d.rarity}<small>已入档</small></span></div><small class="detail-kind">${d.kind==='artifact'?'用途不明的宇宙奇物':d.kind==='creature'?'住在纸箱平原的小居民':'一份尚不能完全解释的现场记录'}</small><h2 class="detail-title">${d.name}</h2><p class="detail-description">${d.description}</p><div class="field-note"><span class="micro-label">咔哒的田野笔记</span><p>${d.fieldNote}</p></div><div class="detail-source"><span>退货箱星 / 退件平原</span><small>${recorded?new Date(recorded).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'旧档案'} 入档</small></div><div class="interaction" id="interaction">${d.kind==='creature'?'它似乎愿意和你打个招呼。':'可以轻轻试一下。咔哒会在旁边记录。'}</div><button class="primary" data-interact="${id}">试一试 ${icon('arrow')}</button>`);
+}
+function offline(){
+  const cargo=state.pendingReturn;if(!cargo)return;
+  director.hide();
+  showModal('offline',`<div class="return-header"><div class="eyebrow">LR–01 / ARRIVAL MANIFEST</div><span class="return-status">已安全抵达</span></div><div class="return-hero"><span class="return-orbit"></span><img class="pixel-art" src="${shipUrl}" alt="失物号归航"></div><h2 class="detail-title">离线归航</h2><p class="return-line">你不在的时候，宇宙替你保管了一点惊喜。</p><div class="cargo-stats"><div><small>有效探索时长</small><b>${Math.floor(cargo.seconds/60)}<span> 分钟</span></b></div><div><small>带回可用零件</small><b class="reward-number">+${cargo.resources}</b></div></div><div class="return-found-heading"><span>${cargo.discoveries.length?'第一次带回的发现':'这次带回熟悉的日常'}</span><small>${cargo.discoveries.length?`${cargo.discoveries.length} 份新档案`:'所有回收都已认真记录'}</small></div>${cargo.discoveries.length?`<div class="cargo-found">${cargo.discoveries.map(id=>`<div class="cargo-item">${itemArt(id)}<span>${discoveryById(id)!.name}</span></div>`).join('')}</div>`:`<div class="return-note">零件来自日常回收与现场勘测。<br>老邻居们，也都过得很好。</div>`}<div class="manifest-footer"><span>货舱离线上限 ${tuning(state).cargo/3600} 小时</span><span>入账后自动留存</span></div><button class="primary" data-action="claim">收下这次远行 ${icon('arrow')}</button>`);
+}
 function update(){
- $('#balance').textContent=Math.floor(state.resources).toLocaleString('zh-CN');
- const fraction=state.cycleMs/tuning(state).scanner;$('#cycle-progress').style.width=`${fraction*100}%`;$('#cycle-remaining').textContent=Math.ceil((tuning(state).scanner-state.cycleMs)/1000).toString();$('#cycles').textContent=state.cycles.toString();$('#robot-action').textContent=actionText[robotPose(fraction).action];
- const latest=state.collection.at(-1),d=latest?discoveryById(latest):null;
- const recent=$('#recent');if(recent.dataset.item!==(latest??'none')){recent.dataset.item=latest??'none';recent.innerHTML=d?`<button data-detail="${d.id}"><span class="recent-symbol">${icon(d.icon)}</span><span><small>最近带回的小小发现</small><strong>${d.name}</strong></span>${icon('arrow')}</button>`:`<span class="recent-symbol">${icon('receipt')}</span><span><small>收件箱里还很安静</small><strong>第一份宇宙奇物，正在路上。</strong></span>`;}
- const rc=JSON.stringify([publicRadar(state),state.planets,state.upgrades.radar]);if(rc!==lastRadar){lastRadar=rc;renderRadar();}
- const cc=JSON.stringify([state.collection,state.planets,filter]);if(cc!==lastCollection){lastCollection=cc;renderCollection();}
- const bc=state.collection.join(',');if(bc!==lastBase){lastBase=bc;renderBase();}
+  $('#balance').textContent=Math.floor(state.resources).toLocaleString('zh-CN');
+  const fraction=reviewTime===null?state.cycleMs/tuning(state).scanner:((reviewTime%12)+12)%12/12,action=robotPose(fraction).action;
+  $('#cycle-progress').style.width=`${fraction*100}%`;$('#cycle-remaining').textContent=String(Math.ceil((tuning(state).scanner-state.cycleMs)/1000));$('#cycles').textContent=String(state.cycles);$('#robot-action').textContent=actionText[action];
+  document.querySelectorAll<HTMLElement>('[data-phase]').forEach(el=>el.classList.toggle('active',el.dataset.phase===action));
+  $('#field-count').textContent=`已记录 ${state.collection.length} / ${discoveries.length}`;
+  const latest=state.collection.at(-1),d=latest?discoveryById(latest):null;
+  if(lastRecent!==(latest??'none')){
+    lastRecent=latest??'none';$('#recent').innerHTML=d?`<button data-detail="${d.id}"><span class="recent-symbol">${itemArt(d.id)}</span><span><small>最近带回的${kindName[d.kind]}</small><strong>${d.name}</strong><em>${d.rarity} · 已收入首星档案</em></span>${icon('arrow')}</button>`:`<span class="recent-symbol empty-recent">${icon('receipt')}</span><span><small>收件站正在等第一份惊喜</small><strong>宇宙的第一张小票，正在路上。</strong><em>不必点击，咔哒会自己带回来。</em></span>`;
+  }
+  const radarKey=JSON.stringify([publicRadar(state),state.surveyCount,state.upgrades.radar,state.planets,!!state.pendingReturn]);if(radarKey!==lastRadar){lastRadar=radarKey;renderRadar();}
+  const collectionKey=JSON.stringify([state.collection,state.discoveryAt,filter]);if(collectionKey!==lastCollection){lastCollection=collectionKey;renderCollection();}
+  const baseKey=state.collection.join(',');if(baseKey!==lastBase){lastBase=baseKey;renderBase();}
 }
-app.addEventListener('click',async e=>{
- const button=(e.target as HTMLElement).closest<HTMLElement>('button');if(!button)return;
- if(button.dataset.go)go(button.dataset.go);
- if(button.dataset.filter){filter=button.dataset.filter as typeof filter;document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));update();}
- if(button.dataset.detail)detail(button.dataset.detail);
- if(button.dataset.interact){const d=discoveryById(button.dataset.interact)!;interaction=d.interaction;$('#interaction').textContent=interaction;button.classList.add('used');}
- if(button.dataset.planet){if(button.dataset.planet==='parcel')go('expedition');else{const p=planetById(button.dataset.planet)!;showModal(`<div class="modal-heading"><span class="eyebrow">NEW COORDINATES</span><button class="icon-button" data-action="close" aria-label="关闭详情">${icon('close')}</button></div><div class="return-emblem">${icon('planet')}</div><h2 class="detail-title">${p.name}</h2><p class="detail-description">${p.subtitle}</p><p class="interaction">航路已记录。失物号正在退件平原工作；这片生态的远征内容将在后续独立航程开放。</p><button class="primary" data-action="close">继续收听宇宙</button>`);}}
- if(button.dataset.upgradeBuy){const id=button.dataset.upgradeBuy as UpgradeId;await transact(s=>upgrade(s,id));workshop();}
- switch(button.dataset.action){case'workshop':workshop();break;case'close':modal.close();break;case'record':await transact(dismissReveal);toast('新坐标已加入永久星图。');break;case'claim':await transact(claimReturn);modal.close();toast('奇物已归档。欢迎回来，管理员。');break;}
+app.addEventListener('click',async event=>{
+  const button=(event.target as HTMLElement).closest<HTMLButtonElement>('button');if(!button||button.disabled)return;
+  if(button.dataset.go)go(button.dataset.go);
+  if(button.dataset.filter){filter=button.dataset.filter as typeof filter;document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));update();}
+  if(button.dataset.detail)detail(button.dataset.detail);
+  if(button.dataset.interact){
+    const d=discoveryById(button.dataset.interact)!;$('#interaction').textContent=d.interaction;$('#modal-body').classList.remove('interacted');void $('#modal-body').offsetWidth;$('#modal-body').classList.add('interacted');soundCue('interaction',d.id);
+  }
+  if(button.dataset.planet)go('expedition');
+  if(button.dataset.upgradeBuy){
+    const id=button.dataset.upgradeBuy as UpgradeId,oldLevel=state.upgrades[id];button.disabled=true;
+    await transact(s=>upgrade(s,id));workshop();
+    if(state.upgrades[id]>oldLevel){soundCue('upgrade',id);toast(`${upgradeInfo[id].name}升至 Lv.${state.upgrades[id]+1} · ${upgradeInfo[id].effect(state)}`);$(`[data-upgrade="${id}"]`).classList.add('just-upgraded');}
+  }
+  switch(button.dataset.action){
+    case 'workshop':workshop();break;
+    case 'close':closeModal();break;
+    case 'record':await transact(dismissSurvey);toast('现场记录已收录。自动监听继续。');break;
+    case 'dismiss-discovery':director.hide();break;
+    case 'claim':button.disabled=true;await transact(claimReturn);closeModal();soundCue('return');toast('奇物已安顿。欢迎回来，管理员。');break;
+  }
 });
-$('.brand').addEventListener('click',e=>{e.preventDefault();go('base');});
-let ticking=false;
-async function tick(){if(ticking)return;ticking=true;const hadCargo=!!state.pendingReturn;try{await transact(s=>advance(s,Date.now(),Date.now()-s.lastAt>=30000));if(!hadCargo&&state.pendingReturn&&!modal.open)offline();}finally{ticking=false;}}
-setInterval(()=>{if(document.visibilityState==='visible')void tick();},250);
-window.addEventListener('storage',e=>{if(e.key===SAVE_KEY){try{state=restore(e.newValue);update();if(modal.open&&$('#modal-body').textContent?.includes('离线归航')&&!state.pendingReturn)modal.close();}catch{/* Keep current valid in-memory state. */}}});
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void tick();});
-update();renderBase();if(state.pendingReturn)offline();if(!storageOK)toast('浏览器暂时无法保存。当前进度会在本次打开期间保留。');
-if(new URLSearchParams(location.search).has('review')){
- Object.assign(window,{__review:{scene,freeze:(t:number|null)=>scene.freeze(t),state:()=>structuredClone(state)}});
+$('.brand').addEventListener('click',event=>{event.preventDefault();go('base');});
+async function tick(){
+  if(ticking)return;ticking=true;const hadCargo=!!state.pendingReturn;
+  try{await transact(s=>advance(s,Date.now(),Date.now()-s.lastAt>=30000));if(!hadCargo&&state.pendingReturn&&!modal.open)offline();else void maybePresent();}
+  finally{ticking=false;}
 }
+setInterval(()=>{if(document.visibilityState==='visible')void tick();},250);
+window.addEventListener('storage',event=>{
+  if(event.key!==SAVE_KEY)return;
+  state=restore(event.newValue);update();
+  if(modal.open&&modalKind==='offline'&&!state.pendingReturn)closeModal();
+});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void tick();});
+update();renderBase();if(state.pendingReturn)offline();else void maybePresent();
+if(!storageOK)toast('浏览器暂时无法保存。当前进度会在本次打开期间保留。');
+if(new URLSearchParams(location.search).has('review'))Object.assign(window,{__review:{scene,freeze:(t:number|null)=>{reviewTime=t;scene.freeze(t);update();},state:()=>structuredClone(state)}});
