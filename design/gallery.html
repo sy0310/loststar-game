@@ -1,0 +1,13 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>失物星球 · 设计审核图库</title>
+<style>*{box-sizing:border-box}body{background:#101126;color:#eee;font:15px/1.5 system-ui,"Noto Sans SC";margin:0;padding:25px}h1{color:#ffdaa1}.note{color:#efc886}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}.card{border:1px solid #64557d;background:#211b37;border-radius:12px;padding:12px}.card .media{height:260px;display:flex;align-items:center;justify-content:center;background:#131124;color:#ad9bbf}.card img,.card video{max-width:100%;max-height:100%;object-fit:contain}.card a{color:#fbe1b1;overflow-wrap:anywhere}.card p{margin:8px 0 0}</style>
+<h1>失物星球 · V0.1 美术审核图库</h1><p>这只是设计参考，不是运行时精灵。六星内容为内部资料，请勿作为玩家开局界面。</p><p class="note">如出现“素材待导入”，请按 design/README.md 导入原始 ZIP，不要将此页面视为已经上传原稿。</p>
+<div id="grid" class="grid"></div><script>
+const files=["00_总览与设计范围.png","01_基地主页面_已认可方向.png","02_远征球体页面_已认可方向.png","03_未知星域雷达_非剧透版.png","04_雷达定位与新星球揭晓.png","05_图鉴总览与奇物详情.png","06_基地收藏展柜与奇物互动.png","07_飞船雷达与回收设备升级.png","08_离线归航与探索成果结算.png","09_宇宙奇物与怪诞异常事件.png","10_六颗星球场景与生态设定.png","11_退货箱星生物与奇物设定.png","12_机器人飞船生物动作与遮挡规范.png","13_UI风格色板与像素美术规范.png","14_设计审核清单.png","15_六星球代表生物与动作意向.png","参考_六星球概念总览.png","参考_球面探索动作关键帧.png","参考_远征8秒动画.mp4","参考_退货箱星完整设定.png"];
+const grid=document.querySelector('#grid');
+files.forEach((name,i)=>{const c=document.createElement('section');c.className='card';
+const media=document.createElement('div');media.className='media';
+const url='reference/v0.1/'+encodeURIComponent(name);const elt=document.createElement(name.endsWith('.mp4')?'video':'img');
+elt.src=url;if(name.endsWith('.mp4')){elt.controls=true;elt.preload='metadata';}else elt.loading='lazy';
+elt.onerror=()=>{media.textContent='素材待导入';};media.appendChild(elt);
+const p=document.createElement('p'),a=document.createElement('a');a.href=url;a.textContent=(i+1)+'. '+name;p.appendChild(a);c.append(media,p);grid.appendChild(c);});
+</script></html>
