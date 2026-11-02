@@ -24,3 +24,14 @@ describe('连续运动与地面接触',()=>{
     expect(shipPose(10).back).toBe(true);expect(shipPose(4).back).toBe(false);
   });
 });
+
+it('独立包裹对齐空手图集的双手中点，先递交再落到收货台',()=>{
+  // Atlas cell 6: gripper centers (49,106)/(74,111) in 160px cells,
+  // rendered at 144px with anchor (-77.76,-139.68). Parcel is 24px tall.
+  const carry=robotPose(.8);
+  expect(carry.parcel.x-carry.x).toBeCloseTo(-22,0);
+  expect(carry.parcel.y-carry.y).toBeCloseTo(-28,0);
+  // Cell 7 extends both hands to the left before releasing onto the tray at (291,435).
+  const handoff=robotPose(.935);expect(handoff.parcel.x).toBeCloseTo(293,0);expect(handoff.parcel.y).toBeCloseTo(419,0);
+  const delivered=robotPose(.98);expect(delivered.parcel).toMatchObject({x:291,y:435,delivered:true,held:false});
+});
