@@ -45,4 +45,4 @@ npm run report
 
 ### WebKit 样本差异
 
-本轮主记录的 WebKit 六秒窗口只获得 258 个帧间隔样本；中位数不能证明全程稳定 60fps。未隔离该次样本缺口的原因，保留原始记录。额外独立六秒探针获得 359 帧，平均 16.68ms，最大 34.0ms，超过 50ms 的间隔 0 个。两次结果均仅代表桌面 WebKit，不能据此宣称 iOS 稳定性通过。原始 [诊断 JSON](../artifacts/phase1-5/webkit-diagnostic.json)，可由 capture:review 重现。
+本轮主记录的 WebKit 六秒窗口获得 258 个帧间隔样本；中位数不能证明全程稳定 60fps。未隔离该次样本缺口的原因，保留原始记录。额外独立六秒探针获得 359 帧，平均 16.68ms，最大 34.0ms，超过 50ms 的间隔 0 个。两次结果均仅代表桌面 WebKit，不能据此宣称 iOS 稳定性通过。原始 [诊断 JSON](../artifacts/phase1-5/webkit-diagnostic.json)，可由 capture:review 重现。
