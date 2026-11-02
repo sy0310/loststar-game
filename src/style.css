@@ -274,3 +274,28 @@ dialog::backdrop { background:#080815bd;backdrop-filter:blur(4px); }
 @media(prefers-reduced-motion:reduce) {
   *,*:before,*:after { animation-duration:.001ms!important;animation-iteration-count:1!important;transition:none!important; }
 }
+/* Keep descriptive copy readable at phone size; serial numbers remain deliberately small. */
+.page-heading p { font-size:11px; }
+.status-head strong { font-size:12px; }
+.recent strong { font-size:12px; }
+.utility-button span { font-size:12px; }
+.utility-button small { font-size:8px; }
+.radar-status p { font-size:11px; }
+.discovery-card p { font-size:10.5px; min-height:38px; }
+.filters button { font-size:11px; }
+.detail-description { font-size:12px; }
+.field-note p { font-size:10px; }
+.upgrade-card p { font-size:9.5px; min-height:34px; }
+.upgrade-effect { font-size:11px; }
+.upgrade-next { font-size:8.5px; min-height:29px; }
+.return-line { font-size:11px; }
+.cargo-found { max-height:260px; }
+.cargo-found:focus { outline:1px solid var(--cyan); outline-offset:2px; }
+.cargo-item span { font-size:8px; }
+@media(max-width:370px) {
+ .page-heading p { font-size:10px; }
+ .status-head strong,.recent strong { font-size:11px; }
+ .utility-button span { font-size:11px; }
+ .utility-button small { font-size:7px; }
+ .upgrade-effect { font-size:10px; }
+}

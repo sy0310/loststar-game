@@ -18,3 +18,14 @@
 这里的源为透明原始 PNG + 提示词 + 程序动画代码，**没有手工 Aseprite 分层源工程**。机器人使用上身与两条腿的可重用切片变换，尚非逐朝向的手工全套帧；拆封鼠使用小幅姿态、拆箱纸屑循环。基地美术独立重制，保留已认可的紫蓝空间、暖灯与收藏柜方向，具体新构图待审核。
 
 设计参考另存于 `design/reference/`，不进入 Vite 构建。不要将其移到 public。
+
+## 首星打磨新增（2026-11-02）
+
+| 可修改源 | 输出与作用 |
+| --- | --- |
+| `src/generated/robot-actions-v2.png` | 4×2 八姿势原图；保留单元留白对齐成 `runtime/robot-actions-v2.webp`，不逐帧随意裁剪锚点 |
+| `src/generated/parcel-ecology-v2.png` | 箱寄居蟹、标签鸟、收件人宇宙包裹、邮戳 |
+| `src/generated/parcel-props-v2.png` | 分拣机、签收铃、夜班机、空白地址信 |
+| `src/generated/equipment-v2.png` | 雷达、扫描仪、回收装置、货舱四种设备像素图 |
+
+均使用内置 image_gen；机器人以本项目旧机器人透明精灵为编辑目标保持身份，其他为新制独立透明图集。完整提示词见 `src/phase1-generation-prompts.json` 和 `src/equipment-generation-prompt.json`。源文件、旧版参考与旧版运行时原图均保留。导出脚本使用标准图像处理做分格、最近邻缩放和压缩；程序动画另见 `src/render/`。当前仍没有手工 Aseprite 工程，不把 AI 图集宣称为手工逐帧定稿。

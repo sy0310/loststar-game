@@ -99,7 +99,7 @@ function renderCollection(){
   $('#archive-title').textContent=list.length===discoveries.length?'这一回，不必退回。':list.length>=7?'这里的怪事，开始彼此回应。':list.length>=3?'认识这里，先认识它的邻居。':'故事正在慢慢长出来';
   $('#archive-progress').style.width=`${list.length/discoveries.length*100}%`;
   for(const id of ['all','artifact','creature','event','planet']){
-    $(`[data-filter-count="${id}"]`).textContent=String(id==='all'?list.length:id==='planet'?publicPlanets(state).length:list.filter(d=>d.kind===id).length);
+    $(`[data-filter-count="${id}"]`).textContent=String(id==='all'?list.length+publicPlanets(state).length:id==='planet'?publicPlanets(state).length:list.filter(d=>d.kind===id).length);
   }
   let html=list.filter(d=>filter==='all'||filter===d.kind).map(d=>`<button class="discovery-card ${d.kind}" data-detail="${d.id}" aria-label="${d.name}，${kindName[d.kind]}"><span class="card-code">${kindName[d.kind]} <b>${String(d.milestone).padStart(2,'0')}</b></span><span class="artifact-art">${itemArt(d.id)}</span><span class="card-title">${d.name}</span><span class="card-rarity">${d.rarity}</span><p>${d.description}</p><span class="card-foot">退件平原 ${icon('arrow')}</span></button>`).join('');
   if(filter==='all'||filter==='planet')html+=publicPlanets(state).map(p=>`<button class="discovery-card planet-card" data-planet="${p.id}"><span class="artifact-art"><img class="pixel-art" src="${globeUrl}" alt=""></span><span><small>已发现星球 · 现场档案</small><strong>${p.name}</strong><p>${p.subtitle}</p><span class="card-foot">返回退件平原 ${icon('arrow')}</span></span></button>`).join('');
@@ -147,7 +147,7 @@ function offline(){
 function update(){
   $('#balance').textContent=Math.floor(state.resources).toLocaleString('zh-CN');
   const fraction=reviewTime===null?state.cycleMs/tuning(state).scanner:((reviewTime%12)+12)%12/12,action=robotPose(fraction).action;
-  $('#cycle-progress').style.width=`${fraction*100}%`;$('#cycle-remaining').textContent=String(Math.ceil((tuning(state).scanner-state.cycleMs)/1000));$('#cycles').textContent=String(state.cycles);$('#robot-action').textContent=actionText[action];
+  $('#cycle-progress').style.width=`${fraction*100}%`;$('#cycle-remaining').textContent=String(Math.ceil((reviewTime===null?tuning(state).scanner-state.cycleMs:tuning(state).scanner*(1-fraction))/1000));$('#cycles').textContent=String(state.cycles);$('#robot-action').textContent=actionText[action];
   document.querySelectorAll<HTMLElement>('[data-phase]').forEach(el=>el.classList.toggle('active',el.dataset.phase===action));
   $('#field-count').textContent=`已记录 ${state.collection.length} / ${discoveries.length}`;
   const latest=state.collection.at(-1),d=latest?discoveryById(latest):null;

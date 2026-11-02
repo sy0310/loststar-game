@@ -244,7 +244,7 @@
       "line": 0,
       "specs": [
         {
-          "title": "新手无剧透，雷达实际定位后才揭晓，刷新保留发现",
+          "title": "首星雷达只勘测真实现场，不引向未开放星球",
           "ok": true,
           "tags": [],
           "tests": [
@@ -259,12 +259,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1096,
+                  "duration": 997,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:05.724Z",
+                  "startTime": "2026-11-02T20:25:21.029Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -272,13 +272,13 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-9a03c4d17c9abe724061",
+          "id": "8b1bb1493a64c9fc3ab6-c20e55c4194c558186ef",
           "file": "game.spec.ts",
-          "line": 7,
+          "line": 9,
           "column": 1
         },
         {
-          "title": "自动探索→图鉴→详情互动→基地展出→升级生效",
+          "title": "新奇物和新居民有独立发现演出，不阻断导航、刷新不重放",
           "ok": true,
           "tags": [],
           "tests": [
@@ -293,12 +293,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 1024,
+                  "duration": 894,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:05.726Z",
+                  "startTime": "2026-11-02T20:25:21.025Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -306,13 +306,13 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-8b3f4f1cddfda76eb3ee",
+          "id": "8b1bb1493a64c9fc3ab6-22aa02b70f91d3333322",
           "file": "game.spec.ts",
-          "line": 30,
+          "line": 26,
           "column": 1
         },
         {
-          "title": "离线包裹领取一次，刷新与第二标签页均不双领",
+          "title": "首星事件有像素现场演出，积累发现只展示最新一份",
           "ok": true,
           "tags": [],
           "tests": [
@@ -327,12 +327,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 717,
+                  "duration": 602,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:07.015Z",
+                  "startTime": "2026-11-02T20:25:22.243Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -340,13 +340,13 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-0f58328159c675197b6f",
+          "id": "8b1bb1493a64c9fc3ab6-e2d1923dd6724e147ba6",
           "file": "game.spec.ts",
-          "line": 51,
+          "line": 36,
           "column": 1
         },
         {
-          "title": "所有页面无横向溢出，导航和操作可触达，首屏不加载概念拼版",
+          "title": "完整首星图鉴生态、六个展柜与奇物互动真实联动",
           "ok": true,
           "tags": [],
           "tests": [
@@ -361,12 +361,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 999,
+                  "duration": 974,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:07.087Z",
+                  "startTime": "2026-11-02T20:25:22.346Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -374,13 +374,149 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-bb87534dc68b0451a156",
+          "id": "8b1bb1493a64c9fc3ab6-5a29f24383e88d466216",
+          "file": "game.spec.ts",
+          "line": 44,
+          "column": 1
+        },
+        {
+          "title": "工坊真实升级反馈、保存与缺钱禁用",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-360",
+              "projectName": "mobile-360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 671,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:22.851Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-d1a04e4a80ae527ab761",
+          "file": "game.spec.ts",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "离线归航清单只领取一次，旧标签页不重复发奖或轰炸演出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-360",
+              "projectName": "mobile-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 857,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:23.326Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-3d8513af3e2b3007e216",
           "file": "game.spec.ts",
           "line": 66,
           "column": 1
         },
         {
-          "title": "新手无剧透，雷达实际定位后才揭晓，刷新保留发现",
+          "title": "旧切片进度迁移，保留已记录坐标但不显示不可玩的航路",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-360",
+              "projectName": "mobile-360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 483,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:23.528Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-00eeb77ca86b1bf54ade",
+          "file": "game.spec.ts",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "所有页面触控、安全区和资源有效，导航处在滚动内容之外",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-360",
+              "projectName": "mobile-360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1508,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:24.017Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-cf75115ad87b1b7795e5",
+          "file": "game.spec.ts",
+          "line": 80,
+          "column": 1
+        },
+        {
+          "title": "首星雷达只勘测真实现场，不引向未开放星球",
           "ok": true,
           "tags": [],
           "tests": [
@@ -393,48 +529,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 1,
-                  "status": "passed",
-                  "duration": 716,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-11-02T17:50:07.977Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "8b1bb1493a64c9fc3ab6-1e4cc55c3f91948ee4a3",
-          "file": "game.spec.ts",
-          "line": 7,
-          "column": 1
-        },
-        {
-          "title": "自动探索→图鉴→详情互动→基地展出→升级生效",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "mobile-390",
-              "projectName": "mobile-390",
-              "results": [
-                {
-                  "workerIndex": 3,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 669,
+                  "duration": 614,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:08.349Z",
+                  "startTime": "2026-11-02T20:25:24.445Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -442,13 +544,13 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-4c9ee448e83e0ca39502",
+          "id": "8b1bb1493a64c9fc3ab6-ed9ec069e1ae73618a40",
           "file": "game.spec.ts",
-          "line": 30,
+          "line": 9,
           "column": 1
         },
         {
-          "title": "离线包裹领取一次，刷新与第二标签页均不双领",
+          "title": "新奇物和新居民有独立发现演出，不阻断导航、刷新不重放",
           "ok": true,
           "tags": [],
           "tests": [
@@ -461,14 +563,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 1,
+                  "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 754,
+                  "duration": 491,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:08.790Z",
+                  "startTime": "2026-11-02T20:25:25.165Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -476,13 +578,13 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-5869bd4019cb017c09ef",
+          "id": "8b1bb1493a64c9fc3ab6-ce19e3a1d182b870e930",
           "file": "game.spec.ts",
-          "line": 51,
+          "line": 26,
           "column": 1
         },
         {
-          "title": "所有页面无横向溢出，导航和操作可触达，首屏不加载概念拼版",
+          "title": "首星事件有像素现场演出，积累发现只展示最新一份",
           "ok": true,
           "tags": [],
           "tests": [
@@ -495,14 +597,14 @@
               "results": [
                 {
                   "workerIndex": 3,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 1058,
+                  "duration": 645,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:09.120Z",
+                  "startTime": "2026-11-02T20:25:25.789Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -510,13 +612,183 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-a216f4bbd35841f47503",
+          "id": "8b1bb1493a64c9fc3ab6-945542edd0fae01f3859",
+          "file": "game.spec.ts",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "完整首星图鉴生态、六个展柜与奇物互动真实联动",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-390",
+              "projectName": "mobile-390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1004,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:25.664Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-00a88fa59cea22f32345",
+          "file": "game.spec.ts",
+          "line": 44,
+          "column": 1
+        },
+        {
+          "title": "工坊真实升级反馈、保存与缺钱禁用",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-390",
+              "projectName": "mobile-390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 758,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:26.545Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-e3ea0e4272bbcdfd9d34",
+          "file": "game.spec.ts",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "离线归航清单只领取一次，旧标签页不重复发奖或轰炸演出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-390",
+              "projectName": "mobile-390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 840,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:26.676Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-42938e52a521082c28df",
           "file": "game.spec.ts",
           "line": 66,
           "column": 1
         },
         {
-          "title": "新手无剧透，雷达实际定位后才揭晓，刷新保留发现",
+          "title": "旧切片进度迁移，保留已记录坐标但不显示不可玩的航路",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-390",
+              "projectName": "mobile-390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 461,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:27.309Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-f6679b54470b8175b521",
+          "file": "game.spec.ts",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "所有页面触控、安全区和资源有效，导航处在滚动内容之外",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-390",
+              "projectName": "mobile-390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1566,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:27.522Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-603f793f239802ffe71a",
+          "file": "game.spec.ts",
+          "line": 80,
+          "column": 1
+        },
+        {
+          "title": "首星雷达只勘测真实现场，不引向未开放星球",
           "ok": true,
           "tags": [],
           "tests": [
@@ -531,12 +803,12 @@
                   "workerIndex": 4,
                   "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 628,
+                  "duration": 662,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:09.800Z",
+                  "startTime": "2026-11-02T20:25:28.022Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -544,47 +816,13 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-1ab2a0ed8e697fb7cfe4",
+          "id": "8b1bb1493a64c9fc3ab6-fb8071f47ca95540ac32",
           "file": "game.spec.ts",
-          "line": 7,
+          "line": 9,
           "column": 1
         },
         {
-          "title": "自动探索→图鉴→详情互动→基地展出→升级生效",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "desktop",
-              "projectName": "desktop",
-              "results": [
-                {
-                  "workerIndex": 5,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 771,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-11-02T17:50:10.439Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "8b1bb1493a64c9fc3ab6-02cc65486a851c56b8de",
-          "file": "game.spec.ts",
-          "line": 30,
-          "column": 1
-        },
-        {
-          "title": "离线包裹领取一次，刷新与第二标签页均不双领",
+          "title": "新奇物和新居民有独立发现演出，不阻断导航、刷新不重放",
           "ok": true,
           "tags": [],
           "tests": [
@@ -599,12 +837,12 @@
                   "workerIndex": 4,
                   "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 901,
+                  "duration": 544,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:10.528Z",
+                  "startTime": "2026-11-02T20:25:28.789Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -612,13 +850,13 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-78ced3d1d9d7792dd1fb",
+          "id": "8b1bb1493a64c9fc3ab6-8a327e321e3b012a98f6",
           "file": "game.spec.ts",
-          "line": 51,
+          "line": 26,
           "column": 1
         },
         {
-          "title": "所有页面无横向溢出，导航和操作可触达，首屏不加载概念拼版",
+          "title": "首星事件有像素现场演出，积累发现只展示最新一份",
           "ok": true,
           "tags": [],
           "tests": [
@@ -633,12 +871,12 @@
                   "workerIndex": 5,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1113,
+                  "duration": 655,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:11.305Z",
+                  "startTime": "2026-11-02T20:25:29.353Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -646,13 +884,183 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-de687e280f14572b94e2",
+          "id": "8b1bb1493a64c9fc3ab6-f864093daf9ff934fe67",
+          "file": "game.spec.ts",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "完整首星图鉴生态、六个展柜与奇物互动真实联动",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1091,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:29.344Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-ccde91f032713a070be7",
+          "file": "game.spec.ts",
+          "line": 44,
+          "column": 1
+        },
+        {
+          "title": "工坊真实升级反馈、保存与缺钱禁用",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 778,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:30.119Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-bbdc1c2184c4cee18011",
+          "file": "game.spec.ts",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "离线归航清单只领取一次，旧标签页不重复发奖或轰炸演出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1009,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:30.441Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-476700bbbaf2d4812eaf",
           "file": "game.spec.ts",
           "line": 66,
           "column": 1
         },
         {
-          "title": "新手无剧透，雷达实际定位后才揭晓，刷新保留发现",
+          "title": "旧切片进度迁移，保留已记录坐标但不显示不可玩的航路",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 465,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:30.903Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-d334b93c241033801120",
+          "file": "game.spec.ts",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "所有页面触控、安全区和资源有效，导航处在滚动内容之外",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1466,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:31.374Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-7d0fd7d167b79403246f",
+          "file": "game.spec.ts",
+          "line": 80,
+          "column": 1
+        },
+        {
+          "title": "首星雷达只勘测真实现场，不引向未开放星球",
           "ok": true,
           "tags": [],
           "tests": [
@@ -667,12 +1075,12 @@
                   "workerIndex": 6,
                   "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 1098,
+                  "duration": 1123,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:11.668Z",
+                  "startTime": "2026-11-02T20:25:31.718Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -680,13 +1088,13 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-7cf71f9abed2db5a6c29",
+          "id": "8b1bb1493a64c9fc3ab6-b7f5ab7a4f69dd8148c5",
           "file": "game.spec.ts",
-          "line": 7,
+          "line": 9,
           "column": 1
         },
         {
-          "title": "自动探索→图鉴→详情互动→基地展出→升级生效",
+          "title": "新奇物和新居民有独立发现演出，不阻断导航、刷新不重放",
           "ok": true,
           "tags": [],
           "tests": [
@@ -701,12 +1109,12 @@
                   "workerIndex": 7,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 870,
+                  "duration": 715,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:12.678Z",
+                  "startTime": "2026-11-02T20:25:33.106Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -714,13 +1122,13 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-8e33ba483897afc8c0fe",
+          "id": "8b1bb1493a64c9fc3ab6-5db485ccb384a3516c29",
           "file": "game.spec.ts",
-          "line": 30,
+          "line": 26,
           "column": 1
         },
         {
-          "title": "离线包裹领取一次，刷新与第二标签页均不双领",
+          "title": "首星事件有像素现场演出，积累发现只展示最新一份",
           "ok": true,
           "tags": [],
           "tests": [
@@ -735,12 +1143,12 @@
                   "workerIndex": 6,
                   "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 834,
+                  "duration": 775,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:13.000Z",
+                  "startTime": "2026-11-02T20:25:33.227Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -748,13 +1156,47 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-da5e3b8911cacc5b518e",
+          "id": "8b1bb1493a64c9fc3ab6-ca87cee485581012aa75",
           "file": "game.spec.ts",
-          "line": 51,
+          "line": 36,
           "column": 1
         },
         {
-          "title": "所有页面无横向溢出，导航和操作可触达，首屏不加载概念拼版",
+          "title": "完整首星图鉴生态、六个展柜与奇物互动真实联动",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-390",
+              "projectName": "webkit-390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1353,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:34.010Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-4a91f9a102f190011445",
+          "file": "game.spec.ts",
+          "line": 44,
+          "column": 1
+        },
+        {
+          "title": "工坊真实升级反馈、保存与缺钱禁用",
           "ok": true,
           "tags": [],
           "tests": [
@@ -769,12 +1211,12 @@
                   "workerIndex": 7,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 813,
+                  "duration": 871,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-02T17:50:13.738Z",
+                  "startTime": "2026-11-02T20:25:34.017Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -782,9 +1224,111 @@
               "status": "expected"
             }
           ],
-          "id": "8b1bb1493a64c9fc3ab6-c85159a55df4dda6b348",
+          "id": "8b1bb1493a64c9fc3ab6-d8346140fcea0da9f7f9",
+          "file": "game.spec.ts",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "离线归航清单只领取一次，旧标签页不重复发奖或轰炸演出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-390",
+              "projectName": "webkit-390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 983,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:34.897Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-644f01f4ae29152ff70e",
           "file": "game.spec.ts",
           "line": 66,
+          "column": 1
+        },
+        {
+          "title": "旧切片进度迁移，保留已记录坐标但不显示不可玩的航路",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-390",
+              "projectName": "webkit-390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 552,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:35.370Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-879de534cb3482118279",
+          "file": "game.spec.ts",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "所有页面触控、安全区和资源有效，导航处在滚动内容之外",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-390",
+              "projectName": "webkit-390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1200,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T20:25:35.891Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b1bb1493a64c9fc3ab6-057e9f2492a120994507",
+          "file": "game.spec.ts",
+          "line": 80,
           "column": 1
         }
       ]
@@ -792,9 +1336,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-11-02T17:50:05.430Z",
-    "duration": 9149.262999999999,
-    "expected": 16,
+    "startTime": "2026-11-02T20:25:20.766Z",
+    "duration": 16355.623999999998,
+    "expected": 32,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
