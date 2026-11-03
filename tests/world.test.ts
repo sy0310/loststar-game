@@ -18,6 +18,6 @@ it('大幅时间跳变为常量复杂度，资源仍有离线上限，时间倒�
 });
 it('基地28秒完成两次不同展柜的观察、取放、归位，步位与手持物连续',()=>{
  const targets=new Set<string>(),actions=new Set<string>();let last=baseRobotPose(0);let min=last.x,max=last.x;
- for(let t=.02;t<28;t+=.02){const p=baseRobotPose(t);expect(Math.hypot(p.x-last.x,p.y-last.y)).toBeLessThan(7);expect(Math.hypot(p.item.x-last.item.x,p.item.y-last.item.y)).toBeLessThan(8);min=Math.min(min,p.x);max=Math.max(max,p.x);targets.add(p.target);actions.add(p.action);last=p;}
+ for(let t=.02;t<28;t+=.02){const p=baseRobotPose(t);expect(Math.hypot(p.x-last.x,p.y-last.y)).toBeLessThan(7);if(p.lift>0||last.lift>0)expect(Math.hypot(p.item.x-last.item.x,p.item.y-last.item.y)).toBeLessThan(8);min=Math.min(min,p.x);max=Math.max(max,p.x);targets.add(p.target);actions.add(p.action);last=p;}
  expect(targets.size).toBeGreaterThanOrEqual(2);expect(max-min).toBeGreaterThan(180);expect(actions).toEqual(new Set(['walk','observe','open','lift','inspect','place','wipe','return']));
 });

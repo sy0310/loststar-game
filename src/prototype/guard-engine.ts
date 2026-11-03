@@ -21,17 +21,16 @@ export function equipGuard(s:GuardState,slot:0|1,item:GuardItem|null):GuardState
   if(item!==null){const other=slot===0?1:0;if(next.slots[other]===item)next.slots[other]=null;}
   next.slots[slot]=item;return next;
 }
-export function advanceGuard(s:GuardState,now:number):GuardState {
+export function advanceGuard(s:GuardState,now:number,maxMs=43200000):GuardState {
   if(!Number.isFinite(now)||now<=s.lastAt)return s;
   const next=structuredClone(s),cycle=s.dayMs+s.nightMs;
   next.lastAt=now;if(!s.enabled)return next;
-  next.elapsedMs+=Math.min(now-s.lastAt,43200000);
+  next.elapsedMs+=Math.min(now-s.lastAt,maxMs);
   const completed=Math.floor(next.elapsedMs/cycle);
-  for(let index=s.settledNights+1;index<=completed;index++){
-    const config=s.activeNight?.index===index?{slots:s.activeNight.slots,strengths:s.activeNight.strengths??s.strengths}:{slots:s.slots,strengths:s.strengths},result=nightResult(config);
-    next.reports.nights++;next.reports.verifiedNights++;next.reports.clues+=result.clues;next.reports.intercepted+=result.intercepted;next.reports.arrived+=result.arrived;
-    next.lastReport={number:index,clues:result.clues,intercepted:result.intercepted,arrived:result.arrived,summary:`${result.intercepted} 位在抵站前完成核对，${result.arrived} 位抵站后由咔哒安全送回。收藏完好，留下${result.quality}。`,result};
-  }
+  function settle(config:{slots:GuardSlots;strengths:[number,number]},count:number,number:number){if(count<=0)return;const result=nightResult(config);next.reports.nights+=count;next.reports.verifiedNights+=count;next.reports.clues+=result.clues*count;next.reports.intercepted+=result.intercepted*count;next.reports.arrived+=result.arrived*count;next.lastReport={number,clues:result.clues,intercepted:result.intercepted,arrived:result.arrived,summary:`${result.intercepted} 位在抵站前完成核对，${result.arrived} 位抵站后由咔哒安全送回。收藏完好，留下${result.quality}。`,result};}
+  const first=s.settledNights+1,hasSnapshot=s.activeNight?.index===first&&completed>=first;
+  if(hasSnapshot)settle({slots:s.activeNight!.slots,strengths:s.activeNight!.strengths??s.strengths},1,first);
+  settle({slots:s.slots,strengths:s.strengths},completed-s.settledNights-(hasSnapshot?1:0),completed);
   next.settledNights=completed;
   const phase=next.elapsedMs%cycle,index=completed+1;
   next.activeNight=phase>=s.dayMs?(s.activeNight?.index===index?structuredClone(s.activeNight):{index,slots:[...s.slots],strengths:[...s.strengths]}):null;
