@@ -3,7 +3,7 @@ import {nightStage,receiptStage,nightCamera,projectNight,receiptGeometry} from '
 import {shipPose} from '../src/render/motion';
 it('D1夜间30秒完成跨区域追踪、核验、收容、返回，路径连续且避开仓库地基',()=>{
  let last=nightStage(0),min=last.robot.x,max=min;const phases=new Set<string>();
- for(let t=.02;t<=30;t+=.02){const s=nightStage(t);expect(Math.hypot(s.robot.x-last.robot.x,s.robot.y-last.robot.y)).toBeLessThan(5);expect(s.robot.x>247&&s.robot.x<395&&s.robot.y>386&&s.robot.y<428).toBe(false);min=Math.min(min,s.robot.x);max=Math.max(max,s.robot.x);phases.add(s.phase);last=s;}
+ for(let t=.02;t<=30;t+=.02){const s=nightStage(t);expect(Math.hypot(s.robot.x-last.robot.x,s.robot.y-last.robot.y)).toBeLessThan(5);expect(Math.hypot(s.target.x-last.target.x,s.target.y-last.target.y)).toBeLessThan(5);expect(s.robot.x>247&&s.robot.x<395&&s.robot.y>386&&s.robot.y<428).toBe(false);min=Math.min(min,s.robot.x);max=Math.max(max,s.robot.x);phases.add(s.phase);last=s;}
  expect(max-min).toBeGreaterThan(240);expect(phases).toEqual(new Set(['signal','travel','identify','contain','escort','dock','done']));expect(nightStage(31).phase).toBe('done');
 });
 it('D1镜头完整保留球体闭合轮廓，光束世界目标与机器人事件点一致',()=>{

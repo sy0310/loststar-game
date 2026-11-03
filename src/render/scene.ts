@@ -12,7 +12,15 @@ import { tuning, type SaveData } from '../game/engine';
 const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl};
 type Art = Record<keyof typeof urls, HTMLImageElement>;
 export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement}
-export interface SceneExtension {robotPose?:(base:ReturnType<typeof robotPose>)=>ReturnType<typeof robotPose>|undefined;afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void}
+export interface SceneCamera {scale:number;x:number;y:number;offsetX?:number;offsetY?:number}
+export interface SceneEntity {depth:number;draw:()=>void}
+export interface SceneExtension {
+  cycleFraction?:(base:number,seconds:number)=>number;
+  robotPose?:(base:ReturnType<typeof robotPose>,seconds:number)=>ReturnType<typeof robotPose>|undefined;
+  camera?:SceneCamera;
+  worldEntities?:(context:CanvasRenderingContext2D,frame:SceneFrame)=>SceneEntity[];
+  afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void;
+}
 const load=(url:string)=>new Promise<HTMLImageElement>((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=url;});
 
 export class ExpeditionScene {
@@ -55,6 +63,8 @@ export class ExpeditionScene {
   setActive(active:boolean){this.active=active;this.lastFrame=0;if(active&&!this.ready)this.load();}
   celebrate(kind:string){this.focusKind=kind;this.focusUntil=performance.now()+2200;}
   freeze(seconds:number|null){this.frozen=seconds;this.draw(performance.now());}
+  restart(){this.start=performance.now();this.frozen=null;this.lastFrame=0;this.draw(this.start);}
+  elapsedSeconds(){return this.frozen??(performance.now()-this.start)/1000;}
   metrics(){
     const sorted=[...this.intervals].sort((a,b)=>a-b);
     return {frames:this.intervals.length,medianFrameMs:sorted[Math.floor(sorted.length/2)]??0,p95FrameMs:sorted[Math.floor(sorted.length*.95)]??0,meanDrawMs:this.drawTimes.reduce((a,b)=>a+b,0)/Math.max(1,this.drawTimes.length),canvasPixels:832*740,canvasSize:{width:832,height:740},renderer:'Canvas2D / independent 2.5D layers'};
@@ -135,10 +145,13 @@ export class ExpeditionScene {
   private draw(now:number){
     if(!this.ready||!this.canvas.isConnected)return;
     const began=performance.now(),c=this.ctx,t=this.frozen??(now-this.start)/1000,s=this.getState();
-    const f=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12,p=this.extension?.robotPose?.(robotPose(f))??robotPose(f);
+    const baseFraction=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12;
+    const f=this.extension?.cycleFraction?.(baseFraction,t)??baseFraction,p=this.extension?.robotPose?.(robotPose(f),t)??robotPose(f);
+    const ship=shipPose(t),frame={t,robot:p,ship,globe:this.art.globe};
     c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);c.translate(32,0);
+    const camera=this.extension?.camera;if(camera){c.translate(camera.x+(camera.offsetX??0),camera.y+(camera.offsetY??0));c.scale(camera.scale,camera.scale);c.translate(-camera.x,-camera.y);}
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
-    const ship=shipPose(t);if(ship.back)this.drawShip(t,ship);
+    if(ship.back)this.drawShip(t,ship);
     c.drawImage(this.art.globe,52,70,664,664);
     // Independent material accents attach to specific pipe/terrain points.
     this.lamp(345,634,'#e9ae70',t);this.lamp(488,610,'#94dcdb',t+.5);this.lamp(193,548,'#e9ae70',t+1);
@@ -151,10 +164,11 @@ export class ExpeditionScene {
     ];
     if(s.collection.includes('hermit'))entities.push({depth:397,draw:()=>{const x=170+Math.floor(Math.sin(t*.5)*6);this.shadow(x,397,25);this.sprite(this.art.hermit,x,397+(Math.floor(t*3)%2),66,65);}});
     if(s.collection.includes('tagbird'))entities.push({depth:235,draw:()=>{this.sprite(this.art.bird,601,235+(Math.floor(t*2)%6===1?-4:0),47,50);}});
+    if(this.extension?.worldEntities)entities.push(...this.extension.worldEntities(c,frame));
     entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
     c.fillStyle='#694771';c.fillRect(600,206,3,52);c.fillStyle='#f9c77c';c.fillRect(599,202,5,5);c.fillStyle='#c9758b';c.beginPath();c.moveTo(603,209);c.lineTo(635,213+Math.sin(t*3)*2);c.lineTo(631,229+Math.sin(t*3)*2);c.lineTo(603,226);c.fill();
     c.fillStyle='#ffdb9b';c.fillRect(611,214,8,6);
-    this.extension?.afterWorld(c,{t,robot:p,ship,globe:this.art.globe});
+    this.extension?.afterWorld(c,frame);
     if(!ship.back)this.drawShip(t,ship);
     if(now<this.focusUntil){
       const progress=1-(this.focusUntil-now)/2200;
