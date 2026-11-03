@@ -41,8 +41,8 @@ export function guardLayer(getVisual:()=>GuardVisual):SceneExtension {
         c.save();c.globalAlpha=.65;for(const [dx,dy] of [[-2,0],[2,0],[0,-2]])c.drawImage(rim,pose%2*192,Math.floor(pose/2)*192,192,192,-49+dx,-85+dy,98,98);c.restore();
         c.drawImage(invader,pose%2*192,Math.floor(pose/2)*192,192,192,-49,-85,98,98);
       }
-      const label=actor.status==='intercepted'?'封条核验完成':actor.status==='arrived'?'咔哒安全护送':actor.stunned?'签收铃 · 停顿':actor.slowed?'道歉胶带 · 减速':`退件影子 ${actor.id+1}`;
-      const color=actor.stunned?'#b6f3e5':actor.slowed?'#ffe0a1':'#ece0ff';c.fillStyle='#211b39e8';c.fillRect(-69,-122,138,28);c.strokeStyle=color;c.lineWidth=1;c.strokeRect(-69,-122,138,28);c.fillStyle=color;c.font='20px sans-serif';c.textAlign='center';c.fillText(label,0,-102,132);
+      const label=actor.status==='intercepted'?'核验完成':actor.status==='arrived'?'咔哒护送':actor.stunned?'铃声停顿':actor.slowed?'胶带减速':`影子 ${actor.id+1}`;
+      const color=actor.stunned?'#b6f3e5':actor.slowed?'#ffe0a1':'#ece0ff';c.fillStyle='#211b39e8';c.fillRect(-69,-122,138,28);c.strokeStyle=color;c.lineWidth=1;c.strokeRect(-69,-122,138,28);c.fillStyle=color;c.font='24px sans-serif';c.textAlign='center';c.fillText(label,0,-102,132);
       c.fillStyle='#322743';c.fillRect(-49,-93,98,5);c.fillStyle='#b8e6d1';c.fillRect(-49,-93,98*actor.verification,5);
       if(actor.stunned){c.fillStyle='#fff0b4';c.fillRect(-4,-72,3,6);c.fillRect(7,-68,3,3);}
       c.restore();

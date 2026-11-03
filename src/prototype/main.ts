@@ -66,7 +66,7 @@ function update(){
   $('#guard-equipped-note').textContent=v.phase==='night'?'夜间调整将在下一夜生效；此刻按入夜配置自动照看。':'白天可以慢慢调整。关掉屏幕，也会按配置自动守护。';
   $('#guard-event').hidden=v.phase!=='night';
   const live=$('#guard-live');live.hidden=v.phase!=='night';live.dataset.intercepted=String(v.nightStatus.intercepted);live.dataset.arrived=String(v.nightStatus.arrived);
-  live.innerHTML=`<span>提前核验 <b>${v.nightStatus.intercepted} / 3</b></span><span>抵站待护送 <b>${v.nightStatus.arrived}</b></span><small>封条核对满 10.5 秒即提前拦退；抵站也会安全送回。</small>`;
+  live.innerHTML=`<span>提前核验 <b>${v.nightStatus.intercepted} / 3</b></span><span>抵站访客 <b>${v.nightStatus.arrived}</b></span><small>封条核对满 10.5 秒即提前拦退；抵站也会安全送回。</small>`;
   const report=guard.lastReport,result=report?.result;
   $('#guard-report').dataset.intercepted=String(report?.intercepted??0);
   $('#guard-report').innerHTML=report?`<span class="micro-label">清晨自动记入实验日志 · 无需领取</span><h2>第 ${report.number} 夜 · 已平安归航</h2><p>${report.summary}</p>${result?`<strong class="guard-quality">${result.quality} · +${result.clues} 实验线索</strong><div class="visitor-results">${result.actors.map(a=>`<div data-visitor-result="${a.id}"><span>影子 ${String(a.id+1).padStart(2,'0')}<small>夜间 ${(a.atMs/1000).toFixed(1)}s</small></span><strong>${a.outcome==='intercepted'?'抵站前核验':'抵站后安全送回'}</strong><small>减速 ${(a.slowMs/1000).toFixed(1)}s · 停顿 ${(a.stunMs/1000).toFixed(1)}s<br>封条核对 ${(a.verificationMs/1000).toFixed(1)}s</small></div>`).join('')}</div>`:`<p class="legacy-night-note">这是旧版演示日志，历史线索已保留；下一夜按新模型逐个核验。</p>`}<div class="guard-stats"><span>新模型核验 <b>${guard.reports.verifiedNights} 夜</b></span><span>累计实验线索 <b>${guard.reports.clues}</b></span></div>`:`<span class="micro-label">收件站值班簿</span><h2>还没有夜间记录</h2><p>减速和声波争取核对封条的时间。没有奇物，也会由老搭档安全送回。</p>`;

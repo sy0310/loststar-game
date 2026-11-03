@@ -1,6 +1,6 @@
 {
   "name": "loststar-game",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -20,7 +20,8 @@
     "build:night": "tsc --noEmit && vite build --config vite.night.config.ts",
     "package:night": "python3 scripts/package_taptap.py --night-lab",
     "simulate:economy": "vite build --ssr scripts/simulate_economy.ts --outDir releases/economy && node releases/economy/simulate_economy.js --final",
-    "assets:export:v02": "node scripts/export_v02_assets.mjs"
+    "assets:export:v02": "node scripts/export_v02_assets.mjs",
+    "simulate:guard": "vite build --ssr scripts/simulate_guard.ts --outDir releases/guard-model && node releases/guard-model/simulate_guard.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
