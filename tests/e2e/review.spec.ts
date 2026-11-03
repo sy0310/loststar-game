@@ -39,13 +39,13 @@ test('文字放大、首页偏好和静音可保存，音频只在明确开启�
   for(const name of ['远征','星图','图鉴','基地']){await page.getByRole('button',{name,exact:true}).click();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);const nav=await page.locator('nav').boundingBox();expect(nav!.y+nav!.height).toBeLessThanOrEqual(page.viewportSize()!.height+1);}
   expect(errors).toEqual([]);
 });
-test('长期首星日记有居民联动、存档回看与独立星际待机频道',async({page})=>{
+test('长期首星日记有居民联动、存档回看与独立星际连续探测频道',async({page})=>{
   await page.clock.install({time:new Date('2026-11-02T19:00:00Z')});await page.goto('/');
   for(let left=1801000;left>0;left-=10000){await page.clock.fastForward(Math.min(left,10000));await page.waitForFunction(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!).lastAt>=Date.now()-500);}
   await expect(page.locator('.journal-note')).toHaveCount(3);await expect(page.locator('#field-journal')).toContainText('标签鸟寄来了明天');
   await page.reload();await expect(page.locator('.journal-note')).toHaveCount(3);
   await page.getByRole('button',{name:'星图',exact:true}).click();await page.getByRole('button',{name:'星际监听',exact:true}).click();
-  await expect(page.locator('#interstellar-status')).toHaveAttribute('data-stage','standby');await expect(page.locator('#local-radar')).toBeHidden();
+  await expect(page.locator('#interstellar-status')).toHaveAttribute('data-stage',/searching|anomaly|locating|unconfirmed/);await expect(page.locator('#local-radar')).toBeHidden();
   expect(await page.locator('body').ariaSnapshot()).not.toMatch(/回声菌星|六颗|6颗|固定节点|问号/);
   await page.getByRole('button',{name:'地表勘测',exact:true}).click();await expect(page.locator('#local-radar')).toBeVisible();
 });

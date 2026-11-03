@@ -18,3 +18,5 @@ it('old known stars remain permanently and malformed optional coordinates do not
  const s=newGame(at);s.resources=5432;const raw=JSON.parse(JSON.stringify(s));delete raw.chart;const migrated=restore(JSON.stringify(raw),at);expect(migrated.chart.records.map(r=>r.id)).toEqual(['parcel']);expect(migrated.resources).toBe(5432);
  const bad={...s,chart:{records:[{id:'parcel',x:999,y:-9}],scan:{elapsed:-1}}};expect(restore(JSON.stringify(bad),at).resources).toBe(5432);
 });
+
+it('已知旧航路保持可见，但不完整内容没有远征能力',()=>{const s=newGame(at);s.planets.push('echo');expect(publicPlanets(s).map(p=>p.id)).toContain('echo');expect(readyPlanet(echo)).toBe(false);});

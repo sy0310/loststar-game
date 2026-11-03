@@ -16,15 +16,15 @@ describe('PR #2 Phase 1.5 回归',()=>{
   it('旧 v2 进度保留，离线日记随归航可读且领取不重置',()=>{
     const legacy=json(newGame(START));delete legacy.journal;
     const migrated=restore(JSON.stringify(legacy),START);expect(json(migrated).journal).toEqual({entries:[],shift:0});
-    migrated.interstellar={elapsed:90000,resolved:{id:'parcel',name:'退货箱星'}};
-    expect(restore(JSON.stringify(migrated),START)).toEqual(migrated);expect(publicRadar(migrated,'interstellar').stage).toBe('standby');
+    migrated.interstellar={elapsed:90000,resolved:{id:'parcel',name:'退货箱星'}};migrated.chart.scan=migrated.interstellar;
+    expect(restore(JSON.stringify(migrated),START)).toEqual(migrated);expect(publicRadar(migrated,'interstellar').stage).toBe('resolved');
     const offline=advance(migrated,START+3600000,true),claimed=claimReturn(offline);
     expect(json(claimed).journal.entries).toHaveLength(5);expect(claimReturn(claimed)).toEqual(claimed);
     const invalid=json(claimed);invalid.journal.entries=['unknown'];expect(restore(JSON.stringify(invalid),START+3600000)).toEqual(newGame(START+3600000));
   });
-  it('星际频道有独立状态且审核冻结时不泄露目标',()=>{
+  it('星际频道有独立状态且持续探测时不泄露目标',()=>{
     const s=newGame(START);
-    expect(json(publicRadar(s,'interstellar'))).toEqual({mode:'interstellar',stage:'standby',progress:0});
+    expect(json(publicRadar(s,'interstellar'))).toEqual({mode:'interstellar',stage:'searching',progress:0});
     expect(JSON.stringify(publicRadar(advance(s,START+7200000),'interstellar'))).not.toMatch(/echo|planet|target|回声|数量|position/);
   });
   it('飞船可视姿态不倒置；包裹有连续的地面→手部→卸货台轨迹',()=>{
