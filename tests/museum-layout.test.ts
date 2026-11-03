@@ -13,3 +13,6 @@ it('六件实物含轻循环余量均在各自玻璃内，不用整格中心推�
 it('柜中实物→机械臂取放使用同一注册中心，无旧的固定半格偏移',()=>{
  for(let i=0;i<6;i++){const p=baseRobotPose(i*14+6.2),e=exhibits.find(e=>e.id===p.target)!;expect(p.item.x).toBeCloseTo(itemCenter(e).x,5);expect(p.item.y).toBeCloseTo(itemCenter(e).y,5);}
 });
+it('前排高柜不压住后排铭牌，六个名字都能在首页阅读',()=>{
+ for(const e of exhibits.slice(3)){const top=layerPoint(e,e.crop.x,e.crop.y).y;expect(top).toBeGreaterThan(568);}
+});

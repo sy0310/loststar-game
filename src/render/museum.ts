@@ -1,14 +1,14 @@
 import robotAtlasUrl from '../../assets/runtime/robot-empty-v3.webp';
 import {baseRobotPose} from './base-motion';
+import {exhibits,exhibitIds,itemCenter,layerPoint,type Exhibit} from './museum-layout';
+export {exhibits,exhibitIds} from './museum-layout';
 import roomUrl from '../../assets/runtime/museum-room-v02.webp';
 import {textures} from '../ui/art';
 import {discoveryById} from '../content/catalog';
 import type {ArtId} from '../content/types';
 const habitatUrls=import.meta.glob('../../assets/runtime/habitat-*-v02.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 const layers=import.meta.glob('../../assets/runtime/case-*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
-export const exhibitIds=['receipt','tape','nested','stamp','cosmic-parcel','bell'] as const;
 export const residentIds=['mouse','hermit','tagbird'] as const;
-export const exhibits=exhibitIds.map((id,i)=>({id,x:[.23,.50,.79,.20,.50,.81][i],y:i<3?.555:.821,w:i<3?198:216}));
 export type MuseumSource={collection:string[]};
 function image(url:string){const img=new Image();img.src=url;return img;}
 function sprite(c:CanvasRenderingContext2D,img:HTMLImageElement|undefined,x:number,y:number,w:number,h=w){if(img?.complete&&img.naturalWidth)c.drawImage(img,Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
@@ -20,7 +20,7 @@ export class MuseumScene {
  private glass=Object.fromEntries(exhibitIds.map(id=>[id,[image(layers[`../../assets/runtime/case-${id}-back.webp`]),image(layers[`../../assets/runtime/case-${id}-front.webp`])]]));
  constructor(private root:HTMLElement,private source:()=>MuseumSource,private level:(id:string)=>number=()=>0,private clock:()=>number=()=>performance.now()/1000){
   root.classList.add('museum-room');this.canvas.id='museum-canvas';this.canvas.width=768;this.canvas.height=960;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','失物收藏室：六个独立玻璃容器，藏品在玻璃内轻轻活动');root.append(this.canvas);this.c=this.canvas.getContext('2d');
-  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(({id,x,y,w})=>`<button data-exhibit="${id}" data-detail="${id}" style="left:${(x-w/768/2)*100}%;top:${(y-w/960)*100}%;width:${w/768*100}%;height:${w/960*100}%"></button>`).join('');root.append(hits);this.ready=this.load();requestAnimationFrame(this.loop);
+  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(e=>{const p=layerPoint(e,e.crop.x,e.crop.y);return `<button data-exhibit="${e.id}" data-detail="${e.id}" style="left:${p.x/768*100}%;top:${p.y/960*100}%;width:${Math.max(96,e.crop.w*e.scale)/768*100}%;height:${Math.max(96,e.crop.h*e.scale)/960*100}%"></button>`;}).join('');root.append(hits);this.ready=this.load();requestAnimationFrame(this.loop);
  }
  async load(){this.root.dataset.loading='true';try{await Promise.all([this.robot,this.room,...Object.values(this.art),...Object.values(this.glass).flat()].map(i=>i.decode()));this.canvas.dataset.ready='true';this.draw(this.clock());this.refresh();}catch{this.canvas.dataset.ready='error';this.root.setAttribute('aria-label','收藏室暂未接通，请返回后重试');}finally{this.root.dataset.loading='false';}}
  mount(parent:HTMLElement){parent.append(this.root);}
@@ -31,7 +31,7 @@ export class MuseumScene {
  private draw(t:number){const c=this.c;if(!c||this.canvas.dataset.ready!=='true'||!this.room.complete||!this.room.naturalWidth)return;c.clearRect(0,0,768,960);c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
   // Tiny free-floating dust and lamplight are part of the room, never the whole background moving.
   for(let i=0;i<16;i++){const x=(i*127+Math.sin(t*.18+i)*10)%740+14,y=110+(i*61+t*3)%620;c.fillStyle=`rgba(255,218,148,${.15+.15*Math.sin(t+i)})`;c.fillRect(Math.round(x),Math.round(y),2,2);}
-  this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y*960,draw:()=>this.case(c,e,t)}));entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
+  this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y,draw:()=>this.case(c,e,t)}));entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
   this.canvas.dataset.robotX=String(Math.round(this.pose.x));this.canvas.dataset.robotY=String(Math.round(this.pose.y));this.canvas.dataset.robotAction=this.pose.action;this.canvas.dataset.robotTarget=this.pose.target;
   this.root.dispatchEvent(new CustomEvent('robot-state',{detail:this.pose}));
   const lights=this.level('light');if(lights){c.fillStyle=`rgba(255,207,124,${.035*lights})`;c.fillRect(0,0,768,960);}
@@ -43,36 +43,37 @@ export class MuseumScene {
  }
  private drawRobot(c:CanvasRenderingContext2D,t:number){const p=this.pose,moving=p.action==='walk'||p.action==='return',frame=moving?Math.floor(t*8)%4:p.action==='observe'?4:p.lift>.8?6:p.action==='wipe'?7:5,w=p.width,feet=[149,147,149,148,148,148,149,149][frame];
   c.save();c.translate(p.x,p.y);c.fillStyle='#100c2880';c.beginPath();c.ellipse(0,1,32,7,0,0,Math.PI*2);c.fill();if(p.facing>0)c.scale(-1,1);c.drawImage(this.robot,frame%4*160,Math.floor(frame/4)*160,160,160,-w/2,-feet/160*w,w,w);c.restore();
-  if(p.opening>0){const end=p.lift>0?p.item:{x:exhibits.find(e=>e.id===p.target)!.x*768,y:exhibits.find(e=>e.id===p.target)!.y*960-30};c.strokeStyle='#a3c5b1';c.lineWidth=4;c.beginPath();c.moveTo(p.hand.x,p.hand.y);c.lineTo((p.hand.x+end.x)/2,end.y+20);c.lineTo(end.x,end.y);c.stroke();c.fillStyle='#ffe5a6';c.fillRect(end.x-4,end.y-4,8,8);}
-  if(p.lift>0&&this.source().collection.includes(p.target)){const e=exhibits.find(e=>e.id===p.target)!;const size=e.w*.45*(1-p.lift)+48*p.lift;sprite(c,this.art[p.target as typeof exhibitIds[number]],p.item.x-size/2,p.item.y-size/2,size);}
+  if(p.opening>0){const end=p.lift>0?p.item:itemCenter(exhibits.find(e=>e.id===p.target)!);c.strokeStyle='#a3c5b1';c.lineWidth=4;c.beginPath();c.moveTo(p.hand.x,p.hand.y);c.lineTo((p.hand.x+end.x)/2,end.y+20);c.lineTo(end.x,end.y);c.stroke();c.fillStyle='#ffe5a6';c.fillRect(end.x-4,end.y-4,8,8);}
+  if(p.lift>0&&this.source().collection.includes(p.target)){const e=exhibits.find(e=>e.id===p.target)!;const size=e.item.size*e.scale*(1-p.lift)+48*p.lift;sprite(c,this.art[p.target as typeof exhibitIds[number]],p.item.x-size/2,p.item.y-size/2,size);}
  }
 
- renderExhibit(canvas:HTMLCanvasElement,id:string,level:number){const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);c.save();c.translate(canvas.width/2,canvas.height-48);this.case(c,{...e,x:0,y:0,w:Math.min(canvas.width*.88,canvas.height-68)},0,level);c.restore();canvas.dataset.ready='true';canvas.dataset.level=String(level);}
- private case(c:CanvasRenderingContext2D,e:typeof exhibits[number],t:number,forcedLevel?:number){
-  const service=forcedLevel===undefined&&this.pose.target===e.id?this.pose:null;const x=e.x*768,y=e.y*960,w=e.w,known=this.source().collection.includes(e.id),level=forcedLevel??this.level(`case-${exhibitIds.indexOf(e.id)}`),[back,front]=this.glass[e.id];
-  c.save();c.translate(x,y);c.fillStyle='#120d2880';c.beginPath();c.ellipse(0,-3,w*.30,10,0,0,Math.PI*2);c.fill();sprite(c,back,-w/2,-w,w,w);
-  if(level){c.strokeStyle=['','#ffe0a0','#9ce9e1','#e6b2ff'][level];c.lineWidth=level===3?3:2;c.beginPath();c.ellipse(0,-w*.13,w*.27,9,0,0,Math.PI*2);c.stroke();}
-  c.save();c.beginPath();c.rect(-w*.32,-w*.82,w*.64,w*.65);c.clip();
+ renderExhibit(canvas:HTMLCanvasElement,id:string,level:number){const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const scale=Math.min((canvas.width-48)/e.crop.w,(canvas.height-70)/(e.base.y-e.crop.y));c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);this.case(c,{...e,x:canvas.width/2,y:canvas.height-48,scale,width:e.base.w*scale},0,level);canvas.dataset.ready='true';canvas.dataset.level=String(level);}
+ private case(c:CanvasRenderingContext2D,e:Exhibit,t:number,forcedLevel?:number){
+  const service=forcedLevel===undefined&&this.pose.target===e.id?this.pose:null,known=this.source().collection.includes(e.id),level=forcedLevel??this.level(`case-${exhibitIds.indexOf(e.id)}`),[back,front]=this.glass[e.id],s=e.scale,p=layerPoint(e,e.crop.x,e.crop.y),b=layerPoint(e,e.cavity.x,e.cavity.y),center=itemCenter(e),width=e.cavity.w*s,height=e.cavity.h*s;
+  c.save();c.fillStyle='#120d2840';c.beginPath();c.ellipse(e.x,e.y-2,e.width*.43,5,0,0,Math.PI*2);c.fill();
+  c.drawImage(back,e.crop.x,e.crop.y,e.crop.w,e.crop.h,p.x,p.y,e.crop.w*s,e.crop.h*s);
+  if(level){c.strokeStyle=['','#ffe0a0','#9ce9e1','#e6b2ff'][level];c.lineWidth=level===3?3:2;c.beginPath();c.ellipse(e.x,e.y-9,e.width*.40,6,0,0,Math.PI*2);c.stroke();}
+  c.save();c.beginPath();c.rect(b.x,b.y,width,height);c.clip();
   if(known&&!(service&&service.lift>0)){
-   if(level){for(let ring=0;ring<3;ring++){c.fillStyle=level===3?'#c8a7ef20':'#ffe2a120';c.beginPath();c.ellipse(0,-w*(.22+ring*.045),w*(.20-ring*.025),w*.035,0,0,Math.PI*2);c.fill();}}
-   const phase=t+exhibitIds.indexOf(e.id),bob=Math.sin(phase*1.4)*2,iw=e.id==='cosmic-parcel'?w*.49:e.id==='stamp'?w*.40:e.id==='bell'?w*.48:w*.45;
-   c.save();c.translate(0,-w*.49+bob);
+   const phase=t+exhibitIds.indexOf(e.id),bob=Math.sin(phase*1.4)*2,iw=e.item.size*s;
+   c.save();c.translate(center.x,center.y+bob);
    switch(e.id){
-    case 'receipt':c.rotate(Math.sin(t*.8)*.035);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.fillStyle='#ffeab9';for(let i=0;i<3;i++)c.fillRect(-12+i*10,iw*.25+(t*6+i*7)%16,3,2);break;
-    case 'tape':c.rotate(Math.sin(t)*.04);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle='#f5cc7a';c.lineWidth=3;c.beginPath();c.moveTo(10,iw*.24);c.lineTo(15+Math.sin(t*1.4)*5,iw*.38);c.lineTo(28,iw*.4);c.stroke();break;
-    case 'nested':sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle='#dfb5fb';c.strokeRect(-9,-iw*.36-Math.sin(t*1.3)**2*10,18,13);break;
-    case 'stamp':c.translate(0,-Math.max(0,Math.sin(t*1.8))*5);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.fillStyle='#b982da88';c.fillRect(-14,iw*.38,28,3);break;
-    case 'cosmic-parcel':c.rotate(Math.sin(t*.7)*.02);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle='#b1d9fd';c.beginPath();c.ellipse(0,0,iw*.54,iw*.19,Math.sin(t*.6)*.4,0,Math.PI*2);c.stroke();break;
-    case 'bell':c.rotate(Math.sin(t*1.5)*.07);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle=`rgba(255,224,153,${1-t%2/2})`;c.beginPath();c.ellipse(0,iw*.25,10+t%2*15,3+t%2*4,0,0,Math.PI*2);c.stroke();break;
+    case 'receipt':c.rotate(Math.sin(t*.8)*.035);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.fillStyle='#ffeab9';for(let i=0;i<3;i++)c.fillRect(-9+i*8,iw*.25+(t*4+i*5)%12,2,2);break;
+    case 'tape':c.rotate(Math.sin(t)*.04);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle='#f5cc7a';c.lineWidth=2;c.beginPath();c.moveTo(8,iw*.24);c.lineTo(12+Math.sin(t*1.4)*3,iw*.36);c.lineTo(20,iw*.39);c.stroke();break;
+    case 'nested':sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle='#dfb5fb';c.strokeRect(-7,-iw*.30-Math.sin(t*1.3)**2*4,14,9);break;
+    case 'stamp':c.translate(0,-Math.max(0,Math.sin(t*1.8))*4);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.fillStyle='#b982da88';c.fillRect(-12,iw*.38,24,2);break;
+    case 'cosmic-parcel':c.rotate(Math.sin(t*.7)*.02);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle='#b1d9fd';c.beginPath();c.ellipse(0,0,iw*.50,iw*.19,Math.sin(t*.6)*.4,0,Math.PI*2);c.stroke();break;
+    case 'bell':c.rotate(Math.sin(t*1.5)*.07);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle=`rgba(255,224,153,${1-t%2/2})`;c.beginPath();c.ellipse(0,iw*.25,8+t%2*10,3+t%2*3,0,0,Math.PI*2);c.stroke();break;
    }
    c.restore();
-   if(level>=2){for(let i=0;i<4;i++){c.fillStyle='#fff3b0';c.fillRect(Math.sin(t*.5+i)*w*.21,-w*.35+Math.cos(t*.7+i)*w*.17,2,2);}}
+   if(level>=2)for(let i=0;i<4;i++){c.fillStyle='#fff3b0';c.fillRect(center.x+Math.sin(t*.5+i)*width*.30,center.y+Math.cos(t*.7+i)*height*.23,2,2);}
   }
-  c.restore();c.save();const frontOpacity=e.id==='cosmic-parcel'?.45:e.id==='bell'?.72:.9;c.globalAlpha=frontOpacity*(1-(service?.opening??0)*.67);sprite(c,front,-w/2+(service?.opening??0)*w*.34,-w,w,w);c.restore();
-  // Nameplates are separate runtime geometry/text; always in front of glass.
-  const plaqueW=w*.77;c.fillStyle='#2b2036';c.fillRect(-plaqueW/2,6,plaqueW,33);c.strokeStyle=level?'#e8c184':'#a98054';c.lineWidth=2;c.strokeRect(-plaqueW/2,6,plaqueW,33);c.fillStyle=known?'#ffe9bf':'#b9a9c7';c.font='22px monospace';c.textAlign='center';c.fillText(known?['未购买收据','道歉胶带','套娃包裹','昨天邮戳','收件人：宇宙','签收铃'][exhibitIds.indexOf(e.id)]:'等待好奇心',0,27,plaqueW-8);
-  if(level===3){c.fillStyle='#ffe8a1';c.fillRect(-4,42,8,3);}c.restore();
+  // Register reflection-only front windows onto the back's cavity. The front sheet's
+  // independent AI-drawn cap/base cannot supply a second, offset physical pedestal.
+  c.save();const opacity=e.id==='cosmic-parcel'?.45:e.id==='bell'?.72:.9;c.globalAlpha=opacity*(1-(service?.opening??0)*.8);c.translate((service?.opening??0)*width*.45,0);c.drawImage(front,e.front.x,e.front.y,e.front.w,e.front.h,b.x,b.y,width,height);c.restore();c.restore();
+  const plaqueW=Math.min(138,e.width*1.10);c.fillStyle='#2b2036';c.fillRect(e.x-plaqueW/2,e.y+12,plaqueW,27);c.strokeStyle=level?'#e8c184':'#a98054';c.lineWidth=2;c.strokeRect(e.x-plaqueW/2,e.y+12,plaqueW,27);c.fillStyle=known?'#ffe9bf':'#b9a9c7';c.font='20px monospace';c.textAlign='center';c.fillText(known?['未购买收据','道歉胶带','套娃包裹','昨天邮戳','收件人：宇宙','签收铃'][exhibitIds.indexOf(e.id)]:'等待好奇心',e.x,e.y+32,plaqueW-8);c.restore();
  }
+
 }
 /** Three habitats have independent miniature terrain, idle poses and glass foreground. */
 export class HabitatScene {
