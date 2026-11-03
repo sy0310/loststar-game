@@ -42,6 +42,68 @@ async function saveTexture(name, imageBuffer) {
   return {file: `assets/runtime/d1-refinement/${name}`, bytes: (await stat(output)).size};
 }
 
+async function exportInnerPaper(config) {
+  const sourceBytes = await readFile(new URL(config.source, sourceRoot));
+  const source = await sharp(sourceBytes).ensureAlpha().raw().toBuffer({resolveWithObject: true});
+  const visible = alphaBounds(source.data, source.info.width, source.info.height, 16);
+  if (!visible) throw new Error('Blank receipt inner paper has no visible pixels');
+  const crop = {left: visible.x, top: visible.y, width: visible.width, height: visible.height};
+  const fragment = await sharp(sourceBytes).extract(crop)
+    .resize({height: config.visibleHeight, kernel: 'nearest'}).png().toBuffer();
+  const size = await sharp(fragment).metadata();
+  const left = Math.round((256 - size.width) / 2);
+  const top = Math.round((256 - size.height) / 2);
+  const normalized = await sharp({create: {width: 256, height: 256, channels: 4, background: '#00000000'}})
+    .composite([{input: fragment, left, top}]).png().toBuffer();
+  const output = await sharp(normalized).ensureAlpha().raw().toBuffer();
+  const outputBounds = measuredBounds(output, 256, 256);
+  if (outputBounds.visible16.height !== config.visibleHeight) {
+    throw new Error('Blank receipt inner paper visible height changed during export');
+  }
+  const reference = await sharp(fileURLToPath(new URL('receipt-tier-0.webp', runtimeRoot)))
+    .ensureAlpha().raw().toBuffer();
+  let intersection = 0;
+  let union = 0;
+  let outsideReference = 0;
+  for (let offset = 3; offset < output.length; offset += 4) {
+    const innerVisible = output[offset] >= 16;
+    const outerVisible = reference[offset] >= 16;
+    if (innerVisible && outerVisible) intersection++;
+    if (innerVisible || outerVisible) union++;
+    if (innerVisible && !outerVisible) outsideReference++;
+  }
+  const hinge = sourceManifest.receipts.hingeUv;
+  const hingeOffset = (Math.round(hinge.y * 256) * 256 + Math.round(hinge.x * 256)) * 4 + 3;
+  const texture = await saveTexture('receipt-inner-blank.webp', normalized);
+  return {
+    ...texture,
+    size: {width: 256, height: 256},
+    source: `assets/src/generated/d1-refinement/${config.source}`,
+    sourceSha256: createHash('sha256').update(sourceBytes).digest('hex'),
+    sourceSize: {width: source.info.width, height: source.info.height},
+    sourceAlphaBounds: measuredBounds(source.data, source.info.width, source.info.height),
+    alphaBounds: outputBounds,
+    centerUv: {x: .5, y: .5},
+    hingeUv: sourceManifest.receipts.hingeUv,
+    paperFace: sourceManifest.receipts.paperFace,
+    lowerCurl: sourceManifest.receipts.lowerCurl,
+    unfoldCutY: config.unfoldCutY,
+    inkStrip: {x: 0, y: 0, width: 0, height: 0},
+    returnStamp: {x: 0, y: 0, width: 0, height: 0},
+    sharedForTiers: [0, 1, 2, 3],
+    validation: {
+      alpha16OverlapWithTier0: intersection / union,
+      alpha16OutsideTier0Pixels: outsideReference,
+      hingeAlpha: output[hingeOffset],
+    },
+    normalization: {
+      crop,
+      outputFragment: {x: left, y: top, width: size.width, height: size.height},
+      method: 'Proportional nearest-neighbour fit to239px visible height and nominal128/128 canvas centre',
+    },
+  };
+}
+
 function insidePolygon(x, y, polygon) {
   let inside = false;
   for (let index = 0, previous = polygon.length - 1; index < polygon.length; previous = index++) {
@@ -273,6 +335,10 @@ const registration = {
   carrier: null,
 };
 
+if (sourceManifest.receipts.innerPaper) {
+  registration.receipts.innerPaper = await exportInnerPaper(sourceManifest.receipts.innerPaper);
+}
+
 if (sourceManifest.carrier) registration.carrier = await exportCarrier(sourceManifest.carrier);
 
 await writeFile(new URL('registration.json', runtimeRoot), JSON.stringify(registration, null, 2) + '\n');
@@ -320,5 +386,30 @@ if (process.argv.includes('--audit')) {
     await sharp(composed).resize(600, 480, {kernel: 'nearest'}).png()
       .toFile(fileURLToPath(new URL('carry-case-native57.png', auditRoot)));
     console.log('Wrote carrier alpha audit at the proposed57px physical size before magnification.');
+  }
+  if (registration.receipts.innerPaper) {
+    const checker = (width, height, cell) => Buffer.from(
+      `<svg width="${width}" height="${height}"><defs><pattern id="grid" width="${cell * 2}" height="${cell * 2}" patternUnits="userSpaceOnUse"><rect width="${cell * 2}" height="${cell * 2}" fill="#a3a3aa"/><rect width="${cell}" height="${cell}" fill="#73747b"/><rect x="${cell}" y="${cell}" width="${cell}" height="${cell}" fill="#73747b"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>`,
+    );
+    const outer = await readFile(new URL('receipt-tier-0.webp', runtimeRoot));
+    const inner = await readFile(new URL('receipt-inner-blank.webp', runtimeRoot));
+    await sharp(checker(512, 256, 8)).composite([
+      {input: outer, left: 0, top: 0},
+      {input: inner, left: 256, top: 0},
+    ]).png().toFile(fileURLToPath(new URL('receipt-outer-inner-registered256.png', auditRoot)));
+    const overlays = [];
+    for (const [index, bytes] of [outer, inner].entries()) {
+      const decoded = await sharp(bytes).ensureAlpha().raw().toBuffer();
+      const visible = alphaBounds(decoded, 256, 256, 16);
+      const native = await sharp(bytes).extract({left: visible.x, top: visible.y, width: visible.width, height: visible.height})
+        .resize({height: 67, kernel: 'nearest'}).png().toBuffer();
+      const size = await sharp(native).metadata();
+      overlays.push({input: native, left: index * 100 + Math.round((100 - size.width) / 2), top: 17});
+    }
+    const native = await sharp(checker(200, 100, 4)).composite(overlays).png().toBuffer();
+    await writeFile(new URL('receipt-outer-inner-native67.png', auditRoot), native);
+    await sharp(native).resize(800, 400, {kernel: 'nearest'}).png()
+      .toFile(fileURLToPath(new URL('receipt-outer-inner-native67-4x.png', auditRoot)));
+    console.log('Wrote registered256px and native67px outer/blank inner paper audits.');
   }
 }

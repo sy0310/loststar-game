@@ -19,6 +19,18 @@
 
 `registration.json.receipts.tiers` 给出每档 alpha 包络、纸面、墨迹带、退货印记、下卷边和原始格坐标。纸面和卷边可按这些区域进行分条弯曲、迟滞和显影。素材中的形变为纸张本身，循环动效由运行时代码驱动。
 
+## 共享空白内页
+
+折读样板新增一张独立的 `receipt-inner-blank.webp`，四个研究档共用。它由内置imagegen定向编辑现有tier0，保留米纸明暗、顶部翻口和右下卷边，清除印刷。原始1254×1254PNG及完整提示词保留，文字由运行时绘制。
+
+运行纹理为256×256、43412字节，可见alpha16包络为(35,9,187,239)。共同铰点(186,48)的实际alpha为253，纸面与卷边区域沿用原注册。外层tier0的可见宽为188px，空白层为187px，与外层alpha16轮廓的IoU为0.96084，有645个内页像素超出旧轮廓。这一约1–2纹理像素的边缘微差已交主线程审看，内页使用自身alpha和侧缘profile进行展开。
+
+`registration.json.receipts.innerPaper` 提供同tiers格式的 `file/size/alphaBounds/paperFace/lowerCurl/hingeUv`。`inkStrip/returnStamp` 为零区域。
+
+整段卷边的展开切线独立记录为 `unfoldCutY=190`。实际右侧轮廓在y190时到x163，之后y191到x166、y192到x171、y193到x174，已开始向外形成卷边。`lowerCurl.y=199` 继续用于卷边局部区域读取。
+
+`audit/receipt-outer-inner-registered256.png` 与 `audit/receipt-outer-inner-native67-4x.png` 给出同注册和原生67px对照。主线程已批准进入真实Canvas审核，真实内页纹理、折页边缘和接缝继续以运行时复审为准。
+
 ## 携行收容匣
 
 首版1457×1079原件的可见包络为1167×937。当整件可见高40px时，其安全正窗约32×10.67px，主线程据此要求压低提柄、减薄盖板和缩浅底盘。
@@ -55,7 +67,7 @@ node scripts/export_d1_refinement_assets.mjs --audit
 node --check scripts/export_d1_refinement_assets.mjs
 ```
 
-脚本保留原始透明通道，使用等比例最近邻缩放和lossless WebP，开启 `exact:true`。四张收据共227254字节，三层收容匣共52078字节，合计279332字节。
+脚本保留原始透明通道，使用等比例最近邻缩放和lossless WebP，开启 `exact:true`。四张收据共227254字节，三层收容匣共52078字节，加上共享空白内页43412字节，当前八张运行纹理合计322744字节。
 
 导出会实测空腔透明度和同源三层的闭合重组。`audit/receipt-old-tiers-native67.png` 从左到右显示旧图等比版本及Lv0–3，先按真实67px绘制后放大。`audit/carry-case-native57.png` 使用拟定的实际携行尺寸进行透明合成。它们用于素材和像素检查，实际手持、柔性运动、开合、遮挡和玻璃灯光以主线程真实运行录屏为准。
 
