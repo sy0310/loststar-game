@@ -144,7 +144,9 @@ try {
       for(const target of [.3,1.8,2.75,4]){
         await receipt.page.waitForTimeout(Math.max(0,target*1000-(Date.now()-began)));
         const file=await screenshot(receipt.page,`research-${level}-${target}-390.png`);
-        researchFrames.push({level,target,wallMs:Date.now()-began,file,...await frame(receipt.page,'#receipt-focus')});
+        const rendered = await frame(receipt.page, '#receipt-focus');
+        assert(Number(rendered.researchLevel) === level, 'Rendered research level does not match the requested level');
+        researchFrames.push({...rendered,requestedResearchLevel:level,target,wallMs:Date.now()-began,file});
       }
     }
     assert(await receipt.page.locator('#receipt-reading-result').getAttribute('data-pending')==='2','A result is wrong');
@@ -177,7 +179,7 @@ try {
     const result={at:new Date().toISOString(),sourceCommit,build:night.build,method:'390×844 desktop mobile touch emulation, actual wall-clock videos. D1 intentionally compresses day/dusk/night/dawn to 54 seconds, while all poses run at normal animation speed. Ordinary gameplay keeps its persistent four-minute day and one-minute night.',physicalPhone:'Pending TapTap QR review',host:{cpu:os.cpus()[0].model,platform:os.platform()},cycleVideo,receiptVideo,nightFrames,researchFrames,comparison,performance,inputs,audits,errors};
     await writeFile(`${out}/recordings.json`,JSON.stringify(result,null,2));
     const images=nightFrames.map(item=>`<figure><img src="${item.file}" alt="${item.period}"><figcaption>${item.target}s · ${item.period}</figcaption></figure>`).join('');
-    const papers=researchFrames.filter(item=>item.target===1.8).map(item=>`<figure><img src="${item.file}" alt="收据研究${item.level}"><figcaption>研究${item.level} · 同一免费玻璃罩</figcaption></figure>`).join('');
+    const papers=researchFrames.filter(item=>item.target===1.8).map(item=>`<figure><img src="${item.file}" alt="收据研究${item.researchLevel}"><figcaption>研究${item.researchLevel} · 同一免费玻璃罩</figcaption></figure>`).join('');
     const gallery = `<!doctype html>
 <html lang="zh-CN">
 <head>
