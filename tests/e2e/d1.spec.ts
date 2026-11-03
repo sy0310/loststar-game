@@ -27,17 +27,34 @@ test('D1只读两样板同H5切换，重播/四档/刷新完全不接触正式�
  expect(await page.evaluate(()=>(window as any).__d1StorageCalls)).toEqual([]);
  await page.reload();await expect(page.locator('#d1-scene canvas')).toHaveAttribute('data-ready','true');expect(await page.evaluate(()=>(window as any).__d1StorageCalls)).toEqual([]);expect(errors).toEqual([]);
 });
-test('D1减弱动态仍连续跨球面追踪核验收容返站，三十秒后完成，镜头不溢出',async({page})=>{
- test.setTimeout(60000);
- await page.emulateMedia({reducedMotion:'reduce'});await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+1000));await page.goto('/?sample=night-d1');
- const canvas=page.locator('#d1-scene canvas');await expect(canvas).toHaveAttribute('data-ready','true');await page.locator('#d1-replay').click();await page.clock.runFor(150);
- const frames:Buffer[]=[],xs:number[]=[];
- for(const [delta,phase]of [[0,'signal'],[7200,'travel'],[4200,'identify'],[5000,'contain'],[5000,'escort'],[5500,'dock'],[3300,'done']] as const){
-  await page.clock.runFor(delta);await expect(page.locator('#d1-status')).toHaveAttribute('data-phase',phase);frames.push(await canvas.screenshot());xs.push(Number(await canvas.getAttribute('data-robot-x')));
+test('D1减弱动态下夜巡各阶段跨球面追踪核验收容返站，三十秒后完成，镜头不溢出', async ({page}) => {
+ await page.emulateMedia({reducedMotion: 'reduce'});
+ await page.clock.install();
+ await page.clock.pauseAt(new Date(Date.now() + 1000));
+ await page.goto('/?sample=night-d1');
+ const canvas = page.locator('#d1-scene canvas');
+ await expect(canvas).toHaveAttribute('data-ready', 'true');
+ await page.locator('#d1-replay').click();
+ await page.clock.runFor(150);
+ const frames: Buffer[] = [];
+ const positions: number[] = [];
+ for (const [delta, phase] of [[0, 'signal'], [7200, 'travel'], [4200, 'identify'], [5000, 'contain'], [5000, 'escort'], [5500, 'dock'], [3300, 'done']] as const) {
+  // Jump between checkpoints, then execute real render callbacks for the image assertions.
+  // Long runFor calls replay every intermediate RAF and exhaust slow Linux WebKit runners.
+  await page.clock.fastForward(Math.max(0, delta - 100));
+  await page.clock.runFor(Math.min(100, delta));
+  await expect(page.locator('#d1-status')).toHaveAttribute('data-phase', phase);
+  frames.push(await canvas.screenshot());
+  positions.push(Number(await canvas.getAttribute('data-robot-x')));
  }
- expect(Math.max(...xs)-Math.min(...xs)).toBeGreaterThan(200);expect(await diff(frames[0],frames[2])).toBeGreaterThan(.01);expect(await diff(frames[2],frames[4])).toBeGreaterThan(.01);
- const r=await canvas.boundingBox();expect(r).not.toBeNull();expect(r!.y).toBeGreaterThanOrEqual(0);expect(r!.x).toBeGreaterThanOrEqual(0);
- expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ expect(Math.max(...positions) - Math.min(...positions)).toBeGreaterThan(200);
+ expect(await diff(frames[0], frames[2])).toBeGreaterThan(.01);
+ expect(await diff(frames[2], frames[4])).toBeGreaterThan(.01);
+ const bounds = await canvas.boundingBox();
+ expect(bounds).not.toBeNull();
+ expect(bounds!.y).toBeGreaterThanOrEqual(0);
+ expect(bounds!.x).toBeGreaterThanOrEqual(0);
+ expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
  expect(await page.locator('body').ariaSnapshot()).not.toMatch(/回声菌星|倒置海星|钟摆荒原星|无人游乐星|未签收之星|六颗|6颗/);
 });
 test('D1收据四级实际轮廓明显变化、同镜头同物品尺寸，安装有中间画面',async({page})=>{
