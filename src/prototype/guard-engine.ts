@@ -1,3 +1,4 @@
+import {nightAt,nightResult,type NightResult} from './night-model';
 export const GUARD_KEY='loststar.prototype.guard.v1';
 export const guardItems=['tape','bell'] as const;
 export type GuardItem=typeof guardItems[number];
@@ -5,15 +6,14 @@ export type GuardSlots=[GuardItem|null,GuardItem|null];
 export interface GuardState {
   version:1;enabled:boolean;lastAt:number;elapsedMs:number;dayMs:number;nightMs:number;
   owned:GuardItem[];slots:GuardSlots;strengths:[number,number];activeNight:{index:number;slots:GuardSlots;strengths?:[number,number]}|null;
-  settledNights:number;reports:{nights:number;clues:number;intercepted:number};
-  lastReport:{number:number;clues:number;intercepted:number;summary:string}|null;
+  settledNights:number;reports:{nights:number;clues:number;intercepted:number;arrived:number;verifiedNights:number};
+  lastReport:{number:number;clues:number;intercepted:number;arrived?:number;summary:string;result?:NightResult}|null;
 }
 export const guardEvent={id:'keep-the-door',name:'请替宇宙看一会儿门',line:'三份没有收件人的影子，在夜色里等一枚温柔的退回章。'};
 const clamp=(n:number)=>Math.max(0,Math.min(1,n));
 const eligible=(owned:string[])=>guardItems.filter(id=>owned.includes(id));
-const count=(slots:GuardSlots)=>new Set(slots.filter(Boolean)).size;
 export function createGuard(now:number,owned:string[],strengths:[number,number]=[0,0]):GuardState {
-  return {version:1,enabled:false,lastAt:now,elapsedMs:0,dayMs:240000,nightMs:60000,owned:eligible(owned),slots:[null,null],strengths:[...strengths],activeNight:null,settledNights:0,reports:{nights:0,clues:0,intercepted:0},lastReport:null};
+  return {version:1,enabled:false,lastAt:now,elapsedMs:0,dayMs:240000,nightMs:60000,owned:eligible(owned),slots:[null,null],strengths:[...strengths],activeNight:null,settledNights:0,reports:{nights:0,clues:0,intercepted:0,arrived:0,verifiedNights:0},lastReport:null};
 }
 export function equipGuard(s:GuardState,slot:0|1,item:GuardItem|null):GuardState {
   if((slot!==0&&slot!==1)||(item!==null&&!s.owned.includes(item)))return s;
@@ -28,9 +28,9 @@ export function advanceGuard(s:GuardState,now:number):GuardState {
   next.elapsedMs+=Math.min(now-s.lastAt,43200000);
   const completed=Math.floor(next.elapsedMs/cycle);
   for(let index=s.settledNights+1;index<=completed;index++){
-    const slots=s.activeNight?.index===index?s.activeNight.slots:s.slots,n=count(slots),clues=1+n,intercepted=n?3:0;
-    next.reports.nights++;next.reports.clues+=clues;next.reports.intercepted+=intercepted;
-    next.lastReport={number:index,clues,intercepted,summary:n===2?'胶带留下脚印，签收铃替夜色点了头。':n===1?'一件奇物和两位老搭档，认真照看了收件站。':'咔哒与失物号把影子礼貌地送回原路。'};
+    const config=s.activeNight?.index===index?{slots:s.activeNight.slots,strengths:s.activeNight.strengths??s.strengths}:{slots:s.slots,strengths:s.strengths},result=nightResult(config);
+    next.reports.nights++;next.reports.verifiedNights++;next.reports.clues+=result.clues;next.reports.intercepted+=result.intercepted;next.reports.arrived+=result.arrived;
+    next.lastReport={number:index,clues:result.clues,intercepted:result.intercepted,arrived:result.arrived,summary:`${result.intercepted} 位在抵站前完成核对，${result.arrived} 位抵站后由咔哒安全送回。收藏完好，留下${result.quality}。`,result};
   }
   next.settledNights=completed;
   const phase=next.elapsedMs%cycle,index=completed+1;
@@ -52,17 +52,9 @@ export function guardView(s:GuardState){
   const activeSlots=phase==='night'?(s.activeNight?.slots??s.slots):s.slots;
   const strengths=phase==='night'?(s.activeNight?.strengths??s.strengths):s.strengths;
   const tape=activeSlots.includes('tape'),bell=activeSlots.includes('bell');
-  const tapeLevel=strengths[Math.max(0,activeSlots.indexOf('tape'))],bellLevel=strengths[Math.max(0,activeSlots.indexOf('bell'))],stunDuration=1.1+bellLevel*.2;
-  const sealAt=count(activeSlots)===2?11:count(activeSlots)===1?14:17;
-  const accumulatedStun=(t:number)=>Math.floor(t/6)*stunDuration+Math.min(t%6,stunDuration);
-  const intruders:Array<{id:number;progress:number;stunned:boolean;slowed:boolean;sealing:boolean;alpha:number}>=[];
-  if(phase==='night')for(let i=0;i<3;i++){
-    const spawn=4.2+i*18,age=nightBase-spawn;if(age<0||age>sealAt+1.2)continue;
-    const stun=bell?accumulatedStun(nightBase)-accumulatedStun(spawn):0;
-    const travel=Math.max(0,age-stun)/12*(tape?.56-tapeLevel*.06:1),returning=clamp((age-sealAt)/1.2);
-    intruders.push({id:i,progress:Math.min(1,travel)*(1-returning),stunned:bell&&nightBase%6<stunDuration,slowed:tape,sealing:age>sealAt-.4,alpha:1-returning});
-  }
-  return {phase,light,nightBase,nightNumber:Math.floor(s.elapsedMs/cycle)+1,untilNextMs:phase==='night'?cycle-phaseMs:s.dayMs-phaseMs,activeSlots,strengths,tape,bell,intruders,event:phase==='night'?guardEvent:null};
+  const timeline=nightAt({slots:activeSlots,strengths},Math.max(0,nightBase));
+  const intruders=phase==='night'?timeline.actors:[];
+  return {phase,light,nightBase,nightNumber:Math.floor(s.elapsedMs/cycle)+1,untilNextMs:phase==='night'?cycle-phaseMs:s.dayMs-phaseMs,activeSlots,strengths,tape,bell,intruders,nightStatus:timeline,event:phase==='night'?guardEvent:null};
 }
 const finite=(x:unknown,max=1e15):x is number=>typeof x==='number'&&Number.isFinite(x)&&x>=0&&x<=max;
 function validSlots(x:unknown,owned:GuardItem[]):x is GuardSlots {
@@ -78,9 +70,12 @@ export function restoreGuard(raw:string|null,now:number,owned:string[]):GuardSta
       !Number.isInteger(s.settledNights)||s.settledNights<0||s.settledNights!==Math.floor(s.elapsedMs/(s.dayMs+s.nightMs))||
       !s.reports||s.reports.nights!==s.settledNights||!finite(s.reports.clues,1e9)||!finite(s.reports.intercepted,1e9))return createGuard(now,owned);
     if(s.activeNight!==null&&(!s.activeNight||s.activeNight.index!==s.settledNights+1||!validSlots(s.activeNight.slots,items)))return createGuard(now,owned);
-    if(s.lastReport!==null&&(!s.lastReport||s.lastReport.number!==s.settledNights||!finite(s.lastReport.clues,3)||!finite(s.lastReport.intercepted,3)||typeof s.lastReport.summary!=='string'||s.lastReport.summary.length>120))return createGuard(now,owned);
+    if(s.lastReport!==null&&(!s.lastReport||s.lastReport.number!==s.settledNights||!finite(s.lastReport.clues,4)||!finite(s.lastReport.intercepted,3)||typeof s.lastReport.summary!=='string'||s.lastReport.summary.length>120))return createGuard(now,owned);
     const strengths=Array.isArray(s.strengths)&&s.strengths.length===2&&s.strengths.every((v:unknown)=>typeof v==='number'&&Number.isInteger(v)&&v>=0&&v<=3)?s.strengths:[0,0];
     if(s.activeNight?.strengths&&!s.activeNight.strengths.every((v:unknown)=>typeof v==='number'&&Number.isInteger(v)&&v>=0&&v<=3))return createGuard(now,owned);
-    return advanceGuard({...s,owned:items,strengths},now);
+    const arrived=s.reports.arrived??0,verifiedNights=s.reports.verifiedNights??0;
+    if(!finite(arrived,1e9)||!Number.isInteger(verifiedNights)||verifiedNights<0||verifiedNights>s.reports.nights)return createGuard(now,owned);
+    if(s.lastReport?.result){const config=s.lastReport.result.configuration;if(!config||!validSlots(config.slots,items)||!Array.isArray(config.strengths)||config.strengths.length!==2||!config.strengths.every((v:unknown)=>typeof v==='number'&&Number.isInteger(v)&&v>=0&&v<=3))return createGuard(now,owned);const result=nightResult(config);s.lastReport={...s.lastReport,result,clues:result.clues,intercepted:result.intercepted,arrived:result.arrived};}
+    return advanceGuard({...s,owned:items,strengths,reports:{...s.reports,arrived,verifiedNights}},now);
   }catch{return createGuard(now,owned);}
 }
