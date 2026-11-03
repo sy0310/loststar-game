@@ -14,7 +14,7 @@ import {drawResident, loadResidentArt, type ResidentArt} from './residents';
 
 const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl};
 type Art = Record<keyof typeof urls, HTMLImageElement>;
-export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement;environment:ResidentEnvironment}
+export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement;environment:ResidentEnvironment;output:HTMLCanvasElement}
 export interface SceneCamera {scale:number;x:number;y:number;offsetX?:number;offsetY?:number}
 export interface SceneEntity {depth:number;draw:()=>void}
 export interface SceneExtension {
@@ -32,6 +32,9 @@ const load=(url:string)=>new Promise<HTMLImageElement>((resolve,reject)=>{const 
 export class ExpeditionScene {
   readonly canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
+  private outputContext: CanvasRenderingContext2D;
+  private world: HTMLCanvasElement;
+  private worldContext: CanvasRenderingContext2D;
   private art!: Art;
   private residentArt!: ResidentArt;
   private backdrop: HTMLCanvasElement;
@@ -50,7 +53,9 @@ export class ExpeditionScene {
   constructor(parent:HTMLElement,private getState:()=>SaveData,private extension?:SceneExtension) {
     this.canvas=document.createElement('canvas');this.canvas.width=832;this.canvas.height=740;
     this.canvas.setAttribute('aria-label','退件平原动态远征：咔哒绕过仓库自动探索，失物号连续前后绕轨');this.canvas.setAttribute('role','img');
-    parent.append(this.canvas);this.ctx=this.canvas.getContext('2d',{alpha:false})!;
+    parent.append(this.canvas);this.ctx=this.outputContext=this.canvas.getContext('2d',{alpha:false})!;
+    this.world=document.createElement('canvas');this.world.width=832;this.world.height=740;
+    this.worldContext=this.world.getContext('2d')!;
     this.backdrop=document.createElement('canvas');this.backdrop.width=832;this.backdrop.height=740;
     const c=this.backdrop.getContext('2d')!;
     const nebula=c.createRadialGradient(440,390,10,440,390,490);
@@ -154,17 +159,24 @@ export class ExpeditionScene {
     c.fillStyle='#ffe0a2';c.beginPath();c.moveTo(l,top);c.lineTo(r,top);c.lineTo(r-6,top+5);c.lineTo(l,top+5);c.fill();
     c.fillStyle='#f6d4b1';c.fillRect(-4,top,5,size);c.fillRect(l+2,top+9,7,6);c.fillStyle='#7f4a53';c.fillRect(l+3,top+11,4,1);c.restore();
   }
+  private positionWorld(context:CanvasRenderingContext2D){
+    context.setTransform(1,0,0,1,32,0);
+    const camera=this.extension?.camera;
+    if(camera){context.translate(camera.x+(camera.offsetX??0),camera.y+(camera.offsetY??0));context.scale(camera.scale,camera.scale);context.translate(-camera.x,-camera.y);}
+  }
   private draw(now:number){
     if(!this.ready||!this.canvas.isConnected)return;
-    const began=performance.now(),c=this.ctx,t=this.frozen??(now-this.start)/1000,s=this.getState();
+    const began=performance.now(),t=this.frozen??(now-this.start)/1000,s=this.getState();
+    let c=this.outputContext;this.ctx=c;
     const baseFraction=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12;
     const f=this.extension?.cycleFraction?.(baseFraction,t)??baseFraction,p=this.extension?.robotPose?.(robotPose(f),t)??robotPose(f);
     const environment=this.extension?.environment?.(t)??residentEnvironment(worldView(s),t);
-    const ship=shipPose(t),frame={t,robot:p,ship,globe:this.art.globe,environment};
-    c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);c.translate(32,0);
-    const camera=this.extension?.camera;if(camera){c.translate(camera.x+(camera.offsetX??0),camera.y+(camera.offsetY??0));c.scale(camera.scale,camera.scale);c.translate(-camera.x,-camera.y);}
+    const ship=shipPose(t),frame={t,robot:p,ship,globe:this.art.globe,environment,output:this.canvas};
+    c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);this.positionWorld(c);
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
     if(ship.back)this.drawShip(t,ship);
+    c=this.worldContext;this.ctx=c;
+    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,832,740);c.imageSmoothingEnabled=false;this.positionWorld(c);
     c.drawImage(this.art.globe,52,70,664,664);
     // Independent material accents attach to specific pipe/terrain points.
     this.lamp(345,634,'#e9ae70',t);this.lamp(488,610,'#94dcdb',t+.5);this.lamp(193,548,'#e9ae70',t+1);
@@ -173,6 +185,10 @@ export class ExpeditionScene {
       {depth:417,draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);c.fillStyle='#624b66';c.fillRect(270,437,38,9);c.fillStyle='#bb957c';c.fillRect(270,434,38,5);c.fillStyle='#88d9c6';c.fillRect(277,438,24,2);}},
       {depth:p.y,draw:()=>{if(!this.extension?.drawRobot||this.extension.drawRobot(c,frame,this.art.robot)===false)this.drawRobot(t,f,p);}},
       {depth:449,draw:()=>this.parcel(438,449,26)},
+      {depth:294.5,draw:()=>{
+    c.fillStyle='#694771';c.fillRect(600,206,3,52);c.fillStyle='#f9c77c';c.fillRect(599,202,5,5);c.fillStyle='#c9758b';c.beginPath();c.moveTo(603,209);c.lineTo(635,213+Math.sin(t*3)*2);c.lineTo(631,229+Math.sin(t*3)*2);c.lineTo(603,226);c.fill();
+    c.fillStyle='#ffdb9b';c.fillRect(611,214,8,6);
+      }},
     ];
     const residents:ReturnType<typeof drawResident>[]=[];
     for(const id of residentIds){
@@ -182,9 +198,9 @@ export class ExpeditionScene {
     }
     if(this.extension?.worldEntities)entities.push(...this.extension.worldEntities(c,frame));
     entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
-    c.fillStyle='#694771';c.fillRect(600,206,3,52);c.fillStyle='#f9c77c';c.fillRect(599,202,5,5);c.fillStyle='#c9758b';c.beginPath();c.moveTo(603,209);c.lineTo(635,213+Math.sin(t*3)*2);c.lineTo(631,229+Math.sin(t*3)*2);c.lineTo(603,226);c.fill();
-    c.fillStyle='#ffdb9b';c.fillRect(611,214,8,6);
     this.extension?.afterWorld(c,frame);
+    c=this.outputContext;this.ctx=c;
+    c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(this.world,0,0);c.restore();
     if(!ship.back)this.drawShip(t,ship);
     if(now<this.focusUntil){
       const progress=1-(this.focusUntil-now)/2200;

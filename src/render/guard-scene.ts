@@ -24,8 +24,8 @@ export function guardLayer(getVisual:()=>GuardVisual):SceneExtension {
     const v=getVisual(),t=frame.t;
     if(v.light>0){
       const warmth=v.phase==='dusk'?Math.sin(v.light/.65*Math.PI/2)*.17:v.phase==='night'?Math.max(0,1-v.nightBase/3)*.17:0;
-      tintWorld(c,frame.globe,'#e5b485',warmth);
-      tintWorld(c,frame.globe,'#737da9',v.light);
+      tintWorld(c,'#e5b485',warmth);
+      tintWorld(c,'#737da9',v.light);
       for(const [x,y] of [[271,330],[557,208],[345,634],[488,610]]){
         c.save();c.globalAlpha=v.light;const g=c.createRadialGradient(x+3,y+2,1,x+3,y+2,30);g.addColorStop(0,'#ffe4a666');g.addColorStop(1,'#ffe4a600');c.fillStyle=g;c.fillRect(x-28,y-28,60,60);c.fillStyle='#ffecb4';c.fillRect(x,y,7,4);c.restore();
       }

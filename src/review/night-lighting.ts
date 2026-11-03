@@ -5,7 +5,7 @@ import {tintWorld} from '../render/world-lighting';
 /** Canvas blend modes retain the source pixels and work without Canvas.filter. */
 export function lightNightWorld(context:CanvasRenderingContext2D,frame:SceneFrame,stage:NightStage,strength=1){
   if(strength<=0)return;
-  tintWorld(context,frame.globe,'#737da9',strength);
+  tintWorld(context,'#737da9',strength);
   context.save();
   context.globalAlpha=strength;
   context.globalCompositeOperation='screen';

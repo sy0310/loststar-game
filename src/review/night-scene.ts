@@ -165,7 +165,7 @@ export function createNightStudy(timelineAt=(time:number)=>reviewEnvironment(tim
         registrationMarks(context,stage);
         searchlight(context,frame,stage);
       }
-      const canvas=context.canvas as HTMLCanvasElement;
+      const canvas=frame.output;
       canvas.dataset.studyPhase=stage.phase;
       canvas.dataset.studySeconds=stage.seconds.toFixed(2);
       canvas.dataset.robotX=stage.robot.x.toFixed(2);canvas.dataset.robotY=stage.robot.y.toFixed(2);
