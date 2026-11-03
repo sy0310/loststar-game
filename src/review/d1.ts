@@ -8,10 +8,10 @@ import {createNightStudy} from './night-scene';
 type Study='night'|'receipt';
 const tierNames=['基础玻璃罩','黄铜灯座','邮政微景观','典藏封存舱'];
 const tierNotes=[
-  '免费玻璃罩与原台面 · 纸卷保留原尺寸、低频摆动。',
-  '加厚黄铜台座、独立金属铭牌 · 暖灯随结构安装点亮。',
-  '柜内邮政微景观、票据机械臂 · 票据沿专属装置循环。',
-  '高耸典藏舱、展开外框与环绕机构 · 专属扫描标记持续运行。',
+  '旧纸卷的纤维、磨边与退货印记，随轻微卷曲浮现。',
+  '暖灯照进纸面，折痕、压印与卷边呈现更深的层次。',
+  '邮政微景观衬托纸面暗纹，票据机械与墨迹缓缓呼应。',
+  '典藏舱里的邮路暗纹渐渐显影，纸卷带着灯光轻轻回弹。',
 ];
 
 /** Review-only entry: no persistence/preferences imports, no simulation/reward calls. */
@@ -34,7 +34,7 @@ export function mountD1(initial:Study='night'){
       <div class="d1-receipt-frame"><canvas id="receipt-focus" width="660" height="930" role="img" aria-label="原收藏室中收据展柜的分层结构近景"></canvas><span class="d1-receipt-stamp">COLLECTION<br>LR–01 / RECEIPT</span></div>
       <div class="d1-tier-buttons" role="group" aria-label="选择展柜样板等级">${tierNames.map((label,i)=>`<button data-tier="${i}" aria-pressed="${i===0}"><small>Lv${i}</small>${label}</button>`).join('')}</div>
       <div id="receipt-status" class="d1-receipt-status" role="status"><strong>Lv0 · 基础玻璃罩</strong><p>${tierNotes[0]}</p></div>
-      <div class="d1-receipt-controls"><button id="receipt-install">▶ 播放 0→3 安装</button><button id="receipt-view" aria-pressed="false">切至房间视角</button></div>
+      <div class="d1-receipt-controls"><button id="receipt-install">▶ 安装演示</button><button id="receipt-view" aria-pressed="false">房间视角</button><button id="receipt-specimen-view" aria-pressed="false">观察收据</button></div>
       <p class="d1-note">原台面坐标、收据中心与尺寸四档一致。基础陈列免费；此页不购买升级。</p>
     </section>
     <footer class="d1-footer" aria-label="切换动态样板"><button data-study="night" aria-pressed="true"><span>01</span> 球面夜巡</button><button data-study="receipt" aria-pressed="false"><span>02</span> 收据展柜</button></footer>
@@ -49,7 +49,7 @@ export function mountD1(initial:Study='night'){
   scene.canvas.setAttribute('aria-label','D1完整退货箱星：纸影出现，咔哒沿原邮路核验、收容并送回原仓库；飞船前后绕轨');
   let museum:MuseumScene|undefined;
   const receiptCanvas=q<HTMLCanvasElement>('#receipt-focus');
-  let study=initial,started=false,museumReady=false,level=0,view:'focus'|'room'='focus',installing=false,installStart=0,receiptTime=0,last=0;
+  let study=initial,started=false,museumReady=false,level=0,view:'focus'|'room'|'specimen'='focus',installing=false,installStart=0,receiptTime=0,last=0;
   let lastPhase='',lastTier=-1;
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
   const startedAt=performance.now();
@@ -71,9 +71,17 @@ export function mountD1(initial:Study='night'){
   }
   q('#d1-replay').addEventListener('click',()=>{scene.restart();started=true;lastPhase='';});
   for(const button of root.querySelectorAll<HTMLButtonElement>('[data-study]'))button.addEventListener('click',()=>selectStudy(button.dataset.study as Study));
-  for(const button of root.querySelectorAll<HTMLButtonElement>('button[data-tier]'))button.addEventListener('click',()=>{installing=false;level=Number(button.dataset.tier);q('#receipt-install').textContent='▶ 播放 0→3 安装';q('#receipt-install').dataset.playing='false';tierUI();});
-  q('#receipt-install').addEventListener('click',()=>{installing=true;installStart=performance.now();level=0;q('#receipt-install').dataset.playing='true';q('#receipt-install').textContent='↻ 重新播放安装';tierUI();});
-  q('#receipt-view').addEventListener('click',()=>{view=view==='focus'?'room':'focus';q('#receipt-view').setAttribute('aria-pressed',String(view==='room'));q('#receipt-view').textContent=view==='focus'?'切至房间视角':'返回展柜近景';});
+  for(const button of root.querySelectorAll<HTMLButtonElement>('button[data-tier]'))button.addEventListener('click',()=>{installing=false;level=Number(button.dataset.tier);q('#receipt-install').textContent='▶ 安装演示';q('#receipt-install').dataset.playing='false';tierUI();});
+  q('#receipt-install').addEventListener('click',()=>{installing=true;installStart=performance.now();level=0;q('#receipt-install').dataset.playing='true';q('#receipt-install').textContent='↻ 重播安装';tierUI();});
+  function setReceiptView(next: 'focus' | 'room' | 'specimen') {
+    view = next;
+    q('#receipt-view').setAttribute('aria-pressed', String(view === 'room'));
+    q('#receipt-view').textContent = view === 'room' ? '返回展柜' : '房间视角';
+    q('#receipt-specimen-view').setAttribute('aria-pressed', String(view === 'specimen'));
+    q('#receipt-specimen-view').textContent = view === 'specimen' ? '返回展柜' : '观察收据';
+  }
+  q('#receipt-view').addEventListener('click', () => setReceiptView(view === 'room' ? 'focus' : 'room'));
+  q('#receipt-specimen-view').addEventListener('click', () => setReceiptView(view === 'specimen' ? 'focus' : 'specimen'));
   selectStudy(initial);
   function frame(now:number){
     if(scene.ready&&!started){scene.restart();started=true;}
@@ -85,7 +93,7 @@ export function mountD1(initial:Study='night'){
       q('.d1-timeline span').style.width=`${Math.min(1,seconds/30)*100}%`;
       receiptTime=(now-startedAt)/1000;
       let install=1;
-      if(installing){const stage=receiptStage((now-installStart)/1000);level=stage.level;install=stage.install;if(stage.done){installing=false;q('#receipt-install').dataset.playing='false';q('#receipt-install').textContent='↻ 重看 0→3 安装';}}
+      if(installing){const stage=receiptStage((now-installStart)/1000);level=stage.level;install=stage.install;if(stage.done){installing=false;q('#receipt-install').dataset.playing='false';q('#receipt-install').textContent='↻ 重播安装';}}
       if(lastTier!==level)tierUI();
       if(museumReady&&study==='receipt')museum?.renderFocused(receiptCanvas,'receipt',level,receiptTime,install,view);
     }
