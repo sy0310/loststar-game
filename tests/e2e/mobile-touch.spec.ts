@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {newGame,advance,tuning} from '../../src/game/engine';
 const KEY='loststar.save.v1';
 async function seeded(page:import('@playwright/test').Page,path='/?start=base&review=1'){
-  const s=advance(newGame(1800000000000),1800000745000);s.lastAt=Date.now();s.seenDiscoveries=[...s.collection];
+  const s=advance(newGame(1800000000000),1800001000000);s.lastAt=Date.now();s.seenDiscoveries=[...s.collection];
   await page.addInitScript(({key,state})=>{if(!localStorage.getItem(key)){state.lastAt=Date.now();localStorage.setItem(key,JSON.stringify(state));}},{key:KEY,state:s});
   await page.goto(path);
 }
@@ -56,19 +56,19 @@ test('夜间实验独立入口、默认关闭，装备/离线/刷新不写正式
   expect(await page.evaluate(k=>localStorage.getItem(k),KEY)).toBe(formal);await page.reload();
   const restored=await page.evaluate(()=>JSON.parse(localStorage.getItem('loststar.prototype.guard.v1')!));expect(restored.reports).toEqual(lab.reports);expect(await page.evaluate(k=>localStorage.getItem(k),KEY)).toBe(formal);
 });
-test('正常入口不载入实验、不创建守护存档',async({page})=>{
+test('正常入口只使用主游戏世界，不载入实验页面或实验存档',async({page})=>{
   await page.goto('/?start=base');await expect(page.locator('.base-scene')).toHaveAttribute('data-background-state','ready');expect(await page.evaluate(()=>localStorage.getItem('loststar.prototype.guard.v1'))).toBeNull();
   await expect(page.getByRole('button',{name:'开启夜间实验',exact:true})).toHaveCount(0);
-  expect(await page.evaluate(()=>performance.getEntriesByType('resource').map(e=>e.name).some(name=>name.includes('/prototype/')))).toBe(false);
+  expect(await page.evaluate(()=>performance.getEntriesByType('resource').map(e=>e.name).some(name=>name.includes('/prototype/main')))).toBe(false);
 });
 
-test('触控：从真实玻璃容器打开六件藏品并就地试验，生态区和夜守入口可返回',async({page})=>{
+test('触控：从真实玻璃容器打开六件藏品并就地试验，生态区和原远征可返回',async({page})=>{
  await seeded(page);await tap(page,page.getByRole('button',{name:'进入失物收藏室',exact:true}));await expect(page.locator('#exhibition #museum-canvas')).toHaveAttribute('data-ready','true');
  for(const id of ['receipt','tape','nested','stamp','cosmic-parcel','bell']){
   await tap(page,page.locator(`#exhibition [data-exhibit="${id}"]`));await tap(page,page.locator(`[data-interact="${id}"]`));await expect(page.locator('#interaction-feedback')).toBeInViewport();await expect(page.locator('#interaction-feedback')).toHaveAttribute('data-last-input','touch');await tap(page,page.getByRole('button',{name:'关闭详情'}));
  }
  await tap(page,page.locator('[data-habitat="tagbird"]'));await tap(page,page.locator('[data-interact="tagbird"]'));await expect(page.locator('#interaction-feedback')).toBeInViewport();await tap(page,page.getByRole('button',{name:'关闭详情'}));
- await tap(page,page.locator('#exhibition [data-go="base"]'));await tap(page,page.getByRole('link',{name:/夜间守护试玩/}));await expect(page.locator('#guard-phase')).toHaveAttribute('data-phase','day');await tap(page,page.getByRole('link',{name:'返回收件站'}));await expect(page.locator('#base')).toBeVisible();
+ await tap(page,page.locator('#exhibition [data-go="base"]'));await tap(page,page.getByRole('button',{name:'远征',exact:true}));await expect(page.locator('#world-phase')).toHaveAttribute('data-period','day');await expect(page.locator('a[href*=night-lab]')).toHaveCount(0);
 });
 
 test('夜守同源：空槽/单槽/双槽真实结果不同，晨间逐个记录抵达与提前拦退',async({page})=>{
@@ -87,4 +87,15 @@ test('成长付款后展示真实近景前后对照，切换不再扣款，守�
  const before=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).resources,KEY);await tap(page,page.locator('[data-growth-buy="case-0"]'));const receipt=page.locator('#growth-receipt');await expect(receipt).toBeInViewport();await expect(receipt).toContainText('160');await expect(receipt.locator('canvas')).toHaveAttribute('data-ready','true');
  await tap(page,receipt.getByRole('button',{name:'升级前',exact:true}));const old=await receipt.locator('canvas').screenshot();await tap(page,receipt.getByRole('button',{name:'升级后',exact:true}));expect(await receipt.locator('canvas').screenshot()).not.toEqual(old);expect(await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).resources,KEY)).toBe(before-160);
  await tap(page,page.locator('[data-growth-filter="守护"]'));await expect(page.locator('[data-growth="guard-0"]')).toContainText('44%');await expect(page.locator('[data-growth="guard-0"]')).toContainText('50%');await expect(page.locator('[data-growth="guard-0"]')).toContainText('1.3');
+});
+
+test('主远征触控与模拟后台恢复：双槽持久化、夜结算同源、切页恢复作业，多标签不重复归航',async({page,context})=>{
+ const T=Date.parse('2026-11-03T10:00:10Z');await page.clock.install({time:new Date(T-10000)});await page.clock.pauseAt(new Date(T));await seeded(page);await page.locator('#museum-canvas[data-ready=true]').waitFor();
+ const frames=Number(await page.locator('#museum-canvas').getAttribute('data-frame'));
+ // Simulate the WebView visibility event; this is not physical lock-screen certification.
+ await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});Object.defineProperty(document,'visibilityState',{configurable:true,get:()=> 'hidden'});document.dispatchEvent(new Event('visibilitychange'));});await page.clock.fastForward(300100);await page.clock.runFor(100);expect(Number(await page.locator('#museum-canvas').getAttribute('data-frame'))).toBe(frames);
+ await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});Object.defineProperty(document,'visibilityState',{configurable:true,get:()=> 'visible'});document.dispatchEvent(new Event('visibilitychange'));});await page.clock.runFor(150);await expect.poll(async()=>Number(await page.locator('#museum-canvas').getAttribute('data-frame'))).toBeGreaterThan(frames);
+ await expect(page.locator('dialog')).toBeVisible();await tap(page,page.getByRole('button',{name:'收下这次远行'}));await tap(page,page.getByRole('button',{name:'远征',exact:true}));await tap(page,page.locator('#world-controls summary'));await page.locator('#world-slot-0').selectOption('tape');await page.locator('#world-slot-1').selectOption('bell');
+ await expect.poll(()=>page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).world.slots,KEY)).toEqual(['tape','bell']);const saved=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!),KEY);expect(saved.world.reports.nights).toBe(1);await page.reload();await tap(page,page.getByRole('button',{name:'远征',exact:true}));await tap(page,page.locator('#world-controls summary'));await expect(page.locator('#world-slot-0')).toHaveValue('tape');await expect(page.locator('#world-slot-1')).toHaveValue('bell');
+ const second=await context.newPage();await second.clock.install({time:new Date(T+300350)});await second.clock.pauseAt(new Date(T+300350));await second.goto('/?start=expedition&review=1');const s=await second.evaluate(k=>JSON.parse(localStorage.getItem(k)!),KEY);expect(s.pendingReturn).toBeNull();expect(s.world.reports.nights).toBe(1);expect(s.world.slots).toEqual(['tape','bell']);expect(await second.locator('a[href*=night-lab]').count()).toBe(0);await second.close();
 });
