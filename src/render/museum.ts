@@ -1,0 +1,77 @@
+import roomUrl from '../../assets/runtime/museum-room-v02.webp';
+import {textures} from '../ui/art';
+import {discoveryById} from '../content/catalog';
+import type {ArtId} from '../content/types';
+const layers=import.meta.glob('../../assets/runtime/case-*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
+export const exhibitIds=['receipt','tape','nested','stamp','cosmic-parcel','bell'] as const;
+export const residentIds=['mouse','hermit','tagbird'] as const;
+export const exhibits=exhibitIds.map((id,i)=>({id,x:[.23,.50,.79,.20,.50,.81][i],y:i<3?.555:.708,w:i<3?206:228}));
+export type MuseumSource={collection:string[]};
+function image(url:string){const img=new Image();img.src=url;return img;}
+function sprite(c:CanvasRenderingContext2D,img:HTMLImageElement|undefined,x:number,y:number,w:number,h=w){if(img?.complete&&img.naturalWidth)c.drawImage(img,Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
+/** Actual rear glass → moving specimen → front glass → independent nameplate. */
+export class MuseumScene {
+ readonly canvas=document.createElement('canvas');
+ private c:CanvasRenderingContext2D|null;private active=false;private last=0;private frames=0;
+ private room=image(roomUrl);private art=Object.fromEntries(exhibitIds.map(id=>[id,image(textures[id])]));
+ private glass=Object.fromEntries(exhibitIds.map(id=>[id,[image(layers[`../../assets/runtime/case-${id}-back.webp`]),image(layers[`../../assets/runtime/case-${id}-front.webp`])]]));
+ constructor(private root:HTMLElement,private source:()=>MuseumSource,private level:(id:string)=>number=()=>0){
+  root.classList.add('museum-room');this.canvas.id='museum-canvas';this.canvas.width=768;this.canvas.height=960;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','失物收藏室：六个独立玻璃容器，藏品在玻璃内轻轻活动');root.append(this.canvas);this.c=this.canvas.getContext('2d');
+  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(({id,x,y,w})=>`<button data-exhibit="${id}" data-detail="${id}" style="left:${(x-w/768/2)*100}%;top:${(y-w/960)*100}%;width:${w/768*100}%;height:${w/960*100}%"></button>`).join('');root.append(hits);void this.load();requestAnimationFrame(this.loop);
+ }
+ async load(){try{await Promise.all([this.room,...Object.values(this.art),...Object.values(this.glass).flat()].map(i=>i.decode()));this.canvas.dataset.ready='true';this.draw(performance.now()/1000);this.refresh();}catch{this.canvas.dataset.ready='error';this.root.setAttribute('aria-label','收藏室暂未接通，请返回后重试');}}
+ refresh(){for(const id of exhibitIds){const b=this.root.querySelector<HTMLButtonElement>(`[data-exhibit="${id}"]`)!;const known=this.source().collection.includes(id);b.disabled=!known;b.setAttribute('aria-label',known?`放大${discoveryById(id)!.name}`:'空展柜，等待下一次发现');}}
+ setActive(value:boolean){this.active=value;this.refresh();if(value)this.draw(performance.now()/1000);}
+ private loop=(ms:number)=>{if(this.active&&!document.hidden&&ms-this.last>=(matchMedia('(prefers-reduced-motion: reduce)').matches?100:50)){this.last=ms;this.draw(ms/1000);}requestAnimationFrame(this.loop);};
+ private draw(t:number){const c=this.c;if(!c||!this.room.complete||!this.room.naturalWidth)return;c.clearRect(0,0,768,960);c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
+  // Tiny free-floating dust and lamplight are part of the room, never the whole background moving.
+  for(let i=0;i<16;i++){const x=(i*127+Math.sin(t*.18+i)*10)%740+14,y=110+(i*61+t*3)%620;c.fillStyle=`rgba(255,218,148,${.15+.15*Math.sin(t+i)})`;c.fillRect(Math.round(x),Math.round(y),2,2);}
+  for(const e of exhibits)this.case(c,e,t);
+  const lights=this.level('light');if(lights){c.fillStyle=`rgba(255,207,124,${.035*lights})`;c.fillRect(0,0,768,960);}
+  if(this.level('deco-0')){c.fillStyle='#ffe9ae';for(let i=0;i<12;i++)c.fillRect(34+i*62,163+(i%2)*7,4,4);}
+  if(this.level('deco-1')){c.fillStyle='#7dbd9b';for(let i=0;i<9;i++)c.fillRect(25+i*4,710-Math.sin(i)*18,5,8);}
+  if(this.level('deco-2')){c.fillStyle='#cf9beb';c.fillRect(580,236,56,27);c.fillStyle='#fff0c9';c.font='16px monospace';c.fillText('LR–01',584,255);}
+  if(this.level('deco-3')){c.strokeStyle='#ffdc8b';c.lineWidth=2;for(let i=0;i<5;i++){c.beginPath();c.arc(55,285,22+i*9,t*.1,t*.1+Math.PI*1.5);c.stroke();}}
+  this.canvas.dataset.frame=String(++this.frames);
+ }
+ private case(c:CanvasRenderingContext2D,e:typeof exhibits[number],t:number){
+  const x=e.x*768,y=e.y*960,w=e.w,known=this.source().collection.includes(e.id),level=this.level(`case-${exhibitIds.indexOf(e.id)}`),[back,front]=this.glass[e.id];
+  c.save();c.translate(x,y);c.fillStyle='#120d2880';c.beginPath();c.ellipse(0,-3,w*.30,10,0,0,Math.PI*2);c.fill();sprite(c,back,-w/2,-w,w,w);
+  if(level){c.strokeStyle=['','#ffe0a0','#9ce9e1','#e6b2ff'][level];c.lineWidth=level===3?3:2;c.beginPath();c.ellipse(0,-w*.13,w*.27,9,0,0,Math.PI*2);c.stroke();}
+  c.save();c.beginPath();c.rect(-w*.32,-w*.82,w*.64,w*.65);c.clip();
+  if(known){
+   const phase=t+exhibitIds.indexOf(e.id),bob=Math.sin(phase*1.4)*2,iw=e.id==='cosmic-parcel'?w*.39:e.id==='stamp'?w*.35:w*.45;
+   c.save();c.translate(0,-w*.49+bob);
+   switch(e.id){
+    case 'receipt':c.rotate(Math.sin(t*.8)*.035);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.fillStyle='#ffeab9';for(let i=0;i<3;i++)c.fillRect(-12+i*10,iw*.25+(t*6+i*7)%16,3,2);break;
+    case 'tape':c.rotate(Math.sin(t)*.04);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle='#f5cc7a';c.lineWidth=3;c.beginPath();c.moveTo(10,iw*.24);c.lineTo(15+Math.sin(t*1.4)*5,iw*.38);c.lineTo(28,iw*.4);c.stroke();break;
+    case 'nested':sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle='#dfb5fb';c.strokeRect(-9,-iw*.36-Math.sin(t*1.3)**2*10,18,13);break;
+    case 'stamp':c.translate(0,-Math.max(0,Math.sin(t*1.8))*5);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.fillStyle='#b982da88';c.fillRect(-14,iw*.38,28,3);break;
+    case 'cosmic-parcel':c.rotate(Math.sin(t*.7)*.02);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle='#b1d9fd';c.beginPath();c.ellipse(0,0,iw*.54,iw*.19,Math.sin(t*.6)*.4,0,Math.PI*2);c.stroke();break;
+    case 'bell':c.rotate(Math.sin(t*1.5)*.07);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.strokeStyle=`rgba(255,224,153,${1-t%2/2})`;c.beginPath();c.ellipse(0,iw*.25,10+t%2*15,3+t%2*4,0,0,Math.PI*2);c.stroke();break;
+   }
+   c.restore();
+   if(level>=2){for(let i=0;i<4;i++){c.fillStyle='#fff3b0';c.fillRect(Math.sin(t*.5+i)*w*.21,-w*.35+Math.cos(t*.7+i)*w*.17,2,2);}}
+  }
+  c.restore();c.save();c.globalAlpha=.9;sprite(c,front,-w/2,-w,w,w);c.restore();
+  // Nameplates are separate runtime geometry/text; always in front of glass.
+  const plaqueW=w*.77;c.fillStyle='#2b2036';c.fillRect(-plaqueW/2,6,plaqueW,33);c.strokeStyle=level?'#e8c184':'#a98054';c.lineWidth=2;c.strokeRect(-plaqueW/2,6,plaqueW,33);c.fillStyle=known?'#ffe9bf':'#b9a9c7';c.font='14px monospace';c.textAlign='center';c.fillText(known?discoveryById(e.id)!.name:'等待一份好奇心',0,27,plaqueW-8);
+  if(level===3){c.fillStyle='#ffe8a1';c.fillRect(-4,42,8,3);}c.restore();
+ }
+}
+/** Three habitats have independent miniature terrain, idle poses and glass foreground. */
+export class HabitatScene {
+ readonly canvas=document.createElement('canvas');private c:CanvasRenderingContext2D|null;private art:HTMLImageElement;private active=false;private last=0;
+ constructor(root:HTMLElement,private id:typeof residentIds[number],private known:()=>boolean,private level:()=>number=()=>0){this.canvas.width=600;this.canvas.height=220;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','居民生态观察区');root.append(this.canvas);this.c=this.canvas.getContext('2d');this.art=image(textures[id as ArtId]);requestAnimationFrame(this.loop);}
+ setActive(v:boolean){this.active=v;}
+ private loop=(ms:number)=>{if(this.active&&!document.hidden&&ms-this.last>=80){this.last=ms;this.draw(ms/1000);}requestAnimationFrame(this.loop);};
+ private draw(t:number){const c=this.c;if(!c)return;const known=this.known(),level=this.level();c.imageSmoothingEnabled=false;c.fillStyle=this.id==='mouse'?'#32243c':this.id==='hermit'?'#28373e':'#2c2947';c.fillRect(0,0,600,220);
+  c.strokeStyle='#725467';c.lineWidth=2;for(let x=30;x<600;x+=60){c.beginPath();c.moveTo(x,0);c.lineTo(x-25,190);c.stroke();}c.fillStyle='#5c4350';c.fillRect(0,182,600,38);c.fillStyle='#b68357';for(let i=0;i<14;i++){c.fillRect(i*47,179+(i%3)*8,35,7);c.fillStyle=i%2?'#b68357':'#d6a16b';}
+  if(this.id==='mouse'){for(let i=0;i<4;i++){c.fillStyle='#745247';c.fillRect(50+i*125,141,59,38);c.fillStyle='#c49a68';c.fillRect(52+i*125,138,55,5);}c.fillStyle='#e4c192';for(let i=0;i<8;i++)c.fillRect(40+i*71,174-(i%3)*8,9,3);}
+  if(this.id==='hermit'){c.fillStyle='#43634d';for(let i=0;i<25;i++)c.fillRect(i*25,169-(i%4)*5,4,18);c.fillStyle='#987259';c.fillRect(60,123,70,53);c.fillStyle='#c99c6c';c.fillRect(55,118,80,9);}
+  if(this.id==='tagbird'){c.strokeStyle='#ac8274';c.lineWidth=7;c.beginPath();c.moveTo(50,167);c.lineTo(550,129);c.stroke();for(let i=0;i<6;i++){c.fillStyle='#dbc6ac';c.fillRect(70+i*85,110+i%2*16,13,23);}}
+  if(known){const x=this.id==='mouse'?280+Math.sin(t*.5)*85:this.id==='hermit'?315+Math.sin(t*.25)*25:340,y=this.id==='tagbird'?124+Math.sin(t*2)*2:175;const w=this.id==='mouse'?122:this.id==='hermit'?132:103;c.save();c.translate(x,y);c.scale(this.id==='mouse'&&Math.cos(t*.5)<0?-1:1,1);c.rotate(Math.sin(t*(this.id==='tagbird'?2:1))*.022);sprite(c,this.art,-w/2,-w,w);c.restore();if(this.id==='mouse'){c.fillStyle='#f1d9b0';c.fillRect(x+35,167,12,3);}}
+  if(level){c.fillStyle='#f9dda455';c.fillRect(0,0,600,8);c.fillStyle='#9ed9ca';for(let i=0;i<level*3;i++)c.fillRect(490+i*10,164-i%3*9,6,11);}
+  c.fillStyle='#bce4ed12';c.fillRect(0,0,600,220);c.fillStyle='#e3edfc70';c.fillRect(14,20,3,140);c.fillRect(21,20,4,35);c.fillRect(577,37,3,91);c.strokeStyle='#ae8e65';c.lineWidth=5;c.strokeRect(3,3,594,214);this.canvas.dataset.frame=String(Math.floor(t*12));
+ }
+}
