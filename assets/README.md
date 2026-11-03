@@ -47,3 +47,11 @@
 ## V0.3 安保/损伤/维修样板
 
 没有重画另一颗球体或拿参考拼版投产。警戒灯复用本项目原创 `equipment-radar.webp`，隔离设施复用 `sorter.webp` 的机壳/底座，并以独立Canvas闸栏、警戒引导光、状态短签实现工作层。咔哒、飞船和纸影仍用原透明图集；损伤裂纹、撞击碎屑、护板补片和焊接火花是 `src/render/guard-scene.ts` 的程序层，由同源实际事件/维修记录驱动。没有新增第三方素材、战斗页面或黑底整图替换；现有源PNG/完整提示词保留。
+
+## V0.3.1 D1收据柜候选与球面动作审核
+
+[D1源目录与批判记录](src/generated/d1/README.md)保留三个透明构件的原始PNG、完整提示词和返修失败版本。内置image_gen由美术子智能体调用，主线程独立审核。只对收据柜制作Lv1厚灯座、Lv2分拣格/独立票据机械、Lv3宽内窗典藏框，不将收据烘焙进柜体，不从参考拼版剪图。
+
+`node scripts/export_d1_assets.mjs --audit`按实测alpha/foot/cavity/parts做等比例最近邻裁片及lossless WebP，三个纹理共436314B；[注册数据](runtime/d1/registration.json)记录精确坐标和源哈希。原始source均保留，没有手工Aseprite工程。运行时玻璃后壁、独立收据、前高光、机械/灯光/分件安装由同一MuseumScene负责。
+
+新资源仅在D1内部审核构建加载；普通收藏室默认外观和存档不被替换。夜间动作复用原完整球体、仓库、机器人、飞船、纸影图集，不声称已画完新三物种。静态alpha/台面审计在源目录，真正运行截图和连续视频在[artifacts/d1](../artifacts/d1/index.html)，仍需用户手机视觉审核。
