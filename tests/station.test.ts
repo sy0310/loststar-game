@@ -53,3 +53,6 @@ it('两个旧标签用相同损伤版本提交维修，只从真实存档扣一�
 it('存储写入失败不会在一次事务内重试维修，恢复写入也不累计重复扣款',()=>{
  const s=newGame(T);s.resources=50;s.station.integrity=94;s.station.autoRepair=false;let raw=JSON.stringify(s),fail=true,calls=0;const storage={getItem:()=>raw,setItem:(_k:string,v:string)=>{if(fail)throw Error('quota');raw=v;}};const fn=(x:typeof s)=>{calls++;return repairStation(x,94);};const a=commitSave(storage,s,fn,T);expect(calls).toBe(1);expect(a.persisted).toBe(false);expect(a.state.resources).toBe(32);fail=false;const b=commitSave(storage,a.state,fn,T);expect(b.state.resources).toBe(32);expect(b.state.station.repairSpent).toBe(18);expect(b.persisted).toBe(true);
 });
+it('科研观察与参考奇物身份一致，收据不能写成道歉胶带',()=>{
+ let s=newGame(T);s.collection=['receipt'];s.seenDiscoveries=['receipt'];s.resources=5000;s=startPlan(s,'study','artifact',null);s=advance(s,T+900000);expect(s.research.notes[0].source).toBe('receipt');expect(s.research.notes[0].text).not.toContain('道歉');
+});
