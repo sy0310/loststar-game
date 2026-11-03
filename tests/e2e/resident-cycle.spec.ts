@@ -76,3 +76,24 @@ test('普通远征的动物跟随持久世界时钟跨夜并在刷新后保持�
   const after = await page.evaluate(() => JSON.parse(localStorage.getItem('loststar.save.v1')!).collection);
   expect(after).toEqual(before);
 });
+
+test('夜栖鸟超出球体边缘的羽毛也受夜色照明', async ({page}) => {
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 1000));
+  await page.goto('/?sample=night-d1');
+  const canvas = page.locator('#d1-scene canvas');
+  await expect(canvas).toHaveAttribute('data-ready', 'true');
+  await page.clock.fastForward(10000);
+  await page.clock.runFor(100);
+  await expect(canvas).toHaveAttribute('data-ship', 'back');
+  const brightFeathers = await canvas.evaluate(element => {
+    // Registered 601/203 perch, projected through the fixed D1 camera.
+    const pixels = (element as HTMLCanvasElement).getContext('2d')!.getImageData(620, 125, 47, 47).data;
+    let bright = 0;
+    for (let index = 0; index < pixels.length; index += 4) {
+      if (pixels[index] > 210 && pixels[index + 1] > 180 && pixels[index + 2] > 100) bright++;
+    }
+    return bright / (pixels.length / 4);
+  });
+  expect(brightFeathers).toBeLessThan(.05);
+});
