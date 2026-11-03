@@ -1,5 +1,5 @@
 import {it,expect} from 'vitest';
-import {receiptAssembly,receiptFocusCamera,receiptVaultWindow} from '../src/render/receipt-study';
+import {receiptAssembly,receiptFloorGeometry,receiptFocusCamera,receiptVaultWindow} from '../src/render/receipt-study';
 import {exhibits,itemCenter} from '../src/render/museum-layout';
 it('收据安装真的移动结构件，灯光等结构归位后点亮，物品不跟着换级漂移',()=>{
  for(const level of [1,2,3]){
@@ -22,4 +22,15 @@ it('预览镜头不随等级重新缩放；越界安装时间安全钳制且减�
  expect(receiptFocusCamera).toEqual({left:65,top:290,width:220,height:310});
  expect(receiptAssembly(3,-1)).toEqual(receiptAssembly(3,0));expect(receiptAssembly(3,12)).toEqual(receiptAssembly(3,1));
  for(let p=0;p<=1;p+=.01){const a=receiptAssembly(3,p);expect(Number.isFinite(a.baseOffsetY+a.shellSplit+a.crownOffsetY+a.lamp)).toBe(true);}
+});
+it('投影采用实际内底接收面并位于前金属唇之后，不落入旧item裁剪区或整座外廓',()=>{
+ const e=exhibits[0];
+ for(const level of [0,1,2,3]){
+  const floor=receiptFloorGeometry(e,level),cy=floor.y+floor.height/2;
+  expect(floor.width).toBeLessThan(84);expect(floor.width).toBeGreaterThan(70);
+  expect(cy).toBeGreaterThan(493);expect(cy).toBeLessThan(507);
+  expect(floor.frontY).toBeGreaterThan(cy);expect(floor.frontY).toBeLessThan(514);
+ }
+ expect(receiptFloorGeometry(e,0).hasBakedFloorFill).toBe(true);
+ expect(receiptFloorGeometry(e,3).hasBakedFloorFill).toBe(false);
 });
