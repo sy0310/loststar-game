@@ -1,5 +1,7 @@
 # V0.2 首星收藏、星图、夜守与成长交付
 
+后续复审已完成V0.2.1同源夜守修订，最新自测为424300 / e9c5ce6，见 [当前复审交付](18_PR2_NIGHT_MODEL_REVIEW.md)。本页保留0.2.0基线实录与数据。
+
 基于 [PR #2 V0.2 Review](https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5747236403)。工作分支 `codex/v0.1-vertical-slice`，维持 Draft；未合并、未正式发布，也未量产后续星球。
 
 运行源码/录像/自测包：`eee74ae685d683be79aad2630a519827f5983f39`，版本0.2.0。随后提交的文档与媒体不改变此包的游戏源码。TapTap 开发自测 **424044**，H5 package150915，包体 **2,636,121字节**，SHA256 `1e9bbaec66b58591fe8423cbed51bfae3d18691803f2ae482ff14196660e0d59`。后台列表已复核，未绑定主包、未提审、未发布。自测二维码保留在本机 `releases/taptap/self-test-424044-v02.png`，不放入公开仓库。
