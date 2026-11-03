@@ -1,0 +1,54 @@
+import {test,expect} from '@playwright/test';
+import sharp from 'sharp';
+
+async function seedReadOnly(page:import('@playwright/test').Page){
+ await page.addInitScript(()=>{
+  // Deliberately malformed sentinel: a D1 renderer must never parse the real save.
+  localStorage.setItem('loststar.save.v1','existing-player-save-do-not-read-or-replace');
+  localStorage.setItem('loststar.preferences.v1','keep-existing-preferences');
+  (window as any).__d1StorageCalls=[];
+  for(const key of ['getItem','setItem','removeItem','clear'] as const){
+   const original=Storage.prototype[key];
+   (Storage.prototype as any)[key]=function(...args:any[]){(window as any).__d1StorageCalls.push([key,...args]);return (original as any).apply(this,args);};
+  }
+ });
+}
+async function diff(a:Buffer,b:Buffer){
+ const aa=await sharp(a).removeAlpha().raw().toBuffer(),bb=await sharp(b).removeAlpha().raw().toBuffer();
+ expect(aa.length).toBe(bb.length);let changed=0;for(let i=0;i<aa.length;i+=3)if(Math.max(Math.abs(aa[i]-bb[i]),Math.abs(aa[i+1]-bb[i+1]),Math.abs(aa[i+2]-bb[i+2]))>20)changed++;return changed/(aa.length/3);
+}
+test('D1只读两样板同H5切换，重播/四档/刷新完全不接触正式存档与偏好',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await seedReadOnly(page);
+ await page.goto('/?sample=night-d1');await expect(page.locator('#d1-app')).toContainText('只读');
+ await expect(page.locator('#d1-scene canvas')).toHaveAttribute('data-ready','true');
+ await page.locator('[data-study=receipt]').click();await expect(page.locator('#receipt-focus')).toHaveAttribute('data-ready','true');
+ for(const level of [0,1,2,3]){await page.locator(`[data-tier="${level}"]`).click();await expect(page.locator(`[data-tier="${level}"]`)).toHaveAttribute('aria-pressed','true');}
+ await page.locator('#receipt-install').click();await page.waitForTimeout(150);await page.locator('[data-study=night]').click();await page.locator('#d1-replay').click();
+ expect(await page.evaluate(()=>(window as any).__d1StorageCalls)).toEqual([]);
+ await page.reload();await expect(page.locator('#d1-scene canvas')).toHaveAttribute('data-ready','true');expect(await page.evaluate(()=>(window as any).__d1StorageCalls)).toEqual([]);expect(errors).toEqual([]);
+});
+test('D1减弱动态仍连续跨球面追踪核验收容返站，三十秒后完成，镜头不溢出',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+1000));await page.goto('/?sample=night-d1');
+ const canvas=page.locator('#d1-scene canvas');await expect(canvas).toHaveAttribute('data-ready','true');await page.locator('#d1-replay').click();await page.clock.runFor(150);
+ const frames:Buffer[]=[],xs:number[]=[];
+ for(const [delta,phase]of [[0,'signal'],[7200,'travel'],[4200,'identify'],[5000,'contain'],[5000,'escort'],[5500,'dock'],[3300,'done']] as const){
+  await page.clock.runFor(delta);await expect(page.locator('#d1-status')).toHaveAttribute('data-phase',phase);frames.push(await canvas.screenshot());xs.push(Number(await canvas.getAttribute('data-robot-x')));
+ }
+ expect(Math.max(...xs)-Math.min(...xs)).toBeGreaterThan(200);expect(await diff(frames[0],frames[2])).toBeGreaterThan(.01);expect(await diff(frames[2],frames[4])).toBeGreaterThan(.01);
+ const r=await canvas.boundingBox();expect(r).not.toBeNull();expect(r!.y).toBeGreaterThanOrEqual(0);expect(r!.x).toBeGreaterThanOrEqual(0);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ expect(await page.locator('body').ariaSnapshot()).not.toMatch(/回声菌星|倒置海星|钟摆荒原星|无人游乐星|未签收之星|六颗|6颗/);
+});
+test('D1收据四级实际轮廓明显变化、同镜头同物品尺寸，安装有中间画面',async({page})=>{
+ await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+1000));await page.goto('/?sample=receipt-d1');
+ const canvas=page.locator('#receipt-focus');await expect(canvas).toHaveAttribute('data-ready','true');const frames:Buffer[]=[];
+ for(const level of [0,1,2,3]){await page.locator(`[data-tier="${level}"]`).click();await page.clock.runFor(100);frames.push(await canvas.screenshot());}
+ for(let i=1;i<4;i++)expect(await diff(frames[i-1],frames[i])).toBeGreaterThan(.02);
+ await page.locator('#receipt-install').click();await page.clock.runFor(2410);const middle=await canvas.screenshot();await page.clock.runFor(1000);expect(await diff(middle,await canvas.screenshot())).toBeGreaterThan(.005);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ for(const selector of ['[data-study=night]','[data-study=receipt]','[data-tier="0"]','#receipt-install','#receipt-view']){const r=await page.locator(selector).boundingBox();expect(r!.height).toBeGreaterThanOrEqual(44);expect(r!.width).toBeGreaterThanOrEqual(44);}
+});
+test('正常游戏入口不载入D1新展柜或样板界面',async({page})=>{
+ const requested:string[]=[];page.on('request',r=>requested.push(r.url()));await page.goto('/?start=base');await expect(page.locator('#museum-canvas')).toHaveAttribute('data-ready','true');await expect(page.locator('#d1-app')).toHaveCount(0);
+ expect(requested.filter(x=>x.includes('/review/d1')||x.includes('/runtime/d1/'))).toEqual([]);
+});
