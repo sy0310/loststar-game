@@ -53,5 +53,30 @@ test('D1收据四级实际轮廓明显变化、同镜头同物品尺寸，安装
 });
 test('正常游戏入口不载入D1新展柜或样板界面',async({page})=>{
  const requested:string[]=[];page.on('request',r=>requested.push(r.url()));await page.goto('/?start=base');await expect(page.locator('#museum-canvas')).toHaveAttribute('data-ready','true');await expect(page.locator('#d1-app')).toHaveCount(0);
- expect(requested.filter(x=>x.includes('/review/d1.ts')||x.includes('/review/night-scene')||x.includes('/runtime/d1/'))).toEqual([]);
+ expect(requested.filter(x=>x.includes('/review/d1.ts')||x.includes('/review/night-scene')||/\/runtime\/d1(?:-refinement)?\//.test(x))).toEqual([]);
+});
+
+test('收据本体近景展示四档细节并保持同一观察镜头，纸卷持续柔性活动', async ({page}) => {
+ await page.goto('/?sample=receipt-d1');
+ const canvas = page.locator('#receipt-focus');
+ await expect(canvas).toHaveAttribute('data-ready', 'true');
+ await page.locator('#receipt-specimen-view').click();
+ await expect(canvas).toHaveAttribute('data-view', 'specimen');
+ const camera = await canvas.getAttribute('data-camera');
+ const frames: Buffer[] = [];
+ for (const level of [0, 1, 2, 3]) {
+  await page.locator(`button[data-tier="${level}"]`).click();
+  await expect(canvas).toHaveAttribute('data-specimen-tier', String(level));
+  await expect(canvas).toHaveAttribute('data-camera', camera!);
+  await page.waitForTimeout(500);
+  frames.push(await canvas.screenshot());
+ }
+ for (let level = 1; level < frames.length; level++) {
+  expect(await diff(frames[level - 1], frames[level])).toBeGreaterThan(.02);
+ }
+ const before = await canvas.screenshot();
+ await page.waitForTimeout(550);
+ expect(await diff(before, await canvas.screenshot())).toBeGreaterThan(.002);
+ await page.locator('#receipt-specimen-view').click();
+ await expect(canvas).toHaveAttribute('data-view', 'focus');
 });
