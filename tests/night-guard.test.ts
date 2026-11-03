@@ -39,3 +39,9 @@ describe('独立、默认关闭的首星夜间实验',()=>{
     expect(advanceGuard(s,START-1)).toEqual(s);const preview=previewNight(s,START);expect(guardView(preview).phase).toBe('night');expect(preview.reports.nights).toBe(0);
   });
 });
+
+it('永久装置强化在独立预演中真实减速，入夜后固定该夜配置',()=>{
+ const base=createGuard(0,['tape','bell']);let weak=equipGuard(equipGuard(base,0,'tape'),1,'bell');weak=previewNight(weak,0);const strong=previewNight(equipGuard(equipGuard(createGuard(0,['tape','bell'],[3,3]),0,'tape'),1,'bell'),0);
+ const a=advanceGuard(weak,11000),b=advanceGuard(strong,11000);expect(guardView(b).intruders[0].progress).toBeLessThan(guardView(a).intruders[0].progress);expect(guardView(b).strengths).toEqual([3,3]);
+ const change={...b,strengths:[0,0] as [number,number]};expect(guardView(change).strengths).toEqual([3,3]);expect(restoreGuard(JSON.stringify(b),11000,['tape','bell'])).toEqual(b);
+});
