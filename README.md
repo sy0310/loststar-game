@@ -26,18 +26,34 @@ npm run preview -- --port 4173
 # http://127.0.0.1:4173
 ```
 
-无需后端、账号、密钥或广告。角色自动探索，页面切换不中断模拟。初次奇物约 12 秒、首位新居民约 36 秒、夜班事件约 3 分钟；不升级时首轮完整档案约 12.4 分钟。雷达勘测首星真实现场，不快速弹出不能前往的世界。货舱初始离线上限 2 小时。
+无需后端、账号、密钥或广告。角色自动探索，页面切换不中断模拟。初次奇物约 12 秒、首位新居民约 36 秒、夜班事件约 3 分钟；不升级时首轮完整档案约 15.4 分钟（4分钟探索/1分钟守护）。雷达勘测首星真实现场，不快速弹出不能前往的世界。货舱初始离线上限 2 小时。
 
 使用当前浏览器 localStorage。旧切片存档会迁移，保留资金、升级、收藏与历史坐标；已发现航路永久保留；未完成内容禁用远征，不伪造外形。存储写满时保留已读进度并提示，不能把失败的写入当作已持久保存。
 
-## V0.2.1 最新复审修订
+## V0.2.3 当前手机反馈修订
+
+- 用户在424659实机确认机器人走动，指出玻璃框与台架未对齐。已逐件注册实际基座/台面/内腔，前反光不再带第二个底座，取放共用同一坐标，前排不遮后排名牌。
+- [最新实际审核页](artifacts/p0-alignment/index.html)、[手机反馈逐项响应](docs/20_PHONE_CASE_ALIGNMENT.md)、[32秒真实整理](artifacts/p0-alignment/home-aligned-robot-32s.mp4)、[六件近景与空柜/升级状态](artifacts/p0-alignment/index.html)。截图/录像来自桌面移动触控仿真，校准版尚待新码手机验收。
+- 开发自测 **424769 / v0.2.3 / 2d70b6d**，65单元＋94浏览器流程通过。昼夜逻辑不变，[完整310秒原远征实录](artifacts/p0-main/expedition-full-cycle-310s.mp4)明确来自0.2.2，用户仍在挂机观察；没有把旧包反馈当作整体验收。
+
+## V0.2.2 P0重构记录
+
+
+- [首页/昼夜审核页](artifacts/p0-main/index.html)、[逐项说明与真实手机验收状态](docs/19_P0_HOME_WORLD_REVIEW.md)。
+- 首页直接使用同一个分层 `MuseumScene`，六件实际奇物在玻璃内循环，机器人每14秒走向不同展柜观察、取放和整理；进入近景移动同一Canvas，不维护两套首页。
+- 原远征自动经历4分钟白天（末12秒黄昏）＋1分钟夜晚＋清晨。双守护槽在远征白天配置，同一球体/机器人/飞船自动守护；无独立夜守入口，旧实验数据不导入正式收藏。
+- [首页整理连续30秒](artifacts/p0-main/home-robot-30s.mp4)、[原远征完整310秒](artifacts/p0-main/expedition-full-cycle-310s.mp4)、[六件触控试验](artifacts/p0-main/home-six-experiments.mp4)、[重算经济](artifacts/p0-main/economy-final.md)。录屏按真实墙钟，来自桌面移动触控仿真，不是手机录像。
+- 开发自测 **424659 / v0.2.2 / 14cc368**，包体2,230,063字节。61单元＋94浏览器流程通过，运行代码PR/push CI成功；用户新包手机扫码验收仍待反馈。旧收藏、零件、升级与图鉴保留，不合并、不正式发行。
+
+## V0.2.1 历史复审修订
+
 
 - [夜守复审审核页](artifacts/v02-review/index.html)、[逐项修订/测试/限制](docs/18_PR2_NIGHT_MODEL_REVIEW.md)。
 - 同一份确定性模型驱动动画、在线/离线和晨间：空槽/单件/双件/满级分别提前核验0/1/2/3位，全部安全送回，不损失正式收藏。
 - [四配置65秒连续对照](artifacts/v02-review/strategy-comparison-live-65s.mp4)、[14组策略表](artifacts/v02-review/strategy-results.md)、[展柜付款后真实近景切换](artifacts/v02-review/growth-closeup-live.mp4)。
 - 新开发自测 **424300 / v0.2.1 / e9c5ce6**，56项单元+80项浏览器流程通过；保持夜守独立可选，等待用户扫码复审。
 
-## V0.2 本轮交付
+## V0.2 历史交付
 
 - [统一审核页](artifacts/v02/index.html)：实际玻璃收藏室、三个生态区、星际监听、夜守与成长工坊。
 - [完整交付及已知限制](docs/17_V02_DELIVERY.md)、[经济模拟与有限成本](docs/16_V02_ECONOMY.md)、[可进出的夜守原型](docs/15_NIGHT_GUARD_PROTOTYPE.md)。
@@ -55,7 +71,7 @@ npm run preview -- --port 4173
 
 Phase 1.5 按 PR #2 审核意见修订：[意见逐项对照与 15/30/60 分钟节奏](docs/12_PR2_REVIEW_RESPONSE.md)、[冷加载/字号/动作放大/音效审核页](artifacts/phase1-5/index.html)。首次默认基地，设置可改为远征；首轮之后自动收录居民联动日记，V0.2 已接通星际连续采样；无可靠定位不会生成新航路。
 
-Phase 1历史五页和连续视频保留在 `artifacts/phase1/`，当前V0.2证据以 `artifacts/v02/` 为准，根目录原来的中文页面图和 12 秒视频为上一轮历史版本。
+Phase 1历史五页和连续视频保留在 `artifacts/phase1/`，当前基地证据以 `artifacts/p0-alignment/` 为准，完整昼夜证据在 `artifacts/p0-main/`，根目录原来的中文页面图和 12 秒视频为上一轮历史版本。
 
 ## 验证与复现
 

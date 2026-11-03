@@ -1,0 +1,85 @@
+{
+  "at": "2026-11-03T07:06:02.904691+00:00",
+  "sourceCommit": "2d70b6d41c4e060b89423f06bc56f052e133d351",
+  "version": "0.2.3",
+  "command": "npm run check",
+  "designAssets": {
+    "passed": 20,
+    "total": 20
+  },
+  "unit": {
+    "passed": 65,
+    "failed": 0
+  },
+  "browser": {
+    "passed": 94,
+    "failed": 0,
+    "projects": [
+      "mobile-360",
+      "mobile-390",
+      "desktop",
+      "webkit-390",
+      "touch-chromium",
+      "touch-webkit"
+    ]
+  },
+  "coverage": {
+    "scope": [
+      "src/game/**",
+      "src/prototype/guard-engine.ts",
+      "src/prototype/night-model.ts",
+      "src/render/base-motion.ts",
+      "src/render/museum-layout.ts"
+    ],
+    "statements": 97.4,
+    "branches": 96.57,
+    "functions": 100,
+    "lines": 100
+  },
+  "package": {
+    "game": "失物星球",
+    "version": "0.2.3",
+    "sourceCommit": "2d70b6d41c4e060b89423f06bc56f052e133d351",
+    "archive": "releases/taptap/loststar-0.2.3-2d70b6d-h5.zip",
+    "bytes": 2230490,
+    "sha256": "c30a0a807229acd31d0622e1facfe7fd655084b87ab29ba424c2160a9b12152c",
+    "files": 43,
+    "uncompressedBytes": 2330657,
+    "entry": "loststar/index.html",
+    "orientation": "portrait",
+    "purpose": "Single-entry H5 with shared home museum and integrated expedition day/night"
+  },
+  "taptap": {
+    "versionId": 424769,
+    "h5PackageId": 151324,
+    "boundMainPackage": false,
+    "isReleasing": false
+  },
+  "relocatablePackage": [
+    "Chromium nested relative entry: home and expedition decoded, no JS/HTTP errors",
+    "WebKit nested relative entry: home and expedition decoded, no JS/HTTP errors"
+  ],
+  "sourceCI": [
+    {
+      "event": "pull_request",
+      "runId": 41593526082,
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/41593526082"
+    },
+    {
+      "event": "push",
+      "runId": 41593517855,
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/41593517855"
+    }
+  ],
+  "physicalPhone": {
+    "tapTap424659": "User confirmed walking and reported case/plinth registration defect",
+    "tapTap424769": "Pending user QR retest; no debug phone connected",
+    "dayNight": "User still observing",
+    "modelOS": "Not provided"
+  },
+  "recordings": {
+    "currentBase": "artifacts/p0-alignment/recordings.json",
+    "dayNight": "artifacts/p0-main/recordings.json",
+    "dayNightSource": "14cc368; world/engine/night model unchanged in2d70b6d; latest source re-tested all phases"
+  }
+}
