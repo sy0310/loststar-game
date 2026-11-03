@@ -100,11 +100,21 @@ type TierRegistration = {
   hingeUv: {x: number; y: number};
 };
 type SpecimenRegistration = {
+  common: {
+    vaultEmitters?: {world: PaperRect}[];
+    floorReceivers: Record<'basic'|'brass'|'vault', {
+      sourceRect: PaperRect;
+      outputRect?: PaperRect;
+      worldRect: PaperRect;
+      sourceFrontLipY: number;
+      frontLipY?: number;
+      hasBakedFloorFill: boolean;
+    }>;
+  };
   receipts: {
     tiers: TierRegistration[];
     common: {
       hingeUv: {x: number; y: number};
-      vaultEmitters?: PaperRect[];
     };
   };
 };
@@ -131,5 +141,289 @@ export function createReceiptSpecimenAssets(): ReceiptSpecimenAssets {
 export function receiptSpecimenRegistration() {
   const registration = registrationFiles['../../assets/runtime/d1-refinement/registration.json'];
   if (!registration) throw new Error('Missing D1 receipt specimen registration');
-  return registration.receipts;
+  return registration;
+}
+
+export type ReceiptLight = {x: number; y: number; strength: number};
+export type ReceiptSpecimenOptions = {
+  center: {x: number; y: number};
+  frame: number;
+  seconds: number;
+  level: number;
+  installation: number;
+  lights: ReceiptLight[];
+  glass: number;
+};
+export type ReceiptSpecimenResult = {
+  tier: number;
+  reveal: number;
+  bounds: {left: number; top: number; width: number; height: number};
+};
+
+type Surface = {canvas: HTMLCanvasElement; context: CanvasRenderingContext2D};
+type PaperRow = {left: number; right: number} | null;
+type PreparedPaper = {
+  surface: Surface;
+  ink: Surface;
+  stamp: PaperRect;
+  fit: ReturnType<typeof fitReceiptSpecimen>;
+  hingeV: number;
+  curlV: number;
+  sourcePixel: number;
+  profile: PaperRow[];
+};
+
+function surface(): Surface {
+  const canvas = document.createElement('canvas');
+  canvas.width = TEXTURE_SIZE;
+  canvas.height = TEXTURE_SIZE;
+  return {canvas, context: canvas.getContext('2d')!};
+}
+
+function mappedRect(rect: PaperRect, crop: PaperRect, fit: ReturnType<typeof fitReceiptSpecimen>): PaperRect {
+  return {
+    x: TEXTURE_SIZE / 2 + fit.left + (rect.x - crop.x) * fit.scale,
+    y: TEXTURE_SIZE / 2 + fit.top + (rect.y - crop.y) * fit.scale,
+    width: rect.width * fit.scale,
+    height: rect.height * fit.scale,
+  };
+}
+
+function contains(rect: PaperRect, x: number, y: number) {
+  return x >= rect.x && x < rect.x + rect.width && y >= rect.y && y < rect.y + rect.height;
+}
+
+function preparePaper(image: HTMLImageElement, registration: TierRegistration): PreparedPaper {
+  const crop = registration.alphaBounds.visible16;
+  const fit = fitReceiptSpecimen(crop.width, crop.height, TEXTURE_SIZE);
+  const paper = surface();
+  paper.context.imageSmoothingEnabled = false;
+  paper.context.drawImage(
+    image, crop.x, crop.y, crop.width, crop.height,
+    TEXTURE_SIZE / 2 + fit.left, TEXTURE_SIZE / 2 + fit.top, fit.width, fit.height,
+  );
+  const ink = surface();
+  const pixels = paper.context.getImageData(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+  const inkRect = mappedRect(registration.inkStrip, crop, fit);
+  const stamp = mappedRect(registration.returnStamp, crop, fit);
+  const profile: PaperRow[] = Array.from({length: TEXTURE_SIZE}, () => null);
+  for (let y = 0; y < TEXTURE_SIZE; y++) {
+    for (let x = 0; x < TEXTURE_SIZE; x++) {
+      const offset = (y * TEXTURE_SIZE + x) * 4;
+      if (pixels.data[offset + 3] >= 16) {
+        const row = profile[y];
+        if (row) row.right = x + 1;
+        else profile[y] = {left: x, right: x + 1};
+      }
+      const luminance = pixels.data[offset] * .2126 + pixels.data[offset + 1] * .7152 + pixels.data[offset + 2] * .0722;
+      const isInk = contains(inkRect, x, y) || contains(stamp, x, y);
+      pixels.data[offset + 3] *= isInk ? clamp((205 - luminance) / 95) : 0;
+    }
+  }
+  ink.context.putImageData(pixels, 0, 0);
+  return {
+    surface: paper,
+    ink,
+    stamp,
+    fit,
+    hingeV: clamp((registration.hingeUv.y * image.naturalHeight - crop.y) / crop.height),
+    curlV: Math.max(.68, Math.min(.86, (registration.lowerCurl.y - crop.y) / crop.height)),
+    sourcePixel: TEXTURE_SIZE / crop.height,
+    profile,
+  };
+}
+
+class ReceiptSpecimenPainter {
+  private papers: PreparedPaper[];
+  private litFrom = surface();
+  private litTo = surface();
+  private revealed = surface();
+  private combined = surface();
+  private transition?: ReceiptTransition;
+
+  constructor(images: HTMLImageElement[], registrations: TierRegistration[]) {
+    this.papers = images.map((image, index) => preparePaper(image, registrations[index]));
+  }
+
+  private illuminate(index: number, target: Surface, options: ReceiptSpecimenOptions) {
+    const {context: c} = target;
+    const paper = this.papers[index];
+    const units = TEXTURE_SIZE / options.frame;
+    c.clearRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+    c.drawImage(paper.surface.canvas, 0, 0);
+    c.save();
+    c.globalCompositeOperation = 'source-atop';
+    for (const light of options.lights) {
+      const x = TEXTURE_SIZE / 2 + (light.x - options.center.x) * units;
+      const y = TEXTURE_SIZE / 2 + (light.y - options.center.y) * units;
+      const glow = c.createRadialGradient(x, y, 0, x, y, TEXTURE_SIZE * 1.75);
+      glow.addColorStop(0, `rgba(255,191,89,${light.strength * .15})`);
+      glow.addColorStop(1, 'rgba(255,191,89,0)');
+      c.fillStyle = glow;
+      c.fillRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+    }
+    const glassPosition = (Math.sin(options.seconds * .35) * .17 + .35) * TEXTURE_SIZE;
+    const reflection = c.createLinearGradient(0, glassPosition - 32, TEXTURE_SIZE, glassPosition + 100);
+    reflection.addColorStop(0, 'rgba(196,238,221,0)');
+    reflection.addColorStop(.43, `rgba(196,238,221,${options.glass * .08})`);
+    reflection.addColorStop(.53, `rgba(231,249,226,${options.glass * .12})`);
+    reflection.addColorStop(.65, 'rgba(196,238,221,0)');
+    c.fillStyle = reflection;
+    c.fillRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+    const curlShade = c.createLinearGradient(0, TEXTURE_SIZE * paper.curlV, 0, TEXTURE_SIZE);
+    curlShade.addColorStop(0, 'rgba(52,28,60,0)');
+    curlShade.addColorStop(.45, `rgba(52,28,60,${.055 + Math.sin(options.seconds * 1.35) * .015})`);
+    curlShade.addColorStop(.7, 'rgba(255,224,171,.07)');
+    curlShade.addColorStop(1, 'rgba(52,28,60,0)');
+    c.fillStyle = curlShade;
+    c.fillRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+    c.restore();
+    // Ink belongs to this paper surface. The rig below bends the stamp and fibres together.
+    c.save();
+    c.globalCompositeOperation = 'multiply';
+    c.globalAlpha = .12 + (Math.sin(options.seconds * 1.1) + 1) * .045;
+    c.drawImage(paper.ink.canvas, 0, 0);
+    c.beginPath();
+    c.rect(paper.stamp.x, paper.stamp.y, paper.stamp.width, paper.stamp.height);
+    c.clip();
+    c.globalAlpha = .12 + (Math.sin(options.seconds * .9 - .8) + 1) * .11;
+    c.drawImage(paper.ink.canvas, 0, 0);
+    c.restore();
+  }
+
+  private revealMask(target: Surface, mix: number, inverted: boolean) {
+    const c = target.context;
+    const mask = c.createLinearGradient(0, 0, 0, TEXTURE_SIZE);
+    for (let step = 0; step <= 16; step++) {
+      const v = step / 16;
+      const reveal = receiptRevealAt(mix, v);
+      mask.addColorStop(v, `rgba(255,255,255,${inverted ? 1 - reveal : reveal})`);
+    }
+    c.save();
+    c.globalCompositeOperation = 'destination-in';
+    c.fillStyle = mask;
+    c.fillRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+    c.restore();
+  }
+
+  private drawBands(
+    c: CanvasRenderingContext2D,
+    image: HTMLCanvasElement,
+    rig: ReturnType<typeof receiptPaperRig>,
+    options: ReceiptSpecimenOptions,
+    sourcePixel: number,
+  ) {
+    const sourceStep = TEXTURE_SIZE / BAND_COUNT;
+    const horizontalScale = options.frame / TEXTURE_SIZE;
+    for (let band = 0; band < BAND_COUNT; band++) {
+      const first = rig.nodes[band];
+      const last = rig.nodes[band + 1];
+      const shear = (last.x - first.x) / sourceStep;
+      const verticalScale = (last.y - first.y) / sourceStep;
+      const boundary = band * sourceStep;
+      const sourceTop = Math.max(0, boundary - sourcePixel);
+      const sourceBottom = Math.min(TEXTURE_SIZE, boundary + sourceStep + sourcePixel);
+      c.save();
+      c.transform(
+        horizontalScale, 0, shear, verticalScale,
+        options.center.x - options.frame / 2 + first.x - shear * boundary,
+        options.center.y + first.y - verticalScale * boundary,
+      );
+      c.drawImage(image, 0, sourceTop, TEXTURE_SIZE, sourceBottom - sourceTop, 0, sourceTop, TEXTURE_SIZE, sourceBottom - sourceTop);
+      c.restore();
+    }
+  }
+
+  private visibleBounds(
+    paper: PreparedPaper,
+    previous: PreparedPaper,
+    rig: ReturnType<typeof receiptPaperRig>,
+    options: ReceiptSpecimenOptions,
+    mix: number,
+  ) {
+    let left = Infinity, right = -Infinity, top = Infinity, bottom = -Infinity;
+    for (let y = 0; y < TEXTURE_SIZE; y++) {
+      const reveal = receiptRevealAt(mix, y / TEXTURE_SIZE);
+      const current = reveal > 0 ? paper.profile[y] : null;
+      const before = reveal < 1 ? previous.profile[y] : null;
+      if (!current && !before) continue;
+      const first = current ?? before!;
+      const second = before ?? first;
+      const rowLeft = Math.min(first.left, second.left);
+      const rowRight = Math.max(first.right, second.right);
+      const position = y / TEXTURE_SIZE * BAND_COUNT;
+      const band = Math.min(BAND_COUNT - 1, Math.floor(position));
+      const fraction = position - band;
+      const a = rig.nodes[band], b = rig.nodes[band + 1];
+      const x = a.x + (b.x - a.x) * fraction;
+      const worldY = a.y + (b.y - a.y) * fraction;
+      left = Math.min(left, options.center.x + x + (rowLeft / TEXTURE_SIZE - .5) * options.frame);
+      right = Math.max(right, options.center.x + x + (rowRight / TEXTURE_SIZE - .5) * options.frame);
+      top = Math.min(top, options.center.y + worldY);
+      bottom = Math.max(bottom, options.center.y + worldY + (b.y - a.y) / (TEXTURE_SIZE / BAND_COUNT));
+    }
+    return {left, top, width: right - left, height: bottom - top};
+  }
+
+  draw(c: CanvasRenderingContext2D, options: ReceiptSpecimenOptions): ReceiptSpecimenResult {
+    this.transition = advanceReceiptTransition(this.transition, options.level, options.seconds, options.installation);
+    const transition = this.transition;
+    const paper = this.papers[transition.level];
+    const previous = this.papers[transition.fromLevel];
+    const mix = transition.fromLevel === transition.level ? 1 : transition.mix;
+    const paperWidth = Math.max(paper.fit.width, previous.fit.width) / TEXTURE_SIZE * options.frame;
+    const rig = receiptPaperRig(options.seconds, {
+      frame: options.frame,
+      paperWidth,
+      hingeV: paper.hingeV,
+      curlV: paper.curlV,
+      reveal: mix,
+    });
+    const composite = this.combined.context;
+    composite.clearRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+    this.illuminate(transition.level, this.litTo, options);
+    if (mix < 1) {
+      this.illuminate(transition.fromLevel, this.litFrom, options);
+      composite.drawImage(this.litFrom.canvas, 0, 0);
+      this.revealMask(this.combined, mix, true);
+      this.revealed.context.clearRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+      this.revealed.context.drawImage(this.litTo.canvas, 0, 0);
+      this.revealMask(this.revealed, mix, false);
+      composite.save();
+      // Complementary premultiplied masks keep the paper opaque through the detail reveal.
+      composite.globalCompositeOperation = 'lighter';
+      composite.drawImage(this.revealed.canvas, 0, 0);
+      composite.restore();
+    } else {
+      composite.drawImage(this.litTo.canvas, 0, 0);
+    }
+
+    c.save();
+    c.beginPath();
+    c.rect(options.center.x - options.frame / 2, options.center.y - options.frame / 2, options.frame, options.frame);
+    c.clip();
+    c.imageSmoothingEnabled = false;
+    this.drawBands(c, this.combined.canvas, rig, options, paper.sourcePixel);
+    c.restore();
+    return {
+      tier: transition.level,
+      reveal: mix,
+      bounds: this.visibleBounds(paper, previous, rig, options, mix),
+    };
+  }
+}
+
+const painters = new WeakMap<HTMLImageElement, ReceiptSpecimenPainter>();
+export function drawReceiptSpecimen(
+  c: CanvasRenderingContext2D,
+  assets: ReceiptSpecimenAssets,
+  options: ReceiptSpecimenOptions,
+): ReceiptSpecimenResult {
+  let painter = painters.get(assets.specimen0);
+  if (!painter) {
+    const images = [assets.specimen0, assets.specimen1, assets.specimen2, assets.specimen3];
+    painter = new ReceiptSpecimenPainter(images, receiptSpecimenRegistration().receipts.tiers);
+    painters.set(assets.specimen0, painter);
+  }
+  return painter.draw(c, options);
 }
