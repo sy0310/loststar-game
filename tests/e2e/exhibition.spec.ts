@@ -26,3 +26,9 @@ test('星际扫描持续经过异常与核对，弱信号自动重试，无提�
  await step(46000);await expect(status).toHaveAttribute('data-stage','anomaly');await step(27000);await expect(status).toHaveAttribute('data-stage','locating');await step(18000);await expect(status).toHaveAttribute('data-stage','unconfirmed');await expect(status).toContainText('尚不能确认坐标');await step(13000);await expect(status).toHaveAttribute('data-stage','searching');
  await expect(page.locator('#star-routes button')).toHaveCount(1);expect(await page.locator('body').ariaSnapshot()).not.toMatch(/回声菌星|六颗|6颗|问号|未签收之星/);const s=await page.evaluate(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!));expect(s.chart.records.map((r:{id:string})=>r.id)).toEqual(['parcel']);await page.reload();const after=await page.evaluate(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!));expect(after.chart.records).toEqual(s.chart.records);
 });
+
+test('已有航路从另一标签恢复时图鉴即时同步，不给未完成内容伪造外形或远征',async({page,context})=>{
+ await page.goto('/?start=base');await page.getByRole('button',{name:'图鉴',exact:true}).click();await page.getByRole('button',{name:/^星球/}).click();await expect(page.locator('.planet-card')).toHaveCount(1);
+ const other=await context.newPage();await other.goto('/?start=base');await other.evaluate(()=>{const key='loststar.save.v1',s=JSON.parse(localStorage.getItem(key)!);s.planets.push('echo');localStorage.setItem(key,JSON.stringify(s));});
+ await expect(page.locator('.planet-card')).toHaveCount(2);const known=page.locator('.planet-card').filter({hasText:'回声菌星'});await expect(known).toBeDisabled();await expect(known.locator('img')).toHaveCount(0);await expect(known).toContainText('远征未开放');await other.close();
+});
