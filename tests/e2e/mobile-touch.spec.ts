@@ -6,6 +6,10 @@ test('D1原生触控：两样板切换、四档展柜、真实安装与返回不
  await page.goto('/?sample=night-d1');await expect(page.locator('#d1-scene canvas')).toHaveAttribute('data-ready','true');
  await tap(page,page.locator('[data-study=receipt]'));await expect(page.locator('#receipt-focus')).toHaveAttribute('data-ready','true');
  for(const tier of [0,1,2,3]){await tap(page,page.locator(`button[data-tier="${tier}"]`));await expect(page.locator('#receipt-focus')).toHaveAttribute('data-tier',String(tier));}
+ await tap(page,page.locator('#receipt-specimen-view'));
+ await expect(page.locator('#receipt-focus')).toHaveAttribute('data-view','specimen');
+ await expect(page.locator('#receipt-focus')).toHaveAttribute('data-specimen-tier','3');
+ await tap(page,page.locator('#receipt-specimen-view'));
  await tap(page,page.locator('#receipt-install'));await expect(page.locator('#receipt-install')).toHaveAttribute('data-playing','true');
  await tap(page,page.locator('#receipt-view'));await expect(page.locator('#receipt-focus')).toHaveAttribute('data-view','room');
  await tap(page,page.locator('[data-study=night]'));await tap(page,page.locator('#d1-replay'));await expect(page.locator('#d1-status')).toHaveAttribute('data-phase','signal');
