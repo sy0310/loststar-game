@@ -212,7 +212,26 @@ function paperMechanism(c:CanvasRenderingContext2D,img:HTMLImageElement,e:Exhibi
  // Reuse the actual illustrated gears instead of covering fine artwork with a flat mechanical icon.
  for(const [i,key]of ['leftGear','rightGear'].entries()){const part=entry.parts[key];if(!part)continue;const r=registeredPart(part);c.save();c.translate(r.x+r.w/2,r.y+r.h/2);c.beginPath();c.arc(0,0,Math.min(r.w,r.h)*.48,0,Math.PI*2);c.clip();c.rotate(t*(i?-.9:.9));c.drawImage(img,part.x,part.y,part.width,part.height,-r.w/2,-r.h/2,r.w,r.h);c.restore();}
  const outlet=entry.parts.ticketOutlet;if(outlet){const r=registeredPart(outlet),feed=(t*7)%Math.max(4,r.h);c.save();c.beginPath();c.rect(r.x,r.y,r.w,r.h);c.clip();c.fillStyle='#f6dfac';c.fillRect(r.x+r.w*.18,r.y-r.h+feed,r.w*.64,r.h);for(let line=0;line<4;line++)pixelLine(c,r.x+r.w*.30,r.y-r.h+feed+line*3,r.w*.4,'#8a6a59');c.restore();}
- const x=e.x,y=machine.top+machine.height+offset,elbow={x:x-34,y:y-17},hand={x:x-28+Math.sin(t*1.8)*2,y:y-22-Math.sin(t*1.8)*2};c.strokeStyle='#d6ad62';c.lineWidth=2;c.beginPath();c.moveTo(x-35,y-3);c.lineTo(elbow.x,elbow.y);c.lineTo(hand.x,hand.y-12*(1-installation));c.stroke();c.fillStyle='#aee6da';c.fillRect(hand.x-2,hand.y-2,4,4);
+ const x=e.x,y=machine.top+machine.height+offset;
+ const elbow={x:x-34,y:y-17};
+ const hand={x:x-28+Math.sin(t*1.8)*2,y:y-22-Math.sin(t*1.8)*2};
+ const tip={x:hand.x,y:hand.y-12*(1-installation)};
+ c.strokeStyle='#d6ad62';
+ c.lineWidth=2;
+ c.beginPath();
+ c.moveTo(x-35,y-3);
+ c.lineTo(elbow.x,elbow.y);
+ c.lineTo(tip.x,tip.y);
+ c.stroke();
+ // A small open brass jaw follows the actual arm tip throughout assembly.
+ c.fillStyle='#92734e';
+ c.fillRect(tip.x-1.4,tip.y-1.4,.9,2.8);
+ c.fillStyle='#e0c18a';
+ c.fillRect(tip.x-.5,tip.y-1.4,1.8,.8);
+ c.fillStyle='#b59463';
+ c.fillRect(tip.x-.5,tip.y+.6,1.8,.8);
+ c.fillStyle='#9dd4bc';
+ c.fillRect(tip.x-.4,tip.y-.35,1,1);
 }
 /** Cabinet parts and the flexible specimen share the original museum registration. */
 export function drawReceiptStudy(c:CanvasRenderingContext2D,a:ReceiptDraw){
