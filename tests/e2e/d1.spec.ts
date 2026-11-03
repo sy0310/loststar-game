@@ -80,3 +80,34 @@ test('收据本体近景展示四档细节并保持同一观察镜头，纸卷�
  await page.locator('#receipt-specimen-view').click();
  await expect(canvas).toHaveAttribute('data-view', 'focus');
 });
+
+test('收据研究独立于柜体并实际核对输入记录，补签收后未发生事项从2变1', async ({page}) => {
+ await seedReadOnly(page);
+ await page.clock.install();
+ await page.clock.pauseAt(new Date(Date.now() + 1000));
+ await page.goto('/?sample=receipt-d1');
+ const canvas = page.locator('#receipt-focus');
+ await expect(page.locator('#d1-museum-source canvas')).toHaveAttribute('data-ready', 'true');
+ await page.clock.runFor(120);
+ await page.locator('#receipt-research summary').click();
+ await page.locator('[data-research-tier="3"]').click();
+ await page.locator('#receipt-experiment').click();
+ await page.clock.runFor(250);
+ await expect(canvas).toHaveAttribute('data-experiment-phase', 'opening');
+ await expect(canvas).toHaveAttribute('data-research-level', '3');
+ await page.clock.fastForward(5000);
+ await page.clock.runFor(120);
+ await expect(page.locator('#receipt-reading-result')).toHaveAttribute('data-pending', '2');
+ await page.locator('[data-tier="0"]').click();
+ await expect(page.locator('[data-research-tier="3"]')).toHaveAttribute('aria-pressed', 'true');
+ await page.locator('#receipt-sample').selectOption('B');
+ await page.locator('#receipt-experiment').click();
+ await page.clock.fastForward(5000);
+ await page.clock.runFor(120);
+ await expect(page.locator('#receipt-reading-result')).toHaveAttribute('data-pending', '1');
+ await page.locator('#receipt-experiment').click();
+ await page.clock.fastForward(5000);
+ await page.clock.runFor(120);
+ await expect(page.locator('#receipt-reading-result')).toHaveAttribute('data-pending', '1');
+ expect(await page.evaluate(() => (window as any).__d1StorageCalls)).toEqual([]);
+});
