@@ -1,6 +1,6 @@
 {
   "name": "loststar-game",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,7 @@
     "test:e2e": "playwright test",
     "capture": "node scripts/capture.mjs",
     "check:assets": "python3 scripts/validate_design_assets.py",
-    "check": "npm run check:assets && npm run test:coverage && npm run build && npm run test:e2e",
+    "check": "npm run check:assets && npm run test:coverage && npm run build && npm run build:d1 && npm run test:e2e",
     "assets:export": "node scripts/export_assets.mjs",
     "report": "node scripts/report.mjs",
     "capture:review": "node scripts/capture_review.mjs",
@@ -23,7 +23,11 @@
     "assets:export:v02": "node scripts/export_v02_assets.mjs",
     "simulate:guard": "vite build --ssr scripts/simulate_guard.ts --outDir releases/guard-model && node releases/guard-model/simulate_guard.js",
     "simulate:v03": "vite build --ssr scripts/simulate_v03.ts --outDir releases/v03-sim && node releases/v03-sim/simulate_v03.js",
-    "capture:v03": "node scripts/capture_v03.mjs"
+    "capture:v03": "node scripts/capture_v03.mjs",
+    "build:d1": "tsc --noEmit && vite build --config vite.d1.config.ts",
+    "package:d1": "python3 scripts/package_taptap.py --d1",
+    "capture:d1": "node scripts/capture_d1.mjs",
+    "assets:export:d1": "node scripts/export_d1_assets.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

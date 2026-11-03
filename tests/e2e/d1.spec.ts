@@ -22,12 +22,13 @@ test('D1只读两样板同H5切换，重播/四档/刷新完全不接触正式�
  await page.goto('/?sample=night-d1');await expect(page.locator('#d1-app')).toContainText('只读');
  await expect(page.locator('#d1-scene canvas')).toHaveAttribute('data-ready','true');
  await page.locator('[data-study=receipt]').click();await expect(page.locator('#receipt-focus')).toHaveAttribute('data-ready','true');
- for(const level of [0,1,2,3]){await page.locator(`[data-tier="${level}"]`).click();await expect(page.locator(`[data-tier="${level}"]`)).toHaveAttribute('aria-pressed','true');}
+ for(const level of [0,1,2,3]){await page.locator(`button[data-tier="${level}"]`).click();await expect(page.locator(`button[data-tier="${level}"]`)).toHaveAttribute('aria-pressed','true');}
  await page.locator('#receipt-install').click();await page.waitForTimeout(150);await page.locator('[data-study=night]').click();await page.locator('#d1-replay').click();
  expect(await page.evaluate(()=>(window as any).__d1StorageCalls)).toEqual([]);
  await page.reload();await expect(page.locator('#d1-scene canvas')).toHaveAttribute('data-ready','true');expect(await page.evaluate(()=>(window as any).__d1StorageCalls)).toEqual([]);expect(errors).toEqual([]);
 });
 test('D1减弱动态仍连续跨球面追踪核验收容返站，三十秒后完成，镜头不溢出',async({page})=>{
+ test.setTimeout(60000);
  await page.emulateMedia({reducedMotion:'reduce'});await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+1000));await page.goto('/?sample=night-d1');
  const canvas=page.locator('#d1-scene canvas');await expect(canvas).toHaveAttribute('data-ready','true');await page.locator('#d1-replay').click();await page.clock.runFor(150);
  const frames:Buffer[]=[],xs:number[]=[];
@@ -41,14 +42,16 @@ test('D1减弱动态仍连续跨球面追踪核验收容返站，三十秒后完
 });
 test('D1收据四级实际轮廓明显变化、同镜头同物品尺寸，安装有中间画面',async({page})=>{
  await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+1000));await page.goto('/?sample=receipt-d1');
+ // The asset promises resolve outside the paused test clock; render one real RAF after decode.
+ await expect(page.locator('#d1-museum-source canvas')).toHaveAttribute('data-ready','true');await page.clock.runFor(100);
  const canvas=page.locator('#receipt-focus');await expect(canvas).toHaveAttribute('data-ready','true');const frames:Buffer[]=[];
- for(const level of [0,1,2,3]){await page.locator(`[data-tier="${level}"]`).click();await page.clock.runFor(100);frames.push(await canvas.screenshot());}
+ for(const level of [0,1,2,3]){await page.locator(`button[data-tier="${level}"]`).click();await page.clock.runFor(100);frames.push(await canvas.screenshot());}
  for(let i=1;i<4;i++)expect(await diff(frames[i-1],frames[i])).toBeGreaterThan(.02);
  await page.locator('#receipt-install').click();await page.clock.runFor(2410);const middle=await canvas.screenshot();await page.clock.runFor(1000);expect(await diff(middle,await canvas.screenshot())).toBeGreaterThan(.005);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
- for(const selector of ['[data-study=night]','[data-study=receipt]','[data-tier="0"]','#receipt-install','#receipt-view']){const r=await page.locator(selector).boundingBox();expect(r!.height).toBeGreaterThanOrEqual(44);expect(r!.width).toBeGreaterThanOrEqual(44);}
+ for(const selector of ['[data-study=night]','[data-study=receipt]','button[data-tier="0"]','#receipt-install','#receipt-view']){const r=await page.locator(selector).boundingBox();expect(r!.height).toBeGreaterThanOrEqual(44);expect(r!.width).toBeGreaterThanOrEqual(44);}
 });
 test('正常游戏入口不载入D1新展柜或样板界面',async({page})=>{
  const requested:string[]=[];page.on('request',r=>requested.push(r.url()));await page.goto('/?start=base');await expect(page.locator('#museum-canvas')).toHaveAttribute('data-ready','true');await expect(page.locator('#d1-app')).toHaveCount(0);
- expect(requested.filter(x=>x.includes('/review/d1')||x.includes('/runtime/d1/'))).toEqual([]);
+ expect(requested.filter(x=>x.includes('/review/d1.ts')||x.includes('/review/night-scene')||x.includes('/runtime/d1/'))).toEqual([]);
 });

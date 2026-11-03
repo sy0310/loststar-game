@@ -14,6 +14,7 @@ jobs:
       - run: python3 scripts/validate_design_assets.py
       - run: npm run test:coverage
       - run: npm run build
+      - run: npm run build:d1
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4
