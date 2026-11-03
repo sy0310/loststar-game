@@ -2,6 +2,7 @@ import './style.css';
 import './museum.css';
 import {MuseumScene,HabitatScene,residentIds,exhibitIds} from './render/museum';
 import {StarMapScene} from './render/star-map';
+import {readyPlanet} from './game/star-chart';
 import {growthCatalog,growthLevel,buyGrowth} from './game/growth';
 import { icon } from './icons';
 import {openSave,commitSave,type StorageLike} from './game/persistence';
@@ -132,7 +133,7 @@ function renderCollection(){
     $(`[data-filter-count="${id}"]`).textContent=String(id==='all'?list.length+publicPlanets(state).length:id==='planet'?publicPlanets(state).length:list.filter(d=>d.kind===id).length);
   }
   let html=list.filter(d=>filter==='all'||filter===d.kind).map(d=>`<button class="discovery-card ${d.kind}" data-detail="${d.id}" aria-label="${d.name}，${kindName[d.kind]}"><span class="card-code">${kindName[d.kind]} <b>${String(d.milestone).padStart(2,'0')}</b></span><span class="artifact-art">${itemArt(d.id)}</span><span class="card-title">${d.name}</span><span class="card-rarity">${d.rarity}</span><p>${d.description}</p><span class="card-foot">退件平原 ${icon('arrow')}</span></button>`).join('');
-  if(filter==='all'||filter==='planet')html+=publicPlanets(state).map(p=>`<button class="discovery-card planet-card" data-planet="${p.id}"><span class="artifact-art"><img class="pixel-art" src="${globeUrl}" alt=""></span><span><small>已发现星球 · 现场档案</small><strong>${p.name}</strong><p>${p.subtitle}</p><span class="card-foot">返回退件平原 ${icon('arrow')}</span></span></button>`).join('');
+  if(filter==='all'||filter==='planet')html+=publicPlanets(state).map(p=>`<button class="discovery-card planet-card" ${readyPlanet(p)?`data-planet="${p.id}"`:'disabled'}><span class="artifact-art"><img class="pixel-art" src="${globeUrl}" alt=""></span><span><small>已发现星球 · 现场档案</small><strong>${p.name}</strong><p>${p.subtitle}</p><span class="card-foot">返回退件平原 ${icon('arrow')}</span></span></button>`).join('');
   $('#collection-items').innerHTML=html||`<div class="empty-state game-panel">${icon('book')}<span class="micro-label">空白的那一页，留给下一次发现</span><h2>故事还在路上</h2><p>咔哒正在认真寻找。<br>每次归舱，都会多懂这里一点。</p><span class="empty-stamp">等待宇宙回信</span></div>`;
 }
 function settings(){
@@ -159,7 +160,7 @@ function renderRadar(){
   const deep=publicRadar(state,'interstellar');$('#interstellar-status').dataset.stage=deep.stage;starMap.setActive(tab==='radar'&&radarMode==='interstellar');
   const deepText={searching:['正在倾听未知宇宙','接收器持续采样。没有定位的回波，不会被画成星球。'],anomaly:['捕获一段异常信号','信号正在增强。暂时还不知道它来自哪里。'],locating:['分离杂音，核对坐标','只有成功定位的真实航路，才会写进星图。'],unconfirmed:['回波太弱，尚不能确认坐标','本次未定位到可靠航路。接收器稍后会自动重新采样。'],resolved:['新航路定位成功','已确认的星球会永久保留，可随时返回。'],standby:['接收器待命','自动监听稍后继续。']}[deep.stage];
   $('#interstellar-copy').innerHTML=`<h2>${deepText[0]}</h2><p>${deepText[1]}</p>${deep.stage==='resolved'&&deep.discovery?`<strong class="resolved-star">${deep.discovery.name}</strong>`:''}<div class="progress"><span style="width:${deep.progress}%"></span></div><div class="status-foot"><span>自动探测 · 无需领取</span><span>采样速度 ×${(1+growthLevel(state,'receiver')*.15+growthLevel(state,'drive')*.05).toFixed(2)}</span></div>`;
-  $('#star-routes').innerHTML=publicPlanets(state).map(p=>`<button class="known-planet game-panel" data-planet="${p.id}"><span>${icon('planet')}</span><span><strong>${p.name}</strong><small>${p.regions.map(r=>r.name).join(' · ')} · 可远征</small></span>${icon('arrow')}</button>`).join('');
+  $('#star-routes').innerHTML=publicPlanets(state).map(p=>`<button class="known-planet game-panel" ${readyPlanet(p)?`data-planet="${p.id}"`:'disabled'}><span>${icon('planet')}</span><span><strong>${p.name}</strong><small>${readyPlanet(p)?`${p.regions.map(r=>r.name).join(' · ')} · 可远征`:'航路已记录 · 远征未开放'}</small></span>${icon('arrow')}</button>`).join('');
   document.querySelectorAll('[data-radar-mode]').forEach(button=>button.setAttribute('aria-pressed',String((button as HTMLElement).dataset.radarMode===radarMode)));
   radarScene.setActive(tab==='radar'&&radarMode==='local');
   const radar=publicRadar(state),stage=radar.stage;
@@ -169,7 +170,7 @@ function renderRadar(){
   const recorded=parcelSignals.slice(0,Math.min(state.surveyCount,parcelSignals.length));
   $('#survey-count').textContent=`${recorded.length} 份已核实`;
   $('#survey-records').innerHTML=recorded.length?recorded.map((r,i)=>`<article class="survey-record"><span class="record-number">${String(i+1).padStart(2,'0')}</span><div><strong>${r.name}</strong><p>${r.description}</p><small>${r.fieldNote}</small></div><span class="record-check">✓</span></article>`).join(''):`<div class="local-note"><span class="record-number">··</span><p>尚无现场记录。<br><small>没有捕获的回波，不会被填进档案。</small></p></div>`;
-  $('#known-planets').innerHTML=publicPlanets(state).map(p=>`<button class="known-planet game-panel" data-planet="${p.id}"><span class="planet-dot"><img src="${globeUrl}" alt=""></span><span><strong>${p.name}</strong><small>退件平原 · 失物号正在工作</small></span>${icon('arrow')}</button>`).join('');
+  $('#known-planets').innerHTML=publicPlanets(state).map(p=>`<button class="known-planet game-panel" ${readyPlanet(p)?`data-planet="${p.id}"`:'disabled'}><span class="planet-dot"><img src="${globeUrl}" alt=""></span><span><strong>${p.name}</strong><small>${readyPlanet(p)?'退件平原 · 失物号正在工作':'航路已记录 · 远征未开放'}</small></span>${icon('arrow')}</button>`).join('');
 }
 const upgradeInfo:Record<UpgradeId,{name:string;desc:string;effect:(s:SaveData)=>string}>={
   radar:{name:'星域雷达',desc:'听见更多退件平原的现场回波。',effect:s=>`勘测速度 ×${tuning(s).radar.toFixed(2)}`},
@@ -224,7 +225,7 @@ app.addEventListener('click',async event=>{
   if(button.dataset.interact){
     interactions.show(button.dataset.interact,lastPointerType);soundCue('interaction',button.dataset.interact);
   }
-  if(button.dataset.planet)go('expedition');
+  if(button.dataset.planet&&publicPlanets(state).some(p=>p.id===button.dataset.planet&&readyPlanet(p)))go('expedition');
   if(button.dataset.upgradeBuy){
     const id=button.dataset.upgradeBuy as UpgradeId,oldLevel=state.upgrades[id];button.disabled=true;
     await transact(s=>upgrade(s,id,oldLevel));workshop();

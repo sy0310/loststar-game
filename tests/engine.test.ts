@@ -81,7 +81,7 @@ describe('首星成熟化：节奏、真实反馈与兼容存档',()=>{
     const old={version:1,lastAt:START,resources:357,cycles:20,cycleMs:4000,radarMs:120000,reveal:'echo',planets:['parcel','echo'],collection:['receipt','tape','mouse'],upgrades:{radar:1,scanner:2,recycler:1,cargo:0},pendingReturn:null};
     const s=restore(JSON.stringify(old),START);
     expect(s.version).toBe(2);expect(s.resources).toBe(357);expect(s.collection).toEqual(old.collection);expect(s.upgrades).toEqual(old.upgrades);expect(s.planets).toEqual(old.planets);
-    expect(publicPlanets(s).map(p=>p.id)).toEqual(['parcel']);expect(publicRadar(s).stage).toBe('searching');expect(pendingPresentations(s)).toEqual([]);
+    expect(publicPlanets(s).map(p=>p.id)).toEqual(['parcel','echo']);expect(publicRadar(s).stage).toBe('searching');expect(pendingPresentations(s)).toEqual([]);
   });
   it('损坏存档、无效字段和非法离线包裹回退，版本不可猜测',()=>{
     expect(restore(null,START).lastAt).toBe(START);expect(restore('{broken',START).resources).toBe(120);

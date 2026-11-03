@@ -53,7 +53,7 @@ export function upgrade(s: SaveData, id: UpgradeId, expected=s.upgrades[id]): Sa
   return next;
 }
 export function publicPlanets(s: SaveData) {
-  return planets.filter(p => readyPlanet(p) && s.planets.includes(p.id));
+  return planets.filter(p => s.planets.includes(p.id));
 }
 export function advance(s: SaveData, now: number, offline = false): SaveData {
   if (!Number.isFinite(now) || now <= s.lastAt) return s;
