@@ -1,3 +1,4 @@
+import {tapeSpeed,bellHoldMs} from './guard-tuning';
 import type {SaveData} from './engine';
 export type GrowthGroup='展示'|'生态'|'设施'|'守护'|'研究'|'装饰';
 export interface GrowthEntry {id:string;name:string;group:GrowthGroup;costs:number[];effect:string;requires?:string;art:string;}
@@ -23,3 +24,17 @@ export function buyGrowth(s:SaveData,id:string,expected:number):SaveData {
  return {...s,resources:s.resources-entry.costs[level],growth:{...s.growth,[id]:level+1}};
 }
 export function growthEffects(s:Pick<SaveData,'growth'>){return {interstellarSpeed:1+growthLevel(s,'receiver')*.15+growthLevel(s,'drive')*.05,cargoSeconds:growthLevel(s,'dock')*1800+growthLevel(s,'drive')*1200,guard:[growthLevel(s,'guard-0'),growthLevel(s,'guard-1')] as [number,number]};}
+
+export function growthChange(s:Pick<SaveData,'growth'>,id:string){
+ const level=growthLevel(s,id),entry=growthCatalog.find(e=>e.id===id),next=Math.min(level+1,entry?.costs.length??level);
+ const value=(n:number)=>{
+  if(id.startsWith('case-'))return ['标准玻璃陈列','柔光底座','柔光底座 + 星尘内景','珍藏铭牌 + 彩色轮廓光'][n];
+  if(id.startsWith('habitat-'))return ['基础栖息地','暖光环境','暖灯 + 纸植微景观'][n];
+  if(id.startsWith('guard-'))return `减速 ${Math.round((1-tapeSpeed(n))*100)}% / 震荡 ${(bellHoldMs(n)/1000).toFixed(1)} 秒`;
+  if(id==='receiver')return `星际采样 ×${(1+n*.15+growthLevel(s,'drive')*.05).toFixed(2)}`;
+  if(id==='drive')return `离线承载 +${n*20}分 / 采样 ×${(1+n*.05+growthLevel(s,'receiver')*.15).toFixed(2)}`;
+  if(id==='dock')return `离线承载 +${n*30} 分钟`;
+  if(id==='light')return ['原有暖灯','柔和暖光','明亮暖光','收藏室灯带全亮'][n];
+  return n?'已布置':'尚未布置';
+ };return {before:value(level),after:value(next)};
+}

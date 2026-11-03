@@ -26,3 +26,9 @@ describe('V0.2 finite growth and old save preservation',()=>{
   const s=newGame(at);s.resources=12345;const corrupt={...s,growth:{'case-0':-1,receiver:99,alien:2}};const fixed=restore(JSON.stringify(corrupt),at);expect(fixed.resources).toBe(12345);expect(growthLevel(fixed,'case-0')).toBe(0);expect(growthLevel(fixed,'receiver')).toBe(0);
  });
 });
+
+import {growthChange} from '../src/game/growth';
+it('成长说明与真实能力同源，当前/下一级与上限可解释',()=>{
+ let s=newGame(at);expect(growthChange(s,'guard-0')).toEqual({before:'减速 44% / 震荡 1.1 秒',after:'减速 50% / 震荡 1.3 秒'});
+ for(const e of growthCatalog){expect(growthChange(s,e.id).before).toBeTruthy();expect(growthChange(s,e.id).after).not.toBe(growthChange(s,e.id).before);s.growth[e.id]=e.costs.length;expect(growthChange(s,e.id).before).toBe(growthChange(s,e.id).after);}
+});

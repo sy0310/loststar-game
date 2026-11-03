@@ -6,14 +6,14 @@ import bellUrl from '../../assets/runtime/bell.webp';
 type GuardVisual=ReturnType<typeof guardView>;
 
 export function guardLayer(getVisual:()=>GuardVisual):SceneExtension {
-  let tint:HTMLCanvasElement|null=null;const invader=new Image();invader.src=invaderUrl;
+  let tint:HTMLCanvasElement|null=null,rim:HTMLCanvasElement|null=null;const invader=new Image();invader.src=invaderUrl;
   const icons={tape:new Image(),bell:new Image()};icons.tape.src=tapeUrl;icons.bell.src=bellUrl;
   const point=(progress:number)=>({x:570-progress*233,y:530-progress*76+Math.sin(progress*Math.PI)*24});
   return {afterWorld(c:CanvasRenderingContext2D,frame:SceneFrame){
     const v=getVisual(),t=frame.t;
     if(v.light>0){
       if(!tint){tint=document.createElement('canvas');tint.width=frame.globe.width;tint.height=frame.globe.height;const m=tint.getContext('2d')!;m.drawImage(frame.globe,0,0);m.globalCompositeOperation='source-in';m.fillStyle='#0a143c';m.fillRect(0,0,tint.width,tint.height);}
-      c.save();c.globalAlpha=v.light*.69;c.drawImage(tint,52,70,664,664);c.restore();
+      c.save();c.globalAlpha=v.light*.56;c.drawImage(tint,52,70,664,664);c.restore();
       for(const [x,y] of [[271,330],[557,208],[345,634],[488,610]]){
         c.save();c.globalAlpha=v.light;const g=c.createRadialGradient(x+3,y+2,1,x+3,y+2,30);g.addColorStop(0,'#ffe4a666');g.addColorStop(1,'#ffe4a600');c.fillStyle=g;c.fillRect(x-28,y-28,60,60);c.fillStyle='#ffecb4';c.fillRect(x,y,7,4);c.restore();
       }
@@ -36,7 +36,14 @@ export function guardLayer(getVisual:()=>GuardVisual):SceneExtension {
       c.fillStyle='#17142d88';c.beginPath();c.ellipse(0,1,24,5,0,0,Math.PI*2);c.fill();
       const bob=actor.stunned?0:Math.round(Math.sin(t*7+actor.id)*2);c.translate(0,bob);
       const pose=actor.stunned?3:actor.slowed?2:Math.floor(t*4+actor.id)%2;
-      if(invader.complete&&invader.naturalWidth)c.drawImage(invader,pose%2*192,Math.floor(pose/2)*192,192,192,-39,-69,78,78);
+      if(invader.complete&&invader.naturalWidth){
+        if(!rim){rim=document.createElement('canvas');rim.width=384;rim.height=384;const r=rim.getContext('2d')!;r.drawImage(invader,0,0);r.globalCompositeOperation='source-in';r.fillStyle='#c8c4eb';r.fillRect(0,0,384,384);}
+        c.save();c.globalAlpha=.65;for(const [dx,dy] of [[-2,0],[2,0],[0,-2]])c.drawImage(rim,pose%2*192,Math.floor(pose/2)*192,192,192,-49+dx,-85+dy,98,98);c.restore();
+        c.drawImage(invader,pose%2*192,Math.floor(pose/2)*192,192,192,-49,-85,98,98);
+      }
+      const label=actor.status==='intercepted'?'封条核验完成':actor.status==='arrived'?'咔哒安全护送':actor.stunned?'签收铃 · 停顿':actor.slowed?'道歉胶带 · 减速':`退件影子 ${actor.id+1}`;
+      const color=actor.stunned?'#b6f3e5':actor.slowed?'#ffe0a1':'#ece0ff';c.fillStyle='#211b39e8';c.fillRect(-69,-122,138,28);c.strokeStyle=color;c.lineWidth=1;c.strokeRect(-69,-122,138,28);c.fillStyle=color;c.font='20px sans-serif';c.textAlign='center';c.fillText(label,0,-102,132);
+      c.fillStyle='#322743';c.fillRect(-49,-93,98,5);c.fillStyle='#b8e6d1';c.fillRect(-49,-93,98*actor.verification,5);
       if(actor.stunned){c.fillStyle='#fff0b4';c.fillRect(-4,-72,3,6);c.fillRect(7,-68,3,3);}
       c.restore();
       if(actor.sealing){

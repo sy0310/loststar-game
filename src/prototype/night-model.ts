@@ -1,3 +1,4 @@
+import {tapeSpeed,bellHoldMs} from '../game/guard-tuning';
 import type {GuardSlots} from './guard-engine';
 export interface NightConfig {slots:GuardSlots;strengths:[number,number];}
 export type NightOutcome='intercepted'|'arrived'|'escorted';
@@ -8,8 +9,6 @@ export interface NightActorFrame {id:number;progress:number;verification:number;
 export interface NightFrame {atMs:number;actors:NightActorFrame[];intercepted:number;arrived:number;escorted:number;}
 export interface NightTimeline {frames:NightFrame[];events:NightEvent[];result:NightResult;}
 export const nightRules={durationMs:60000,stepMs:100,verificationMs:10500,bellPeriodMs:6000,spawns:[{atMs:4200,travelMs:15000},{atMs:22200,travelMs:12000},{atMs:40200,travelMs:9600}]} as const;
-export const tapeSpeed=(level:number)=>.56-level*.06;
-export const bellHoldMs=(level:number)=>1100+level*200;
 const clamp=(n:number)=>Math.max(0,Math.min(1,n));
 const inside=(p:number,zone:readonly number[])=>p>=zone[0]&&p<=zone[1];
 const tapeZones=[[.34,.58],[.64,.88]] as const,bellZones=[[.20,.80],[.50,1]] as const;

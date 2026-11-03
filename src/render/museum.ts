@@ -12,13 +12,13 @@ function image(url:string){const img=new Image();img.src=url;return img;}
 function sprite(c:CanvasRenderingContext2D,img:HTMLImageElement|undefined,x:number,y:number,w:number,h=w){if(img?.complete&&img.naturalWidth)c.drawImage(img,Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
 /** Actual rear glass → moving specimen → front glass → independent nameplate. */
 export class MuseumScene {
- readonly canvas=document.createElement('canvas');
+ readonly canvas=document.createElement('canvas');readonly ready:Promise<void>;
  private c:CanvasRenderingContext2D|null;private active=false;private last=0;private frames=0;
  private room=image(roomUrl);private art=Object.fromEntries(exhibitIds.map(id=>[id,image(textures[id])]));
  private glass=Object.fromEntries(exhibitIds.map(id=>[id,[image(layers[`../../assets/runtime/case-${id}-back.webp`]),image(layers[`../../assets/runtime/case-${id}-front.webp`])]]));
  constructor(private root:HTMLElement,private source:()=>MuseumSource,private level:(id:string)=>number=()=>0){
   root.classList.add('museum-room');this.canvas.id='museum-canvas';this.canvas.width=768;this.canvas.height=960;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','失物收藏室：六个独立玻璃容器，藏品在玻璃内轻轻活动');root.append(this.canvas);this.c=this.canvas.getContext('2d');
-  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(({id,x,y,w})=>`<button data-exhibit="${id}" data-detail="${id}" style="left:${(x-w/768/2)*100}%;top:${(y-w/960)*100}%;width:${w/768*100}%;height:${w/960*100}%"></button>`).join('');root.append(hits);void this.load();requestAnimationFrame(this.loop);
+  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(({id,x,y,w})=>`<button data-exhibit="${id}" data-detail="${id}" style="left:${(x-w/768/2)*100}%;top:${(y-w/960)*100}%;width:${w/768*100}%;height:${w/960*100}%"></button>`).join('');root.append(hits);this.ready=this.load();requestAnimationFrame(this.loop);
  }
  async load(){try{await Promise.all([this.room,...Object.values(this.art),...Object.values(this.glass).flat()].map(i=>i.decode()));this.canvas.dataset.ready='true';this.draw(performance.now()/1000);this.refresh();}catch{this.canvas.dataset.ready='error';this.root.setAttribute('aria-label','收藏室暂未接通，请返回后重试');}}
  refresh(){for(const id of exhibitIds){const b=this.root.querySelector<HTMLButtonElement>(`[data-exhibit="${id}"]`)!;const known=this.source().collection.includes(id);b.disabled=!known;b.setAttribute('aria-label',known?`放大${discoveryById(id)!.name}`:'空展柜，等待下一次发现');}}
@@ -35,12 +35,14 @@ export class MuseumScene {
   if(this.level('deco-3')){c.strokeStyle='#ffdc8b';c.lineWidth=2;for(let i=0;i<5;i++){c.beginPath();c.arc(55,285,22+i*9,t*.1,t*.1+Math.PI*1.5);c.stroke();}}
   this.canvas.dataset.frame=String(++this.frames);
  }
- private case(c:CanvasRenderingContext2D,e:typeof exhibits[number],t:number){
-  const x=e.x*768,y=e.y*960,w=e.w,known=this.source().collection.includes(e.id),level=this.level(`case-${exhibitIds.indexOf(e.id)}`),[back,front]=this.glass[e.id];
+ renderExhibit(canvas:HTMLCanvasElement,id:string,level:number){const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);c.save();c.translate(canvas.width/2,canvas.height-48);this.case(c,{...e,x:0,y:0,w:Math.min(canvas.width*.88,canvas.height-68)},0,level);c.restore();canvas.dataset.ready='true';canvas.dataset.level=String(level);}
+ private case(c:CanvasRenderingContext2D,e:typeof exhibits[number],t:number,forcedLevel?:number){
+  const x=e.x*768,y=e.y*960,w=e.w,known=this.source().collection.includes(e.id),level=forcedLevel??this.level(`case-${exhibitIds.indexOf(e.id)}`),[back,front]=this.glass[e.id];
   c.save();c.translate(x,y);c.fillStyle='#120d2880';c.beginPath();c.ellipse(0,-3,w*.30,10,0,0,Math.PI*2);c.fill();sprite(c,back,-w/2,-w,w,w);
   if(level){c.strokeStyle=['','#ffe0a0','#9ce9e1','#e6b2ff'][level];c.lineWidth=level===3?3:2;c.beginPath();c.ellipse(0,-w*.13,w*.27,9,0,0,Math.PI*2);c.stroke();}
   c.save();c.beginPath();c.rect(-w*.32,-w*.82,w*.64,w*.65);c.clip();
   if(known){
+   if(level){c.fillStyle=level===3?'#c8a7ef29':'#ffe2a128';c.fillRect(-w*.24,-w*.67,w*.48,w*.49);c.fillStyle='#fff0b12f';c.fillRect(-w*.27,-w*.23,w*.54,w*.06);}
    const phase=t+exhibitIds.indexOf(e.id),bob=Math.sin(phase*1.4)*2,iw=e.id==='cosmic-parcel'?w*.39:e.id==='stamp'?w*.35:w*.45;
    c.save();c.translate(0,-w*.49+bob);
    switch(e.id){

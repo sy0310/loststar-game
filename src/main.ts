@@ -3,7 +3,7 @@ import './museum.css';
 import {MuseumScene,HabitatScene,residentIds,exhibitIds} from './render/museum';
 import {StarMapScene} from './render/star-map';
 import {readyPlanet} from './game/star-chart';
-import {growthCatalog,growthLevel,buyGrowth} from './game/growth';
+import {growthCatalog,growthLevel,buyGrowth,growthChange} from './game/growth';
 import { icon } from './icons';
 import {openSave,commitSave,type StorageLike} from './game/persistence';
 import {newGame,advance,restore,claimReturn,upgrade,cost,tuning,publicRadar,dismissSurvey,upgradeIds,MAX_LEVEL,SAVE_KEY,pendingPresentations,markPresented,publicPlanets,type SaveData,type UpgradeId} from './game/engine';
@@ -35,6 +35,7 @@ const sounds=new SoundDesk(preferences.muted);
 const requestedStart=new URLSearchParams(location.search).get('start');
 let tab:string=requestedStart==='expedition'||requestedStart==='base'?requestedStart:preferences.startPage;
 let growthFilter='展示';
+let growthReceipt:{id:string;price:number;level:number;before:string;after:string}|null=null;let comparisonView:'before'|'after'='after';
 let radarMode:RadarMode='local',lastJournal='',lastAction='';
 let filter:DiscoveryKind|'planet'|'all'='all';
 let lastRadar='',lastCollection='',lastBase='',lastRecent='';
@@ -91,7 +92,8 @@ const modal=$<HTMLDialogElement>('#modal');
 const radarScene=new RadarScene($('.radar-rings'),()=>publicRadar(state));
 const starMap=new StarMapScene($('#star-map'),()=>({stage:publicRadar(state,'interstellar').stage,progress:publicRadar(state,'interstellar').progress,research:growthLevel(state,'receiver'),records:publicPlanets(state).flatMap(p=>{const r=state.chart.records.find(r=>r.id===p.id);return r?[{...r,name:p.name}]:[];})}));
 let museum:MuseumScene|undefined;const habitats:HabitatScene[]=[];
-function enterMuseum(){if(!museum){museum=new MuseumScene($('#museum'),()=>state,id=>growthLevel(state,id));residentIds.forEach((id,i)=>habitats.push(new HabitatScene($(`[data-habitat="${id}"] .habitat-window`),id,()=>state.collection.includes(id),()=>growthLevel(state,`habitat-${i}`))));}museum.setActive(true);habitats.forEach(h=>h.setActive(true));}
+function ensureMuseum(){return museum??=new MuseumScene($('#museum'),()=>state,id=>growthLevel(state,id));}
+function enterMuseum(){ensureMuseum().setActive(true);if(!habitats.length)residentIds.forEach((id,i)=>habitats.push(new HabitatScene($(`[data-habitat="${id}"] .habitat-window`),id,()=>state.collection.includes(id),()=>growthLevel(state,`habitat-${i}`))));habitats.forEach(h=>h.setActive(true));}
 const interactions=new InteractionDirector($('#modal-body'));
 let lastPointerType='mouse';
 app.addEventListener('pointerup',event=>{lastPointerType=event.pointerType||'mouse';},{passive:true});
@@ -156,9 +158,10 @@ function renderBase(){
   $('#base-collection').innerHTML=residents.length?residents.map(id=>{const d=discoveryById(id)!;return `<button class="resident game-panel" data-detail="${id}">${itemArt(id)}<span><small>这里也是它的归处</small><strong>${d.name}</strong><p>${id==='mouse'?'正在帮你检查每一个空箱子。':id==='hermit'?'挑了一间刚好合身的纸箱小屋。':'它把今天的好天气贴在了窗外。'}</p></span>${icon('arrow')}</button>`;}).join(''):`<div class="home-note game-panel"><span class="micro-label">收件站的灯一直亮着</span><p>外面的居民偶尔会来。先留几个空纸箱，等它们慢慢熟悉这里。</p></div>`;
 }
 function renderRadar(){
+  $('#radar .eyebrow').textContent=radarMode==='interstellar'?'DEEP SPACE RECEIVER / 星际监听':'SIGNAL ROOM / 本地勘测';$('#radar .page-heading p').textContent=radarMode==='interstellar'?'仍在捕捉未知信号，先让回波自己说话。':'先把脚下这颗星球，认真听清楚。';
   $('#local-radar').hidden=radarMode!=='local';$('#interstellar-status').hidden=radarMode!=='interstellar';
   const deep=publicRadar(state,'interstellar');$('#interstellar-status').dataset.stage=deep.stage;starMap.setActive(tab==='radar'&&radarMode==='interstellar');
-  const deepText={searching:['正在倾听未知宇宙','接收器持续采样。没有定位的回波，不会被画成星球。'],anomaly:['捕获一段异常信号','信号正在增强。暂时还不知道它来自哪里。'],locating:['分离杂音，核对坐标','只有成功定位的真实航路，才会写进星图。'],unconfirmed:['回波太弱，尚不能确认坐标','本次未定位到可靠航路。接收器稍后会自动重新采样。'],resolved:['新航路定位成功','已确认的星球会永久保留，可随时返回。'],standby:['接收器待命','自动监听稍后继续。']}[deep.stage];
+  const deepText={searching:['正在倾听未知宇宙','接收器持续采样。没有定位的回波，不会被画成星球。'],anomaly:['捕获一段异常信号','信号正在增强。暂时还不知道它来自哪里。'],locating:['分离杂音，核对坐标','只有成功定位的真实航路，才会写进星图。'],unconfirmed:['回波太弱，尚不能确认坐标','仍在捕捉未知信号。这段回波不足以确认航路，接收器会继续监听。'],resolved:['新航路定位成功','已确认的星球会永久保留，可随时返回。'],standby:['接收器待命','自动监听稍后继续。']}[deep.stage];
   $('#interstellar-copy').innerHTML=`<h2>${deepText[0]}</h2><p>${deepText[1]}</p>${deep.stage==='resolved'&&deep.discovery?`<strong class="resolved-star">${deep.discovery.name}</strong>`:''}<div class="progress"><span style="width:${deep.progress}%"></span></div><div class="status-foot"><span>自动探测 · 无需领取</span><span>采样速度 ×${(1+growthLevel(state,'receiver')*.15+growthLevel(state,'drive')*.05).toFixed(2)}</span></div>`;
   $('#star-routes').innerHTML=publicPlanets(state).map(p=>`<button class="known-route game-panel" ${readyPlanet(p)?`data-planet="${p.id}"`:'disabled'}><span>${icon('planet')}</span><span><strong>${p.name}</strong><small>${readyPlanet(p)?`${p.regions.map(r=>r.name).join(' · ')} · 可远征`:'航路已记录 · 远征未开放'}</small></span>${icon('arrow')}</button>`).join('');
   document.querySelectorAll('[data-radar-mode]').forEach(button=>button.setAttribute('aria-pressed',String((button as HTMLElement).dataset.radarMode===radarMode)));
@@ -178,11 +181,16 @@ const upgradeInfo:Record<UpgradeId,{name:string;desc:string;effect:(s:SaveData)=
   recycler:{name:'回收装置',desc:'把废旧包装变成下一次航程的零件。',effect:s=>`${tuning(s).recycler} 零件 / 次回收`},
   cargo:{name:'飞船货舱',desc:'屏幕关掉以后，仍能安心航行。',effect:s=>`${tuning(s).cargo/3600} 小时离线上限`},
 };
+function growthReceiptHTML(){
+ if(!growthReceipt)return '';const r=growthReceipt,e=growthCatalog.find(e=>e.id===r.id)!;
+ return `<section id="growth-receipt" class="growth-receipt game-panel" role="status"><span class="micro-label">升级已装好 · 已消耗 ${r.price} 零件</span><h3>${e.name}</h3><p><span>升级前</span>${r.before}<br><span>升级后</span><strong>${r.after}</strong></p>${r.id.startsWith('case-')?`<div class="comparison-tabs" role="group" aria-label="实际展柜近景对照"><button class="secondary" data-growth-compare="before" aria-pressed="${comparisonView==='before'}">升级前</button><button class="secondary" data-growth-compare="after" aria-pressed="${comparisonView==='after'}">升级后</button></div><canvas id="growth-comparison" width="320" height="310" role="img" aria-label="展柜升级前后实际材质近景"></canvas><small>近景使用收藏室同一渲染器与真实等级；切换不再扣款。</small>`:''}</section>`;
+}
+function updateGrowthPreview(){const canvas=$<HTMLCanvasElement>('#growth-comparison');if(!canvas||!growthReceipt)return;const r=growthReceipt,m=ensureMuseum();void m.ready.then(()=>{if(!canvas.isConnected)return;m.renderExhibit(canvas,growthCatalog.find(e=>e.id===r.id)!.requires!,comparisonView==='before'?r.level-1:r.level);});}
 function workshop(){
   const scroll=$('#modal-body').scrollTop;showModal('workshop',`<div class="modal-heading"><div><div class="eyebrow">LR–01 / ENGINEERING BAY</div><h2>设备工坊</h2></div>${closeButton('关闭工坊')}</div><p class="modal-subtitle">捡来的小零件，会让下一次出发更从容。</p><div class="workshop-balance">${icon('cube')}工坊零件储备 <b>${Math.floor(state.resources)}</b></div><div class="upgrade-grid">${upgradeIds.map(id=>{
     const info=upgradeInfo[id],level=state.upgrades[id],max=level>=MAX_LEVEL,next={...state,upgrades:{...state.upgrades,[id]:level+1}};
     return `<article class="upgrade-card game-panel" data-upgrade="${id}"><header><h3>${info.name}</h3><span>Lv.${level+1}</span></header><img class="equipment-art pixel-art" src="${equipment[id]}" alt=""><div class="level-notches" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i class="${i<=level?'filled':''}"></i>`).join('')}</div><strong class="upgrade-effect">${info.effect(state)}</strong><p>${info.desc}</p><small class="upgrade-next">${max?'已达当前设备上限':`下一级 ${info.effect(next)}`}</small><button class="upgrade-buy" data-upgrade-buy="${id}" aria-label="升级${info.name}" ${max||state.resources<cost(state,id)?'disabled':''}>${max?'已满级':`${icon('cube')}${cost(state,id)} 零件 ${icon('arrow')}`}</button></article>`;
-  }).join('')}</div><div class="section-title"><span>让归处慢慢长大</span><small>基础展示免费</small></div><div class="growth-filters" role="group" aria-label="成长项目分类">${['展示','生态','设施','守护','研究','装饰'].map(group=>`<button class="secondary" data-growth-filter="${group}" aria-pressed="${group===growthFilter}">${group}</button>`).join('')}</div><div class="growth-grid">${growthCatalog.filter(e=>e.group===growthFilter).map(e=>{const level=growthLevel(state,e.id),max=level>=e.costs.length,owned=!e.requires||state.collection.includes(e.requires),price=e.costs[level];return `<article class="growth-card game-panel" data-growth="${e.id}"><span class="growth-art">${owned?itemArt(e.art):icon('book')}</span><div><small>${e.group} · ${level} / ${e.costs.length}</small><h3>${e.name}</h3><p>${e.effect}</p><button class="secondary" data-growth-buy="${e.id}" data-level="${level}" ${max||!owned||state.resources<price?'disabled':''}>${max?'已完成':!owned?'发现藏品后可升级':`${price} 零件 · 升级`}</button></div></article>`;}).join('')}</div><p class="quiet-note">所有项目都有固定上限，无维护费。旧设备等级与零件完整保留。</p>`);$('#modal-body').scrollTop=scroll;
+  }).join('')}</div><div class="section-title"><span>让归处慢慢长大</span><small>基础展示免费</small></div><div class="growth-filters" role="group" aria-label="成长项目分类">${['展示','生态','设施','守护','研究','装饰'].map(group=>`<button class="secondary" data-growth-filter="${group}" aria-pressed="${group===growthFilter}">${group}</button>`).join('')}</div><div class="growth-grid">${growthCatalog.filter(e=>e.group===growthFilter).map(e=>{const level=growthLevel(state,e.id),max=level>=e.costs.length,owned=!e.requires||state.collection.includes(e.requires),price=e.costs[level];return `<article class="growth-card game-panel" data-growth="${e.id}"><span class="growth-art">${owned?itemArt(e.art):icon('book')}</span><div><small>${e.group} · ${level} / ${e.costs.length}</small><h3>${e.name}</h3><p>${e.effect}</p><small class="growth-change">当前：${growthChange(state,e.id).before}<br>下一级：${growthChange(state,e.id).after}</small><button class="secondary" data-growth-buy="${e.id}" data-level="${level}" ${max||!owned||state.resources<price?'disabled':''}>${max?'已完成':!owned?'发现藏品后可升级':`${price} 零件 · 升级`}</button></div></article>`;}).join('')}</div>${growthReceiptHTML()}<p class="quiet-note">所有项目都有固定上限，无维护费。旧设备等级与零件完整保留。</p>`);$('#modal-body').scrollTop=scroll;updateGrowthPreview();
 }
 function detail(id:string){
   const d=discoveryById(id);if(!d||!state.collection.includes(id))return;
@@ -232,10 +240,13 @@ app.addEventListener('click',async event=>{
     if(state.upgrades[id]>oldLevel){soundCue('upgrade',id);toast(`${upgradeInfo[id].name}升至 Lv.${state.upgrades[id]+1} · ${upgradeInfo[id].effect(state)}`);$(`[data-upgrade="${id}"]`).classList.add('just-upgraded');}
   }
   if(button.dataset.growthFilter){growthFilter=button.dataset.growthFilter;workshop();}
-  if(button.dataset.growthBuy){const id=button.dataset.growthBuy,expected=Number(button.dataset.level),before=growthLevel(state,id);button.disabled=true;await transact(s=>buyGrowth(s,id,expected));workshop();if(growthLevel(state,id)>before){soundCue('upgrade',id);toast('升级完成。回去看看归处的新变化。');}}
+  if(button.dataset.growthCompare&&growthReceipt){comparisonView=button.dataset.growthCompare as 'before'|'after';document.querySelectorAll<HTMLElement>('[data-growth-compare]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.growthCompare===comparisonView)));updateGrowthPreview();}
+  if(button.dataset.growthBuy){const id=button.dataset.growthBuy,expected=Number(button.dataset.level);button.disabled=true;let purchased=false;
+    await transact(s=>{const next=buyGrowth(s,id,expected);if(next!==s){const change=growthChange(s,id);growthReceipt={id,price:s.resources-next.resources,level:growthLevel(next,id),...change};comparisonView='after';purchased=true;}return next;});workshop();if(purchased){soundCue('upgrade',id);toast('升级已装好，看看它的新样子。');$('#growth-receipt').scrollIntoView({block:'nearest'});}
+  }
   switch(button.dataset.action){
-    case 'museum-upgrades':growthFilter='展示';workshop();break;
-    case 'workshop':workshop();break;
+    case 'museum-upgrades':growthReceipt=null;growthFilter='展示';workshop();break;
+    case 'workshop':growthReceipt=null;workshop();break;
     case 'settings':settings();break;
     case 'retry-base':void baseArrival.load();break;
     case 'close':closeModal();break;
