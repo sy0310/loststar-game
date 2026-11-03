@@ -25,7 +25,7 @@ export function mountD1(initial:Study='night'){
     <section data-study-panel="night" aria-label="球面夜间处置样板">
       <div class="d1-section-heading"><div><span class="d1-eyebrow">RETURNS PLAIN / 原场景分层</span><h2>夜间邮路 · 漂行纸影</h2></div><span class="d1-tag">30 秒连续动作</span></div>
       <div class="d1-night-frame"><div class="d1-scene-label"><span><i></i>巡守通信接通</span><span>球面追踪 / LR–01</span></div><div id="d1-scene"></div></div>
-      <div id="d1-status" class="d1-caption" role="status" data-phase="signal"><span class="d1-eyebrow">KADA–07 / 正在接通</span><strong>箱堆里，多了一封没有地址的影子。</strong><p>加载原球体、咔哒与失物号图层。</p></div>
+      <div id="d1-status" class="d1-caption" role="status" data-phase="signal"><span class="d1-eyebrow">KADA–07 / 正在接通</span><strong>管道旁，多了一封没有地址的影子。</strong><p>加载原球体、咔哒与失物号图层。</p></div>
       <div class="d1-timeline" aria-hidden="true"><span></span></div><div class="d1-playback"><span id="d1-time">00 / 30 秒</span><button id="d1-replay">↻ 重看 30 秒</button></div>
       <p class="d1-note">原球体、原邮路、原绕轨飞船。只演示核验、收容与回站，不进行战果或维修结算。</p>
     </section>
