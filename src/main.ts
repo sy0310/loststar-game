@@ -133,7 +133,7 @@ function renderCollection(){
     $(`[data-filter-count="${id}"]`).textContent=String(id==='all'?list.length+publicPlanets(state).length:id==='planet'?publicPlanets(state).length:list.filter(d=>d.kind===id).length);
   }
   let html=list.filter(d=>filter==='all'||filter===d.kind).map(d=>`<button class="discovery-card ${d.kind}" data-detail="${d.id}" aria-label="${d.name}，${kindName[d.kind]}"><span class="card-code">${kindName[d.kind]} <b>${String(d.milestone).padStart(2,'0')}</b></span><span class="artifact-art">${itemArt(d.id)}</span><span class="card-title">${d.name}</span><span class="card-rarity">${d.rarity}</span><p>${d.description}</p><span class="card-foot">退件平原 ${icon('arrow')}</span></button>`).join('');
-  if(filter==='all'||filter==='planet')html+=publicPlanets(state).map(p=>`<button class="discovery-card planet-card" ${readyPlanet(p)?`data-planet="${p.id}"`:'disabled'}><span class="artifact-art"><img class="pixel-art" src="${globeUrl}" alt=""></span><span><small>已发现星球 · 现场档案</small><strong>${p.name}</strong><p>${p.subtitle}</p><span class="card-foot">返回退件平原 ${icon('arrow')}</span></span></button>`).join('');
+  if(filter==='all'||filter==='planet')html+=publicPlanets(state).map(p=>`<button class="discovery-card planet-card" ${readyPlanet(p)?`data-planet="${p.id}"`:'disabled'}><span class="artifact-art">${p.id==='parcel'?`<img class="pixel-art" src="${globeUrl}" alt="">`:icon('book')}</span><span><small>已发现星球 · 现场档案</small><strong>${p.name}</strong><p>${p.subtitle}</p><span class="card-foot">${readyPlanet(p)?'返回退件平原':'航路已记录 · 远征未开放'} ${icon('arrow')}</span></span></button>`).join('');
   $('#collection-items').innerHTML=html||`<div class="empty-state game-panel">${icon('book')}<span class="micro-label">空白的那一页，留给下一次发现</span><h2>故事还在路上</h2><p>咔哒正在认真寻找。<br>每次归舱，都会多懂这里一点。</p><span class="empty-stamp">等待宇宙回信</span></div>`;
 }
 function settings(){
@@ -206,7 +206,7 @@ function update(){
     lastRecent=latest??'none';$('#recent').innerHTML=d?`<button data-detail="${d.id}"><span class="recent-symbol">${itemArt(d.id)}</span><span><small>最近带回的${kindName[d.kind]}</small><strong>${d.name}</strong><em>${d.rarity} · 已收入首星档案</em></span>${icon('arrow')}</button>`:`<span class="recent-symbol empty-recent">${icon('receipt')}</span><span><small>收件站正在等第一份惊喜</small><strong>宇宙的第一张小票，正在路上。</strong><em>不必点击，咔哒会自己带回来。</em></span>`;
   }
   const radarKey=JSON.stringify([publicRadar(state),publicRadar(state,'interstellar'),state.growth,state.surveyCount,state.upgrades.radar,state.planets,!!state.pendingReturn]);if(radarKey!==lastRadar){lastRadar=radarKey;renderRadar();}
-  const collectionKey=JSON.stringify([state.collection,state.discoveryAt,filter]);if(collectionKey!==lastCollection){lastCollection=collectionKey;renderCollection();}
+  const collectionKey=JSON.stringify([state.collection,state.discoveryAt,state.planets,filter]);if(collectionKey!==lastCollection){lastCollection=collectionKey;renderCollection();}
   const journalKey=JSON.stringify(state.journal);if(journalKey!==lastJournal){lastJournal=journalKey;renderJournal();}
   const baseKey=JSON.stringify([state.collection,state.growth]);if(baseKey!==lastBase){lastBase=baseKey;renderBase();}
 }
