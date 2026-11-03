@@ -31,10 +31,10 @@ export async function loadResidentArt() {
   const images = Object.fromEntries(pairs);
   for (const id of residentIds) {
     const resident = registration.residents[id];
-    if (resident.frames.length !== 2 || id === 'tagbird' && resident.flightFrames?.length !== 2) {
+    if (resident.frames.length !== 2 || (id === 'tagbird' && resident.flightFrames?.length !== 2)) {
       throw Error(`Resident ${id} requires its complete resting and flying poses`);
     }
-    for (const frame of [...resident.frames, ...resident.flightFrames ?? []]) {
+    for (const frame of [...resident.frames, ...(resident.flightFrames ?? [])]) {
       if (!images[frame.file]) throw Error(`Resident pose ${frame.file} is missing`);
     }
   }

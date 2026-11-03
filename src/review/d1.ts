@@ -4,6 +4,11 @@ import {ExpeditionScene} from '../render/scene';
 import {MuseumScene,exhibitIds,residentIds} from '../render/museum';
 import {nightStage,nightCaption,receiptStage,reviewEnvironment} from './d1-motion';
 import {createNightStudy} from './night-scene';
+import {
+  RECEIPT_RESEARCH_LEVELS, RECEIPT_SAMPLE_BATCHES,
+  resolveReceiptReading, receiptExperimentFrame,
+  type ReceiptResearchLevel, type ReceiptReading, type ReceiptExperimentFrame,
+} from './receipt-reading';
 
 type Study='night'|'receipt';
 const tierNames=['基础玻璃罩','黄铜灯座','邮政微景观','典藏封存舱'];
@@ -24,7 +29,7 @@ export function mountD1(initial:Study='night'){
     <p class="d1-disclaimer">独立审核样板 · 不读取、不修改原存档</p>
     <section data-study-panel="night" aria-label="球面夜间处置样板">
       <div class="d1-section-heading"><div><span class="d1-eyebrow">RETURNS PLAIN / 原场景分层</span><h2>居民作息 · 夜间邮路</h2></div><span id="d1-duration" class="d1-tag">30 秒连续动作</span></div>
-      <div class="d1-night-frame"><div class="d1-scene-label"><span><i></i>巡守通信接通</span><span>球面追踪 / LR–01</span></div><div id="d1-scene"></div></div>
+      <div class="d1-night-frame"><div class="d1-scene-label"><span><i></i><span id="d1-ecology-label">夜晚 · 居民休息</span></span><span>球面追踪 / LR–01</span></div><div id="d1-scene"></div></div>
       <div id="d1-status" class="d1-caption" role="status" data-phase="signal"><span class="d1-eyebrow">KADA–07 / 正在接通</span><strong>管道旁，多了一封没有地址的影子。</strong><p>加载原球体、咔哒与失物号图层。</p></div>
       <div class="d1-timeline" aria-hidden="true"><span></span></div><div class="d1-playback"><span id="d1-time">00 / 30 秒</span><button id="d1-environment" aria-pressed="false">昼夜对照</button><button id="d1-replay">↻ 重播</button></div>
       <p class="d1-note">原球体、原邮路、原绕轨飞船。只演示核验、收容与回站，不进行战果或维修结算。</p>
@@ -35,6 +40,16 @@ export function mountD1(initial:Study='night'){
       <div class="d1-tier-buttons" role="group" aria-label="选择展柜样板等级">${tierNames.map((label,i)=>`<button data-tier="${i}" aria-pressed="${i===0}"><small>Lv${i}</small>${label}</button>`).join('')}</div>
       <div id="receipt-status" class="d1-receipt-status" role="status"><strong>Lv0 · 基础玻璃罩</strong><p>${tierNotes[0]}</p></div>
       <div class="d1-receipt-controls"><button id="receipt-install">▶ 安装演示</button><button id="receipt-view" aria-pressed="false">房间视角</button><button id="receipt-specimen-view" aria-pressed="false">观察收据</button></div>
+      <details id="receipt-research" class="d1-research">
+        <summary>本体研究 · 折读未发生清单</summary>
+        <p class="d1-research-note">研究等级独立于展柜。使用退件平原样例回执，观察收据能读出什么。</p>
+        <div class="d1-research-levels" role="group" aria-label="收据本体研究等级">${RECEIPT_RESEARCH_LEVELS.map(item=>`<button data-research-tier="${item.level}" aria-pressed="${item.level===0}"><small>研究${item.level}</small>${item.name}</button>`).join('')}</div>
+        <p id="receipt-research-state"></p>
+        <label for="receipt-sample">交给收据核对的记录</label>
+        <select id="receipt-sample">${Object.entries(RECEIPT_SAMPLE_BATCHES).map(([key,batch])=>`<option value="${key}">${batch.label}</option>`).join('')}</select>
+        <button id="receipt-experiment">试一试</button>
+        <output id="receipt-reading-result" role="status" aria-live="polite"></output>
+      </details>
       <p class="d1-note">原台面坐标、收据中心与尺寸四档一致。基础陈列免费；此页不购买升级。</p>
     </section>
     <footer class="d1-footer" aria-label="切换动态样板"><button data-study="night" aria-pressed="true"><span>01</span> 球面夜巡</button><button data-study="receipt" aria-pressed="false"><span>02</span> 收据展柜</button></footer>
@@ -52,6 +67,8 @@ export function mountD1(initial:Study='night'){
   const receiptCanvas=q<HTMLCanvasElement>('#receipt-focus');
   let study=initial,started=false,museumReady=false,level=0,view:'focus'|'room'|'specimen'='focus',installing=false,installStart=0,receiptTime=0,last=0;
   let lastPhase='',lastTier=-1;
+  let researchLevel:ReceiptResearchLevel=0,sampleKey:'A'|'B'='A';
+  let reading:ReceiptReading|undefined,experimentStart=0,lastExperimentKey='';
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
   const startedAt=performance.now();
   function loadMuseum(){
@@ -90,6 +107,54 @@ export function mountD1(initial:Study='night'){
   }
   q('#receipt-view').addEventListener('click', () => setReceiptView(view === 'room' ? 'focus' : 'room'));
   q('#receipt-specimen-view').addEventListener('click', () => setReceiptView(view === 'specimen' ? 'focus' : 'specimen'));
+  function resetResearch(){
+    reading=undefined;lastExperimentKey='';
+    const definition=RECEIPT_RESEARCH_LEVELS[researchLevel];
+    q('#receipt-research summary').textContent=`本体研究${researchLevel} · 折读未发生清单`;
+    q('#receipt-research-state').textContent=`研究${researchLevel} · ${definition.name}。${definition.description}`;
+    for(const button of root.querySelectorAll<HTMLButtonElement>('[data-research-tier]'))button.setAttribute('aria-pressed',String(Number(button.dataset.researchTier)===researchLevel));
+    q('#receipt-reading-result').textContent='点击试一试，收据会主动展开并留下本次读数。';
+    q('#receipt-reading-result').dataset.phase='idle';
+    q('#receipt-reading-result').dataset.pending='';
+    q('#receipt-experiment').textContent='试一试';
+  }
+  function updateReading(experiment:ReceiptExperimentFrame){
+    const key=`${experiment.reading.researchLevel}-${experiment.reading.batchId}-${experiment.phase}-${experiment.visibleLines.length}`;
+    if(key===lastExperimentKey)return;
+    lastExperimentKey=key;
+    const output=q('#receipt-reading-result'),result=experiment.reading;
+    const headings={opening:'收据正在主动展开卷边…',reading:'折层中的事项正在显影…',checking:'逐项核对回执，折回已完成事项…',printing:'正在打印本次读数…',closing:'读数已留下，收据慢慢合拢。',done:'本次折读完成。'};
+    const lines=experiment.check>=.6?result.resultLines:experiment.visibleLines;
+    const text=lines.map(line=>[line.title,line.address,line.nextStepLabel].filter(Boolean).join(' · '));
+    const summary=result.pendingCount===null?`读出 ${result.lines.length} 项`:`未发生 ${result.pendingCount} 项 · 已核对 ${result.lines.length} 项`;
+    output.textContent=[headings[experiment.phase],experiment.check>=.6?summary:'',...text,experiment.phase==='done'?result.ticketLines.join(' · '):''].filter(Boolean).join('\n');
+    output.dataset.phase=experiment.phase;
+    output.dataset.pending=result.pendingCount===null?'':String(result.pendingCount);
+    q('#receipt-experiment').textContent='重播试验';
+  }
+  function focusResearch(){
+    q('#d1-app').dataset.receiptResearch='true';
+    setReceiptView('specimen');
+    q('.d1-receipt-frame').scrollIntoView({block:'start',behavior:'auto'});
+  }
+  q('#receipt-research').addEventListener('toggle',()=>{
+    const open=(q('#receipt-research') as HTMLDetailsElement).open;
+    q('#d1-app').dataset.receiptResearch=String(open);
+    if(open)focusResearch();else setReceiptView('focus');
+  });
+  for(const button of root.querySelectorAll<HTMLButtonElement>('[data-research-tier]'))button.addEventListener('click',()=>{
+    researchLevel=Number(button.dataset.researchTier) as ReceiptResearchLevel;
+    resetResearch();setReceiptView('specimen');
+  });
+  q<HTMLSelectElement>('#receipt-sample').addEventListener('change',event=>{
+    sampleKey=(event.target as HTMLSelectElement).value as 'A'|'B';resetResearch();
+  });
+  q('#receipt-experiment').addEventListener('click',()=>{
+    reading=resolveReceiptReading(researchLevel,RECEIPT_SAMPLE_BATCHES[sampleKey]);
+    experimentStart=performance.now();lastExperimentKey='';focusResearch();
+    updateReading(receiptExperimentFrame(reading,0));
+  });
+  resetResearch();
   selectStudy(initial);
   function frame(now:number){
     if(scene.ready&&!started){scene.restart();started=true;}
@@ -105,6 +170,8 @@ export function mountD1(initial:Study='night'){
       const caption=period==='night'?nightCaption[s.phase]:ecologyCaptions[period];
       q('#d1-status').dataset.phase=s.phase;
       const captionKey=`${period}-${s.phase}`;
+      const ecologyLabels={day:'白天 · 居民出勤',dusk:'黄昏 · 正在归巢',night:'夜晚 · 居民休息',dawn:'清晨 · 慢慢苏醒'};
+      q('#d1-ecology-label').textContent=ecologyLabels[period];
       if(lastPhase!==captionKey){q('#d1-status .d1-eyebrow').textContent=`KADA–07 / ${period==='night'?'现场作业':'居民作息'}`;q('#d1-status strong').textContent=caption.title;q('#d1-status p').textContent=caption.detail;lastPhase=captionKey;}
       q('#d1-time').textContent=`${String(Math.floor(Math.min(timeline.duration,seconds))).padStart(2,'0')} / ${timeline.duration} 秒`;
       q('.d1-timeline span').style.width=`${Math.min(1,seconds/timeline.duration)*100}%`;
@@ -112,7 +179,9 @@ export function mountD1(initial:Study='night'){
       let install=1;
       if(installing){const stage=receiptStage((now-installStart)/1000);level=stage.level;install=stage.install;if(stage.done){installing=false;q('#receipt-install').dataset.playing='false';q('#receipt-install').textContent='↻ 重播安装';}}
       if(lastTier!==level)tierUI();
-      if(museumReady&&study==='receipt')museum?.renderFocused(receiptCanvas,'receipt',level,receiptTime,install,view);
+      const experiment=reading?receiptExperimentFrame(reading,(now-experimentStart)/1000):undefined;
+      if(experiment)updateReading(experiment);
+      if(museumReady&&study==='receipt')museum?.renderFocused(receiptCanvas,'receipt',level,receiptTime,install,view,experiment);
     }
     requestAnimationFrame(frame);
   }
