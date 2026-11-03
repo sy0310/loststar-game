@@ -5,7 +5,7 @@ import os from 'node:os';
 
 // Discover → Rehearse → Record. D1 has its own narrative captions, so the mobile
 // adaptation uses native touch rings rather than a desktop mouse/subtitle layer.
-const base=process.env.BASE_URL??'http://127.0.0.1:4173';
+const base=process.env.BASE_URL??'http://127.0.0.1:4187';
 const out='artifacts/d1',raw='artifacts/raw-video/d1';
 const rehearse=process.argv.includes('--rehearse');
 const options={viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true};
