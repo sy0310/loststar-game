@@ -53,3 +53,12 @@ it('切档从现纸卷开始显影，阶段边缘连续，常态不会持续做�
     expect(Math.abs(receiptRevealAt(.5001,v)-receiptRevealAt(.5,v))).toBeLessThan(.002);
   }
 });
+it('位于纸带内部的真实铰点也保持固定',()=>{
+  const hingeV=39/239,position=hingeV*9,band=Math.floor(position),fraction=position-band;
+  for(let t=0;t<4;t+=.05){
+    const rig=receiptPaperRig(t,{frame,paperWidth:53.32,hingeV,curlV:.795,reveal:1});
+    const a=rig.nodes[band],b=rig.nodes[band+1];
+    expect(a.x+(b.x-a.x)*fraction).toBeCloseTo(0,10);
+    expect(a.y+(b.y-a.y)*fraction).toBeCloseTo((hingeV-.5)*frame,10);
+  }
+});
