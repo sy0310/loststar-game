@@ -1,3 +1,4 @@
+import {createStation,createResearch,cleanStation,cleanResearch,progressStation,type StationState,type ResearchState} from './station';
 import {createWorld,restoreWorld,advanceWorld,dayTimeBetween,wallForDayTime} from './world';
 import type {GuardState} from '../prototype/guard-engine';
 import { discoveries, planets } from '../content/catalog';
@@ -8,7 +9,7 @@ import {initialChart,stepStarChart,cleanChart,readyPlanet,type StarChart} from '
 import { emptyInterstellar, interstellarView, radarPolicy, type InterstellarScan } from './radar';
 
 export type UpgradeId = 'radar' | 'scanner' | 'recycler' | 'cargo';
-export interface ReturnCargo { id: string; seconds: number; resources: number; discoveries: string[]; }
+export interface ReturnCargo { id: string; seconds: number; resources: number; discoveries: string[]; maintenance?:number;gross?:number; }
 export interface SaveData {
   version: 2;
   lastAt: number;
@@ -29,6 +30,7 @@ export interface SaveData {
   growth: Record<string,number>;
   chart: StarChart;
   world: GuardState;
+  station:StationState;research:ResearchState;
 }
 // Keep the original key so the review build can migrate existing player progress.
 export const SAVE_KEY = 'loststar.save.v1';
@@ -41,7 +43,7 @@ export function newGame(now = Date.now()): SaveData {
     radarMs: 0, surveyCount: 0, surveyNotice: null, planets: ['parcel'],
     collection: [], seenDiscoveries: [], discoveryAt: {},
     upgrades: { radar: 0, scanner: 0, recycler: 0, cargo: 0 }, pendingReturn: null,
-    journal:{entries:[],shift:0}, interstellar:emptyInterstellar(),growth:{},chart:initialChart(now),world:createWorld(now),
+    journal:{entries:[],shift:0}, interstellar:emptyInterstellar(),growth:{},chart:initialChart(now),world:createWorld(now),station:createStation(),research:createResearch(),
   };
 }
 export function tuning(s: SaveData) {
@@ -60,40 +62,7 @@ export function publicPlanets(s: SaveData) {
 }
 export function advance(s: SaveData, now: number, offline = false): SaveData {
   if (!Number.isFinite(now) || now <= s.lastAt) return s;
-  const next = structuredClone(s), values = tuning(s);
-  const ms = Math.min(now - s.lastAt, values.cargo * 1000);
-  next.lastAt = now;next.world=advanceWorld(s,now);
-  next.chart=stepStarChart(s.chart,ms*growthEffects(s).interstellarSpeed,s.planets,planets,now);next.interstellar=next.chart.scan;
-  next.planets=[...new Set([...s.planets,...next.chart.records.map(r=>r.id)])];
-  const totalRadar = s.radarMs + ms * values.radar;
-  const surveys = Math.floor(totalRadar / SURVEY_DURATION);
-  next.radarMs = totalRadar % SURVEY_DURATION;
-  next.surveyCount += surveys;
-  if (surveys > 0) next.surveyNotice = parcelSignals[(next.surveyCount - 1) % parcelSignals.length].id;
-  const totalCycle = s.cycleMs + dayTimeBetween(s.world.elapsedMs,ms);
-  const earned = Math.floor(totalCycle / values.scanner);
-  next.cycles += earned; next.cycleMs = totalCycle % values.scanner;
-  const known = new Set([...s.collection, ...(s.pendingReturn?.discoveries ?? [])]);
-  const found = discoveries.filter(d => d.milestone <= next.cycles && !known.has(d.id));
-  for (const d of found) {
-    next.discoveryAt[d.id] = s.lastAt + wallForDayTime(s.world.elapsedMs,Math.max(0,(d.milestone-s.cycles)*values.scanner-s.cycleMs),ms);
-  }
-  const resources = earned * values.recycler + surveys * 6;
-  const observed=new Set([...known,...found.map(d=>d.id)]);
-  next.journal.entries=[...new Set([...s.journal.entries,...parcelJournal.filter(note=>note.cycle<=next.cycles&&note.requires.every(id=>observed.has(id))).map(note=>note.id)])];
-  next.journal.shift=journalShift(next.cycles);
-  if (offline && ms >= 30000) {
-    const old = s.pendingReturn;
-    next.pendingReturn = {
-      id: old?.id ?? `return-${s.lastAt}`, seconds: (old?.seconds ?? 0) + Math.floor(ms / 1000),
-      resources: (old?.resources ?? 0) + resources, discoveries: [...(old?.discoveries ?? []), ...found.map(d => d.id)],
-    };
-  } else {
-    next.resources += resources;
-    next.collection.push(...found.map(d => d.id));
-  }
-  next.world.owned=next.collection.filter((id):id is 'tape'|'bell'=>id==='tape'||id==='bell');
-  return next;
+  return progressStation(s,now,offline);
 }
 export function pendingPresentations(s: SaveData) { return s.collection.filter(id => !s.seenDiscoveries.includes(id)); }
 export function markPresented(s: SaveData, id: string): SaveData {
@@ -107,7 +76,7 @@ export function claimReturn(s: SaveData): SaveData {
   next.collection = [...new Set([...next.collection, ...cargo.discoveries])];
   // The return manifest itself presents the bulk discoveries; avoid a popup queue afterward.
   next.seenDiscoveries = [...new Set([...next.seenDiscoveries, ...cargo.discoveries])];
-  next.pendingReturn = null;next.world.owned=next.collection.filter((id):id is 'tape'|'bell'=>id==='tape'||id==='bell');
+  next.pendingReturn = null;
   return next;
 }
 export function dismissSurvey(s: SaveData): SaveData { return { ...s, surveyNotice: null }; }
@@ -153,6 +122,7 @@ export function restore(raw: string | null, now = Date.now()): SaveData {
     }
     s={...s,growth:cleanGrowth(input.growth),chart:cleanChart(input.chart,s.interstellar,s.planets,input.lastAt)};s.interstellar=s.chart.scan;
     s={...s,world:restoreWorld(input.world,input.lastAt,s.collection,growthEffects(s).guard)};
+    s={...s,station:cleanStation(input.station,input.station===undefined&&(growthEffects(s).guard.some(n=>n>0))),research:cleanResearch(input.research)};
     return advance(s, now, now - s.lastAt >= 30000);
   } catch { return newGame(now); }
 }

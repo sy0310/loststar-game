@@ -29,6 +29,6 @@ describe('V0.2 finite growth and old save preservation',()=>{
 
 import {growthChange} from '../src/game/growth';
 it('成长说明与真实能力同源，当前/下一级与上限可解释',()=>{
- let s=newGame(at);expect(growthChange(s,'guard-0')).toEqual({before:'减速 44% / 震荡 1.1 秒',after:'减速 50% / 震荡 1.3 秒'});
+ let s=newGame(at);expect(growthChange(s,'guard-0')).toEqual({before:'警戒引导减速 44%',after:'警戒引导减速 50%'});
  for(const e of growthCatalog){expect(growthChange(s,e.id).before).toBeTruthy();expect(growthChange(s,e.id).after).not.toBe(growthChange(s,e.id).before);s.growth[e.id]=e.costs.length;expect(growthChange(s,e.id).before).toBe(growthChange(s,e.id).after);}
 });

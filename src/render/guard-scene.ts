@@ -26,7 +26,7 @@ export function guardLayer(getVisual:()=>GuardVisual):SceneExtension {
     const slots=[{x:438,y:492},{x:378,y:517}];
     for(let i=0;i<2;i++){
       const slot=slots[i],id=v.activeSlots[i];if(v.strengths[i]){c.strokeStyle=['','#e7c792','#a7e5d9','#e9aefb'][v.strengths[i]];c.lineWidth=2+v.strengths[i]*.5;c.beginPath();c.ellipse(slot.x,slot.y,25+v.strengths[i]*7,8+v.strengths[i]*2,0,0,Math.PI*2);c.stroke();}c.fillStyle='#352f50';c.fillRect(slot.x-23,slot.y-5,46,11);c.fillStyle='#9a8b91';c.fillRect(slot.x-21,slot.y-7,42,4);
-      if(id&&icons[id].complete&&icons[id].naturalWidth)c.drawImage(icons[id],slot.x-25,slot.y-57,50,50);
+      if((id==='tape'||id==='bell')&&icons[id].complete&&icons[id].naturalWidth)c.drawImage(icons[id],slot.x-25,slot.y-57,50,50);
       if(id==='tape'){
         const stretch=45+Math.sin(t*2)*5;c.fillStyle='#e7c8a5bb';c.fillRect(slot.x-5,slot.y+3,stretch,7);c.fillStyle='#ae8ab5';for(let j=0;j<7;j++)c.fillRect(slot.x+j*7,slot.y+5,3,2);
       }

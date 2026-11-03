@@ -16,7 +16,7 @@ const tapeZones=[[.34,.58],[.64,.88]] as const,bellZones=[[.20,.80],[.50,1]] as 
 export function simulateNight(config:NightConfig):NightTimeline {
  const actors=nightRules.spawns.map((spawn,id)=>({id,...spawn,progress:0,verificationMs:0,slowMs:0,stunMs:0,stunUntil:0,outcome:null as NightOutcome|null,at:0,tapeSeen:false,returned:false}));
  const frames:NightFrame[]=[],events:NightEvent[]=[];
- const tapeSlot=config.slots.indexOf('tape'),bellSlot=config.slots.indexOf('bell');
+ const tapeSlot=config.slots.findIndex(id=>id==='tape'||id==='beacon'),bellSlot=config.slots.findIndex(id=>id==='bell'||id==='gate');
  let intercepted=0,arrived=0,escorted=0;
  for(let time=0;time<=nightRules.durationMs;time+=nightRules.stepMs){
   const visible:NightActorFrame[]=[];

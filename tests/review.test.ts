@@ -10,7 +10,7 @@ describe('PR #2 Phase 1.5 回归',()=>{
     const a=advance(newGame(START),START+wall(900000)),b=advance(a,START+wall(1800000)),c=advance(b,START+wall(3600000));
     expect(json(a).journal.entries).toHaveLength(1);expect(json(b).journal.entries).toHaveLength(3);expect(json(c).journal.entries).toHaveLength(5);
     expect(c.collection).toHaveLength(12);expect(c.planets).toEqual(['parcel']);
-    expect(c.resources).toBe(120+300*8+c.surveyCount*6); // Notes add stories, never another reward stream.
+    expect(c.resources).toBe(120+300*8+c.surveyCount*6-c.station.repairSpent); // Notes add stories, never another reward stream.
     expect(restore(JSON.stringify(c),c.lastAt)).toEqual(c);
     const later=advance(c,START+wall(6000000));expect(json(later).journal.entries).toHaveLength(8);expect(json(later).journal.shift).toBe(9);
     expect(restore(JSON.stringify(later),later.lastAt)).toEqual(later);

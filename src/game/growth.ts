@@ -8,7 +8,8 @@ export const growthCatalog:GrowthEntry[]=[
  ...['mouse','hermit','tagbird'].map((art,i)=>({id:`habitat-${i}`,name:['拆箱台生态区','纸层小屋生态区','邮签枝生态区'][i],group:'生态' as const,costs:[240,700],effect:'栖息地暖灯 → 丰富纸植与微型景观',requires:art,art})),
  {id:'light',name:'收藏室照明',group:'设施',costs:[280,720,1400],effect:'逐级增添温暖环境光；可见亮度与灯带',art:'night-shift'},
  {id:'dock',name:'归航停泊站',group:'设施',costs:[320,850,1600],effect:'每级增加 30 分钟离线承载，基地泊位亮灯',art:'cosmic-parcel'},
- ...[0,1].map(i=>({id:`guard-${i}`,name:`守护位 ${i?'B':'A'} 的共鸣装置`,group:'守护' as const,costs:[280,760,1500],effect:'每级提高胶带减速或签收铃停顿时长；预演中可见光环',art:i?'bell':'tape'})),
+ ...[0,1].map(i=>({id:`guard-${i}`,name:i?'自动隔离门':'警戒探照灯',group:'守护' as const,costs:[280,760,1500],effect:i?'延长隔离门停顿，争取封条核验时间':'增强警戒光束引导，降低纸影靠近速度',art:i?'night-shift':'signal'})),
+ {id:'repair-bay',name:'收件站修复工位',group:'设施',costs:[360,960],effect:'每点维修3→2→1零件；修复时焊接灯与护板可见',art:'night-shift'},
  {id:'receiver',name:'深空接收器研究',group:'研究',costs:[420,1050,2200],effect:'每级星际采样速度 +15%；增亮接收器，缩短真实扫描',art:'stamp'},
  {id:'drive',name:'飞船勘探模块',group:'研究',costs:[480,1200,2600],effect:'每级增加 20 分钟离线承载，星际采样速度 +5%',art:'cosmic-parcel'},
  ...['星窗串灯','纸叶庭院','管理员纪念牌','旋转星仪'].map((name,i)=>({id:`deco-${i}`,name,group:'装饰' as const,costs:[[450,900,1500,2400][i]],effect:['星窗增加暖光像素串灯','入口增加纸叶植物景观','收藏室增添 LR–01 纪念铭牌','星窗增加缓慢运行的微型星仪'][i],art:'receipt'})),
@@ -21,7 +22,7 @@ export function cleanGrowth(raw:unknown):Record<string,number>{
 }
 export function buyGrowth(s:SaveData,id:string,expected:number):SaveData {
  const entry=growthCatalog.find(e=>e.id===id),level=growthLevel(s,id);if(!entry||level!==expected||level>=entry.costs.length||(entry.requires&&!s.collection.includes(entry.requires))||s.resources<entry.costs[level])return s;
- const next={...s,resources:s.resources-entry.costs[level],growth:{...s.growth,[id]:level+1}};next.world={...next.world,strengths:growthEffects(next).guard,owned:next.collection.filter((id):id is 'tape'|'bell'=>id==='tape'||id==='bell')};return next;
+ const next={...s,resources:s.resources-entry.costs[level],growth:{...s.growth,[id]:level+1}};next.world={...next.world,strengths:growthEffects(next).guard,owned:['beacon','gate']};return next;
 }
 export function growthEffects(s:Pick<SaveData,'growth'>){return {interstellarSpeed:1+growthLevel(s,'receiver')*.15+growthLevel(s,'drive')*.05,cargoSeconds:growthLevel(s,'dock')*1800+growthLevel(s,'drive')*1200,guard:[growthLevel(s,'guard-0'),growthLevel(s,'guard-1')] as [number,number]};}
 
@@ -30,7 +31,9 @@ export function growthChange(s:Pick<SaveData,'growth'>,id:string){
  const value=(n:number)=>{
   if(id.startsWith('case-'))return ['标准玻璃陈列','柔光底座','柔光底座 + 星尘内景','珍藏铭牌 + 彩色轮廓光'][n];
   if(id.startsWith('habitat-'))return ['基础栖息地','暖光环境','暖灯 + 纸植微景观'][n];
-  if(id.startsWith('guard-'))return `减速 ${Math.round((1-tapeSpeed(n))*100)}% / 震荡 ${(bellHoldMs(n)/1000).toFixed(1)} 秒`;
+  if(id==='guard-0')return `警戒引导减速 ${Math.round((1-tapeSpeed(n))*100)}%`;
+  if(id==='guard-1')return `隔离门每6秒阻挡 ${(bellHoldMs(n)/1000).toFixed(1)} 秒`;
+  if(id==='repair-bay')return `每点维修 ${3-n} 零件`;
   if(id==='receiver')return `星际采样 ×${(1+n*.15+growthLevel(s,'drive')*.05).toFixed(2)}`;
   if(id==='drive')return `离线承载 +${n*20}分 / 采样 ×${(1+n*.05+growthLevel(s,'receiver')*.15).toFixed(2)}`;
   if(id==='dock')return `离线承载 +${n*30} 分钟`;

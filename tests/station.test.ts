@@ -34,3 +34,9 @@ it('科研固定预算不自动续费，实际加快探索并带回本地观察�
 it('零余额/夜间不能手动维修，高预算科研需已发现奇物；损坏新字段只重置新系统',()=>{
  let s=newGame(T);expect(startPlan(s,'deep','artifact',null)).toBe(s);s.resources=0;s.station.integrity=80;expect(repairStation(s)).toBe(s);const night=advance(setAutoRepair(s,false),T+241000);expect(repairStation(night)).toBe(night);const raw:any={...s,resources:27049,station:{integrity:-1},research:{active:'invalid'}};const restored=restore(JSON.stringify(raw),T);expect(restored.resources).toBe(27049);expect(restored.station.integrity).toBe(100);expect(restored.research.active).toBeNull();
 });
+it('零完整度自动部分修复时，小步在线与离线仍产生相同效率和费用',()=>{
+ const s=newGame(T);s.resources=0;s.station.integrity=0;let online=s;for(let ms=500;ms<=600000;ms+=500)online=advance(online,T+ms);const done=claimReturn(advance(s,T+600000,true));expect(done.resources).toBe(online.resources);expect(done.cycles).toBe(online.cycles);expect(done.station.integrity).toBe(online.station.integrity);expect(done.station.repairSpent).toBe(online.station.repairSpent);
+});
+it('损坏旧world可选字段不会把27049存档清空',()=>{
+ const s:any=newGame(T);s.resources=27049;s.world.slots='invalid';expect(restore(JSON.stringify(s),T).resources).toBe(27049);
+});

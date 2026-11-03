@@ -1,6 +1,6 @@
 import {nightAt,nightResult,type NightResult} from './night-model';
 export const GUARD_KEY='loststar.prototype.guard.v1';
-export const guardItems=['tape','bell'] as const;
+export const guardItems=['tape','bell','beacon','gate'] as const;
 export type GuardItem=typeof guardItems[number];
 export type GuardSlots=[GuardItem|null,GuardItem|null];
 export interface GuardState {
@@ -50,7 +50,7 @@ export function guardView(s:GuardState){
   const light=phase==='night'?Math.min(.65+clamp(nightBase/3)*.35,clamp((60-nightBase)/4)):phase==='dusk'?clamp((phaseMs-s.dayMs+duskMs)/duskMs)*.65:0;
   const activeSlots=phase==='night'?(s.activeNight?.slots??s.slots):s.slots;
   const strengths=phase==='night'?(s.activeNight?.strengths??s.strengths):s.strengths;
-  const tape=activeSlots.includes('tape'),bell=activeSlots.includes('bell');
+  const tape=activeSlots.includes('tape')||activeSlots.includes('beacon'),bell=activeSlots.includes('bell')||activeSlots.includes('gate');
   const timeline=nightAt({slots:activeSlots,strengths},Math.max(0,nightBase));
   const intruders=phase==='night'?timeline.actors:[];
   return {phase,light,nightBase,nightNumber:Math.floor(s.elapsedMs/cycle)+1,untilNextMs:phase==='night'?cycle-phaseMs:s.dayMs-phaseMs,activeSlots,strengths,tape,bell,intruders,nightStatus:timeline,event:phase==='night'?guardEvent:null};
