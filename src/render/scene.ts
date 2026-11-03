@@ -11,6 +11,8 @@ import { tuning, type SaveData } from '../game/engine';
 
 const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl};
 type Art = Record<keyof typeof urls, HTMLImageElement>;
+export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement}
+export interface SceneExtension {afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void}
 const load=(url:string)=>new Promise<HTMLImageElement>((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=url;});
 
 export class ExpeditionScene {
@@ -30,7 +32,7 @@ export class ExpeditionScene {
   private loading=false;
   ready=false;
 
-  constructor(parent:HTMLElement,private getState:()=>SaveData) {
+  constructor(parent:HTMLElement,private getState:()=>SaveData,private extension?:SceneExtension) {
     this.canvas=document.createElement('canvas');this.canvas.width=832;this.canvas.height=740;
     this.canvas.setAttribute('aria-label','退件平原动态远征：咔哒绕过仓库自动探索，失物号连续前后绕轨');this.canvas.setAttribute('role','img');
     parent.append(this.canvas);this.ctx=this.canvas.getContext('2d',{alpha:false})!;
@@ -152,6 +154,7 @@ export class ExpeditionScene {
     entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
     c.fillStyle='#694771';c.fillRect(600,206,3,52);c.fillStyle='#f9c77c';c.fillRect(599,202,5,5);c.fillStyle='#c9758b';c.beginPath();c.moveTo(603,209);c.lineTo(635,213+Math.sin(t*3)*2);c.lineTo(631,229+Math.sin(t*3)*2);c.lineTo(603,226);c.fill();
     c.fillStyle='#ffdb9b';c.fillRect(611,214,8,6);
+    this.extension?.afterWorld(c,{t,robot:p,ship,globe:this.art.globe});
     if(!ship.back)this.drawShip(t,ship);
     if(now<this.focusUntil){
       const progress=1-(this.focusUntil-now)/2200;
