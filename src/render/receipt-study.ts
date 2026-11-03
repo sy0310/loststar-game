@@ -12,11 +12,35 @@ export function receiptAssembly(level:number,progress:number){
 }
 export type ReceiptStudyAssets={base:HTMLImageElement;mechanism:HTMLImageElement;vault:HTMLImageElement};
 type SourceRect={x:number;y:number;width:number;height:number};
-type RegisteredImage={world:{draw:{left:number;top:number;width:number;height:number}};outputSize:{width:number;height:number};parts:Record<string,SourceRect>};
+type WorldRect={left:number;top:number;width:number;height:number};
+type RegisteredImage={world:{draw:WorldRect;cavity?:WorldRect|null};outputSize:{width:number;height:number};parts:Record<string,SourceRect>};
 const registrations=(registrationJson as unknown as {files:Record<string,RegisteredImage>}).files;
 function registeredRect(name:string,e:Exhibit,fallback:{left:number;top:number;width:number;height:number}){
  const measured=registrations[name]?.world.draw??fallback,scale=e.scale/(98/164);
  return {left:e.x+(measured.left-175)*scale,top:e.y+(measured.top-526)*scale,width:measured.width*scale,height:measured.height*scale};
+}
+export function receiptVaultWindow(e:Exhibit){
+ const cavity=registrations['receipt-vault-l3']?.world.cavity;if(!cavity)throw new Error('D1 vault aperture registration is missing');
+ const s=e.scale/(98/164);return {left:e.x+(cavity.left-175)*s,top:e.y+(cavity.top-526)*s,width:cavity.width*s,height:cavity.height*s,archRise:28*s};
+}
+type VaultWindow=ReturnType<typeof receiptVaultWindow>;
+function glassArch(c:CanvasRenderingContext2D,w:VaultWindow){
+ const left=w.left,right=left+w.width,cx=left+w.width/2,top=w.top,rise=w.archRise;c.moveTo(left,top);c.bezierCurveTo(left,top-rise*.60,cx-w.width*.23,top-rise,cx,top-rise);c.bezierCurveTo(cx+w.width*.23,top-rise,right,top-rise*.60,right,top);
+}
+function glassPane(c:CanvasRenderingContext2D,w:VaultWindow){
+ const bottom=w.top+w.height;c.beginPath();glassArch(c,w);c.lineTo(w.left+w.width,bottom-3);c.quadraticCurveTo(w.left+w.width/2,bottom+2,w.left,bottom-3);c.closePath();
+}
+function vaultGlassBack(c:CanvasRenderingContext2D,w:VaultWindow){
+ c.save();glassPane(c,w);const color=c.createLinearGradient(w.left,w.top-w.archRise,w.left+w.width,w.top+w.height);color.addColorStop(0,'rgba(126,216,207,.09)');color.addColorStop(.5,'rgba(80,172,182,.035)');color.addColorStop(1,'rgba(127,218,210,.075)');c.fillStyle=color;c.fill();c.strokeStyle='rgba(153,219,213,.17)';c.lineWidth=1;c.stroke();c.restore();
+}
+function vaultGlassFront(c:CanvasRenderingContext2D,w:VaultWindow,progress:number){
+ const right=w.left+w.width,bottom=w.top+w.height;c.save();c.globalAlpha=.35+.65*smooth(.45,.95,progress);glassPane(c,w);c.clip();
+ // Narrow diagonal reflections let the room and original receipt stay visible through the pane.
+ c.fillStyle='rgba(225,255,242,.14)';c.beginPath();c.moveTo(w.left+6,w.top+12);c.lineTo(right-10,w.top+51);c.lineTo(right-10,w.top+53);c.lineTo(w.left+6,w.top+14);c.closePath();c.fill();
+ c.fillStyle='rgba(224,255,244,.10)';c.beginPath();c.moveTo(w.left+9,w.top+29);c.lineTo(w.left+29,w.top+43);c.lineTo(w.left+29,w.top+44);c.lineTo(w.left+9,w.top+30);c.closePath();c.fill();
+ c.strokeStyle='rgba(220,251,238,.48)';c.lineWidth=1;c.beginPath();glassArch(c,w);c.stroke();
+ c.fillStyle='rgba(222,255,242,.34)';c.fillRect(w.left+2,w.top+9,1,bottom-w.top-22);c.fillRect(right-3,w.top+19,1,34);c.fillStyle='rgba(242,255,234,.17)';c.fillRect(w.left+5,w.top+12,1,23);
+ c.strokeStyle='rgba(192,243,224,.28)';c.beginPath();c.moveTo(w.left,bottom-3);c.quadraticCurveTo(w.left+w.width/2,bottom+2,right,bottom-3);c.stroke();c.restore();
 }
 function baseLighting(c:CanvasRenderingContext2D,e:Exhibit,offset:number,light:number,t:number){
  const entry=registrations['receipt-base-l1'];if(!entry)return;const base=registeredRect('receipt-base-l1',e,entry.world.draw);
@@ -65,8 +89,8 @@ export function drawReceiptStudy(c:CanvasRenderingContext2D,a:ReceiptDraw){
   // Cut away the old physical base. A new base must never sit on a second pedestal sprite.
   const sourceBottom=252,bodyHeight=(sourceBottom-e.crop.y)*s;c.drawImage(back,e.crop.x,e.crop.y,e.crop.w,sourceBottom-e.crop.y,p.x,p.y,e.crop.w*s,bodyHeight);
  }else{
-  // The premium vault is empty artwork; a transparent glass rear sits behind the independent receipt.
-  const left=e.x-47,top=e.y-189;c.fillStyle='#73bfc214';c.beginPath();c.moveTo(left,top+158);c.lineTo(left,top+22);c.quadraticCurveTo(left,top,left+22,top);c.lineTo(left+72,top);c.quadraticCurveTo(left+94,top,left+94,top+22);c.lineTo(left+94,top+158);c.closePath();c.fill();
+  // A real registered pane closes the arch: rear glass → machinery → original specimen.
+  vaultGlassBack(c,receiptVaultWindow(e));
  }
  if(level>=2){
   const machine=registeredRect('receipt-mechanism-l2',e,{left:b.x,top:b.y,width:cavityW,height:cavityH});
@@ -79,7 +103,7 @@ export function drawReceiptStudy(c:CanvasRenderingContext2D,a:ReceiptDraw){
  c.save();c.beginPath();c.rect(b.x,b.y,cavityW,cavityH);c.clip();
  if(known){c.save();c.translate(center.x,center.y+Math.sin(t*1.4)*2);c.rotate(Math.sin(t*.8)*.035);sprite(c,item,-iw/2,-iw/2,iw,iw);c.restore();c.fillStyle='#ffeab9';for(let i=0;i<3;i++)c.fillRect(center.x-9+i*8,center.y+iw*.25+(t*4+i*5)%12,2,2);}
  if(level<3){c.save();c.globalAlpha=.9;c.drawImage(front,e.front.x,e.front.y,e.front.w,e.front.h,b.x,b.y,cavityW,cavityH);c.restore();}c.restore();
- if(level===3){c.fillStyle='#d4f8ee35';c.fillRect(e.x-38,e.y-160,2,110);c.fillRect(e.x-33,e.y-158,3,32);c.fillStyle='#fff7cd38';c.fillRect(e.x+37,e.y-132,2,79);}
+ if(level===3)vaultGlassFront(c,receiptVaultWindow(e),a.install);
  if(level===3){
   // Split outer shell parts close around an existing glass/receipt chamber, no rescaling specimen.
   const vault=registeredRect('receipt-vault-l3',e,{left:175-g.baseWidth/2,top:526-g.frameHeight,width:g.baseWidth,height:g.frameHeight});vaultParts(c,assets.vault,vault.left,vault.top,vault.width,vault.height,assembly);
