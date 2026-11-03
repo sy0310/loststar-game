@@ -32,6 +32,11 @@ it('A到B的2→1结果取决于实际记录，重复和乱序记录不制造额
   expect(resolveReceiptReading(3,a)).toEqual(resolveReceiptReading(3,a));
   expect(JSON.stringify(a)).toBe(before);
 });
+it('非有限研究级安全退回回应好奇心',()=>{
+  for(const level of [NaN,Infinity,-Infinity]){
+    expect(resolveReceiptReading(level,RECEIPT_SAMPLE_BATCHES.A).researchLevel).toBe(0);
+  }
+});
 
 it('真实四秒内按开卷、读出、核对、打印、收卷推进，已发生行由动画折回',()=>{
   const reading=resolveReceiptReading(3,RECEIPT_SAMPLE_BATCHES.A);
