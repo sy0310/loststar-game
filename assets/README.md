@@ -42,3 +42,8 @@
 内置 image_gen 独立制作 `glass-a/b/c-v02.png`（每张两种容器、上排后壁、下排前玻璃），`museum-room-v02.png` 初稿与 `museum-room-spaced-v02.png` 调整后空房间，`habitats-v02.png` 三个不含居民的环境、`invader-v02.png` 一种纸影的四姿态。原始PNG和完整提示词 `v02-generation-prompts.json`、`v02-followup-prompts.json` 均保留；没有手工Aseprite工程。
 
 运行 `npm run assets:export:v02`：标准分格、最近邻缩放、WebP导出；容器前后层保持相同单元坐标，藏品/居民由独立图像及运行时代码绘制。12张玻璃层、1房间、3生态背景、1入侵者图集作为正式运行纹理；不从设计参考拼版取材。`v02-metadata.json` 记录容器来源单元。主游戏不打包概念PNG、审核截图或录像。
+
+
+## V0.3 安保/损伤/维修样板
+
+没有重画另一颗球体或拿参考拼版投产。警戒灯复用本项目原创 `equipment-radar.webp`，隔离设施复用 `sorter.webp` 的机壳/底座，并以独立Canvas闸栏、警戒引导光、状态短签实现工作层。咔哒、飞船和纸影仍用原透明图集；损伤裂纹、撞击碎屑、护板补片和焊接火花是 `src/render/guard-scene.ts` 的程序层，由同源实际事件/维修记录驱动。没有新增第三方素材、战斗页面或黑底整图替换；现有源PNG/完整提示词保留。
