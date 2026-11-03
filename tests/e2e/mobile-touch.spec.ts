@@ -70,3 +70,21 @@ test('触控：从真实玻璃容器打开六件藏品并就地试验，生态�
  await tap(page,page.locator('[data-habitat="tagbird"]'));await tap(page,page.locator('[data-interact="tagbird"]'));await expect(page.locator('#interaction-feedback')).toBeInViewport();await tap(page,page.getByRole('button',{name:'关闭详情'}));
  await tap(page,page.locator('#exhibition [data-go="base"]'));await tap(page,page.getByRole('link',{name:/夜间守护试玩/}));await expect(page.locator('#guard-phase')).toHaveAttribute('data-phase','day');await tap(page,page.getByRole('link',{name:'返回收件站'}));await expect(page.locator('#base')).toBeVisible();
 });
+
+test('夜守同源：空槽/单槽/双槽真实结果不同，晨间逐个记录抵达与提前拦退',async({page})=>{
+ await page.clock.install({time:new Date('2026-11-03T07:00:00Z')});await page.clock.pauseAt(new Date('2026-11-03T07:00:10Z'));await seeded(page,'/night-lab.html?review=1');const formal=await page.evaluate(k=>localStorage.getItem(k),KEY);
+ await page.locator('#guard-pacing').selectOption('short');
+ for(const [a,b,count] of [['','','0'],['tape','','1'],['tape','bell','2']]){
+  await page.locator('#guard-slot-0').selectOption(a);await page.locator('#guard-slot-1').selectOption(b);await tap(page,page.getByRole('button',{name:'预演夜晚',exact:true}));await expect(page.locator('#guard-live')).toBeVisible();await page.clock.fastForward(10200);
+  await expect(page.locator('#guard-report')).toHaveAttribute('data-intercepted',count);await expect(page.locator('#guard-report [data-visitor-result]')).toHaveCount(3);await expect(page.locator('#guard-report')).toContainText('安全送回');
+ }
+ expect(await page.evaluate(k=>localStorage.getItem(k),KEY)).toBe(formal);
+ await page.evaluate(k=>{const s=JSON.parse(localStorage.getItem(k)!);s.growth={'guard-0':3,'guard-1':3};localStorage.setItem(k,JSON.stringify(s));},KEY);await page.reload();await tap(page,page.getByRole('button',{name:'预演夜晚',exact:true}));await page.clock.fastForward(10200);await expect(page.locator('#guard-report')).toHaveAttribute('data-intercepted','3');await expect(page.locator('#guard-report')).toContainText('完整封条档案');await expect(page.locator('#guard-effect-0')).toContainText('62%');await expect(page.locator('#guard-effect-1')).toContainText('1.7');
+});
+
+test('成长付款后展示真实近景前后对照，切换不再扣款，守护能力有具体数字',async({page})=>{
+ await page.clock.install({time:new Date('2026-11-03T07:00:00Z')});await page.clock.pauseAt(new Date('2026-11-03T07:00:10Z'));await seeded(page);await tap(page,page.getByRole('button',{name:'进入失物收藏室',exact:true}));await tap(page,page.getByRole('button',{name:'展柜与设施升级'}));
+ const before=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).resources,KEY);await tap(page,page.locator('[data-growth-buy="case-0"]'));const receipt=page.locator('#growth-receipt');await expect(receipt).toBeInViewport();await expect(receipt).toContainText('160');await expect(receipt.locator('canvas')).toHaveAttribute('data-ready','true');
+ await tap(page,receipt.getByRole('button',{name:'升级前',exact:true}));const old=await receipt.locator('canvas').screenshot();await tap(page,receipt.getByRole('button',{name:'升级后',exact:true}));expect(await receipt.locator('canvas').screenshot()).not.toEqual(old);expect(await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).resources,KEY)).toBe(before-160);
+ await tap(page,page.locator('[data-growth-filter="守护"]'));await expect(page.locator('[data-growth="guard-0"]')).toContainText('44%');await expect(page.locator('[data-growth="guard-0"]')).toContainText('50%');await expect(page.locator('[data-growth="guard-0"]')).toContainText('1.3');
+});

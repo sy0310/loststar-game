@@ -22,7 +22,7 @@ describe('独立、默认关闭的首星夜间实验',()=>{
     let s=equipGuard(equipGuard(createGuard(START,['tape','bell']),0,'tape'),1,'bell');s=setGuardEnabled(s,true,START);
     const owned=[...s.owned],offline=advanceGuard(s,START+3600000);let online=s;
     for(let i=1;i<=3600;i++)online=advanceGuard(online,START+i*1000);
-    expect(offline).toEqual(online);expect(offline.reports).toEqual({nights:12,clues:36,intercepted:36});expect(offline.owned).toEqual(owned);
+    expect(offline).toEqual(online);expect(offline.reports).toEqual({nights:12,clues:36,intercepted:24,arrived:12,verifiedNights:12});expect(offline.owned).toEqual(owned);
     expect(restoreGuard(JSON.stringify(offline),offline.lastAt,owned)).toEqual(offline);expect(advanceGuard(offline,offline.lastAt)).toEqual(offline);
   });
   it('守护效果能改变可见入侵者，数量有界、空槽也不受惩罚',()=>{
