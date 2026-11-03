@@ -59,3 +59,12 @@ test('正常入口不载入实验、不创建守护存档',async({page})=>{
   await expect(page.getByRole('button',{name:'开启夜间实验',exact:true})).toHaveCount(0);
   expect(await page.evaluate(()=>performance.getEntriesByType('resource').map(e=>e.name).some(name=>name.includes('/prototype/')))).toBe(false);
 });
+
+test('触控：从真实玻璃容器打开六件藏品并就地试验，生态区和夜守入口可返回',async({page})=>{
+ await seeded(page);await tap(page,page.getByRole('button',{name:'进入失物收藏室',exact:true}));await expect(page.locator('#exhibition #museum-canvas')).toHaveAttribute('data-ready','true');
+ for(const id of ['receipt','tape','nested','stamp','cosmic-parcel','bell']){
+  await tap(page,page.locator(`#exhibition [data-exhibit="${id}"]`));await tap(page,page.locator(`[data-interact="${id}"]`));await expect(page.locator('#interaction-feedback')).toBeInViewport();await expect(page.locator('#interaction-feedback')).toHaveAttribute('data-last-input','touch');await tap(page,page.getByRole('button',{name:'关闭详情'}));
+ }
+ await tap(page,page.locator('[data-habitat="tagbird"]'));await tap(page,page.locator('[data-interact="tagbird"]'));await expect(page.locator('#interaction-feedback')).toBeInViewport();await tap(page,page.getByRole('button',{name:'关闭详情'}));
+ await tap(page,page.locator('#exhibition [data-go="base"]'));await tap(page,page.getByRole('link',{name:/夜间守护试玩/}));await expect(page.locator('#guard-phase')).toHaveAttribute('data-phase','day');await tap(page,page.getByRole('link',{name:'返回收件站'}));await expect(page.locator('#base')).toBeVisible();
+});

@@ -18,3 +18,11 @@ test('正式基地免费陈列可放大试验，成长购买保留存档，夜�
  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!).growth['case-0'])).toBe(1);
  await page.getByRole('link',{name:/夜间守护试玩/}).click();await expect(page.locator('#guard-phase')).toHaveAttribute('data-phase','day');await page.getByRole('link',{name:'返回收件站'}).click();await expect(page.locator('#base')).toBeVisible();
 });
+
+test('星际扫描持续经过异常与核对，弱信号自动重试，无提前星球或假远征入口',async({page})=>{
+ await page.clock.install({time:new Date('2026-11-03T05:00:00Z')});await page.clock.pauseAt(new Date('2026-11-03T05:00:10Z'));await page.goto('/?start=base');await page.getByRole('button',{name:'星图',exact:true}).click();await page.getByRole('button',{name:'星际监听',exact:true}).click();
+ const status=page.locator('#interstellar-status');await expect(status).toHaveAttribute('data-stage','searching');
+ async function step(ms:number){for(let left=ms;left>0;left-=10000){await page.clock.fastForward(Math.min(left,10000));await page.waitForFunction(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!).lastAt>=Date.now()-500);}}
+ await step(46000);await expect(status).toHaveAttribute('data-stage','anomaly');await step(27000);await expect(status).toHaveAttribute('data-stage','locating');await step(18000);await expect(status).toHaveAttribute('data-stage','unconfirmed');await expect(status).toContainText('尚不能确认坐标');await step(13000);await expect(status).toHaveAttribute('data-stage','searching');
+ await expect(page.locator('#star-routes button')).toHaveCount(1);expect(await page.locator('body').ariaSnapshot()).not.toMatch(/回声菌星|六颗|6颗|问号|未签收之星/);const s=await page.evaluate(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!));expect(s.chart.records.map((r:{id:string})=>r.id)).toEqual(['parcel']);await page.reload();const after=await page.evaluate(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!));expect(after.chart.records).toEqual(s.chart.records);
+});
