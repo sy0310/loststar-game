@@ -36,3 +36,9 @@
 - `src/generated/robot-empty-v3.png`：基于原八姿势图集去掉手内固化包裹，保留空手抓取/携带/递交姿态。`robot-empty-v3.webp` 固定 160px 单元；包裹位置由独立运动数据与 Canvas 层绘制。
 - 完整内置 image_gen 提示词：`src/phase1-5-generation-prompts.json`。旧源与旧图集保留；没有手工 Aseprite 工程。
 - 声音源：`../src/ui/audio.ts` 的原创振荡器/包络短音效；无第三方音源。`../artifacts/phase1-5/audio/` 是通过同一代码离线渲染的 WAV 审听样本。
+
+## V0.2 收藏室与夜守素材
+
+内置 image_gen 独立制作 `glass-a/b/c-v02.png`（每张两种容器、上排后壁、下排前玻璃），`museum-room-v02.png` 初稿与 `museum-room-spaced-v02.png` 调整后空房间，`habitats-v02.png` 三个不含居民的环境、`invader-v02.png` 一种纸影的四姿态。原始PNG和完整提示词 `v02-generation-prompts.json`、`v02-followup-prompts.json` 均保留；没有手工Aseprite工程。
+
+运行 `npm run assets:export:v02`：标准分格、最近邻缩放、WebP导出；容器前后层保持相同单元坐标，藏品/居民由独立图像及运行时代码绘制。12张玻璃层、1房间、3生态背景、1入侵者图集作为正式运行纹理；不从设计参考拼版取材。`v02-metadata.json` 记录容器来源单元。主游戏不打包概念PNG、审核截图或录像。
