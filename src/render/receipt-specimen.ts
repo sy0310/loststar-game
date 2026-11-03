@@ -1,4 +1,6 @@
 /** D1-only paper rig. Every band shares its boundary with its neighbours. */
+import type {ReceiptExperimentFrame} from '../review/receipt-reading';
+import {prepareReceiptInnerPaper,paintReceiptInnerContent,drawReceiptUnfold,drawReceiptTicket} from './receipt-experiment';
 const BAND_COUNT = 9;
 const TEXTURE_SIZE = 256;
 const TRANSITION_SECONDS = 1;
@@ -36,7 +38,8 @@ export function receiptPaperRig(seconds: number, options: RigOptions) {
     if (index === 0) return {x: 0, y: -frame / 2};
     if (index === BAND_COUNT) return {x: 0, y: frame / 2};
     const v = index / BAND_COUNT;
-    const body = (v - hingeV) * Math.sin(Math.PI * v);
+    const anchored=index<=Math.ceil(hingeV*BAND_COUNT);
+    const body = anchored?0:(v - hingeV) * Math.sin(Math.PI * v);
     const curl = smooth((v - curlV) / (1 - curlV)) * (1 - v) * 6;
     const displacement = body * Math.sin(seconds * .85) * 1.2
       + curl * (Math.sin(seconds * 1.35 - .8) * 1.1 + unfold * .9);
@@ -87,6 +90,7 @@ export type ReceiptSpecimenAssets = {
   specimen1: HTMLImageElement;
   specimen2: HTMLImageElement;
   specimen3: HTMLImageElement;
+  innerBlank:HTMLImageElement;
 };
 
 export type PaperRect = {x: number; y: number; width: number; height: number};
@@ -97,6 +101,7 @@ type TierRegistration = {
   inkStrip: PaperRect;
   returnStamp: PaperRect;
   lowerCurl: PaperRect;
+  unfoldCutY?:number;
   hingeUv: {x: number; y: number};
 };
 type SpecimenRegistration = {
@@ -113,13 +118,14 @@ type SpecimenRegistration = {
   };
   receipts: {
     tiers: TierRegistration[];
+    innerPaper:TierRegistration;
     common: {
       hingeUv: {x: number; y: number};
     };
   };
 };
 
-const imageUrls = import.meta.glob('../../assets/runtime/d1-refinement/receipt-tier-*.webp', {
+const imageUrls = import.meta.glob(['../../assets/runtime/d1-refinement/receipt-tier-*.webp','../../assets/runtime/d1-refinement/receipt-inner-blank.webp'], {
   eager: true, query: '?url', import: 'default',
 }) as Record<string, string>;
 const registrationFiles = import.meta.glob('../../assets/runtime/d1-refinement/registration.json', {
@@ -127,15 +133,15 @@ const registrationFiles = import.meta.glob('../../assets/runtime/d1-refinement/r
 }) as Record<string, SpecimenRegistration>;
 
 export function createReceiptSpecimenAssets(): ReceiptSpecimenAssets {
-  const load = (tier: number) => {
-    const path = `../../assets/runtime/d1-refinement/receipt-tier-${tier}.webp`;
+  const load = (name:string) => {
+    const path = `../../assets/runtime/d1-refinement/${name}.webp`;
     const url = imageUrls[path];
-    if (!url) throw new Error(`Missing D1 receipt specimen tier ${tier}`);
+    if (!url) throw new Error(`Missing D1 receipt specimen ${name}`);
     const image = new Image();
     image.src = url;
     return image;
   };
-  return {specimen0: load(0), specimen1: load(1), specimen2: load(2), specimen3: load(3)};
+  return {specimen0:load('receipt-tier-0'),specimen1:load('receipt-tier-1'),specimen2:load('receipt-tier-2'),specimen3:load('receipt-tier-3'),innerBlank:load('receipt-inner-blank')};
 }
 
 export function receiptSpecimenRegistration() {
@@ -153,11 +159,17 @@ export type ReceiptSpecimenOptions = {
   installation: number;
   lights: ReceiptLight[];
   glass: number;
+  experiment?:ReceiptExperimentFrame;
+  receiverY?:number;
 };
 export type ReceiptSpecimenResult = {
   tier: number;
   reveal: number;
   bounds: {left: number; top: number; width: number; height: number};
+  experiment?:{
+    phase:ReceiptExperimentFrame['phase'];researchLevel:number;extension:number;bottom:number;
+    floorGap:number;hinge:{x:number;y:number};renderedLineIds:string[];
+  };
 };
 
 type Surface = {canvas: HTMLCanvasElement; context: CanvasRenderingContext2D};
@@ -171,6 +183,8 @@ type PreparedPaper = {
   curlV: number;
   sourcePixel: number;
   profile: PaperRow[];
+  face:PaperRect;
+  hinge:{x:number;y:number};
 };
 
 function surface(): Surface {
@@ -203,6 +217,7 @@ function preparePaper(image: HTMLImageElement, registration: TierRegistration): 
     TEXTURE_SIZE / 2 + fit.left, TEXTURE_SIZE / 2 + fit.top, fit.width, fit.height,
   );
   const ink = surface();
+  const face=mappedRect(registration.paperFace,crop,fit);
   const pixels = paper.context.getImageData(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
   const inkRect = mappedRect(registration.inkStrip, crop, fit);
   const stamp = mappedRect(registration.returnStamp, crop, fit);
@@ -227,30 +242,41 @@ function preparePaper(image: HTMLImageElement, registration: TierRegistration): 
     stamp,
     fit,
     hingeV: clamp((registration.hingeUv.y * image.naturalHeight - crop.y) / crop.height),
-    curlV: Math.max(.68, Math.min(.86, (registration.lowerCurl.y - crop.y) / crop.height)),
+    curlV: Math.max(.68, Math.min(.86, ((registration.unfoldCutY??registration.lowerCurl.y) - crop.y) / crop.height)),
     sourcePixel: TEXTURE_SIZE / crop.height,
     profile,
+    face,
+    hinge:{
+      x:TEXTURE_SIZE/2+fit.left+(registration.hingeUv.x*image.naturalWidth-crop.x)*fit.scale,
+      y:TEXTURE_SIZE/2+fit.top+(registration.hingeUv.y*image.naturalHeight-crop.y)*fit.scale,
+    },
   };
 }
 
 class ReceiptSpecimenPainter {
   private papers: PreparedPaper[];
+  private innerPaper:PreparedPaper;
+  private innerMaterial:ReturnType<typeof prepareReceiptInnerPaper>;
   private litFrom = surface();
   private litTo = surface();
   private revealed = surface();
   private combined = surface();
+  private experimentPage=surface();
+  private experimentLit=surface();
   private transition?: ReceiptTransition;
 
-  constructor(images: HTMLImageElement[], registrations: TierRegistration[]) {
+  constructor(images: HTMLImageElement[], registrations: TierRegistration[],blank:HTMLImageElement,blankRegistration:TierRegistration) {
     this.papers = images.map((image, index) => preparePaper(image, registrations[index]));
+    this.innerPaper=preparePaper(blank,blankRegistration);
+    this.innerMaterial=prepareReceiptInnerPaper(this.innerPaper.surface.canvas,this.innerPaper.face,this.innerPaper.curlV);
   }
 
-  private illuminate(index: number, target: Surface, options: ReceiptSpecimenOptions) {
+  private illuminate(index: number, target: Surface, options: ReceiptSpecimenOptions,innerPage?:HTMLCanvasElement) {
     const {context: c} = target;
     const paper = this.papers[index];
     const units = TEXTURE_SIZE / options.frame;
     c.clearRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
-    c.drawImage(paper.surface.canvas, 0, 0);
+    c.drawImage(innerPage??paper.surface.canvas, 0, 0);
     c.save();
     c.globalCompositeOperation = 'source-atop';
     for (const light of options.lights) {
@@ -278,6 +304,7 @@ class ReceiptSpecimenPainter {
     c.fillStyle = curlShade;
     c.fillRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
     c.restore();
+    if(innerPage)return;
     // Ink belongs to this paper surface. The rig below bends the stamp and fibres together.
     c.save();
     c.globalCompositeOperation = 'multiply';
@@ -366,17 +393,19 @@ class ReceiptSpecimenPainter {
   }
 
   draw(c: CanvasRenderingContext2D, options: ReceiptSpecimenOptions): ReceiptSpecimenResult {
-    this.transition = advanceReceiptTransition(this.transition, options.level, options.seconds, options.installation);
+    const paperLevel=options.experiment?.reading.researchLevel??options.level;
+    this.transition = advanceReceiptTransition(this.transition, paperLevel, options.seconds, options.installation);
     const transition = this.transition;
     const paper = this.papers[transition.level];
     const previous = this.papers[transition.fromLevel];
+    const rigPaper=options.experiment?this.innerPaper:paper;
     const mix = transition.fromLevel === transition.level ? 1 : transition.mix;
-    const paperWidth = Math.max(paper.fit.width, previous.fit.width) / TEXTURE_SIZE * options.frame;
+    const paperWidth = Math.max(paper.fit.width, previous.fit.width,rigPaper.fit.width) / TEXTURE_SIZE * options.frame;
     const rig = receiptPaperRig(options.seconds, {
       frame: options.frame,
       paperWidth,
-      hingeV: paper.hingeV,
-      curlV: paper.curlV,
+      hingeV: rigPaper.hingeV,
+      curlV: rigPaper.curlV,
       reveal: mix,
     });
     const composite = this.combined.context;
@@ -398,6 +427,32 @@ class ReceiptSpecimenPainter {
       composite.drawImage(this.litTo.canvas, 0, 0);
     }
 
+    if(options.experiment){
+      const experiment=options.experiment;
+      const inner=this.innerPaper;
+      const renderedLineIds=paintReceiptInnerContent(this.experimentPage,inner.surface.canvas,inner.face,inner.hinge.x,inner.profile,inner.curlV*TEXTURE_SIZE,experiment);
+      this.illuminate(paperLevel,this.experimentLit,options,this.experimentPage.canvas);
+      const hinge={
+        x:options.center.x+(inner.hinge.x/TEXTURE_SIZE-.5)*options.frame,
+        y:options.center.y+(inner.hinge.y/TEXTURE_SIZE-.5)*options.frame,
+      };
+      const receiverY=options.receiverY??options.center.y+options.frame/2+18;
+      c.save();c.beginPath();
+      c.rect(options.center.x-options.frame/2,options.center.y-options.frame/2,options.frame,receiverY-(options.center.y-options.frame/2));
+      c.clip();c.imageSmoothingEnabled=false;
+      const geometry=drawReceiptUnfold(c,{center:options.center,frame:options.frame,receiverY},experiment,{
+        outer:this.combined.canvas,inner:this.experimentLit.canvas,extension:this.innerMaterial.extension.canvas,
+        profile:inner.profile,curlV:inner.curlV,hinge,
+      },rig,image=>this.drawBands(c,image,rig,options,paper.sourcePixel));
+      c.restore();
+      const bounds=this.visibleBounds(inner,inner,rig,options,1);
+      return {
+        tier:paperLevel,reveal:mix,bounds:{...bounds,left:bounds.left+Math.min(0,geometry.capShift),width:bounds.width+Math.abs(geometry.capShift),height:bounds.height+geometry.extension},
+        experiment:{phase:experiment.phase,researchLevel:experiment.reading.researchLevel,
+          extension:geometry.extension,bottom:geometry.bottom,floorGap:receiverY-geometry.bottom,hinge,renderedLineIds:experiment.open>.02?renderedLineIds:[]},
+      };
+    }
+
     c.save();
     c.beginPath();
     c.rect(options.center.x - options.frame / 2, options.center.y - options.frame / 2, options.frame, options.frame);
@@ -411,6 +466,13 @@ class ReceiptSpecimenPainter {
       bounds: this.visibleBounds(paper, previous, rig, options, mix),
     };
   }
+
+  drawTicket(c:CanvasRenderingContext2D,options:ReceiptSpecimenOptions){
+    const frame=options.experiment;
+    if(!frame)return;
+    const material=this.innerMaterial.grain.canvas;
+    drawReceiptTicket(c,options.center,options.receiverY!,material,frame);
+  }
 }
 
 const painters = new WeakMap<HTMLImageElement, ReceiptSpecimenPainter>();
@@ -422,8 +484,12 @@ export function drawReceiptSpecimen(
   let painter = painters.get(assets.specimen0);
   if (!painter) {
     const images = [assets.specimen0, assets.specimen1, assets.specimen2, assets.specimen3];
-    painter = new ReceiptSpecimenPainter(images, receiptSpecimenRegistration().receipts.tiers);
+    const registration=receiptSpecimenRegistration().receipts;
+    painter = new ReceiptSpecimenPainter(images,registration.tiers,assets.innerBlank,registration.innerPaper);
     painters.set(assets.specimen0, painter);
   }
   return painter.draw(c, options);
+}
+export function drawReceiptSpecimenTicket(c:CanvasRenderingContext2D,assets:ReceiptSpecimenAssets,options:ReceiptSpecimenOptions){
+  painters.get(assets.specimen0)?.drawTicket(c,options);
 }

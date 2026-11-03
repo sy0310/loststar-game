@@ -14,7 +14,7 @@ export const RECEIPT_STEP_LABELS: Record<ReceiptStep, string> = {
   arrived: '待到站', checked: '待核验', signed: '待签收',
 };
 const STEPS: ReceiptStep[] = ['arrived', 'checked', 'signed'];
-export type ReceiptSlip = {id: string; title: string; address: string};
+export type ReceiptSlip = {id: string; title: string; address: string; paperTitle?:string};
 export type ReceiptRecord = {id: string; slipId: string; step: ReceiptStep};
 export type ReceiptBatch = {
   id: string;
@@ -24,9 +24,9 @@ export type ReceiptBatch = {
 };
 
 const slips: ReceiptSlip[] = [
-  {id: 'silent-bell', title: '未响的门铃', address: '收件站·东柜03'},
-  {id: 'yesterday-apology', title: '寄给昨天的道歉', address: '管道口·转运箱02'},
-  {id: 'late-signature', title: '迟到的签收', address: '收件站·回执槽01'},
+  {id: 'silent-bell', title: '未响的门铃', paperTitle:'未响门铃', address: '收件站·东柜03'},
+  {id: 'yesterday-apology', title: '寄给昨天的道歉', paperTitle:'昨日道歉', address: '管道口·转运箱02'},
+  {id: 'late-signature', title: '迟到的签收', paperTitle:'迟到签收', address: '收件站·回执槽01'},
 ];
 const recordsA: ReceiptRecord[] = [
   {id: 'bell-arrived', slipId: 'silent-bell', step: 'arrived'},
@@ -47,6 +47,7 @@ export const RECEIPT_SAMPLE_BATCHES: Record<'A' | 'B', ReceiptBatch> = {
 export type ReceiptReadLine = {
   id: string;
   title: string;
+  paperTitle:string;
   address?: string;
   status: 'unverified' | 'pending' | 'complete';
   nextStep?: ReceiptStep;
@@ -93,6 +94,7 @@ export function resolveReceiptReading(level: number, batch: ReceiptBatch): Recei
     return {
       id: slip.id,
       title: slip.title,
+      paperTitle:slip.paperTitle??slip.title,
       ...(researchLevel >= 2 ? {address: slip.address} : {}),
       status: checked ? checked.nextStep ? 'pending' : 'complete' : 'unverified',
       ...(nextStep ? {nextStep, nextStepLabel: RECEIPT_STEP_LABELS[nextStep]} : {}),
