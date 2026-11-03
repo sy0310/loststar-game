@@ -7,13 +7,15 @@ import bellUrl from '../../assets/runtime/bell.webp';
 type GuardVisual=ReturnType<typeof guardView>;
 
 export function guardLayer(getVisual:()=>GuardVisual):SceneExtension {
-  let tint:HTMLCanvasElement|null=null,rim:HTMLCanvasElement|null=null;const invader=new Image();invader.src=invaderUrl;
+  let tint:HTMLCanvasElement|null=null,warm:HTMLCanvasElement|null=null,rim:HTMLCanvasElement|null=null;const invader=new Image();invader.src=invaderUrl;
   const icons={tape:new Image(),bell:new Image()};icons.tape.src=tapeUrl;icons.bell.src=bellUrl;
   const point=(progress:number)=>({x:570-progress*233,y:530-progress*76+Math.sin(progress*Math.PI)*24});
-  return {robotPose:()=>{const v=getVisual();if(v.phase!=='night')return undefined;const a=(v.nightBase%12)/12,base=robotPose(0),x=a<.3?327+a/.3*78:a<.65?405:a<.95?405-(a-.65)/.3*78:327,y=454+(x-327)/78*24;return {...base,x,y,action:a<.3?'walk':a<.65?'scan':a<.95?'return':'unload',parcel:{...base.parcel,x:520,y:520,visible:false,held:false}};},afterWorld(c:CanvasRenderingContext2D,frame:SceneFrame){
+  return {robotPose:(dayPose)=>{const v=getVisual();if(v.phase!=='night'){const dawn=240000-v.untilNextMs;if(v.nightNumber>1&&dawn>=0&&dawn<2500){const f=dawn/2500;return {...dayPose,x:327+(dayPose.x-327)*f,y:454+(dayPose.y-454)*f,action:'walk',parcel:{...dayPose.parcel,visible:false}};}return undefined;}const a=(v.nightBase%12)/12,base=robotPose(0),targetX=a<.3?327+a/.3*78:a<.65?405:a<.95?405-(a-.65)/.3*78:327,targetY=454+(targetX-327)/78*24,blend=Math.min(1,v.nightBase/2.5),x=dayPose.x+(targetX-dayPose.x)*blend,y=dayPose.y+(targetY-dayPose.y)*blend;return {...base,x,y,action:a<.3?'walk':a<.65?'scan':a<.95?'return':'unload',parcel:{...base.parcel,x:520,y:520,visible:false,held:false}};},afterWorld(c:CanvasRenderingContext2D,frame:SceneFrame){
     const v=getVisual(),t=frame.t;
     if(v.light>0){
       if(!tint){tint=document.createElement('canvas');tint.width=frame.globe.width;tint.height=frame.globe.height;const m=tint.getContext('2d')!;m.drawImage(frame.globe,0,0);m.globalCompositeOperation='source-in';m.fillStyle='#0a143c';m.fillRect(0,0,tint.width,tint.height);}
+      if(!warm){warm=document.createElement('canvas');warm.width=frame.globe.width;warm.height=frame.globe.height;const m=warm.getContext('2d')!;m.drawImage(frame.globe,0,0);m.globalCompositeOperation='source-in';m.fillStyle='#e59a52';m.fillRect(0,0,warm.width,warm.height);}
+      const warmth=v.phase==='dusk'?Math.sin(v.light/.65*Math.PI/2)*.17:v.phase==='night'?Math.max(0,1-v.nightBase/3)*.17:0;if(warmth){c.save();c.globalAlpha=warmth;c.drawImage(warm,52,70,664,664);c.restore();}
       c.save();c.globalAlpha=v.light*.56;c.drawImage(tint,52,70,664,664);c.restore();
       for(const [x,y] of [[271,330],[557,208],[345,634],[488,610]]){
         c.save();c.globalAlpha=v.light;const g=c.createRadialGradient(x+3,y+2,1,x+3,y+2,30);g.addColorStop(0,'#ffe4a666');g.addColorStop(1,'#ffe4a600');c.fillStyle=g;c.fillRect(x-28,y-28,60,60);c.fillStyle='#ffecb4';c.fillRect(x,y,7,4);c.restore();

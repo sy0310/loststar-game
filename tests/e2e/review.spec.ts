@@ -1,24 +1,24 @@
 import {test,expect} from '@playwright/test';
 test('冷首次访问基地：慢网期间不显示悬空角色，解码后才整体显现',async({page})=>{
   let release!:()=>void;const gate=new Promise<void>(resolve=>release=resolve);
-  await page.route(/station.*\.webp/,async route=>{if(route.request().resourceType()==='image')await gate;await route.continue();});
+  await page.route(/museum-room.*\.webp/,async route=>{if(route.request().resourceType()==='image')await gate;await route.continue();});
   await page.goto('/',{waitUntil:'domcontentloaded'});
   try{
     await expect(page.getByRole('button',{name:'基地',exact:true})).toHaveAttribute('aria-current','page');
     await expect(page.locator('.base-scene')).toHaveAttribute('data-background-state','loading');
     await expect(page.getByText('收件站正在接通')).toBeVisible();
     await page.waitForTimeout(750); // Intentionally hold a slow response; overlay must remain coherent.
-    await expect(page.locator('.base-rover')).toBeHidden();
+    await expect(page.locator('#base #museum-canvas')).toBeHidden();
   }finally{release();}
   await expect(page.locator('.base-scene')).toHaveAttribute('data-background-state','ready');
-  expect(await page.locator('#base-background').evaluate((img:HTMLImageElement)=>img.complete&&img.naturalWidth>0)).toBe(true);
-  await expect(page.locator('.base-rover')).toBeVisible();await page.reload();
+  expect(await page.locator('#museum-canvas').evaluate(c=>(c as HTMLElement).dataset.ready==='true')).toBe(true);
+  await expect(page.locator('#base #museum-canvas')).toBeVisible();await page.reload();
   await expect(page.locator('.base-scene')).toHaveAttribute('data-background-state','ready');
 });
 test('基地图片失败有可操作重试，不把空房间当加载完成',async({page})=>{
-  await page.route(/station.*\.webp/,r=>r.request().resourceType()==='image'?r.abort():r.continue());await page.goto('/');
+  await page.route(/museum-room.*\.webp/,r=>r.request().resourceType()==='image'?r.abort():r.continue());await page.goto('/');
   await expect(page.locator('.base-scene')).toHaveAttribute('data-background-state','error');
-  await expect(page.locator('.base-rover')).toBeHidden();await page.unroute(/station.*\.webp/);
+  await expect(page.locator('#base #museum-canvas')).toBeHidden();await page.unroute(/museum-room.*\.webp/);
   await page.getByRole('button',{name:'重新接通收件站'}).click();await expect(page.locator('.base-scene')).toHaveAttribute('data-background-state','ready');
 });
 test('文字放大、首页偏好和静音可保存，音频只在明确开启后工作',async({page})=>{
@@ -41,7 +41,7 @@ test('文字放大、首页偏好和静音可保存，音频只在明确开启�
 });
 test('长期首星日记有居民联动、存档回看与独立星际连续探测频道',async({page})=>{
   await page.clock.install({time:new Date('2026-11-02T19:00:00Z')});await page.goto('/');
-  for(let left=1801000;left>0;left-=10000){await page.clock.fastForward(Math.min(left,10000));await page.waitForFunction(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!).lastAt>=Date.now()-500);}
+  for(let left=2221000;left>0;left-=10000){await page.clock.fastForward(Math.min(left,10000));await page.waitForFunction(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!).lastAt>=Date.now()-500);}
   await expect(page.locator('.journal-note')).toHaveCount(3);await expect(page.locator('#field-journal')).toContainText('标签鸟寄来了明天');
   await page.reload();await expect(page.locator('.journal-note')).toHaveCount(3);
   await page.getByRole('button',{name:'星图',exact:true}).click();await page.getByRole('button',{name:'星际监听',exact:true}).click();

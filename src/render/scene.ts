@@ -12,7 +12,7 @@ import { tuning, type SaveData } from '../game/engine';
 const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl};
 type Art = Record<keyof typeof urls, HTMLImageElement>;
 export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement}
-export interface SceneExtension {robotPose?:()=>ReturnType<typeof robotPose>|undefined;afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void}
+export interface SceneExtension {robotPose?:(base:ReturnType<typeof robotPose>)=>ReturnType<typeof robotPose>|undefined;afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void}
 const load=(url:string)=>new Promise<HTMLImageElement>((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=url;});
 
 export class ExpeditionScene {
@@ -135,7 +135,7 @@ export class ExpeditionScene {
   private draw(now:number){
     if(!this.ready||!this.canvas.isConnected)return;
     const began=performance.now(),c=this.ctx,t=this.frozen??(now-this.start)/1000,s=this.getState();
-    const f=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12,p=this.extension?.robotPose?.()??robotPose(f);
+    const f=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12,p=this.extension?.robotPose?.(robotPose(f))??robotPose(f);
     c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);c.translate(32,0);
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
     const ship=shipPose(t);if(ship.back)this.drawShip(t,ship);

@@ -32,7 +32,7 @@ describe('首星成熟化：节奏、真实反馈与兼容存档',()=>{
     const early=advance(newGame(START),START+100000);
     expect(early.collection).toEqual(['receipt','mouse','tape','hermit']);
     expect(early.collection).not.toContain('last-recipient');
-    const mature=advance(newGame(START),START+12*62000);
+    const mature=advance(newGame(START),START+924000);
     expect(mature.collection).toHaveLength(12);expect(new Set(mature.collection).size).toBe(12);
   });
   it('发现演出仅对应真实新发现，记录已播放后刷新不重放，不加奖励',()=>{

@@ -21,7 +21,7 @@ export function cleanGrowth(raw:unknown):Record<string,number>{
 }
 export function buyGrowth(s:SaveData,id:string,expected:number):SaveData {
  const entry=growthCatalog.find(e=>e.id===id),level=growthLevel(s,id);if(!entry||level!==expected||level>=entry.costs.length||(entry.requires&&!s.collection.includes(entry.requires))||s.resources<entry.costs[level])return s;
- return {...s,resources:s.resources-entry.costs[level],growth:{...s.growth,[id]:level+1}};
+ const next={...s,resources:s.resources-entry.costs[level],growth:{...s.growth,[id]:level+1}};next.world={...next.world,strengths:growthEffects(next).guard,owned:next.collection.filter((id):id is 'tape'|'bell'=>id==='tape'||id==='bell')};return next;
 }
 export function growthEffects(s:Pick<SaveData,'growth'>){return {interstellarSpeed:1+growthLevel(s,'receiver')*.15+growthLevel(s,'drive')*.05,cargoSeconds:growthLevel(s,'dock')*1800+growthLevel(s,'drive')*1200,guard:[growthLevel(s,'guard-0'),growthLevel(s,'guard-1')] as [number,number]};}
 

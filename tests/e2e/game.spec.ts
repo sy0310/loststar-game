@@ -48,7 +48,7 @@ test('首星事件有像素现场演出，积累发现只展示最新一份',asy
   await expect(page.locator('[data-presentation]')).toHaveCount(0);
 });
 test('完整首星图鉴生态、六个展柜与奇物互动真实联动',async({page})=>{
-  await boot(page);await page.getByRole('button',{name:'图鉴',exact:true}).click();await passTime(page,745000);
+  await boot(page);await page.getByRole('button',{name:'图鉴',exact:true}).click();await passTime(page,925000);
   await expect(page.locator('#collection-count')).toContainText('12 / 12');
   for(const [kind,count] of [['奇物',6],['生物',3],['事件',3]] as const){await page.getByRole('button',{name:new RegExp(`^${kind}`)}).click();await expect(page.locator('.discovery-card')).toHaveCount(count);}
   await page.getByRole('button',{name:/^奇物/}).click();await page.getByRole('button',{name:'未购买的退货收据，奇物'}).click();
@@ -56,8 +56,8 @@ test('完整首星图鉴生态、六个展柜与奇物互动真实联动',async(
   await page.getByRole('button',{name:'试一试'}).click();await page.getByRole('button',{name:'试一试'}).click();
   await expect(page.getByText(/已收到好奇心/)).toBeVisible();expect(await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).resources,KEY)).toBe(balance);
   await page.getByRole('button',{name:'关闭详情'}).click();await page.getByRole('button',{name:'基地',exact:true}).click();
-  await expect(page.locator('.display-object')).toHaveCount(6);await expect(page.locator('.resident')).toHaveCount(3);
-  const bounds=await page.locator('.display-object').evaluateAll(buttons=>buttons.map(b=>{const r=b.getBoundingClientRect(),p=b.parentElement!.parentElement!.getBoundingClientRect();return{w:r.width,h:r.height,inside:r.left>=p.left&&r.right<=p.right&&r.top>=p.top&&r.bottom<=p.bottom}}));
+  await expect(page.locator('#base [data-exhibit]')).toHaveCount(6);await expect(page.locator('.resident')).toHaveCount(3);
+  const bounds=await page.locator('#base [data-exhibit]').evaluateAll(buttons=>buttons.map(b=>{const r=b.getBoundingClientRect(),p=b.closest('.museum-room')!.getBoundingClientRect();return{w:r.width,h:r.height,inside:r.left>=p.left&&r.right<=p.right&&r.top>=p.top&&r.bottom<=p.bottom}}));
   expect(bounds.every(b=>b.w>=44&&b.h>=44&&b.inside)).toBe(true);
   await expect(page.locator('body')).not.toContainText(hiddenWorlds);
 });

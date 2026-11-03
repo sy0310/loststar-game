@@ -28,7 +28,7 @@ export class MuseumScene {
  refresh(){for(const id of exhibitIds){const b=this.root.querySelector<HTMLButtonElement>(`[data-exhibit="${id}"]`)!;const known=this.source().collection.includes(id);b.disabled=!known;b.setAttribute('aria-label',known?`放大${discoveryById(id)!.name}`:'空展柜，等待下一次发现');}}
  setActive(value:boolean){this.active=value;this.refresh();if(value)this.draw(this.clock());}
  private loop=(ms:number)=>{if(this.active&&!document.hidden&&ms-this.last>=(matchMedia('(prefers-reduced-motion: reduce)').matches?100:50)){this.last=ms;this.draw(this.clock());}requestAnimationFrame(this.loop);};
- private draw(t:number){const c=this.c;if(!c||!this.room.complete||!this.room.naturalWidth)return;c.clearRect(0,0,768,960);c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
+ private draw(t:number){const c=this.c;if(!c||this.canvas.dataset.ready!=='true'||!this.room.complete||!this.room.naturalWidth)return;c.clearRect(0,0,768,960);c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
   // Tiny free-floating dust and lamplight are part of the room, never the whole background moving.
   for(let i=0;i<16;i++){const x=(i*127+Math.sin(t*.18+i)*10)%740+14,y=110+(i*61+t*3)%620;c.fillStyle=`rgba(255,218,148,${.15+.15*Math.sin(t+i)})`;c.fillRect(Math.round(x),Math.round(y),2,2);}
   this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y*960,draw:()=>this.case(c,e,t)}));entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
@@ -55,7 +55,7 @@ export class MuseumScene {
   c.save();c.beginPath();c.rect(-w*.32,-w*.82,w*.64,w*.65);c.clip();
   if(known&&!(service&&service.lift>0)){
    if(level){for(let ring=0;ring<3;ring++){c.fillStyle=level===3?'#c8a7ef20':'#ffe2a120';c.beginPath();c.ellipse(0,-w*(.22+ring*.045),w*(.20-ring*.025),w*.035,0,0,Math.PI*2);c.fill();}}
-   const phase=t+exhibitIds.indexOf(e.id),bob=Math.sin(phase*1.4)*2,iw=e.id==='cosmic-parcel'?w*.39:e.id==='stamp'?w*.35:w*.45;
+   const phase=t+exhibitIds.indexOf(e.id),bob=Math.sin(phase*1.4)*2,iw=e.id==='cosmic-parcel'?w*.49:e.id==='stamp'?w*.40:e.id==='bell'?w*.48:w*.45;
    c.save();c.translate(0,-w*.49+bob);
    switch(e.id){
     case 'receipt':c.rotate(Math.sin(t*.8)*.035);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.fillStyle='#ffeab9';for(let i=0;i<3;i++)c.fillRect(-12+i*10,iw*.25+(t*6+i*7)%16,3,2);break;
@@ -68,7 +68,7 @@ export class MuseumScene {
    c.restore();
    if(level>=2){for(let i=0;i<4;i++){c.fillStyle='#fff3b0';c.fillRect(Math.sin(t*.5+i)*w*.21,-w*.35+Math.cos(t*.7+i)*w*.17,2,2);}}
   }
-  c.restore();c.save();c.globalAlpha=.9-(service?.opening??0)*.6;sprite(c,front,-w/2+(service?.opening??0)*w*.34,-w,w,w);c.restore();
+  c.restore();c.save();const frontOpacity=e.id==='cosmic-parcel'?.45:e.id==='bell'?.72:.9;c.globalAlpha=frontOpacity*(1-(service?.opening??0)*.67);sprite(c,front,-w/2+(service?.opening??0)*w*.34,-w,w,w);c.restore();
   // Nameplates are separate runtime geometry/text; always in front of glass.
   const plaqueW=w*.77;c.fillStyle='#2b2036';c.fillRect(-plaqueW/2,6,plaqueW,33);c.strokeStyle=level?'#e8c184':'#a98054';c.lineWidth=2;c.strokeRect(-plaqueW/2,6,plaqueW,33);c.fillStyle=known?'#ffe9bf':'#b9a9c7';c.font='22px monospace';c.textAlign='center';c.fillText(known?['未购买收据','道歉胶带','套娃包裹','昨天邮戳','收件人：宇宙','签收铃'][exhibitIds.indexOf(e.id)]:'等待好奇心',0,27,plaqueW-8);
   if(level===3){c.fillStyle='#ffe8a1';c.fillRect(-4,42,8,3);}c.restore();

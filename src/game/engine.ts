@@ -92,6 +92,7 @@ export function advance(s: SaveData, now: number, offline = false): SaveData {
     next.resources += resources;
     next.collection.push(...found.map(d => d.id));
   }
+  next.world.owned=next.collection.filter((id):id is 'tape'|'bell'=>id==='tape'||id==='bell');
   return next;
 }
 export function pendingPresentations(s: SaveData) { return s.collection.filter(id => !s.seenDiscoveries.includes(id)); }
@@ -106,7 +107,7 @@ export function claimReturn(s: SaveData): SaveData {
   next.collection = [...new Set([...next.collection, ...cargo.discoveries])];
   // The return manifest itself presents the bulk discoveries; avoid a popup queue afterward.
   next.seenDiscoveries = [...new Set([...next.seenDiscoveries, ...cargo.discoveries])];
-  next.pendingReturn = null;
+  next.pendingReturn = null;next.world.owned=next.collection.filter((id):id is 'tape'|'bell'=>id==='tape'||id==='bell');
   return next;
 }
 export function dismissSurvey(s: SaveData): SaveData { return { ...s, surveyNotice: null }; }

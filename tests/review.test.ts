@@ -1,16 +1,18 @@
 import {describe,it,expect} from 'vitest';
 import {newGame,advance,restore,claimReturn,publicRadar} from '../src/game/engine';
 import {robotPose,shipPose} from '../src/render/motion';
+import {wallForDayTime} from '../src/game/world';
+const wall=(ms:number)=>wallForDayTime(0,ms,ms*1.3+60000);
 const START=1800000000000;
 const json=(value:unknown)=>JSON.parse(JSON.stringify(value));
 describe('PR #2 Phase 1.5 回归',()=>{
-  it('15/30/60 分钟有居民联动日记，重复恢复不增加条目或发奖',()=>{
-    const a=advance(newGame(START),START+900000),b=advance(a,START+1800000),c=advance(b,START+3600000);
+  it('15/30/60 分钟有效白天探索有居民联动日记，重复恢复不增加条目或发奖',()=>{
+    const a=advance(newGame(START),START+wall(900000)),b=advance(a,START+wall(1800000)),c=advance(b,START+wall(3600000));
     expect(json(a).journal.entries).toHaveLength(1);expect(json(b).journal.entries).toHaveLength(3);expect(json(c).journal.entries).toHaveLength(5);
     expect(c.collection).toHaveLength(12);expect(c.planets).toEqual(['parcel']);
-    expect(c.resources).toBe(120+300*8+40*6); // Notes add stories, never another reward stream.
+    expect(c.resources).toBe(120+300*8+c.surveyCount*6); // Notes add stories, never another reward stream.
     expect(restore(JSON.stringify(c),c.lastAt)).toEqual(c);
-    const later=advance(c,START+6000000);expect(json(later).journal.entries).toHaveLength(8);expect(json(later).journal.shift).toBe(9);
+    const later=advance(c,START+wall(6000000));expect(json(later).journal.entries).toHaveLength(8);expect(json(later).journal.shift).toBe(9);
     expect(restore(JSON.stringify(later),later.lastAt)).toEqual(later);
   });
   it('旧 v2 进度保留，离线日记随归航可读且领取不重置',()=>{
@@ -18,9 +20,9 @@ describe('PR #2 Phase 1.5 回归',()=>{
     const migrated=restore(JSON.stringify(legacy),START);expect(json(migrated).journal).toEqual({entries:[],shift:0});
     migrated.interstellar={elapsed:90000,resolved:{id:'parcel',name:'退货箱星'}};migrated.chart.scan=migrated.interstellar;
     expect(restore(JSON.stringify(migrated),START)).toEqual(migrated);expect(publicRadar(migrated,'interstellar').stage).toBe('resolved');
-    const offline=advance(migrated,START+3600000,true),claimed=claimReturn(offline);
+    const offline=advance(migrated,START+wall(3600000),true),claimed=claimReturn(offline);
     expect(json(claimed).journal.entries).toHaveLength(5);expect(claimReturn(claimed)).toEqual(claimed);
-    const invalid=json(claimed);invalid.journal.entries=['unknown'];expect(restore(JSON.stringify(invalid),START+3600000)).toEqual(newGame(START+3600000));
+    const invalid=json(claimed);invalid.journal.entries=['unknown'];expect(restore(JSON.stringify(invalid),START+wall(3600000))).toEqual(newGame(START+wall(3600000)));
   });
   it('星际频道有独立状态且持续探测时不泄露目标',()=>{
     const s=newGame(START);
