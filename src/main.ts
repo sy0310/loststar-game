@@ -1,4 +1,8 @@
 import './style.css';
+import './museum.css';
+import {MuseumScene,HabitatScene,residentIds,exhibitIds} from './render/museum';
+import {StarMapScene} from './render/star-map';
+import {growthCatalog,growthLevel,buyGrowth} from './game/growth';
 import { icon } from './icons';
 import {openSave,commitSave,type StorageLike} from './game/persistence';
 import {newGame,advance,restore,claimReturn,upgrade,cost,tuning,publicRadar,dismissSurvey,upgradeIds,MAX_LEVEL,SAVE_KEY,pendingPresentations,markPresented,publicPlanets,type SaveData,type UpgradeId} from './game/engine';
@@ -14,7 +18,7 @@ import { ExpeditionScene } from './render/scene';
 import { RadarScene } from './render/radar-scene';
 import { InteractionDirector } from './ui/interaction';
 import { robotPose, actionText } from './render/motion';
-import { equipment, itemArt } from './ui/art';
+import { equipment, itemArt, textures } from './ui/art';
 import { DiscoveryDirector, soundCue } from './ui/discovery';
 import globeUrl from '../assets/runtime/parcel-globe.webp';
 import robotUrl from '../assets/runtime/robot.webp';
@@ -29,6 +33,7 @@ savePreferences(preferences);
 const sounds=new SoundDesk(preferences.muted);
 const requestedStart=new URLSearchParams(location.search).get('start');
 let tab:string=requestedStart==='expedition'||requestedStart==='base'?requestedStart:preferences.startPage;
+let growthFilter='展示';
 let radarMode:RadarMode='local',lastJournal='',lastAction='';
 let filter:DiscoveryKind|'planet'|'all'='all';
 let lastRadar='',lastCollection='',lastBase='',lastRecent='';
@@ -53,7 +58,7 @@ app.innerHTML=`
     </section>
     <section id="radar" class="view" hidden>
       ${heading('SIGNAL ROOM / 本地勘测','星域雷达','先把脚下这颗星球，认真听清楚。','<span class="tiny-tag cyan-tag">信道已接通</span>')}
-      <div class="radar-channels" role="group" aria-label="雷达频道"><button data-radar-mode="local" aria-pressed="true">地表勘测</button><button data-radar-mode="interstellar" aria-pressed="false">星际监听</button></div><div id="interstellar-status" class="game-panel" hidden><span class="micro-label">深空接收器 / 待接通</span><h2>先听完这颗星球的故事</h2><p>地表勘测仍在自动进行。星际频道接通后，将从捕获真实信号开始逐步定位。</p></div><div id="local-radar"><div class="radar-screen game-panel"><div class="radar-top"><span>RETURNS PLAIN / 地表回波</span><span class="live-label"><i class="live-dot"></i>持续监听</span></div><div class="radar-rings"><i></i><i></i><i></i><div class="sweep"></div><img class="radar-planet" loading="lazy" src="${globeUrl}" alt="已知退货箱星"><div id="radar-signal"></div></div><div class="radar-crosshair-x"></div><div class="radar-crosshair-y"></div><span class="radar-scale scale-left">01<br>··<br>02<br>··<br>03</span><span class="radar-corner">地表信道 / K–07</span><span class="radar-noise">RX <b>▂ ▅ ▃ ▆</b></span></div>
+      <div class="radar-channels" role="group" aria-label="雷达频道"><button data-radar-mode="local" aria-pressed="true">地表勘测</button><button data-radar-mode="interstellar" aria-pressed="false">星际监听</button></div><div id="interstellar-status" class="game-panel" hidden><span class="micro-label">DEEP SPACE / 不为未知预设形状</span><div id="star-map"></div><div id="interstellar-copy"></div><div class="section-title"><span>已确认的航路</span><small>永久留在星图</small></div><div id="star-routes"></div></div><div id="local-radar"><div class="radar-screen game-panel"><div class="radar-top"><span>RETURNS PLAIN / 地表回波</span><span class="live-label"><i class="live-dot"></i>持续监听</span></div><div class="radar-rings"><i></i><i></i><i></i><div class="sweep"></div><img class="radar-planet" loading="lazy" src="${globeUrl}" alt="已知退货箱星"><div id="radar-signal"></div></div><div class="radar-crosshair-x"></div><div class="radar-crosshair-y"></div><span class="radar-scale scale-left">01<br>··<br>02<br>··<br>03</span><span class="radar-corner">地表信道 / K–07</span><span class="radar-noise">RX <b>▂ ▅ ▃ ▆</b></span></div>
       <div class="telemetry"><span>轨道 <b>稳定</b></span><span>地表 <b>有回应</b></span><span>自动 <b>归档中</b></span></div><div id="radar-status"></div>
       <div class="section-title"><span>退件平原 · 现场记录</span><small id="survey-count"></small></div><div id="survey-records"></div>
       <div class="section-title"><span>已记录的航路</span><small>归处始终在线</small></div><div id="known-planets"></div></div>
@@ -66,8 +71,12 @@ app.innerHTML=`
     <section id="base" class="view" hidden>
       ${heading('HOME / 失物号收件站','欢迎归航，管理员。','有热茶，也有一些无法解释的收藏。')}
       <div class="base-scene" data-background-state="loading" aria-busy="true"><img id="base-background" fetchpriority="high" decoding="async" class="base-background pixel-art" alt="失物号收件站：展柜、停泊区与工作台"><div class="base-loading" role="status"><span class="loading-postmark" aria-hidden="true">LR–01</span><strong class="loading-message">收件站正在接通</strong><p>正在展开收藏室，请稍候片刻。</p><button class="secondary" data-action="retry-base">重新接通收件站</button></div><span class="base-window-light"></span><div id="display-items"></div><div class="base-rover"><div class="base-robot" role="img" aria-label="咔哒在基地整理收藏"></div><span class="rover-note">整理中 · · ·</span></div><span class="base-label">失物收藏室 <b>LR–01</b></span><span class="base-lamp"></span></div>
-      <div class="base-caption"><span><i class="live-dot"></i>失物号仍在自动探索</span><span id="display-count"></span></div><button class="primary" data-go="expedition">${icon('rocket')}继续远征${icon('arrow')}</button>
+      <button class="utility-button museum-entry" data-go="exhibition" aria-label="进入失物收藏室">${icon('book')}<span><strong>失物收藏室</strong><small>走近玻璃里，那些不明所以的小宇宙</small></span>${icon('arrow')}</button><a class="lab-entry" href="./night-lab.html"><span>夜间守护试玩<small>自由进入退出 · 自动照看 · 默认不加入日常循环</small></span>↗</a><div class="base-caption"><span><i class="live-dot"></i>失物号仍在自动探索</span><span id="display-count"></span></div><button class="primary" data-go="expedition">${icon('rocket')}继续远征${icon('arrow')}</button>
       <div class="quick-actions"><button class="utility-button" data-action="workshop">${icon('gear')}<span>设备工坊<small>让每次出发更从容</small></span>${icon('arrow')}</button><button class="utility-button" data-go="collection">${icon('book')}<span>收藏档案<small>看看带回了什么</small></span>${icon('arrow')}</button></div><div class="section-title"><span>住在这里的邻居</span><small id="resident-count"></small></div><div id="base-collection"></div><div class="section-title"><span>邻居来信 · 田野续记</span><small id="journal-count"></small></div><div id="field-journal"></div>
+    </section>
+    <section id="exhibition" class="view" hidden>
+      ${heading('CABINET OF CURIOSITIES / LR–01','失物收藏室','每一件失物，都有自己的小宇宙。')}
+      <button class="secondary museum-back" data-go="base">← 返回收件站</button><div id="museum"></div><div class="museum-stats"><span id="museum-count"></span><span>基础陈列免费 · 点击容器放大</span></div><button class="utility-button" data-action="museum-upgrades" aria-label="展柜与设施升级">${icon('gear')}<span>展柜与设施升级<small>把捡来的零件，变成一处归所</small></span>${icon('arrow')}</button><div class="section-title"><span>居民生态观察区</span><small>各自认真过日子</small></div>${residentIds.map((id,i)=>`<button class="habitat-card game-panel" data-habitat="${id}"><span class="habitat-window"></span><span class="habitat-caption"><b data-resident-name="${id}">等待邻居</b><small>${['拆箱台 · 留下的纸屑也有用','纸层小屋 · 刚刚好的归处','邮签枝 · 等一封宇宙回信'][i]}</small></span></button>`).join('')}
     </section>
   </main>
   <nav aria-label="主导航">${[['expedition','rocket','远征'],['radar','radar','星图'],['collection','book','图鉴'],['base','base','基地']].map(([id,img,name])=>`<button data-go="${id}" aria-current="${id===tab?'page':'false'}"><span class="nav-icon">${icon(img)}</span><span>${name}</span><i></i></button>`).join('')}</nav>
@@ -79,6 +88,9 @@ app.innerHTML=`
 const scene=new ExpeditionScene($('#planet-scene'),()=>state);
 const modal=$<HTMLDialogElement>('#modal');
 const radarScene=new RadarScene($('.radar-rings'),()=>publicRadar(state));
+const starMap=new StarMapScene($('#star-map'),()=>({stage:publicRadar(state,'interstellar').stage,progress:publicRadar(state,'interstellar').progress,research:growthLevel(state,'receiver'),records:publicPlanets(state).flatMap(p=>{const r=state.chart.records.find(r=>r.id===p.id);return r?[{...r,name:p.name}]:[];})}));
+let museum:MuseumScene|undefined;const habitats:HabitatScene[]=[];
+function enterMuseum(){if(!museum){museum=new MuseumScene($('#museum'),()=>state,id=>growthLevel(state,id));residentIds.forEach((id,i)=>habitats.push(new HabitatScene($(`[data-habitat="${id}"] .habitat-window`),id,()=>state.collection.includes(id),()=>growthLevel(state,`habitat-${i}`))));}museum.setActive(true);habitats.forEach(h=>h.setActive(true));}
 const interactions=new InteractionDirector($('#modal-body'));
 let lastPointerType='mouse';
 app.addEventListener('pointerup',event=>{lastPointerType=event.pointerType||'mouse';},{passive:true});
@@ -106,9 +118,9 @@ async function maybePresent(){
   else presenting=false;
 }
 function go(id:string){
-  if(!['expedition','radar','collection','base'].includes(id))return;
-  tab=id;if(id==='base')void baseArrival.load();document.querySelectorAll<HTMLElement>('.view').forEach(view=>view.hidden=view.id!==id);
-  document.querySelectorAll('[data-go]').forEach(button=>button.setAttribute('aria-current',button.getAttribute('data-go')===id?'page':'false'));
+  if(!['expedition','radar','collection','base','exhibition'].includes(id))return;
+  tab=id;if(id==='exhibition')enterMuseum();else {museum?.setActive(false);habitats.forEach(h=>h.setActive(false));}starMap.setActive(id==='radar'&&radarMode==='interstellar');if(id==='base')void baseArrival.load();document.querySelectorAll<HTMLElement>('.view').forEach(view=>view.hidden=view.id!==id);
+  document.querySelectorAll('[data-go]').forEach(button=>button.setAttribute('aria-current',button.getAttribute('data-go')===(id==='exhibition'?'base':id)?'page':'false'));
   $('#page-scroll').scrollTo(0,0);scene.setActive(id==='expedition');radarScene.setActive(id==='radar'&&radarMode==='local');if(id!=='expedition')director.hide();update();void maybePresent();
 }
 function renderCollection(){
@@ -133,15 +145,21 @@ function renderJournal(){
   $('#field-journal').innerHTML=notes.length?`<p class="journal-intro">第 ${state.journal.shift} 次邻居接力 · 自动记下，不必领取。</p>${[...notes].reverse().map(note=>`<article class="journal-note game-panel ${note.id===current?'latest-note':''}">${itemArt(note.art)}<div><small>${note.id===current?'最近收到的回信':'退件平原 · 居民联动'}</small><h3>${note.title}</h3><p>${note.text}</p></div></article>`).join('')}`:`<div class="home-note game-panel"><p>居民们还在慢慢熟悉彼此。继续探索，偶尔回来看看它们的来信。</p></div>`;
 }
 function renderBase(){
+  museum?.refresh();$('#museum-count').textContent=`${exhibitIds.filter(id=>state.collection.includes(id)).length} 件奇物已安顿`;
+  residentIds.forEach(id=>{const known=state.collection.includes(id),b=$<HTMLButtonElement>(`[data-habitat="${id}"]`);b.disabled=!known;if(known)b.dataset.detail=id;else delete b.dataset.detail;$(`[data-resident-name="${id}"]`).textContent=known?discoveryById(id)!.name:'给邻居留着的观察区';});
+  $('.base-scene').dataset.dock=String(growthLevel(state,'dock'));
   const artifacts=state.collection.filter(id=>discoveryById(id)!.kind==='artifact');
-  $('#display-items').innerHTML=artifacts.map((id,i)=>`<button class="display-object slot-${i}" aria-label="查看 ${discoveryById(id)!.name}" data-detail="${id}">${itemArt(id)}</button>`).join('');
+  $('#display-items').innerHTML=artifacts.map((id,i)=>`<button class="display-object slot-${i}" aria-label="查看 ${discoveryById(id)!.name}" data-detail="${id}"><span class="mini-vessel"><img class="vessel-back pixel-art" src="${new URL(`../assets/runtime/case-${id}-back.webp`,import.meta.url).href}" alt=""><img class="mini-curio pixel-art" src="${textures[discoveryById(id)!.icon]}" alt=""><img class="vessel-front pixel-art" src="${new URL(`../assets/runtime/case-${id}-front.webp`,import.meta.url).href}" alt=""></span></button>`).join('');
   $('#display-count').textContent=artifacts.length?`${artifacts.length} 件奇物已安顿`:'给惊喜留了位置';
   const residents=state.collection.filter(id=>discoveryById(id)!.kind==='creature');$('#resident-count').textContent=`${residents.length} 位邻居`;
   $('#base-collection').innerHTML=residents.length?residents.map(id=>{const d=discoveryById(id)!;return `<button class="resident game-panel" data-detail="${id}">${itemArt(id)}<span><small>这里也是它的归处</small><strong>${d.name}</strong><p>${id==='mouse'?'正在帮你检查每一个空箱子。':id==='hermit'?'挑了一间刚好合身的纸箱小屋。':'它把今天的好天气贴在了窗外。'}</p></span>${icon('arrow')}</button>`;}).join(''):`<div class="home-note game-panel"><span class="micro-label">收件站的灯一直亮着</span><p>外面的居民偶尔会来。先留几个空纸箱，等它们慢慢熟悉这里。</p></div>`;
 }
 function renderRadar(){
   $('#local-radar').hidden=radarMode!=='local';$('#interstellar-status').hidden=radarMode!=='interstellar';
-  $('#interstellar-status').dataset.stage=publicRadar(state,'interstellar').stage;
+  const deep=publicRadar(state,'interstellar');$('#interstellar-status').dataset.stage=deep.stage;starMap.setActive(tab==='radar'&&radarMode==='interstellar');
+  const deepText={searching:['正在倾听未知宇宙','接收器持续采样。没有定位的回波，不会被画成星球。'],anomaly:['捕获一段异常信号','信号正在增强。暂时还不知道它来自哪里。'],locating:['分离杂音，核对坐标','只有成功定位的真实航路，才会写进星图。'],unconfirmed:['回波太弱，尚不能确认坐标','本次未定位到可靠航路。接收器稍后会自动重新采样。'],resolved:['新航路定位成功','已确认的星球会永久保留，可随时返回。'],standby:['接收器待命','自动监听稍后继续。']}[deep.stage];
+  $('#interstellar-copy').innerHTML=`<h2>${deepText[0]}</h2><p>${deepText[1]}</p>${deep.stage==='resolved'&&deep.discovery?`<strong class="resolved-star">${deep.discovery.name}</strong>`:''}<div class="progress"><span style="width:${deep.progress}%"></span></div><div class="status-foot"><span>自动探测 · 无需领取</span><span>采样速度 ×${(1+growthLevel(state,'receiver')*.15+growthLevel(state,'drive')*.05).toFixed(2)}</span></div>`;
+  $('#star-routes').innerHTML=publicPlanets(state).map(p=>`<button class="known-planet game-panel" data-planet="${p.id}"><span>${icon('planet')}</span><span><strong>${p.name}</strong><small>${p.regions.map(r=>r.name).join(' · ')} · 可远征</small></span>${icon('arrow')}</button>`).join('');
   document.querySelectorAll('[data-radar-mode]').forEach(button=>button.setAttribute('aria-pressed',String((button as HTMLElement).dataset.radarMode===radarMode)));
   radarScene.setActive(tab==='radar'&&radarMode==='local');
   const radar=publicRadar(state),stage=radar.stage;
@@ -160,10 +178,10 @@ const upgradeInfo:Record<UpgradeId,{name:string;desc:string;effect:(s:SaveData)=
   cargo:{name:'飞船货舱',desc:'屏幕关掉以后，仍能安心航行。',effect:s=>`${tuning(s).cargo/3600} 小时离线上限`},
 };
 function workshop(){
-  showModal('workshop',`<div class="modal-heading"><div><div class="eyebrow">LR–01 / ENGINEERING BAY</div><h2>设备工坊</h2></div>${closeButton('关闭工坊')}</div><p class="modal-subtitle">捡来的小零件，会让下一次出发更从容。</p><div class="workshop-balance">${icon('cube')}工坊零件储备 <b>${Math.floor(state.resources)}</b></div><div class="upgrade-grid">${upgradeIds.map(id=>{
+  const scroll=$('#modal-body').scrollTop;showModal('workshop',`<div class="modal-heading"><div><div class="eyebrow">LR–01 / ENGINEERING BAY</div><h2>设备工坊</h2></div>${closeButton('关闭工坊')}</div><p class="modal-subtitle">捡来的小零件，会让下一次出发更从容。</p><div class="workshop-balance">${icon('cube')}工坊零件储备 <b>${Math.floor(state.resources)}</b></div><div class="upgrade-grid">${upgradeIds.map(id=>{
     const info=upgradeInfo[id],level=state.upgrades[id],max=level>=MAX_LEVEL,next={...state,upgrades:{...state.upgrades,[id]:level+1}};
     return `<article class="upgrade-card game-panel" data-upgrade="${id}"><header><h3>${info.name}</h3><span>Lv.${level+1}</span></header><img class="equipment-art pixel-art" src="${equipment[id]}" alt=""><div class="level-notches" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i class="${i<=level?'filled':''}"></i>`).join('')}</div><strong class="upgrade-effect">${info.effect(state)}</strong><p>${info.desc}</p><small class="upgrade-next">${max?'已达当前设备上限':`下一级 ${info.effect(next)}`}</small><button class="upgrade-buy" data-upgrade-buy="${id}" aria-label="升级${info.name}" ${max||state.resources<cost(state,id)?'disabled':''}>${max?'已满级':`${icon('cube')}${cost(state,id)} 零件 ${icon('arrow')}`}</button></article>`;
-  }).join('')}</div><p class="quiet-note">每一级都有实际效果，咔哒会认真使用。</p>`);
+  }).join('')}</div><div class="section-title"><span>让归处慢慢长大</span><small>基础展示免费</small></div><div class="growth-filters" role="group" aria-label="成长项目分类">${['展示','生态','设施','守护','研究','装饰'].map(group=>`<button class="secondary" data-growth-filter="${group}" aria-pressed="${group===growthFilter}">${group}</button>`).join('')}</div><div class="growth-grid">${growthCatalog.filter(e=>e.group===growthFilter).map(e=>{const level=growthLevel(state,e.id),max=level>=e.costs.length,owned=!e.requires||state.collection.includes(e.requires),price=e.costs[level];return `<article class="growth-card game-panel" data-growth="${e.id}"><span class="growth-art">${owned?itemArt(e.art):icon('book')}</span><div><small>${e.group} · ${level} / ${e.costs.length}</small><h3>${e.name}</h3><p>${e.effect}</p><button class="secondary" data-growth-buy="${e.id}" data-level="${level}" ${max||!owned||state.resources<price?'disabled':''}>${max?'已完成':!owned?'发现藏品后可升级':`${price} 零件 · 升级`}</button></div></article>`;}).join('')}</div><p class="quiet-note">所有项目都有固定上限，无维护费。旧设备等级与零件完整保留。</p>`);$('#modal-body').scrollTop=scroll;
 }
 function detail(id:string){
   const d=discoveryById(id);if(!d||!state.collection.includes(id))return;
@@ -186,10 +204,10 @@ function update(){
   if(lastRecent!==(latest??'none')){
     lastRecent=latest??'none';$('#recent').innerHTML=d?`<button data-detail="${d.id}"><span class="recent-symbol">${itemArt(d.id)}</span><span><small>最近带回的${kindName[d.kind]}</small><strong>${d.name}</strong><em>${d.rarity} · 已收入首星档案</em></span>${icon('arrow')}</button>`:`<span class="recent-symbol empty-recent">${icon('receipt')}</span><span><small>收件站正在等第一份惊喜</small><strong>宇宙的第一张小票，正在路上。</strong><em>不必点击，咔哒会自己带回来。</em></span>`;
   }
-  const radarKey=JSON.stringify([publicRadar(state),state.surveyCount,state.upgrades.radar,state.planets,!!state.pendingReturn]);if(radarKey!==lastRadar){lastRadar=radarKey;renderRadar();}
+  const radarKey=JSON.stringify([publicRadar(state),publicRadar(state,'interstellar'),state.growth,state.surveyCount,state.upgrades.radar,state.planets,!!state.pendingReturn]);if(radarKey!==lastRadar){lastRadar=radarKey;renderRadar();}
   const collectionKey=JSON.stringify([state.collection,state.discoveryAt,filter]);if(collectionKey!==lastCollection){lastCollection=collectionKey;renderCollection();}
   const journalKey=JSON.stringify(state.journal);if(journalKey!==lastJournal){lastJournal=journalKey;renderJournal();}
-  const baseKey=state.collection.join(',');if(baseKey!==lastBase){lastBase=baseKey;renderBase();}
+  const baseKey=JSON.stringify([state.collection,state.growth]);if(baseKey!==lastBase){lastBase=baseKey;renderBase();}
 }
 app.addEventListener('click',async event=>{
   const button=(event.target as HTMLElement).closest<HTMLButtonElement>('button');if(!button||button.disabled)return;
@@ -209,10 +227,13 @@ app.addEventListener('click',async event=>{
   if(button.dataset.planet)go('expedition');
   if(button.dataset.upgradeBuy){
     const id=button.dataset.upgradeBuy as UpgradeId,oldLevel=state.upgrades[id];button.disabled=true;
-    await transact(s=>upgrade(s,id));workshop();
+    await transact(s=>upgrade(s,id,oldLevel));workshop();
     if(state.upgrades[id]>oldLevel){soundCue('upgrade',id);toast(`${upgradeInfo[id].name}升至 Lv.${state.upgrades[id]+1} · ${upgradeInfo[id].effect(state)}`);$(`[data-upgrade="${id}"]`).classList.add('just-upgraded');}
   }
+  if(button.dataset.growthFilter){growthFilter=button.dataset.growthFilter;workshop();}
+  if(button.dataset.growthBuy){const id=button.dataset.growthBuy,expected=Number(button.dataset.level),before=growthLevel(state,id);button.disabled=true;await transact(s=>buyGrowth(s,id,expected));workshop();if(growthLevel(state,id)>before){soundCue('upgrade',id);toast('升级完成。回去看看归处的新变化。');}}
   switch(button.dataset.action){
+    case 'museum-upgrades':growthFilter='展示';workshop();break;
     case 'workshop':workshop();break;
     case 'settings':settings();break;
     case 'retry-base':void baseArrival.load();break;
