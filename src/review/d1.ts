@@ -18,6 +18,7 @@ const tierNotes=[
 export function mountD1(initial:Study='night'){
   const root=document.querySelector<HTMLElement>('#app')!;
   document.title='失物星球 · D1 动态样板';
+  document.documentElement.dataset.build=`${__BUILD_INFO__.version} · ${__BUILD_INFO__.commit}${__BUILD_INFO__.dirty?' (本地修改中)':''}`;
   root.innerHTML=`<main id="d1-app">
     <header class="d1-header"><div class="d1-mark" aria-hidden="true">LR<span>01</span></div><div><span class="d1-eyebrow">LOSTSTAR / 动态制作样板</span><h1>失物星球 <small>D1</small></h1></div><span class="d1-readonly">只读预览<br><b>不扣零件</b></span></header>
     <p class="d1-disclaimer">独立审核样板 · 不读取、不修改原存档</p>
@@ -44,6 +45,7 @@ export function mountD1(initial:Study='night'){
   // Only in-memory scene inputs. Advancing or viewing the study never touches money.
   const dummy=newGame(0);dummy.collection=[...exhibitIds,...residentIds];
   const scene=new ExpeditionScene(q('#d1-scene'),()=>dummy,createNightStudy());
+  Object.assign(window,{__D1_REVIEW__:{metrics:()=>scene.metrics(),resetMetrics:()=>scene.resetMetrics()}});
   scene.canvas.setAttribute('aria-label','D1完整退货箱星：纸影出现，咔哒沿原邮路核验、收容并送回原仓库；飞船前后绕轨');
   let museum:MuseumScene|undefined;
   const receiptCanvas=q<HTMLCanvasElement>('#receipt-focus');
@@ -64,12 +66,12 @@ export function mountD1(initial:Study='night'){
     scene.setActive(next==='night');q('#d1-app').dataset.currentStudy=next;if(next==='receipt')loadMuseum();
   }
   function tierUI(){
-    for(const button of root.querySelectorAll<HTMLButtonElement>('[data-tier]'))button.setAttribute('aria-pressed',String(Number(button.dataset.tier)===level));
+    for(const button of root.querySelectorAll<HTMLButtonElement>('button[data-tier]'))button.setAttribute('aria-pressed',String(Number(button.dataset.tier)===level));
     q('#receipt-status strong').textContent=`Lv${level} · ${tierNames[level]}`;q('#receipt-status p').textContent=tierNotes[level];lastTier=level;
   }
   q('#d1-replay').addEventListener('click',()=>{scene.restart();started=true;lastPhase='';});
   for(const button of root.querySelectorAll<HTMLButtonElement>('[data-study]'))button.addEventListener('click',()=>selectStudy(button.dataset.study as Study));
-  for(const button of root.querySelectorAll<HTMLButtonElement>('[data-tier]'))button.addEventListener('click',()=>{installing=false;level=Number(button.dataset.tier);q('#receipt-install').textContent='▶ 播放 0→3 安装';q('#receipt-install').dataset.playing='false';tierUI();});
+  for(const button of root.querySelectorAll<HTMLButtonElement>('button[data-tier]'))button.addEventListener('click',()=>{installing=false;level=Number(button.dataset.tier);q('#receipt-install').textContent='▶ 播放 0→3 安装';q('#receipt-install').dataset.playing='false';tierUI();});
   q('#receipt-install').addEventListener('click',()=>{installing=true;installStart=performance.now();level=0;q('#receipt-install').dataset.playing='true';q('#receipt-install').textContent='↻ 重新播放安装';tierUI();});
   q('#receipt-view').addEventListener('click',()=>{view=view==='focus'?'room':'focus';q('#receipt-view').setAttribute('aria-pressed',String(view==='room'));q('#receipt-view').textContent=view==='focus'?'切至房间视角':'返回展柜近景';});
   selectStudy(initial);
