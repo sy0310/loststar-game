@@ -42,7 +42,7 @@ export class MuseumScene {
   if(level){c.strokeStyle=['','#ffe0a0','#9ce9e1','#e6b2ff'][level];c.lineWidth=level===3?3:2;c.beginPath();c.ellipse(0,-w*.13,w*.27,9,0,0,Math.PI*2);c.stroke();}
   c.save();c.beginPath();c.rect(-w*.32,-w*.82,w*.64,w*.65);c.clip();
   if(known){
-   if(level){c.fillStyle=level===3?'#c8a7ef29':'#ffe2a128';c.fillRect(-w*.24,-w*.67,w*.48,w*.49);c.fillStyle='#fff0b12f';c.fillRect(-w*.27,-w*.23,w*.54,w*.06);}
+   if(level){for(let ring=0;ring<3;ring++){c.fillStyle=level===3?'#c8a7ef20':'#ffe2a120';c.beginPath();c.ellipse(0,-w*(.22+ring*.045),w*(.20-ring*.025),w*.035,0,0,Math.PI*2);c.fill();}}
    const phase=t+exhibitIds.indexOf(e.id),bob=Math.sin(phase*1.4)*2,iw=e.id==='cosmic-parcel'?w*.39:e.id==='stamp'?w*.35:w*.45;
    c.save();c.translate(0,-w*.49+bob);
    switch(e.id){
