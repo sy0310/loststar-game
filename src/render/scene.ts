@@ -15,8 +15,10 @@ export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:Re
 export interface SceneCamera {scale:number;x:number;y:number;offsetX?:number;offsetY?:number}
 export interface SceneEntity {depth:number;draw:()=>void}
 export interface SceneExtension {
+  ready?:Promise<void>;
   cycleFraction?:(base:number,seconds:number)=>number;
   robotPose?:(base:ReturnType<typeof robotPose>,seconds:number)=>ReturnType<typeof robotPose>|undefined;
+  drawRobot?:(context:CanvasRenderingContext2D,frame:SceneFrame,atlas:HTMLImageElement)=>void;
   camera?:SceneCamera;
   worldEntities?:(context:CanvasRenderingContext2D,frame:SceneFrame)=>SceneEntity[];
   afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void;
@@ -56,7 +58,8 @@ export class ExpeditionScene {
   }
   private load(){
     if(this.loading)return;this.loading=true;
-    Promise.all(Object.entries(urls).map(async([key,url])=>[key,await load(url)] as const)).then(entries=>{
+    Promise.all(Object.entries(urls).map(async([key,url])=>[key,await load(url)] as const)).then(async entries=>{
+      if(this.extension?.ready)await this.extension.ready;
       this.art=Object.fromEntries(entries) as Art;this.ready=true;this.canvas.dataset.ready='true';this.loop();
     }).catch(()=>{const parent=this.canvas.parentElement!;parent.dataset.error='true';parent.insertAdjacentText('beforeend','通信暂时中断，请刷新恢复场景。');});
   }
@@ -158,7 +161,7 @@ export class ExpeditionScene {
     const entities=[
       {depth:294,draw:()=>{this.shadow(568,294,38);this.sprite(this.art.sorter,568,294,101,101);this.lamp(557,208,'#8ff3df',t);const step=Math.floor(t*3)%3;c.fillStyle='#d7b46d';for(let i=0;i<3;i++)c.fillRect(526+i*7+step,278+i*2,3,2);}},
       {depth:417,draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);c.fillStyle='#624b66';c.fillRect(270,437,38,9);c.fillStyle='#bb957c';c.fillRect(270,434,38,5);c.fillStyle='#88d9c6';c.fillRect(277,438,24,2);}},
-      {depth:p.y,draw:()=>this.drawRobot(t,f,p)},
+      {depth:p.y,draw:()=>this.extension?.drawRobot?this.extension.drawRobot(c,frame,this.art.robot):this.drawRobot(t,f,p)},
       {depth:447,draw:()=>{this.shadow(553,447,30);this.sprite(this.art.mouse,553,447+(Math.floor(t*4)%4===2?1:0),83,89);if(Math.floor(t*4)%7<2){c.fillStyle='#f4d49d';for(let i=0;i<3;i++)c.fillRect(520+i*9+Math.floor(t*11)%4,405-i*5,3,2);}}},
       {depth:449,draw:()=>this.parcel(438,449,26)},
     ];

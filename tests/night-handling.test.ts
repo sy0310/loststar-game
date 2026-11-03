@@ -1,5 +1,5 @@
 import {expect,it} from 'vitest';
-import {nightStage,nightRobotRegistration} from '../src/review/d1-motion';
+import {nightStage,nightRobotRegistration,nightDoor} from '../src/review/d1-motion';
 
 it('uses the measured atlas grip instead of the old parcel bottom anchor',()=>{
   expect(nightRobotRegistration.carryGrip.x).toBeCloseTo(-23.76,2);
@@ -34,4 +34,16 @@ it('keeps cargo, paper and handoff continuous and receives behind the door',()=>
   expect(nightStage(27.8).cargo.receiving).toBeGreaterThan(0);
   expect(nightStage(28.7).cargo.receiving).toBe(1);
   expect(nightStage(29.2).cargo.visible).toBe(false);
+});
+
+it('receives inside the original warehouse facade above its 417px foot line',()=>{
+  const xs=nightDoor.opening.map(point=>point.x),ys=nightDoor.opening.map(point=>point.y);
+  expect(Math.min(...xs)).toBeGreaterThan(250);
+  expect(Math.max(...xs)).toBeLessThan(315);
+  expect(Math.max(...ys)).toBeLessThan(417);
+  const transfer=nightStage(27.1);
+  expect(transfer.robot.y).toBeGreaterThan(428);
+  expect(transfer.cargo.grip.x).toBeGreaterThan(Math.min(...xs));
+  expect(transfer.cargo.grip.x).toBeLessThan(Math.max(...xs));
+  expect(transfer.cargo.grip.y).toBeLessThan(390);
 });

@@ -1,87 +1,169 @@
 import invaderUrl from '../../assets/runtime/invader-v02.webp';
 import type {SceneExtension,SceneFrame} from '../render/scene';
-import {nightStage,nightCamera,smoothInstall,type NightStage} from './d1-motion';
+import {nightStage,nightCamera,nightDoor,type NightStage} from './d1-motion';
+import {lightNightWorld} from './night-lighting';
+import {createNightRobot} from './night-robot';
+import {createNightCarrier} from './night-carrier';
 
-/** D1 keeps the normal scene's globe, buildings, robot atlas and orbit renderer. */
+/** One globe and one existing creature, assembled under one set of world lights. */
 export function createNightStudy():SceneExtension {
-  const shadow=new Image();shadow.src=invaderUrl;
-  let night:HTMLCanvasElement|undefined,rim:HTMLCanvasElement|undefined;
-  function atmosphere(c:CanvasRenderingContext2D,frame:SceneFrame){
-    if(!night){night=document.createElement('canvas');night.width=frame.globe.width;night.height=frame.globe.height;const m=night.getContext('2d')!;m.drawImage(frame.globe,0,0);m.globalCompositeOperation='source-in';m.fillStyle='#273b84';m.fillRect(0,0,night.width,night.height);}
-    c.save();c.globalAlpha=.50;c.drawImage(night,52,70,664,664);c.restore();
-    for(const [x,y]of [[271,330],[557,208],[345,634],[488,610]]){
-      c.save();const glow=c.createRadialGradient(x+3,y+2,1,x+3,y+2,29);glow.addColorStop(0,'#ffd89d66');glow.addColorStop(1,'#ffd89d00');c.fillStyle=glow;c.fillRect(x-28,y-28,62,62);c.restore();
+  const paper=new Image();
+  paper.src=invaderUrl;
+  const carrier=createNightCarrier();
+  const robot=createNightRobot();
+  const ready=Promise.all([paper.decode(),carrier.ready]).then(()=>{});
+  void ready.catch(()=>{});
+  let foldShade:HTMLCanvasElement|undefined;
+  let robotAtlas:HTMLImageElement|undefined;
+
+  function paperPanel(context:CanvasRenderingContext2D,rect:{x:number;y:number;w:number;h:number},hinge:{x:number;y:number},sx:number,sy:number,shade:number){
+    context.save();
+    context.translate(hinge.x-96,hinge.y-106);
+    context.scale(sx,sy);
+    context.drawImage(paper,rect.x,rect.y,rect.w,rect.h,rect.x-hinge.x,rect.y-hinge.y,rect.w,rect.h);
+    if(shade>0){
+      context.globalAlpha=shade;
+      context.drawImage(foldShade!,rect.x,rect.y,rect.w,rect.h,rect.x-hinge.x,rect.y-hinge.y,rect.w,rect.h);
     }
+    context.restore();
   }
-  function beacon(c:CanvasRenderingContext2D,s:NightStage){
-    const alarm=s.phase==='signal'||s.phase==='travel',pulse=.55+Math.sin(s.seconds*5)**2*.4;
-    c.save();c.fillStyle=alarm?'#ffe4a8':'#a2eadc';c.fillRect(554,206,10,4);c.fillStyle=alarm?'#ffe4a833':'#a2eadc22';c.fillRect(551,203,16,10);
-    if(alarm){c.globalAlpha=pulse*.35;c.strokeStyle='#f8d59b';c.lineWidth=2;c.beginPath();c.ellipse(559,208,12+(s.seconds*12)%22,5+(s.seconds*5)%10,0,0,Math.PI*2);c.stroke();
-      c.fillStyle='#ffe9bb30';c.beginPath();c.moveTo(558,210);c.lineTo(s.target.x-26,s.target.y);c.lineTo(s.target.x+26,s.target.y);c.closePath();c.fill();}
-    c.restore();
-  }
-  function gate(c:CanvasRenderingContext2D,s:NightStage){
-    // Door is attached to the actual receiving lip, rather than another front-row machine.
-    const access=s.phase==='dock'?smoothInstall(s.progress/.18)*(1-smoothInstall((s.progress-.70)/.30)):0;
-    c.save();
-    // The receiving alcove is warm while the terrain is blue-purple: local light,
-    // not a full-screen dark filter, establishes the building's night-time depth.
-    const porch=c.createRadialGradient(291,415,2,291,415,31);porch.addColorStop(0,'#f9c97833');porch.addColorStop(1,'#f9c97800');c.fillStyle=porch;c.fillRect(260,384,62,62);
-    c.fillStyle='#293247';c.fillRect(277,411,29,24);c.strokeStyle='#d3ad7d';c.lineWidth=2;c.strokeRect(276,410,31,25);
-    const h=Math.round(22*(1-access));
-    c.fillStyle='#728c91';c.fillRect(279,412,25,h);c.fillStyle='#aec8bb';for(let y=414;y<412+h;y+=5)c.fillRect(279,y,25,2);
-    c.fillStyle=access>.4?'#c9ffe0':'#9fdaca';c.fillRect(277,437,29,3);c.fillStyle='#f3dbab';c.fillRect(273,414,3,5);c.restore();
-  }
-  function paperShadow(c:CanvasRenderingContext2D,s:NightStage){
-    if(s.phase==='done')return;
-    const held=s.phase==='escort'||s.phase==='dock',x=s.target.x,y=s.target.y,fold=s.fold;
-    const alpha=s.emerge*(s.phase==='dock'?1-smoothInstall((s.progress-.72)/.25):1);
-    c.save();c.globalAlpha=alpha;c.translate(Math.round(x),Math.round(y));
-    if(!held){c.fillStyle='#12162c66';c.beginPath();c.ellipse(0,5,24*(1-fold*.5),5,0,0,Math.PI*2);c.fill();}
-    if(shadow.complete&&shadow.naturalWidth){
-      if(!rim){rim=document.createElement('canvas');rim.width=384;rim.height=384;const r=rim.getContext('2d')!;r.drawImage(shadow,0,0);r.globalCompositeOperation='source-in';r.fillStyle='#e1d7f4';r.fillRect(0,0,384,384);}
-      const pose=fold>.4?3:s.phase==='identify'?2:Math.floor(s.seconds*3)%2;
-      const w=104*(1-fold*.66),h=104*(1-fold*.72),dy=-h*.79;
-      c.save();c.globalAlpha*=.58+Math.sin(s.seconds*3)**2*.20;
-      for(const [dx,dy2]of [[-2,0],[2,0],[0,-2]])c.drawImage(rim,pose%2*192,Math.floor(pose/2)*192,192,192,-w/2+dx,dy+dy2,w,h);c.restore();
-      c.drawImage(shadow,pose%2*192,Math.floor(pose/2)*192,192,192,-w/2,dy,w,h);
+
+  function drawPaper(context:CanvasRenderingContext2D,stage:NightStage){
+    if(stage.phase==='done')return;
+    if(!foldShade){
+      foldShade=document.createElement('canvas');foldShade.width=192;foldShade.height=192;
+      const shade=foldShade.getContext('2d')!;
+      shade.drawImage(paper,0,0,192,192,0,0,192,192);
+      shade.globalCompositeOperation='source-in';shade.fillStyle='#21253f';shade.fillRect(0,0,192,192);
     }
-    if(fold>0){
-      // Transparent registered containment case lets the paper remain visible inside.
-      c.save();c.globalAlpha*=fold;c.fillStyle='#84cfc91c';c.fillRect(-23,-34,46,35);c.strokeStyle='#c0f5e2';c.lineWidth=2;c.strokeRect(-23,-34,46,35);
-      c.fillStyle='#b3ba9d';c.fillRect(-25,-37,50,5);c.fillRect(-25,1,50,5);c.fillStyle='#fff0c270';c.fillRect(-17,-29,3,18);c.fillRect(17,-26,2,9);c.fillStyle='#e7d5a9';c.fillRect(-7,-8,14,6);c.restore();
-    }
-    if(s.phase==='identify'){
-      const progress=s.progress;for(let i=0;i<2;i++){const wave=(s.seconds*.65+i*.5)%1;c.save();c.globalAlpha=(1-wave)*.8;c.strokeStyle='#9cece0';c.lineWidth=2;c.setLineDash([4,3]);c.beginPath();c.ellipse(0,5,24+wave*24,8+wave*7,0,0,Math.PI*2);c.stroke();c.restore();}
-      // The caption carries the words. Small registration corners never cover
-      // Kada's face or the actual sorting machine with a floating text panel.
-      c.strokeStyle='#bcefd8';c.lineWidth=2;
-      for(const sign of [-1,1]){c.beginPath();c.moveTo(sign*29,-72);c.lineTo(sign*36,-72);c.lineTo(sign*36,-64);c.stroke();}
-      c.fillStyle='#314453';c.fillRect(-25,12,50,3);c.fillStyle='#b9efcf';c.fillRect(-25,12,50*progress,3);
-    }
-    c.restore();
+    const fold=stage.paper.fold;
+    const position=carrier.paperPivot(stage);
+    context.save();
+    context.globalAlpha=stage.paper.alpha;
+    context.translate(position.x,position.y);
+    const intake=stage.paper.intake;
+    context.rotate(stage.cargo.angle*intake);
+    context.transform(1+(stage.cargo.yaw-1)*intake,-(1-stage.cargo.yaw)*.12*intake,(1-stage.cargo.pitch)*.18*intake,1+(stage.cargo.pitch-1)*intake,0,0);
+    context.scale(stage.paper.sourceScale,stage.paper.sourceScale);
+    const side=Math.cos(fold*Math.PI*.46),bottom=Math.cos(fold*Math.PI*.45);
+    paperPanel(context,{x:14,y:65,w:29,h:81},{x:43,y:106},side,1,fold*.26);
+    paperPanel(context,{x:128,y:58,w:48,h:88},{x:128,y:106},side,1,fold*.32);
+    paperPanel(context,{x:43,y:64,w:85,h:42},{x:96,y:106},1,1,0);
+    paperPanel(context,{x:43,y:106,w:85,h:40},{x:96,y:106},1,bottom,fold*.35);
+    paperPanel(context,{x:30,y:146,w:117,h:17},{x:96,y:106},1,bottom,fold*.42);
+    paperPanel(context,{x:23,y:29,w:140,h:35},{x:96,y:64},1,Math.cos(fold*Math.PI*.46),fold*.22);
+    context.fillStyle='#d9edc2';
+    context.fillRect(77-96,74-106,4,5);
+    context.fillRect(90-96,74-106,4,5);
+    context.restore();
   }
-  function searchlight(c:CanvasRenderingContext2D,frame:SceneFrame,s:NightStage){
-    if(!s.beamVisible(frame.ship.back))return;
-    const ship=frame.ship,from={x:ship.x,y:ship.y-ship.width*.20},target=s.target;
-    const a=Math.atan2(target.y-from.y,target.x-from.x),right={x:-Math.sin(a)*23,y:Math.cos(a)*23};
-    c.save();
-    const light=c.createLinearGradient(from.x,from.y,target.x,target.y);light.addColorStop(0,'#fff0bf38');light.addColorStop(1,'#fff0bf1e');c.fillStyle=light;
-    c.beginPath();c.moveTo(from.x-right.x*.10,from.y-right.y*.10);c.lineTo(target.x-right.x,target.y-right.y);c.lineTo(target.x+right.x,target.y+right.y);c.lineTo(from.x+right.x*.10,from.y+right.y*.10);c.closePath();c.fill();
-    const spot=c.createRadialGradient(target.x,target.y,1,target.x,target.y,31);spot.addColorStop(0,'#fff2cc55');spot.addColorStop(1,'#fff2cc00');c.fillStyle=spot;c.save();c.translate(target.x,target.y);c.scale(1,.34);c.fillRect(-32,-32,64,64);c.restore();c.restore();
+
+  function paperShadow(context:CanvasRenderingContext2D,stage:NightStage){
+    const alpha=stage.emerge*(1-stage.paper.intake)*Math.max(.08,.25-stage.paper.height*.003);
+    if(alpha<=0)return;
+    context.save();context.globalAlpha=alpha;context.fillStyle='#202039';
+    context.beginPath();context.ellipse(stage.paper.ground.x,stage.paper.ground.y+2,14+stage.paper.height*.14,4+stage.paper.height*.03,0,0,Math.PI*2);context.fill();context.restore();
   }
+
+  function beacon(context:CanvasRenderingContext2D,stage:NightStage){
+    const alarm=stage.phase==='signal'||stage.phase==='travel';
+    context.save();
+    context.fillStyle=alarm?'#f8dbaa':'#96c8bd';context.fillRect(554,206,10,4);
+    if(alarm){
+      const wave=(stage.seconds*.5)%1;
+      context.globalAlpha=(1-wave)*.35;
+      context.strokeStyle='#e8c28f';context.lineWidth=2;
+      context.beginPath();context.ellipse(559,208,10+wave*21,4+wave*8,0,0,Math.PI*2);context.stroke();
+    }
+    context.restore();
+  }
+
+  function gate(context:CanvasRenderingContext2D,stage:NightStage){
+    context.save();
+    context.beginPath();context.moveTo(nightDoor.opening[0].x,nightDoor.opening[0].y);
+    for(const point of nightDoor.opening.slice(1))context.lineTo(point.x,point.y);
+    context.closePath();context.clip();
+    const glow=context.createLinearGradient(283,365,283,407);
+    glow.addColorStop(0,'#e8c48708');glow.addColorStop(1,'#edbd7040');
+    context.fillStyle=glow;context.fillRect(255,360,56,50);
+    const shutter=Math.round(43*(1-stage.gate));
+    context.fillStyle='#584b66';context.fillRect(256,364,54,shutter);
+    for(let y=366;y<364+shutter;y+=5){
+      context.fillStyle='#86738b';context.fillRect(256,y,54,2);
+      context.fillStyle='#443d58';context.fillRect(256,y+3,54,1);
+    }
+    context.restore();
+  }
+
+  function registrationMarks(context:CanvasRenderingContext2D,stage:NightStage){
+    if(stage.phase!=='identify')return;
+    const position=stage.paper.freePivot;
+    context.save();context.lineWidth=1.5;context.strokeStyle='#9ac5bb';
+    context.fillStyle='#a4dbc21c';
+    context.beginPath();
+    context.moveTo(stage.robot.x-48,stage.robot.y-66);
+    context.lineTo(position.x-14,stage.paper.ground.y);
+    context.lineTo(position.x+14,stage.paper.ground.y);
+    context.closePath();context.fill();
+    for(const sign of [-1,1]){
+      context.beginPath();context.moveTo(position.x+sign*20,position.y-21);context.lineTo(position.x+sign*26,position.y-21);context.lineTo(position.x+sign*26,position.y-15);context.stroke();
+    }
+    context.fillStyle='#34464b';context.fillRect(position.x-20,stage.paper.ground.y+10,40,2);
+    context.fillStyle='#a8cfbc';context.fillRect(position.x-20,stage.paper.ground.y+10,40*stage.progress,2);
+    context.restore();
+  }
+
+  function searchlight(context:CanvasRenderingContext2D,frame:SceneFrame,stage:NightStage){
+    if(!stage.beamVisible(frame.ship.back))return;
+    const ship=frame.ship,from={x:ship.x,y:ship.y-ship.width*.20};
+    const target=stage.target;
+    const angle=Math.atan2(target.y-from.y,target.x-from.x);
+    const edge={x:-Math.sin(angle)*23,y:Math.cos(angle)*23};
+    context.save();
+    context.globalCompositeOperation='screen';
+    const light=context.createLinearGradient(from.x,from.y,target.x,target.y);
+    light.addColorStop(0,'#e2d3ab2b');light.addColorStop(1,'#e2d3ab18');context.fillStyle=light;
+    context.beginPath();context.moveTo(from.x-edge.x*.10,from.y-edge.y*.10);context.lineTo(target.x-edge.x,target.y-edge.y);context.lineTo(target.x+edge.x,target.y+edge.y);context.lineTo(from.x+edge.x*.10,from.y+edge.y*.10);context.closePath();context.fill();
+    context.restore();
+  }
+
   return {
+    ready,
     camera:nightCamera,
-    cycleFraction:(_base,t)=>nightStage(t).fraction,
-    robotPose:(_base,t)=>nightStage(t).robot,
-    worldEntities:(c,frame)=>{const s=nightStage(frame.t);return [
-      {depth:-Infinity,draw:()=>atmosphere(c,frame)},
-      {depth:295,draw:()=>beacon(c,s)},
-      {depth:434,draw:()=>gate(c,s)},
-      {depth:s.phase==='escort'||s.phase==='dock'?s.robot.y+.1:s.target.y-.1,draw:()=>paperShadow(c,s)},
-    ];},
-    afterWorld(c,frame){const s=nightStage(frame.t);searchlight(c,frame,s);
-      const canvas=c.canvas as HTMLCanvasElement;canvas.dataset.studyPhase=s.phase;canvas.dataset.studySeconds=s.seconds.toFixed(2);canvas.dataset.robotX=s.robot.x.toFixed(2);canvas.dataset.robotY=s.robot.y.toFixed(2);canvas.dataset.targetX=s.target.x.toFixed(2);canvas.dataset.targetY=s.target.y.toFixed(2);canvas.dataset.beam=String(s.beamVisible(frame.ship.back));
+    cycleFraction:(_base,time)=>nightStage(time).fraction,
+    robotPose:(_base,time)=>nightStage(time).robot,
+    drawRobot(context,frame,atlas){
+      robotAtlas=atlas;
+      const stage=nightStage(frame.t);
+      robot.drawBody(context,frame,stage,atlas);
+    },
+    worldEntities(context,frame){
+      const stage=nightStage(frame.t);
+      const handling=stage.phase==='contain'||stage.phase==='escort'||stage.phase==='dock';
+      return [
+        {depth:stage.robot.y-.3,draw:()=>{paperShadow(context,stage);carrier.groundShadow(context,stage);}},
+        {depth:handling?stage.robot.y+.1:stage.robot.y-.1,draw:()=>carrier.draw(context,stage,()=>{if(handling)drawPaper(context,stage);})},
+        {depth:417.1,draw:()=>carrier.draw(context,stage,()=>{if(handling)drawPaper(context,stage);},true)},
+        {depth:stage.paper.ground.y,draw:()=>{if(!handling)drawPaper(context,stage);}},
+        {depth:stage.robot.y+.2,draw:()=>{if(robotAtlas)robot.drawClaws(context,stage,robotAtlas,carrier.handles(stage));}},
+        {depth:295,draw:()=>beacon(context,stage)},
+        {depth:417.2,draw:()=>gate(context,stage)},
+      ];
+    },
+    afterWorld(context,frame){
+      const stage=nightStage(frame.t);
+      lightNightWorld(context,frame,stage);
+      registrationMarks(context,stage);
+      searchlight(context,frame,stage);
+      const canvas=context.canvas as HTMLCanvasElement;
+      canvas.dataset.studyPhase=stage.phase;
+      canvas.dataset.studySeconds=stage.seconds.toFixed(2);
+      canvas.dataset.robotX=stage.robot.x.toFixed(2);canvas.dataset.robotY=stage.robot.y.toFixed(2);
+      canvas.dataset.targetX=stage.target.x.toFixed(2);canvas.dataset.targetY=stage.target.y.toFixed(2);
+      canvas.dataset.beam=String(stage.beamVisible(frame.ship.back));
+      canvas.dataset.carrierOpen=stage.cargo.open.toFixed(3);
+      canvas.dataset.carrierReceiving=stage.cargo.receiving.toFixed(3);
+      canvas.dataset.paperFold=stage.paper.fold.toFixed(3);
     },
   };
 }
