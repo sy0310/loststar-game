@@ -74,19 +74,21 @@ export class ExpeditionScene {
     const c=this.ctx;c.fillStyle=color+'22';c.fillRect(x-5,y-4,16,10);c.fillStyle=color;c.fillRect(x,y,6,3);
     if(Math.sin(t*2+x)>.25){c.fillStyle='#fff0bc';c.fillRect(x+1,y,3,1);}
   }
-  private drawShip(t:number){
-    const c=this.ctx,p=shipPose(t),w=112*p.scale,h=w;
-    c.save();c.translate(p.x,p.y-h*.28);
-    const flame=(Math.floor(t*16)%3)*3;
-    c.save();c.rotate(p.heading);
-    c.fillStyle='#72dcff26';c.beginPath();c.ellipse(-w*.68,0,25+flame,9,0,0,Math.PI*2);c.fill();
-    c.fillStyle='#5cdfff';c.fillRect(-w*.72,-3,24+flame,6);c.fillStyle='#dcffff';c.fillRect(-w*.53,-2,12,4);
-    c.restore();c.rotate(p.bank);
-    // The nose follows the orbit through independent directional sprites. Only a small bank rotates
-    // the hull, so the cockpit never rolls upside-down. Blend across every seam.
-    const first=Math.floor(p.direction),mix=Math.max(0,Math.min(1,(p.direction-first-.47)/.06)),indices=[0,1,2,3];
-    const draw=(index:number,alpha:number)=>{c.globalAlpha=alpha;const cell=indices[index%4];c.drawImage(this.art.ship,cell%2*256,Math.floor(cell/2)*256,256,256,-w/2,-h/2,w,h);};
-    draw(first,1-mix);draw(first+1,mix);c.restore();
+  private drawShip(t:number,p=shipPose(t)){
+    const c=this.ctx,w=p.width;
+    // One render unit shares the orbit depth. Both plume and fading wake are masked
+    // by the planet on the back pass, just like the registered directional hulls.
+    c.save();
+    for(const dot of p.trail){c.globalAlpha=dot.alpha;c.fillStyle='#7cdffe';const size=Math.max(1,Math.round(dot.size*p.scale));c.fillRect(Math.round(dot.x),Math.round(dot.y),size,size);}
+    c.globalAlpha=1;c.translate(p.nozzle.x,p.nozzle.y);c.rotate(p.exhaustHeading);
+    const length=p.flameLength+[0,3,1,5][p.flameFrame]*p.scale;
+    c.fillStyle='#4bbded55';c.fillRect(0,-5*p.scale,length+5,10*p.scale);
+    c.fillStyle='#66dfff';c.fillRect(0,-3*p.scale,length,6*p.scale);
+    c.fillStyle='#e7ffff';c.fillRect(0,-p.scale,length*.55,2*p.scale);c.restore();
+    for(const layer of p.layers){
+      c.save();c.globalAlpha=layer.alpha;c.translate(layer.x,layer.y);c.rotate(layer.rotation);
+      c.drawImage(this.art.ship,layer.cell%2*256,Math.floor(layer.cell/2)*256,256,256,-w/2,-w/2,w,w);c.restore();
+    }
   }
   private actor(frame:number,x:number,y:number,w:number,flip=false,carrying=false,t=0){
     const c=this.ctx,atlas=this.art.robot,cell=160,dx=-w*.54,dy=-w*.97;
@@ -134,7 +136,7 @@ export class ExpeditionScene {
     const f=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12,p=robotPose(f);
     c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);c.translate(32,0);
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
-    if(shipPose(t).back)this.drawShip(t);
+    const ship=shipPose(t);if(ship.back)this.drawShip(t,ship);
     c.drawImage(this.art.globe,52,70,664,664);
     // Independent material accents attach to specific pipe/terrain points.
     this.lamp(345,634,'#e9ae70',t);this.lamp(488,610,'#94dcdb',t+.5);this.lamp(193,548,'#e9ae70',t+1);
@@ -150,14 +152,14 @@ export class ExpeditionScene {
     entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
     c.fillStyle='#694771';c.fillRect(600,206,3,52);c.fillStyle='#f9c77c';c.fillRect(599,202,5,5);c.fillStyle='#c9758b';c.beginPath();c.moveTo(603,209);c.lineTo(635,213+Math.sin(t*3)*2);c.lineTo(631,229+Math.sin(t*3)*2);c.lineTo(603,226);c.fill();
     c.fillStyle='#ffdb9b';c.fillRect(611,214,8,6);
-    if(!shipPose(t).back)this.drawShip(t);
+    if(!ship.back)this.drawShip(t,ship);
     if(now<this.focusUntil){
       const progress=1-(this.focusUntil-now)/2200;
       c.save();c.globalAlpha=(1-progress)*.8;c.strokeStyle=this.focusKind==='glitch'?'#f4b3e7':'#ffe0a2';c.lineWidth=2;
       for(let i=0;i<12;i++){const a=i*Math.PI/6,r=35+progress*95,x=474+Math.cos(a)*r,y=310+Math.sin(a)*r*.6;c.strokeRect(x,y,3,3);}
       c.restore();
     }
-    this.canvas.dataset.action=p.action;this.canvas.dataset.ship=shipPose(t).back?'back':'front';
+    this.canvas.dataset.action=p.action;this.canvas.dataset.ship=ship.back?'back':'front';
     this.drawTimes.push(performance.now()-began);if(this.drawTimes.length>1800)this.drawTimes.shift();
   }
   destroy(){cancelAnimationFrame(this.frame);}

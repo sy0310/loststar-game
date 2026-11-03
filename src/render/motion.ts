@@ -29,13 +29,45 @@ export function robotPose(fraction:number) {
       y:f<.935?hand.y+(extended.y-hand.y)*pass:extended.y+(435-extended.y)*release,held:release<1,delivered:release===1,visible:f<.995};
   return {action,...point,carrying:action==='return'||action==='unload',parcel,lift,release};
 }
-export function shipPose(seconds:number) {
+function shipOrbit(seconds:number) {
   const angle=seconds/14*Math.PI*2-.8,rx=350,ry=175,tilt=-.18;
   const x=rx*Math.cos(angle),y=ry*Math.sin(angle);
   const dx=-rx*Math.sin(angle)*Math.cos(tilt)-ry*Math.cos(angle)*Math.sin(tilt);
   const dy=-rx*Math.sin(angle)*Math.sin(tilt)+ry*Math.cos(angle)*Math.cos(tilt);
   const heading=Math.atan2(dy,dx),direction=(heading/(Math.PI/2)+4)%4;
   const view=['starboard','bow','port','stern'][Math.round(direction)%4];
-  return {x:384+x*Math.cos(tilt)-y*Math.sin(tilt),y:365+x*Math.sin(tilt)+y*Math.cos(tilt),back:Math.sin(angle)<0,scale:.78+Math.sin(angle)*.3,angle,heading,view,direction,bank:Math.sin(angle*2)*.12};
+  return {x:384+x*Math.cos(tilt)-y*Math.sin(tilt),y:365+x*Math.sin(tilt)+y*Math.cos(tilt),back:Math.sin(angle)<0,scale:.78+Math.sin(angle)*.3,angle,heading,view,direction,bank:Math.sin(angle*2)*.12,speed:Math.hypot(dx,dy)*Math.PI*2/14};
+}
+// Calibrated against the 256px runtime cells, NOT the atlas's transparent center.
+// Nose-to-nozzle axes include each drawing's 3/4 perspective.
+export const shipViews=[
+  {cell:0,anchor:{x:9,y:139},nose:{x:246,y:169}},
+  {cell:1,anchor:{x:128,y:66},nose:{x:128,y:224}},
+  {cell:2,anchor:{x:247,y:141},nose:{x:10,y:181}},
+  {cell:3,anchor:{x:132,y:223},nose:{x:128,y:31}},
+];
+function shipBody(seconds:number){
+  const p=shipOrbit(seconds),width=112*p.scale,center={x:p.x,y:p.y-width*.28};
+  const first=Math.floor(p.direction),blend=Math.max(0,Math.min(1,(p.direction-first-.47)/.06));
+  const candidates=[{view:shipViews[first%4],alpha:1-blend},{view:shipViews[(first+1)%4],alpha:blend}].filter(layer=>layer.alpha>0);
+  const layers=candidates.map(({view,alpha})=>{
+    const nativeHeading=Math.atan2(view.nose.y-view.anchor.y,view.nose.x-view.anchor.x),rotation=p.heading-nativeHeading+p.bank;
+    const x=(view.anchor.x-128)*width/256,y=(view.anchor.y-128)*width/256;
+    return {...view,alpha,nativeHeading,rotation,offset:{x:x*Math.cos(rotation)-y*Math.sin(rotation),y:x*Math.sin(rotation)+y*Math.cos(rotation)}};
+  });
+  const nozzle={x:center.x+layers.reduce((s,l)=>s+l.offset.x*l.alpha,0),y:center.y+layers.reduce((s,l)=>s+l.offset.y*l.alpha,0)};
+  return {...p,width,nozzle,exhaustHeading:p.heading+p.bank+Math.PI,
+    // Register both crossfaded sprites at the same engine mouth. The flame cannot detach.
+    layers:layers.map(layer=>({...layer,x:nozzle.x-layer.offset.x,y:nozzle.y-layer.offset.y}))};
+}
+export function shipPose(seconds:number){
+  const p=shipBody(seconds);
+  const trail=Array.from({length:8},(_,i)=>{
+    const age=.035+i*.042,old=shipBody(seconds-age),drift=age*(22+p.speed*.12),side=Math.sin(i*2.7+seconds*3)*age*7;
+    return {x:old.nozzle.x+Math.cos(old.exhaustHeading)*drift-Math.sin(old.exhaustHeading)*side,
+      y:old.nozzle.y+Math.sin(old.exhaustHeading)*drift+Math.cos(old.exhaustHeading)*side,
+      alpha:(1-age/.4)**2,size:i<3?3:2,back:p.back};
+  });
+  return {...p,trail,flameFrame:Math.floor(seconds*16)%4,flameLength:(10+p.speed*.07)*p.scale};
 }
 export const actionText = {walk:'绕过仓库，寻找奇怪的小包裹',scan:'扫描中 · 这里面好像有回声',pickup:'轻轻捡起，暂时不要拆封',return:'带着新发现，从前庭返回',unload:'归舱卸货 · 奇物正在登记'};

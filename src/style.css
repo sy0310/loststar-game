@@ -373,3 +373,23 @@ nav button { font-size:.8125rem;min-height:3.75rem; }
 
 .journal-preview { width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px;margin-top:10px;min-height:60px; }
 .journal-preview small {color:#bee5d7;font-size:.6875rem;margin-bottom:5px;} .journal-preview strong {color:#f6d8af;font-size:.8125rem;line-height:1.7;}
+
+/* Essential radar motion is drawn in Canvas; CSS-only sweep remains a static fallback. */
+#radar-canvas { position:absolute;inset:0;width:100%;height:100%;border-radius:50%;pointer-events:none;image-rendering:pixelated; }
+.radar-rings[data-renderer=canvas2d]>.sweep,.radar-rings[data-renderer=canvas2d]>i,.radar-rings[data-renderer=canvas2d] #radar-signal { display:none; }
+.radar-planet { pointer-events:none; }
+dialog[data-kind=detail] { padding:0;overflow:hidden;height:min(800px,calc(100svh - 24px)); }
+dialog[data-kind=detail] #modal-body { height:100%;display:flex;flex-direction:column;overflow:hidden; }
+.detail-dialog-header { flex-shrink:0;padding:14px 16px;border-bottom:1px solid #856487; }
+.detail-scroll { flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:13px 17px 8px; }
+.interaction-dock { flex-shrink:0;padding:10px 13px 9px;border-top:1px solid #b4948b;background:linear-gradient(#35263f,#211b32);box-shadow:0 -5px 20px #110e2566; }
+.interaction-feedback { position:relative;display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;gap:9px;margin-bottom:9px;min-height:100px;padding:6px 44px 6px 5px;background:#1d2632;border:1px solid #91b5ab; }
+.interaction-feedback canvas { display:block;width:110px;height:76px;object-fit:contain;image-rendering:pixelated; }
+.interaction-feedback p { color:#d5f4d9;font-size:.8125rem;line-height:1.8;overflow-wrap:anywhere; }
+.interaction-feedback>.icon-button { position:absolute;right:0;top:0;width:44px;min-height:44px;padding:9px; }
+.interaction-feedback>.icon-button .icon { width:17px;height:17px; }
+.interaction-dock .primary { touch-action:manipulation;min-height:48px; }
+.interaction-hint { display:block;margin-top:6px;text-align:center;color:#c3b0cf;font-size:.6875rem;line-height:1.5; }
+@media(max-height:650px) { .interaction-feedback {grid-template-columns:90px minmax(0,1fr);} .interaction-feedback canvas {width:90px;height:65px;} .interaction-hint {display:none;} }
+
+.build-info {font-size:.75rem;color:#d4bbd7;line-height:1.8;margin-top:17px;border-top:1px dashed #8d6c8d;padding-top:12px;}

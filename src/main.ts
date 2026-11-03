@@ -11,6 +11,8 @@ import type {RadarMode} from './game/radar';
 import { parcelSignals } from './content/parcel';
 import type { DiscoveryKind } from './content/types';
 import { ExpeditionScene } from './render/scene';
+import { RadarScene } from './render/radar-scene';
+import { InteractionDirector } from './ui/interaction';
 import { robotPose, actionText } from './render/motion';
 import { equipment, itemArt } from './ui/art';
 import { DiscoveryDirector, soundCue } from './ui/discovery';
@@ -35,6 +37,7 @@ const kindName={artifact:'奇物',creature:'居民',event:'异闻'};
 const heading=(eyebrow:string,title:string,subtitle:string,extra='')=>`<header class="page-heading"><div class="eyebrow">${eyebrow}</div><div class="heading-line"><h1>${title}</h1>${extra}</div><p>${subtitle}</p></header>`;
 const closeButton=(label:string)=>`<button class="icon-button" data-action="close" aria-label="${label}">${icon('close')}</button>`;
 const app=$('#app');
+document.documentElement.dataset.build=`${__BUILD_INFO__.version} · ${__BUILD_INFO__.commit}${__BUILD_INFO__.dirty?' (本地修改中)':''}`;
 app.innerHTML=`
 <aside class="desktop-intro"><div class="edition">LR–01 / 宇宙失物招领处</div><div class="wordmark">失物<br>星球<span>LOSTSTAR</span></div><p>每一次归航，<br>都带回一点不明所以。</p><div class="intro-line"></div><small>有些地方，是因为你来过，<br>才有了收件人。</small><div class="postal-stamp">退件平原<br><b>航程进行中</b></div></aside>
 <div class="device">
@@ -75,12 +78,16 @@ app.innerHTML=`
 
 const scene=new ExpeditionScene($('#planet-scene'),()=>state);
 const modal=$<HTMLDialogElement>('#modal');
+const radarScene=new RadarScene($('.radar-rings'),()=>publicRadar(state));
+const interactions=new InteractionDirector($('#modal-body'));
+let lastPointerType='mouse';
+app.addEventListener('pointerup',event=>{lastPointerType=event.pointerType||'mouse';},{passive:true});
 const baseArrival=new BaseArrival($('.base-scene'),$<HTMLImageElement>('#base-background'));
 const director=new DiscoveryDirector($('#discovery-stage'),()=>{presenting=false;queueMicrotask(()=>void maybePresent());});
 function toast(text:string){clearTimeout(toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3000);}
-function showModal(kind:string,html:string){modalKind=kind;$('#modal-body').innerHTML=html;if(!modal.open)modal.showModal();}
-function closeModal(){modal.close();modalKind='';void maybePresent();}
-modal.addEventListener('cancel',()=>{modalKind='';setTimeout(()=>void maybePresent(),0);});
+function showModal(kind:string,html:string){interactions.hide();modal.dataset.kind=kind;modalKind=kind;$('#modal-body').innerHTML=html;if(!modal.open)modal.showModal();}
+function closeModal(){interactions.hide();modal.close();modalKind='';void maybePresent();}
+modal.addEventListener('cancel',()=>{interactions.hide();modalKind='';setTimeout(()=>void maybePresent(),0);});
 async function transact(fn:(s:SaveData)=>SaveData){
   const run=()=>{
     const result=commitSave(storage,state,fn,Date.now());state=result.state;
@@ -102,7 +109,7 @@ function go(id:string){
   if(!['expedition','radar','collection','base'].includes(id))return;
   tab=id;if(id==='base')void baseArrival.load();document.querySelectorAll<HTMLElement>('.view').forEach(view=>view.hidden=view.id!==id);
   document.querySelectorAll('[data-go]').forEach(button=>button.setAttribute('aria-current',button.getAttribute('data-go')===id?'page':'false'));
-  $('#page-scroll').scrollTo(0,0);scene.setActive(id==='expedition');if(id!=='expedition')director.hide();update();void maybePresent();
+  $('#page-scroll').scrollTo(0,0);scene.setActive(id==='expedition');radarScene.setActive(id==='radar'&&radarMode==='local');if(id!=='expedition')director.hide();update();void maybePresent();
 }
 function renderCollection(){
   const list=state.collection.map(id=>discoveryById(id)!);
@@ -117,7 +124,7 @@ function renderCollection(){
   $('#collection-items').innerHTML=html||`<div class="empty-state game-panel">${icon('book')}<span class="micro-label">空白的那一页，留给下一次发现</span><h2>故事还在路上</h2><p>咔哒正在认真寻找。<br>每次归舱，都会多懂这里一点。</p><span class="empty-stamp">等待宇宙回信</span></div>`;
 }
 function settings(){
-  showModal('settings',`<div class="modal-heading"><h2>界面与声音</h2>${closeButton('关闭设置')}</div><p class="modal-subtitle">收件站按你的习惯亮灯。所有设置会保存在本机。</p><div class="settings-group"><h3>无线电声音</h3><p>原创像素短音效；首次默认静音，开启后才接通。</p><button class="secondary" data-preference="sound" aria-pressed="${!preferences.muted}">${preferences.muted?'开启声音':'静音'}</button></div><div class="settings-group"><h3>文字大小</h3><div class="settings-options">${[['normal','标准字号'],['large','大字号']].map(([id,label])=>`<button class="secondary" data-preference="text" data-value="${id}" aria-pressed="${preferences.textSize===id}">${label}</button>`).join('')}</div></div><div class="settings-group"><h3>打开游戏时</h3><div class="settings-options">${[['base','基地作为首页'],['expedition','远征作为首页']].map(([id,label])=>`<button class="secondary" data-preference="start" data-value="${id}" aria-pressed="${preferences.startPage===id}">${label}</button>`).join('')}</div><p>首页只影响下次打开，不改变探索进度。</p></div>`);
+  showModal('settings',`<div class="modal-heading"><h2>界面与声音</h2>${closeButton('关闭设置')}</div><p class="modal-subtitle">收件站按你的习惯亮灯。所有设置会保存在本机。</p><div class="settings-group"><h3>无线电声音</h3><p>原创像素短音效；首次默认静音，开启后才接通。</p><button class="secondary" data-preference="sound" aria-pressed="${!preferences.muted}">${preferences.muted?'开启声音':'静音'}</button></div><div class="settings-group"><h3>文字大小</h3><div class="settings-options">${[['normal','标准字号'],['large','大字号']].map(([id,label])=>`<button class="secondary" data-preference="text" data-value="${id}" aria-pressed="${preferences.textSize===id}">${label}</button>`).join('')}</div></div><div class="settings-group"><h3>打开游戏时</h3><div class="settings-options">${[['base','基地作为首页'],['expedition','远征作为首页']].map(([id,label])=>`<button class="secondary" data-preference="start" data-value="${id}" aria-pressed="${preferences.startPage===id}">${label}</button>`).join('')}</div><p>首页只影响下次打开，不改变探索进度。</p></div><p class="build-info">首星测试 v${__BUILD_INFO__.version} · Git ${__BUILD_INFO__.commit}${__BUILD_INFO__.dirty?' · 本地修改中':''}</p>`);
 }
 function renderJournal(){
   const current=currentJournalId(state.journal.shift),notes=parcelJournal.filter(note=>state.journal.entries.includes(note.id));
@@ -136,6 +143,7 @@ function renderRadar(){
   $('#local-radar').hidden=radarMode!=='local';$('#interstellar-status').hidden=radarMode!=='interstellar';
   $('#interstellar-status').dataset.stage=publicRadar(state,'interstellar').stage;
   document.querySelectorAll('[data-radar-mode]').forEach(button=>button.setAttribute('aria-pressed',String((button as HTMLElement).dataset.radarMode===radarMode)));
+  radarScene.setActive(tab==='radar'&&radarMode==='local');
   const radar=publicRadar(state),stage=radar.stage;
   const text={searching:['正在监听退件平原','咔哒会自动核对地表回波，不必守着雷达。'],anomaly:['捕获本地异常','纸层与旧机器之间，传来一段不同寻常的回应。'],locking:['正在核对回波','正在分离现场杂音，记录只来自真实勘测。'],surveyed:['现场回波已归档','这颗小星球，刚刚多讲了一点自己的故事。']}[stage];
   $('#radar-signal').innerHTML=stage==='anomaly'||stage==='locking'?`<span data-signal class="signal ${stage}" style="--signal-x:${54+(state.surveyCount%3)*7}%;--signal-y:${25+(state.surveyCount%2)*13}%"></span>`:'';
@@ -160,7 +168,7 @@ function workshop(){
 function detail(id:string){
   const d=discoveryById(id);if(!d||!state.collection.includes(id))return;
   director.hide();const recorded=state.discoveryAt[id];
-  showModal('detail',`<div class="modal-heading"><div><div class="eyebrow">FIELD ARCHIVE / ${kindName[d.kind]}</div><span class="detail-serial">RETURNS PLAIN · ${String(d.milestone).padStart(3,'0')}</span></div>${closeButton('关闭详情')}</div><div class="detail-art ${d.kind}"><div class="artifact-orbit"></div>${itemArt(id)}<span class="rarity-stamp">${d.rarity}<small>已入档</small></span></div><small class="detail-kind">${d.kind==='artifact'?'用途不明的宇宙奇物':d.kind==='creature'?'住在纸箱平原的小居民':'一份尚不能完全解释的现场记录'}</small><h2 class="detail-title">${d.name}</h2><p class="detail-description">${d.description}</p><div class="field-note"><span class="micro-label">咔哒的田野笔记</span><p>${d.fieldNote}</p></div><div class="detail-source"><span>退货箱星 / 退件平原</span><small>${recorded?new Date(recorded).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'旧档案'} 入档</small></div><div class="interaction" id="interaction">${d.kind==='creature'?'它似乎愿意和你打个招呼。':'可以轻轻试一下。咔哒会在旁边记录。'}</div><button class="primary" data-interact="${id}">试一试 ${icon('arrow')}</button>`);
+  showModal('detail',`<div class="modal-heading detail-dialog-header"><div><div class="eyebrow">FIELD ARCHIVE / ${kindName[d.kind]}</div><span class="detail-serial">RETURNS PLAIN · ${String(d.milestone).padStart(3,'0')}</span></div>${closeButton('关闭详情')}</div><div class="detail-scroll"><div class="detail-art ${d.kind}"><div class="artifact-orbit"></div>${itemArt(id)}<span class="rarity-stamp">${d.rarity}<small>已入档</small></span></div><small class="detail-kind">${d.kind==='artifact'?'用途不明的宇宙奇物':d.kind==='creature'?'住在纸箱平原的小居民':'一份尚不能完全解释的现场记录'}</small><h2 class="detail-title">${d.name}</h2><p class="detail-description">${d.description}</p><div class="field-note"><span class="micro-label">咔哒的田野笔记</span><p>${d.fieldNote}</p></div><div class="detail-source"><span>退货箱星 / 退件平原</span><small>${recorded?new Date(recorded).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'旧档案'} 入档</small></div></div><div class="interaction-dock"><div id="interaction-feedback" class="interaction-feedback" role="status" aria-live="polite" hidden><canvas width="320" height="180" aria-label="${d.name}的独特互动演出" role="img"></canvas><p id="interaction"></p><button class="icon-button" data-action="dismiss-interaction" aria-label="收起互动反馈">${icon('close')}</button></div><button class="primary" data-interact="${id}">试一试 ${icon('arrow')}</button><small class="interaction-hint">可以反复试试 · 不消耗藏品，不产生奖励</small></div>`);
 }
 function offline(){
   const cargo=state.pendingReturn;if(!cargo)return;
@@ -196,7 +204,7 @@ app.addEventListener('click',async event=>{
   if(button.dataset.filter){filter=button.dataset.filter as typeof filter;document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));update();}
   if(button.dataset.detail)detail(button.dataset.detail);
   if(button.dataset.interact){
-    const d=discoveryById(button.dataset.interact)!;$('#interaction').textContent=d.interaction;$('#modal-body').classList.remove('interacted');void $('#modal-body').offsetWidth;$('#modal-body').classList.add('interacted');soundCue('interaction',d.id);
+    interactions.show(button.dataset.interact,lastPointerType);soundCue('interaction',button.dataset.interact);
   }
   if(button.dataset.planet)go('expedition');
   if(button.dataset.upgradeBuy){
@@ -211,6 +219,7 @@ app.addEventListener('click',async event=>{
     case 'close':closeModal();break;
     case 'record':await transact(dismissSurvey);toast('现场记录已收录。自动监听继续。');break;
     case 'dismiss-discovery':director.hide();break;
+    case 'dismiss-interaction':interactions.hide();break;
     case 'claim':button.disabled=true;await transact(claimReturn);closeModal();soundCue('return');toast('奇物已安顿。欢迎回来，管理员。');break;
   }
 });
@@ -229,4 +238,4 @@ window.addEventListener('storage',event=>{
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void tick();});
 go(tab);renderBase();if(state.pendingReturn)offline();else void maybePresent();
 if(!storageOK)toast('浏览器暂时无法保存。当前进度会在本次打开期间保留。');
-if(new URLSearchParams(location.search).has('review'))Object.assign(window,{__review:{scene,freeze:(t:number|null)=>{reviewTime=t;scene.freeze(t);update();},state:()=>structuredClone(state)}});
+if(new URLSearchParams(location.search).has('review'))Object.assign(window,{__review:{scene,radarScene,freeze:(t:number|null)=>{reviewTime=t;scene.freeze(t);update();},state:()=>structuredClone(state)}});
