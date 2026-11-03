@@ -27,3 +27,13 @@
 - 这些测试不能代替 TapTap 真机触控、GPU、帧率和手机实际观感。新包扫码确认由用户进行。
 
 录屏、上传回执、版本ID和手机反馈将继续追加本页。夜间守护方案见 [独立实验设计](15_NIGHT_GUARD_PROTOTYPE.md)，默认不进入主流程。
+
+## 已上传的新包与用户手机复测
+
+- TapTap 开发自测版本 **423778**，包体记录150760，游戏v0.1.1，Git **b4c0d20**；旧版本422632不再用于本次验证。
+- [上传回执](../artifacts/mobile-fixes/upload-receipt.json)：远端已读回；未发布、未绑定主包。修复包里没有夜间原型入口或代码。
+- 用户扫码后回复：**“三项目前都正常”**。这是该新版本的真实手机试玩反馈；用户未提供机型/系统/TapTap版本，不把它扩大为所有Android/iOS均通过。
+- [28秒完整两圈绕轨](../artifacts/mobile-fixes/ship-orbit-28s.mp4)、[放大](../artifacts/mobile-fixes/ship-orbit-zoom-28s.mp4)、[旧包左/修复版右连续对照](../artifacts/mobile-fixes/ship-before-after-28s.mp4)。
+- [96秒真实雷达扫描至锁定/归档](../artifacts/mobile-fixes/radar-live-96s.mp4)、[奇物触控演出](../artifacts/mobile-fixes/artifacts-touch-emulation.mp4)。后者使用引擎产生的已解锁测试存档，明确是触控模拟，不冒称物理手机录像。
+- [录制元数据与测量](../artifacts/mobile-fixes/recordings.json)。录屏均为实时运行，没有视觉冻结或时间快进；旧包对照来自原有连续源视频。
+- [本次P0 CI](https://github.com/sy0310/loststar-game/actions/runs/41576256275) 已通过26单元/运动与54浏览器流程。后续夜间原型有独立测试与入口，最终分支CI以最新PR Checks为准。

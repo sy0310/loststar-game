@@ -7,5 +7,5 @@ let dirty=false;try{execFileSync('git',['diff','--quiet','--','src','package.jso
 export default defineConfig({
   define:{__BUILD_INFO__:JSON.stringify({version,commit,dirty})},
   server: { host: '127.0.0.1' },
-  test: { include: ['tests/*.test.ts'], coverage: { provider: 'v8', include: ['src/game/**'], thresholds: { lines: 80, functions: 80, statements: 80, branches: 80 } } },
+  test: { include: ['tests/*.test.ts'], coverage: { provider: 'v8', include: ['src/game/**','src/prototype/guard-engine.ts'], thresholds: { lines: 80, functions: 80, statements: 80, branches: 80 } } },
 });

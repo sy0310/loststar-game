@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build a relocatable TapTap H5 archive: one loststar/ directory at ZIP root."""
 from pathlib import Path
+import argparse
 import hashlib
 import json
 import subprocess
@@ -8,22 +9,30 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'releases' / 'taptap'
-GAME = OUTPUT / 'loststar'
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--night-lab', action='store_true', help='Package the separate, default-off night prototype')
+    args = parser.parse_args()
+    folder = 'loststar-night' if args.night_lab else 'loststar'
+    game = OUTPUT / folder
     version = json.loads((ROOT / 'package.json').read_text())['version']
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    subprocess.run(['npm', 'run', 'build', '--', '--base=./', '--outDir=releases/taptap/loststar'], cwd=ROOT, check=True)
-    files = sorted(path for path in GAME.rglob('*') if path.is_file())
-    assert (GAME / 'index.html').is_file(), 'Missing first-level HTML entry'
-    assert all(path.relative_to(GAME).parts[0] in ('index.html', 'assets') for path in files), 'Unexpected build content'
-    html = (GAME / 'index.html').read_text()
+    command = ['npx', 'vite', 'build', '--config', 'vite.night.config.ts'] if args.night_lab else ['npm', 'run', 'build', '--']
+    subprocess.run(command + ['--base=./', '--outDir=releases/taptap/' + folder], cwd=ROOT, check=True)
+    if args.night_lab:
+        (game / 'night-lab.html').replace(game / 'index.html')
+    files = sorted(path for path in game.rglob('*') if path.is_file())
+    assert (game / 'index.html').is_file(), 'Missing first-level HTML entry'
+    assert all(path.relative_to(game).parts[0] in ('index.html', 'assets') for path in files), 'Unexpected build content'
+    html = (game / 'index.html').read_text()
     assert 'src="./assets/' in html and 'href="./assets/' in html, 'Entry must use relative URLs'
-    archive = OUTPUT / f'loststar-{version}-{commit[:7]}-h5.zip'
+    suffix = '-night-lab' if args.night_lab else ''
+    archive = OUTPUT / f'loststar-{version}-{commit[:7]}{suffix}-h5.zip'
     with zipfile.ZipFile(archive, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as target:
         for path in files:
-            info = zipfile.ZipInfo('loststar/' + path.relative_to(GAME).as_posix(), (1980, 1, 1, 0, 0, 0))
+            info = zipfile.ZipInfo(folder + '/' + path.relative_to(game).as_posix(), (1980, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o100644 << 16
             target.writestr(info, path.read_bytes(), compresslevel=9)
@@ -32,9 +41,10 @@ def main():
         'archive': str(archive.relative_to(ROOT)), 'bytes': archive.stat().st_size,
         'sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
         'files': len(files), 'uncompressedBytes': sum(path.stat().st_size for path in files),
-        'entry': 'loststar/index.html', 'orientation': 'portrait',
+        'entry': folder + '/index.html', 'orientation': 'portrait',
+        'purpose': 'separate opt-in night prototype' if args.night_lab else 'first-planet game; night prototype not included',
     }
-    (OUTPUT / 'package-info.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n')
+    (OUTPUT / ('package-info-night.json' if args.night_lab else 'package-info.json')).write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(metadata, ensure_ascii=False, indent=2))
 
 
