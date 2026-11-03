@@ -72,7 +72,7 @@ export type ReceiptReading = {
 };
 
 export function resolveReceiptReading(level: number, batch: ReceiptBatch): ReceiptReading {
-  const researchLevel = Math.max(0, Math.min(3, Math.floor(level))) as ReceiptResearchLevel;
+  const researchLevel = (Number.isFinite(level) ? Math.max(0, Math.min(3, Math.floor(level))) : 0) as ReceiptResearchLevel;
   const capability = RECEIPT_RESEARCH_LEVELS[researchLevel];
   const uniqueSlips = [...new Map(batch.slips.map(slip => [slip.id, slip])).values()];
   const uniqueRecords = [...new Map(batch.records.map(record => [`${record.slipId}/${record.step}`, record])).values()];
