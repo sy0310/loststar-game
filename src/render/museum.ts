@@ -6,7 +6,7 @@ import roomUrl from '../../assets/runtime/museum-room-v02.webp';
 import {textures} from '../ui/art';
 import {discoveryById} from '../content/catalog';
 import type {ArtId} from '../content/types';
-import {createReceiptStudyAssets,drawReceiptStudy,receiptFocusCamera,type ReceiptStudyAssets} from './receipt-study';
+import type {ReceiptStudyAssets} from './receipt-study';
 const habitatUrls=import.meta.glob('../../assets/runtime/habitat-*-v02.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 const layers=import.meta.glob('../../assets/runtime/case-*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 export const residentIds=['mouse','hermit','tagbird'] as const;
@@ -21,12 +21,13 @@ export class MuseumScene {
  private room=image(roomUrl);private robot=image(robotAtlasUrl);private pose=baseRobotPose(0);private art=Object.fromEntries(exhibitIds.map(id=>[id,image(textures[id])]));
  private glass=Object.fromEntries(exhibitIds.map(id=>[id,[image(layers[`../../assets/runtime/case-${id}-back.webp`]),image(layers[`../../assets/runtime/case-${id}-front.webp`])]]));
  private receiptParts?:ReceiptStudyAssets;
+ private receiptRenderer?:typeof import('./receipt-study');
  constructor(private root:HTMLElement,private source:()=>MuseumSource,private level:(id:string)=>number=()=>0,private clock:()=>number=()=>performance.now()/1000,private options:MuseumOptions={}){
   root.classList.add('museum-room');this.canvas.id='museum-canvas';this.canvas.width=768;this.canvas.height=960;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','失物收藏室：六个独立玻璃容器，藏品在玻璃内轻轻活动');root.append(this.canvas);this.c=this.canvas.getContext('2d');
-  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(e=>{const p=layerPoint(e,e.crop.x,e.crop.y);return `<button data-exhibit="${e.id}" data-detail="${e.id}" style="left:${p.x/768*100}%;top:${p.y/960*100}%;width:${Math.max(96,e.crop.w*e.scale)/768*100}%;height:${Math.max(96,e.crop.h*e.scale)/960*100}%"></button>`;}).join('');root.append(hits);if(options.receiptStudy)this.receiptParts=createReceiptStudyAssets();this.ready=this.load();requestAnimationFrame(this.loop);
+  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(e=>{const p=layerPoint(e,e.crop.x,e.crop.y);return `<button data-exhibit="${e.id}" data-detail="${e.id}" style="left:${p.x/768*100}%;top:${p.y/960*100}%;width:${Math.max(96,e.crop.w*e.scale)/768*100}%;height:${Math.max(96,e.crop.h*e.scale)/960*100}%"></button>`;}).join('');root.append(hits);this.ready=this.load();requestAnimationFrame(this.loop);
  }
  private images(){return [this.robot,this.room,...Object.values(this.art),...Object.values(this.glass).flat(),...Object.values(this.receiptParts??{})];}
- async load(){this.root.dataset.loading='true';try{await Promise.all(this.images().map(i=>i.decode()));this.canvas.dataset.ready='true';this.draw(this.clock());this.refresh();}catch{this.canvas.dataset.ready='error';this.root.setAttribute('aria-label','收藏室暂未接通，请返回后重试');}finally{this.root.dataset.loading='false';}}
+ async load(){this.root.dataset.loading='true';try{if(this.options.receiptStudy&&!this.receiptParts){this.receiptRenderer??=await import('./receipt-study');this.receiptParts=this.receiptRenderer.createReceiptStudyAssets();}await Promise.all(this.images().map(i=>i.decode()));this.canvas.dataset.ready='true';this.draw(this.clock());this.refresh();}catch{this.canvas.dataset.ready='error';this.root.setAttribute('aria-label','收藏室暂未接通，请返回后重试');}finally{this.root.dataset.loading='false';}}
  mount(parent:HTMLElement){parent.append(this.root);}
  async retry(){for(const img of this.images()){const url=new URL(img.src);url.searchParams.set('retry',String(Date.now()));img.src=url.href;}this.ready=this.load();await this.ready;}
  refresh(){for(const id of exhibitIds){const b=this.root.querySelector<HTMLButtonElement>(`[data-exhibit="${id}"]`)!;const known=this.source().collection.includes(id);b.disabled=!known;b.setAttribute('aria-label',known?`放大${discoveryById(id)!.name}`:'空展柜，等待下一次发现');}}
@@ -39,7 +40,7 @@ export class MuseumScene {
  private paint(c:CanvasRenderingContext2D,t:number,receipt?:{level:number;install:number}){c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
   // Tiny free-floating dust and lamplight are part of the room, never the whole background moving.
   for(let i=0;i<16;i++){const x=(i*127+Math.sin(t*.18+i)*10)%740+14,y=110+(i*61+t*3)%620;c.fillStyle=`rgba(255,218,148,${.15+.15*Math.sin(t+i)})`;c.fillRect(Math.round(x),Math.round(y),2,2);}
-  this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y,draw:()=>this.case(c,e,t,e.id==='receipt'?receipt?.level:undefined,e.id==='receipt'?receipt?.install:undefined)}));entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
+  this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y,draw:()=>this.case(c,e,t,receipt?(e.id==='receipt'?receipt.level:this.level(`case-${exhibitIds.indexOf(e.id)}`)):undefined,e.id==='receipt'?receipt?.install:undefined)}));if(!receipt)entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
   const lights=this.level('light');if(lights){c.fillStyle=`rgba(255,207,124,${.035*lights})`;c.fillRect(0,0,768,960);}
   if(this.level('deco-0')){c.fillStyle='#ffe9ae';for(let i=0;i<12;i++)c.fillRect(34+i*62,163+(i%2)*7,4,4);}
   if(this.level('deco-1')){c.fillStyle='#7dbd9b';for(let i=0;i<9;i++)c.fillRect(25+i*4,710-Math.sin(i)*18,5,8);}
@@ -55,13 +56,13 @@ export class MuseumScene {
  renderExhibit(canvas:HTMLCanvasElement,id:string,level:number){const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const scale=Math.min((canvas.width-48)/e.crop.w,(canvas.height-70)/(e.base.y-e.crop.y));c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);this.case(c,{...e,x:canvas.width/2,y:canvas.height-48,scale,width:e.base.w*scale},0,level);canvas.dataset.ready='true';canvas.dataset.level=String(level);}
  /** D1 compares real structural parts in one fixed room camera, never one fitted poster per level. */
  renderFocused(canvas:HTMLCanvasElement,id:'receipt',level:number,t:number,install=1,view:'focus'|'room'='focus'){
-  if(id!=='receipt'||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const camera=view==='room'?{left:0,top:0,width:768,height:960}:receiptFocusCamera,scale=Math.min(canvas.width/camera.width,canvas.height/camera.height),x=(canvas.width-camera.width*scale)/2,y=(canvas.height-camera.height*scale)/2;
+  if(id!=='receipt'||!this.receiptRenderer||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const camera=view==='room'?{left:0,top:0,width:768,height:960}:this.receiptRenderer.receiptFocusCamera,scale=Math.min(canvas.width/camera.width,canvas.height/camera.height),x=(canvas.width-camera.width*scale)/2,y=(canvas.height-camera.height*scale)/2;
   c.save();c.setTransform(1,0,0,1,0,0);c.fillStyle='#171124';c.fillRect(0,0,canvas.width,canvas.height);c.beginPath();c.rect(x,y,camera.width*scale,camera.height*scale);c.clip();c.translate(x-camera.left*scale,y-camera.top*scale);c.scale(scale,scale);this.paint(c,t,{level,install});c.restore();
-  canvas.dataset.ready='true';canvas.dataset.level=String(level);canvas.dataset.install=install.toFixed(3);canvas.dataset.view=view;canvas.dataset.camera=`${camera.left},${camera.top},${camera.width},${camera.height}`;canvas.dataset.item='175,445.927,66.927';canvas.dataset.anchor='175,526';
+  const e=exhibits[0],item=itemCenter(e),itemSize=e.item.size*e.scale;canvas.dataset.ready='true';canvas.dataset.level=canvas.dataset.tier=String(level);canvas.dataset.install=install.toFixed(3);canvas.dataset.view=view;canvas.dataset.camera=`${camera.left},${camera.top},${camera.width},${camera.height}`;canvas.dataset.item=`${item.x},${item.y},${itemSize}`;canvas.dataset.anchor=`${e.x},${e.y}`;canvas.dataset.anchorX=String(e.x);canvas.dataset.anchorY=String(e.y);canvas.dataset.itemX=String(item.x);canvas.dataset.itemY=String(item.y);canvas.dataset.itemSize=String(itemSize);
  }
  private case(c:CanvasRenderingContext2D,e:Exhibit,t:number,forcedLevel?:number,install=1){
   const service=forcedLevel===undefined&&this.pose.target===e.id?this.pose:null,known=this.source().collection.includes(e.id),level=forcedLevel??this.level(`case-${exhibitIds.indexOf(e.id)}`),[back,front]=this.glass[e.id],s=e.scale,p=layerPoint(e,e.crop.x,e.crop.y),b=layerPoint(e,e.cavity.x,e.cavity.y),center=itemCenter(e),width=e.cavity.w*s,height=e.cavity.h*s;
-  if(this.options.receiptStudy&&this.receiptParts&&e.id==='receipt'&&level>0){drawReceiptStudy(c,{e,t,level,install,known,back,front,item:this.art.receipt,assets:this.receiptParts});return;}
+  if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'&&level>0){this.receiptRenderer.drawReceiptStudy(c,{e,t,level,install,known,back,front,item:this.art.receipt,assets:this.receiptParts});return;}
   c.save();c.fillStyle='#120d2840';c.beginPath();c.ellipse(e.x,e.y-2,e.width*.43,5,0,0,Math.PI*2);c.fill();
   c.drawImage(back,e.crop.x,e.crop.y,e.crop.w,e.crop.h,p.x,p.y,e.crop.w*s,e.crop.h*s);
   if(level){c.strokeStyle=['','#ffe0a0','#9ce9e1','#e6b2ff'][level];c.lineWidth=level===3?3:2;c.beginPath();c.ellipse(e.x,e.y-9,e.width*.40,6,0,0,Math.PI*2);c.stroke();}
