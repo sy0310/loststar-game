@@ -2,10 +2,11 @@ import roomUrl from '../../assets/runtime/museum-room-v02.webp';
 import {textures} from '../ui/art';
 import {discoveryById} from '../content/catalog';
 import type {ArtId} from '../content/types';
+const habitatUrls=import.meta.glob('../../assets/runtime/habitat-*-v02.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 const layers=import.meta.glob('../../assets/runtime/case-*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 export const exhibitIds=['receipt','tape','nested','stamp','cosmic-parcel','bell'] as const;
 export const residentIds=['mouse','hermit','tagbird'] as const;
-export const exhibits=exhibitIds.map((id,i)=>({id,x:[.23,.50,.79,.20,.50,.81][i],y:i<3?.555:.708,w:i<3?206:228}));
+export const exhibits=exhibitIds.map((id,i)=>({id,x:[.23,.50,.79,.20,.50,.81][i],y:i<3?.555:.821,w:i<3?198:216}));
 export type MuseumSource={collection:string[]};
 function image(url:string){const img=new Image();img.src=url;return img;}
 function sprite(c:CanvasRenderingContext2D,img:HTMLImageElement|undefined,x:number,y:number,w:number,h=w){if(img?.complete&&img.naturalWidth)c.drawImage(img,Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
@@ -55,23 +56,20 @@ export class MuseumScene {
   }
   c.restore();c.save();c.globalAlpha=.9;sprite(c,front,-w/2,-w,w,w);c.restore();
   // Nameplates are separate runtime geometry/text; always in front of glass.
-  const plaqueW=w*.77;c.fillStyle='#2b2036';c.fillRect(-plaqueW/2,6,plaqueW,33);c.strokeStyle=level?'#e8c184':'#a98054';c.lineWidth=2;c.strokeRect(-plaqueW/2,6,plaqueW,33);c.fillStyle=known?'#ffe9bf':'#b9a9c7';c.font='14px monospace';c.textAlign='center';c.fillText(known?discoveryById(e.id)!.name:'等待一份好奇心',0,27,plaqueW-8);
+  const plaqueW=w*.77;c.fillStyle='#2b2036';c.fillRect(-plaqueW/2,6,plaqueW,33);c.strokeStyle=level?'#e8c184':'#a98054';c.lineWidth=2;c.strokeRect(-plaqueW/2,6,plaqueW,33);c.fillStyle=known?'#ffe9bf':'#b9a9c7';c.font='22px monospace';c.textAlign='center';c.fillText(known?['未购买收据','道歉胶带','套娃包裹','昨天邮戳','收件人：宇宙','签收铃'][exhibitIds.indexOf(e.id)]:'等待好奇心',0,27,plaqueW-8);
   if(level===3){c.fillStyle='#ffe8a1';c.fillRect(-4,42,8,3);}c.restore();
  }
 }
 /** Three habitats have independent miniature terrain, idle poses and glass foreground. */
 export class HabitatScene {
- readonly canvas=document.createElement('canvas');private c:CanvasRenderingContext2D|null;private art:HTMLImageElement;private active=false;private last=0;
- constructor(root:HTMLElement,private id:typeof residentIds[number],private known:()=>boolean,private level:()=>number=()=>0){this.canvas.width=600;this.canvas.height=220;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','居民生态观察区');root.append(this.canvas);this.c=this.canvas.getContext('2d');this.art=image(textures[id as ArtId]);requestAnimationFrame(this.loop);}
+ readonly canvas=document.createElement('canvas');private c:CanvasRenderingContext2D|null;private art:HTMLImageElement;private background:HTMLImageElement;private active=false;private last=0;
+ constructor(root:HTMLElement,private id:typeof residentIds[number],private known:()=>boolean,private level:()=>number=()=>0){this.canvas.width=600;this.canvas.height=220;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','居民生态观察区');root.append(this.canvas);this.c=this.canvas.getContext('2d');this.art=image(textures[id as ArtId]);this.background=image(habitatUrls[`../../assets/runtime/habitat-${id}-v02.webp`]);requestAnimationFrame(this.loop);}
  setActive(v:boolean){this.active=v;}
  private loop=(ms:number)=>{if(this.active&&!document.hidden&&ms-this.last>=80){this.last=ms;this.draw(ms/1000);}requestAnimationFrame(this.loop);};
  private draw(t:number){const c=this.c;if(!c)return;const known=this.known(),level=this.level();c.imageSmoothingEnabled=false;c.fillStyle=this.id==='mouse'?'#32243c':this.id==='hermit'?'#28373e':'#2c2947';c.fillRect(0,0,600,220);
-  c.strokeStyle='#725467';c.lineWidth=2;for(let x=30;x<600;x+=60){c.beginPath();c.moveTo(x,0);c.lineTo(x-25,190);c.stroke();}c.fillStyle='#5c4350';c.fillRect(0,182,600,38);c.fillStyle='#b68357';for(let i=0;i<14;i++){c.fillRect(i*47,179+(i%3)*8,35,7);c.fillStyle=i%2?'#b68357':'#d6a16b';}
-  if(this.id==='mouse'){for(let i=0;i<4;i++){c.fillStyle='#745247';c.fillRect(50+i*125,141,59,38);c.fillStyle='#c49a68';c.fillRect(52+i*125,138,55,5);}c.fillStyle='#e4c192';for(let i=0;i<8;i++)c.fillRect(40+i*71,174-(i%3)*8,9,3);}
-  if(this.id==='hermit'){c.fillStyle='#43634d';for(let i=0;i<25;i++)c.fillRect(i*25,169-(i%4)*5,4,18);c.fillStyle='#987259';c.fillRect(60,123,70,53);c.fillStyle='#c99c6c';c.fillRect(55,118,80,9);}
-  if(this.id==='tagbird'){c.strokeStyle='#ac8274';c.lineWidth=7;c.beginPath();c.moveTo(50,167);c.lineTo(550,129);c.stroke();for(let i=0;i<6;i++){c.fillStyle='#dbc6ac';c.fillRect(70+i*85,110+i%2*16,13,23);}}
-  if(known){const x=this.id==='mouse'?280+Math.sin(t*.5)*85:this.id==='hermit'?315+Math.sin(t*.25)*25:340,y=this.id==='tagbird'?124+Math.sin(t*2)*2:175;const w=this.id==='mouse'?122:this.id==='hermit'?132:103;c.save();c.translate(x,y);c.scale(this.id==='mouse'&&Math.cos(t*.5)<0?-1:1,1);c.rotate(Math.sin(t*(this.id==='tagbird'?2:1))*.022);sprite(c,this.art,-w/2,-w,w);c.restore();if(this.id==='mouse'){c.fillStyle='#f1d9b0';c.fillRect(x+35,167,12,3);}}
-  if(level){c.fillStyle='#f9dda455';c.fillRect(0,0,600,8);c.fillStyle='#9ed9ca';for(let i=0;i<level*3;i++)c.fillRect(490+i*10,164-i%3*9,6,11);}
+  sprite(c,this.background,0,0,600,220);
+  if(known){const x=this.id==='mouse'?300+Math.sin(t*.5)*65:this.id==='hermit'?315+Math.sin(t*.25)*25:330,y=this.id==='tagbird'?101+Math.sin(t*2)*2:185;const w=this.id==='mouse'?122:this.id==='hermit'?132:103;c.save();c.translate(x,y);c.scale(this.id==='mouse'&&Math.cos(t*.5)<0?-1:1,1);c.rotate(Math.sin(t*(this.id==='tagbird'?2:1))*.022);sprite(c,this.art,-w/2,-w,w);c.restore();if(this.id==='mouse'){c.fillStyle='#f1d9b0';c.fillRect(x+35,167,12,3);}}
+  if(level){c.fillStyle='#f9dda455';c.fillRect(0,0,600,8);c.fillStyle='#9ed9ca';for(let i=0;i<level*3;i++)c.fillRect(490+i*10,164-i%3*9,6,11);if(level>=2){c.fillStyle='#d5afdd';for(let i=0;i<5;i++)c.fillRect(499+i*9,145-i%2*5,6,6);}}
   c.fillStyle='#bce4ed12';c.fillRect(0,0,600,220);c.fillStyle='#e3edfc70';c.fillRect(14,20,3,140);c.fillRect(21,20,4,35);c.fillRect(577,37,3,91);c.strokeStyle='#ae8e65';c.lineWidth=5;c.strokeRect(3,3,594,214);this.canvas.dataset.frame=String(Math.floor(t*12));
  }
 }

@@ -78,10 +78,10 @@ test('离线归航清单只领取一次，旧标签页不重复发奖或轰炸�
   await second.locator('[data-action="claim"]').evaluate(el=>(el as HTMLButtonElement).click());await page.reload();
   expect(await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).resources,KEY)).toBe(balance);await expect(page.getByText('离线归航')).toHaveCount(0);await expect(page.locator('[data-presentation]')).toHaveCount(0);
 });
-test('旧切片进度迁移，保留已记录坐标但不显示不可玩的航路',async({page})=>{
+test('旧切片进度迁移，已记录航路永久保留且未完成星球禁用远征',async({page})=>{
   await page.goto('/');await page.evaluate(k=>localStorage.setItem(k,JSON.stringify({version:1,lastAt:Date.now(),resources:357,cycles:8,cycleMs:0,radarMs:120000,reveal:'echo',planets:['parcel','echo'],collection:['receipt','tape','mouse'],upgrades:{radar:1,scanner:1,recycler:0,cargo:0},pendingReturn:null})),KEY);await page.reload();
   const s=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!),KEY);expect(s.version).toBe(2);expect(s.resources).toBe(357);expect(s.planets).toContain('echo');expect(s.collection).toEqual(expect.arrayContaining(['receipt','tape','mouse']));
-  await page.getByRole('button',{name:'星图',exact:true}).click();await expect(page.locator('body')).not.toContainText(hiddenWorlds);await expect(page.locator('.known-planet')).toHaveCount(1);
+  await page.getByRole('button',{name:'星图',exact:true}).click();await expect(page.locator('.known-planet')).toHaveCount(2);await expect(page.locator('.known-planet').filter({hasText:'回声菌星'})).toBeDisabled();
 });
 test('所有页面触控、安全区和资源有效，导航处在滚动内容之外',async({page})=>{
   const bad:string[]=[],errors:string[]=[];page.on('response',r=>{if(r.status()>=400)bad.push(r.url());});page.on('pageerror',e=>errors.push(e.message));
