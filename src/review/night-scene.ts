@@ -53,8 +53,11 @@ export function createNightStudy():SceneExtension {
     }
     if(s.phase==='identify'){
       const progress=s.progress;for(let i=0;i<2;i++){const wave=(s.seconds*.65+i*.5)%1;c.save();c.globalAlpha=(1-wave)*.8;c.strokeStyle='#9cece0';c.lineWidth=2;c.setLineDash([4,3]);c.beginPath();c.ellipse(0,5,24+wave*24,8+wave*7,0,0,Math.PI*2);c.stroke();c.restore();}
-      c.fillStyle='#292d44e8';c.fillRect(-59,-110,118,24);c.strokeStyle='#99e5d3';c.strokeRect(-59,-110,118,24);c.font='19px monospace';c.textAlign='center';c.fillStyle='#d9f4df';c.fillText(progress>.5?'漂行纸影':'核验折痕中',0,-92,108);
-      c.fillStyle='#314453';c.fillRect(-47,-81,94,4);c.fillStyle='#b9efcf';c.fillRect(-47,-81,94*progress,4);
+      // The caption carries the words. Small registration corners never cover
+      // Kada's face or the actual sorting machine with a floating text panel.
+      c.strokeStyle='#bcefd8';c.lineWidth=2;
+      for(const sign of [-1,1]){c.beginPath();c.moveTo(sign*29,-72);c.lineTo(sign*36,-72);c.lineTo(sign*36,-64);c.stroke();}
+      c.fillStyle='#314453';c.fillRect(-25,12,50,3);c.fillStyle='#b9efcf';c.fillRect(-25,12,50*progress,3);
     }
     c.restore();
   }
@@ -62,9 +65,10 @@ export function createNightStudy():SceneExtension {
     if(!s.beamVisible(frame.ship.back))return;
     const ship=frame.ship,from={x:ship.x,y:ship.y-ship.width*.20},target=s.target;
     const a=Math.atan2(target.y-from.y,target.x-from.x),right={x:-Math.sin(a)*23,y:Math.cos(a)*23};
-    c.save();c.fillStyle='#fff0bf18';c.beginPath();c.moveTo(from.x,from.y);c.lineTo(target.x-right.x,target.y-right.y);c.lineTo(target.x+right.x,target.y+right.y);c.closePath();c.fill();
-    c.lineWidth=1.5;c.strokeStyle='#ffedbe40';c.beginPath();c.moveTo(from.x,from.y);c.lineTo(target.x,target.y);c.stroke();
-    c.fillStyle='#fff0bf1e';c.beginPath();c.ellipse(target.x,target.y,31,10,0,0,Math.PI*2);c.fill();c.strokeStyle='#fff0bf99';c.lineWidth=1;c.stroke();c.restore();
+    c.save();
+    const light=c.createLinearGradient(from.x,from.y,target.x,target.y);light.addColorStop(0,'#fff0bf38');light.addColorStop(1,'#fff0bf1e');c.fillStyle=light;
+    c.beginPath();c.moveTo(from.x-right.x*.10,from.y-right.y*.10);c.lineTo(target.x-right.x,target.y-right.y);c.lineTo(target.x+right.x,target.y+right.y);c.lineTo(from.x+right.x*.10,from.y+right.y*.10);c.closePath();c.fill();
+    const spot=c.createRadialGradient(target.x,target.y,1,target.x,target.y,31);spot.addColorStop(0,'#fff2cc55');spot.addColorStop(1,'#fff2cc00');c.fillStyle=spot;c.save();c.translate(target.x,target.y);c.scale(1,.34);c.fillRect(-32,-32,64,64);c.restore();c.restore();
   }
   return {
     camera:nightCamera,
