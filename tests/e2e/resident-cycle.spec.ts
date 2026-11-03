@@ -1,5 +1,6 @@
 import {test, expect} from '@playwright/test';
 import {newGame, advance} from '../../src/game/engine';
+import {createWorld} from '../../src/game/world';
 
 test('昼夜对照中三居民归巢、休息、苏醒，沿用同一星球和原存档', async ({page}) => {
   await page.clock.install();
@@ -16,20 +17,26 @@ test('昼夜对照中三居民归巢、休息、苏醒，沿用同一星球和�
   await page.clock.runFor(100);
   await expect(canvas).toHaveAttribute('data-period', 'day');
   await expect(canvas).toHaveAttribute('data-resident-mouse', 'foraging');
-  await page.clock.runFor(10000);
+  await page.clock.fastForward(10000);
+  await page.clock.runFor(120);
   await expect(canvas).toHaveAttribute('data-period', 'dusk');
   await expect(canvas).toHaveAttribute('data-resident-mouse', 'returning');
-  await page.clock.runFor(6500);
+  await page.clock.fastForward(6500);
+  await page.clock.runFor(120);
   await expect(canvas).toHaveAttribute('data-period', 'night');
   await expect(canvas).toHaveAttribute('data-resident-mouse', 'sleeping');
   const rest = JSON.parse((await canvas.getAttribute('data-residents'))!);
   expect(rest.every((resident: {nightArt: boolean}) => resident.nightArt)).toBe(true);
-  await page.clock.runFor(29000);
+  await page.clock.fastForward(29000);
+  await page.clock.runFor(120);
   await expect(canvas).toHaveAttribute('data-period', 'dawn');
   await expect(canvas).toHaveAttribute('data-resident-mouse', 'waking');
-  await page.clock.runFor(8000);
+  await page.clock.fastForward(8000);
+  await page.clock.runFor(120);
   await expect(canvas).toHaveAttribute('data-period', 'day');
   await expect(canvas).toHaveAttribute('data-resident-tagbird', 'flying');
+  const awake = JSON.parse((await canvas.getAttribute('data-residents'))!);
+  expect(awake.find((resident: {id: string}) => resident.id === 'tagbird').flightArt).toBe(true);
   expect(await canvas.count()).toBe(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
@@ -39,7 +46,8 @@ test('普通远征的动物跟随持久世界时钟跨夜并在刷新后保持�
   await page.clock.install({time: new Date(now - 1000)});
   await page.clock.pauseAt(new Date(now));
   const save = advance(newGame(now), now + 1000000);
-  save.lastAt = save.world.lastAt = now;
+  save.lastAt = now;
+  save.world = createWorld(now, save.collection);
   save.world.elapsedMs = 230000;
   save.world.settledNights = 0;
   save.seenDiscoveries = [...save.collection];

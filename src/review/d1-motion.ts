@@ -1,5 +1,6 @@
 import {robotPose} from '../render/motion';
 import {exhibits,itemCenter} from '../render/museum-layout';
+import type {ResidentEnvironment} from '../render/resident-motion';
 
 const clamp=(value:number)=>Math.max(0,Math.min(1,value));
 export const smoothInstall=(value:number)=>{const t=clamp(value);return t*t*(3-2*t);};
@@ -101,6 +102,27 @@ export function nightStage(seconds:number){
   };
 }
 export type NightStage=ReturnType<typeof nightStage>;
+
+/** D1 comparison compresses the phase lengths while every pose runs in real time. */
+export function reviewEnvironment(seconds:number,cycle=false){
+  const t=Math.max(0,Number.isFinite(seconds)?seconds:0);
+  if(!cycle)return {
+    environment:{period:'night',rest:1,light:1,seconds:t} as ResidentEnvironment,
+    nightSeconds:t,fraction:nightStage(t).fraction,duration:30,
+  };
+  let period:ResidentEnvironment['period']='day',rest=0,light=0,nightSeconds:number|null=null;
+  let fraction=t<8?(t%12)/12:((t-44)%12)/12;
+  if(t>=8&&t<14){
+    period='dusk';rest=smoothInstall((t-8)/6);light=rest*.65;
+    fraction=8/12+(.999999-8/12)*rest;
+  }else if(t>=14&&t<44){
+    period='night';rest=1;light=.65+smoothInstall((t-14)/3)*.35;
+    nightSeconds=t-14;fraction=nightStage(nightSeconds).fraction;
+  }else if(t>=44&&t<52){
+    period='dawn';rest=1-smoothInstall((t-44)/8);light=rest;
+  }
+  return {environment:{period,rest,light,seconds:t},nightSeconds,fraction,duration:54};
+}
 
 /** Same receipt specimen / shelf registration at every tier. Only the structure grows. */
 export function receiptGeometry(level:number){

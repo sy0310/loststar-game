@@ -34,7 +34,7 @@ export function createNightRobot(){
     context.ellipse(stage.robot.x,stage.robot.y-5,27,6,0,0,Math.PI*2);context.fill();
     context.translate(Math.round(stage.robot.x),Math.round(stage.robot.y+stage.rig.bob));
     context.rotate(stage.rig.tilt);
-    const pose=poseAt(stage,frame.t);
+    const pose=poseAt(stage,stage.seconds);
     context.save();
     if(pose.flip)context.scale(-1,1);
     if(stage.phase==='escort'){

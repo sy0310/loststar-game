@@ -8,17 +8,21 @@ import birdUrl from '../../assets/runtime/tagbird.webp';
 import sorterUrl from '../../assets/runtime/sorter.webp';
 import { robotPose, shipPose } from './motion';
 import { tuning, type SaveData } from '../game/engine';
+import {worldView} from '../game/world';
+import {residentEnvironment, residentMotion, residentIds, type ResidentEnvironment} from './resident-motion';
+import {drawResident, loadResidentArt, type ResidentArt} from './residents';
 
 const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl};
 type Art = Record<keyof typeof urls, HTMLImageElement>;
-export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement}
+export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement;environment:ResidentEnvironment}
 export interface SceneCamera {scale:number;x:number;y:number;offsetX?:number;offsetY?:number}
 export interface SceneEntity {depth:number;draw:()=>void}
 export interface SceneExtension {
   ready?:Promise<void>;
   cycleFraction?:(base:number,seconds:number)=>number;
   robotPose?:(base:ReturnType<typeof robotPose>,seconds:number)=>ReturnType<typeof robotPose>|undefined;
-  drawRobot?:(context:CanvasRenderingContext2D,frame:SceneFrame,atlas:HTMLImageElement)=>void;
+  drawRobot?:(context:CanvasRenderingContext2D,frame:SceneFrame,atlas:HTMLImageElement)=>boolean|void;
+  environment?:(seconds:number)=>ResidentEnvironment;
   camera?:SceneCamera;
   worldEntities?:(context:CanvasRenderingContext2D,frame:SceneFrame)=>SceneEntity[];
   afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void;
@@ -29,6 +33,7 @@ export class ExpeditionScene {
   readonly canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private art!: Art;
+  private residentArt!: ResidentArt;
   private backdrop: HTMLCanvasElement;
   private frame=0;
   private start=performance.now();
@@ -58,8 +63,12 @@ export class ExpeditionScene {
   }
   private load(){
     if(this.loading)return;this.loading=true;
-    Promise.all(Object.entries(urls).map(async([key,url])=>[key,await load(url)] as const)).then(async entries=>{
+    Promise.all([
+      Promise.all(Object.entries(urls).map(async([key,url])=>[key,await load(url)] as const)),
+      loadResidentArt(),
+    ]).then(async ([entries,residentArt])=>{
       if(this.extension?.ready)await this.extension.ready;
+      this.residentArt=residentArt;
       this.art=Object.fromEntries(entries) as Art;this.ready=true;this.canvas.dataset.ready='true';this.loop();
     }).catch(()=>{const parent=this.canvas.parentElement!;parent.dataset.error='true';parent.insertAdjacentText('beforeend','通信暂时中断，请刷新恢复场景。');});
   }
@@ -150,7 +159,8 @@ export class ExpeditionScene {
     const began=performance.now(),c=this.ctx,t=this.frozen??(now-this.start)/1000,s=this.getState();
     const baseFraction=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12;
     const f=this.extension?.cycleFraction?.(baseFraction,t)??baseFraction,p=this.extension?.robotPose?.(robotPose(f),t)??robotPose(f);
-    const ship=shipPose(t),frame={t,robot:p,ship,globe:this.art.globe};
+    const environment=this.extension?.environment?.(t)??residentEnvironment(worldView(s),t);
+    const ship=shipPose(t),frame={t,robot:p,ship,globe:this.art.globe,environment};
     c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);c.translate(32,0);
     const camera=this.extension?.camera;if(camera){c.translate(camera.x+(camera.offsetX??0),camera.y+(camera.offsetY??0));c.scale(camera.scale,camera.scale);c.translate(-camera.x,-camera.y);}
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
@@ -161,12 +171,15 @@ export class ExpeditionScene {
     const entities=[
       {depth:294,draw:()=>{this.shadow(568,294,38);this.sprite(this.art.sorter,568,294,101,101);this.lamp(557,208,'#8ff3df',t);const step=Math.floor(t*3)%3;c.fillStyle='#d7b46d';for(let i=0;i<3;i++)c.fillRect(526+i*7+step,278+i*2,3,2);}},
       {depth:417,draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);c.fillStyle='#624b66';c.fillRect(270,437,38,9);c.fillStyle='#bb957c';c.fillRect(270,434,38,5);c.fillStyle='#88d9c6';c.fillRect(277,438,24,2);}},
-      {depth:p.y,draw:()=>this.extension?.drawRobot?this.extension.drawRobot(c,frame,this.art.robot):this.drawRobot(t,f,p)},
-      {depth:447,draw:()=>{this.shadow(553,447,30);this.sprite(this.art.mouse,553,447+(Math.floor(t*4)%4===2?1:0),83,89);if(Math.floor(t*4)%7<2){c.fillStyle='#f4d49d';for(let i=0;i<3;i++)c.fillRect(520+i*9+Math.floor(t*11)%4,405-i*5,3,2);}}},
+      {depth:p.y,draw:()=>{if(!this.extension?.drawRobot||this.extension.drawRobot(c,frame,this.art.robot)===false)this.drawRobot(t,f,p);}},
       {depth:449,draw:()=>this.parcel(438,449,26)},
     ];
-    if(s.collection.includes('hermit'))entities.push({depth:397,draw:()=>{const x=170+Math.floor(Math.sin(t*.5)*6);this.shadow(x,397,25);this.sprite(this.art.hermit,x,397+(Math.floor(t*3)%2),66,65);}});
-    if(s.collection.includes('tagbird'))entities.push({depth:235,draw:()=>{this.sprite(this.art.bird,601,235+(Math.floor(t*2)%6===1?-4:0),47,50);}});
+    const residents:ReturnType<typeof drawResident>[]=[];
+    for(const id of residentIds){
+      if(id!=='mouse'&&!s.collection.includes(id))continue;
+      const pose=residentMotion(id,environment),dayImage=id==='tagbird'?this.art.bird:this.art[id];
+      entities.push({depth:pose.depth,draw:()=>residents.push(drawResident(c,id,environment,this.residentArt,dayImage))});
+    }
     if(this.extension?.worldEntities)entities.push(...this.extension.worldEntities(c,frame));
     entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
     c.fillStyle='#694771';c.fillRect(600,206,3,52);c.fillStyle='#f9c77c';c.fillRect(599,202,5,5);c.fillStyle='#c9758b';c.beginPath();c.moveTo(603,209);c.lineTo(635,213+Math.sin(t*3)*2);c.lineTo(631,229+Math.sin(t*3)*2);c.lineTo(603,226);c.fill();
@@ -180,6 +193,9 @@ export class ExpeditionScene {
       c.restore();
     }
     this.canvas.dataset.action=p.action;this.canvas.dataset.ship=ship.back?'back':'front';
+    this.canvas.dataset.period=environment.period;
+    this.canvas.dataset.residents=JSON.stringify(residents);
+    for(const resident of residents)this.canvas.setAttribute(`data-resident-${resident.id}`,resident.action);
     this.drawTimes.push(performance.now()-began);if(this.drawTimes.length>1800)this.drawTimes.shift();
   }
   destroy(){cancelAnimationFrame(this.frame);}

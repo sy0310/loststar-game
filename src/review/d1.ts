@@ -2,7 +2,7 @@ import './d1.css';
 import {newGame} from '../game/engine';
 import {ExpeditionScene} from '../render/scene';
 import {MuseumScene,exhibitIds,residentIds} from '../render/museum';
-import {nightStage,nightCaption,receiptStage} from './d1-motion';
+import {nightStage,nightCaption,receiptStage,reviewEnvironment} from './d1-motion';
 import {createNightStudy} from './night-scene';
 
 type Study='night'|'receipt';
@@ -23,10 +23,10 @@ export function mountD1(initial:Study='night'){
     <header class="d1-header"><div class="d1-mark" aria-hidden="true">LR<span>01</span></div><div><span class="d1-eyebrow">LOSTSTAR / 动态制作样板</span><h1>失物星球 <small>D1</small></h1></div><span class="d1-readonly">只读预览<br><b>不扣零件</b></span></header>
     <p class="d1-disclaimer">独立审核样板 · 不读取、不修改原存档</p>
     <section data-study-panel="night" aria-label="球面夜间处置样板">
-      <div class="d1-section-heading"><div><span class="d1-eyebrow">RETURNS PLAIN / 原场景分层</span><h2>夜间邮路 · 漂行纸影</h2></div><span class="d1-tag">30 秒连续动作</span></div>
+      <div class="d1-section-heading"><div><span class="d1-eyebrow">RETURNS PLAIN / 原场景分层</span><h2>居民作息 · 夜间邮路</h2></div><span id="d1-duration" class="d1-tag">30 秒连续动作</span></div>
       <div class="d1-night-frame"><div class="d1-scene-label"><span><i></i>巡守通信接通</span><span>球面追踪 / LR–01</span></div><div id="d1-scene"></div></div>
       <div id="d1-status" class="d1-caption" role="status" data-phase="signal"><span class="d1-eyebrow">KADA–07 / 正在接通</span><strong>管道旁，多了一封没有地址的影子。</strong><p>加载原球体、咔哒与失物号图层。</p></div>
-      <div class="d1-timeline" aria-hidden="true"><span></span></div><div class="d1-playback"><span id="d1-time">00 / 30 秒</span><button id="d1-replay">↻ 重看 30 秒</button></div>
+      <div class="d1-timeline" aria-hidden="true"><span></span></div><div class="d1-playback"><span id="d1-time">00 / 30 秒</span><button id="d1-environment" aria-pressed="false">昼夜对照</button><button id="d1-replay">↻ 重播</button></div>
       <p class="d1-note">原球体、原邮路、原绕轨飞船。只演示核验、收容与回站，不进行战果或维修结算。</p>
     </section>
     <section data-study-panel="receipt" aria-label="收据展柜四级结构样板" hidden>
@@ -44,9 +44,10 @@ export function mountD1(initial:Study='night'){
   const q=<T extends HTMLElement=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
   // Only in-memory scene inputs. Advancing or viewing the study never touches money.
   const dummy=newGame(0);dummy.collection=[...exhibitIds,...residentIds];
-  const scene=new ExpeditionScene(q('#d1-scene'),()=>dummy,createNightStudy());
+  let cycleEnvironment=false;
+  const scene=new ExpeditionScene(q('#d1-scene'),()=>dummy,createNightStudy(time=>reviewEnvironment(time,cycleEnvironment)));
   Object.assign(window,{__D1_REVIEW__:{metrics:()=>scene.metrics(),resetMetrics:()=>scene.resetMetrics()}});
-  scene.canvas.setAttribute('aria-label','D1完整退货箱星：纸影出现，咔哒沿原邮路核验、收容并送回原仓库；飞船前后绕轨');
+  scene.canvas.setAttribute('aria-label','D1完整退货箱星，三居民昼夜作息，咔哒沿邮路核验、收容并送回仓库，飞船前后绕轨');
   let museum:MuseumScene|undefined;
   const receiptCanvas=q<HTMLCanvasElement>('#receipt-focus');
   let study=initial,started=false,museumReady=false,level=0,view:'focus'|'room'|'specimen'='focus',installing=false,installStart=0,receiptTime=0,last=0;
@@ -70,6 +71,13 @@ export function mountD1(initial:Study='night'){
     q('#receipt-status strong').textContent=`Lv${level} · ${tierNames[level]}`;q('#receipt-status p').textContent=tierNotes[level];lastTier=level;
   }
   q('#d1-replay').addEventListener('click',()=>{scene.restart();started=true;lastPhase='';});
+  q('#d1-environment').addEventListener('click',()=>{
+    cycleEnvironment=!cycleEnvironment;
+    q('#d1-environment').setAttribute('aria-pressed',String(cycleEnvironment));
+    q('#d1-environment').textContent=cycleEnvironment?'返回夜巡':'昼夜对照';
+    q('#d1-duration').textContent=cycleEnvironment?'54 秒昼夜对照':'30 秒连续动作';
+    scene.restart();started=true;lastPhase='';
+  });
   for(const button of root.querySelectorAll<HTMLButtonElement>('[data-study]'))button.addEventListener('click',()=>selectStudy(button.dataset.study as Study));
   for(const button of root.querySelectorAll<HTMLButtonElement>('button[data-tier]'))button.addEventListener('click',()=>{installing=false;level=Number(button.dataset.tier);q('#receipt-install').textContent='▶ 安装演示';q('#receipt-install').dataset.playing='false';tierUI();});
   q('#receipt-install').addEventListener('click',()=>{installing=true;installStart=performance.now();level=0;q('#receipt-install').dataset.playing='true';q('#receipt-install').textContent='↻ 重播安装';tierUI();});
@@ -86,11 +94,20 @@ export function mountD1(initial:Study='night'){
   function frame(now:number){
     if(scene.ready&&!started){scene.restart();started=true;}
     if(now-last>=(reducedMotion.matches?100:45)){
-      last=now;const seconds=started?scene.elapsedSeconds():0,s=nightStage(seconds),caption=nightCaption[s.phase];
+      last=now;
+      const seconds=started?scene.elapsedSeconds():0,timeline=reviewEnvironment(seconds,cycleEnvironment);
+      const s=nightStage(timeline.nightSeconds??0),period=timeline.environment.period;
+      const ecologyCaptions={
+        day:{title:seconds>44?'天亮了，平原重新忙碌起来。':'白天，居民各自忙着收件。',detail:'拆封鼠收集纸屑 · 箱寄居蟹搬壳 · 标签鸟巡飞'},
+        dusk:{title:'灯亮之前，居民沿熟悉的路归巢。',detail:'脚步逐渐放缓 · 纸屑收好 · 标签翼落回天线'},
+        dawn:{title:'晨光回到纸层，居民慢慢苏醒。',detail:'拆封鼠醒来 · 箱壳重新探头 · 标签鸟离开栖点'},
+      };
+      const caption=period==='night'?nightCaption[s.phase]:ecologyCaptions[period];
       q('#d1-status').dataset.phase=s.phase;
-      if(lastPhase!==s.phase){q('#d1-status .d1-eyebrow').textContent=`KADA–07 / ${s.phase==='done'?'巡守完成':'现场作业'}`;q('#d1-status strong').textContent=caption.title;q('#d1-status p').textContent=caption.detail;lastPhase=s.phase;}
-      q('#d1-time').textContent=`${String(Math.floor(Math.min(30,seconds))).padStart(2,'0')} / 30 秒`;
-      q('.d1-timeline span').style.width=`${Math.min(1,seconds/30)*100}%`;
+      const captionKey=`${period}-${s.phase}`;
+      if(lastPhase!==captionKey){q('#d1-status .d1-eyebrow').textContent=`KADA–07 / ${period==='night'?'现场作业':'居民作息'}`;q('#d1-status strong').textContent=caption.title;q('#d1-status p').textContent=caption.detail;lastPhase=captionKey;}
+      q('#d1-time').textContent=`${String(Math.floor(Math.min(timeline.duration,seconds))).padStart(2,'0')} / ${timeline.duration} 秒`;
+      q('.d1-timeline span').style.width=`${Math.min(1,seconds/timeline.duration)*100}%`;
       receiptTime=(now-startedAt)/1000;
       let install=1;
       if(installing){const stage=receiptStage((now-installStart)/1000);level=stage.level;install=stage.install;if(stage.done){installing=false;q('#receipt-install').dataset.playing='false';q('#receipt-install').textContent='↻ 重播安装';}}

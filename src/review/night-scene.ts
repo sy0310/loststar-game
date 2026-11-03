@@ -1,12 +1,12 @@
 import invaderUrl from '../../assets/runtime/invader-v02.webp';
 import type {SceneExtension,SceneFrame} from '../render/scene';
-import {nightStage,nightCamera,nightDoor,type NightStage} from './d1-motion';
+import {nightStage,nightCamera,nightDoor,reviewEnvironment,type NightStage} from './d1-motion';
 import {lightNightWorld} from './night-lighting';
 import {createNightRobot} from './night-robot';
 import {createNightCarrier} from './night-carrier';
 
 /** One globe and one existing creature, assembled under one set of world lights. */
-export function createNightStudy():SceneExtension {
+export function createNightStudy(timelineAt=(time:number)=>reviewEnvironment(time)):SceneExtension {
   const paper=new Image();
   paper.src=invaderUrl;
   const carrier=createNightCarrier();
@@ -130,15 +130,23 @@ export function createNightStudy():SceneExtension {
   return {
     ready,
     camera:nightCamera,
-    cycleFraction:(_base,time)=>nightStage(time).fraction,
-    robotPose:(_base,time)=>nightStage(time).robot,
+    environment:time=>timelineAt(time).environment,
+    cycleFraction:(_base,time)=>timelineAt(time).fraction,
+    robotPose:(_base,time)=>{
+      const seconds=timelineAt(time).nightSeconds;
+      return seconds===null?undefined:nightStage(seconds).robot;
+    },
     drawRobot(context,frame,atlas){
+      const seconds=timelineAt(frame.t).nightSeconds;
+      if(seconds===null)return false;
       robotAtlas=atlas;
-      const stage=nightStage(frame.t);
+      const stage=nightStage(seconds);
       robot.drawBody(context,frame,stage,atlas);
     },
     worldEntities(context,frame){
-      const stage=nightStage(frame.t);
+      const seconds=timelineAt(frame.t).nightSeconds;
+      if(seconds===null)return [];
+      const stage=nightStage(seconds);
       const handling=stage.phase==='contain'||stage.phase==='escort'||stage.phase==='dock';
       return [
         {depth:stage.robot.y-.3,draw:()=>{paperShadow(context,stage);carrier.groundShadow(context,stage);}},
@@ -151,16 +159,18 @@ export function createNightStudy():SceneExtension {
       ];
     },
     afterWorld(context,frame){
-      const stage=nightStage(frame.t);
-      lightNightWorld(context,frame,stage);
-      registrationMarks(context,stage);
-      searchlight(context,frame,stage);
+      const timeline=timelineAt(frame.t),stage=nightStage(timeline.nightSeconds??0);
+      lightNightWorld(context,frame,stage,timeline.environment.light);
+      if(timeline.nightSeconds!==null){
+        registrationMarks(context,stage);
+        searchlight(context,frame,stage);
+      }
       const canvas=context.canvas as HTMLCanvasElement;
       canvas.dataset.studyPhase=stage.phase;
       canvas.dataset.studySeconds=stage.seconds.toFixed(2);
       canvas.dataset.robotX=stage.robot.x.toFixed(2);canvas.dataset.robotY=stage.robot.y.toFixed(2);
       canvas.dataset.targetX=stage.target.x.toFixed(2);canvas.dataset.targetY=stage.target.y.toFixed(2);
-      canvas.dataset.beam=String(stage.beamVisible(frame.ship.back));
+      canvas.dataset.beam=String(timeline.nightSeconds!==null&&stage.beamVisible(frame.ship.back));
       canvas.dataset.carrierOpen=stage.cargo.open.toFixed(3);
       canvas.dataset.carrierReceiving=stage.cargo.receiving.toFixed(3);
       canvas.dataset.paperFold=stage.paper.fold.toFixed(3);

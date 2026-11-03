@@ -1,25 +1,13 @@
 import type {SceneFrame} from '../render/scene';
 import {nightDoor,type NightStage} from './d1-motion';
-
-const ambientMasks=new WeakMap<HTMLImageElement,HTMLCanvasElement>();
+import {tintWorld} from '../render/world-lighting';
 
 /** Canvas blend modes retain the source pixels and work without Canvas.filter. */
-export function lightNightWorld(context:CanvasRenderingContext2D,frame:SceneFrame,stage:NightStage){
+export function lightNightWorld(context:CanvasRenderingContext2D,frame:SceneFrame,stage:NightStage,strength=1){
+  if(strength<=0)return;
+  tintWorld(context,frame.globe,'#737da9',strength);
   context.save();
-  let mask=ambientMasks.get(frame.globe);
-  if(!mask){
-    mask=document.createElement('canvas');
-    mask.width=frame.globe.width;mask.height=frame.globe.height;
-    const source=mask.getContext('2d')!;
-    source.drawImage(frame.globe,0,0);
-    source.globalCompositeOperation='source-in';source.fillStyle='#a1a9ce';
-    source.fillRect(0,0,mask.width,mask.height);
-    ambientMasks.set(frame.globe,mask);
-  }
-  // Apply the actual irregular surface alpha after all world entities. They
-  // share its light, while transparent space at the carton rim stays intact.
-  context.globalCompositeOperation='multiply';
-  context.drawImage(mask,52,70,664,664);
+  context.globalAlpha=strength;
   context.globalCompositeOperation='screen';
   for(const light of [
     {x:nightDoor.light.x,y:nightDoor.light.y,radius:103,power:stage.phase==='dock'?.40:.23},
