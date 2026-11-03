@@ -1,4 +1,4 @@
-import {tapeSpeed,bellHoldMs} from './guard-tuning';
+import {tapeSpeed,bellHoldMs,securityStrengths} from './guard-tuning';
 import type {SaveData} from './engine';
 export type GrowthGroup='展示'|'生态'|'设施'|'守护'|'研究'|'装饰';
 export interface GrowthEntry {id:string;name:string;group:GrowthGroup;costs:number[];effect:string;requires?:string;art:string;}
@@ -22,7 +22,7 @@ export function cleanGrowth(raw:unknown):Record<string,number>{
 }
 export function buyGrowth(s:SaveData,id:string,expected:number):SaveData {
  const entry=growthCatalog.find(e=>e.id===id),level=growthLevel(s,id);if(!entry||level!==expected||level>=entry.costs.length||(entry.requires&&!s.collection.includes(entry.requires))||s.resources<entry.costs[level])return s;
- const next={...s,resources:s.resources-entry.costs[level],growth:{...s.growth,[id]:level+1}};next.world={...next.world,strengths:growthEffects(next).guard,owned:['beacon','gate']};return next;
+ const next={...s,resources:s.resources-entry.costs[level],growth:{...s.growth,[id]:level+1}};next.world={...next.world,strengths:securityStrengths(next.world.slots,growthEffects(next).guard),owned:['beacon','gate']};return next;
 }
 export function growthEffects(s:Pick<SaveData,'growth'>){return {interstellarSpeed:1+growthLevel(s,'receiver')*.15+growthLevel(s,'drive')*.05,cargoSeconds:growthLevel(s,'dock')*1800+growthLevel(s,'drive')*1200,guard:[growthLevel(s,'guard-0'),growthLevel(s,'guard-1')] as [number,number]};}
 
