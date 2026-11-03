@@ -11,5 +11,5 @@ export function advanceWorld(s:SaveData,now:number){return advanceGuard({...s.wo
 function dayAt(ms:number){return Math.floor(ms/300000)*240000+Math.min(ms%300000,240000);}
 export const dayTimeBetween=(elapsed:number,ms:number)=>dayAt(elapsed+ms)-dayAt(elapsed);
 export function wallForDayTime(elapsed:number,needed:number,limit:number){let lo=0,hi=Math.ceil(limit);while(lo<hi){const mid=Math.floor((lo+hi)/2);if(dayTimeBetween(elapsed,mid)>=needed)hi=mid;else lo=mid+1;}return lo;}
-export function worldView(s:Pick<SaveData,'world'>){const v=guardView(s.world),offset=s.world.elapsedMs%300000,period=v.phase==='day'&&s.world.settledNights>0&&offset<8000?'dawn':v.phase;return {...v,period};}
+export function worldView(s:Pick<SaveData,'world'>){const v=guardView(s.world),offset=s.world.elapsedMs%300000;const period:'day'|'dusk'|'night'|'dawn'=v.phase==='day'&&s.world.settledNights>0&&offset<8000?'dawn':v.phase;return {...v,period};}
 export function setWorldSlot(s:SaveData,slot:0|1,item:GuardItem|null){if(worldView(s).phase==='night'||item!==null&&!owned(s.collection).includes(item))return s;const world=equipGuard({...s.world,owned:owned(s.collection)},slot,item);return world.slots.every((id,i)=>id===s.world.slots[i])?s:{...s,world};}

@@ -12,7 +12,7 @@ import { tuning, type SaveData } from '../game/engine';
 const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl};
 type Art = Record<keyof typeof urls, HTMLImageElement>;
 export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement}
-export interface SceneExtension {afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void}
+export interface SceneExtension {robotPose?:()=>ReturnType<typeof robotPose>|undefined;afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void}
 const load=(url:string)=>new Promise<HTMLImageElement>((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=url;});
 
 export class ExpeditionScene {
@@ -102,8 +102,8 @@ export class ExpeditionScene {
     }else c.drawImage(atlas,(frame%4)*cell,Math.floor(frame/4)*cell,cell,cell,dx,dy,w,w);
     c.restore();
   }
-  private drawRobot(t:number,f:number){
-    const c=this.ctx,p=robotPose(f),moving=p.action==='walk'||p.action==='return';
+  private drawRobot(t:number,f:number,p=robotPose(f)){
+    const c=this.ctx,moving=p.action==='walk'||p.action==='return';
     this.shadow(p.x,p.y,31);
     const walkFrame=Math.floor(t*8)%4;
     let frame=moving?walkFrame:p.action==='scan'?4:p.action==='pickup'?(f<.575?5:6):7;
@@ -135,7 +135,7 @@ export class ExpeditionScene {
   private draw(now:number){
     if(!this.ready||!this.canvas.isConnected)return;
     const began=performance.now(),c=this.ctx,t=this.frozen??(now-this.start)/1000,s=this.getState();
-    const f=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12,p=robotPose(f);
+    const f=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12,p=this.extension?.robotPose?.()??robotPose(f);
     c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);c.translate(32,0);
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
     const ship=shipPose(t);if(ship.back)this.drawShip(t,ship);
@@ -145,7 +145,7 @@ export class ExpeditionScene {
     const entities=[
       {depth:294,draw:()=>{this.shadow(568,294,38);this.sprite(this.art.sorter,568,294,101,101);this.lamp(557,208,'#8ff3df',t);const step=Math.floor(t*3)%3;c.fillStyle='#d7b46d';for(let i=0;i<3;i++)c.fillRect(526+i*7+step,278+i*2,3,2);}},
       {depth:417,draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);c.fillStyle='#624b66';c.fillRect(270,437,38,9);c.fillStyle='#bb957c';c.fillRect(270,434,38,5);c.fillStyle='#88d9c6';c.fillRect(277,438,24,2);}},
-      {depth:p.y,draw:()=>this.drawRobot(t,f)},
+      {depth:p.y,draw:()=>this.drawRobot(t,f,p)},
       {depth:447,draw:()=>{this.shadow(553,447,30);this.sprite(this.art.mouse,553,447+(Math.floor(t*4)%4===2?1:0),83,89);if(Math.floor(t*4)%7<2){c.fillStyle='#f4d49d';for(let i=0;i<3;i++)c.fillRect(520+i*9+Math.floor(t*11)%4,405-i*5,3,2);}}},
       {depth:449,draw:()=>this.parcel(438,449,26)},
     ];

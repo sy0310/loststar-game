@@ -1,5 +1,9 @@
 import './style.css';
 import './museum.css';
+import {worldView,setWorldSlot} from './game/world';
+import {guardLayer} from './render/guard-scene';
+import {tapeSpeed,bellHoldMs} from './game/guard-tuning';
+import type {GuardItem} from './prototype/guard-engine';
 import {MuseumScene,HabitatScene,residentIds,exhibitIds} from './render/museum';
 import {StarMapScene} from './render/star-map';
 import {readyPlanet} from './game/star-chart';
@@ -8,7 +12,6 @@ import { icon } from './icons';
 import {openSave,commitSave,type StorageLike} from './game/persistence';
 import {newGame,advance,restore,claimReturn,upgrade,cost,tuning,publicRadar,dismissSurvey,upgradeIds,MAX_LEVEL,SAVE_KEY,pendingPresentations,markPresented,publicPlanets,type SaveData,type UpgradeId} from './game/engine';
 import { discoveries, discoveryById } from './content/catalog';
-import { BaseArrival } from './ui/base';
 import { readPreferences, savePreferences } from './ui/preferences';
 import { SoundDesk } from './ui/audio';
 import { parcelJournal, currentJournalId } from './content/parcel-journal';
@@ -52,8 +55,9 @@ app.innerHTML=`
   <main id="page-scroll">
     <section id="expedition" class="view">
       ${heading('FIELD EXPEDITION / LR–01','退货箱星','退件平原 · 一切都能退回，除了好奇心。','<span class="tiny-tag">自动勘察</span>')}
-      <div class="scene-wrap"><div class="scene-top"><span><i class="live-dot"></i>地表通信正常</span><span class="scene-serial">KADA–07 / 自动探索</span></div><div id="planet-scene"></div><div class="scene-bottom"><span>退件平原 · 收件站</span><span>LR–01 ${icon('rocket')}</span></div></div>
+      <div id="world-phase" class="world-phase game-panel" data-period="day"><strong></strong><span></span></div><div class="scene-wrap"><div class="scene-top"><span><i class="live-dot"></i>地表通信正常</span><span class="scene-serial">KADA–07 / 自动探索</span></div><div id="planet-scene"></div><div class="scene-bottom"><span>退件平原 · 收件站</span><span>LR–01 ${icon('rocket')}</span></div></div>
       <div class="exploration-panel game-panel"><div class="status-head"><div class="unit-portrait"><img src="${robotUrl}" alt=""></div><div><span class="micro-label">咔哒–07 的作业频道</span><strong id="robot-action"></strong></div><span class="pulse-bars" aria-hidden="true"><i></i><i></i><i></i></span></div><div class="action-track" aria-label="自动探索流程">${[['walk','行走'],['scan','扫描'],['pickup','拾取'],['return','回仓'],['unload','卸货']].map(([id,text])=>`<span data-phase="${id}"><i></i>${text}</span>`).join('')}</div><div class="progress"><span id="cycle-progress"></span></div><div class="status-foot"><span>下一次归舱 <b id="cycle-remaining">12</b>s</span><span>已完成 <b id="cycles">0</b> 次回收</span></div></div>
+      <details id="world-controls" class="world-controls game-panel"><summary>奇物守护配置 <small>白天可调整 · 夜晚自动守护</small></summary><div class="world-slots">${[0,1].map(i=>`<label>守护位 ${i?'B':'A'}<select id="world-slot-${i}" aria-label="守护位${i?'B':'A'}"></select><small id="world-effect-${i}"></small></label>`).join('')}</div><p>空槽也有咔哒和失物号照看，收藏不会丢失。</p></details><div id="world-live" class="world-live game-panel" hidden></div><div id="world-report" class="world-report game-panel" hidden></div><p class="world-motion-note">保留必要的作业与昼夜动态；减少动态偏好会降低装饰运动。</p>
       <div id="recent" class="recent game-panel"></div><div id="journal-teaser" hidden></div>
       <div class="quick-actions"><button class="utility-button" data-action="workshop">${icon('gear')}<span>设备工坊<small>把零件变成好奇心</small></span>${icon('arrow')}</button><button class="utility-button" data-go="collection">${icon('book')}<span>首星档案<small id="field-count">正在记录</small></span>${icon('arrow')}</button></div>
       <p class="quiet-note">关掉屏幕也没关系，失物号会继续前行。</p>
@@ -72,13 +76,12 @@ app.innerHTML=`
     </section>
     <section id="base" class="view" hidden>
       ${heading('HOME / 失物号收件站','欢迎归航，管理员。','有热茶，也有一些无法解释的收藏。')}
-      <div class="base-scene" data-background-state="loading" aria-busy="true"><img id="base-background" fetchpriority="high" decoding="async" class="base-background pixel-art" alt="失物号收件站：展柜、停泊区与工作台"><div class="base-loading" role="status"><span class="loading-postmark" aria-hidden="true">LR–01</span><strong class="loading-message">收件站正在接通</strong><p>正在展开收藏室，请稍候片刻。</p><button class="secondary" data-action="retry-base">重新接通收件站</button></div><span class="base-window-light"></span><div id="display-items"></div><div class="base-rover"><div class="base-robot" role="img" aria-label="咔哒在基地整理收藏"></div><span class="rover-note">整理中 · · ·</span></div><span class="base-label">失物收藏室 <b>LR–01</b></span><span class="base-lamp"></span></div>
-      <button class="utility-button museum-entry" data-go="exhibition" aria-label="进入失物收藏室">${icon('book')}<span><strong>失物收藏室</strong><small>走近玻璃里，那些不明所以的小宇宙</small></span>${icon('arrow')}</button><a class="lab-entry" href="./night-lab.html"><span>夜间守护试玩<small>自由进入退出 · 自动照看 · 默认不加入日常循环</small></span>↗</a><div class="base-caption"><span><i class="live-dot"></i>失物号仍在自动探索</span><span id="display-count"></span></div><button class="primary" data-go="expedition">${icon('rocket')}继续远征${icon('arrow')}</button>
+      <div class="base-scene" data-background-state="loading" aria-busy="true"><div id="base-museum-mount"><div id="museum"></div></div><div class="base-loading" role="status"><span class="loading-postmark" aria-hidden="true">LR–01</span><strong class="loading-message">收件站正在接通</strong><p>正在展开真实玻璃展柜，请稍候片刻。</p><button class="secondary" data-action="retry-base">重新接通收件站</button></div></div><div id="base-robot-status" class="base-robot-status" role="status"></div><button class="utility-button museum-entry" data-go="exhibition" aria-label="进入失物收藏室">${icon('book')}<span><strong>走近收藏室</strong><small>同一组玻璃展柜 · 放大观察与居民生态</small></span>${icon('arrow')}</button><div class="base-caption"><span><i class="live-dot"></i>失物号仍在自动探索</span><span id="display-count"></span></div><button class="primary" data-go="expedition">${icon('rocket')}继续远征${icon('arrow')}</button>
       <div class="quick-actions"><button class="utility-button" data-action="workshop">${icon('gear')}<span>设备工坊<small>让每次出发更从容</small></span>${icon('arrow')}</button><button class="utility-button" data-go="collection">${icon('book')}<span>收藏档案<small>看看带回了什么</small></span>${icon('arrow')}</button></div><div class="section-title"><span>住在这里的邻居</span><small id="resident-count"></small></div><div id="base-collection"></div><div class="section-title"><span>邻居来信 · 田野续记</span><small id="journal-count"></small></div><div id="field-journal"></div>
     </section>
     <section id="exhibition" class="view" hidden>
       ${heading('CABINET OF CURIOSITIES / LR–01','失物收藏室','每一件失物，都有自己的小宇宙。')}
-      <button class="secondary museum-back" data-go="base">← 返回收件站</button><div id="museum"></div><div class="museum-stats"><span id="museum-count"></span><span>基础陈列免费 · 点击容器放大</span></div><button class="utility-button" data-action="museum-upgrades" aria-label="展柜与设施升级">${icon('gear')}<span>展柜与设施升级<small>把捡来的零件，变成一处归所</small></span>${icon('arrow')}</button><div class="section-title"><span>居民生态观察区</span><small>各自认真过日子</small></div>${residentIds.map((id,i)=>`<button class="habitat-card game-panel" data-habitat="${id}"><span class="habitat-window"></span><span class="habitat-caption"><b data-resident-name="${id}">等待邻居</b><small>${['拆箱台 · 留下的纸屑也有用','纸层小屋 · 刚刚好的归处','邮签枝 · 等一封宇宙回信'][i]}</small></span></button>`).join('')}
+      <button class="secondary museum-back" data-go="base">← 返回收件站</button><div id="museum-dock"></div><div class="museum-stats"><span id="museum-count"></span><span>基础陈列免费 · 点击容器放大</span></div><button class="utility-button" data-action="museum-upgrades" aria-label="展柜与设施升级">${icon('gear')}<span>展柜与设施升级<small>把捡来的零件，变成一处归所</small></span>${icon('arrow')}</button><div class="section-title"><span>居民生态观察区</span><small>各自认真过日子</small></div>${residentIds.map((id,i)=>`<button class="habitat-card game-panel" data-habitat="${id}"><span class="habitat-window"></span><span class="habitat-caption"><b data-resident-name="${id}">等待邻居</b><small>${['拆箱台 · 留下的纸屑也有用','纸层小屋 · 刚刚好的归处','邮签枝 · 等一封宇宙回信'][i]}</small></span></button>`).join('')}
     </section>
   </main>
   <nav aria-label="主导航">${[['expedition','rocket','远征'],['radar','radar','星图'],['collection','book','图鉴'],['base','base','基地']].map(([id,img,name])=>`<button data-go="${id}" aria-current="${id===tab?'page':'false'}"><span class="nav-icon">${icon(img)}</span><span>${name}</span><i></i></button>`).join('')}</nav>
@@ -87,17 +90,19 @@ app.innerHTML=`
 <aside class="desktop-note"><span class="orbit-mark">✦</span><p>一只拆箱的小鼠。<br>一封没有地址的信。<br>宇宙的惊喜，往往很小。</p><small>退件平原 · 首轮田野档案<br>低频操作 / 自动探索</small></aside>
 <dialog id="modal"><div id="modal-body"></div></dialog><div id="toast" role="status"></div>`;
 
-const scene=new ExpeditionScene($('#planet-scene'),()=>state);
+function liveWorld(){const world={...state.world,elapsedMs:state.world.elapsedMs+Math.max(0,Date.now()-state.lastAt)};return worldView({world});}
+const scene=new ExpeditionScene($('#planet-scene'),()=>state,guardLayer(liveWorld));
 const modal=$<HTMLDialogElement>('#modal');
 const radarScene=new RadarScene($('.radar-rings'),()=>publicRadar(state));
 const starMap=new StarMapScene($('#star-map'),()=>({stage:publicRadar(state,'interstellar').stage,progress:publicRadar(state,'interstellar').progress,research:growthLevel(state,'receiver'),records:publicPlanets(state).flatMap(p=>{const r=state.chart.records.find(r=>r.id===p.id);return r?[{...r,name:p.name}]:[];})}));
 let museum:MuseumScene|undefined;const habitats:HabitatScene[]=[];
-function ensureMuseum(){return museum??=new MuseumScene($('#museum'),()=>state,id=>growthLevel(state,id));}
-function enterMuseum(){ensureMuseum().setActive(true);if(!habitats.length)residentIds.forEach((id,i)=>habitats.push(new HabitatScene($(`[data-habitat="${id}"] .habitat-window`),id,()=>state.collection.includes(id),()=>growthLevel(state,`habitat-${i}`))));habitats.forEach(h=>h.setActive(true));}
+function ensureMuseum(){return museum??=new MuseumScene($('#museum'),()=>state,id=>growthLevel(state,id),()=>(state.world.elapsedMs+Math.max(0,Date.now()-state.lastAt))/1000);}
+function enterMuseum(){ensureMuseum().mount($('#museum-dock'));ensureMuseum().setActive(true);if(!habitats.length)residentIds.forEach((id,i)=>habitats.push(new HabitatScene($(`[data-habitat="${id}"] .habitat-window`),id,()=>state.collection.includes(id),()=>growthLevel(state,`habitat-${i}`))));habitats.forEach(h=>h.setActive(true));}
 const interactions=new InteractionDirector($('#modal-body'));
 let lastPointerType='mouse';
 app.addEventListener('pointerup',event=>{lastPointerType=event.pointerType||'mouse';},{passive:true});
-const baseArrival=new BaseArrival($('.base-scene'),$<HTMLImageElement>('#base-background'));
+async function loadHome(retry=false){const root=$('.base-scene'),m=ensureMuseum();m.mount($('#base-museum-mount'));m.setActive(true);root.dataset.backgroundState='loading';root.setAttribute('aria-busy','true');if(retry)await m.retry();else await m.ready;root.dataset.backgroundState=m.canvas.dataset.ready==='true'?'ready':'error';root.setAttribute('aria-busy','false');$('.loading-message').textContent=root.dataset.backgroundState==='ready'?'收件站已接通':'收件站暂未接通';}
+$('#museum').addEventListener('robot-state',event=>{const p=(event as CustomEvent).detail;const labels:Record<string,string>={walk:'走向展柜',observe:'观察藏品',open:'打开玻璃罩',lift:'轻轻取出',inspect:'检查与整理',place:'放回原位',wipe:'擦拭并关好展柜',return:'返回工作台'};$('#base-robot-status').textContent=`咔哒–07 · ${labels[p.action]} · ${state.collection.includes(p.target)?discoveryById(p.target)!.name:'空展柜'}`;});
 const director=new DiscoveryDirector($('#discovery-stage'),()=>{presenting=false;queueMicrotask(()=>void maybePresent());});
 function toast(text:string){clearTimeout(toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3000);}
 function showModal(kind:string,html:string){interactions.hide();modal.dataset.kind=kind;modalKind=kind;$('#modal-body').innerHTML=html;if(!modal.open)modal.showModal();}
@@ -113,7 +118,7 @@ async function transact(fn:(s:SaveData)=>SaveData){
   if(navigator.locks)await navigator.locks.request('loststar-save',run);else run();
 }
 async function maybePresent(){
-  if(presenting||director.active||modal.open||tab!=='expedition')return;
+  if(presenting||director.active||modal.open||tab!=='expedition'||worldView(state).phase==='night')return;
   const unseen=pendingPresentations(state),id=unseen.at(-1);if(!id)return;
   presenting=true;let claimed=false;
   await transact(s=>{claimed=pendingPresentations(s).includes(id);return claimed?unseen.reduce((next,key)=>markPresented(next,key),s):s;});
@@ -122,7 +127,7 @@ async function maybePresent(){
 }
 function go(id:string){
   if(!['expedition','radar','collection','base','exhibition'].includes(id))return;
-  tab=id;if(id==='exhibition')enterMuseum();else {museum?.setActive(false);habitats.forEach(h=>h.setActive(false));}starMap.setActive(id==='radar'&&radarMode==='interstellar');if(id==='base')void baseArrival.load();document.querySelectorAll<HTMLElement>('.view').forEach(view=>view.hidden=view.id!==id);
+  tab=id;if(id==='exhibition')enterMuseum();else {museum?.setActive(false);habitats.forEach(h=>h.setActive(false));}starMap.setActive(id==='radar'&&radarMode==='interstellar');if(id==='base')void loadHome();document.querySelectorAll<HTMLElement>('.view').forEach(view=>view.hidden=view.id!==id);
   document.querySelectorAll('[data-go]').forEach(button=>button.setAttribute('aria-current',button.getAttribute('data-go')===(id==='exhibition'?'base':id)?'page':'false'));
   $('#page-scroll').scrollTo(0,0);scene.setActive(id==='expedition');radarScene.setActive(id==='radar'&&radarMode==='local');if(id!=='expedition')director.hide();update();void maybePresent();
 }
@@ -150,9 +155,8 @@ function renderJournal(){
 function renderBase(){
   museum?.refresh();$('#museum-count').textContent=`${exhibitIds.filter(id=>state.collection.includes(id)).length} 件奇物已安顿`;
   residentIds.forEach(id=>{const known=state.collection.includes(id),b=$<HTMLButtonElement>(`[data-habitat="${id}"]`);b.disabled=!known;if(known)b.dataset.detail=id;else delete b.dataset.detail;$(`[data-resident-name="${id}"]`).textContent=known?discoveryById(id)!.name:'给邻居留着的观察区';});
-  $('.base-scene').dataset.dock=String(growthLevel(state,'dock'));
+
   const artifacts=state.collection.filter(id=>discoveryById(id)!.kind==='artifact');
-  $('#display-items').innerHTML=artifacts.map((id,i)=>`<button class="display-object slot-${i}" aria-label="查看 ${discoveryById(id)!.name}" data-detail="${id}"><span class="mini-vessel"><img class="vessel-back pixel-art" src="${new URL(`../assets/runtime/case-${id}-back.webp`,import.meta.url).href}" alt=""><img class="mini-curio pixel-art" src="${textures[discoveryById(id)!.icon]}" alt=""><img class="vessel-front pixel-art" src="${new URL(`../assets/runtime/case-${id}-front.webp`,import.meta.url).href}" alt=""></span></button>`).join('');
   $('#display-count').textContent=artifacts.length?`${artifacts.length} 件奇物已安顿`:'给惊喜留了位置';
   const residents=state.collection.filter(id=>discoveryById(id)!.kind==='creature');$('#resident-count').textContent=`${residents.length} 位邻居`;
   $('#base-collection').innerHTML=residents.length?residents.map(id=>{const d=discoveryById(id)!;return `<button class="resident game-panel" data-detail="${id}">${itemArt(id)}<span><small>这里也是它的归处</small><strong>${d.name}</strong><p>${id==='mouse'?'正在帮你检查每一个空箱子。':id==='hermit'?'挑了一间刚好合身的纸箱小屋。':'它把今天的好天气贴在了窗外。'}</p></span>${icon('arrow')}</button>`;}).join(''):`<div class="home-note game-panel"><span class="micro-label">收件站的灯一直亮着</span><p>外面的居民偶尔会来。先留几个空纸箱，等它们慢慢熟悉这里。</p></div>`;
@@ -202,10 +206,19 @@ function offline(){
   director.hide();
   showModal('offline',`<div class="return-header"><div class="eyebrow">LR–01 / ARRIVAL MANIFEST</div><span class="return-status">已安全抵达</span></div><div class="return-hero"><span class="return-orbit"></span><img class="pixel-art" src="${shipUrl}" alt="失物号归航"></div><h2 class="detail-title">离线归航</h2><p class="return-line">你不在的时候，宇宙替你保管了一点惊喜。</p><div class="cargo-stats"><div><small>有效探索时长</small><b>${Math.floor(cargo.seconds/60)}<span> 分钟</span></b></div><div><small>带回可用零件</small><b class="reward-number">+${cargo.resources}</b></div></div><div class="return-found-heading"><span>${cargo.discoveries.length?'第一次带回的发现':'这次带回熟悉的日常'}</span><small>${cargo.discoveries.length?`${cargo.discoveries.length} 份新档案`:'所有回收都已认真记录'}</small></div>${cargo.discoveries.length?`<div class="cargo-found">${cargo.discoveries.map(id=>`<div class="cargo-item">${itemArt(id)}<span>${discoveryById(id)!.name}</span></div>`).join('')}</div>`:`<div class="return-note">零件来自日常回收与现场勘测。<br>老邻居们，也都过得很好。</div>`}${state.journal.entries.length?`<div class="return-note journal-return">邻居给你留了 ${state.journal.entries.length} 篇来信。<br>安顿好货物后，去基地读一读。</div>`:''}<div class="manifest-footer"><span>货舱离线上限 ${tuning(state).cargo/3600} 小时</span><span>入账后自动留存</span></div><button class="primary" data-action="claim">收下这次远行 ${icon('arrow')}</button>`);
 }
+let lastWorldReport='',lastWorldControls='';
+function renderWorld(){const v=worldView(state),names={day:'白天 · 自动探索',dusk:'黄昏 · 收件站亮灯',night:'夜晚 · 奇物自动守护',dawn:'清晨 · 恢复探索'};$('#world-phase').dataset.period=v.period;$('#world-phase strong').textContent=names[v.period];$('#world-phase span').textContent=`${Math.ceil(v.untilNextMs/1000)}s 后${v.phase==='night'?'天亮':'入夜'}`;
+ const controls=JSON.stringify([state.collection,state.world.slots,state.world.strengths]);if(controls!==lastWorldControls){lastWorldControls=controls;for(let i=0;i<2;i++){const select=$<HTMLSelectElement>(`#world-slot-${i}`);select.innerHTML=`<option value="">空位 · 老搭档照看</option>${['tape','bell'].filter(id=>state.collection.includes(id)).map(id=>`<option value="${id}">${discoveryById(id)!.name}</option>`).join('')}`;select.value=state.world.slots[i]??'';const id=state.world.slots[i],level=state.world.strengths[i];$(`#world-effect-${i}`).textContent=id==='tape'?`区域减速 ${Math.round((1-tapeSpeed(level))*100)}%`:id==='bell'?`每6秒停顿 ${(bellHoldMs(level)/1000).toFixed(1)} 秒`:'机器人与飞船自动照看';}}
+ for(let i=0;i<2;i++)$<HTMLSelectElement>(`#world-slot-${i}`).disabled=v.phase==='night';
+ $('#world-live').hidden=v.phase!=='night';$('#world-live').textContent=`提前核验 ${v.nightStatus.intercepted}/3 · 抵站护送 ${v.nightStatus.arrived} · 不会丢失收藏`;
+ const r=state.world.lastReport,key=JSON.stringify([r,state.world.reports.nights]);if(key!==lastWorldReport){lastWorldReport=key;$('#world-report').hidden=!r;$('#world-report').innerHTML=r?`<details><summary>清晨值班簿 · 第 ${r.number} 夜已平安归航</summary><p>${r.summary}</p><p>+${r.clues} 守护线索 · 自动记入，无需领取</p>${r.result?.actors.map(a=>`<p>影子 ${a.id+1} · ${a.outcome==='intercepted'?'抵站前核验':'抵站后安全送回'} · ${(a.atMs/1000).toFixed(1)}s</p>`).join('')??''}<small>累计守护 ${state.world.reports.nights} 夜</small></details>`:'';}
+}
+for(let i=0;i<2;i++)$(`#world-slot-${i}`).addEventListener('change',()=>void transact(s=>setWorldSlot(s,i as 0|1,($<HTMLSelectElement>(`#world-slot-${i}`).value||null) as GuardItem|null)));
 function update(){
+  renderWorld();
   $('#balance').textContent=Math.floor(state.resources).toLocaleString('zh-CN');
   const fraction=reviewTime===null?state.cycleMs/tuning(state).scanner:((reviewTime%12)+12)%12/12,action=robotPose(fraction).action;
-  $('#cycle-progress').style.width=`${fraction*100}%`;$('#cycle-remaining').textContent=String(Math.ceil((reviewTime===null?tuning(state).scanner-state.cycleMs:tuning(state).scanner*(1-fraction))/1000));$('#cycles').textContent=String(state.cycles);$('#robot-action').textContent=actionText[action];
+  $('#cycle-progress').style.width=`${fraction*100}%`;$('#cycle-remaining').textContent=String(Math.ceil((reviewTime===null?tuning(state).scanner-state.cycleMs:tuning(state).scanner*(1-fraction))/1000));$('#cycles').textContent=String(state.cycles);$('#robot-action').textContent=worldView(state).phase==='night'?'守护收件站 · 咔哒正在核对封条':actionText[action];
   if(lastAction!==action){if(tab==='expedition'){if(action==='scan')soundCue('scan');if(action==='return')soundCue('pickup');}lastAction=action;}
   document.querySelectorAll<HTMLElement>('[data-phase]').forEach(el=>el.classList.toggle('active',el.dataset.phase===action));
   $('#field-count').textContent=`已记录 ${state.collection.length} / ${discoveries.length}`;
@@ -248,7 +261,7 @@ app.addEventListener('click',async event=>{
     case 'museum-upgrades':growthReceipt=null;growthFilter='展示';workshop();break;
     case 'workshop':growthReceipt=null;workshop();break;
     case 'settings':settings();break;
-    case 'retry-base':void baseArrival.load();break;
+    case 'retry-base':void loadHome(true);break;
     case 'close':closeModal();break;
     case 'record':await transact(dismissSurvey);toast('现场记录已收录。自动监听继续。');break;
     case 'dismiss-discovery':director.hide();break;
@@ -271,4 +284,4 @@ window.addEventListener('storage',event=>{
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void tick();});
 go(tab);renderBase();if(state.pendingReturn)offline();else void maybePresent();
 if(!storageOK)toast('浏览器暂时无法保存。当前进度会在本次打开期间保留。');
-if(new URLSearchParams(location.search).has('review'))Object.assign(window,{__review:{scene,radarScene,freeze:(t:number|null)=>{reviewTime=t;scene.freeze(t);update();},state:()=>structuredClone(state)}});
+if(new URLSearchParams(location.search).has('review'))Object.assign(window,{__review:{scene,radarScene,museum:()=>museum,freeze:(t:number|null)=>{reviewTime=t;scene.freeze(t);update();},state:()=>structuredClone(state)}});

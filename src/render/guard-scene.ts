@@ -1,3 +1,4 @@
+import {robotPose} from './motion';
 import type {SceneExtension,SceneFrame} from './scene';
 import type {guardView} from '../prototype/guard-engine';
 import tapeUrl from '../../assets/runtime/tape.webp';
@@ -9,7 +10,7 @@ export function guardLayer(getVisual:()=>GuardVisual):SceneExtension {
   let tint:HTMLCanvasElement|null=null,rim:HTMLCanvasElement|null=null;const invader=new Image();invader.src=invaderUrl;
   const icons={tape:new Image(),bell:new Image()};icons.tape.src=tapeUrl;icons.bell.src=bellUrl;
   const point=(progress:number)=>({x:570-progress*233,y:530-progress*76+Math.sin(progress*Math.PI)*24});
-  return {afterWorld(c:CanvasRenderingContext2D,frame:SceneFrame){
+  return {robotPose:()=>{const v=getVisual();if(v.phase!=='night')return undefined;const a=(v.nightBase%12)/12,base=robotPose(0),x=a<.3?327+a/.3*78:a<.65?405:a<.95?405-(a-.65)/.3*78:327,y=454+(x-327)/78*24;return {...base,x,y,action:a<.3?'walk':a<.65?'scan':a<.95?'return':'unload',parcel:{...base.parcel,x:520,y:520,visible:false,held:false}};},afterWorld(c:CanvasRenderingContext2D,frame:SceneFrame){
     const v=getVisual(),t=frame.t;
     if(v.light>0){
       if(!tint){tint=document.createElement('canvas');tint.width=frame.globe.width;tint.height=frame.globe.height;const m=tint.getContext('2d')!;m.drawImage(frame.globe,0,0);m.globalCompositeOperation='source-in';m.fillStyle='#0a143c';m.fillRect(0,0,tint.width,tint.height);}

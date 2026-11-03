@@ -25,7 +25,7 @@ def main():
         (game / 'night-lab.html').replace(game / 'index.html')
     files = sorted(path for path in game.rglob('*') if path.is_file())
     assert (game / 'index.html').is_file(), 'Missing first-level HTML entry'
-    assert all(path.relative_to(game).parts[0] in ('index.html', 'night-lab.html', 'assets') for path in files), 'Unexpected build content'
+    assert all(path.relative_to(game).parts[0] in ('index.html', 'assets') for path in files), 'Unexpected build content'
     html = (game / 'index.html').read_text()
     assert 'src="./assets/' in html and 'href="./assets/' in html, 'Entry must use relative URLs'
     suffix = '-night-lab' if args.night_lab else ''
@@ -42,7 +42,7 @@ def main():
         'sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
         'files': len(files), 'uncompressedBytes': sum(path.stat().st_size for path in files),
         'entry': folder + '/index.html', 'orientation': 'portrait',
-        'purpose': 'separate opt-in night prototype' if args.night_lab else 'V0.2 first-planet game with opt-in, independently saved night mode',
+        'purpose': 'separate opt-in night prototype' if args.night_lab else 'Single-entry H5 with shared home museum and integrated expedition day/night',
     }
     (OUTPUT / ('package-info-night.json' if args.night_lab else 'package-info.json')).write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(metadata, ensure_ascii=False, indent=2))

@@ -7,6 +7,6 @@ export function baseRobotPose(seconds:number){
  const time=Math.max(0,seconds),index=Math.floor(time/14)%visits.length,bay=bays[visits[index]],t=time%14,service={x:visits[index]%3===0?270:500,y:bay.y+42};
  let action:'walk'|'observe'|'open'|'lift'|'inspect'|'place'|'wipe'|'return',position=service,lift=0,opening=0;
  if(t<4){action='walk';position=path(hub,service,t/4);}else if(t<5.5)action='observe';else if(t<6.2){action='open';opening=(t-5.5)/.7;}else if(t<7.2){action='lift';opening=1;lift=t-6.2;}else if(t<8.2){action='inspect';opening=1;lift=1;}else if(t<9.2){action='place';opening=1;lift=1-(t-8.2);}else if(t<10){action='wipe';opening=1-(t-9.2)/.8;}else{action='return';position=path(service,hub,(t-10)/4);}
- const facing=bay.x<position.x?-1:1,hand={x:position.x+facing*30,y:position.y-54},item={x:lerp(bay.x,hand.x,lift),y:lerp(bay.y-bay.w*.49,hand.y,lift)};
+ const dx=(action==='return'?hub.x:service.x)-position.x,facing=(action==='walk'||action==='return')&&Math.abs(dx)>.01?Math.sign(dx):bay.x<position.x?-1:1,hand={x:position.x+facing*30,y:position.y-54},item={x:lerp(bay.x,hand.x,lift),y:lerp(bay.y-bay.w*.49,hand.y,lift)};
  return {...position,action,target:bay.id,lift,opening,facing,hand,item,width:108};
 }
