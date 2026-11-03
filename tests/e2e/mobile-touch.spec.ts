@@ -3,11 +3,13 @@ import {newGame,advance,tuning} from '../../src/game/engine';
 const KEY='loststar.save.v1';
 async function seeded(page:import('@playwright/test').Page,path='/?start=base&review=1'){
   const s=advance(newGame(1800000000000),1800000745000);s.lastAt=Date.now();s.seenDiscoveries=[...s.collection];
-  await page.addInitScript(({key,state})=>{if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(state));},{key:KEY,state:s});
+  await page.addInitScript(({key,state})=>{if(!localStorage.getItem(key)){state.lastAt=Date.now();localStorage.setItem(key,JSON.stringify(state));}},{key:KEY,state:s});
   await page.goto(path);
 }
 async function tap(page:import('@playwright/test').Page,locator:import('@playwright/test').Locator){await locator.scrollIntoViewIfNeeded();const box=await locator.boundingBox();expect(box).not.toBeNull();await page.touchscreen.tap(box!.x+box!.width/2,box!.y+box!.height/2);}
 test('触控：六件奇物与居民有按钮旁的独立可见演出，重播不发奖',async({page})=>{
+  // Keep screenshots at two known animation instants on slow CI WebKit. Live recordings independently verify wall-clock animation.
+  await page.clock.install({time:new Date('2026-11-03T06:00:00Z')});await page.clock.pauseAt(new Date('2026-11-03T06:00:10Z'));
   await seeded(page);await tap(page,page.getByRole('button',{name:'图鉴',exact:true}));
   const cases=[['receipt','未购买的退货收据','artifact'],['tape','自动道歉的胶带','artifact'],['nested','无限套娃包裹','artifact'],['stamp','只会盖昨天的邮戳','artifact'],['cosmic-parcel','收件人：宇宙','artifact'],['bell','无人签收铃','artifact'],['mouse','拆封鼠','creature']];
   const kinds={artifact:'奇物',creature:'居民'};
@@ -18,7 +20,7 @@ test('触控：六件奇物与居民有按钮旁的独立可见演出，重播�
     await tap(page,button);const feedback=page.locator('#interaction-feedback');
     await expect(feedback).toBeInViewport();await expect(feedback).toHaveAttribute('data-item',id);await expect(feedback).toHaveAttribute('data-last-input','touch');
     await expect(feedback.locator('canvas')).toBeInViewport();await expect(feedback.locator('#interaction')).toBeInViewport();
-    const animation=await feedback.locator('canvas').screenshot();await page.waitForTimeout(220);expect(await feedback.locator('canvas').screenshot()).not.toEqual(animation);
+    const animation=await feedback.locator('canvas').screenshot();await page.clock.runFor(350);expect(await feedback.locator('canvas').screenshot()).not.toEqual(animation);
     const first=await feedback.getAttribute('data-replay');await tap(page,button);await expect(feedback).not.toHaveAttribute('data-replay',first!);
     await tap(page,page.getByRole('button',{name:'收起互动反馈'}));await expect(feedback).toBeHidden();
     await tap(page,page.getByRole('button',{name:'关闭详情'}));
