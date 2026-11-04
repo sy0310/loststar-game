@@ -40,6 +40,8 @@ test('文字放大、首页偏好和静音可保存，音频只在明确开启�
   expect(errors).toEqual([]);
 });
 test('长期首星日记有居民联动、存档回看与独立星际连续探测频道',async({page})=>{
+  // 223 chronological 10-second clock steps model37 online minutes; Linux WebKit needs more than the default30s total budget.
+  test.setTimeout(60000);
   await page.clock.install({time:new Date('2026-11-02T19:00:00Z')});await page.goto('/');
   for(let left=2221000;left>0;left-=10000){await page.clock.fastForward(Math.min(left,10000));await page.waitForFunction(()=>JSON.parse(localStorage.getItem('loststar.save.v1')!).lastAt>=Date.now()-500);}
   await expect(page.locator('.journal-note')).toHaveCount(3);await expect(page.locator('#field-journal')).toContainText('标签鸟寄来了明天');

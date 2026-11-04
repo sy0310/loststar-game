@@ -42,18 +42,55 @@ async function pointFor(page: Page, kind: 'planet' | 'robot' | 'resident') {
     const scale = Math.min(bounds.width / canvas.width, bounds.height / canvas.height);
     const left = bounds.left + (bounds.width - canvas.width * scale) / 2;
     const top = bounds.top + (bounds.height - canvas.height * scale) / 2;
-    // Search rendered alpha targets, keeping terrain below the actor region.
-    for (let y = kind === 'planet' ? 500 : 160; y < (kind === 'planet' ? 590 : 520); y += 4) {
-      for (let x = kind === 'planet' ? 430 : 100; x < (kind === 'planet' ? 520 : 720); x += 4) {
-        const client = {x: left + x * scale, y: top + y * scale};
-        const target = pick(client.x, client.y);
-        const inside = [[-1.5, 0], [1.5, 0], [0, -1.5], [0, 1.5]].every(([dx, dy]) => {const adjacent = pick(client.x + dx, client.y + dy);return adjacent.kind === kind && adjacent.id === target.id;});
-        if (target.kind === kind && inside) return {...client, id: target.id};
-      }
+    // Use a whole interior square at integer CSS coordinates. A cross-shaped
+    // check can still select a diagonal alpha gap or a narrow antenna pixel.
+    const firstX = Math.ceil(left + (kind === 'planet' ? 430 : 100) * scale);
+    const lastX = Math.floor(left + (kind === 'planet' ? 520 : 720) * scale);
+    const firstY = Math.ceil(top + (kind === 'planet' ? 500 : 160) * scale);
+    const lastY = Math.floor(top + (kind === 'planet' ? 590 : 520) * scale);
+    const width = lastX - firstX + 1;
+    const height = lastY - firstY + 1;
+    const stride = width + 2;
+    const distance = new Uint16Array(stride * (height + 2));
+    for (let y = 1; y <= height; y++) for (let x = 1; x <= width; x++) {
+      if (pick(firstX + x - 1, firstY + y - 1).kind === kind) distance[y * stride + x] = 65535;
     }
-    throw new Error(`实际绘制中缺少${kind}命中区域`);
+    for (let y = 1; y <= height; y++) for (let x = 1; x <= width; x++) {
+      const index = y * stride + x;
+      if (distance[index]) distance[index] = 1 + Math.min(distance[index - 1], distance[index - stride - 1], distance[index - stride], distance[index - stride + 1]);
+    }
+    let best = {x: 0, y: 0, clearance: 0};
+    for (let y = height; y >= 1; y--) for (let x = width; x >= 1; x--) {
+      const index = y * stride + x;
+      if (!distance[index]) continue;
+      distance[index] = Math.min(distance[index], 1 + Math.min(distance[index + 1], distance[index + stride - 1], distance[index + stride], distance[index + stride + 1]));
+      if (distance[index] > best.clearance) best = {x: firstX + x - 1, y: firstY + y - 1, clearance: distance[index]};
+    }
+    if (best.clearance < 3) throw new Error(`实际绘制中的${kind}缺少可轻点的内部区域`);
+    return {...best, id: pick(best.x, best.y).id, canvasBounds: {left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height}, scale};
   }, kind);
 }
+async function auditedTouch(page: Page, point: {x: number; y: number; clearance: number}, label: string) {
+  await page.evaluate(() => {
+    const audit = window as any;
+    audit.__fusionPointerAudit = [];
+    if (audit.__fusionPointerAuditInstalled) return;
+    audit.__fusionPointerAuditInstalled = true;
+    for (const type of ['pointerdown', 'pointerup', 'pointercancel', 'click']) document.addEventListener(type, event => {
+      const pointer = event as PointerEvent;
+      audit.__fusionPointerAudit.push({type, x: pointer.clientX, y: pointer.clientY, pointerId: pointer.pointerId,
+        primary: pointer.isPrimary, detail: pointer.detail, at: performance.now(), target: (event.target as Element)?.id,
+        scroll: document.querySelector('#fusion-scroll')?.scrollTop,
+        hit: audit.__FUSION__.pickAtClient(pointer.clientX, pointer.clientY)});
+    }, {capture: true, passive: true});
+  });
+  await page.touchscreen.tap(point.x, point.y);
+  const observed = await page.evaluate(() => ({events: (window as any).__fusionPointerAudit,
+    dialogOpen: document.querySelector<HTMLDialogElement>('#fusion-drawer')!.open,
+    dialogTitle: document.querySelector('#fusion-drawer-title')?.textContent}));
+  await test.info().attach(`${label}-native-touch.json`, {body: JSON.stringify({point, ...observed}, null, 2), contentType: 'application/json'});
+}
+
 async function pointer(page: Page, type: string, point: {x: number; y: number}, id = 81, primary = true, target = '#fusion-tap') {
   await page.locator(target).dispatchEvent(type, {pointerId: id, pointerType: 'touch', isPrimary: primary,
     button: 0, buttons: type === 'pointerup' ? 0 : 1, clientX: point.x, clientY: point.y});
@@ -94,7 +131,7 @@ test('手势拒绝长按双指和滚动，有效原生轻点与键盘各接受�
 test('实际机器人与居民命中分别打开设备和详情，场景外点击保持零助力', async ({page}) => {
   await open(page, true);
   const robot = await pointFor(page, 'robot');
-  await page.touchscreen.tap(robot.x, robot.y);
+  await auditedTouch(page, robot, 'robot');
   await expect(page.locator('#fusion-drawer')).toBeVisible();
   await expect(page.locator('#fusion-drawer-title')).toHaveText('设备升级');
   expect(((await saved(page)).game.assist?.actionSeq ?? 0)).toBe(0);
@@ -103,7 +140,7 @@ test('实际机器人与居民命中分别打开设备和详情，场景外点�
   await page.locator('#fusion-close').tap();
   await page.clock.runFor(100);
   const resident = await pointFor(page, 'resident');
-  await page.touchscreen.tap(resident.x, resident.y);
+  await auditedTouch(page, resident, 'resident');
   await expect(page.locator('#fusion-drawer-title')).toHaveText(discoveries.find(item => item.id === resident.id)!.name);
   expect(((await saved(page)).game.assist?.actionSeq ?? 0)).toBe(0);
   await page.locator('#fusion-close').tap();
