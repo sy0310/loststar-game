@@ -8,6 +8,14 @@
 
 工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不发布正式版。2026-11-02 用户授权的 TapTap 开发自测上传见 [实机试玩记录](docs/13_TAPTAP_SELF_TEST.md)。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
 
+## V0.3.5 首批返修
+
+收据与胶带获得独立本体能力，旧分拣区卡纸支线已有实际施工、清障和三项实地观察。点击反馈、收藏室绘制和跨柜取放已返修，零件余额入口提供当前可执行目标。
+
+开发审阅入口为 `http://127.0.0.1:5173/?sample=refinement`。生产审阅包由 `npm run package:fusion` 生成，使用独立档案承接同源旧档副本。浏览器与经济验证、连续视频、性能方法和实机待审项见交付记录。
+
+[V0.3.5交付与经济表](docs/30_FIRST_PLANET_REFINEMENT_DELIVERY.md) · [112图／14段连续视频](artifacts/refinement/index.html)
+
 ## 本地运行
 
 需要 Node.js 22.12+、npm、Python 3；录屏/媒体核验另需 ffmpeg/ffprobe。

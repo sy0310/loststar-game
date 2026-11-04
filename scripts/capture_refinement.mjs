@@ -1,5 +1,5 @@
 import {chromium, webkit} from '@playwright/test';
-import {mkdirSync, writeFileSync} from 'node:fs';
+import {mkdirSync, writeFileSync, readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {openReview, click, terrainTap, readArchive, oldDatabase} from './refinement_browser_helpers.mjs';
 import {freshReviewFixture} from '../releases/refinement-fixtures/refinement_fixtures.js';
@@ -8,7 +8,8 @@ const base = process.env.BASE_URL ?? 'http://127.0.0.1:4207';
 const output = process.env.OUTPUT_DIR ?? 'artifacts/refinement';
 const requested = (process.env.CAPTURE_GROUPS ?? 'input,comparison,museum,abilities,evidence,branch,night,cycle,layouts').split(',');
 mkdirSync(output, {recursive:true});
-const source = execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+const source = JSON.parse(readFileSync('releases/taptap/package-info-fusion.json', 'utf8')).sourceCommit;
+const verificationCommit = execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const browser = await chromium.launch();
 const entries = [], shots = [], videos = [], errors = [];
 async function open(name, options = {}, engine = browser) {
@@ -16,6 +17,7 @@ async function open(name, options = {}, engine = browser) {
   const {page, context} = session;
   const started = Date.now();
   const build = await page.locator('.fu-build').textContent();
+  if (!build.includes(source.slice(0,7))) throw Error('Captured package SHA mismatch');
   const states = [];
   const initial = await readArchive(page);
   const old = options.legacy ? await readArchive(page, oldDatabase) : null;
@@ -223,6 +225,6 @@ finally {
     video.durationSeconds=Number(info.format.duration);video.bytes=Number(info.format.size);delete video.raw;
     video.streams=info.streams;
   }
-  const manifest={sourceCommit:source,base,method:'Uninterrupted native touchscreen-emulation recordings at normal runtime speed. Configured review fixtures are produced by real domain actions and work. The capture advances through the normal live game clock. Desktop emulation evidence only, pending physical TapTap review.',entries,shots,videos,errors};
+  const manifest={sourceCommit:source,verificationCommit,base,method:'Uninterrupted native touchscreen-emulation recordings at normal runtime speed. Configured review fixtures are produced by real domain actions and work. The capture advances through the normal live game clock. Desktop emulation evidence only, pending physical TapTap review.',entries,shots,videos,errors};
   writeFileSync(`${output}/evidence-${requested.join('-')}.json`,JSON.stringify(manifest,null,2)+'\n');
 }

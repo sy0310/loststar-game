@@ -1,5 +1,5 @@
 import {chromium, webkit} from '@playwright/test';
-import {writeFileSync, mkdirSync} from 'node:fs';
+import {writeFileSync, mkdirSync, readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {cpus, platform, arch} from 'node:os';
 import {openReview, click, terrainTap} from './refinement_browser_helpers.mjs';
@@ -7,6 +7,7 @@ import {openReview, click, terrainTap} from './refinement_browser_helpers.mjs';
 const base = process.env.BASE_URL ?? 'http://127.0.0.1:4207';
 const output = process.env.OUTPUT_DIR ?? 'artifacts/refinement';
 const seconds = Number(process.env.MEASURE_SECONDS ?? 10);
+const packageInfo = JSON.parse(readFileSync('releases/taptap/package-info-fusion.json', 'utf8'));
 mkdirSync(output, {recursive:true});
 const results = [];
 function summarize(values) {
@@ -48,6 +49,7 @@ for (const [engine, type] of [['chromium',chromium], ['webkit',webkit]]) {
         return {raf:intervals.slice(1), scene:window.__FUSION__.metrics(), ui:window.__FUSION__.uiMetrics(),
           build:document.querySelector('.fu-build').textContent, ua:navigator.userAgent, dpr:devicePixelRatio};
       }, seconds*1000);
+      if (!sample.build.includes(packageInfo.sourceCommit.slice(0,7))) throw Error('Measured package SHA mismatch');
       results.push({engine, view, seconds, ...sample, raf:summarize(sample.raf),
         actualPaint:summarize(['museum','museum-reduced'].includes(view) ? sample.ui.museum.intervalsMs : sample.ui.focus.intervalsMs),
         drawCost:summarize(['museum','museum-reduced'].includes(view) ? sample.ui.museum.costsMs : sample.ui.focus.costsMs), errors:session.errors});
@@ -65,7 +67,8 @@ for (const [engine, type] of [['chromium',chromium], ['webkit',webkit]]) {
     await session.context.close();
   } finally {await browser.close();}
 }
-const report = {sourceCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),
+const report = {sourceCommit:packageInfo.sourceCommit,
+  verificationCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),
   method:'One headless browser/page at a time, isolated from recording and other tests. 390×844 DPR2 touch emulation, 1.5-second warmup. Actual Museum/focus draw intervals measured independently of page rAF. Input latency ends at first Canvas drawing call, before presentation. Desktop host only. Physical phone and TapTap WebView remain to be tested.',
   host:{platform:platform(),arch:arch(),cpu:cpus()[0]?.model},results};
 writeFileSync(`${output}/performance.json`,JSON.stringify(report,null,2)+'\n');
