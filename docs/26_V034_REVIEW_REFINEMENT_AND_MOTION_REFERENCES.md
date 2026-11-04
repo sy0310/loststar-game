@@ -99,3 +99,28 @@ TapTap开发自测为**430051 / v0.3.4 / 8ffad81**。[公开业务回执](../art
 3. 390×844及360×800、Chromium/WebKit与原生触控仿真，单独登记真实TapTap手机反馈。
 4. 旧存档隔离、40+120幂等、真实来源节点、有效离线上限与维修净流量继续回归。
 5. 逐项记录主线程退回与返修原因，视觉与长期消费的用户审核完成后再登记首周冻结项。
+
+## 复现与版本对照
+
+媒体与TapTap430051对应8ffad81。通过独立worktree取得相同运行版本，保留当前工作目录用于开发。
+
+```bash
+git worktree add ../loststar-v034-repro 8ffad81
+cd ../loststar-v034-repro
+npm ci
+npm run check
+npm run simulate:v034
+npm run package:v034
+npx vite preview --config vite.v034.config.ts --host 127.0.0.1 --port 4197 --outDir releases/taptap/loststar-week1
+```
+
+保持生产预览运行，在第二终端按发现、彩排和录制顺序采集。
+
+```bash
+BASE_URL=http://127.0.0.1:4197 npm run capture:v034 -- --discover
+BASE_URL=http://127.0.0.1:4197 npm run capture:v034 -- --rehearse
+BASE_URL=http://127.0.0.1:4197 npm run capture:v034
+BASE_URL=http://127.0.0.1:4197 node scripts/capture_v034_drawers.mjs
+```
+
+同位灯光控制检查使用开发源码fixture。先在另一终端运行`npx vite --host 127.0.0.1 --port 5199`，再执行`BASE_URL=http://127.0.0.1:5199 node scripts/capture_v034_lighting.mjs`。它固定渲染时刻并核对角色、船、镜头和星空角点。五段实录按生产入口运行，操作与计时回执保存在`artifacts/v034-refine/`。
