@@ -173,11 +173,7 @@ const searchlightSources = [
   {x: 128, y: 124},
 ];
 
-export function v034NightLightState(
-  view: V034NightSnapshot,
-  stage: NightStage,
-  ship: ReturnType<typeof shipPose>,
-) {
+export function v034SearchlightSource(ship: ReturnType<typeof shipPose>) {
   const source = {x: 0, y: 0};
   for (const layer of ship.layers) {
     const panel = searchlightSources[layer.cell];
@@ -186,6 +182,15 @@ export function v034NightLightState(
     source.x += (layer.x + x * Math.cos(layer.rotation) - y * Math.sin(layer.rotation)) * layer.alpha;
     source.y += (layer.y + x * Math.sin(layer.rotation) + y * Math.cos(layer.rotation)) * layer.alpha;
   }
+  return source;
+}
+
+export function v034NightLightState(
+  view: V034NightSnapshot,
+  stage: NightStage,
+  ship: ReturnType<typeof shipPose>,
+) {
+  const source = v034SearchlightSource(ship);
   const escape = v034Escape(view);
   let target = {
     x: stage.target.x,

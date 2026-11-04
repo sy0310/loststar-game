@@ -4,7 +4,7 @@ import {guardLayer} from '../render/guard-scene';
 import {tintWorld} from '../render/world-lighting';
 import type {SceneCamera, SceneExtension, SceneFrame} from '../render/scene';
 import {nightCamera, nightDoor, type NightStage} from './d1-motion';
-import {createNightStudy} from './night-scene';
+import {createNightStudy, type NightStudyOptions} from './night-scene';
 import {
   createV034NightModel,
   type V034NightModel,
@@ -16,6 +16,9 @@ import {v034BlendFromPatrol, v034Escape, v034NightLightState, v034NightStage, v0
 
 export interface V034NightSceneOptions {
   camera?: SceneCamera;
+  patrolIntruders?: boolean;
+  patrolRobotPose?: SceneExtension['robotPose'];
+  patrolContents?: NightStudyOptions['idleContents'];
 }
 
 const marker = {x: 408, y: 389, width: 43, height: 18};
@@ -102,7 +105,7 @@ function drawStationLights(
 }
 
 /** A small original-pixel patch restores local material contrast under work lights. */
-function createRelightPatch() {
+export function createRelightPatch() {
   const patch = document.createElement('canvas');
   patch.width = 256;
   patch.height = 256;
@@ -471,7 +474,7 @@ function drawEscape(
 }
 
 /** Financial state and every facility action share the existing deterministic model. */
-export function createV034NightScene(model: V034NightModel, options: V034NightSceneOptions = {}): SceneExtension {
+export function createV034NightScene(model: Pick<V034NightModel, 'snapshot' | 'getState'>, options: V034NightSceneOptions = {}): SceneExtension {
   let currentSeconds = 0;
   const paper = new Image();
   paper.src = invaderUrl;
@@ -488,12 +491,12 @@ export function createV034NightScene(model: V034NightModel, options: V034NightSc
       at: state.lastAt,
       repairBay: 0,
     };
-  }, {showEquipment: false, showSearchLine: false});
+  }, {showEquipment: false, showSearchLine: false, showIntruders: options.patrolIntruders});
   const stageAt = (seconds: number) => {
     currentSeconds = seconds;
     const view = model.snapshot(seconds);
     const stage = v034NightStage(view);
-    const previous = patrol.robotPose?.(stage.robot, seconds);
+    const previous = options.patrolRobotPose?.(stage.robot, seconds) ?? patrol.robotPose?.(stage.robot, seconds);
     if (!previous) return stage;
     return v034BlendFromPatrol(view, stage, previous);
   };
@@ -510,6 +513,7 @@ export function createV034NightScene(model: V034NightModel, options: V034NightSc
     idleCarrier: true,
     searchlight: false,
     registrationMarks: false,
+    idleContents: options.patrolContents,
     paperRim: '#bce6d5',
     lightWorld: (context, _frame, _stage, strength) => tintWorld(context, '#737da9', strength ?? 1),
   });
@@ -529,7 +533,7 @@ export function createV034NightScene(model: V034NightModel, options: V034NightSc
     robotPose(base, seconds) {
       currentSeconds = seconds;
       const view = model.snapshot(seconds);
-      if (view.eventSeconds === null) return patrol.robotPose?.(base, seconds);
+      if (view.eventSeconds === null) return options.patrolRobotPose?.(base, seconds) ?? patrol.robotPose?.(base, seconds);
       return study.robotPose?.(base, seconds);
     },
     drawRobot(context, frame, atlas) {

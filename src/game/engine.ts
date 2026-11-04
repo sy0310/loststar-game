@@ -7,6 +7,7 @@ import { parcelJournal, journalShift } from '../content/parcel-journal';
 import {cleanGrowth,growthEffects} from './growth';
 import {initialChart,stepStarChart,cleanChart,readyPlanet,type StarChart} from './star-chart';
 import { emptyInterstellar, interstellarView, radarPolicy, type InterstellarScan } from './radar';
+import {cleanAssist, type AssistState} from './assist';
 
 export type UpgradeId = 'radar' | 'scanner' | 'recycler' | 'cargo';
 export interface ReturnCargo { id: string; seconds: number; resources: number; discoveries: string[]; maintenance?:number;gross?:number; }
@@ -31,6 +32,7 @@ export interface SaveData {
   chart: StarChart;
   world: GuardState;
   station:StationState;research:ResearchState;
+  assist?: AssistState;
 }
 // Keep the original key so the review build can migrate existing player progress.
 export const SAVE_KEY = 'loststar.save.v1';
@@ -94,7 +96,7 @@ export function publicRadar(s:SaveData,mode:'local'|'interstellar'='local') {
 }
 const finite = (x: unknown, max = 1e12): x is number => typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= max;
 const ids = (x: unknown, valid: string[]): x is string[] => Array.isArray(x) && x.every(id => typeof id === 'string' && valid.includes(id)) && new Set(x).size === x.length;
-export function restore(raw: string | null, now = Date.now()): SaveData {
+export function restore(raw: string | null, now = Date.now(), options: {advance?: boolean} = {}): SaveData {
   if (!raw) return newGame(now);
   try {
     const input = JSON.parse(raw);
@@ -123,6 +125,7 @@ export function restore(raw: string | null, now = Date.now()): SaveData {
     s={...s,growth:cleanGrowth(input.growth),chart:cleanChart(input.chart,s.interstellar,s.planets,input.lastAt)};s.interstellar=s.chart.scan;
     s={...s,world:restoreWorld(input.world,input.lastAt,s.collection,growthEffects(s).guard)};
     s={...s,station:cleanStation(input.station,input.station===undefined&&(growthEffects(s).guard.some(n=>n>0))),research:cleanResearch(input.research)};
-    return advance(s, now, now - s.lastAt >= 30000);
+    s={...s,assist:cleanAssist(input.assist,input.lastAt)};
+    return options.advance === false ? s : advance(s, now, now - s.lastAt >= 30000);
   } catch { return newGame(now); }
 }

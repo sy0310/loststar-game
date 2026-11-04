@@ -18,8 +18,10 @@ def main():
     modes.add_argument('--night-lab', dest='mode', action='store_const', const='night', help='Package the separate, default-off night prototype')
     modes.add_argument('--d1', dest='mode', action='store_const', const='d1', help='Package the read-only D1 art/motion review, without touching real saves')
     modes.add_argument('--v034', dest='mode', action='store_const', const='week1', help='Package the isolated week-one design review')
+    modes.add_argument('--fusion', dest='mode', action='store_const', const='fusion', help='Package integrated exploration, collection and base playtest')
     args = parser.parse_args()
     profiles = {
+        'fusion': ('loststar-fusion', 'vite.fusion.config.ts', '-fusion', 'package-info-fusion.json', 'Integrated tap-assisted exploration, collection and base development playtest; independent migrated archive'),
         'game': ('loststar', None, '', 'package-info.json', 'Single-entry H5 with shared home museum and integrated expedition day/night'),
         'night': ('loststar-night', 'vite.night.config.ts', '-night-lab', 'package-info-night.json', 'separate opt-in night prototype'),
         'd1': ('loststar-d1', 'vite.d1.config.ts', '-d1', 'package-info-d1.json', 'D1 read-only spherical night operations and receipt capability comparison; no save access or payment'),
@@ -48,6 +50,7 @@ def main():
             info.external_attr = 0o100644 << 16
             target.writestr(info, path.read_bytes(), compresslevel=9)
     metadata = {
+        'fusion': ('loststar-fusion', 'vite.fusion.config.ts', '-fusion', 'package-info-fusion.json', 'Integrated tap-assisted exploration, collection and base development playtest; independent migrated archive'),
         'game': '失物星球', 'version': version, 'sourceCommit': commit,
         'archive': str(archive.relative_to(ROOT)), 'bytes': archive.stat().st_size,
         'sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),

@@ -174,3 +174,51 @@ test('V034原生触控：出土整理、免费试验与三抽屉在同一竖屏�
   expect(await page.evaluate(() => localStorage.getItem('loststar.save.v1'))).toBe('V034-TOUCH-PRESERVE');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+
+test('融合原生触控：点星球有助力，六件奇物可反复互动且不重复发奖', async ({page}) => {
+  await seeded(page, '/?sample=fusion');
+  await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
+  const read = () => page.evaluate(() => new Promise<any>((resolve, reject) => {
+    const request = indexedDB.open('loststar.fusion.v1', 1);
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const db = request.result;
+      const item = db.transaction('archive', 'readonly').objectStore('archive').get('current');
+      item.onsuccess = () => {resolve(item.result); db.close();};
+    };
+  }));
+  const original = await page.evaluate(() => localStorage.getItem('loststar.save.v1'));
+  await tap(page, page.locator('#fusion-tap'));
+  await expect.poll(async () => (await read()).game.assist?.actionSeq).toBe(1);
+  await tap(page, page.locator('[data-tab="collection"]'));
+  const before = await read();
+  for (const id of ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell']) {
+    await tap(page, page.locator(`#fusion-collection-list [data-detail="${id}"]`));
+    const trial = page.locator('#fusion-try');
+    await expect(trial).toBeEnabled();
+    await tap(page, trial);
+    if (id === 'receipt') {
+      await expect.poll(async () => (await read()).receipt.activeAction?.kind).toBe('try');
+      const canvas = page.locator('#fusion-paper-focus');
+      const first = await canvas.screenshot();
+      await page.waitForTimeout(350);
+      expect(await canvas.screenshot()).not.toEqual(first);
+    } else {
+      const feedback = page.locator('#interaction-feedback');
+      await expect(feedback).toHaveAttribute('data-item', id);
+      await expect(feedback).toHaveAttribute('data-last-input', 'touch');
+      await expect(feedback).toBeInViewport();
+      const first = await feedback.locator('canvas').screenshot();
+      await page.waitForTimeout(250);
+      expect(await feedback.locator('canvas').screenshot()).not.toEqual(first);
+      const replay = await feedback.getAttribute('data-replay');
+      await tap(page, trial);
+      await expect(feedback).not.toHaveAttribute('data-replay', replay!);
+    }
+    await tap(page, page.locator('#fusion-close'));
+  }
+  const after = await read();
+  expect(after.game.collection).toEqual(before.game.collection);
+  expect(after.game.resources - before.game.resources).toBe(after.game.station.grossIncome - before.game.station.grossIncome - after.game.station.repairSpent + before.game.station.repairSpent);
+  expect(await page.evaluate(() => localStorage.getItem('loststar.save.v1'))).toBe(original);
+});

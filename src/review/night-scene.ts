@@ -11,6 +11,7 @@ export interface NightStudyOptions {
   paperRim?: string;
   lightWorld?: typeof lightNightWorld;
   registrationMarks?: boolean;
+  idleContents?: (context: CanvasRenderingContext2D, frame: SceneFrame, position: {x: number; y: number}) => void;
 }
 
 /** Register the same closed field case at the robot's existing belt position. */
@@ -187,7 +188,10 @@ export function createNightStudy(
         const stage=nightHolsterStage(frame.robot);
         return [
           {depth:stage.robot.y-.3,draw:()=>carrier.groundShadow(context,stage)},
-          {depth:stage.robot.y-.1,draw:()=>carrier.draw(context,stage,()=>{})},
+          {depth:stage.robot.y-.1,draw:()=>carrier.draw(context,stage,()=>{
+            const inside = {...stage, paper: {...stage.paper, intake: 1}};
+            options.idleContents?.(context, frame, carrier.paperPivot(inside));
+          })},
         ];
       }
       const stage=stageAt(seconds);

@@ -15,7 +15,13 @@ const habitatUrls=import.meta.glob('../../assets/runtime/habitat-*-v02.webp',{ea
 const layers=import.meta.glob('../../assets/runtime/case-*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 export const residentIds=['mouse','hermit','tagbird'] as const;
 export type MuseumSource={collection:string[]};
-export type MuseumOptions={receiptStudy?:boolean};
+export type MuseumOptions={
+ receiptStudy?:boolean;
+ receiptFrame?:()=>ReceiptRestorationFrame|undefined;
+ drawSpecimen?:(context:CanvasRenderingContext2D,exhibit:Exhibit,t:number,image:HTMLImageElement)=>boolean;
+ specimenOpening?:(id:string)=>number;
+ caseEngineering?:(context:CanvasRenderingContext2D,exhibit:Exhibit,level:number,t:number,layer:'back'|'front')=>void;
+};
 function image(url:string){const img=new Image();img.src=url;return img;}
 function sprite(c:CanvasRenderingContext2D,img:HTMLImageElement|undefined,x:number,y:number,w:number,h=w){if(img?.complete&&img.naturalWidth)c.drawImage(img,Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
 /** Actual rear glass → moving specimen → front glass → independent nameplate. */
@@ -66,7 +72,7 @@ export class MuseumScene {
  private paint(c:CanvasRenderingContext2D,t:number,receipt?:{level:number;install:number;experiment?:ReceiptExperimentFrame;restoration?:ReceiptRestorationFrame}){c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
   // Tiny free-floating dust and lamplight are part of the room, never the whole background moving.
   for(let i=0;i<16;i++){const x=(i*127+Math.sin(t*.18+i)*10)%740+14,y=110+(i*61+t*3)%620;c.fillStyle=`rgba(255,218,148,${.15+.15*Math.sin(t+i)})`;c.fillRect(Math.round(x),Math.round(y),2,2);}
-  this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y,draw:()=>this.case(c,e,t,receipt?(e.id==='receipt'?receipt.level:this.level(`case-${exhibitIds.indexOf(e.id)}`)):undefined,e.id==='receipt'?receipt?.install:undefined,e.id==='receipt'?receipt?.experiment:undefined,e.id==='receipt'?receipt?.restoration:undefined)}));if(!receipt)entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
+  this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y,draw:()=>this.case(c,e,t,receipt?(e.id==='receipt'?receipt.level:this.level(`case-${exhibitIds.indexOf(e.id)}`)):undefined,e.id==='receipt'?receipt?.install:undefined,e.id==='receipt'?receipt?.experiment:undefined,e.id==='receipt'?(receipt?.restoration??this.options.receiptFrame?.()):undefined)}));if(!receipt)entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
   const lights=this.level('light');if(lights){c.fillStyle=`rgba(255,207,124,${.035*lights})`;c.fillRect(0,0,768,960);}
   if(this.level('deco-0')){c.fillStyle='#ffe9ae';for(let i=0;i<12;i++)c.fillRect(34+i*62,163+(i%2)*7,4,4);}
   if(this.level('deco-1')){c.fillStyle='#7dbd9b';for(let i=0;i<9;i++)c.fillRect(25+i*4,710-Math.sin(i)*18,5,8);}
@@ -76,10 +82,21 @@ export class MuseumScene {
  private drawRobot(c:CanvasRenderingContext2D,t:number){const p=this.pose,moving=p.action==='walk'||p.action==='return',frame=moving?Math.floor(t*8)%4:p.action==='observe'?4:p.lift>.8?6:p.action==='wipe'?7:5,w=p.width,feet=[149,147,149,148,148,148,149,149][frame];
   c.save();c.translate(p.x,p.y);c.fillStyle='#100c2880';c.beginPath();c.ellipse(0,1,32,7,0,0,Math.PI*2);c.fill();if(p.facing>0)c.scale(-1,1);c.drawImage(this.robot,frame%4*160,Math.floor(frame/4)*160,160,160,-w/2,-feet/160*w,w,w);c.restore();
   if(p.opening>0){const end=p.lift>0?p.item:itemCenter(exhibits.find(e=>e.id===p.target)!);c.strokeStyle='#a3c5b1';c.lineWidth=4;c.beginPath();c.moveTo(p.hand.x,p.hand.y);c.lineTo((p.hand.x+end.x)/2,end.y+20);c.lineTo(end.x,end.y);c.stroke();c.fillStyle='#ffe5a6';c.fillRect(end.x-4,end.y-4,8,8);}
-  if(p.lift>0&&this.source().collection.includes(p.target)){const e=exhibits.find(e=>e.id===p.target)!;const size=e.item.size*e.scale*(1-p.lift)+48*p.lift;sprite(c,this.art[p.target as typeof exhibitIds[number]],p.item.x-size/2,p.item.y-size/2,size);}
+  if(p.lift>0&&this.source().collection.includes(p.target)){
+   const e=exhibits.find(e=>e.id===p.target)!;
+   const size=e.item.size*e.scale*(1-p.lift)+48*p.lift;
+   const scale=size/e.item.size;
+   const carried={...e,x:p.item.x-(e.item.x-e.base.x)*scale,y:p.item.y-(e.item.y-e.base.y)*scale,scale};
+   const restoration=e.id==='receipt'?this.options.receiptFrame?.():undefined;
+   if(restoration&&this.restorationRenderer&&this.restorationParts){
+    this.restorationRenderer.drawReceiptRestoration(c,this.restorationParts,{center:p.item,frame:size,seconds:t,receiverY:p.item.y+size/2,lights:[],glass:0,restorationFrame:{...restoration,phase:restoration.stage==='buried'?'buried':restoration.condition}});
+   }else if(!this.options.drawSpecimen?.(c,carried,t,this.art[p.target as typeof exhibitIds[number]])){
+    sprite(c,this.art[p.target as typeof exhibitIds[number]],p.item.x-size/2,p.item.y-size/2,size);
+   }
+  }
  }
 
- renderExhibit(canvas:HTMLCanvasElement,id:string,level:number){const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const scale=Math.min((canvas.width-48)/e.crop.w,(canvas.height-70)/(e.base.y-e.crop.y));c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);this.case(c,{...e,x:canvas.width/2,y:canvas.height-48,scale,width:e.base.w*scale},0,level);canvas.dataset.ready='true';canvas.dataset.level=String(level);}
+ renderExhibit(canvas:HTMLCanvasElement,id:string,level:number){const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const scale=Math.min((canvas.width-48)/e.crop.w,(canvas.height-70)/(e.base.y-e.crop.y));c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);this.case(c,{...e,x:canvas.width/2,y:canvas.height-48,scale,width:e.base.w*scale},0,level,1,undefined,id==='receipt'?this.options.receiptFrame?.():undefined);canvas.dataset.ready='true';canvas.dataset.level=String(level);}
  /** D1 compares real structural parts in one fixed room camera, never one fitted poster per level. */
  renderFocused(canvas:HTMLCanvasElement,id:'receipt',level:number,t:number,install=1,view:'focus'|'room'|'specimen'='focus',experiment?:ReceiptExperimentFrame,restoration?:ReceiptRestorationFrame){
   if(id!=='receipt'||!this.receiptRenderer||this.canvas.dataset.ready!=='true')return;
@@ -125,7 +142,8 @@ export class MuseumScene {
    this.restorationStatus=this.restorationRenderer!.drawReceiptRestoration(context,this.restorationParts!,{...options,receiverY:options.receiverY!,restorationFrame:restoration});
    return this.restorationStatus;
   }:undefined;
-  if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'&&level>0){this.specimenStatus=this.receiptRenderer.drawReceiptStudy(c,{e,t,level,install,known,back,front,item:this.art.receipt,assets:this.receiptParts,experiment,paperOverride});return;}
+  if(known)this.options.caseEngineering?.(c,e,level,t,'back');
+  if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'&&level>0){this.specimenStatus=this.receiptRenderer.drawReceiptStudy(c,{e,t,level,install,known,specimenHidden:!!service&&service.lift>0,back,front,item:this.art.receipt,assets:this.receiptParts,experiment,paperOverride});if(known)this.options.caseEngineering?.(c,e,level,t,'front');return;}
   c.save();c.fillStyle='#120d2840';c.beginPath();c.ellipse(e.x,e.y-2,e.width*.43,5,0,0,Math.PI*2);c.fill();
   c.drawImage(back,e.crop.x,e.crop.y,e.crop.w,e.crop.h,p.x,p.y,e.crop.w*s,e.crop.h*s);
   if(this.options.receiptStudy&&this.receiptRenderer&&this.receiptParts&&e.id==='receipt'&&known)this.receiptRenderer.drawStudyReceiptFloor(c,e,level,install,this.receiptParts);
@@ -137,6 +155,7 @@ export class MuseumScene {
    if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'){
     this.specimenStatus=this.receiptRenderer.drawStudyReceiptSpecimen(c,e,t,level,install,this.receiptParts,experiment,paperOverride);
    }else{
+   if(!this.options.drawSpecimen?.(c,e,t,this.art[e.id])){
    c.save();c.translate(center.x,center.y+bob);
    switch(e.id){
     case 'receipt':c.rotate(Math.sin(t*.8)*.035);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.fillStyle='#ffeab9';for(let i=0;i<3;i++)c.fillRect(-9+i*8,iw*.25+(t*4+i*5)%12,2,2);break;
@@ -148,11 +167,13 @@ export class MuseumScene {
    }
    c.restore();
    }
+   }
    if(level>=2)for(let i=0;i<4;i++){c.fillStyle='#fff3b0';c.fillRect(center.x+Math.sin(t*.5+i)*width*.30,center.y+Math.cos(t*.7+i)*height*.23,2,2);}
   }
   // Register reflection-only front windows onto the back's cavity. The front sheet's
   // independent AI-drawn cap/base cannot supply a second, offset physical pedestal.
-  c.save();const opacity=e.id==='cosmic-parcel'?.45:e.id==='bell'?.72:.9;c.globalAlpha=opacity*(1-(service?.opening??0)*.8);c.translate((service?.opening??0)*width*.45,0);c.drawImage(front,e.front.x,e.front.y,e.front.w,e.front.h,b.x,b.y,width,height);c.restore();c.restore();
+  c.save();const opacity=e.id==='cosmic-parcel'?.45:e.id==='bell'?.72:.9;const opening=Math.max(service?.opening??0,this.options.specimenOpening?.(e.id)??0);c.globalAlpha=opacity*(1-opening*.8);c.translate(opening*width*.45,0);c.drawImage(front,e.front.x,e.front.y,e.front.w,e.front.h,b.x,b.y,width,height);c.restore();c.restore();
+  if(known)this.options.caseEngineering?.(c,e,level,t,'front');
   if(this.options.receiptStudy&&this.receiptRenderer&&this.receiptParts&&e.id==='receipt')this.receiptRenderer.drawStudyReceiptTicket(c,e,level,t,this.receiptParts,experiment);
   const plaqueW=Math.min(138,e.width*1.10);c.fillStyle='#2b2036';c.fillRect(e.x-plaqueW/2,e.y+12,plaqueW,27);c.strokeStyle=level?'#e8c184':'#a98054';c.lineWidth=2;c.strokeRect(e.x-plaqueW/2,e.y+12,plaqueW,27);c.fillStyle=known?'#ffe9bf':'#b9a9c7';c.font='20px monospace';c.textAlign='center';c.fillText(known?['未购买收据','道歉胶带','套娃包裹','昨天邮戳','收件人：宇宙','签收铃'][exhibitIds.indexOf(e.id)]:'等待好奇心',e.x,e.y+32,plaqueW-8);c.restore();
  }

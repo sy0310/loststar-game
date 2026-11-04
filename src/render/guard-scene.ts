@@ -13,6 +13,7 @@ type GuardVisual=ReturnType<typeof guardView>&{period?:ResidentPeriod;station?:S
 export interface GuardLayerOptions {
   showEquipment?: boolean;
   showSearchLine?: boolean;
+  showIntruders?: boolean;
 }
 
 export function guardLayer(getVisual:()=>GuardVisual,options:GuardLayerOptions={}):SceneExtension {
@@ -55,7 +56,7 @@ export function guardLayer(getVisual:()=>GuardVisual,options:GuardLayerOptions={
         const wave=(v.nightBase/6+j/3)%1;c.save();c.globalAlpha=(1-wave)*.7;c.strokeStyle='#b8ecdf';c.lineWidth=2;c.beginPath();c.ellipse(slot.x,slot.y,20+wave*(95+v.strengths[i]*12),8+wave*37,0,0,Math.PI*2);c.stroke();c.restore();
       }
     }
-    if(v.phase!=='night')return;
+    if(v.phase!=='night'||options.showIntruders===false)return;
     for(const actor of v.intruders){
       const p=point(actor.progress);c.save();c.globalAlpha=actor.alpha;c.translate(Math.round(p.x),Math.round(p.y));
       c.fillStyle='#17142d88';c.beginPath();c.ellipse(0,1,24,5,0,0,Math.PI*2);c.fill();
