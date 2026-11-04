@@ -50,7 +50,6 @@ def main():
             info.external_attr = 0o100644 << 16
             target.writestr(info, path.read_bytes(), compresslevel=9)
     metadata = {
-        'fusion': ('loststar-fusion', 'vite.fusion.config.ts', '-fusion', 'package-info-fusion.json', 'Integrated tap-assisted exploration, collection and base development playtest; independent migrated archive'),
         'game': '失物星球', 'version': version, 'sourceCommit': commit,
         'archive': str(archive.relative_to(ROOT)), 'bytes': archive.stat().st_size,
         'sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
