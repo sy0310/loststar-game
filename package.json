@@ -1,6 +1,6 @@
 {
   "name": "loststar-game",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "private": true,
   "type": "module",
   "scripts": {
@@ -37,7 +37,11 @@
     "package:fusion": "python3 scripts/package_taptap.py --fusion",
     "simulate:fusion": "vite build --ssr scripts/simulate_fusion_assist.ts --outDir releases/fusion-assist-sim && node releases/fusion-assist-sim/simulate_fusion_assist.js && vite build --ssr scripts/simulate_fusion.ts --outDir releases/fusion-sim && node releases/fusion-sim/simulate_fusion.js",
     "capture:fusion": "vite build --ssr scripts/fusion_capture_fixtures.ts --outDir releases/fusion-capture && node scripts/capture_fusion.mjs",
-    "capture:fusion:compare": "vite build --ssr scripts/fusion_capture_fixtures.ts --outDir releases/fusion-capture && node scripts/capture_fusion_comparison.mjs"
+    "capture:fusion:compare": "vite build --ssr scripts/fusion_capture_fixtures.ts --outDir releases/fusion-capture && node scripts/capture_fusion_comparison.mjs",
+    "simulate:refinement": "vite build --ssr scripts/simulate_refinement.ts --outDir releases/refinement-sim && node releases/refinement-sim/simulate_refinement.js",
+    "capture:refinement": "vite build --ssr scripts/refinement_fixtures.ts --outDir releases/refinement-fixtures && node scripts/capture_refinement.mjs",
+    "measure:refinement": "vite build --ssr scripts/refinement_fixtures.ts --outDir releases/refinement-fixtures && node scripts/measure_refinement.mjs",
+    "gallery:refinement": "python3 scripts/build_refinement_gallery.py"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

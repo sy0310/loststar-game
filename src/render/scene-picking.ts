@@ -1,10 +1,10 @@
 export interface ScenePoint {x: number; y: number}
-export type ScenePickKind = 'space' | 'planet' | 'robot' | 'resident' | 'ship';
+export type ScenePickKind = 'space' | 'planet' | 'robot' | 'resident' | 'ship' | 'site';
 export interface ScenePick extends ScenePoint {kind: ScenePickKind; id?: string}
 export interface SceneHitTarget {kind: Exclude<ScenePickKind, 'space'>; id?: string}
 export interface SceneImageCommand {
   target: SceneHitTarget;
-  image?: HTMLImageElement;
+  image?: HTMLImageElement | HTMLCanvasElement;
   source: {x: number; y: number; width: number; height: number};
   destination: {x: number; y: number; width: number; height: number};
   transform: {a: number; b: number; c: number; d: number; e: number; f: number};
@@ -42,7 +42,7 @@ export function sceneAlphaHit(point: ScenePoint, command: SceneImageCommand, mas
 }
 
 export function pickSceneCommands(point: ScenePoint, commands: readonly SceneImageCommand[],
-  maskFor: (image: HTMLImageElement) => SceneAlphaMask | undefined): ScenePick {
+  maskFor: (image: HTMLImageElement | HTMLCanvasElement) => SceneAlphaMask | undefined): ScenePick {
   for (let index = commands.length - 1; index >= 0; index--) {
     const command = commands[index];
     if (!sceneImagePoint(point, command)) continue;

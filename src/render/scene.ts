@@ -18,7 +18,7 @@ const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,
 type Art = Record<keyof typeof urls, HTMLImageElement>;
 export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement;environment:ResidentEnvironment;output:HTMLCanvasElement}
 export interface SceneCamera {scale:number;x:number;y:number;offsetX?:number;offsetY?:number}
-export interface SceneEntity {depth:number;draw:()=>void}
+export interface SceneEntity {depth:number;draw:()=>void;hitTarget?:SceneHitTarget}
 export interface SceneExtension {
   ready?:Promise<void>;
   cycleFraction?:(base:number,seconds:number)=>number;
@@ -55,7 +55,7 @@ export class ExpeditionScene {
   private loading=false;
   private hitCommands: SceneImageCommand[] = [];
   private hitTarget: SceneHitTarget | undefined;
-  private alphaMasks = new WeakMap<HTMLImageElement, SceneAlphaMask>();
+  private alphaMasks = new WeakMap<HTMLImageElement | HTMLCanvasElement, SceneAlphaMask>();
   ready=false;
 
   constructor(parent:HTMLElement,private getState:()=>SaveData,private extension?:SceneExtension) {
@@ -103,10 +103,10 @@ export class ExpeditionScene {
     if(!this.ready||point.x<0||point.y<0||point.x>=this.canvas.width||point.y>=this.canvas.height)return {...point,kind:'space'};
     return pickSceneCommands(point,this.hitCommands,image=>this.imageMask(image));
   }
-  private imageMask(image:HTMLImageElement){
+  private imageMask(image:HTMLImageElement | HTMLCanvasElement){
     const cached=this.alphaMasks.get(image);
     if(cached)return cached;
-    const canvas=document.createElement('canvas');canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;
+    const canvas=document.createElement('canvas');canvas.width=image instanceof HTMLImageElement?image.naturalWidth:image.width;canvas.height=image instanceof HTMLImageElement?image.naturalHeight:image.height;
     const context=canvas.getContext('2d')!;context.drawImage(image,0,0);
     const pixels=context.getImageData(0,0,canvas.width,canvas.height).data;
     const alpha=new Uint8Array(canvas.width*canvas.height);
@@ -116,10 +116,12 @@ export class ExpeditionScene {
   private recordImageHits(context:CanvasRenderingContext2D){
     const original=context.drawImage.bind(context);
     context.drawImage=((image:CanvasImageSource,...values:number[])=>{
-      if(this.hitTarget&&image instanceof HTMLImageElement){
-        const source=values.length===8?{x:values[0],y:values[1],width:values[2],height:values[3]}:{x:0,y:0,width:image.naturalWidth,height:image.naturalHeight};
+      if(this.hitTarget&&(image instanceof HTMLImageElement||image instanceof HTMLCanvasElement)){
+        const imageWidth=image instanceof HTMLImageElement?image.naturalWidth:image.width;
+        const imageHeight=image instanceof HTMLImageElement?image.naturalHeight:image.height;
+        const source=values.length===8?{x:values[0],y:values[1],width:values[2],height:values[3]}:{x:0,y:0,width:imageWidth,height:imageHeight};
         const destination=values.length===8?{x:values[4],y:values[5],width:values[6],height:values[7]}:
-          {x:values[0],y:values[1],width:values.length===4?values[2]:image.naturalWidth,height:values.length===4?values[3]:image.naturalHeight};
+          {x:values[0],y:values[1],width:values.length===4?values[2]:imageWidth,height:values.length===4?values[3]:imageHeight};
         this.hitCommands.push({target:this.hitTarget,image,source,destination,transform:context.getTransform(),opacity:context.globalAlpha});
       }
       Reflect.apply(original,context,[image,...values]);
@@ -244,7 +246,7 @@ export class ExpeditionScene {
       entities.push({depth:pose.depth,hit:s.collection.includes(id)?{kind:'resident',id}:undefined,draw:()=>residents.push(paintResident(c,id,environment,this.residentArt,dayImage))});
     }
     if(this.extension?.worldEntities)entities.push(...this.extension.worldEntities(c,frame));
-    entities.sort((a,b)=>a.depth-b.depth).forEach(e=>this.withHitTarget(e.hit,e.draw));
+    entities.sort((a,b)=>a.depth-b.depth).forEach(e=>this.withHitTarget(e.hit??e.hitTarget,e.draw));
     this.extension?.afterWorld(c,frame);
     c=this.outputContext;this.ctx=c;
     c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(this.world,0,0);c.restore();

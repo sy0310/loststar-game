@@ -203,17 +203,27 @@ test('融合原生触控：点星球有助力，六件奇物可反复互动且�
       const first = await canvas.screenshot();
       await page.waitForTimeout(350);
       expect(await canvas.screenshot()).not.toEqual(first);
-    } else {
-      const feedback = page.locator('#interaction-feedback');
-      await expect(feedback).toHaveAttribute('data-item', id);
-      await expect(feedback).toHaveAttribute('data-last-input', 'touch');
-      await expect(feedback).toBeInViewport();
-      const first = await feedback.locator('canvas').screenshot();
-      await page.waitForTimeout(250);
-      expect(await feedback.locator('canvas').screenshot()).not.toEqual(first);
-      const replay = await feedback.getAttribute('data-replay');
+      const action = (await read()).receipt.activeAction?.id;
+      await expect(trial).toBeEnabled({timeout:5000});
       await tap(page, trial);
-      await expect(feedback).not.toHaveAttribute('data-replay', replay!);
+      await expect.poll(async () => (await read()).receipt.activeAction?.id).not.toBe(action);
+      await expect(canvas).toHaveAttribute('data-restoration-phase','trying');
+    } else {
+      const canvas = page.locator('#fusion-exhibit-focus');
+      await expect(canvas).toHaveAttribute('data-item', id);
+      await expect(canvas).toHaveAttribute('data-last-input', 'touch');
+      await expect(canvas).toHaveAttribute('data-experiment-playing', 'true');
+      await expect(canvas).toBeInViewport();
+      await expect(page.locator('#interaction-feedback')).toBeHidden();
+      const first = await canvas.screenshot();
+      await page.waitForTimeout(250);
+      expect(await canvas.screenshot()).not.toEqual(first);
+      const replay = await canvas.getAttribute('data-replay');
+      const started = await canvas.getAttribute('data-experiment-started-at');
+      await tap(page, trial);
+      await expect(canvas).not.toHaveAttribute('data-replay', replay!);
+      await expect(canvas).not.toHaveAttribute('data-experiment-started-at', started!);
+      await expect(canvas).toHaveAttribute('data-experiment-playing', 'true');
     }
     await tap(page, page.locator('#fusion-close'));
   }

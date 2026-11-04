@@ -2,6 +2,7 @@ import type {SaveData, UpgradeId} from '../game/engine';
 import type {ReceiptRestorationKind, ReceiptRestorationState} from '../review/receipt-restoration';
 import type {NightConfig} from '../prototype/night-model';
 import type {StationReceipt} from '../game/station';
+import type {AbilityId, ProgressionState, SortingActionKind, SortingStudyId} from './progression';
 
 export interface FieldRecord {
   id: string;
@@ -27,6 +28,7 @@ export interface FusionSave {
   task: FusionTask | null;
   taskSeq: number;
   importedLegacy: boolean;
+  progression: ProgressionState;
   curios: Record<string, {condition: 'found' | 'clean' | 'stabilized'; action?: {kind: 'clean' | 'repair'; startedAt: number; endsAt: number}}>;
 }
 export type FusionAction =
@@ -42,11 +44,14 @@ export type FusionAction =
   | {type: 'claim'}
   | {type: 'observe'; id: string; at: number; source: string}
   | {type: 'slot'; slot: 0 | 1; enabled: boolean}
-  | {type: 'curio'; id: string; kind: 'clean' | 'repair'};
+  | {type: 'curio'; id: string; kind: 'clean' | 'repair'}
+  | {type: 'ability'; id: AbilityId; expected: number}
+  | {type: 'sorting'; kind: SortingActionKind; target?: SortingStudyId; expected?: number};
 export interface FusionResult {ok: boolean; message?: string}
 export interface FusionController {
   state: FusionSave;
   persisted: boolean;
+  readonly migrationBlocked?: boolean;
   act(action: FusionAction): Promise<FusionResult>;
   subscribe(listener: () => void): () => void;
 }

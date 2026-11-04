@@ -242,3 +242,40 @@ button:focus-visible, [tabindex]:focus-visible, summary:focus-visible, input:foc
 .fu-pick-reticle::before, .fu-pick-reticle::after {content: '';position: absolute;background: #e3ecc8;}
 .fu-pick-reticle::before {width: 3px;height: 3px;left: 10px;top: 8px;}
 .fu-pick-reticle::after {width: 5px;height: 1px;left: -4px;top: 10px;box-shadow: 26px 0 #e3ecc8;}
+
+button.fu-wallet {padding: 2px 3px 2px 8px;min-width: 84px;border-color: transparent;background: transparent;box-shadow: none;text-align: right;}
+#fusion-revenue-effects {position: fixed;inset: 0;pointer-events: none;z-index: 12;overflow: hidden;}
+.fu-income-token {position: absolute;left: 0;top: 0;padding: 3px 6px 3px 15px;background: #302a38;border: 1px solid #c5a36d;color: #ffe5a8;font: 12px monospace;box-shadow: 2px 2px #15101f;}
+.fu-income-token::before {content: '';position: absolute;left: 4px;top: 6px;width: 6px;height: 6px;background: #dab67c;box-shadow: inset -2px -2px #9b6d54,inset 1px 1px #ffe5a8;}
+.fu-next-goal {padding: 12px 13px;margin-bottom: 15px;border: 1px solid #9a835e;background: linear-gradient(105deg,#40323e,#242b35);position: relative;}
+.fu-next-goal > small,.fu-ability-panel > small {display: block;color: #c6ad83;font-size: 10px;margin-bottom: 5px;}
+.fu-next-goal > strong {display: block;color: #f1dcc0;font-size: 15px;}
+.fu-next-goal p {font-size: 11px;color: #b8cebd;margin: 8px 0 10px;line-height: 1.5;}
+.fu-next-goal button {width: 100%;text-align: left;display: flex;justify-content: space-between;align-items: center;background: #3a3941;}
+.fu-drawer-links,.fu-ability-shortcuts {display: grid;grid-template-columns: 1fr 1fr;gap: 8px;margin-top: 15px;}
+.fu-wallet-total {display: flex;align-items: center;justify-content: center;gap: 10px;padding: 15px;margin-bottom: 12px;color: #f4d29a;}
+.fu-wallet-total b {font: 29px monospace;}
+.fu-wallet-total span {font-size: 11px;}
+.fu-spend-goal {display: flex;gap: 10px;align-items: center;border: 1px solid #796573;padding: 12px;margin-bottom: 11px;background: #292534;}
+.fu-spend-goal > div {flex: 1;min-width: 0;}
+.fu-spend-goal small {font-size: 10px;color: #b6b28f;}
+.fu-spend-goal h3 {font-size: 14px;margin: 5px 0;color: #efd9b4;}
+.fu-spend-goal p {font-size: 11px;color: #b8b5c0;margin: 0;line-height: 1.6;}
+.fu-spend-goal button {font-size: 11px;flex-shrink: 0;}
+.fu-sorting-place {border: 1px solid #a1835f;background: repeating-linear-gradient(135deg,#332d38 0 12px,#37313b 12px 24px);padding: 16px;margin-bottom: 16px;}
+.fu-sorting-place span,.fu-sorting-place small {display: block;font-size: 10px;color: #c5b395;}
+.fu-sorting-place strong {display: block;font-size: 25px;letter-spacing: 4px;color: #f1d1a4;margin: 8px 0;}
+.fu-current-work > strong {font-size: 16px;}
+.fu-current-work > p {font-size: 12px;color: #b8d2bf;line-height: 1.6;}
+.fu-current-work > small {display: block;font-size: 10px;color: #bcacbb;margin: 8px 0 14px;}
+#fusion-sorting-actions {display: flex;gap: 8px;flex-wrap: wrap;}
+#fusion-sorting-actions > button {flex: 1;min-width: 120px;}
+.fu-ability-panel {padding: 12px;margin: 15px 0 9px;border: 1px solid #a98b65;background: #302c38;}
+.fu-ability-panel strong,.fu-ability-panel span {display: block;}
+.fu-ability-panel strong {font-size: 14px;color: #f1dab5;}
+.fu-ability-panel span {font-size: 11px;color: #b4d7c4;margin: 7px 0 12px;line-height: 1.6;}
+.fu-ability-panel > button {width: 100%;}
+.fu-curio-message {margin: 15px 0 8px;border-left: 2px solid #987e61;padding-left: 10px;}
+.fu-curio-message small {font-size: 10px;color: #b2a7b1;}
+.fu-curio-message p {font-size: 13px;color: #dfcbaa;margin: 6px 0;}
+.fu-ability-panel .fu-ability-next {display: block;margin: 9px 0 0;font-size: 10px;color: #b7a6b7;line-height: 1.5;}

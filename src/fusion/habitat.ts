@@ -6,6 +6,7 @@ import {createDailyResidentRenderer} from '../render/v034-residents';
 import {residentDailyPose} from '../review/resident-daily';
 import {textures} from '../ui/art';
 import {fusionRenderElapsed} from './render-clock';
+import {FrameCadence} from '../render/frame-cadence';
 
 const backgroundUrls = import.meta.glob('../../assets/runtime/habitat-*-v02.webp', {
   eager: true, query: '?url', import: 'default',
@@ -48,8 +49,7 @@ export class FusionHabitatScene {
   private active = false;
   private disposed = false;
   private frame = 0;
-  private last = -Infinity;
-  private reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  private cadence = new FrameCadence();
 
   constructor(
     root: HTMLElement,
@@ -76,6 +76,7 @@ export class FusionHabitatScene {
 
   setActive(active: boolean) {
     if (this.disposed) return;
+    if (this.active !== active) this.cadence.reset();
     this.active = active;
     if (active && !this.frame) this.frame = requestAnimationFrame(this.loop);
     if (active && this.assets) this.draw();
@@ -91,8 +92,7 @@ export class FusionHabitatScene {
   private loop = (milliseconds: number) => {
     this.frame = 0;
     if (this.disposed || !this.active || !this.canvas.isConnected) return;
-    if (!document.hidden && milliseconds - this.last >= (this.reducedMotion.matches ? 140 : 65)) {
-      this.last = milliseconds;
+    if (!document.hidden && this.cadence.draw(milliseconds, 1000 / 30)) {
       this.draw();
     }
     this.frame = requestAnimationFrame(this.loop);

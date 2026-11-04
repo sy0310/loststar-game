@@ -368,6 +368,7 @@ export type ReceiptRestorationDrawOptions = {
 };
 
 export type ReceiptRestorationDrawResult = {
+  attachments: {leftTop: Point;leftBottom: Point;rightTop: Point;rightBottom: Point;leftEdge:Point[];rightEdge:Point[]};
   tier: number;
   reveal: number;
   bounds: {left: number; top: number; width: number; height: number};
@@ -917,6 +918,14 @@ class ReceiptRestorationPainter {
     this.drawIdentification(c, options, mesh);
     c.restore();
     return {
+      attachments: {
+        leftEdge: Array.from({length:11},(_,index)=>{const y=60+index*16;return this.paperPoint((this.paperRows[y]?.left??90)+1,y,mesh);}),
+        rightEdge: Array.from({length:11},(_,index)=>{const y=60+index*16;return this.paperPoint((this.paperRows[y]?.right??160)-1,y,mesh);}),
+        leftTop: this.paperPoint((this.paperRows[60]?.left ?? 90) + 1, 60, mesh),
+        leftBottom: this.paperPoint((this.paperRows[220]?.left ?? 90) + 1, 220, mesh),
+        rightTop: this.paperPoint((this.paperRows[60]?.right ?? 160) - 1, 60, mesh),
+        rightBottom: this.paperPoint((this.paperRows[220]?.right ?? 160) - 1, 220, mesh),
+      },
       tier: frame.caseTier,
       reveal: frame.cleaning,
       bounds: this.visiblePaperBounds(mesh),

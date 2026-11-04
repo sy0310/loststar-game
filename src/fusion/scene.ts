@@ -12,6 +12,9 @@ import type {V034NightSnapshot} from '../review/v034-night-model';
 import {fusionNightPlan, fusionNightSnapshot} from './runtime-night';
 import {anomalyPoint, drawContainedAnomaly, drawFusionAnomaly} from './anomalies';
 import {fusionCycleFraction, fusionRenderElapsed} from './render-clock';
+import {createWorldFeedback, type FusionFeedbackEvent} from './world-feedback';
+import type {FusionSave} from './contracts';
+import {createSortingScene} from './sorting-scene';
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const smooth = (value: number) => {const amount = clamp(value);return amount * amount * (3 - 2 * amount);};
@@ -137,7 +140,8 @@ export function createFusionScene(
   getState: () => SaveData,
   onObservation?: (id: string, at: number, source: string) => void,
   getProjects: () => string[] = () => [],
-): SceneExtension & {pulse(): void; focus(): {x: number; y: number}; snapshot(): V034NightSnapshot} {
+  getFusion?: () => FusionSave,
+): SceneExtension & {pulse(event?: FusionFeedbackEvent): void; focus(): {x: number; y: number}; unloadPoint(): {x:number;y:number}; feedbackMetrics():ReturnType<ReturnType<typeof createWorldFeedback>['metrics']>; snapshot(): V034NightSnapshot} {
   let current = fusionNightSnapshot(getState());
   let lastState = getState();
   let lastElapsed = -1;
@@ -165,7 +169,9 @@ export function createFusionScene(
       drawContainedAnomaly(context, id, position, opacity);
     },
   });
-  let pulseAt = -Infinity;
+  const feedback = createWorldFeedback();
+  const sorting = createSortingScene(getFusion);
+  let feedbackToken = 0;
   let focus = {x: 416, y: 350};
   const seen = new Set<string>();
   const observe = (id: string, at: number, source: string, key: string) => {
@@ -175,7 +181,7 @@ export function createFusionScene(
   };
   return {
     ...layer,
-    ready: Promise.all([layer.ready, daily.ready]).then(() => {}),
+    ready: Promise.all([layer.ready, daily.ready, sorting.ready]).then(() => {}),
     shipPose() {
       const state = getState();
       return v034ShipPose(shipPose(fusionRenderElapsed(state, Date.now()) / 1000));
@@ -190,11 +196,16 @@ export function createFusionScene(
       if (view.environment.period !== 'night') return fusionCycleFraction(getState(), Date.now());
       return layer.cycleFraction?.(base, seconds) ?? base;
     },
-    pulse() {pulseAt = performance.now();},
+    pulse(event) {feedback.accept(event ?? {token: --feedbackToken, kind: 'accepted', ...focus, at: performance.now()});},
     focus: () => focus,
+    unloadPoint: () => ({x: 32 + v034NightCamera.x + (291 - v034NightCamera.x) * v034NightCamera.scale + v034NightCamera.offsetX,
+      y: v034NightCamera.y + (435 - v034NightCamera.y) * v034NightCamera.scale + v034NightCamera.offsetY}),
+    feedbackMetrics: () => feedback.metrics(),
     snapshot,
     robotPose(base, seconds) {
       const view = snapshot();
+      base = sorting.pose(base, fusionCycleFraction(getState(), Date.now()), view.environment.period === 'night');
+      if (sorting.active() && ['day','dusk'].includes(view.environment.period)) return base;
       if (view.environment.period === 'day' && base.action === 'scan') {
         return {...base, parcel: {...base.parcel, x: 429, y: 398, visible: false}};
       }
@@ -212,6 +223,7 @@ export function createFusionScene(
     },
     worldEntities(context, frame) {
       const entities = layer.worldEntities?.(context, frame) ?? [];
+      entities.push(...sorting.entities(context, frame));
       const view = snapshot();
       for (const actor of patrolActors(view)) {
         const point = anomalyPoint(actor, frame.environment.seconds);
@@ -233,13 +245,10 @@ export function createFusionScene(
       const view = snapshot();
       encounterLight.draw(context);
       drawTracking(context, frame, actors, view);
-      const age = (performance.now() - pulseAt) / 1000;
-      if (age >= 0 && age < .8) {
-        context.save();context.strokeStyle = '#a6e0cf';context.lineWidth = 2;context.globalAlpha = 1 - age / .8;
-        context.beginPath();context.ellipse(frame.robot.x, frame.robot.y + 2, 20 + age * 55, 7 + age * 14, 0, 0, Math.PI * 2);context.stroke();context.restore();
-      }
+      feedback.draw(context, frame, getState().assist?.appliedWorkMs ?? 0);
+      sorting.afterWorld(context, frame);
       const fraction = getState().cycleMs / tuning(getState()).scanner;
-      if (frame.environment.period === 'day' && frame.robot.action === 'scan') {
+      if (!sorting.active() && frame.environment.period === 'day' && frame.robot.action === 'scan') {
         lightCone(context, {x: frame.robot.x - 44, y: frame.robot.y - 64}, {x: 429, y: 398}, '#a9e2cd', .7);
         context.save();context.fillStyle = '#c3ebcc';context.globalAlpha = .8;
         context.fillRect(412, 392 + ((frame.t * 1.5) % 1) * 12, 34, 1);context.restore();
@@ -248,7 +257,7 @@ export function createFusionScene(
       for (const observation of fusionNightSnapshot(getState()).observations) {
         observe(observation.evidenceId, observation.observedAtSeconds * 1000, observation.source, observation.actionId);
       }
-      let target = {x: frame.robot.x, y: frame.robot.y - 48};
+      let target = sorting.active() && frame.environment.period !== 'night' ? sorting.target() : {x: frame.robot.x, y: frame.robot.y - 48};
       if (actors.length) {const point = anomalyPoint(actors[0], frame.environment.seconds);target = {x: point.x, y: point.y - 20};}
       else if (view.eventSeconds !== null && frame.environment.period === 'night') target = v034NightStage(view).target;
       focus = {

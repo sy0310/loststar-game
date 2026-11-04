@@ -1,5 +1,6 @@
 import robotAtlasUrl from '../../assets/runtime/robot-empty-v3.webp';
 import {baseRobotPose} from './base-motion';
+import {FrameCadence} from './frame-cadence';
 import {exhibits,exhibitIds,itemCenter,layerPoint,type Exhibit} from './museum-layout';
 export {exhibits,exhibitIds} from './museum-layout';
 import roomUrl from '../../assets/runtime/museum-room-v02.webp';
@@ -18,7 +19,8 @@ export type MuseumSource={collection:string[]};
 export type MuseumOptions={
  receiptStudy?:boolean;
  receiptFrame?:()=>ReceiptRestorationFrame|undefined;
- drawSpecimen?:(context:CanvasRenderingContext2D,exhibit:Exhibit,t:number,image:HTMLImageElement)=>boolean;
+ receiptExtension?:(context:CanvasRenderingContext2D,options:{center:{x:number;y:number};frame:number;receiverY:number;seconds:number;carried?:boolean;cavity:{left:number;top:number;width:number;height:number};service?:ReturnType<typeof baseRobotPose>},restoration:ReceiptRestorationFrame,result:ReceiptRestorationDrawResult)=>void;
+ drawSpecimen?:(context:CanvasRenderingContext2D,exhibit:Exhibit,t:number,image:HTMLImageElement,service?:ReturnType<typeof baseRobotPose>)=>boolean;
  specimenOpening?:(id:string)=>number;
  caseEngineering?:(context:CanvasRenderingContext2D,exhibit:Exhibit,level:number,t:number,layer:'back'|'front')=>void;
 };
@@ -27,7 +29,7 @@ function sprite(c:CanvasRenderingContext2D,img:HTMLImageElement|undefined,x:numb
 /** Actual rear glass → moving specimen → front glass → independent nameplate. */
 export class MuseumScene {
  readonly canvas=document.createElement('canvas');ready:Promise<void>;
- private c:CanvasRenderingContext2D|null;private active=false;private last=0;private frames=0;
+ private c:CanvasRenderingContext2D|null;private active=false;private visible=true;private frame=0;private frames=0;private cadence=new FrameCadence();private reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
  private room=image(roomUrl);private robot=image(robotAtlasUrl);private pose=baseRobotPose(0);private art=Object.fromEntries(exhibitIds.map(id=>[id,image(textures[id])]));
  private glass=Object.fromEntries(exhibitIds.map(id=>[id,[image(layers[`../../assets/runtime/case-${id}-back.webp`]),image(layers[`../../assets/runtime/case-${id}-front.webp`])]]));
  private receiptParts?:ReceiptStudyAssets;
@@ -37,9 +39,10 @@ export class MuseumScene {
  private restorationRenderer?:typeof import('./receipt-restoration');
  private restorationReady?:Promise<void>;
  private restorationStatus?:ReceiptRestorationDrawResult;
+ private paintIntervals:number[]=[];private paintCosts:number[]=[];private lastPaintAt=0;
  constructor(private root:HTMLElement,private source:()=>MuseumSource,private level:(id:string)=>number=()=>0,private clock:()=>number=()=>performance.now()/1000,private options:MuseumOptions={}){
   root.classList.add('museum-room');this.canvas.id='museum-canvas';this.canvas.width=768;this.canvas.height=960;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','失物收藏室：六个独立玻璃容器，藏品在玻璃内轻轻活动');root.append(this.canvas);this.c=this.canvas.getContext('2d');
-  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(e=>{const p=layerPoint(e,e.crop.x,e.crop.y);return `<button data-exhibit="${e.id}" data-detail="${e.id}" style="left:${p.x/768*100}%;top:${p.y/960*100}%;width:${Math.max(96,e.crop.w*e.scale)/768*100}%;height:${Math.max(96,e.crop.h*e.scale)/960*100}%"></button>`;}).join('');root.append(hits);this.ready=this.load();requestAnimationFrame(this.loop);
+  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(e=>{const p=layerPoint(e,e.crop.x,e.crop.y);return `<button data-exhibit="${e.id}" data-detail="${e.id}" style="left:${p.x/768*100}%;top:${p.y/960*100}%;width:${Math.max(96,e.crop.w*e.scale)/768*100}%;height:${Math.max(96,e.crop.h*e.scale)/960*100}%"></button>`;}).join('');root.append(hits);this.ready=this.load();const visibility=new IntersectionObserver(entries=>{this.visible=entries.some(entry=>entry.isIntersecting);if(!this.visible)this.lastPaintAt=0;this.cadence.reset();this.schedule();});visibility.observe(this.canvas);document.addEventListener('visibilitychange',()=>{this.cadence.reset();this.schedule();});
  }
  private images(){return [this.robot,this.room,...Object.values(this.art),...Object.values(this.glass).flat(),...Object.values(this.receiptParts??{}),...Object.values(this.restorationParts??{})];}
  async load(){this.root.dataset.loading='true';try{if(this.options.receiptStudy&&!this.receiptParts){this.receiptRenderer??=await import('./receipt-study');this.receiptParts=this.receiptRenderer.createReceiptStudyAssets();}await Promise.all(this.images().map(i=>i.decode()));this.canvas.dataset.ready='true';this.draw(this.clock());this.refresh();}catch{this.canvas.dataset.ready='error';this.root.setAttribute('aria-label','收藏室暂未接通，请返回后重试');}finally{this.root.dataset.loading='false';}}
@@ -63,25 +66,49 @@ export class MuseumScene {
  mount(parent:HTMLElement){parent.append(this.root);}
  async retry(){for(const img of this.images()){const url=new URL(img.src);url.searchParams.set('retry',String(Date.now()));img.src=url.href;}this.ready=this.load();await this.ready;}
  refresh(){for(const id of exhibitIds){const b=this.root.querySelector<HTMLButtonElement>(`[data-exhibit="${id}"]`)!;const known=this.source().collection.includes(id);b.disabled=!known;b.setAttribute('aria-label',known?`放大${discoveryById(id)!.name}`:'空展柜，等待下一次发现');}}
- setActive(value:boolean){this.active=value;this.refresh();if(value)this.draw(this.clock());}
- private loop=(ms:number)=>{if(this.active&&!document.hidden&&ms-this.last>=(matchMedia('(prefers-reduced-motion: reduce)').matches?100:50)){this.last=ms;this.draw(this.clock());}requestAnimationFrame(this.loop);};
- private draw(t:number){const c=this.c;if(!c||this.canvas.dataset.ready!=='true'||!this.room.complete||!this.room.naturalWidth)return;c.clearRect(0,0,768,960);this.paint(c,t);
+ setActive(value:boolean){if(this.active!==value)this.cadence.reset();this.active=value;if(!value)this.lastPaintAt=0;this.refresh();if(value&&this.visible&&!document.hidden)this.draw(this.clock());if(!value){cancelAnimationFrame(this.frame);this.frame=0;}this.schedule();}
+ private schedule(){if(this.active&&this.visible&&!document.hidden&&!this.frame)this.frame=requestAnimationFrame(this.loop);}
+ private loop=(ms:number)=>{this.frame=0;if(this.active&&this.visible&&!document.hidden&&this.cadence.draw(ms,this.reducedMotion.matches?1000/30:1000/60))this.draw(this.clock());this.schedule();};
+ resetMetrics(){this.paintIntervals.length=0;this.paintCosts.length=0;this.lastPaintAt=0;}
+ metrics(){return {sampleWindowMs:this.paintIntervals.reduce((sum,value)=>sum+value,0),active:this.active,visible:this.visible,frames:this.frames,intervalsMs:[...this.paintIntervals],costsMs:[...this.paintCosts]};}
+ private draw(t:number){const c=this.c;if(!c||this.canvas.dataset.ready!=='true'||!this.room.complete||!this.room.naturalWidth)return;const began=performance.now();if(this.lastPaintAt)this.paintIntervals.push(began-this.lastPaintAt);this.lastPaintAt=began;this.paintIntervals=this.paintIntervals.slice(-1200);c.clearRect(0,0,768,960);this.paint(c,t);
   this.canvas.dataset.robotX=String(Math.round(this.pose.x));this.canvas.dataset.robotY=String(Math.round(this.pose.y));this.canvas.dataset.robotAction=this.pose.action;this.canvas.dataset.robotTarget=this.pose.target;
-  this.root.dispatchEvent(new CustomEvent('robot-state',{detail:this.pose}));this.canvas.dataset.frame=String(++this.frames);
+  this.root.dispatchEvent(new CustomEvent('robot-state',{detail:this.pose}));this.canvas.dataset.frame=String(++this.frames);this.paintCosts.push(performance.now()-began);this.paintCosts=this.paintCosts.slice(-1200);
  }
- private paint(c:CanvasRenderingContext2D,t:number,receipt?:{level:number;install:number;experiment?:ReceiptExperimentFrame;restoration?:ReceiptRestorationFrame}){c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
+ private paint(c:CanvasRenderingContext2D,t:number,receipt?:{level:number;install:number;experiment?:ReceiptExperimentFrame;restoration?:ReceiptRestorationFrame},onlyExhibit?:string){c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
   // Tiny free-floating dust and lamplight are part of the room, never the whole background moving.
-  for(let i=0;i<16;i++){const x=(i*127+Math.sin(t*.18+i)*10)%740+14,y=110+(i*61+t*3)%620;c.fillStyle=`rgba(255,218,148,${.15+.15*Math.sin(t+i)})`;c.fillRect(Math.round(x),Math.round(y),2,2);}
-  this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y,draw:()=>this.case(c,e,t,receipt?(e.id==='receipt'?receipt.level:this.level(`case-${exhibitIds.indexOf(e.id)}`)):undefined,e.id==='receipt'?receipt?.install:undefined,e.id==='receipt'?receipt?.experiment:undefined,e.id==='receipt'?(receipt?.restoration??this.options.receiptFrame?.()):undefined)}));if(!receipt)entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
+  for(let i=0;i<(this.reducedMotion.matches?4:16);i++){const x=(i*127+Math.sin(t*.18+i)*10)%740+14,y=110+(i*61+t*3)%620;c.fillStyle=`rgba(255,218,148,${.15+.15*Math.sin(t+i)})`;c.fillRect(Math.round(x),Math.round(y),2,2);}
+  this.pose=baseRobotPose(t);
+  if(this.pose.target==='receipt'&&this.restorationRenderer&&this.options.receiptFrame){
+   const restoration=this.options.receiptFrame();
+   if(restoration){
+    const e=exhibits[0],center=itemCenter(e),floor=this.receiptRenderer!.receiptFloorGeometry(e,this.level('case-0'));
+    const geometry=this.restorationRenderer.receiptRestorationGeometry(restoration,center,e.item.size*e.scale,floor.y+floor.height/2);
+    const offset=(geometry.paperCenter.y-center.y)*(1-this.pose.lift);
+    this.pose={...this.pose,item:{...this.pose.item,y:this.pose.item.y+offset},hand:{...this.pose.hand,y:this.pose.hand.y+offset*this.pose.contact}};
+    if(restoration.stage==='buried'&&this.pose.action!=='walk'&&this.pose.action!=='return')this.pose={...this.pose,lift:0,contact:0,opening:0,action:'observe'};
+   }
+  }
+  const entities=exhibits.filter(e=>!onlyExhibit||e.id===onlyExhibit).map(e=>({depth:e.y,draw:()=>this.case(c,e,t,receipt?(e.id==='receipt'?receipt.level:this.level(`case-${exhibitIds.indexOf(e.id)}`)):undefined,e.id==='receipt'?receipt?.install:undefined,e.id==='receipt'?receipt?.experiment:undefined,e.id==='receipt'?(receipt?.restoration??this.options.receiptFrame?.()):undefined)}));if(!receipt)entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
   const lights=this.level('light');if(lights){c.fillStyle=`rgba(255,207,124,${.035*lights})`;c.fillRect(0,0,768,960);}
   if(this.level('deco-0')){c.fillStyle='#ffe9ae';for(let i=0;i<12;i++)c.fillRect(34+i*62,163+(i%2)*7,4,4);}
   if(this.level('deco-1')){c.fillStyle='#7dbd9b';for(let i=0;i<9;i++)c.fillRect(25+i*4,710-Math.sin(i)*18,5,8);}
   if(this.level('deco-2')){c.fillStyle='#cf9beb';c.fillRect(580,236,56,27);c.fillStyle='#fff0c9';c.font='16px monospace';c.fillText('LR–01',584,255);}
   if(this.level('deco-3')){c.strokeStyle='#ffdc8b';c.lineWidth=2;for(let i=0;i<5;i++){c.beginPath();c.arc(55,285,22+i*9,t*.1,t*.1+Math.PI*1.5);c.stroke();}}
  }
- private drawRobot(c:CanvasRenderingContext2D,t:number){const p=this.pose,moving=p.action==='walk'||p.action==='return',frame=moving?Math.floor(t*8)%4:p.action==='observe'?4:p.lift>.8?6:p.action==='wipe'?7:5,w=p.width,feet=[149,147,149,148,148,148,149,149][frame];
-  c.save();c.translate(p.x,p.y);c.fillStyle='#100c2880';c.beginPath();c.ellipse(0,1,32,7,0,0,Math.PI*2);c.fill();if(p.facing>0)c.scale(-1,1);c.drawImage(this.robot,frame%4*160,Math.floor(frame/4)*160,160,160,-w/2,-feet/160*w,w,w);c.restore();
-  if(p.opening>0){const end=p.lift>0?p.item:itemCenter(exhibits.find(e=>e.id===p.target)!);c.strokeStyle='#a3c5b1';c.lineWidth=4;c.beginPath();c.moveTo(p.hand.x,p.hand.y);c.lineTo((p.hand.x+end.x)/2,end.y+20);c.lineTo(end.x,end.y);c.stroke();c.fillStyle='#ffe5a6';c.fillRect(end.x-4,end.y-4,8,8);}
+ private drawRobot(c:CanvasRenderingContext2D,t:number){
+  const p=this.pose,moving=p.action==='walk'||p.action==='return';
+  const frame=moving?Math.floor(t*8)%4:p.action==='observe'?4:p.action==='wipe'?7:6;
+  const w=p.width,feet=[149,147,149,148,148,148,149,149][frame];
+  c.save();c.translate(p.x,p.y);c.fillStyle='#100c2880';c.beginPath();c.ellipse(0,1,32,7,0,0,Math.PI*2);c.fill();
+  if(p.facing>0)c.scale(-1,1);c.scale(1-p.turn*.18,1);c.rotate((p.opening-p.lift)*.025);
+  c.drawImage(this.robot,frame%4*160,Math.floor(frame/4)*160,160,160,-w/2,-feet/160*w,w,w);c.restore();
+  if(p.contact>0){
+   const elbow={x:p.shoulder.x+(p.hand.x-p.shoulder.x)*.48,y:Math.min(p.shoulder.y,p.hand.y)-12*p.contact};
+   c.save();c.lineJoin='round';c.lineCap='round';
+   for(const [width,color] of [[8,'#35253e'],[5,'#b7956d'],[2,'#dfc497']] as const){c.lineWidth=width;c.strokeStyle=color;c.beginPath();c.moveTo(p.shoulder.x,p.shoulder.y);c.lineTo(elbow.x,elbow.y);c.lineTo(p.hand.x,p.hand.y);c.stroke();}
+   c.fillStyle='#58425c';for(const joint of [p.shoulder,elbow,p.hand]){c.fillRect(joint.x-3,joint.y-3,6,6);c.fillStyle='#d2b482';c.fillRect(joint.x-1,joint.y-2,2,2);c.fillStyle='#58425c';}c.restore();
+  }
   if(p.lift>0&&this.source().collection.includes(p.target)){
    const e=exhibits.find(e=>e.id===p.target)!;
    const size=e.item.size*e.scale*(1-p.lift)+48*p.lift;
@@ -90,13 +117,19 @@ export class MuseumScene {
    const restoration=e.id==='receipt'?this.options.receiptFrame?.():undefined;
    if(restoration&&this.restorationRenderer&&this.restorationParts){
     this.restorationRenderer.drawReceiptRestoration(c,this.restorationParts,{center:p.item,frame:size,seconds:t,receiverY:p.item.y+size/2,lights:[],glass:0,restorationFrame:{...restoration,phase:restoration.stage==='buried'?'buried':restoration.condition}});
-   }else if(!this.options.drawSpecimen?.(c,carried,t,this.art[p.target as typeof exhibitIds[number]])){
+   }else if(!this.options.drawSpecimen?.(c,carried,t,this.art[p.target as typeof exhibitIds[number]],p)){
     sprite(c,this.art[p.target as typeof exhibitIds[number]],p.item.x-size/2,p.item.y-size/2,size);
    }
   }
+  if(p.contact>0){
+   const grip=4+(1-p.lift)*3;c.strokeStyle='#3c2d43';c.lineWidth=4;
+   c.beginPath();c.moveTo(p.hand.x-grip,p.hand.y+3);c.lineTo(p.hand.x-grip,p.hand.y-3);c.lineTo(p.hand.x-grip+3,p.hand.y-5);
+   c.moveTo(p.hand.x+grip,p.hand.y+3);c.lineTo(p.hand.x+grip,p.hand.y-3);c.lineTo(p.hand.x+grip-3,p.hand.y-5);c.stroke();
+   c.strokeStyle='#dbc39b';c.lineWidth=1;c.stroke();
+  }
  }
 
- renderExhibit(canvas:HTMLCanvasElement,id:string,level:number){const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const scale=Math.min((canvas.width-48)/e.crop.w,(canvas.height-70)/(e.base.y-e.crop.y));c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);this.case(c,{...e,x:canvas.width/2,y:canvas.height-48,scale,width:e.base.w*scale},0,level,1,undefined,id==='receipt'?this.options.receiptFrame?.():undefined);canvas.dataset.ready='true';canvas.dataset.level=String(level);}
+ renderExhibit(canvas:HTMLCanvasElement,id:string,level:number,t=0){const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const scale=Math.min((canvas.width-48)/e.crop.w,(canvas.height-70)/(e.base.y-e.crop.y));c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);this.case(c,{...e,x:canvas.width/2,y:canvas.height-48,scale,width:e.base.w*scale},t,level,1,undefined,id==='receipt'?this.options.receiptFrame?.():undefined);canvas.dataset.ready='true';canvas.dataset.level=String(level);canvas.dataset.frame=String(++this.frames);canvas.dataset.seconds=String(t);}
  /** D1 compares real structural parts in one fixed room camera, never one fitted poster per level. */
  renderFocused(canvas:HTMLCanvasElement,id:'receipt',level:number,t:number,install=1,view:'focus'|'room'|'specimen'='focus',experiment?:ReceiptExperimentFrame,restoration?:ReceiptRestorationFrame){
   if(id!=='receipt'||!this.receiptRenderer||this.canvas.dataset.ready!=='true')return;
@@ -110,7 +143,7 @@ export class MuseumScene {
    :view==='specimen'?(restoration?this.restorationRenderer!.receiptRestorationCamera:experiment?this.receiptRenderer.receiptExperimentCamera:this.receiptRenderer.receiptSpecimenCamera):this.receiptRenderer.receiptFocusCamera;
   const scale=Math.min(canvas.width/camera.width,canvas.height/camera.height);
   const x=(canvas.width-camera.width*scale)/2,y=(canvas.height-camera.height*scale)/2;
-  c.save();c.setTransform(1,0,0,1,0,0);c.fillStyle='#171124';c.fillRect(0,0,canvas.width,canvas.height);c.beginPath();c.rect(x,y,camera.width*scale,camera.height*scale);c.clip();c.translate(x-camera.left*scale,y-camera.top*scale);c.scale(scale,scale);this.paint(c,t,{level,install,experiment,restoration});c.restore();
+  c.save();c.setTransform(1,0,0,1,0,0);c.fillStyle='#171124';c.fillRect(0,0,canvas.width,canvas.height);c.beginPath();c.rect(x,y,camera.width*scale,camera.height*scale);c.clip();c.translate(x-camera.left*scale,y-camera.top*scale);c.scale(scale,scale);this.paint(c,t,{level,install,experiment,restoration},view==='room'?undefined:id);c.restore();
   const e=exhibits[0],item=itemCenter(e),itemSize=e.item.size*e.scale;canvas.dataset.ready='true';canvas.dataset.level=canvas.dataset.tier=String(level);canvas.dataset.install=install.toFixed(3);canvas.dataset.view=view;canvas.dataset.camera=`${camera.left},${camera.top},${camera.width},${camera.height}`;canvas.dataset.item=`${item.x},${item.y},${itemSize}`;canvas.dataset.anchor=`${e.x},${e.y}`;canvas.dataset.anchorX=String(e.x);canvas.dataset.anchorY=String(e.y);canvas.dataset.itemX=String(item.x);canvas.dataset.itemY=String(item.y);canvas.dataset.itemSize=String(itemSize);
   if(this.specimenStatus){const b=this.specimenStatus.bounds;canvas.dataset.specimenTier=String(this.specimenStatus.tier);canvas.dataset.paperBbox=`${b.left},${b.top},${b.width},${b.height}`;canvas.dataset.paperReveal=this.specimenStatus.reveal.toFixed(3);}
   const trial=this.specimenStatus?.experiment;
@@ -140,6 +173,10 @@ export class MuseumScene {
   const service=forcedLevel===undefined&&this.pose.target===e.id?this.pose:null,known=this.source().collection.includes(e.id),level=forcedLevel??this.level(`case-${exhibitIds.indexOf(e.id)}`),[back,front]=this.glass[e.id],s=e.scale,p=layerPoint(e,e.crop.x,e.crop.y),b=layerPoint(e,e.cavity.x,e.cavity.y),center=itemCenter(e),width=e.cavity.w*s,height=e.cavity.h*s;
   const paperOverride:ReceiptStudyPaperOverride|undefined=restoration&&this.restorationRenderer&&this.restorationParts?(context,options)=>{
    this.restorationStatus=this.restorationRenderer!.drawReceiptRestoration(context,this.restorationParts!,{...options,receiverY:options.receiverY!,restorationFrame:restoration});
+   const floor=this.receiptRenderer!.receiptFloorGeometry(e,level);
+   const aperture=level===3?this.receiptRenderer!.receiptVaultWindow(e):{left:b.x,top:b.y,width,height};
+   const left=Math.max(b.x,aperture.left),top=Math.max(b.y,aperture.top),right=Math.min(b.x+width,aperture.left+aperture.width),bottom=Math.min(floor.frontY,aperture.top+aperture.height);
+   this.options.receiptExtension?.(context,{center:options.center,frame:options.frame,receiverY:options.receiverY!,seconds:options.seconds,cavity:{left,top,width:right-left,height:bottom-top},service:service??undefined},restoration,this.restorationStatus);
    return this.restorationStatus;
   }:undefined;
   if(known)this.options.caseEngineering?.(c,e,level,t,'back');
@@ -155,7 +192,7 @@ export class MuseumScene {
    if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'){
     this.specimenStatus=this.receiptRenderer.drawStudyReceiptSpecimen(c,e,t,level,install,this.receiptParts,experiment,paperOverride);
    }else{
-   if(!this.options.drawSpecimen?.(c,e,t,this.art[e.id])){
+   if(!this.options.drawSpecimen?.(c,e,t,this.art[e.id],service??undefined)){
    c.save();c.translate(center.x,center.y+bob);
    switch(e.id){
     case 'receipt':c.rotate(Math.sin(t*.8)*.035);sprite(c,this.art[e.id],-iw/2,-iw/2,iw);c.fillStyle='#ffeab9';for(let i=0;i<3;i++)c.fillRect(-9+i*8,iw*.25+(t*4+i*5)%12,2,2);break;

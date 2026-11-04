@@ -38,7 +38,7 @@ describe('actual scene picking', () => {
     const hullImage = {} as HTMLImageElement;
     const back = {...command('ship'), image: hullImage};
     const planet = command('planet');
-    const mask = (source: HTMLImageElement) => source === hullImage ? full : globe;
+    const mask = (source: HTMLImageElement | HTMLCanvasElement) => source === hullImage ? full : globe;
     expect(pickSceneCommands({x: .5, y: .5}, [back, planet], mask).kind).toBe('ship');
     expect(pickSceneCommands({x: 1.5, y: 1.5}, [back, planet], mask).kind).toBe('planet');
     expect(pickSceneCommands({x: 1.5, y: 1.5}, [planet, back], mask).kind).toBe('ship');
@@ -48,9 +48,19 @@ describe('actual scene picking', () => {
     const warehouseImage = {} as HTMLImageElement;
     const robot = command('robot');
     const warehouse = {...command('planet'), image: warehouseImage};
-    const mask = (source: HTMLImageElement) => source === warehouseImage ? globe : full;
+    const mask = (source: HTMLImageElement | HTMLCanvasElement) => source === warehouseImage ? globe : full;
     expect(pickSceneCommands({x: 1.5, y: 1.5}, [robot, warehouse], mask).kind).toBe('planet');
     expect(pickSceneCommands({x: .5, y: .5}, [robot, warehouse], mask).kind).toBe('robot');
+  });
+
+  it('uses the registered procedural belt alpha and lets the robot cover a discovered work site', () => {
+    const beltImage = {} as HTMLCanvasElement;
+    const site = {...command('site'), target:{kind:'site' as const,id:'sorting'}, image:beltImage};
+    const robot = command('robot');
+    const mask = (source: HTMLImageElement | HTMLCanvasElement) => source === beltImage ? globe : full;
+    expect(pickSceneCommands({x:1.5,y:1.5},[site],mask)).toMatchObject({kind:'site',id:'sorting'});
+    expect(pickSceneCommands({x:.5,y:.5},[site],mask).kind).toBe('space');
+    expect(pickSceneCommands({x:1.5,y:1.5},[site,robot],mask).kind).toBe('robot');
   });
 
   it('leaves blank space inert and avoids reading image masks for out-of-bounds targets', () => {

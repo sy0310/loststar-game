@@ -13,6 +13,7 @@ import {
   type ReceiptRestorationState,
 } from '../review/receipt-restoration';
 import {fusionProjects, fusionTargets, type FusionSave, type FusionAction, type FusionResult, type FieldRecord} from './contracts';
+import {advanceProgression, cleanProgression, createProgression, reduceProgression} from './progression';
 
 export const curioPrices: Record<string, {clean: number; repair: number}> = {
   tape: {clean: 30, repair: 100}, nested: {clean: 50, repair: 140},
@@ -67,7 +68,7 @@ export function createFusion(now: number, legacyRaw: string | null = null): Fusi
   }
   const state: FusionSave = {
     version: 1, game, receipt, projects: [], records: [], task: null, taskSeq: 0,
-    importedLegacy,
+    importedLegacy, progression: createProgression(game),
     curios: Object.fromEntries(Object.keys(curioPrices).filter(id => game.collection.includes(id))
       .map(id => [id, {condition: importedLegacy ? 'stabilized' as const : 'found' as const}])),
   };
@@ -133,6 +134,7 @@ export function restoreFusion(raw: string, now: number): FusionSave {
     });
   state.taskSeq = Number.isSafeInteger(input.taskSeq) && input.taskSeq >= 0 ? input.taskSeq : 0;
   state.importedLegacy = input.importedLegacy === true;
+  state.progression = cleanProgression(input.progression, game);
   state.curios = {};
   for (const id of Object.keys(curioPrices)) {
     const curio = input.curios?.[id];
@@ -272,6 +274,7 @@ export function advanceFusion(previous: FusionSave, now: number, offline = false
     }
   }
   observeWorld(state, previous.game);
+  advanceProgression(state, previous.game);
   refreshNightReceipt(state);
   const task = state.task;
   if (task && now >= task.endsAt) {
@@ -390,6 +393,9 @@ export function reduceFusion(previous: FusionSave, action: FusionAction, now: nu
   } else if (action.type === 'slot') {
     state.game = setWorldSlot(game, action.slot, action.enabled ? (action.slot === 0 ? 'beacon' : 'gate') : null);
     ok = state.game !== game;
+  } else if (action.type === 'ability' || action.type === 'sorting') {
+    const result = reduceProgression(state, action, now);
+    ok = result.ok; message = result.message;
   } else if (action.type === 'curio') {
     const prices = curioPrices[action.id];
     const curio = state.curios[action.id];
