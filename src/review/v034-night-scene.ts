@@ -1,8 +1,9 @@
 import invaderUrl from '../../assets/runtime/invader-v02.webp';
 import {worldView} from '../game/world';
 import {guardLayer} from '../render/guard-scene';
-import type {SceneExtension, SceneFrame} from '../render/scene';
-import {nightCamera, nightDoor} from './d1-motion';
+import {tintWorld} from '../render/world-lighting';
+import type {SceneCamera, SceneExtension, SceneFrame} from '../render/scene';
+import {nightCamera, nightDoor, type NightStage} from './d1-motion';
 import {createNightStudy} from './night-scene';
 import {
   createV034NightModel,
@@ -11,9 +12,268 @@ import {
   type V034NightPreset,
   type V034NightSnapshot,
 } from './v034-night-model';
-import {v034BlendFromPatrol, v034Escape, v034NightStage, v034RepairTool} from './v034-night-stage';
+import {v034BlendFromPatrol, v034Escape, v034NightLightState, v034NightStage, v034RelightState, v034RepairTool} from './v034-night-stage';
+
+export interface V034NightSceneOptions {
+  camera?: SceneCamera;
+}
 
 const marker = {x: 408, y: 389, width: 43, height: 18};
+
+function softLight(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  radius: number,
+  color: string,
+  opacity: number,
+) {
+  const light = context.createRadialGradient(x, y, 1, x, y, radius);
+  light.addColorStop(0, color);
+  light.addColorStop(1, `${color}00`);
+  context.save();
+  context.globalCompositeOperation = 'screen';
+  context.globalAlpha = opacity;
+  context.fillStyle = light;
+  context.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+  context.restore();
+}
+
+/** Alpha-preserving color fields keep the same globe pixels and silhouettes. */
+function drawNightAtmosphere(
+  context: CanvasRenderingContext2D,
+  view: V034NightSnapshot,
+) {
+  const night = view.environment.light;
+  if (night <= 0) return;
+  context.save();
+  context.globalCompositeOperation = 'source-atop';
+  context.globalAlpha = night;
+  const shade = context.createLinearGradient(160, 160, 610, 680);
+  shade.addColorStop(0, '#20386ba0');
+  shade.addColorStop(.48, '#252b5992');
+  shade.addColorStop(1, '#17245bb0');
+  context.fillStyle = shade;
+  context.fillRect(-32, 0, 864, 740);
+  const rim = context.createLinearGradient(530, 420, 735, 550);
+  rim.addColorStop(0, '#70b4da00');
+  rim.addColorStop(.72, '#70b4da0c');
+  rim.addColorStop(1, '#70b4da57');
+  context.fillStyle = rim;
+  context.fillRect(460, 80, 300, 655);
+  context.restore();
+}
+
+function drawStationLights(
+  context: CanvasRenderingContext2D,
+  stage: NightStage,
+  view: V034NightSnapshot,
+) {
+  const night = view.environment.light;
+  if (night <= 0) return;
+  const receiving = stage.phase === 'dock' ? .1 : 0;
+  softLight(context, 283, 390, 64, '#ebbd81', (.18 + receiving) * night);
+  softLight(context, 359, 334, 46, '#e6b57b', .18 * night);
+  softLight(context, 558, 210, 37, '#b1dfd0', .14 * night);
+  context.save();
+  context.globalCompositeOperation = 'screen';
+  let fault = 0;
+  if (view.actor.outcome === 'arrived' && view.actor.resolution) {
+    const age = view.seconds - view.actor.resolution.seconds;
+    if (age >= 0 && age < 1.3) fault = Math.sin(age / 1.3 * Math.PI * 2) ** 2;
+  }
+  context.globalAlpha = night * (.68 - fault * .42);
+  context.fillStyle = '#efc28a';
+  // Source-space windows on the original 256×235 warehouse, at scale170/256.
+  context.translate(230, 261);
+  context.scale(170 / 256, 170 / 256);
+  for (const points of [
+    [[177, 109], [189, 104], [189, 124], [177, 129]],
+    [[193, 102], [207, 97], [207, 118], [193, 123]],
+    [[213, 95], [231, 89], [231, 110], [213, 116]],
+  ]) {
+    context.beginPath();
+    context.moveTo(points[0][0], points[0][1]);
+    for (const [x, y] of points.slice(1)) context.lineTo(x, y);
+    context.closePath();
+    context.fill();
+  }
+  context.restore();
+}
+
+/** A small original-pixel patch restores local material contrast under work lights. */
+function createRelightPatch() {
+  const patch = document.createElement('canvas');
+  patch.width = 256;
+  patch.height = 256;
+  const painter = patch.getContext('2d')!;
+  let left = 0;
+  let top = 0;
+  let visible = false;
+
+  return {
+    capture(context: CanvasRenderingContext2D, center: {x: number; y: number}, radius: number, power: number) {
+      visible = power > 0;
+      if (!visible) return;
+      const transform = context.getTransform();
+      const x = transform.a * center.x + transform.c * center.y + transform.e;
+      const y = transform.b * center.x + transform.d * center.y + transform.f;
+      const scale = Math.hypot(transform.a, transform.b);
+      left = Math.floor(x - 128);
+      top = Math.floor(y - 128);
+      painter.globalCompositeOperation = 'source-over';
+      painter.clearRect(0, 0, 256, 256);
+      painter.imageSmoothingEnabled = false;
+      painter.drawImage(context.canvas, left, top, 256, 256, 0, 0, 256, 256);
+      const mask = painter.createRadialGradient(x - left, y - top, radius * scale * .2,
+        x - left, y - top, radius * scale);
+      mask.addColorStop(0, `rgba(255,255,255,${power})`);
+      mask.addColorStop(1, 'rgba(255,255,255,0)');
+      painter.globalCompositeOperation = 'destination-in';
+      painter.fillStyle = mask;
+      painter.fillRect(0, 0, 256, 256);
+    },
+    draw(context: CanvasRenderingContext2D) {
+      if (!visible) return;
+      context.save();
+      context.setTransform(1, 0, 0, 1, 0, 0);
+      context.globalCompositeOperation = 'source-over';
+      context.drawImage(patch, left, top);
+      context.restore();
+    },
+  };
+}
+
+function createBeamTexture(color: readonly [number, number, number] = [238, 221, 171]) {
+  const texture = document.createElement('canvas');
+  texture.width = 128;
+  texture.height = 384;
+  const context = texture.getContext('2d')!;
+  const pixels = context.createImageData(texture.width, texture.height);
+  for (let y = 0; y < texture.height; y++) {
+    const progress = y / (texture.height - 1);
+    const halfWidth = 2 + progress * 62;
+    for (let x = 0; x < texture.width; x++) {
+      const across = Math.abs(x - 63.5) / halfWidth;
+      const feather = Math.max(0, 1 - across * across);
+      const opacity = feather * feather * (.27 - progress * .13);
+      const offset = (y * texture.width + x) * 4;
+      pixels.data[offset] = color[0];
+      pixels.data[offset + 1] = color[1];
+      pixels.data[offset + 2] = color[2];
+      pixels.data[offset + 3] = Math.round(opacity * 255);
+    }
+  }
+  context.putImageData(pixels, 0, 0);
+  return texture;
+}
+
+function drawSearchlight(
+  context: CanvasRenderingContext2D,
+  frame: SceneFrame,
+  stage: NightStage,
+  view: V034NightSnapshot,
+  texture: HTMLCanvasElement,
+) {
+  const light = v034NightLightState(view, stage, frame.ship);
+  if (light.beam <= 0) return;
+  const angle = Math.atan2(light.target.y - light.source.y, light.target.x - light.source.x);
+  const distance = Math.hypot(light.target.x - light.source.x, light.target.y - light.source.y);
+  context.save();
+  context.globalCompositeOperation = 'screen';
+  context.globalAlpha = light.beam;
+  context.translate(light.source.x, light.source.y);
+  context.rotate(angle - Math.PI / 2);
+  context.drawImage(texture, -28, 0, 56, distance);
+  context.restore();
+  softLight(context, light.target.x, light.target.y, 38, '#e8dca7', light.beam * .29);
+}
+
+function drawAttention(
+  context: CanvasRenderingContext2D,
+  frame: SceneFrame,
+  stage: NightStage,
+  view: V034NightSnapshot,
+) {
+  const light = v034NightLightState(view, stage, frame.ship);
+  if (light.attention <= 0) return;
+  const escape = v034Escape(view);
+  const ground = escape.active
+    ? {x: escape.point.x, y: escape.point.y + escape.entry * 44}
+    : stage.paper.ground;
+  const wave = (view.seconds * .65) % 1;
+  context.save();
+  context.globalCompositeOperation = 'screen';
+  context.globalAlpha = light.attention;
+  for (let index = 0; index < 16; index++) {
+    const angle = index / 16 * Math.PI * 2;
+    const radius = 27 + wave * 15;
+    context.fillStyle = `rgba(180,221,197,${(1 - wave) * .7})`;
+    context.fillRect(Math.round(ground.x + Math.cos(angle) * radius), Math.round(ground.y + 3 + Math.sin(angle) * radius * .3), 2, 2);
+  }
+  context.strokeStyle = '#b4decb';
+  context.lineWidth = 1.5;
+  for (const sign of [-1, 1]) {
+    context.beginPath();
+    context.moveTo(light.target.x + sign * 24, light.target.y - 22);
+    context.lineTo(light.target.x + sign * 30, light.target.y - 22);
+    context.lineTo(light.target.x + sign * 30, light.target.y - 16);
+    context.stroke();
+  }
+  context.restore();
+}
+
+function drawDoorSignals(
+  context: CanvasRenderingContext2D,
+  stage: NightStage,
+  view: V034NightSnapshot,
+) {
+  const active = view.facilities.gate.holding;
+  const night = view.environment.light;
+  if (night <= 0) return;
+  const intensity = active ? .9 : .2;
+  context.save();
+  context.globalAlpha = night * intensity;
+  let indicator = '#85bbbe';
+  if (active) indicator = '#e2c384';
+  else if (view.repair.displayIntegrity < 100) indicator = '#edaa7e';
+  else if (view.actor.outcome === 'intercepted') indicator = '#b9e6bd';
+  context.fillStyle = indicator;
+  for (const [x, y] of [[257, 373], [307, 380]]) {
+    context.fillRect(x, y, 3, 7);
+    context.fillRect(x, y + 13, 3, 7);
+  }
+  if (active) {
+    const bottom = 364 + 43 * (1 - stage.gate);
+    context.save();
+    doorClip(context);
+    context.fillStyle = '#f1cd8b';
+    context.fillRect(260, bottom - 2, 45, 2);
+    context.globalAlpha *= .4;
+    for (let y = 369; y < bottom; y += 6) context.fillRect(260, y, 45, 1);
+    context.restore();
+  }
+  context.restore();
+  softLight(context, 283, 410, 34, active ? '#d7c691' : '#9fc9bc', night * (active ? .24 : .07));
+}
+
+function drawSealedIndicator(
+  context: CanvasRenderingContext2D,
+  stage: NightStage,
+  view: V034NightSnapshot,
+) {
+  if (view.actor.outcome !== 'intercepted' || !stage.cargo.latched
+    || !stage.cargo.visible || stage.cargo.receiving > 0) return;
+  context.save();
+  context.translate(stage.cargo.grip.x, stage.cargo.grip.y);
+  context.rotate(stage.cargo.angle);
+  context.transform(stage.cargo.yaw, -(1 - stage.cargo.yaw) * .12, (1 - stage.cargo.pitch) * .18, stage.cargo.pitch, 0, 0);
+  context.fillStyle = '#b6edb8';
+  context.fillRect(-12, 27, 6, 2);
+  context.fillStyle = '#2b5b52';
+  context.fillRect(-12, 29, 6, 1);
+  context.restore();
+}
 
 function doorClip(context: CanvasRenderingContext2D) {
   context.beginPath();
@@ -51,22 +311,25 @@ function drawMarkerScan(
   context: CanvasRenderingContext2D,
   frame: SceneFrame,
   view: V034NightSnapshot,
+  texture: HTMLCanvasElement,
 ) {
   if (view.phase !== 'identify') return;
   const stage = v034NightStage(view);
   const observed = view.observations.some(item => item.evidenceId === 'field-pipe-scan');
-  const floor = marker.y + marker.height;
+  const source = {x: stage.robot.x - 48, y: stage.robot.y - 66};
+  const target = {x: marker.x + marker.width / 2, y: marker.y + marker.height / 2};
+  const angle = Math.atan2(target.y - source.y, target.x - source.x);
+  const distance = Math.hypot(target.x - source.x, target.y - source.y);
   context.save();
-  context.fillStyle = '#abd9c42b';
-  context.beginPath();
-  context.moveTo(stage.robot.x - 48, stage.robot.y - 66);
-  context.lineTo(marker.x - 3, floor);
-  context.lineTo(marker.x + marker.width + 3, floor);
-  context.closePath();
-  context.fill();
+  context.globalCompositeOperation = 'screen';
+  context.translate(source.x, source.y);
+  context.rotate(angle - Math.PI / 2);
+  context.drawImage(texture, -18, 0, 36, distance);
+  context.restore();
+  context.save();
   const scanY = marker.y + 2 + ((frame.t * 1.7) % 1) * (marker.height - 4);
   context.fillStyle = observed ? '#dbf4c9' : '#a5d9c5';
-  context.fillRect(marker.x + 3, scanY, marker.width - 6, 1);
+  context.fillRect(marker.x + 3, scanY, marker.width - 6, 2);
   if (observed) {
     context.fillRect(marker.x + marker.width + 4, marker.y + 3, 2, 4);
     context.fillRect(marker.x + marker.width + 6, marker.y + 6, 5, 2);
@@ -106,7 +369,7 @@ function drawDamage(
   const missing = 100 - view.repair.displayIntegrity;
   if (missing <= .01) return;
   context.save();
-  context.lineWidth = 2;
+  context.lineWidth = 3;
   context.strokeStyle = '#261e35';
   context.beginPath();
   context.moveTo(311, 377);
@@ -131,13 +394,15 @@ function drawImpact(
   if (view.actor.outcome !== 'arrived' || !view.actor.resolution) return;
   const age = view.seconds - view.actor.resolution.seconds;
   if (age < 0 || age > 1.3) return;
+  const pulse = (1 - age / 1.3) * (.45 + Math.sin(age / 1.3 * Math.PI * 2) ** 2 * .55);
+  softLight(context, 309, 391, 35, '#efb27b', pulse * .45);
   context.save();
   context.globalAlpha = 1 - age / 1.3;
-  for (let index = 0; index < 7; index++) {
+  for (let index = 0; index < 9; index++) {
     const angle = index * 2.3;
     const distance = age * (12 + index * 3);
     context.fillStyle = index % 2 ? '#e9bd8f' : '#b67e91';
-    context.fillRect(309 + Math.cos(angle) * distance, 393 + Math.sin(angle) * distance, 2, 3);
+    context.fillRect(309 + Math.cos(angle) * distance, 393 + Math.sin(angle) * distance, 2 + index % 2, 4);
   }
   context.fillStyle = '#ffd29c';
   context.fillRect(306, 391, 5, 3);
@@ -150,6 +415,7 @@ function drawRepair(
 ) {
   if (!view.repair.active) return;
   const tool = v034RepairTool(view);
+  softLight(context, tool.tip.x, tool.tip.y, 22, '#b8e3d2', .23);
   context.save();
   context.translate(tool.grip.x, tool.grip.y);
   context.rotate(tool.angle);
@@ -161,7 +427,7 @@ function drawRepair(
   context.fillRect(tool.length - 2, -1, 3, 2);
   context.restore();
   context.save();
-  for (let index = 0; index < 6; index++) {
+  for (let index = 0; index < 8; index++) {
     const phase = (view.repair.progress * 7.2 + index * .17) % 1;
     const angle = index * 2.1;
     context.globalAlpha = 1 - phase;
@@ -169,8 +435,8 @@ function drawRepair(
     context.fillRect(
       tool.tip.x + Math.cos(angle) * phase * 13,
       tool.tip.y + Math.sin(angle) * phase * 8,
-      2,
-      2,
+      2 + index % 2,
+      3,
     );
   }
   context.restore();
@@ -205,10 +471,14 @@ function drawEscape(
 }
 
 /** Financial state and every facility action share the existing deterministic model. */
-export function createV034NightScene(model: V034NightModel): SceneExtension {
+export function createV034NightScene(model: V034NightModel, options: V034NightSceneOptions = {}): SceneExtension {
   let currentSeconds = 0;
   const paper = new Image();
   paper.src = invaderUrl;
+  const beamTexture = createBeamTexture();
+  const scanTexture = createBeamTexture([168, 216, 196]);
+  const workRelight = createRelightPatch();
+  const stationRelight = createRelightPatch();
   const patrol = guardLayer(() => {
     const state = model.getState(currentSeconds);
     return {
@@ -236,13 +506,19 @@ export function createV034NightScene(model: V034NightModel): SceneExtension {
       fraction: focused ? stageAt(seconds).fraction : 0,
       duration: view.duration,
     };
-  }, stageAt, {idleCarrier: true});
+  }, stageAt, {
+    idleCarrier: true,
+    searchlight: false,
+    registrationMarks: false,
+    paperRim: '#bce6d5',
+    lightWorld: (context, _frame, _stage, strength) => tintWorld(context, '#737da9', strength ?? 1),
+  });
   const ready = Promise.all([study.ready, paper.decode()]).then(() => {});
   void ready.catch(() => {});
 
   return {
     ready,
-    camera: nightCamera,
+    camera: options.camera ?? nightCamera,
     environment: seconds => model.snapshot(seconds).environment,
     cycleFraction(base, seconds) {
       currentSeconds = seconds;
@@ -265,6 +541,8 @@ export function createV034NightScene(model: V034NightModel): SceneExtension {
       const entities = [{depth: marker.y + marker.height, draw: () => drawMarker(context)}];
       entities.push(...study.worldEntities?.(context, frame) ?? []);
       if (view.eventSeconds === null) return entities;
+      const stage = stageAt(frame.t);
+      entities.push({depth: stage.robot.y + .25, draw: () => drawSealedIndicator(context, stage, view)});
       const escape = v034Escape(view);
       if (escape.active && escape.entry < 1) {
         entities.push({depth: 417.15, draw: () => drawEscape(context, paper, view, true)});
@@ -287,11 +565,24 @@ export function createV034NightScene(model: V034NightModel): SceneExtension {
     afterWorld(context, frame) {
       currentSeconds = frame.t;
       const view = model.snapshot(frame.t);
+      const stage = stageAt(frame.t);
+      const relight = v034RelightState(view);
+      workRelight.capture(context, {x: frame.robot.x - 21, y: frame.robot.y - 64}, 103, relight.work);
+      stationRelight.capture(context, {x: 300, y: 365}, 110, relight.station);
       if (view.eventSeconds === null) patrol.afterWorld(context, frame);
       else {
         study.afterWorld(context, frame);
+      }
+      drawNightAtmosphere(context, view);
+      stationRelight.draw(context);
+      workRelight.draw(context);
+      drawStationLights(context, stage, view);
+      if (view.eventSeconds !== null) {
+        drawSearchlight(context, frame, stage, view, beamTexture);
+        drawAttention(context, frame, stage, view);
+        drawDoorSignals(context, stage, view);
         drawGuidance(context, view);
-        drawMarkerScan(context, frame, view);
+        drawMarkerScan(context, frame, view, scanTexture);
         drawDamage(context, view);
         drawImpact(context, view);
         drawRepair(context, view);
@@ -307,6 +598,12 @@ export function createV034NightScene(model: V034NightModel): SceneExtension {
       canvas.dataset.v034Beacon = String(view.facilities.beacon.guiding);
       canvas.dataset.v034Gate = String(view.facilities.gate.holding);
       canvas.dataset.v034Observation = String(view.observations.length);
+      const light = v034NightLightState(view, stage, frame.ship);
+      canvas.dataset.v034LightStrength = light.night.toFixed(3);
+      canvas.dataset.v034BeamStrength = light.beam.toFixed(3);
+      canvas.dataset.v034LightTargetX = light.target.x.toFixed(2);
+      canvas.dataset.v034LightTargetY = light.target.y.toFixed(2);
+      canvas.dataset.v034WorkLightPower = relight.work.toFixed(3);
       if (view.repair.active) {
         const tool = v034RepairTool(view);
         canvas.dataset.v034RepairGripX = tool.grip.x.toFixed(2);
@@ -321,11 +618,12 @@ export function createV034NightScene(model: V034NightModel): SceneExtension {
 export function createV034NightReview(
   preset: V034NightPreset = 'basic',
   options: V034NightOptions = {},
+  sceneOptions: V034NightSceneOptions = {},
 ) {
   const model = createV034NightModel(preset, options);
   return {
     ...model,
     get duration() {return model.duration;},
-    extension: createV034NightScene(model),
+    extension: createV034NightScene(model, sceneOptions),
   };
 }

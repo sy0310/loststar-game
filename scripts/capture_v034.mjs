@@ -3,9 +3,9 @@ import {mkdir, readFile, stat, writeFile} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 
-const base = (process.env.BASE_URL ?? 'http://127.0.0.1:4196').replace(/\/$/, '');
-const output = 'artifacts/v034';
-const raw = 'artifacts/raw-video/v034';
+const base = (process.env.BASE_URL ?? 'http://127.0.0.1:4197').replace(/\/$/, '');
+const output = process.env.OUTPUT_DIR ?? 'artifacts/v034-refine';
+const raw = 'artifacts/raw-video/v034-refine';
 const mode = process.argv.includes('--discover') ? 'discover' : process.argv.includes('--rehearse') ? 'rehearse' : 'record';
 const captureCommit = execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim();
 const sourceCommit = execFileSync('git', ['rev-parse', process.env.RUNTIME_COMMIT ?? 'HEAD'], {encoding: 'utf8'}).trim();
@@ -75,6 +75,26 @@ async function audit(page, label) {
   assert(result.strings.join('|') === 'V034-PRESERVE-PLAYER|V034-PRESERVE-PREFERENCES', `${label} changed player sentinels`);
   audits.push({label, ...result});
 }
+async function measureWorld(page) {
+  return page.evaluate(async () => {
+    window.__WEEK1__.resetMetrics();
+    const intervals = [];
+    const start = performance.now();
+    let last = start;
+    await new Promise(resolve => {
+      function tick(now) {
+        intervals.push(now - last);
+        last = now;
+        if (now - start >= 6000) resolve();
+        else requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+    const sorted = [...intervals].sort((a, b) => a - b);
+    return {windowMs: performance.now() - start, p95RafMs: sorted[Math.floor(sorted.length * .95)],
+      over50ms: intervals.filter(value => value > 50).length, scene: window.__WEEK1__.metrics()};
+  });
+}
 async function close(trial, file) {
   await audit(trial.page, file ?? 'rehearsal');
   const recording = trial.page.video();
@@ -97,6 +117,14 @@ async function receiptFlow(trial, saveScreens) {
   async function action(kind, phase) {
     assert(await page.locator('#week1-primary').getAttribute('data-kind') === kind, `Unexpected receipt action, expected ${kind}`);
     await tap(page, '#week1-primary');
+    if (saveScreens && viewport.width === 390) {
+      const start = Date.now();
+      const moments = {excavate: [.9, 2.2, 3.5, 4.8, 5.9], clean: [.8, 1.9, 3.2], repair: [.9, 2.2, 3.4]};
+      for (const seconds of moments[kind] ?? []) {
+        await page.waitForTimeout(Math.max(0, seconds * 1000 - (Date.now() - start)));
+        await shot(`${kind}-${seconds}`);
+      }
+    }
     await page.locator(`#week1-paper[data-restoration-phase="${phase}"]`).waitFor({timeout: 8000});
     await page.waitForTimeout(750);
   }
@@ -205,29 +233,28 @@ if (mode === 'discover') {
   const performance = [];
   for (const engine of [chromium, webkit]) {
     const trial = await boot('life', {engine});
-    const world = await trial.page.evaluate(async () => {
-      window.__WEEK1__.resetMetrics(); const intervals = []; const start = performance.now(); let last = start;
-      await new Promise(resolve => {function tick(now) {intervals.push(now - last); last = now; if (now - start >= 6000) resolve(); else requestAnimationFrame(tick);} requestAnimationFrame(tick);});
-      const sorted = [...intervals].sort((a, b) => a - b);
-      return {windowMs: performance.now() - start, p95RafMs: sorted[Math.floor(sorted.length * .95)], over50ms: intervals.filter(value => value > 50).length, scene: window.__WEEK1__.metrics()};
-    });
+    const world = await measureWorld(trial.page);
+    await tap(trial.page, '[data-week-tab="night"]');
+    await tap(trial.page, '#week1-replay');
+    await trial.page.locator('#week1-world canvas[data-v034-phase=identify]').waitFor({timeout: 25000});
+    const night = await measureWorld(trial.page);
     await tap(trial.page, '[data-week-tab="receipt"]');
     await trial.page.locator('#week1-paper[data-restoration-ready=true]').waitFor();
     await tap(trial.page, '#week1-primary');
     const paper = await trial.page.evaluate(async () => {
       const canvas = document.querySelector('#week1-paper'); const start = performance.now(); const samples = []; let last = canvas.dataset.frame;
-      await new Promise(resolve => {function tick(now) {if (canvas.dataset.frame !== last) {samples.push(Number(canvas.dataset.drawMs)); last = canvas.dataset.frame;} if (now - start >= 6000) resolve(); else requestAnimationFrame(tick);} requestAnimationFrame(tick);});
+      await new Promise(resolve => {function tick(now) {if (canvas.dataset.frame !== last) {samples.push(Number(canvas.dataset.drawMs)); last = canvas.dataset.frame;} if (now - start >= 8000) resolve(); else requestAnimationFrame(tick);} requestAnimationFrame(tick);});
       const sorted = [...samples].sort((a, b) => a - b); const windowMs = performance.now() - start;
       return {windowMs, uniqueFrames: samples.length, actualHz: samples.length / (windowMs / 1000), meanDrawMs: samples.reduce((sum, value) => sum + value, 0) / samples.length, p95DrawMs: sorted[Math.floor(sorted.length * .95)], maxDrawMs: sorted.at(-1), samples};
     });
-    performance.push({engine: engine.name(), world, paper}); await close(trial);
+    performance.push({engine: engine.name(), world, night, paper}); await close(trial);
   }
   assert(errors.length === 0, 'Recording has page/HTTP errors');
   assert(dirtySource().length === 0 && execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim() === captureCommit, 'Source changed during recording');
   const result = {at: new Date().toISOString(), sourceCommit, captureCommit, viewport: {width: 390, height: 844},
     method: 'Actual wall-clock continuous mobile touch emulation. No injected player save, simulation clock, money, or evidence. The 30-second event deliberately observes source night 40.2–60 seconds through the documented piecewise mapping, followed by six-second dawn. The complete cycle uses real 240-second day and 60-second night.',
     phoneReview: 'Pending physical TapTap scan review', host: {cpu: os.cpus()[0].model, platform: os.platform()},
-    performanceScope: 'Desktop separate six-second sampling after all video recording, no simultaneous recording. Paper includes the real 4.5-second excavation and idle remainder. Canvas CPU calls exclude GPU completion. WebKit short samples may be quantized.',
+    performanceScope: 'Desktop separate sampling after all video recording, no simultaneous recording. Daytime residents and active night scanning are each sampled for six seconds. Paper is sampled for eight seconds including the real 6.2-second excavation and idle remainder. Scene CPU excludes the inspection-copy and GPU completion, while requestAnimationFrame intervals observe the whole page. WebKit short samples may be quantized.',
     videos, receiptFrames, nightFrames, lifeFrames, cycleFrames, performance, inputs, audits, errors};
   await writeFile(`${output}/recordings.json`, JSON.stringify(result, null, 2) + '\n');
   const videoNames = {
@@ -243,12 +270,16 @@ if (mode === 'discover') {
     <p>${video.seconds.toFixed(2)}秒 · 真实墙钟</p>
   </article>`).join('\n');
   const figures = screens.filter(file => file.startsWith('receipt-') || file.startsWith('drawer-') || file.startsWith('cycle-')).map(file => `<figure><img src="${file}" alt="${file}"><figcaption>${file}</figcaption></figure>`).join('\n');
+  const lightFigures = [4, 12].flatMap(seconds => ['day', 'night'].map(light => {
+    const file = `lighting-basic-${seconds}-${light}-390.png`;
+    return `<figure><img src="${file}" alt="${seconds}秒同位${light}光照"><figcaption>${seconds}秒同事件姿态 · ${light}</figcaption></figure>`;
+  })).join('\n');
   await writeFile(`${output}/index.html`, `<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>失物星球 · V0.3.4首周设计候选</title>
+  <title>失物星球 · V0.3.4动作返修候选</title>
   <style>
     body { margin:0; background:#171225; color:#eadcc8; font:15px/1.8 system-ui }
     main { max-width:1100px; margin:auto; padding:22px 16px }
@@ -265,15 +296,18 @@ if (mode === 'discover') {
   </style>
 </head>
 <body><main>
-  <h1>V0.3.4 首周设计候选</h1>
+  <h1>V0.3.4 动作返修候选</h1>
   <p>0.3.4 · ${sourceCommit.slice(0, 7)} · 2026年11月4–10日审核计划。样板、费用和材质待用户审核，正式玩家存档保持。</p>
-  <p><a href="../v033/">0.3.3旧版</a> · <a href="recordings.json">原始录制和桌面性能</a> · <a href="economy.md">经济候选</a> · <a href="validation.json">验证记录</a></p>
+  <p><a href="../v034/">上一轮0.3.4</a> · <a href="recordings.json">原始录制和桌面性能</a> · <a href="economy.md">经济候选</a> · <a href="budget-route.md">有限工程预算路线</a> · <a href="validation.json">验证记录</a> · <a href="https://github.com/sy0310/loststar-game/blob/codex/v0.1-vertical-slice/docs/26_V034_REVIEW_REFINEMENT_AND_MOTION_REFERENCES.md">10款动作参考与返修说明</a></p>
   <p>以下为桌面手机触控仿真。新的真实TapTap手机、锁屏和长期发热待扫码复审。清洁与修补改变原件物理状态，P03场景观察改变核验结果，签收仍缺失。</p>
   <div class="videos">${videoCards}</div>
+  <h2>同位灯光渲染检查</h2>
+  <p>指定同一渲染时刻与事件姿态，只有环境光场变化。它与上方真实墙钟录像分别记录。<a href="lighting-comparison.json">位置、镜头与星空角点核对</a></p>
+  <div class="gallery">${lightFigures}</div>
   <h2>390×844与360×800实际运行画面</h2>
   <div class="gallery">${figures}</div>
   <h2>仍待审核</h2>
-  <p>补纸胶沿偏亮，鸟的新动作比旧站姿略高。三异常标准稿仅供形态和动作审核，其余奇物保留设计差异与经济候选。正式迁移在视觉审核后实施。</p>
+  <p>出土受力、两处修补、同位夜色与居民比例等待新一轮手机视觉审核。前两次巡守沿用已有动作。三异常标准稿供形态和动作审核，其余奇物保留设计差异。长期零件消费价值和候选任务内容仍待审核。</p>
 </main></body>
 </html>\n`);
   console.log(JSON.stringify({videos, errors: errors.length, audits: audits.length, sourceCommit}));

@@ -1,4 +1,5 @@
 import {expect, test} from '@playwright/test';
+import {RESTORATION_DURATIONS} from '../../src/review/receipt-restoration';
 
 async function isolate(page: import('@playwright/test').Page) {
   await page.addInitScript(() => {
@@ -28,6 +29,8 @@ test('V034首周样板隔离、统一抽屉和原存档哨兵保持完整', asyn
   await page.goto('/?sample=week1');
   await expect(page.locator('#week1-app')).toBeVisible();
   await expect(page.locator('#week1-world canvas')).toHaveAttribute('data-ready', 'true');
+  await expect(page.locator('#week1-inspection')).toHaveAttribute('data-source', 'week1-world');
+  await expect(page.locator('#week1-inspection')).toHaveAttribute('data-width', '430');
   for (const name of ['security', 'research', 'repair']) {
     await page.locator(`[data-drawer="${name}"]`).click();
     await expect(page.locator('#week1-drawer')).toBeVisible();
@@ -43,6 +46,30 @@ test('V034首周样板隔离、统一抽屉和原存档哨兵保持完整', asyn
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
+test('科研抽屉区分免费现场核对和候选任务票，展开预算保持审阅余额', async ({page}) => {
+  await isolate(page);
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 1000));
+  await page.goto('/?sample=week1');
+  await expect(page.locator('#week1-world canvas')).toHaveAttribute('data-ready', 'true');
+  await page.clock.runFor(150);
+  await page.locator('[data-drawer="research"]').click();
+  await expect(page.locator('.week-field-ticket')).toContainText('可实测 · 免费');
+  await expect(page.locator('#week1-visit-field')).toBeEnabled();
+  const balance = await page.locator('#week1-parts').textContent();
+  for (const id of ['field', 'study', 'deep']) {
+    const ticket = page.locator(`[data-study-candidate="${id}"]`);
+    await ticket.locator('summary').click();
+    await expect(ticket.locator('details')).toHaveAttribute('open', '');
+    await expect(ticket).toContainText('首星记录已齐');
+    await expect(ticket).toContainText('用时与离线');
+    await expect(ticket).toContainText('开工与取消');
+    await expect(ticket.getByRole('button', {name: '待任务内容审核'})).toBeDisabled();
+  }
+  await expect(page.locator('#week1-parts')).toHaveText(balance!);
+  expect(await page.evaluate(() => (window as any).__weekStorageCalls)).toEqual([]);
+});
+
 test('同一收据出土清洁修补只付一次，现场证据才能让缺失从2变1', async ({page}) => {
   await isolate(page);
   await page.clock.install();
@@ -52,17 +79,17 @@ test('同一收据出土清洁修补只付一次，现场证据才能让缺失�
   await page.clock.runFor(150);
   const original = await page.locator('#week1-paper').getAttribute('data-original-code');
   await page.locator('#week1-primary').click();
-  await step(page, 4700);
+  await step(page, RESTORATION_DURATIONS.excavate * 1000 + 200);
   await expect(page.locator('#week1-primary')).toHaveAttribute('data-kind', 'clean');
   await page.locator('#week1-try').click();
   await step(page, 2600);
   await expect(page.locator('#week1-parts')).toHaveText('360');
   await page.locator('#week1-primary').click();
-  await step(page, 3600);
+  await step(page, RESTORATION_DURATIONS.clean * 1000 + 200);
   await expect(page.locator('#week1-parts')).toHaveText('320');
   await expect(page.locator('#week1-primary')).toHaveAttribute('data-kind', 'repair');
   await page.locator('#week1-primary').click();
-  await step(page, 3800);
+  await step(page, RESTORATION_DURATIONS.repair * 1000 + 200);
   await expect(page.locator('#week1-parts')).toHaveText('200');
   await expect(page.locator('#week1-missing')).toHaveAttribute('data-count', '2');
   await expect(page.locator('#week1-paper')).toHaveAttribute('data-original-code', original!);

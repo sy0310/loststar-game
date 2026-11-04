@@ -1,6 +1,7 @@
 import {drawResident, type ResidentDrawResult} from './residents';
 import {residentDailyPose} from '../review/resident-daily';
 import type {ResidentId} from './resident-motion';
+import refinement from '../../assets/runtime/v034-refine/registration.json';
 
 interface DailyFrame {file: string; contact: {x: number; y: number}; displayScale: number}
 interface Registration {residents: Record<ResidentId, {frames: DailyFrame[]}>}
@@ -31,7 +32,9 @@ export function createDailyResidentRenderer() {
     const selected = daily ?? flight;
     const image = daily ? images[daily.file] : flight ? art.images[flight.file] : dayImage;
     const contact = selected?.contact ?? art.registration.residents[id].dayContact;
-    const scale = selected?.displayScale ?? pose.width / image.naturalWidth;
+    const scale = id === 'tagbird' && daily
+      ? refinement.residentDaily.bird.displayScale
+      : selected?.displayScale ?? pose.width / image.naturalWidth;
     context.save();
     context.fillStyle = id === 'tagbird' ? '#28233b30' : '#30203965';
     context.beginPath();

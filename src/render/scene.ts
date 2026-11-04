@@ -21,6 +21,7 @@ export interface SceneExtension {
   ready?:Promise<void>;
   cycleFraction?:(base:number,seconds:number)=>number;
   robotPose?:(base:ReturnType<typeof robotPose>,seconds:number)=>ReturnType<typeof robotPose>|undefined;
+  shipPose?:(base:ReturnType<typeof shipPose>,seconds:number)=>ReturnType<typeof shipPose>;
   drawRobot?:(context:CanvasRenderingContext2D,frame:SceneFrame,atlas:HTMLImageElement)=>boolean|void;
   environment?:(seconds:number)=>ResidentEnvironment;
   drawResident?:typeof drawResident;
@@ -173,7 +174,8 @@ export class ExpeditionScene {
     const baseFraction=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12;
     const f=this.extension?.cycleFraction?.(baseFraction,t)??baseFraction,p=this.extension?.robotPose?.(robotPose(f),t)??robotPose(f);
     const environment=this.extension?.environment?.(t)??residentEnvironment(worldView(s),t);
-    const ship=shipPose(t),frame={t,robot:p,ship,globe:this.art.globe,environment,output:this.canvas};
+    const baseShip=shipPose(t),ship=this.extension?.shipPose?.(baseShip,t)??baseShip;
+    const frame={t,robot:p,ship,globe:this.art.globe,environment,output:this.canvas};
     c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);this.positionWorld(c);
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
     if(ship.back)this.drawShip(t,ship);

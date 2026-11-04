@@ -150,7 +150,10 @@ function environmentAt(worldMs: number): ResidentEnvironment {
     const rest = smooth((worldMs - 228000) / 12000);
     return {period: 'dusk', rest, light: rest * .65, seconds};
   }
-  if (worldMs < 300000) return {period: 'night', rest: 1, light: 1, seconds};
+  if (worldMs < 300000) {
+    const light = .65 + smooth((worldMs - 240000) / 3000) * .35;
+    return {period: 'night', rest: 1, light, seconds};
+  }
   const rest = 1 - smooth((worldMs - 300000) / 6000);
   return {period: 'dawn', rest, light: rest, seconds};
 }

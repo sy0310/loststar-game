@@ -7,6 +7,8 @@ import {createDailyResidentRenderer} from '../render/v034-residents';
 import {residentDailyPose} from './resident-daily';
 import {createV034NightScene} from './v034-night-scene';
 import {createV034NightModel} from './v034-night-model';
+import {v034NightCamera} from './v034-night-stage';
+import {v034ShipPose} from './v034-camera';
 import {studyCandidates} from './v034-budget';
 import type {V034NightMode, V034NightPreset, V034NightSnapshot} from './v034-night-model';
 import {
@@ -62,7 +64,10 @@ export function mountV034() {
       <main class="week-main">
         <section id="week1-world-panel">
           <div class="week-location"><strong id="week1-place">退货箱星 · 夜班</strong><span id="week1-clock">00 / 30 秒</span></div>
-          <div class="week-scene"><small id="week1-scene-label">退件平原 / 第3次处置片段</small><div id="week1-world"></div><div class="week-integrity" id="week1-integrity" data-value="100">完整度 100</div></div>
+          <div class="week-scene">
+            <div class="week-orbit-frame"><small id="week1-scene-label">退件平原 / 第3次处置片段</small><div id="week1-world"></div><div class="week-integrity" id="week1-integrity" data-value="100">完整度 100</div></div>
+            <div class="week-inspection"><canvas id="week1-inspection" width="780" height="208" role="img" aria-label="与上方球体同步的现场观察近景"></canvas><small>LR–01 / 现场镜 <span>实景同步</span></small></div>
+          </div>
           <div class="week-caption"><strong id="week1-world-result"></strong><p id="week1-world-detail"></p></div>
           <div class="week-tools">
             <button data-drawer="security">${icon('radar', 'week-icon')}安保</button>
@@ -112,11 +117,14 @@ export function mountV034() {
   let drawerKind: Drawer = 'security';
   let lastPaint = 0;
   let started = false;
+  let inspectionTarget = {x: 416, y: 350};
+  let inspectionCenter = inspectionTarget;
   const controller = createV034NightModel();
-  const nightLayer = createV034NightScene(controller);
+  const nightLayer = createV034NightScene(controller, {camera: v034NightCamera});
   const daily = createDailyResidentRenderer();
   const extension: SceneExtension = {
     ...nightLayer,
+    shipPose: v034ShipPose,
     ready: Promise.all([nightLayer.ready, daily.ready]).then(() => {}),
     drawResident: daily.draw,
     residentPose: residentDailyPose,
@@ -129,7 +137,19 @@ export function mountV034() {
     robotPose: (base, seconds) => view === 'life' ? undefined : nightLayer.robotPose?.(base, seconds),
     drawRobot: (context, frame, atlas) => view === 'life' ? false : nightLayer.drawRobot?.(context, frame, atlas),
     worldEntities: (context, frame) => view === 'life' ? [] : nightLayer.worldEntities?.(context, frame) ?? [],
-    afterWorld: (context, frame) => {if (view !== 'life') nightLayer.afterWorld(context, frame);},
+    afterWorld: (context, frame) => {
+      if (view !== 'life') nightLayer.afterWorld(context, frame);
+      let focus = {x: frame.robot.x, y: frame.robot.y - 48};
+      if (view === 'life') {
+        const resident = (['mouse', 'hermit', 'tagbird'] as const)[Math.floor(Math.max(0, frame.t - lifeStarted) / 5) % 3];
+        const pose = residentDailyPose(resident, frame.environment);
+        focus = {x: pose.x, y: pose.y - 24};
+      }
+      inspectionTarget = {
+        x: 32 + v034NightCamera.x + (focus.x - v034NightCamera.x) * v034NightCamera.scale + v034NightCamera.offsetX,
+        y: v034NightCamera.y + (focus.y - v034NightCamera.y) * v034NightCamera.scale + v034NightCamera.offsetY,
+      };
+    },
   };
   const world = new ExpeditionScene(query('#week1-world'), () => {
     const state = controller.getState(world.elapsedSeconds());
@@ -225,10 +245,28 @@ export function mountV034() {
       <div class="week-configs"><button data-week-config="basic" aria-pressed="${preset === 'basic'}">基础设备<br>Lv0 / Lv0</button><button data-week-config="complete" aria-pressed="${preset === 'complete'}">完善设备<br>Lv3 / Lv3</button></div>
       <p>切换后从同一夜班片段重新运行，可观察本次6点损伤与0损伤的差异。</p><p>此处为只读配置对照，正式设备等级与费用保留原存档。</p>`;
     if (kind === 'research') body.innerHTML = `
-      <p>辨识依据已有原件与现场观察。P03来源可在此片段实际核对，签收证据尚未取得。</p>
-      ${studyCandidates.map(project => `<article class="week-project"><header><strong>${project.title}</strong><span>${project.price}零件</span></header><small>${project.minutes}分钟 · 候选预算</small><p>${project.result}</p></article>`).join('')}
-      <p>首星收齐后属于复核与增效。科研记录实际采样，新的签收或奇物需要真实内容支持。</p>
-      <button class="week-drawer-action" id="week1-visit-field">前往 P03 现场核对</button>`;
+      <section class="week-field-ticket" aria-label="可试玩的现场核对">
+        <span class="week-ticket-status">可实测 · 免费</span>
+        <h3>P03 来源核对</h3>
+        <p>咔哒扫描现场箱标，与原件 RET-031 对照。实际观察收录后，回整理台辨识来源。</p>
+        <p>${paper.evidenceIds.includes('field-pipe-scan') ? '现场观察已收录，签收记录仍待证。' : '等待现场扫描，签收记录仍待证。'}</p>
+        <button class="week-drawer-action" id="week1-visit-field">前往 P03 现场核对</button>
+      </section>
+      <h3>科研预算方案</h3>
+      <p>以下任务票用于审核费用与增效。内容目标、取消退款及正式接入仍待审核。</p>
+      ${studyCandidates.map(project => `<article class="week-project" data-study-candidate="${project.id}">
+        <header><strong>${project.title}</strong><span>${project.price}零件</span></header>
+        <small>${project.minutes}分钟 · 预算预览</small>
+        <details><summary>查看任务票</summary>
+          <dl class="week-ticket-details">
+            <dt>目标与预计效果</dt><dd>${project.result}</dd>
+            <dt>首星记录已齐</dt><dd>复核已有记录与统计真实采样，未知奇物仍须实际取得。</dd>
+            <dt>用时与离线</dt><dd>${project.minutes}分钟，原引擎按有效货舱时间完成已资助的一单。</dd>
+            <dt>开工与取消</dt><dd>当前为候选任务票，取消退款规则随任务内容一并审核。</dd>
+          </dl>
+          <button class="week-drawer-action" disabled>待任务内容审核</button>
+        </details>
+      </article>`).join('')}`;
     if (kind === 'repair') body.innerHTML = `
       <div class="week-repair-total"><div><b id="week1-drawer-integrity">${snapshot.integrity}/100</b><small>收件站完整度</small></div><div><b id="week1-drawer-due">${snapshot.repairDue}</b><small>当前待修零件</small></div></div>
       <label class="week-switch">清晨自动维修<input type="checkbox" id="week1-auto-repair" ${autoRepair ? 'checked' : ''}></label>
@@ -256,6 +294,27 @@ export function mountV034() {
     mode = 'event';
     selectView('night');
     replay();
+  }
+
+  function paintInspection() {
+    if (!world.ready || view === 'receipt') return;
+    const canvas = query<HTMLCanvasElement>('#week1-inspection');
+    const context = canvas.getContext('2d')!;
+    inspectionCenter = {
+      x: inspectionCenter.x + (inspectionTarget.x - inspectionCenter.x) * .18,
+      y: inspectionCenter.y + (inspectionTarget.y - inspectionCenter.y) * .18,
+    };
+    const width = 430;
+    const height = width * canvas.height / canvas.width;
+    const left = Math.round(Math.max(0, Math.min(world.canvas.width - width, inspectionCenter.x - width / 2)));
+    const top = Math.round(Math.max(0, Math.min(world.canvas.height - height, inspectionCenter.y - height / 2)));
+    context.imageSmoothingEnabled = false;
+    context.drawImage(world.canvas, left, top, width, height, 0, 0, canvas.width, canvas.height);
+    canvas.dataset.source = 'week1-world';
+    canvas.dataset.left = String(left);
+    canvas.dataset.top = String(top);
+    canvas.dataset.width = String(width);
+    canvas.dataset.height = String(height);
   }
 
   app.addEventListener('click', event => {
@@ -317,6 +376,7 @@ export function mountV034() {
         : mode === 'cycle' ? '240秒白天＋60秒夜晚＋8秒晨间，真实时间运行。隔离内存预览。'
           : '30秒第三次处置＋6秒晨间。只读内存预览，账目由原夜班模型计算。';
       updateRepairDrawer(snapshot);
+      paintInspection();
     }
     requestAnimationFrame(paint);
   }

@@ -43,7 +43,7 @@ function stabilized(parts = 360) {
   return complete(state, 'repair', 10);
 }
 
-it('发掘免费运行4.5秒，真实泥层保留在已找到的原件上', () => {
+it('发掘免费运行6.2秒，真实泥层保留在已找到的原件上', () => {
   const original = createReceiptRestorationState(360, 3);
   const started = beginReceiptRestoration(original, 'excavate', 'dig-1', 10);
   expect(original.stage).toBe('buried');
@@ -54,12 +54,12 @@ it('发掘免费运行4.5秒，真实泥层保留在已找到的原件上', () =
   expect(middle.excavation).toBeGreaterThan(0);
   expect(middle.excavation).toBeLessThan(1);
   expect(middle.mudRemaining).toBe(1);
-  const found = advanceReceiptRestoration(started.state, 14.5);
+  const found = advanceReceiptRestoration(started.state, 16.2);
   expect(found.stage).toBe('displayed');
   expect(found.condition).toBe('found');
   expect(found.caseTier).toBe(3);
   expect(found.parts).toBe(360);
-  expect(receiptRestorationFrame(found, 14.5).mudRemaining).toBe(1);
+  expect(receiptRestorationFrame(found, 16.2).mudRemaining).toBe(1);
 });
 
 it('清洁40和修补120各支付一次，重试和后台补算不重复扣款', () => {
@@ -214,19 +214,20 @@ it('有限时间归一化且状态单调，重复试验不改变钱、实物或�
   expect(createReceiptRestorationState(27_049, Infinity).caseTier).toBe(0);
 });
 
-import {receiptRestorationGeometry, restorationBrushPasses, restorationPaperRig, restorationRepairStages} from '../src/render/receipt-restoration';
+import {receiptRestorationGeometry, restorationBrushPasses, restorationPaperRig, restorationRepairStages, restorationExcavationMotion, restorationPaperMesh, restorationMeshPoint, restorationSoilChip, restorationCleaningMotion, restorationBrushTransform} from '../src/render/receipt-restoration';
 
-it('出土沿托盘抬升到原展品中心，前土遮挡随同一进度退去', () => {
+it('同一收据落到真实接收面，前土遮挡随同一进度退去', () => {
   const center = {x: 175, y: 445.926829};
   const frame = 66.926829;
   const state = createReceiptRestorationState(360);
   const action = beginReceiptRestoration(state, 'excavate', 'excavation', 0).state;
   const buried = receiptRestorationGeometry(receiptRestorationFrame(state, 0), center, frame, 505);
   const middle = receiptRestorationGeometry(receiptRestorationFrame(action, 2), center, frame, 505);
-  const found = receiptRestorationGeometry(receiptRestorationFrame(action, 4.5), center, frame, 505);
+  const found = receiptRestorationGeometry(receiptRestorationFrame(action, RESTORATION_DURATIONS.excavate), center, frame, 505);
   expect(buried.paperCenter.y).toBeGreaterThan(middle.paperCenter.y);
   expect(middle.paperCenter.y).toBeGreaterThan(found.paperCenter.y);
-  expect(found.paperCenter).toEqual(center);
+  expect(found.paperCenter.x).toBe(center.x);
+  expect(found.paperCenter.y + frame / 2).toBeCloseTo(505);
   expect(found.paperBounds.height).toBeCloseTo(frame);
   expect(middle.soilOpacity).toBeGreaterThanOrEqual(found.soilOpacity);
   expect(found.soilOpacity).toBe(0);
@@ -281,20 +282,20 @@ it('非法动作与不足余额提示保持免费查看能力，中间动作帧�
   const funded = {...found, parts: 360};
   const cleaning = beginReceiptRestoration(funded, 'clean', 'cleaning', 5).state;
   expect(receiptRestorationMainAction(cleaning).reason).toBe('操作进行中');
-  const middle = receiptRestorationFrame(cleaning, 6.7);
+  const middle = receiptRestorationFrame(cleaning, 6.9);
   expect(middle.phase).toBe('cleaning');
   expect(middle.cleaning).toBeCloseTo(.5);
   expect(middle.mudRemaining).toBeCloseTo(.5);
-  const clean = advanceReceiptRestoration(cleaning, 8.4);
+  const clean = advanceReceiptRestoration(cleaning, 8.8);
   const repairing = beginReceiptRestoration(clean, 'repair', 'repairing', 9).state;
-  expect(receiptRestorationFrame(repairing, 10.8).repairing).toBeCloseTo(.5);
+  expect(receiptRestorationFrame(repairing, 10.95).repairing).toBeCloseTo(.5);
 });
 
 it('浮点完成边界的绘制阶段与已完成状态一致，不残留刷子或修补夹头', () => {
   let state = complete(createReceiptRestorationState(360), 'excavate', 0);
   state = complete(state, 'clean', 5);
   const repairing = beginReceiptRestoration(state, 'repair', 'repair-boundary', 9).state;
-  const frame = receiptRestorationFrame(repairing, 12.6);
+  const frame = receiptRestorationFrame(repairing, 12.9);
   expect(frame.condition).toBe('stabilized');
   expect(frame.phase).toBe('stabilized');
   expect(frame.complete).toBe(true);
@@ -344,4 +345,140 @@ it('每种现场事件只接受对应固定节点，未知和错配节点不能�
       expect(receiptRestorationReading(rejected).missingCount).toBe(2);
     }
   }
+});
+
+
+it('新的真实动作时长给松土受力落托和刷洗收手留出过程', () => {
+  expect(RESTORATION_DURATIONS.excavate).toBe(6.2);
+  expect(RESTORATION_DURATIONS.clean).toBe(3.8);
+  expect(RESTORATION_DURATIONS.repair).toBe(3.9);
+});
+
+it('发掘先松土不抬纸，再发生偏转和受力弯曲，最后按重力落托缓冲', () => {
+  const center = {x: 175, y: 445.926829};
+  const size = 66.926829;
+  const state = beginReceiptRestoration(createReceiptRestorationState(360), 'excavate', 'force-dig', 0).state;
+  const at = (progress: number) => receiptRestorationGeometry(
+    receiptRestorationFrame(state, progress * RESTORATION_DURATIONS.excavate), center, size, 505,
+  );
+  expect(at(.10).paperCenter).toEqual(at(0).paperCenter);
+  expect(restorationExcavationMotion(.10).phase).toBe('loosen');
+  expect(Math.abs(at(.42).rotation)).toBeGreaterThan(.08);
+  expect(at(.42).pullBend).toBeGreaterThan(2);
+  expect(at(.88).paperCenter.y).toBeLessThan(at(1).paperCenter.y - 4);
+  expect(at(1).paperCenter.y + size / 2).toBeCloseTo(505);
+  expect(at(1).paperCenter.x).toBe(center.x);
+  expect(at(1).rotation).toBe(0);
+});
+
+it('共享纸网格在受力时改变局部轮廓，纸端和工具取样使用同一映射', () => {
+  const rig = restorationPaperRig(0, {frame: 67, paperWidth: 52, hingeV: .16, curlV: .76, reveal: 1}, 0);
+  const mesh = restorationPaperMesh(rig, {
+    center: {x: 175, y: 471.5}, frame: 67, rotation: .15,
+    upperLift: 4, upperOut: 2, lowerSpread: -2, lowerLift: 1, pullBend: 8,
+  });
+  const a = restorationMeshPoint(mesh, .36, .25);
+  const b = restorationMeshPoint(mesh, .75, .25);
+  const c = restorationMeshPoint(mesh, .36, .75);
+  expect(Math.abs(a.y - b.y)).toBeGreaterThan(2);
+  expect(Math.abs((a.x - c.x))).toBeGreaterThan(1);
+  expect(restorationMeshPoint(mesh, .4, 1 / 3)).toEqual(mesh.vertices[3][1]);
+  expect(mesh.vertices.every(row => row.every(point => Number.isFinite(point.x + point.y)))).toBe(true);
+});
+
+it('S1两处轮廓不稳，S2压住翘角并稳定展开卷边，主锚点与落点一致', () => {
+  const clean = complete(complete(createReceiptRestorationState(360), 'excavate', 0), 'clean', 7);
+  const fixed = complete(clean, 'repair', 12);
+  const center = {x: 175, y: 445.926829};
+  const a = receiptRestorationGeometry(receiptRestorationFrame(clean, 20), center, 67, 505);
+  const b = receiptRestorationGeometry(receiptRestorationFrame(fixed, 20), center, 67, 505);
+  expect(a.paperCenter).toEqual(b.paperCenter);
+  expect(a.upperLift - b.upperLift).toBeGreaterThan(3);
+  expect(b.lowerSpread - a.lowerSpread).toBeGreaterThan(3);
+  expect(a.paperCenter.y + 67 / 2).toBeCloseTo(505);
+  const aTry = beginReceiptRestoration(clean, 'try', 'loose-trial', 21).state;
+  const bTry = beginReceiptRestoration(fixed, 'try', 'fixed-trial', 21).state;
+  const loose = receiptRestorationGeometry(receiptRestorationFrame(aTry, 21.7), center, 67, 505);
+  const stable = receiptRestorationGeometry(receiptRestorationFrame(bTry, 21.7), center, 67, 505);
+  expect(stable.upperLift).toBe(0);
+  expect(loose.upperLift).toBeGreaterThan(3);
+  expect(stable.lowerSpread).toBeGreaterThan(b.lowerSpread);
+  expect(receiptRestorationReading(fixed).missingCount).toBe(2);
+});
+
+it('真实土片按重力抛落并在接收平面停下，阴影高度不穿地', () => {
+  const origin = {x: 170, y: 495};
+  const early = restorationSoilChip(0, .10, origin, 505);
+  const high = restorationSoilChip(0, .30, origin, 505);
+  const landed = restorationSoilChip(0, 3, origin, 505);
+  expect(high.y).toBeLessThan(early.y);
+  expect(landed.y).toBe(505);
+  expect(landed.height).toBe(0);
+  expect(Math.abs(landed.x - origin.x)).toBeGreaterThan(3);
+  expect(restorationSoilChip(0, 5, origin, 505)).toEqual(landed);
+});
+
+it('刷洗先压毛再沿接触擦除泥层，结束前收手而不整纸抖动', () => {
+  expect(restorationCleaningMotion(0).wipe).toBe(0);
+  expect(restorationCleaningMotion(.05).pressure).toBeGreaterThan(0);
+  expect(restorationCleaningMotion(.5).wipe).toBeGreaterThan(0);
+  expect(restorationCleaningMotion(.5).pressure).toBeGreaterThan(.5);
+  expect(restorationCleaningMotion(.96).withdraw).toBeGreaterThan(.5);
+  expect(restorationCleaningMotion(1).wipe).toBe(1);
+  expect(restorationCleaningMotion(1).pressure).toBe(0);
+});
+
+
+it('刷毛受压时真实毛尖仍贴接触点，柄接在压短后的毛根', () => {
+  const root = {x: 85, y: 101};
+  const contact = {x: 34.2520458, y: 144.81923};
+  const pose = restorationBrushTransform(root, contact, 1);
+  const matrix = pose.bristles;
+  expect(matrix.a * contact.x + matrix.c * contact.y + matrix.e).toBeCloseTo(0);
+  expect(matrix.b * contact.x + matrix.d * contact.y + matrix.f).toBeCloseTo(0);
+  const compressedRoot = {x: matrix.a * root.x + matrix.c * root.y + matrix.e,
+    y: matrix.b * root.x + matrix.d * root.y + matrix.f};
+  expect(Math.hypot(compressedRoot.x, compressedRoot.y)).toBeLessThan(Math.hypot(root.x - contact.x, root.y - contact.y));
+  expect(pose.handleOrigin.x + root.x).toBeCloseTo(compressedRoot.x);
+  expect(pose.handleOrigin.y + root.y).toBeCloseTo(compressedRoot.y);
+});
+
+it('侧伏纸先逐段翻起，四分一半与四分三阶段埋入支点均不漂移', () => {
+  const size = 67;
+  const action = beginReceiptRestoration(createReceiptRestorationState(360), 'excavate', 'fixed-pivot', 0).state;
+  const meshAt = (p: number, pivotU = .5) => {
+    const frame = receiptRestorationFrame(action, p * RESTORATION_DURATIONS.excavate);
+    const geometry = receiptRestorationGeometry(frame, {x: 175, y: 445.926829}, size, 505);
+    const rig = restorationPaperRig(frame.seconds, {frame: size, paperWidth: 52, hingeV: .16, curlV: .76, reveal: 1}, 0);
+    return {
+      geometry,
+      mesh: restorationPaperMesh(rig, {
+        center: geometry.paperCenter, frame: size, rotation: geometry.rotation,
+        upperLift: geometry.upperLift, upperOut: geometry.upperOut,
+        lowerSpread: geometry.lowerSpread, lowerLift: geometry.lowerLift, pullBend: geometry.pullBend,
+        pivot: {x: 175 + (pivotU - .5) * size, y: geometry.pivotY}, pivotU, sectionTilts: geometry.motion.sectionTilts,
+      }),
+    };
+  };
+  const buried = meshAt(0);
+  expect(buried.geometry.paperBounds.height).toBeLessThan(28);
+  expect(buried.geometry.rotation).toBeGreaterThan(.35);
+  for (const p of [.25, .5, .75]) {
+    const {mesh} = meshAt(p);
+    const contact = restorationMeshPoint(mesh, .5, 1);
+    expect(contact.x).toBeCloseTo(175);
+    expect(contact.y).toBeCloseTo(505);
+  }
+  for (const p of [.25, .5, .75]) {
+    const contact = restorationMeshPoint(meshAt(p, .63).mesh, .63, 1);
+    expect(contact.x).toBeCloseTo(175 + .13 * size);
+    expect(contact.y).toBeCloseTo(505);
+  }
+  const early = meshAt(.25).mesh;
+  const later = meshAt(.75).mesh;
+  const topMove = restorationMeshPoint(later, .5, .1).y - restorationMeshPoint(early, .5, .1).y;
+  const lowerMove = restorationMeshPoint(later, .5, .9).y - restorationMeshPoint(early, .5, .9).y;
+  expect(Math.abs(topMove - lowerMove)).toBeGreaterThan(20);
+  expect(meshAt(.88).geometry.pivotY).toBeCloseTo(498);
+  expect(meshAt(1).geometry.pivotY).toBeCloseTo(505);
 });

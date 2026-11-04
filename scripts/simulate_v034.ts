@@ -12,7 +12,7 @@ import {
 } from '../src/review/v034-budget';
 
 const epoch = 1800000000000;
-const output = 'artifacts/v034';
+const output = process.env.OUTPUT_DIR ?? 'artifacts/v034-refine';
 const minutes = [0, 15, 30, 60, 120];
 const balances = [120, 5000, 27049, 50000];
 const policies = ['accumulate', 'restoration', 'security', 'research'] as const;

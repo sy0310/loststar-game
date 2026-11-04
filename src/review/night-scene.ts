@@ -1,12 +1,16 @@
 import invaderUrl from '../../assets/runtime/invader-v02.webp';
 import type {SceneExtension,SceneFrame} from '../render/scene';
-import {nightStage,nightCamera,nightDoor,reviewEnvironment,type NightStage} from './d1-motion';
+import {nightStage,nightCamera,nightDoor,reviewEnvironment,smoothInstall,type NightStage} from './d1-motion';
 import {lightNightWorld} from './night-lighting';
 import {createNightRobot} from './night-robot';
 import {createNightCarrier} from './night-carrier';
 
 export interface NightStudyOptions {
   idleCarrier?: boolean;
+  searchlight?: boolean;
+  paperRim?: string;
+  lightWorld?: typeof lightNightWorld;
+  registrationMarks?: boolean;
 }
 
 /** Register the same closed field case at the robot's existing belt position. */
@@ -34,6 +38,7 @@ export function createNightStudy(
   const ready=Promise.all([paper.decode(),carrier.ready]).then(()=>{});
   void ready.catch(()=>{});
   let foldShade:HTMLCanvasElement|undefined;
+  let paperRim:HTMLCanvasElement|undefined;
   let robotAtlas:HTMLImageElement|undefined;
 
   function paperPanel(context:CanvasRenderingContext2D,rect:{x:number;y:number;w:number;h:number},hinge:{x:number;y:number},sx:number,sy:number,shade:number){
@@ -65,6 +70,18 @@ export function createNightStudy(
     context.rotate(stage.cargo.angle*intake);
     context.transform(1+(stage.cargo.yaw-1)*intake,-(1-stage.cargo.yaw)*.12*intake,(1-stage.cargo.pitch)*.18*intake,1+(stage.cargo.pitch-1)*intake,0,0);
     context.scale(stage.paper.sourceScale,stage.paper.sourceScale);
+    if(options.paperRim&&fold<.2&&intake<.25){
+      if(!paperRim){
+        paperRim=document.createElement('canvas');paperRim.width=192;paperRim.height=192;
+        const rim=paperRim.getContext('2d')!;
+        rim.drawImage(paper,0,0,192,192,0,0,192,192);
+        rim.globalCompositeOperation='source-in';rim.fillStyle=options.paperRim;rim.fillRect(0,0,192,192);
+      }
+      context.save();
+      context.globalAlpha*=.55*(1-smoothInstall(fold/.2))*(1-smoothInstall(intake/.25));
+      for(const [x,y] of [[-5,0],[5,0],[0,-5],[0,5]])context.drawImage(paperRim,-96+x,-106+y);
+      context.restore();
+    }
     const side=Math.cos(fold*Math.PI*.46),bottom=Math.cos(fold*Math.PI*.45);
     paperPanel(context,{x:14,y:65,w:29,h:81},{x:43,y:106},side,1,fold*.26);
     paperPanel(context,{x:128,y:58,w:48,h:88},{x:128,y:106},side,1,fold*.32);
@@ -189,10 +206,10 @@ export function createNightStudy(
       const timeline=timelineAt(frame.t);
       let stage=stageAt(timeline.nightSeconds??0);
       if(timeline.nightSeconds===null&&options.idleCarrier)stage=nightHolsterStage(frame.robot);
-      lightNightWorld(context,frame,stage,timeline.environment.light);
+      (options.lightWorld??lightNightWorld)(context,frame,stage,timeline.environment.light);
       if(timeline.nightSeconds!==null){
-        registrationMarks(context,stage);
-        searchlight(context,frame,stage);
+        if(options.registrationMarks!==false)registrationMarks(context,stage);
+        if(options.searchlight!==false)searchlight(context,frame,stage);
       }
       const canvas=frame.output;
       canvas.dataset.studyPhase=stage.phase;

@@ -2,8 +2,11 @@ import {nightDoor, nightRobotRegistration, nightStage, smoothInstall, type Night
 import {bellHoldMs} from '../game/guard-tuning';
 import {nightRules} from '../prototype/night-model';
 import type {V034NightSnapshot} from './v034-night-model';
-import type {robotPose} from '../render/motion';
+import type {robotPose, shipPose} from '../render/motion';
 import {nightRobotSourcePoint} from './night-robot';
+
+/** Keeps the complete registered globe inside the existing 832×740 canvas. */
+export const v034NightCamera = {scale: 1.085, x: 384, y: 402, offsetX: 0, offsetY: -29};
 
 function clamp(value: number) {
   return Math.max(0, Math.min(1, value));
@@ -158,5 +161,65 @@ export function v034RepairTool(view: V034NightSnapshot) {
     tip,
     length: Math.hypot(tip.x - grip.x, tip.y - grip.y),
     angle: Math.atan2(tip.y - grip.y, tip.x - grip.x),
+  };
+}
+
+// Measured light panels on the existing directional hulls. The source points
+// follow their registered sprite layers and share their nozzle-aligned blend.
+const searchlightSources = [
+  {x: 154, y: 177},
+  {x: 128, y: 185},
+  {x: 106, y: 177},
+  {x: 128, y: 124},
+];
+
+export function v034NightLightState(
+  view: V034NightSnapshot,
+  stage: NightStage,
+  ship: ReturnType<typeof shipPose>,
+) {
+  const source = {x: 0, y: 0};
+  for (const layer of ship.layers) {
+    const panel = searchlightSources[layer.cell];
+    const x = (panel.x - 128) * ship.width / 256;
+    const y = (panel.y - 128) * ship.width / 256;
+    source.x += (layer.x + x * Math.cos(layer.rotation) - y * Math.sin(layer.rotation)) * layer.alpha;
+    source.y += (layer.y + x * Math.sin(layer.rotation) + y * Math.cos(layer.rotation)) * layer.alpha;
+  }
+  const escape = v034Escape(view);
+  let target = {
+    x: stage.target.x,
+    y: stage.target.y - (1 - stage.paper.intake) * 21,
+  };
+  if (escape.active && view.actor.outcome === 'arrived') {
+    const receive = smoothInstall(escape.entry);
+    target = {
+      x: 290 + (nightDoor.light.x - 290) * receive,
+      y: 389 + (nightDoor.light.y - 389) * receive,
+    };
+  }
+  const seconds = view.eventSeconds ?? 0;
+  const orbit = smoothInstall(Math.sin(ship.angle) / .18);
+  const entered = smoothInstall(seconds / .7);
+  const returning = 1 - smoothInstall((seconds - 29.2) / .8);
+  let beam = 0;
+  if (view.eventSeconds !== null && stage.beamVisible(ship.back)) {
+    beam = orbit * entered * returning * view.environment.light;
+  }
+  let attention = stage.emerge * (1 - stage.paper.intake);
+  if (escape.active) attention = 1 - escape.entry;
+  if (!view.actor.present) attention = 0;
+  return {source, target, beam, attention, night: view.environment.light};
+}
+
+export function v034RelightState(view: V034NightSnapshot) {
+  let focus = 0;
+  if (view.eventSeconds !== null) {
+    focus = smoothInstall((view.eventSeconds - 8) / 2)
+      * (1 - smoothInstall((view.eventSeconds - 28) / 2));
+  }
+  return {
+    station: view.environment.light * .48,
+    work: view.environment.light * (.24 + focus * .32),
   };
 }

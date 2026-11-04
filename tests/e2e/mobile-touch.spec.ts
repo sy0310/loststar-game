@@ -1,5 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {newGame,advance,tuning} from '../../src/game/engine';
+import {RESTORATION_DURATIONS} from '../../src/review/receipt-restoration';
 const KEY='loststar.save.v1';
 test('D1原生触控：两样板切换、四档展柜、真实安装与返回不改旧存档',async({page})=>{
  await page.addInitScript(()=>{localStorage.setItem('loststar.save.v1','preserve-player-save');});
@@ -141,14 +142,14 @@ test('V034原生触控：出土整理、免费试验与三抽屉在同一竖屏�
     await page.clock.runFor(100);
   };
   await tap(page, primary);
-  await advance(4700);
+  await advance(RESTORATION_DURATIONS.excavate * 1000 + 200);
   await tap(page, primary);
   await expect(primary).toBeDisabled();
   await tap(page, primary);
-  await advance(3600);
+  await advance(RESTORATION_DURATIONS.clean * 1000 + 200);
   await expect(page.locator('#week1-parts')).toHaveText('320');
   await tap(page, primary);
-  await advance(3800);
+  await advance(RESTORATION_DURATIONS.repair * 1000 + 200);
   await expect(page.locator('#week1-parts')).toHaveText('200');
   const button = page.locator('#week1-try');
   await expect(canvas).toBeInViewport();
@@ -161,6 +162,13 @@ test('V034原生触控：出土整理、免费试验与三抽屉在同一竖屏�
   for (const drawer of ['security', 'research', 'repair']) {
     await tap(page, page.locator(`[data-drawer="${drawer}"]`));
     await expect(page.locator('#week1-close')).toBeInViewport();
+    if (drawer === 'research') {
+      const ticket = page.locator('[data-study-candidate="field"]');
+      await tap(page, ticket.locator('summary'));
+      await expect(ticket).toContainText('首星记录已齐');
+      await expect(ticket).toContainText('用时与离线');
+      await expect(ticket.getByRole('button', {name: '待任务内容审核'})).toBeDisabled();
+    }
     await tap(page, page.locator('#week1-close'));
   }
   expect(await page.evaluate(() => localStorage.getItem('loststar.save.v1'))).toBe('V034-TOUCH-PRESERVE');

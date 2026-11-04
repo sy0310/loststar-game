@@ -10,9 +10,9 @@ export const RECEIPT_ORIGINAL = Object.freeze({
 
 export const RECEIPT_EVIDENCE_SOURCE = 'parcel/returns-plain/night-review';
 export const RESTORATION_DURATIONS = {
-  excavate: 4.5,
-  clean: 3.4,
-  repair: 3.6,
+  excavate: 6.2,
+  clean: 3.8,
+  repair: 3.9,
   identify: 2.6,
   try: 2.4,
 } as const;

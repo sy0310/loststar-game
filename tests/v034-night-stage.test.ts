@@ -5,10 +5,14 @@ import {
   v034BlendFromPatrol,
   v034Escape,
   v034NightStage,
+  v034NightCamera,
+  v034NightLightState,
+  v034RelightState,
   v034RepairTool,
 } from '../src/review/v034-night-stage';
 import {nightRobotSourcePoint} from '../src/review/night-robot';
 import {nightRobotRegistration} from '../src/review/d1-motion';
+import {shipPose} from '../src/render/motion';
 
 it('holds during the actual isolation pause and routes a leak through the real door', () => {
   const model = createV034NightModel('basic');
@@ -84,4 +88,48 @@ it('enters the third cycle incident from the existing patrol position continuous
   const settled = v034BlendFromPatrol(end, v034NightStage(end), patrol);
   expect(settled.robot.x).toBeCloseTo(normal.robot.x, 3);
   expect(settled.robot.y).toBeCloseTo(normal.robot.y, 3);
+});
+
+it('keeps the entire globe texture inside the suggested review camera', () => {
+  const camera = v034NightCamera;
+  const left = 32 + camera.x + (52 - camera.x) * camera.scale;
+  const right = 32 + camera.x + (716 - camera.x) * camera.scale;
+  const top = camera.y + (70 - camera.y) * camera.scale + camera.offsetY;
+  const bottom = camera.y + (734 - camera.y) * camera.scale + camera.offsetY;
+  expect(left).toBeGreaterThan(0);
+  expect(right).toBeLessThan(832);
+  expect(top).toBeGreaterThan(0);
+  expect(bottom).toBeLessThan(740);
+});
+
+it('only emits searchlight on the front orbit and fades it at the orbit boundary', () => {
+  const view = createV034NightModel('basic').snapshot(12);
+  const stage = v034NightStage(view);
+  expect(v034NightLightState(view, stage, shipPose(1)).beam).toBe(0);
+  expect(v034NightLightState(view, stage, shipPose(4)).beam).toBeGreaterThan(.9);
+  const horizon = .8 / (Math.PI * 2) * 14;
+  expect(v034NightLightState(view, stage, shipPose(horizon + .001)).beam).toBeLessThan(.001);
+});
+
+it('keeps the light on the actual creature or receiving point across both outcomes', () => {
+  for (const preset of ['basic', 'complete'] as const) {
+    const model = createV034NightModel(preset);
+    const resolved = preset === 'basic' ? 23 : 24;
+    const before = model.snapshot(resolved - .001);
+    const after = model.snapshot(resolved + .001);
+    const a = v034NightLightState(before, v034NightStage(before), shipPose(4)).target;
+    const b = v034NightLightState(after, v034NightStage(after), shipPose(4)).target;
+    expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeLessThan(1);
+  }
+  const model = createV034NightModel('basic', {mode: 'cycle'});
+  expect(Math.abs(model.snapshot(240).environment.light - model.snapshot(239.999).environment.light))
+    .toBeLessThan(.001);
+  expect(model.snapshot(243).environment.light).toBe(1);
+});
+
+it('increases local work light during contact and restores daylight without a ledger change', () => {
+  const model = createV034NightModel('basic');
+  expect(v034RelightState(model.snapshot(12)).work).toBeGreaterThan(v034RelightState(model.snapshot(3)).work);
+  expect(v034RelightState(model.snapshot(36))).toEqual({station: 0, work: 0});
+  expect(model.snapshot(36)).toMatchObject({damage: 6, repairSpent: 18, integrity: 100});
 });

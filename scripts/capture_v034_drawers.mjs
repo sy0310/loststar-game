@@ -3,8 +3,8 @@ import {execFileSync} from 'node:child_process';
 import {writeFile} from 'node:fs/promises';
 
 const sourceCommit = execFileSync('git', ['rev-parse', process.env.RUNTIME_COMMIT ?? 'HEAD'], {encoding: 'utf8'}).trim();
-const base = process.env.BASE_URL ?? 'http://127.0.0.1:4196';
-const output = 'artifacts/v034';
+const base = process.env.BASE_URL ?? 'http://127.0.0.1:4197';
+const output = process.env.OUTPUT_DIR ?? 'artifacts/v034-refine';
 const results = [];
 const errors = [];
 
