@@ -146,6 +146,48 @@ test('能力与展柜分别保存，工程按开工胶带等级定价，真实�
 
 test('触点先中性回应，长按不记助力，成功后独立确认并只按真实卸货入账',async({page})=>{
   await open(page);
+  // WAAPI uses wall time even while the model clock is paused. Capture the real
+  // node and its animation when appended, before a later IDB read can outlive it.
+  await page.evaluate(()=>{
+    const entries:any[]=[];
+    (window as any).__incomeEffects=entries;
+    const host=document.querySelector<HTMLElement>('#fusion-revenue-effects')!;
+    const observer=new MutationObserver(records=>{
+      for(const record of records)for(const added of record.addedNodes){
+        if(!(added instanceof HTMLElement)||!added.matches('.fu-income-token'))continue;
+        const box=added.getBoundingClientRect();
+        const hostBox=host.getBoundingClientRect();
+        const wallet=document.querySelector<HTMLElement>('#fusion-wallet')!;
+        const walletBox=wallet.getBoundingClientRect();
+        const style=getComputedStyle(added),hostStyle=getComputedStyle(host);
+        const [originX,originY]=style.transformOrigin.split(' ').map(Number.parseFloat);
+        const width=added.offsetWidth,height=added.offsetHeight;
+        const intersects=(rect:{left:number;top:number;right:number;bottom:number})=>rect.right>0&&rect.bottom>0&&rect.left<innerWidth&&rect.top<innerHeight;
+        const animations=added.getAnimations().map(animation=>{
+          const effect=animation.effect as KeyframeEffect;
+          const keyframes=effect.getKeyframes().map(frame=>{
+            const transform=String(frame.transform??'none');
+            const matrix=new DOMMatrix(transform);
+            const points=[[0,0],[width,0],[0,height],[width,height]].map(([x,y])=>matrix.transformPoint(new DOMPoint(x-originX,y-originY)));
+            const left=Math.min(...points.map(point=>point.x))+originX+hostBox.left+added.offsetLeft;
+            const right=Math.max(...points.map(point=>point.x))+originX+hostBox.left+added.offsetLeft;
+            const top=Math.min(...points.map(point=>point.y))+originY+hostBox.top+added.offsetTop;
+            const bottom=Math.max(...points.map(point=>point.y))+originY+hostBox.top+added.offsetTop;
+            return {offset:frame.computedOffset,opacity:Number(frame.opacity??1),transform,bounds:{left,top,right,bottom},inViewport:intersects({left,top,right,bottom})};
+          });
+          return {playState:animation.playState,pending:animation.pending,duration:effect.getTiming().duration,keyframes};
+        });
+        entries.push({text:added.textContent,wallet:document.querySelector('#fusion-parts')!.textContent,
+          measuredAt:'MutationObserver append microtask, DOM geometry and native WAAPI keyframes',
+          bounds:{left:box.left,top:box.top,right:box.right,bottom:box.bottom,width:box.width,height:box.height},
+          inViewport:intersects(box),display:style.display,visibility:style.visibility,
+          hostDisplay:hostStyle.display,hostVisibility:hostStyle.visibility,
+          walletBounds:{left:walletBox.left,top:walletBox.top,right:walletBox.right,bottom:walletBox.bottom},animations});
+        if(entries.length>16)entries.shift();
+      }
+    });
+    observer.observe(host,{childList:true});
+  });
   const point=await page.evaluate(()=>{
     const canvas=document.querySelector<HTMLCanvasElement>('#fusion-world canvas')!,box=canvas.getBoundingClientRect();
     const scale=Math.min(box.width/canvas.width,box.height/canvas.height);
@@ -168,9 +210,34 @@ test('触点先中性回应，长按不记助力，成功后独立确认并只�
   feedback=await page.evaluate(()=>(window as any).__FUSION__.feedbackMetrics());
   const accepted=feedback.samples.filter((sample:any)=>sample.kind==='accepted');expect(accepted).toHaveLength(1);expect(accepted[0].firstPaintMs).toBeLessThanOrEqual(80);
   expect((await saved(page)).game.resources).toBe(120);
+  expect(await page.evaluate(()=>(window as any).__incomeEffects)).toEqual([]);
   await advance(page,12000);
+  await expect.poll(()=>page.evaluate(()=>(window as any).__incomeEffects.length)).toBe(1);
+  const effects=await page.evaluate(()=>(window as any).__incomeEffects);
   const after=await saved(page);expect(after.game.resources).toBe(120+after.game.station.grossIncome);
-  expect(after.game.cycles).toBeGreaterThan(0);await expect(page.locator('#fusion-revenue-effects .fu-income-token')).toContainText('+8');
+  expect(after.game.cycles).toBeGreaterThan(0);
+  const income=effects[0];
+  expect(income.text).toBe('+8');
+  expect(Number(income.text.slice(1))).toBe(after.game.station.grossIncome);
+  expect(Number(income.wallet.replace(/[^0-9]/g,''))).toBe(after.game.resources);
+  expect(income.bounds.width).toBeGreaterThan(0);expect(income.bounds.height).toBeGreaterThan(0);
+  expect(income.inViewport).toBe(true);
+  expect(income.display).not.toBe('none');expect(income.visibility).toBe('visible');
+  expect(income.hostDisplay).not.toBe('none');expect(income.hostVisibility).toBe('visible');
+  expect(income.animations).toHaveLength(1);
+  const animation=income.animations[0];
+  expect(animation.playState).toBe('running');expect(Number(animation.duration)).toBeGreaterThan(0);
+  expect(animation.keyframes.length).toBeGreaterThanOrEqual(3);
+  expect(animation.keyframes[0].opacity).toBe(0);expect(animation.keyframes.at(-1).opacity).toBe(0);
+  const visibleFrames=animation.keyframes.filter((frame:any)=>frame.opacity>=.9);
+  expect(visibleFrames.length).toBeGreaterThanOrEqual(2);
+  expect(visibleFrames.every((frame:any)=>frame.inViewport)).toBe(true);
+  expect(new Set(animation.keyframes.map((frame:any)=>frame.transform)).size).toBeGreaterThanOrEqual(3);
+  const end=animation.keyframes.at(-1).bounds;
+  const endX=(end.left+end.right)/2,endY=(end.top+end.bottom)/2;
+  expect(endX).toBeGreaterThanOrEqual(income.walletBounds.left);expect(endX).toBeLessThanOrEqual(income.walletBounds.right);
+  expect(endY).toBeGreaterThanOrEqual(income.walletBounds.top);expect(endY).toBeLessThanOrEqual(income.walletBounds.bottom);
+  await test.info().attach('actual-income-animation.json',{body:JSON.stringify({effects,ledger:{cycles:after.game.cycles,grossIncome:after.game.station.grossIncome,resources:after.game.resources}},null,2),contentType:'application/json'});
 });
 
 

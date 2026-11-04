@@ -196,7 +196,9 @@ for (const scanner of [0, 5]) for (const receipt of [0, 1, 2] as const) {
 
 const report = {
   at: new Date().toISOString(), sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim(),
-  sourceState: 'working tree, rerun after source freeze for final SHA', checks,
+  sourceState: execFileSync('git', ['status', '--porcelain', '--', 'src', 'package.json', 'package-lock.json', 'vite.config.ts'], {encoding: 'utf8'}).trim()
+    ? 'runtime source has uncommitted changes' : 'runtime source matches recorded commit',
+  checks,
   assumptions: [
     'Actual unified domain actions and original income/maintenance engine. Regional work creates no additional ordinary currency.',
     'Profiles120/5000 start without permanent rights. Profiles27049/50000 retain all old collection/equipment/growth and free physical restoration rights.',
