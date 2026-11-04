@@ -55,6 +55,7 @@ async function open(name, fixture, engine = browser, width = 390, record = true)
   page.on('response', response => {if(response.status() >= 400) localErrors.push(`${response.status()} ${response.url()}`);});
   await page.goto(base);
   await page.locator('#fusion-world canvas[data-ready="true"]').waitFor();
+  await page.waitForFunction(() => document.querySelector('#fusion-tap').getAttribute('aria-disabled') === 'false');
   const build = await page.locator('.fu-build').textContent();
   const started = Date.now();
   async function shot(label) {

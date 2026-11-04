@@ -830,8 +830,8 @@
       "engine": "chromium",
       "width": 360,
       "build": "0.3.4 · 59670a6",
-      "wallMs": 428,
-      "worldMs": 960565,
+      "wallMs": 475,
+      "worldMs": 960619,
       "balance": 30321,
       "transactions": [],
       "projects": [],
@@ -839,7 +839,7 @@
         {
           "id": "night/3",
           "target": "night",
-          "at": 1793788478394,
+          "at": 1793789733894,
           "source": "parcel/returns-plain/receiving-warehouse",
           "detail": "核验3位 · 抵站0位 · 受损0点 · 维修0零件",
           "night": {
@@ -869,13 +869,18 @@
         {
           "id": "fusion/night-3/field-pipe-scan",
           "target": "marker",
-          "at": 1793788477394,
+          "at": 1793789732894,
           "source": "parcel/returns-plain/pipe-marker-p03",
           "detail": "现场箱标P03与原件RET-031相符"
         }
       ],
       "originalSave": null,
-      "errors": []
+      "errors": [],
+      "readinessGateRecapture": {
+        "at": "2026-11-04T10:56:34.740Z",
+        "build": "0.3.4 · 59670a6",
+        "errors": []
+      }
     },
     {
       "name": "compat-chromium-390",
@@ -883,8 +888,8 @@
       "engine": "chromium",
       "width": 390,
       "build": "0.3.4 · 59670a6",
-      "wallMs": 437,
-      "worldMs": 960568,
+      "wallMs": 462,
+      "worldMs": 960571,
       "balance": 30321,
       "transactions": [],
       "projects": [],
@@ -892,7 +897,7 @@
         {
           "id": "night/3",
           "target": "night",
-          "at": 1793788479175,
+          "at": 1793789734800,
           "source": "parcel/returns-plain/receiving-warehouse",
           "detail": "核验3位 · 抵站0位 · 受损0点 · 维修0零件",
           "night": {
@@ -922,13 +927,18 @@
         {
           "id": "fusion/night-3/field-pipe-scan",
           "target": "marker",
-          "at": 1793788478175,
+          "at": 1793789733800,
           "source": "parcel/returns-plain/pipe-marker-p03",
           "detail": "现场箱标P03与原件RET-031相符"
         }
       ],
       "originalSave": null,
-      "errors": []
+      "errors": [],
+      "readinessGateRecapture": {
+        "at": "2026-11-04T10:56:35.594Z",
+        "build": "0.3.4 · 59670a6",
+        "errors": []
+      }
     },
     {
       "name": "compat-webkit-360",
@@ -936,8 +946,8 @@
       "engine": "webkit",
       "width": 360,
       "build": "0.3.4 · 59670a6",
-      "wallMs": 356,
-      "worldMs": 960746,
+      "wallMs": 393,
+      "worldMs": 960711,
       "balance": 30321,
       "transactions": [],
       "projects": [],
@@ -945,7 +955,7 @@
         {
           "id": "night/3",
           "target": "night",
-          "at": 1793788480394,
+          "at": 1793789736397,
           "source": "parcel/returns-plain/receiving-warehouse",
           "detail": "核验3位 · 抵站0位 · 受损0点 · 维修0零件",
           "night": {
@@ -975,13 +985,18 @@
         {
           "id": "fusion/night-3/field-pipe-scan",
           "target": "marker",
-          "at": 1793788479394,
+          "at": 1793789735397,
           "source": "parcel/returns-plain/pipe-marker-p03",
           "detail": "现场箱标P03与原件RET-031相符"
         }
       ],
       "originalSave": null,
-      "errors": []
+      "errors": [],
+      "readinessGateRecapture": {
+        "at": "2026-11-04T10:56:37.260Z",
+        "build": "0.3.4 · 59670a6",
+        "errors": []
+      }
     },
     {
       "name": "compat-webkit-390",
@@ -989,8 +1004,8 @@
       "engine": "webkit",
       "width": 390,
       "build": "0.3.4 · 59670a6",
-      "wallMs": 357,
-      "worldMs": 960445,
+      "wallMs": 378,
+      "worldMs": 960689,
       "balance": 30321,
       "transactions": [],
       "projects": [],
@@ -998,7 +1013,7 @@
         {
           "id": "night/3",
           "target": "night",
-          "at": 1793788481319,
+          "at": 1793789737444,
           "source": "parcel/returns-plain/receiving-warehouse",
           "detail": "核验3位 · 抵站0位 · 受损0点 · 维修0零件",
           "night": {
@@ -1028,13 +1043,18 @@
         {
           "id": "fusion/night-3/field-pipe-scan",
           "target": "marker",
-          "at": 1793788480319,
+          "at": 1793789736444,
           "source": "parcel/returns-plain/pipe-marker-p03",
           "detail": "现场箱标P03与原件RET-031相符"
         }
       ],
       "originalSave": null,
-      "errors": []
+      "errors": [],
+      "readinessGateRecapture": {
+        "at": "2026-11-04T10:56:38.268Z",
+        "build": "0.3.4 · 59670a6",
+        "errors": []
+      }
     }
   ],
   "shots": [
@@ -1861,57 +1881,73 @@
       "file": "360-chromium-explore.png",
       "width": 360,
       "height": 800,
-      "at": 45,
-      "context": "compat-chromium-360"
+      "at": 0,
+      "context": "compat-chromium-360",
+      "resampledAt": "2026-11-04T10:56:34.740Z",
+      "note": "Supplemental readiness-gated capture; avoids first200ms hint update lag after Canvas decode."
     },
     {
       "file": "360-chromium-base.png",
       "width": 360,
       "height": 800,
-      "at": 422,
-      "context": "compat-chromium-360"
+      "at": 472,
+      "context": "compat-chromium-360",
+      "resampledAt": "2026-11-04T10:56:34.740Z",
+      "note": "Supplemental readiness-gated capture; avoids first200ms hint update lag after Canvas decode."
     },
     {
       "file": "390-chromium-explore.png",
       "width": 390,
       "height": 844,
-      "at": 59,
-      "context": "compat-chromium-390"
+      "at": 0,
+      "context": "compat-chromium-390",
+      "resampledAt": "2026-11-04T10:56:35.594Z",
+      "note": "Supplemental readiness-gated capture; avoids first200ms hint update lag after Canvas decode."
     },
     {
       "file": "390-chromium-base.png",
       "width": 390,
       "height": 844,
-      "at": 434,
-      "context": "compat-chromium-390"
+      "at": 459,
+      "context": "compat-chromium-390",
+      "resampledAt": "2026-11-04T10:56:35.594Z",
+      "note": "Supplemental readiness-gated capture; avoids first200ms hint update lag after Canvas decode."
     },
     {
       "file": "360-webkit-explore.png",
       "width": 360,
       "height": 800,
-      "at": 25,
-      "context": "compat-webkit-360"
+      "at": 0,
+      "context": "compat-webkit-360",
+      "resampledAt": "2026-11-04T10:56:37.260Z",
+      "note": "Supplemental readiness-gated capture; avoids first200ms hint update lag after Canvas decode."
     },
     {
       "file": "360-webkit-base.png",
       "width": 360,
       "height": 800,
-      "at": 350,
-      "context": "compat-webkit-360"
+      "at": 390,
+      "context": "compat-webkit-360",
+      "resampledAt": "2026-11-04T10:56:37.260Z",
+      "note": "Supplemental readiness-gated capture; avoids first200ms hint update lag after Canvas decode."
     },
     {
       "file": "390-webkit-explore.png",
       "width": 390,
       "height": 844,
-      "at": 28,
-      "context": "compat-webkit-390"
+      "at": 0,
+      "context": "compat-webkit-390",
+      "resampledAt": "2026-11-04T10:56:38.268Z",
+      "note": "Supplemental readiness-gated capture; avoids first200ms hint update lag after Canvas decode."
     },
     {
       "file": "390-webkit-base.png",
       "width": 390,
       "height": 844,
-      "at": 353,
-      "context": "compat-webkit-390"
+      "at": 375,
+      "context": "compat-webkit-390",
+      "resampledAt": "2026-11-04T10:56:38.268Z",
+      "note": "Supplemental readiness-gated capture; avoids first200ms hint update lag after Canvas decode."
     }
   ],
   "videos": [
