@@ -9,6 +9,8 @@ import {
  receiptSpecimenRegistration,
  type ReceiptLight,
  type ReceiptSpecimenAssets,
+ type ReceiptSpecimenOptions,
+ type ReceiptSpecimenResult,
 } from './receipt-specimen';
 
 /** D1 deliberately keeps the room camera and actual specimen registration at every tier. */
@@ -93,6 +95,8 @@ function receiptStudyLights(
  lights.push({x:e.x+107,y:e.y-211,strength:.28});
  return lights;
 }
+export type ReceiptStudyPaperOverride = (c:CanvasRenderingContext2D,options:ReceiptSpecimenOptions)=>ReceiptSpecimenResult;
+
 export function drawStudyReceiptSpecimen(
  c:CanvasRenderingContext2D,
  e:Exhibit,
@@ -101,13 +105,15 @@ export function drawStudyReceiptSpecimen(
  install:number,
  assets:ReceiptStudyAssets,
  experiment?:ReceiptExperimentFrame,
+ paperOverride?:ReceiptStudyPaperOverride,
 ){
  const floor=receiptFloorGeometry(e,level);
- return drawReceiptSpecimen(c,assets,{
+ const options:ReceiptSpecimenOptions={
   center:itemCenter(e),frame:e.item.size*e.scale,
   seconds:t,level,installation:install,lights:receiptStudyLights(e,level,install),glass:level===3?.85:.5,
   experiment,receiverY:floor.y+floor.height/2,
- });
+ };
+ return paperOverride?paperOverride(c,options):drawReceiptSpecimen(c,assets,options);
 }
 export function drawStudyReceiptTicket(c:CanvasRenderingContext2D,e:Exhibit,level:number,t:number,assets:ReceiptStudyAssets,experiment?:ReceiptExperimentFrame){
  if(!experiment)return;
@@ -185,7 +191,7 @@ export function drawStudyReceiptFloor(
  c.fill();
  c.restore();
 }
-type ReceiptDraw={e:Exhibit;t:number;level:number;install:number;known:boolean;back:HTMLImageElement;front:HTMLImageElement;item:HTMLImageElement;assets:ReceiptStudyAssets;experiment?:ReceiptExperimentFrame};
+type ReceiptDraw={e:Exhibit;t:number;level:number;install:number;known:boolean;back:HTMLImageElement;front:HTMLImageElement;item:HTMLImageElement;assets:ReceiptStudyAssets;experiment?:ReceiptExperimentFrame;paperOverride?:ReceiptStudyPaperOverride};
 function sprite(c:CanvasRenderingContext2D,img:HTMLImageElement,x:number,y:number,w:number,h:number){if(img.complete&&img.naturalWidth)c.drawImage(img,Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
 function vaultParts(c:CanvasRenderingContext2D,img:HTMLImageElement,x:number,y:number,w:number,h:number,assembly:ReturnType<typeof receiptAssembly>,layer:'rear'|'front'){
  const iw=img.naturalWidth,ih=img.naturalHeight;if(!iw||!ih)return;
@@ -270,8 +276,9 @@ export function drawReceiptStudy(c:CanvasRenderingContext2D,a:ReceiptDraw){
   c.save();c.strokeStyle=`rgba(173,229,208,${.34*assembly.lamp})`;c.lineWidth=1;c.beginPath();c.ellipse(center.x,center.y,44,14,-.25,Math.PI,Math.PI*2);c.stroke();c.restore();
  }
  if(known)drawStudyReceiptFloor(c,e,level,a.install,assets);
- c.save();c.beginPath();c.rect(b.x,b.y,cavityW,cavityH);c.clip();
- const specimen=known?drawStudyReceiptSpecimen(c,e,t,level,a.install,assets,a.experiment):undefined;
+ const paperClipHeight=a.paperOverride?receiptFloorGeometry(e,level).frontY-b.y:cavityH;
+ c.save();c.beginPath();c.rect(b.x,b.y,cavityW,paperClipHeight);c.clip();
+ const specimen=known?drawStudyReceiptSpecimen(c,e,t,level,a.install,assets,a.experiment,a.paperOverride):undefined;
  if(level<3){c.save();c.globalAlpha=.9;c.drawImage(front,e.front.x,e.front.y,e.front.w,e.front.h,b.x,b.y,cavityW,cavityH);c.restore();}c.restore();
  drawStudyReceiptTicket(c,e,level,t,assets,a.experiment);
  if(level===3)vaultGlassFront(c,receiptVaultWindow(e),a.install);

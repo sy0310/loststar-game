@@ -41,6 +41,11 @@ export async function loadResidentArt() {
   return {registration, images};
 }
 export type ResidentArt = Awaited<ReturnType<typeof loadResidentArt>>;
+export type ResidentDrawResult = Omit<ReturnType<typeof residentMotion>, 'action'> & {
+  action: string;
+  flightArt: boolean;
+  source: string;
+};
 
 export function drawResident(
   context: CanvasRenderingContext2D,
@@ -48,7 +53,7 @@ export function drawResident(
   environment: ResidentEnvironment,
   art: ResidentArt,
   dayImage: HTMLImageElement,
-) {
+): ResidentDrawResult {
   const pose = residentMotion(id, environment);
   const registration = art.registration.residents[id];
   const flight = id === 'tagbird' && !pose.nightArt ? registration.flightFrames?.[pose.frame] : undefined;

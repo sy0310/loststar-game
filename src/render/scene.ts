@@ -23,6 +23,8 @@ export interface SceneExtension {
   robotPose?:(base:ReturnType<typeof robotPose>,seconds:number)=>ReturnType<typeof robotPose>|undefined;
   drawRobot?:(context:CanvasRenderingContext2D,frame:SceneFrame,atlas:HTMLImageElement)=>boolean|void;
   environment?:(seconds:number)=>ResidentEnvironment;
+  drawResident?:typeof drawResident;
+  residentPose?:typeof residentMotion;
   camera?:SceneCamera;
   worldEntities?:(context:CanvasRenderingContext2D,frame:SceneFrame)=>SceneEntity[];
   afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void;
@@ -193,8 +195,9 @@ export class ExpeditionScene {
     const residents:ReturnType<typeof drawResident>[]=[];
     for(const id of residentIds){
       if(id!=='mouse'&&!s.collection.includes(id))continue;
-      const pose=residentMotion(id,environment),dayImage=id==='tagbird'?this.art.bird:this.art[id];
-      entities.push({depth:pose.depth,draw:()=>residents.push(drawResident(c,id,environment,this.residentArt,dayImage))});
+      const pose=this.extension?.residentPose?.(id,environment)??residentMotion(id,environment),dayImage=id==='tagbird'?this.art.bird:this.art[id];
+      const paintResident=this.extension?.drawResident??drawResident;
+      entities.push({depth:pose.depth,draw:()=>residents.push(paintResident(c,id,environment,this.residentArt,dayImage))});
     }
     if(this.extension?.worldEntities)entities.push(...this.extension.worldEntities(c,frame));
     entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());

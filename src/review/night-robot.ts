@@ -20,7 +20,8 @@ function poseAt(stage:NightStage,time:number):Pose{
   return {frame:stage.rig.unload>.5?7:6,flip:false};
 }
 
-function sourcePoint(point:NightPoint,flip:boolean,stage:NightStage){
+/** Native cell coordinates registered with the same origin, tilt and bob as the body. */
+export function nightRobotSourcePoint(point:NightPoint,flip:boolean,stage:NightStage){
   const x=(origin.x+point.x*scale)*(flip?-1:1),y=origin.y+point.y*scale;
   const angle=stage.rig.tilt;
   return {x:stage.robot.x+x*Math.cos(angle)-y*Math.sin(angle),
@@ -53,7 +54,7 @@ export function createNightRobot(){
     const sourceHands=pose.frame===5?nightRobotRegistration.pickupHands:pose.frame===7?nightRobotRegistration.unloadHands:nightRobotRegistration.carryHands;
     for(let index=0;index<2;index++){
       const grip=sourceHands[index];
-      const actual=sourcePoint(grip,pose.flip,stage);
+      const actual=nightRobotSourcePoint(grip,pose.flip,stage);
       // Pickup cradles the sides. Carry/unload close over the registered top
       // handle; the original upper arms remain intact behind the case.
       let target=actual;

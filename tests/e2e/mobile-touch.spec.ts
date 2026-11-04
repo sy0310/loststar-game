@@ -125,3 +125,44 @@ test('V0.3原生触控：余额7部分维修、自动开关保存、刷新不重
  await page.clock.install({time:new Date('2026-11-03T15:00:00Z')});await page.clock.pauseAt(new Date('2026-11-03T15:00:10Z'));const s=newGame(Date.parse('2026-11-03T15:00:10Z'));s.resources=7;s.station.integrity=82;s.station.autoRepair=false;
  await page.addInitScript(({s,k})=>{if(!localStorage.getItem(k))localStorage.setItem(k,JSON.stringify(s));},{s,k:KEY});await page.goto('/?start=expedition&review=1');await tap(page,page.locator('#manual-repair'));await expect(page.locator('#station-panel')).toHaveAttribute('data-integrity','84');await expect.poll(()=>page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).resources,KEY)).toBe(1);await page.reload();expect(await page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).resources,KEY)).toBe(1);await tap(page,page.locator('.repair-controls label'));await expect.poll(()=>page.evaluate(k=>JSON.parse(localStorage.getItem(k)!).station.autoRepair,KEY)).toBe(true);await tap(page,page.locator('#research-controls summary'));await expect(page.locator('[data-plan=field]')).toBeDisabled();await expect(page.locator('#world-controls')).not.toContainText('无人签收铃');
 });
+
+test('V034原生触控：出土整理、免费试验与三抽屉在同一竖屏内可操作', async ({page}) => {
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 1000));
+  await page.addInitScript(() => localStorage.setItem('loststar.save.v1', 'V034-TOUCH-PRESERVE'));
+  await page.goto('/?sample=week1&view=receipt');
+  const canvas = page.locator('#week1-paper');
+  const primary = page.locator('#week1-primary');
+  await expect(canvas).toHaveAttribute('data-restoration-ready', 'true');
+  await page.clock.runFor(150);
+  await expect(primary).toBeInViewport();
+  const advance = async (milliseconds: number) => {
+    await page.clock.fastForward(milliseconds - 100);
+    await page.clock.runFor(100);
+  };
+  await tap(page, primary);
+  await advance(4700);
+  await tap(page, primary);
+  await expect(primary).toBeDisabled();
+  await tap(page, primary);
+  await advance(3600);
+  await expect(page.locator('#week1-parts')).toHaveText('320');
+  await tap(page, primary);
+  await advance(3800);
+  await expect(page.locator('#week1-parts')).toHaveText('200');
+  const button = page.locator('#week1-try');
+  await expect(canvas).toBeInViewport();
+  await expect(button).toBeInViewport();
+  await tap(page, button);
+  await advance(2700);
+  await expect(page.locator('#week1-parts')).toHaveText('200');
+  await tap(page, page.locator('[data-week-tab="night"]'));
+  await expect(page.locator('#week1-world canvas')).toHaveAttribute('data-ready', 'true');
+  for (const drawer of ['security', 'research', 'repair']) {
+    await tap(page, page.locator(`[data-drawer="${drawer}"]`));
+    await expect(page.locator('#week1-close')).toBeInViewport();
+    await tap(page, page.locator('#week1-close'));
+  }
+  expect(await page.evaluate(() => localStorage.getItem('loststar.save.v1'))).toBe('V034-TOUCH-PRESERVE');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

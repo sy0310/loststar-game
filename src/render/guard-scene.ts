@@ -10,8 +10,12 @@ import bellUrl from '../../assets/runtime/bell.webp';
 import {residentEnvironment,type ResidentPeriod} from './resident-motion';
 import {tintWorld} from './world-lighting';
 type GuardVisual=ReturnType<typeof guardView>&{period?:ResidentPeriod;station?:StationState;research?:ResearchState;at?:number;repairBay?:number};
+export interface GuardLayerOptions {
+  showEquipment?: boolean;
+  showSearchLine?: boolean;
+}
 
-export function guardLayer(getVisual:()=>GuardVisual):SceneExtension {
+export function guardLayer(getVisual:()=>GuardVisual,options:GuardLayerOptions={}):SceneExtension {
   let rim:HTMLCanvasElement|null=null;const invader=new Image();invader.src=invaderUrl;
   const icons={tape:new Image(),bell:new Image()};icons.tape.src=tapeUrl;icons.bell.src=bellUrl;
   const machines={beacon:new Image(),gate:new Image()};machines.beacon.src=radarDeviceUrl;machines.gate.src=gateDeviceUrl;
@@ -38,9 +42,9 @@ export function guardLayer(getVisual:()=>GuardVisual):SceneExtension {
     if(v.research?.active){c.save();c.strokeStyle='#a1e1db88';c.lineWidth=1;c.setLineDash([4,6]);c.beginPath();c.ellipse(476,384,58+(t*8)%24,18,0,0,Math.PI*2);c.stroke();c.restore();}
     const production=!!v.station;
 
-    const ship=frame.ship;if(v.phase==='night'&&!ship.back){c.save();c.globalAlpha=.22;c.strokeStyle='#ffeab3';c.setLineDash([4,8]);c.beginPath();c.moveTo(ship.x,ship.y+15);c.lineTo(365,470);c.stroke();c.setLineDash([]);c.fillStyle='#ffeab355';c.beginPath();c.ellipse(365,470,35+Math.sin(t)*3,10,0,0,Math.PI*2);c.fill();c.restore();}
-    const slots=[{x:438,y:492},{x:378,y:517}];
-    for(let i=0;i<2;i++){
+    const ship=frame.ship;if(options.showSearchLine!==false&&v.phase==='night'&&!ship.back){c.save();c.globalAlpha=.22;c.strokeStyle='#ffeab3';c.setLineDash([4,8]);c.beginPath();c.moveTo(ship.x,ship.y+15);c.lineTo(365,470);c.stroke();c.setLineDash([]);c.fillStyle='#ffeab355';c.beginPath();c.ellipse(365,470,35+Math.sin(t)*3,10,0,0,Math.PI*2);c.fill();c.restore();}
+    const slots=options.showEquipment===false?[]:[{x:438,y:492},{x:378,y:517}];
+    for(let i=0;i<slots.length;i++){
       const slot=slots[i],id=v.activeSlots[i];if(v.strengths[i]){c.strokeStyle=['','#e7c792','#a7e5d9','#e9aefb'][v.strengths[i]];c.lineWidth=2+v.strengths[i]*.5;c.beginPath();c.ellipse(slot.x,slot.y,25+v.strengths[i]*7,8+v.strengths[i]*2,0,0,Math.PI*2);c.stroke();}c.fillStyle='#352f50';c.fillRect(slot.x-23,slot.y-5,46,11);c.fillStyle='#9a8b91';c.fillRect(slot.x-21,slot.y-7,42,4);
       if((id==='tape'||id==='bell')&&icons[id].complete&&icons[id].naturalWidth)c.drawImage(icons[id],slot.x-25,slot.y-57,50,50);
       if(id==='beacon'||id==='gate'){const img=machines[id];if(img.complete&&img.naturalWidth)c.drawImage(img,slot.x-33,slot.y-68,66,66);if(v.phase==='night'&&id==='beacon'){const p=point(.47);c.save();c.fillStyle='#b4e8d733';c.beginPath();c.moveTo(slot.x-3,slot.y-45);c.lineTo(p.x-30,p.y+8);c.lineTo(p.x+30,p.y+8);c.fill();c.strokeStyle='#bdffee';c.lineWidth=2;c.beginPath();c.ellipse(p.x,p.y+6,26,7,0,0,Math.PI*2);c.stroke();c.restore();}if(id==='gate'){const closed=v.phase==='night'&&v.nightBase%6<1.1+v.strengths[i]*.2;c.fillStyle=closed?'#c2e8d7':'#81768c';for(let j=0;j<(closed?5:1);j++)c.fillRect(slot.x-18+j*8,slot.y-36,4,29);}}

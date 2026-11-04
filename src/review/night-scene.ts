@@ -5,8 +5,28 @@ import {lightNightWorld} from './night-lighting';
 import {createNightRobot} from './night-robot';
 import {createNightCarrier} from './night-carrier';
 
+export interface NightStudyOptions {
+  idleCarrier?: boolean;
+}
+
+/** Register the same closed field case at the robot's existing belt position. */
+export function nightHolsterStage(pose: NightStage['robot']): NightStage {
+  const stage = nightStage(0);
+  const dx = stage.cargo.grip.x - stage.robot.x;
+  const dy = stage.cargo.grip.y - stage.robot.y;
+  stage.robot = {...pose};
+  stage.cargo.grip = {x: pose.x + dx, y: pose.y + dy};
+  stage.paper.alpha = 0;
+  stage.emerge = 0;
+  return stage;
+}
+
 /** One globe and one existing creature, assembled under one set of world lights. */
-export function createNightStudy(timelineAt=(time:number)=>reviewEnvironment(time)):SceneExtension {
+export function createNightStudy(
+  timelineAt=(time:number)=>reviewEnvironment(time),
+  stageAt:(seconds:number)=>NightStage=nightStage,
+  options:NightStudyOptions={},
+):SceneExtension {
   const paper=new Image();
   paper.src=invaderUrl;
   const carrier=createNightCarrier();
@@ -134,19 +154,26 @@ export function createNightStudy(timelineAt=(time:number)=>reviewEnvironment(tim
     cycleFraction:(_base,time)=>timelineAt(time).fraction,
     robotPose:(_base,time)=>{
       const seconds=timelineAt(time).nightSeconds;
-      return seconds===null?undefined:nightStage(seconds).robot;
+      return seconds===null?undefined:stageAt(seconds).robot;
     },
     drawRobot(context,frame,atlas){
       const seconds=timelineAt(frame.t).nightSeconds;
       if(seconds===null)return false;
       robotAtlas=atlas;
-      const stage=nightStage(seconds);
+      const stage=stageAt(seconds);
       robot.drawBody(context,frame,stage,atlas);
     },
     worldEntities(context,frame){
       const seconds=timelineAt(frame.t).nightSeconds;
-      if(seconds===null)return [];
-      const stage=nightStage(seconds);
+      if(seconds===null){
+        if(!options.idleCarrier)return [];
+        const stage=nightHolsterStage(frame.robot);
+        return [
+          {depth:stage.robot.y-.3,draw:()=>carrier.groundShadow(context,stage)},
+          {depth:stage.robot.y-.1,draw:()=>carrier.draw(context,stage,()=>{})},
+        ];
+      }
+      const stage=stageAt(seconds);
       const handling=stage.phase==='contain'||stage.phase==='escort'||stage.phase==='dock';
       return [
         {depth:stage.robot.y-.3,draw:()=>{paperShadow(context,stage);carrier.groundShadow(context,stage);}},
@@ -159,7 +186,9 @@ export function createNightStudy(timelineAt=(time:number)=>reviewEnvironment(tim
       ];
     },
     afterWorld(context,frame){
-      const timeline=timelineAt(frame.t),stage=nightStage(timeline.nightSeconds??0);
+      const timeline=timelineAt(frame.t);
+      let stage=stageAt(timeline.nightSeconds??0);
+      if(timeline.nightSeconds===null&&options.idleCarrier)stage=nightHolsterStage(frame.robot);
       lightNightWorld(context,frame,stage,timeline.environment.light);
       if(timeline.nightSeconds!==null){
         registrationMarks(context,stage);
@@ -172,6 +201,8 @@ export function createNightStudy(timelineAt=(time:number)=>reviewEnvironment(tim
       canvas.dataset.targetX=stage.target.x.toFixed(2);canvas.dataset.targetY=stage.target.y.toFixed(2);
       canvas.dataset.beam=String(timeline.nightSeconds!==null&&stage.beamVisible(frame.ship.back));
       canvas.dataset.carrierOpen=stage.cargo.open.toFixed(3);
+      canvas.dataset.carrierGripX=stage.cargo.grip.x.toFixed(2);
+      canvas.dataset.carrierGripY=stage.cargo.grip.y.toFixed(2);
       canvas.dataset.carrierReceiving=stage.cargo.receiving.toFixed(3);
       canvas.dataset.paperFold=stage.paper.fold.toFixed(3);
     },

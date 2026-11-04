@@ -6,9 +6,11 @@ import roomUrl from '../../assets/runtime/museum-room-v02.webp';
 import {textures} from '../ui/art';
 import {discoveryById} from '../content/catalog';
 import type {ArtId} from '../content/types';
-import type {ReceiptStudyAssets} from './receipt-study';
+import type {ReceiptStudyAssets,ReceiptStudyPaperOverride} from './receipt-study';
 import type {ReceiptSpecimenResult} from './receipt-specimen';
 import type {ReceiptExperimentFrame} from '../review/receipt-reading';
+import type {ReceiptRestorationFrame} from '../review/receipt-restoration';
+import type {ReceiptRestorationAssets,ReceiptRestorationDrawResult} from './receipt-restoration';
 const habitatUrls=import.meta.glob('../../assets/runtime/habitat-*-v02.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 const layers=import.meta.glob('../../assets/runtime/case-*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 export const residentIds=['mouse','hermit','tagbird'] as const;
@@ -25,12 +27,33 @@ export class MuseumScene {
  private receiptParts?:ReceiptStudyAssets;
  private receiptRenderer?:typeof import('./receipt-study');
  private specimenStatus?:ReceiptSpecimenResult;
+ private restorationParts?:ReceiptRestorationAssets;
+ private restorationRenderer?:typeof import('./receipt-restoration');
+ private restorationReady?:Promise<void>;
+ private restorationStatus?:ReceiptRestorationDrawResult;
  constructor(private root:HTMLElement,private source:()=>MuseumSource,private level:(id:string)=>number=()=>0,private clock:()=>number=()=>performance.now()/1000,private options:MuseumOptions={}){
   root.classList.add('museum-room');this.canvas.id='museum-canvas';this.canvas.width=768;this.canvas.height=960;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','失物收藏室：六个独立玻璃容器，藏品在玻璃内轻轻活动');root.append(this.canvas);this.c=this.canvas.getContext('2d');
   const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=exhibits.map(e=>{const p=layerPoint(e,e.crop.x,e.crop.y);return `<button data-exhibit="${e.id}" data-detail="${e.id}" style="left:${p.x/768*100}%;top:${p.y/960*100}%;width:${Math.max(96,e.crop.w*e.scale)/768*100}%;height:${Math.max(96,e.crop.h*e.scale)/960*100}%"></button>`;}).join('');root.append(hits);this.ready=this.load();requestAnimationFrame(this.loop);
  }
- private images(){return [this.robot,this.room,...Object.values(this.art),...Object.values(this.glass).flat(),...Object.values(this.receiptParts??{})];}
+ private images(){return [this.robot,this.room,...Object.values(this.art),...Object.values(this.glass).flat(),...Object.values(this.receiptParts??{}),...Object.values(this.restorationParts??{})];}
  async load(){this.root.dataset.loading='true';try{if(this.options.receiptStudy&&!this.receiptParts){this.receiptRenderer??=await import('./receipt-study');this.receiptParts=this.receiptRenderer.createReceiptStudyAssets();}await Promise.all(this.images().map(i=>i.decode()));this.canvas.dataset.ready='true';this.draw(this.clock());this.refresh();}catch{this.canvas.dataset.ready='error';this.root.setAttribute('aria-label','收藏室暂未接通，请返回后重试');}finally{this.root.dataset.loading='false';}}
+ /** Explicit opt-in keeps V0.3.4 layers out of the ordinary game and old D1 path. */
+ prepareReceiptRestoration(){
+  this.restorationReady??=(async()=>{
+   await this.ready;
+   if(!this.options.receiptStudy||this.canvas.dataset.ready!=='true')throw new Error('Receipt study is unavailable');
+   try{
+    this.restorationRenderer=await import('./receipt-restoration');
+    this.restorationParts=this.restorationRenderer.createReceiptRestorationAssets();
+    await Promise.all(Object.values(this.restorationParts).map(part=>part.decode()));
+   }catch(error){
+    this.restorationParts=undefined;
+    this.restorationReady=undefined;
+    throw error;
+   }
+  })();
+  return this.restorationReady;
+ }
  mount(parent:HTMLElement){parent.append(this.root);}
  async retry(){for(const img of this.images()){const url=new URL(img.src);url.searchParams.set('retry',String(Date.now()));img.src=url.href;}this.ready=this.load();await this.ready;}
  refresh(){for(const id of exhibitIds){const b=this.root.querySelector<HTMLButtonElement>(`[data-exhibit="${id}"]`)!;const known=this.source().collection.includes(id);b.disabled=!known;b.setAttribute('aria-label',known?`放大${discoveryById(id)!.name}`:'空展柜，等待下一次发现');}}
@@ -40,10 +63,10 @@ export class MuseumScene {
   this.canvas.dataset.robotX=String(Math.round(this.pose.x));this.canvas.dataset.robotY=String(Math.round(this.pose.y));this.canvas.dataset.robotAction=this.pose.action;this.canvas.dataset.robotTarget=this.pose.target;
   this.root.dispatchEvent(new CustomEvent('robot-state',{detail:this.pose}));this.canvas.dataset.frame=String(++this.frames);
  }
- private paint(c:CanvasRenderingContext2D,t:number,receipt?:{level:number;install:number;experiment?:ReceiptExperimentFrame}){c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
+ private paint(c:CanvasRenderingContext2D,t:number,receipt?:{level:number;install:number;experiment?:ReceiptExperimentFrame;restoration?:ReceiptRestorationFrame}){c.imageSmoothingEnabled=false;sprite(c,this.room,0,0,768,960);
   // Tiny free-floating dust and lamplight are part of the room, never the whole background moving.
   for(let i=0;i<16;i++){const x=(i*127+Math.sin(t*.18+i)*10)%740+14,y=110+(i*61+t*3)%620;c.fillStyle=`rgba(255,218,148,${.15+.15*Math.sin(t+i)})`;c.fillRect(Math.round(x),Math.round(y),2,2);}
-  this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y,draw:()=>this.case(c,e,t,receipt?(e.id==='receipt'?receipt.level:this.level(`case-${exhibitIds.indexOf(e.id)}`)):undefined,e.id==='receipt'?receipt?.install:undefined,e.id==='receipt'?receipt?.experiment:undefined)}));if(!receipt)entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
+  this.pose=baseRobotPose(t);const entities=exhibits.map(e=>({depth:e.y,draw:()=>this.case(c,e,t,receipt?(e.id==='receipt'?receipt.level:this.level(`case-${exhibitIds.indexOf(e.id)}`)):undefined,e.id==='receipt'?receipt?.install:undefined,e.id==='receipt'?receipt?.experiment:undefined,e.id==='receipt'?receipt?.restoration:undefined)}));if(!receipt)entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
   const lights=this.level('light');if(lights){c.fillStyle=`rgba(255,207,124,${.035*lights})`;c.fillRect(0,0,768,960);}
   if(this.level('deco-0')){c.fillStyle='#ffe9ae';for(let i=0;i<12;i++)c.fillRect(34+i*62,163+(i%2)*7,4,4);}
   if(this.level('deco-1')){c.fillStyle='#7dbd9b';for(let i=0;i<9;i++)c.fillRect(25+i*4,710-Math.sin(i)*18,5,8);}
@@ -58,16 +81,19 @@ export class MuseumScene {
 
  renderExhibit(canvas:HTMLCanvasElement,id:string,level:number){const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const scale=Math.min((canvas.width-48)/e.crop.w,(canvas.height-70)/(e.base.y-e.crop.y));c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);this.case(c,{...e,x:canvas.width/2,y:canvas.height-48,scale,width:e.base.w*scale},0,level);canvas.dataset.ready='true';canvas.dataset.level=String(level);}
  /** D1 compares real structural parts in one fixed room camera, never one fitted poster per level. */
- renderFocused(canvas:HTMLCanvasElement,id:'receipt',level:number,t:number,install=1,view:'focus'|'room'|'specimen'='focus',experiment?:ReceiptExperimentFrame){
+ renderFocused(canvas:HTMLCanvasElement,id:'receipt',level:number,t:number,install=1,view:'focus'|'room'|'specimen'='focus',experiment?:ReceiptExperimentFrame,restoration?:ReceiptRestorationFrame){
   if(id!=='receipt'||!this.receiptRenderer||this.canvas.dataset.ready!=='true')return;
+  if(restoration&&(!this.restorationParts||!this.restorationRenderer))return;
+  if(restoration)experiment=undefined;
+  this.restorationStatus=undefined;
   const started=performance.now();
   const c=canvas.getContext('2d');
   if(!c)return;
   const camera=view==='room'?{left:0,top:0,width:768,height:960}
-   :view==='specimen'?(experiment?this.receiptRenderer.receiptExperimentCamera:this.receiptRenderer.receiptSpecimenCamera):this.receiptRenderer.receiptFocusCamera;
+   :view==='specimen'?(restoration?this.restorationRenderer!.receiptRestorationCamera:experiment?this.receiptRenderer.receiptExperimentCamera:this.receiptRenderer.receiptSpecimenCamera):this.receiptRenderer.receiptFocusCamera;
   const scale=Math.min(canvas.width/camera.width,canvas.height/camera.height);
   const x=(canvas.width-camera.width*scale)/2,y=(canvas.height-camera.height*scale)/2;
-  c.save();c.setTransform(1,0,0,1,0,0);c.fillStyle='#171124';c.fillRect(0,0,canvas.width,canvas.height);c.beginPath();c.rect(x,y,camera.width*scale,camera.height*scale);c.clip();c.translate(x-camera.left*scale,y-camera.top*scale);c.scale(scale,scale);this.paint(c,t,{level,install,experiment});c.restore();
+  c.save();c.setTransform(1,0,0,1,0,0);c.fillStyle='#171124';c.fillRect(0,0,canvas.width,canvas.height);c.beginPath();c.rect(x,y,camera.width*scale,camera.height*scale);c.clip();c.translate(x-camera.left*scale,y-camera.top*scale);c.scale(scale,scale);this.paint(c,t,{level,install,experiment,restoration});c.restore();
   const e=exhibits[0],item=itemCenter(e),itemSize=e.item.size*e.scale;canvas.dataset.ready='true';canvas.dataset.level=canvas.dataset.tier=String(level);canvas.dataset.install=install.toFixed(3);canvas.dataset.view=view;canvas.dataset.camera=`${camera.left},${camera.top},${camera.width},${camera.height}`;canvas.dataset.item=`${item.x},${item.y},${itemSize}`;canvas.dataset.anchor=`${e.x},${e.y}`;canvas.dataset.anchorX=String(e.x);canvas.dataset.anchorY=String(e.y);canvas.dataset.itemX=String(item.x);canvas.dataset.itemY=String(item.y);canvas.dataset.itemSize=String(itemSize);
   if(this.specimenStatus){const b=this.specimenStatus.bounds;canvas.dataset.specimenTier=String(this.specimenStatus.tier);canvas.dataset.paperBbox=`${b.left},${b.top},${b.width},${b.height}`;canvas.dataset.paperReveal=this.specimenStatus.reveal.toFixed(3);}
   const trial=this.specimenStatus?.experiment;
@@ -80,21 +106,36 @@ export class MuseumScene {
    canvas.dataset.experimentHinge=`${trial.hinge.x},${trial.hinge.y}`;
    canvas.dataset.readLineIds=trial.renderedLineIds.join(',');
   }
+  const restored=(this.restorationStatus as ReceiptRestorationDrawResult|undefined)?.restoration;
+  canvas.dataset.restorationPhase=restored?.phase??'idle';
+  canvas.dataset.restorationCondition=restored?.condition??'';
+  if(restored){
+   canvas.dataset.restorationCleaning=restored.cleaning.toFixed(3);
+   canvas.dataset.restorationRepairing=restored.repairing.toFixed(3);
+   canvas.dataset.restorationExcavation=restored.excavation.toFixed(3);
+   canvas.dataset.restorationOriginalCode=restored.originalCode;
+   canvas.dataset.restorationMissing=String(restored.missingCount);
+  }
   canvas.dataset.frame=String(++this.frames);
   canvas.dataset.drawMs=(performance.now()-started).toFixed(3);
  }
- private case(c:CanvasRenderingContext2D,e:Exhibit,t:number,forcedLevel?:number,install=1,experiment?:ReceiptExperimentFrame){
+ private case(c:CanvasRenderingContext2D,e:Exhibit,t:number,forcedLevel?:number,install=1,experiment?:ReceiptExperimentFrame,restoration?:ReceiptRestorationFrame){
   const service=forcedLevel===undefined&&this.pose.target===e.id?this.pose:null,known=this.source().collection.includes(e.id),level=forcedLevel??this.level(`case-${exhibitIds.indexOf(e.id)}`),[back,front]=this.glass[e.id],s=e.scale,p=layerPoint(e,e.crop.x,e.crop.y),b=layerPoint(e,e.cavity.x,e.cavity.y),center=itemCenter(e),width=e.cavity.w*s,height=e.cavity.h*s;
-  if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'&&level>0){this.specimenStatus=this.receiptRenderer.drawReceiptStudy(c,{e,t,level,install,known,back,front,item:this.art.receipt,assets:this.receiptParts,experiment});return;}
+  const paperOverride:ReceiptStudyPaperOverride|undefined=restoration&&this.restorationRenderer&&this.restorationParts?(context,options)=>{
+   this.restorationStatus=this.restorationRenderer!.drawReceiptRestoration(context,this.restorationParts!,{...options,receiverY:options.receiverY!,restorationFrame:restoration});
+   return this.restorationStatus;
+  }:undefined;
+  if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'&&level>0){this.specimenStatus=this.receiptRenderer.drawReceiptStudy(c,{e,t,level,install,known,back,front,item:this.art.receipt,assets:this.receiptParts,experiment,paperOverride});return;}
   c.save();c.fillStyle='#120d2840';c.beginPath();c.ellipse(e.x,e.y-2,e.width*.43,5,0,0,Math.PI*2);c.fill();
   c.drawImage(back,e.crop.x,e.crop.y,e.crop.w,e.crop.h,p.x,p.y,e.crop.w*s,e.crop.h*s);
   if(this.options.receiptStudy&&this.receiptRenderer&&this.receiptParts&&e.id==='receipt'&&known)this.receiptRenderer.drawStudyReceiptFloor(c,e,level,install,this.receiptParts);
   if(level){c.strokeStyle=['','#ffe0a0','#9ce9e1','#e6b2ff'][level];c.lineWidth=level===3?3:2;c.beginPath();c.ellipse(e.x,e.y-9,e.width*.40,6,0,0,Math.PI*2);c.stroke();}
-  c.save();c.beginPath();c.rect(b.x,b.y,width,height);c.clip();
+  const paperClipHeight=restoration&&this.receiptRenderer?this.receiptRenderer.receiptFloorGeometry(e,level).frontY-b.y:height;
+  c.save();c.beginPath();c.rect(b.x,b.y,width,paperClipHeight);c.clip();
   if(known&&!(service&&service.lift>0)){
    const phase=t+exhibitIds.indexOf(e.id),bob=Math.sin(phase*1.4)*2,iw=e.item.size*s;
    if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'){
-    this.specimenStatus=this.receiptRenderer.drawStudyReceiptSpecimen(c,e,t,level,install,this.receiptParts,experiment);
+    this.specimenStatus=this.receiptRenderer.drawStudyReceiptSpecimen(c,e,t,level,install,this.receiptParts,experiment,paperOverride);
    }else{
    c.save();c.translate(center.x,center.y+bob);
    switch(e.id){
