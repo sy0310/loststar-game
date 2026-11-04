@@ -34,6 +34,7 @@ npm run preview -- --port 4173
 
 计划周期为2026年11月4日至10日。目标是形成可供用户逐项审核的设计包，按视觉、交互和经济证据决定冻结项。
 
+- [简洁交互与探索融合计划](docs/27_V034_SIMPLIFIED_EXPLORATION_FUSION_PLAN.md)补充“点星球助力、自动探索、零件升级”的入口设计，保留奇物、收藏、昼夜和真实线索，列明旧档、经济与动画连续性门槛。本次为文档候选，运行版本仍为8ffad81。
 - [最新Review动作返修与10款参考](docs/26_V034_REVIEW_REFINEMENT_AND_MOTION_REFERENCES.md)针对发掘平移、修补差异、夜间可读性、科研候选任务票与鸟比例逐项修订，首周整体冻结仍待用户审核。
 - [本轮实际截图与连续媒体](artifacts/v034-refine/index.html)对应返修源码**0.3.4 / 8ffad81**。固定支点翻起、两处哑光修补、同源夜间观察窗、冷暖局部光照和鸟比例校准保持隔离审阅。
 - [首周计划](docs/24_V034_WEEK1_DESIGN_FREEZE_PLAN.md)、[设计审核包与实施门槛](docs/25_V034_DESIGN_REVIEW_PACKET.md)。优先同一收据的出土、清洁、修补、证据辨识和同球体30秒夜间处置。
