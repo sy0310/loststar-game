@@ -50,7 +50,8 @@ async function open(name, fixture, engine = browser, width = 390, record = true)
   }
   const page = await context.newPage();
   const localErrors = [];
-  page.on('pageerror', error => localErrors.push(error.message));
+  page.on('pageerror', error => localErrors.push(error.stack ?? error.message));
+  page.on('console', message => {if (message.type() === 'error') localErrors.push(message.text());});
   page.on('response', response => {if(response.status() >= 400) localErrors.push(`${response.status()} ${response.url()}`);});
   await page.goto(base);
   await page.locator('#fusion-world canvas[data-ready="true"]').waitFor();
@@ -80,11 +81,25 @@ async function click(page, selector) {
   await element.tap();
   await page.waitForTimeout(180);
 }
+async function terrainTap(page) {
+  const point = await page.evaluate(() => {
+    const canvas = document.querySelector('#fusion-world canvas');
+    const box = canvas.getBoundingClientRect();
+    for (const [px, py] of [[488,507],[570,485],[416,520],[350,530],[470,450]]) {
+      const x = box.x + box.width * px / 832;
+      const y = box.y + box.height * py / 740;
+      if (window.__FUSION__.pickAtClient(x, y).kind === 'planet') return {x,y};
+    }
+    throw Error('No visible terrain point');
+  });
+  await page.touchscreen.tap(point.x, point.y);
+  await page.waitForTimeout(180);
+}
 async function fresh() {
   const {page, shot, close} = await open('fresh', null);
   await shot('390-explore');
-  await click(page, '#fusion-tap');
-  await page.waitForTimeout(350);await click(page, '#fusion-tap');
+  await terrainTap(page);
+  await page.waitForTimeout(350);await terrainTap(page);
   await shot('390-assist');
   await click(page, '#fusion-upgrades');await shot('390-upgrades-before');
   await click(page, '[data-upgrade="scanner"]');await shot('390-upgrades-after');
@@ -120,7 +135,7 @@ async function night(kind) {
     await page.waitForTimeout(Math.max(0, started + at - Date.now()));
     await shot(`${kind}-${at / 1000}`);
   }
-  await click(page, '[data-tab="base"]');await click(page, '[data-drawer="station"]');await shot(`${kind}-receipt`);
+  await click(page, '[data-tab="base"]');await click(page, '.fu-base-actions [data-drawer="station"]');await shot(`${kind}-receipt`);
   await close(`${kind}-live`);
 }
 async function fullCycle() {
@@ -134,7 +149,7 @@ async function fullCycle() {
 async function baseAndProjects() {
   const {page, shot, close} = await open('base-projects', 'base');
   await click(page, '[data-tab="base"]');await shot('390-base');
-  await page.waitForTimeout(15000);await shot('390-robot-next-case');
+  await page.waitForTimeout(35000);await shot('390-robot-next-case');
   await click(page, '[data-tab="collection"]');await shot('390-collection');
   for (const id of ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell']) {
     await click(page, `#fusion-collection-list [data-detail="${id}"]`);await page.waitForTimeout(250);await shot(`closeup-${id}`);

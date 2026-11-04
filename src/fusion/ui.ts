@@ -11,6 +11,7 @@ import {MuseumScene, residentIds} from '../render/museum';
 import {FusionHabitatScene} from './habitat';
 import {ArchiveNightReplay} from './archive-replay';
 import {drawCaseEngineering} from './case-engineering';
+import {PlanetTapGesture, type TapPointer} from './tap-gesture';
 import {RadarScene} from '../render/radar-scene';
 import {StarMapScene} from '../render/star-map';
 import type {ExpeditionScene} from '../render/scene';
@@ -51,7 +52,7 @@ export function mountFusion(controller: FusionController) {
       <main id="fusion-scroll">
         <section id="fusion-explore" class="fu-view">
           <div class="fu-world-shell">
-            <div id="fusion-tap" role="button" tabindex="0" aria-label="点星球，协助探索"><div id="fusion-world"></div><span id="fusion-tap-hint">星球接通中…</span></div><button id="fusion-scene-retry" class="fu-scene-retry" hidden>重新接通信号</button>
+            <div id="fusion-tap" role="button" tabindex="0" aria-label="点星球，协助探索"><div id="fusion-world"></div><span id="fusion-tap-hint">星球接通中…</span><span id="fusion-pick-reticle" class="fu-pick-reticle" aria-hidden="true" hidden></span></div><button id="fusion-scene-retry" class="fu-scene-retry" hidden>重新接通信号</button>
             <span id="fusion-period" class="fu-period">白天</span><div id="fusion-inspection-panel" class="fu-inspection" hidden><canvas id="fusion-inspection" width="780" height="180" aria-label="同一球面的事件近景"></canvas><small>现场观察</small></div>
           </div>
           <section class="fu-explore-controls">
@@ -120,6 +121,9 @@ export function mountFusion(controller: FusionController) {
   let focus: (() => {x: number; y: number}) | undefined;
   let inspectionCenter = {x: 416, y: 350};
   let lastInspectionPaint = 0;
+  let manualInspectionUntil = 0;
+  let manualInspectionPoint = {x: 416, y: 350};
+  let reticleTimer: ReturnType<typeof setTimeout>;
   let tab: Tab = 'explore';
   let filter: Filter = 'artifact';
   let drawer: Drawer = 'upgrades';
@@ -423,13 +427,13 @@ export function mountFusion(controller: FusionController) {
       const task = state.task;
       const active = query('#fusion-active-task');
       const legacyTask = task ? null : state.game.research.active;
-      if (active.dataset.task !== (task?.id ?? legacyTask?.id ?? '')) {
-        active.dataset.task = task?.id ?? legacyTask?.id ?? '';
+      if (active.dataset.taskKey !== (task?.id ?? legacyTask?.id ?? '')) {
+        active.dataset.taskKey = task?.id ?? legacyTask?.id ?? '';
         active.innerHTML = task ? `<div class="fu-active-task"><span>${fusionTargets.find(target => target.id === task.target)!.name}</span><strong id="fusion-task-remaining"></strong><button data-cancel-task="${task.id}">取消，退还未用零件</button></div>` : legacyTask ? '<p id="fusion-legacy-task" class="fu-muted"></p>' : '';
       }
       if (legacyTask) query('#fusion-legacy-task').textContent = `已有调查进行中 · 余${minutes(Math.max(0, legacyTask.end - state.game.world.elapsedMs))}`;
       if (task) query('#fusion-task-remaining').textContent = task.endsAt > state.game.lastAt ? minutes(task.endsAt - state.game.lastAt) : '等待现场发生';
-      for (const button of body.querySelectorAll<HTMLButtonElement>('[data-task]')) {
+      for (const button of body.querySelectorAll<HTMLButtonElement>('button[data-task]')) {
         const target = fusionTargets.find(item => item.id === button.dataset.task)!;
         const eligible = target.id === 'marker' ? state.game.collection.includes('receipt') : target.id === 'residents' ? residentIds.some(id => state.game.collection.includes(id)) : state.game.world.settledNights > 0;
         button.disabled = !!task || !!state.game.research.active || state.game.resources < target.price || !eligible;
@@ -490,7 +494,7 @@ export function mountFusion(controller: FusionController) {
     query('.fu-explore-controls [role="progressbar"]').setAttribute('aria-label', night ? '夜班进度' : '探索进度');
     const phase = scene?.canvas.dataset.fusionPhase;
     const repair = game.station.lastRepair;
-    const showInspection = tab === 'explore' && (night && ['patrol', 'track', 'identify', 'contain', 'result', 'return'].includes(phase ?? '') || !!repair && game.lastAt - repair.at < 4000);
+    const showInspection = tab === 'explore' && (performance.now() < manualInspectionUntil || night && ['patrol', 'track', 'identify', 'contain', 'result', 'return'].includes(phase ?? '') || !!repair && game.lastAt - repair.at < 4000);
     query('#fusion-inspection-panel').hidden = !showInspection;
     query('#fusion-action').textContent = night ? ({appear: '箱堆传来动静', track: '咔哒正在追踪', identify: '核对访客标记', contain: '引导访客入站', result: '正在归档结果', return: '咔哒正在回站'}[phase ?? ''] ?? '咔哒正在巡守') : world.period === 'dawn' ? '清晨，继续探索' : '搜索箱堆';
     query('#fusion-auto').textContent = night ? '夜间自动守护' : pending > 0 ? '助力探索中' : '自动探索中';
@@ -535,34 +539,90 @@ export function mountFusion(controller: FusionController) {
     query('#fusion-robot-status').textContent = `咔哒 · ${labels[pose.action] ?? '整理中'}`;
   });
 
-  let down: {x: number; y: number; id: number} | null = null;
-  query('#fusion-tap').addEventListener('pointerdown', event => {
-    const pointer = event as PointerEvent;
-    down = {x: pointer.clientX, y: pointer.clientY, id: pointer.pointerId};
-  });
-  query('#fusion-tap').addEventListener('pointercancel', () => {down = null;});
+  const gesture = new PlanetTapGesture();
+  let sceneClick: {x: number; y: number; at: number} | null = null;
+  const hero = query('#fusion-tap');
+  function scrollPosition() {
+    return [query('#fusion-scroll').scrollTop, window.scrollX, window.scrollY,
+      window.visualViewport?.offsetLeft ?? 0, window.visualViewport?.offsetTop ?? 0].join('/');
+  }
+  function pointerSample(event: PointerEvent): TapPointer {
+    return {id: event.pointerId, primary: event.isPrimary, button: event.button,
+      x: event.clientX, y: event.clientY, at: performance.now(), scroll: scrollPosition()};
+  }
+  function heroReady() {
+    return scene?.ready === true && worldRoot.dataset.error !== 'true' && !dialog.open && tab === 'explore';
+  }
+  function highlightPicked(x: number, y: number) {
+    const canvas = scene!.canvas.getBoundingClientRect();
+    const bounds = hero.getBoundingClientRect();
+    const reticle = query('#fusion-pick-reticle');
+    const scale = Math.min(canvas.width / scene!.canvas.width, canvas.height / scene!.canvas.height);
+    reticle.style.left = `${canvas.left - bounds.left + (canvas.width - scene!.canvas.width * scale) / 2 + x * scale}px`;
+    reticle.style.top = `${canvas.top - bounds.top + (canvas.height - scene!.canvas.height * scale) / 2 + y * scale}px`;
+    reticle.hidden = false;
+    clearTimeout(reticleTimer);
+    reticleTimer = setTimeout(() => {reticle.hidden = true;}, 1200);
+  }
+  function inspectPicked(x: number, y: number) {
+    manualInspectionPoint = {x, y};
+    manualInspectionUntil = performance.now() + 2200;
+    inspectionCenter = {x, y};
+    query('#fusion-inspection-panel').hidden = false;
+    highlightPicked(x, y);
+    pulse?.();
+  }
   async function assist() {
-    if (!scene?.ready || worldRoot.dataset.error === 'true' || dialog.open || tab !== 'explore') return;
-    if (worldView(controller.state.game).phase === 'night') {pulse?.();return;}
+    if (!heroReady()) return;
+    if (worldView(controller.state.game).phase === 'night') {
+      const point = focus?.() ?? inspectionCenter;
+      inspectPicked(point.x, point.y);
+      return;
+    }
     const result = await act({type: 'tap'});
     if (result.ok) pulse?.();
   }
-  query('#fusion-tap').addEventListener('pointerup', event => {
-    const pointer = event as PointerEvent;
-    if (!down || down.id !== pointer.pointerId) return;
-    const moved = Math.hypot(pointer.clientX - down.x, pointer.clientY - down.y);
-    down = null;
-    const bounds = scene?.canvas.getBoundingClientRect();
-    const onPlanet = bounds && ((pointer.clientX - bounds.left - bounds.width * .5) / (bounds.width * .46)) ** 2 + ((pointer.clientY - bounds.top - bounds.height * .52) / (bounds.height * .5)) ** 2 <= 1;
-    if (moved <= 10 && onPlanet && !dialog.open && tab === 'explore') void assist();
-  });
-  query('#fusion-tap').addEventListener('keydown', event => {
-    const key = event as KeyboardEvent;
-    if (key.key !== 'Enter' && key.key !== ' ') return;
-    key.preventDefault();
-    if (!key.repeat) void assist();
+  async function routeScenePointer(event: PointerEvent) {
+    if (!heroReady()) return;
+    const hit = scene!.pickAtClient(event.clientX, event.clientY);
+    if (hit.kind === 'space') return;
+    if (worldView(controller.state.game).phase === 'night') {inspectPicked(hit.x, hit.y);return;}
+    if (hit.kind === 'robot' || hit.kind === 'ship') {openUpgrades();return;}
+    if (hit.kind === 'resident') {if (hit.id) showDetail(hit.id);return;}
+    await assist();
+  }
+  document.addEventListener('pointerdown', event => {
+    sceneClick = null;
+    gesture.down(pointerSample(event), heroReady() && hero.contains(event.target as Node));
+  }, {capture: true, passive: true});
+  document.addEventListener('pointermove', event => {gesture.move(pointerSample(event));}, {capture: true, passive: true});
+  document.addEventListener('pointerup', event => {
+    const accepted = gesture.up(pointerSample(event));
+    if (accepted && hero.contains(event.target as Node)) {
+      sceneClick = {x: event.clientX, y: event.clientY, at: performance.now()};
+      void routeScenePointer(event);
+    }
+  }, {capture: true, passive: true});
+  document.addEventListener('pointercancel', event => {gesture.pointerCancel(event.pointerId);}, {capture: true, passive: true});
+  document.addEventListener('scroll', () => gesture.cancel(), {capture: true, passive: true});
+  window.addEventListener('scroll', () => gesture.cancel(), {passive: true});
+  window.visualViewport?.addEventListener('scroll', () => gesture.cancel(), {passive: true});
+  window.addEventListener('blur', () => gesture.reset());
+  document.addEventListener('visibilitychange', () => {if (document.hidden) gesture.reset();});
+  hero.addEventListener('keydown', event => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    if (!event.repeat) void assist();
   });
   app.addEventListener('pointerup', event => {lastPointer = (event as PointerEvent).pointerType || 'mouse';}, {passive: true});
+  // A compatibility click can be retargeted to a newly opened modal backdrop.
+  document.addEventListener('click', event => {
+    if (sceneClick && event.detail > 0 && performance.now() - sceneClick.at < 700
+      && Math.hypot(event.clientX - sceneClick.x, event.clientY - sceneClick.y) <= 12) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, {capture: true});
   app.addEventListener('click', async event => {
     const button = (event.target as Element).closest<HTMLButtonElement>('button');
     if (!button || button.disabled) return;
@@ -704,7 +764,7 @@ export function mountFusion(controller: FusionController) {
     }
     if (scene?.ready && focus && tab === 'explore' && !dialog.open && !query('#fusion-inspection-panel').hidden && now - lastInspectionPaint >= 50) {
       lastInspectionPaint = now;
-      const target = focus();
+      const target = now < manualInspectionUntil ? manualInspectionPoint : focus();
       inspectionCenter.x += (target.x - inspectionCenter.x) * .18;
       inspectionCenter.y += (target.y - inspectionCenter.y) * .18;
       const canvas = query<HTMLCanvasElement>('#fusion-inspection');

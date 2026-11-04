@@ -15,3 +15,5 @@ export function captureFixture(kind: 'paper' | 'base' | 'night-basic' | 'night-s
   seed.growth = {'guard-0': kind === 'night-basic' ? 0 : 3, 'guard-1': kind === 'night-basic' ? 0 : 3};
   return advanceFusion(createFusion(start, JSON.stringify(seed)), now);
 }
+
+export function freshComparison(now: number) {return createFusion(now);}

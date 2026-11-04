@@ -238,3 +238,7 @@ button:focus-visible, [tabindex]:focus-visible, summary:focus-visible, input:foc
 #fusion-case-preview {display: block;width: 100%;height: auto;max-height: 51dvh;object-fit: contain;background: #201a32;border: 1px solid #806572;}
 .fu-scene-retry {position: absolute;left: 50%;top: 45%;transform: translate(-50%, -50%);z-index: 3;white-space: nowrap;border-color: #b18b61;background: #352a3c;}
 #fusion-world[data-error="true"] {font-size: 0;}
+.fu-pick-reticle {position: absolute;width: 26px;height: 22px;transform: translate(-50%, -50%);border: 1px solid #c6e2bf;box-shadow: 0 0 0 2px #223c3a66;pointer-events: none;}
+.fu-pick-reticle::before, .fu-pick-reticle::after {content: '';position: absolute;background: #e3ecc8;}
+.fu-pick-reticle::before {width: 3px;height: 3px;left: 10px;top: 8px;}
+.fu-pick-reticle::after {width: 5px;height: 1px;left: -4px;top: 10px;box-shadow: 26px 0 #e3ecc8;}

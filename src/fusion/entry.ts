@@ -15,6 +15,7 @@ async function start() {
   Object.assign(window, {__FUSION__: {
     metrics: () => scene.metrics(),
     resetMetrics: () => scene.resetMetrics(),
+    pickAtClient: (x: number, y: number) => scene.pickAtClient(x, y),
   }});
 }
 

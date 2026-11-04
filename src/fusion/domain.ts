@@ -249,7 +249,7 @@ export function projectAvailable(state: FusionSave, id: string): {available: boo
   if (id === 'habitat-window' && !residentIds.every(id => state.game.collection.includes(id))) {
     return {available: false, reason: '发现三位居民'};
   }
-  if (id === 'archive' && !state.records.some(record => record.target === 'night')) return {available: false, reason: '等一次夜班'};
+  if (id === 'archive' && !latestNightHistory(state)) return {available: false, reason: '等一次夜班'};
   if (state.game.resources < project.price) return {available: false, reason: '零件不足'};
   return {available: true};
 }

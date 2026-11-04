@@ -1,5 +1,6 @@
 import {describe, expect, test} from 'vitest';
-import {newGame, MAX_LEVEL, tuning, restore} from '../src/game/engine';
+import {advance, newGame, MAX_LEVEL, tuning, restore} from '../src/game/engine';
+import {archiveReplaySeed} from '../src/fusion/archive-replay';
 import {discoveries} from '../src/content/catalog';
 import {growthCatalog} from '../src/game/growth';
 import {advanceFusion, createFusion, reduceFusion, restoreFusion, curioPrices, projectAvailable, latestNightHistory} from '../src/fusion/domain';
@@ -308,5 +309,22 @@ describe('融合版统一账本与旧权益', () => {
     expect(initialized.curios.tape.condition).toBe('found');
     expect(initialized.receipt.condition).toBe('found');
     expect(createFusion(epoch + 86400000, '{bad old data').importedLegacy).toBe(false);
+  });
+
+  test('旧档已有合法夜班但无融合记录时仍可建归档廊并回放原配置', () => {
+    const now = epoch + 300000;
+    const old = advance(legacy(), now);
+    const state = createFusion(now, JSON.stringify(old));
+    expect(state.records).toEqual([]);
+    expect(projectAvailable(state, 'archive').available).toBe(true);
+    const bought = reduceFusion(state, {type: 'project', id: 'archive'}, now);
+    expect(bought.result.ok).toBe(true);
+    expect(bought.state.game.resources).toBe(state.game.resources - 6000);
+    const source = latestNightHistory(bought.state)!;
+    expect(source.world.lastReport!.number).toBe(old.world.lastReport!.number);
+    expect(source.station.lastNight).toEqual(old.station.lastNight);
+    const replay = archiveReplaySeed(source, now);
+    expect(replay.world.activeNight!.strengths).toEqual(old.world.lastReport!.result!.configuration.strengths);
+    expect(replay.world.activeNight!.slots).toEqual(old.world.lastReport!.result!.configuration.slots);
   });
 });

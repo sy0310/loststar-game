@@ -11,6 +11,8 @@ import { tuning, type SaveData } from '../game/engine';
 import {worldView} from '../game/world';
 import {residentEnvironment, residentMotion, residentIds, type ResidentEnvironment} from './resident-motion';
 import {drawResident, loadResidentArt, type ResidentArt} from './residents';
+import {pickSceneCommands, sceneClientPoint, type SceneAlphaMask, type SceneHitTarget, type SceneImageCommand, type ScenePick} from './scene-picking';
+export type {ScenePick} from './scene-picking';
 
 const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl};
 type Art = Record<keyof typeof urls, HTMLImageElement>;
@@ -51,6 +53,9 @@ export class ExpeditionScene {
   private focusKind='parcel';
   private active=false;
   private loading=false;
+  private hitCommands: SceneImageCommand[] = [];
+  private hitTarget: SceneHitTarget | undefined;
+  private alphaMasks = new WeakMap<HTMLImageElement, SceneAlphaMask>();
   ready=false;
 
   constructor(parent:HTMLElement,private getState:()=>SaveData,private extension?:SceneExtension) {
@@ -59,6 +64,8 @@ export class ExpeditionScene {
     parent.append(this.canvas);this.ctx=this.outputContext=this.canvas.getContext('2d',{alpha:false})!;
     this.world=document.createElement('canvas');this.world.width=832;this.world.height=740;
     this.worldContext=this.world.getContext('2d')!;
+    this.recordImageHits(this.outputContext);
+    this.recordImageHits(this.worldContext);
     this.backdrop=document.createElement('canvas');this.backdrop.width=832;this.backdrop.height=740;
     const c=this.backdrop.getContext('2d')!;
     const nebula=c.createRadialGradient(440,390,10,440,390,490);
@@ -90,6 +97,38 @@ export class ExpeditionScene {
     return {frames:this.intervals.length,medianFrameMs:sorted[Math.floor(sorted.length/2)]??0,p95FrameMs:sorted[Math.floor(sorted.length*.95)]??0,meanDrawMs:this.drawTimes.reduce((a,b)=>a+b,0)/Math.max(1,this.drawTimes.length),canvasPixels:832*740,canvasSize:{width:832,height:740},renderer:'Canvas2D / independent 2.5D layers'};
   }
   resetMetrics(){this.intervals=[];this.drawTimes=[];this.lastFrame=0;}
+  pickAtClient(clientX:number,clientY:number):ScenePick {
+    const point=sceneClientPoint(clientX,clientY,this.canvas.getBoundingClientRect(),this.canvas.width,this.canvas.height);
+    if(!point)return {kind:'space',x:0,y:0};
+    if(!this.ready||point.x<0||point.y<0||point.x>=this.canvas.width||point.y>=this.canvas.height)return {...point,kind:'space'};
+    return pickSceneCommands(point,this.hitCommands,image=>this.imageMask(image));
+  }
+  private imageMask(image:HTMLImageElement){
+    const cached=this.alphaMasks.get(image);
+    if(cached)return cached;
+    const canvas=document.createElement('canvas');canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;
+    const context=canvas.getContext('2d')!;context.drawImage(image,0,0);
+    const pixels=context.getImageData(0,0,canvas.width,canvas.height).data;
+    const alpha=new Uint8Array(canvas.width*canvas.height);
+    for(let index=0;index<alpha.length;index++)alpha[index]=pixels[index*4+3];
+    const mask={width:canvas.width,height:canvas.height,alpha};this.alphaMasks.set(image,mask);return mask;
+  }
+  private recordImageHits(context:CanvasRenderingContext2D){
+    const original=context.drawImage.bind(context);
+    context.drawImage=((image:CanvasImageSource,...values:number[])=>{
+      if(this.hitTarget&&image instanceof HTMLImageElement){
+        const source=values.length===8?{x:values[0],y:values[1],width:values[2],height:values[3]}:{x:0,y:0,width:image.naturalWidth,height:image.naturalHeight};
+        const destination=values.length===8?{x:values[4],y:values[5],width:values[6],height:values[7]}:
+          {x:values[0],y:values[1],width:values.length===4?values[2]:image.naturalWidth,height:values.length===4?values[3]:image.naturalHeight};
+        this.hitCommands.push({target:this.hitTarget,image,source,destination,transform:context.getTransform(),opacity:context.globalAlpha});
+      }
+      Reflect.apply(original,context,[image,...values]);
+    }) as typeof context.drawImage;
+  }
+  private withHitTarget(target:SceneHitTarget|undefined,draw:()=>void){
+    const previous=this.hitTarget;this.hitTarget=target;
+    try{draw();}finally{this.hitTarget=previous;}
+  }
   private loop=()=>{
     const now=performance.now();
     if(this.active&&document.visibilityState==='visible'){
@@ -108,6 +147,7 @@ export class ExpeditionScene {
   }
   private drawShip(t:number,p=shipPose(t)){
     const c=this.ctx,w=p.width;
+    const previousTarget=this.hitTarget;this.hitTarget={kind:'ship',id:'ship'};
     // One render unit shares the orbit depth. Both plume and fading wake are masked
     // by the planet on the back pass, just like the registered directional hulls.
     c.save();
@@ -121,6 +161,7 @@ export class ExpeditionScene {
       c.save();c.globalAlpha=layer.alpha;c.translate(layer.x,layer.y);c.rotate(layer.rotation);
       c.drawImage(this.art.ship,layer.cell%2*256,Math.floor(layer.cell/2)*256,256,256,-w/2,-w/2,w,w);c.restore();
     }
+    this.hitTarget=previousTarget;
   }
   private actor(frame:number,x:number,y:number,w:number,flip=false,carrying=false,t=0){
     const c=this.ctx,atlas=this.art.robot,cell=160,dx=-w*.54,dy=-w*.97;
@@ -170,6 +211,7 @@ export class ExpeditionScene {
   private draw(now:number){
     if(!this.ready||!this.canvas.isConnected)return;
     const began=performance.now(),t=this.frozen??(now-this.start)/1000,s=this.getState();
+    this.hitCommands=[];this.hitTarget=undefined;
     let c=this.outputContext;this.ctx=c;
     const baseFraction=this.frozen===null?s.cycleMs/tuning(s).scanner:(t%12)/12;
     const f=this.extension?.cycleFraction?.(baseFraction,t)??baseFraction,p=this.extension?.robotPose?.(robotPose(f),t)??robotPose(f);
@@ -181,13 +223,13 @@ export class ExpeditionScene {
     if(ship.back)this.drawShip(t,ship);
     c=this.worldContext;this.ctx=c;
     c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,832,740);c.imageSmoothingEnabled=false;this.positionWorld(c);
-    c.drawImage(this.art.globe,52,70,664,664);
+    this.withHitTarget({kind:'planet',id:'parcel'},()=>c.drawImage(this.art.globe,52,70,664,664));
     // Independent material accents attach to specific pipe/terrain points.
     this.lamp(345,634,'#e9ae70',t);this.lamp(488,610,'#94dcdb',t+.5);this.lamp(193,548,'#e9ae70',t+1);
-    const entities=[
-      {depth:294,draw:()=>{this.shadow(568,294,38);this.sprite(this.art.sorter,568,294,101,101);this.lamp(557,208,'#8ff3df',t);const step=Math.floor(t*3)%3;c.fillStyle='#d7b46d';for(let i=0;i<3;i++)c.fillRect(526+i*7+step,278+i*2,3,2);}},
-      {depth:417,draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);c.fillStyle='#624b66';c.fillRect(270,437,38,9);c.fillStyle='#bb957c';c.fillRect(270,434,38,5);c.fillStyle='#88d9c6';c.fillRect(277,438,24,2);}},
-      {depth:p.y,draw:()=>{if(!this.extension?.drawRobot||this.extension.drawRobot(c,frame,this.art.robot)===false)this.drawRobot(t,f,p);}},
+    const entities:(SceneEntity&{hit?:SceneHitTarget})[]=[
+      {depth:294,hit:{kind:'planet',id:'parcel'},draw:()=>{this.shadow(568,294,38);this.sprite(this.art.sorter,568,294,101,101);this.lamp(557,208,'#8ff3df',t);const step=Math.floor(t*3)%3;c.fillStyle='#d7b46d';for(let i=0;i<3;i++)c.fillRect(526+i*7+step,278+i*2,3,2);}},
+      {depth:417,hit:{kind:'planet',id:'parcel'},draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);c.fillStyle='#624b66';c.fillRect(270,437,38,9);c.fillStyle='#bb957c';c.fillRect(270,434,38,5);c.fillStyle='#88d9c6';c.fillRect(277,438,24,2);}},
+      {depth:p.y,hit:{kind:'robot',id:'robot'},draw:()=>{if(!this.extension?.drawRobot||this.extension.drawRobot(c,frame,this.art.robot)===false)this.drawRobot(t,f,p);}},
       {depth:449,draw:()=>this.parcel(438,449,26)},
       {depth:294.5,draw:()=>{
     c.fillStyle='#694771';c.fillRect(600,206,3,52);c.fillStyle='#f9c77c';c.fillRect(599,202,5,5);c.fillStyle='#c9758b';c.beginPath();c.moveTo(603,209);c.lineTo(635,213+Math.sin(t*3)*2);c.lineTo(631,229+Math.sin(t*3)*2);c.lineTo(603,226);c.fill();
@@ -199,10 +241,10 @@ export class ExpeditionScene {
       if(id!=='mouse'&&!s.collection.includes(id))continue;
       const pose=this.extension?.residentPose?.(id,environment)??residentMotion(id,environment),dayImage=id==='tagbird'?this.art.bird:this.art[id];
       const paintResident=this.extension?.drawResident??drawResident;
-      entities.push({depth:pose.depth,draw:()=>residents.push(paintResident(c,id,environment,this.residentArt,dayImage))});
+      entities.push({depth:pose.depth,hit:s.collection.includes(id)?{kind:'resident',id}:undefined,draw:()=>residents.push(paintResident(c,id,environment,this.residentArt,dayImage))});
     }
     if(this.extension?.worldEntities)entities.push(...this.extension.worldEntities(c,frame));
-    entities.sort((a,b)=>a.depth-b.depth).forEach(e=>e.draw());
+    entities.sort((a,b)=>a.depth-b.depth).forEach(e=>this.withHitTarget(e.hit,e.draw));
     this.extension?.afterWorld(c,frame);
     c=this.outputContext;this.ctx=c;
     c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(this.world,0,0);c.restore();
