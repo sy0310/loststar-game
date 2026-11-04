@@ -26,6 +26,43 @@
 
 候选入口使用独立内存状态，所有正式存档键、资金和偏好通过Storage访问哨兵验证。正式游戏继续使用原来的生命周期和权益。将来通过视觉审核后再进行条件字段迁移和同源事件接入。
 
+## 实际审核入口与复现
+
+运行源码固定为`95d4609cd0852c549eb348096c2ee9300d5b7506`，版本0.3.4。截图、视频和桌面采样来自同一生产包，正式数据引擎相对上一轮dcf7e64无变更。首周日期作为审核里程碑，用户通过后登记对应冻结项。
+
+[截图与视频浏览页](../artifacts/v034/index.html) 包含390×844和360×800实际触控仿真画面。[录制原始记录](../artifacts/v034/recordings.json) 保留逐次输入、时间、Canvas状态、证据、预算、Storage哨兵和两引擎性能。[验证汇总](../artifacts/v034/validation.json) 汇合测试、包体和复审边界。
+
+| 实际媒体 | 时长 | 可核对内容 |
+| --- | --- | --- |
+| [收据出土与辨识](../artifacts/v034/receipt-lifecycle-and-proof-live.mp4) | 37.97秒 | 同纸同柜、去泥和两处压补、现场P03观察、缺失2→1 |
+| [基础安保](../artifacts/v034/night-basic-36s-live.mp4) | 37.07秒 | 真实漏网、完整度94、清晨维修18零件 |
+| [完善安保](../artifacts/v034/night-complete-36s-live.mp4) | 37.40秒 | 实际灯门响应、封匣回站、本次无损伤 |
+| [居民日常](../artifacts/v034/resident-daily-15s-live.mp4) | 16.43秒 | 停嗅、进食、抖壳、搬纸、落杆和扑翼 |
+| [完整昼夜](../artifacts/v034/day-night-cycle-308s-live.mp4) | 309.03秒 | 240秒白天、60秒夜晚、8秒晨间与第三段连续切入 |
+
+媒体以真实墙钟采集，1倍播放。30秒事件取同源夜班40.2–60秒并按已说明的分段映射展示，另加6秒清晨。完整昼夜使用正常世界时间，视频含少量载入和点击耗时。三抽屉另在原生触摸高亮消退500ms后采集静止面板，记录在[面板采集回执](../artifacts/v034/drawer-capture.json)。
+
+Apple M2 Pro桌面每个引擎单独采样6秒，录屏结束后执行。球面Chromium/WebKit的rAF P95为16.7/18ms，Canvas平均CPU调用为1.69/0.79ms。收据整个Museum整理台包含出土操作与空闲，实际唯一画面频率18.81/17.79Hz，平均CPU调用3.59/1.79ms。Canvas调用不包含GPU完成，WebKit短采样时间量化，手机长时发热和锁屏待新包实测。
+
+本地完整检查通过20/20原PNG/MP4、151单元、164浏览器流程、普通/D1/V034三份构建。纯模型选定覆盖范围为语句96.73%、分支94.65%、函数98.12%、行99.33%，范围见Vitest配置。运行源码的[PR CI](https://github.com/sy0310/loststar-game/actions/runs/41763509790)和[push CI](https://github.com/sy0310/loststar-game/actions/runs/41763503494)均成功。
+
+```bash
+npm run check
+npm run simulate:v034
+npm run build:v034
+npm run package:v034
+# 启动V034生产预览，先发现控件、彩排，再真实录制
+npx vite preview --config vite.v034.config.ts --host 127.0.0.1 --port 4196 --outDir dist-v034
+BASE_URL=http://127.0.0.1:4196 npm run capture:v034 -- --discover
+BASE_URL=http://127.0.0.1:4196 npm run capture:v034 -- --rehearse
+BASE_URL=http://127.0.0.1:4196 npm run capture:v034
+BASE_URL=http://127.0.0.1:4196 node scripts/capture_v034_drawers.mjs
+```
+
+录制要求提交后的干净运行源码和匹配构建，普通截图和时间压缩单测与实录分开保存。审核包的运行归档为4034693B、75文件，解压4156027B，入口`loststar-week1/index.html`，SHA256为`8047489a9b0adc51b91ee19fda567be87371b3af41e6f0b2d8e30d771a745226`。
+
+[相对子目录核验](../artifacts/v034/package-smoke.json) 对同一归档执行Chromium360/390与WebKit390原生触控仿真。三份上下文均实际完成发掘、清洁、修补与免费试验，四个物理阶段Canvas图像不同；WebKit另从现场取得P03并辨识到1项缺失，签收保持空白。三抽屉、完整昼夜入口、居民时钟与旧档Storage隔离均通过。9份录制、3份包体及2份面板上下文均无Storage调用，样板没有正式迁移玩家物品状态。
+
 ## 一件旧物的四个维度
 
 ```mermaid
@@ -110,6 +147,8 @@ P03标牌是本样板新增的首星现场内容，原PNG参考中没有该标�
 | 标签鸟 | 真扑翼、落杆、低头梳理、再次飞起 | 收翼栖息 | 复用已验飞行帧，新增落杆小动作 |
 
 两帧小动作与插值、停顿组合。图像局部动作须在实际390画面中可辨，数据状态变化只作辅助核验。新的生活动作通过review专用绘制hook，正式居民保持现有行为到视觉确认。
+
+样板采用三位既有居民均已发现的审阅画面配置，方便同镜头核对动作。收入与夜损仍使用原引擎的独立账本，正式页面继续按实际收藏门槛显示居民。整理预算与夜班片段账本分别标识，正式单币存档整合在视觉审核后执行。
 
 素材审核保存原PNG、提示词、alpha边界、接触点、运行时尺寸和确定性导出。主线程先看原图，再看256纹理/67逻辑像素合成，最后看实际连续动画。泥膜出现杂色边与颗粒质感不协调时已退回重制，合成实图通过后才录正式媒体。
 
