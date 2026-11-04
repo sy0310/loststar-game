@@ -1,0 +1,99 @@
+{
+  "sourceCommit": "59670a60b3804d68a1a6750eec20cf28c10b1139",
+  "verificationCommit": "4c35944eccc913b5fcf318690728a85522076e84",
+  "date": "2026-11-04",
+  "unitTests": 221,
+  "unitFiles": 34,
+  "browserTests": 230,
+  "browsers": [
+    "Chromium360",
+    "Chromium390",
+    "Chromium desktop",
+    "WebKit390",
+    "native-touch Chromium390 emulation",
+    "native-touch WebKit390 emulation"
+  ],
+  "builds": [
+    "ordinary",
+    "D1",
+    "V034",
+    "fusion"
+  ],
+  "originalAssets": "20/20",
+  "coverage": {
+    "statements": 97,
+    "branches": 95.79,
+    "functions": 99.11,
+    "lines": 99.39,
+    "scope": "src/game and selected pure models; excludes much UI and Canvas renderer"
+  },
+  "localFullCheckLog": "npm run check:20 assets,221 units,4builds,230flows passed. All230 browser flows re-run after CI-only target/budget changes:0 unexpected,0 flaky,0 skipped; ../e2e-results.json.",
+  "recordings": {
+    "screenshots": 125,
+    "videos": 13,
+    "contexts": 17,
+    "errors": []
+  },
+  "comparison": {
+    "screenshots": 8,
+    "videos": 4,
+    "errors": [],
+    "method": "Identical initial state held until a shared future real wall-clock start. Native touch, real60second input window and video. Ledger read at60.7seconds to let the200ms persisted tick settle past the60second completion boundary; actual worldMs reported for each arm. No clock acceleration. Video lead-in removed and pairs aligned approximately by page creation timestamps. Data measurements use actual engine timestamps. Desktop emulation, physical phone feedback pending."
+  },
+  "economy": {
+    "assist": {
+      "profiles": 112,
+      "rows": 1008,
+      "negativeBalances": 0,
+      "accountingErrors": 0,
+      "workErrors": 0,
+      "repeatedFeesOrWork": 0,
+      "maintenanceOverBudget": 0,
+      "rollingWorkEnvelopeErrors": 0
+    },
+    "unified": {
+      "negative": 0,
+      "accounting": 0,
+      "duplicateFees": 0,
+      "oldRestorationFees": 0
+    },
+    "unifiedProfiles": 48,
+    "unifiedRows": 432
+  },
+  "package": {
+    "game": "失物星球",
+    "version": "0.3.4",
+    "sourceCommit": "59670a60b3804d68a1a6750eec20cf28c10b1139",
+    "archive": "releases/taptap/loststar-0.3.4-59670a6-fusion-h5.zip",
+    "bytes": 4097743,
+    "sha256": "364348f4d32bfee2c22aabcce65116763312952c136d12b912b741c2a50a4840",
+    "files": 77,
+    "uncompressedBytes": 4299494,
+    "entry": "loststar-fusion/index.html",
+    "orientation": "portrait",
+    "purpose": "Integrated tap-assisted exploration, collection and base development playtest; independent migrated archive"
+  },
+  "performanceMethod": "One headless browser/page at a time, 12 real seconds after1.5s warmup, no capture/video/test load, 390x844 DPR2 desktop emulation. Not physical mobile or TapTap WebView measurement.",
+  "knownPending": [
+    "Physical TapTap phone touch, lock screen, brightness, thermal and long play",
+    "Subjective visual and long-term consumption review",
+    "Legacy in-flight research equivalent migration before formal entry integration",
+    "Same-origin legacy availability across TapTap version origins"
+  ],
+  "ci": {
+    "earlierSourceRuns": [
+      {
+        "id": 41814150763,
+        "conclusion": "failure",
+        "reason": "legacy37-minute diary exceeded30s total; unchanged assertions now have60s budget"
+      },
+      {
+        "id": 41814161190,
+        "conclusion": "failure",
+        "reason": "37-minute diary total budget and WebKit robot-touch visibility failure; first-edge selector strengthened to integer interior targets, native diagnostics attached. Original failure has no pointer log, unique cause unproven."
+      }
+    ],
+    "latestDelivery": "See latest Draft PR checks; final head must pass before handoff"
+  },
+  "runtimeUnchangedSincePackage": true
+}
