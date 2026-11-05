@@ -23,7 +23,7 @@ def main():
     args = parser.parse_args()
     profiles = {
         'v036': ('loststar-v036', 'vite.v036.config.ts', '-v036-art', 'package-info-v036.json', 'Two isolated visual samples: local surface fog and receipt restoration; no player save access, wallet or rewards'),
-        'fusion': ('loststar-fusion', 'vite.fusion.config.ts', '-fusion', 'package-info-fusion.json', 'First-planet playable journey with persistent surface fog, artifact restoration, collection, base and day/night; fresh campaign with archived prior saves'),
+        'fusion': ('loststar-fusion', 'vite.fusion.config.ts', '-fusion', 'package-info-fusion.json', 'First-planet playable journey with persistent surface fog, artifact restoration, collection, base and day/night; continues the existing v037 campaign and preserves prior source backups'),
         'game': ('loststar', None, '', 'package-info.json', 'Single-entry H5 with shared home museum and integrated expedition day/night'),
         'night': ('loststar-night', 'vite.night.config.ts', '-night-lab', 'package-info-night.json', 'separate opt-in night prototype'),
         'd1': ('loststar-d1', 'vite.d1.config.ts', '-d1', 'package-info-d1.json', 'D1 read-only spherical night operations and receipt capability comparison; no save access or payment'),

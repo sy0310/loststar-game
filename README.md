@@ -8,13 +8,21 @@
 
 工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不发布正式版。2026-11-02 用户授权的 TapTap 开发自测上传见 [实机试玩记录](docs/13_TAPTAP_SELF_TEST.md)。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
 
-## V0.3.7 首星游玩接入
+## V0.3.8 远征反馈返修
+
+按PR最新实机意见，机器人步态、扫描和路径改为共同跟随真实探索工作，接受助力时增加短促动作应答；三处星雾扩大为区域尺度；重复旧分拣机替换为独立安保灯架，真实任务继续使用同一台分拣机。
+
+TapTap开发自测 **435972 / v0.3.8 / 2fdbebe**，本机已上传包预览为 `http://127.0.0.1:4224/`。本轮沿用当前V0.3.7周目，不再次清档。20/20原件、298项单测、五类构建和394项浏览器流程通过，另有6组最终包新／旧档烟测。真实手机仍待新码复测。
+
+[本轮修订与验证](docs/34_V038_EXPEDITION_FEEDBACK_REPAIR.md) · [79张截图与5段连续动画](artifacts/v038-feedback/index.html) · [同档输入与入账对照](artifacts/v038-feedback/comparison-summary.json)
+
+## V0.3.7 首星游玩接入（历史）
 
 两项认可样板已接入实际首星探索、六件奇物整理、收藏与基地。此次用户授权重新开始，首次开局采用120零件、初始设备、空收藏与白天。旧源保留并归档备份，刷新继续同一周目。
 
 当前开发入口为 `http://127.0.0.1:5173/?sample=first-planet`。当前玩家包由 `npm run package:fusion` 生成，生产预览使用 `npm run build:fusion` 与 `npx vite preview --config vite.fusion.config.ts --port 4220`。
 
-TapTap开发自测 **435439 / v0.3.7 / b7f7326**。本机实际打包预览为 `http://127.0.0.1:4221/`。
+当时TapTap开发自测 **435439 / v0.3.7 / b7f7326**。本轮新版入口见上方V0.3.8。
 
 [本轮交付与验证](docs/33_V037_FIRST_PLANET_DELIVERY.md) · [实际截图与连续动画](artifacts/first-planet/index.html) · [首星经济模拟](artifacts/first-planet/economy.md)
 

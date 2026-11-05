@@ -182,7 +182,7 @@ async function frameScreens() {
           const scene = await screenshot(session, session.name);
           await session.page.locator('#fusion-wallet').tap();
           await session.page.locator('#fusion-drawer-body #fusion-open-sorting').tap();
-          await session.page.locator('#fusion-sorting-cost').waitFor();
+          await session.page.locator('#fusion-sorting-cost').waitFor({state: 'attached'});
           const drawer = await screenshot(session, `${session.name}-ledger`);
           report.cases.push({name: session.name, fixtureAudit: fixture.audit, build: session.build,
             entityId: 'parcel/old-sorting', renderer: 'fusion/sorting-scene:refinement/sorting-machine',
