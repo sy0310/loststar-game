@@ -2,6 +2,7 @@
 import sharp from 'sharp';
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 const source='assets/source/visual-renewal/receipt-proposal',out='assets/runtime/visual-renewal/receipt-proposal',review='artifacts/receipt-redesign-static';
 await fs.mkdir(out,{recursive:true});await fs.mkdir(review,{recursive:true});
 const states=['found','clean','stabilized'],papers={},records=[];
@@ -52,7 +53,7 @@ const refs=[{left:35,top:286,width:144,height:133},{left:188,top:286,width:139,h
 let comparison='';for(const [col,title]of ['认可原图 · 左上面板','439256旧版 · 用户拒绝','重画静态候选 · 待审核'].entries())comparison+=label(title,col*390+20,38,19);
 for(const [row,state]of states.entries()){
  const y=64+row*330,ref=await sharp(approved).extract(refs[row]).png().toBuffer();await fs.writeFile(`${review}/reference-${state}.png`,ref);
- const old=await fs.readFile(`assets/runtime/visual-renewal/curios/receipt-${state}.png`),art=state==='clean'?supported:state==='stabilized'?displayed:papers[state];
+ const old=execFileSync('git',['show',`f1397e268b4dec43a241833da077b08104451c8e:assets/runtime/visual-renewal/curios/receipt-${state}.png`]),art=state==='clean'?supported:state==='stabilized'?displayed:papers[state];
  comparison+=`<path d="M12 ${y}H1158" stroke="#78537b"/>`+label(['发现','整理','展示'][row],20,y+25,15)+imageTag(ref,70,y+50,240,235)+imageTag(old,420,y+37,300,300)+imageTag(art,state==='stabilized'?828:810,y+10,state==='stabilized'?256:300,state==='stabilized'?320:300);
 }
 await sharp(svg(1170,1070,`<rect width="1170" height="1070" fill="#241342"/>${comparison}`)).png().toFile(`${review}/comparison-1170.png`);

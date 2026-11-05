@@ -512,7 +512,8 @@ async function reading(){
  try{for(const level of [0,1,2]){
   let session;
   try{
-   const fixture=firstPlanetFixture(Date.now(),level,'stabilized',{receiptAbility:level,tapeAbility:0});
+   // Hold the cabinet at Lv0: cabinet ornament must not masquerade as research growth.
+   const fixture=firstPlanetFixture(Date.now(),0,'stabilized',{receiptAbility:level,tapeAbility:0});
    session=await open(browser,{name:`chromium-390-receipt-reading-${level}`,fixture,video:true});
    await session.page.locator('[data-tab="collection"]').tap();
    await session.page.locator('#fusion-collection-list [data-detail="receipt"]').tap();
@@ -528,7 +529,7 @@ async function reading(){
    if(ledger.charged!==0||JSON.stringify(before.records)!==JSON.stringify(after.records)||JSON.stringify(before.receipt.verifiedEvidenceIds)!==JSON.stringify(after.receipt.verifiedEvidenceIds))throw Error('Display reading charged or manufactured a fact');
    if(level){const bounds=JSON.parse(data.abilityBounds);if(!(bounds.width>80&&bounds.width<=152))throw Error('Research enlarged or lost the original paper');}
    const durationSeconds=(Date.now()-startAt)/1000;
-   report.cases.push({name:session.name,kind:'receipt-reading',abilityLevel:level,fixtureAudit:fixture.audit,before,after,ledger,trial,focus:data,initialFile:initial.file,finalFile:final.file,durationSeconds,originalFactsUnchanged:true});
+   report.cases.push({name:session.name,kind:'receipt-reading',abilityLevel:level,cabinetLevel:0,fixtureAudit:fixture.audit,before,after,ledger,trial,focus:data,initialFile:initial.file,finalFile:final.file,durationSeconds,originalFactsUnchanged:true});
    await close(session);await saveVideo(session,`receipt-reading-level-${level}.mp4`,durationSeconds,startAt);
   }finally{await close(session);}
  }}finally{await browser.close();}

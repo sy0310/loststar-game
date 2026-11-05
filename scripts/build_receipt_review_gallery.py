@@ -30,12 +30,21 @@ def figure(file, caption):
 
 materials = reports['screens']['materials']
 comparison = []
+page_comparison = []
+old_screens = json.loads((ROOT / 'artifacts/visual-renewal/screens-evidence.json').read_text())
+assert old_screens['sourceCommit'] == 'f1397e268b4dec43a241833da077b08104451c8e'
 for stage in ('found', 'clean', 'stabilized'):
     current = next(item for item in materials if item['id'] == 'receipt' and item['stage'] == stage and item['engine'] == 'chromium' and item['viewportWidth'] == 390)
     file = f'materials/receipt-439256-{stage}.png'
     old = subprocess.check_output(['git', 'show', f'f1397e268b4dec43a241833da077b08104451c8e:assets/runtime/visual-renewal/curios/receipt-{stage}.png'], cwd=ROOT)
     (OUT / file).write_bytes(old)
     comparison.append('<section class="pair">' + figure(file, f'439256 / f1397e2 · {stage} · 用户要求返修') + figure(current['file'], f'{package["version"]} / {source[:7]} · {stage} · 实际材质导出') + '</section>')
+    name = f'chromium-390-receipt-{stage}'
+    old_shot = next(shot for shot in old_screens['screenshots'] if shot['name'] == name)
+    new_shot = next(shot for shot in reports['screens']['screenshots'] if shot['name'] == name)
+    copied = f'screens/receipt-439256-{stage}.png'
+    (OUT / copied).write_bytes((ROOT / 'artifacts/visual-renewal' / old_shot['file']).read_bytes())
+    page_comparison.append('<section class="pair">' + figure(copied, f'439256 / f1397e2 · {stage} · 历史实际390×844') + figure(new_shot['file'], f'{package["version"]} / {source[:7]} · {stage} · 本版实际390×844') + '</section>')
 
 sections = []
 for mode, title in [('screens', '实际三态与分层页面'), ('pages', '按钮、选项与全页面'), ('treatment', '连续处理与具体互动'), ('reading', '同张原纸的未研究／Ⅰ／Ⅱ读数'), ('cases', '玻璃柜、取放与原级别安装')]:
@@ -66,6 +75,7 @@ page = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="v
 <p>{shot_count}项实际图像记录、{len(materials)}份透明材质导出、{video_count}段自然连续影片。正文与操作标签保持可读；没有新货币、重开或重复收费。</p>
 <p>依据：<a href="../../design/visual-renewal/approved/03_curio_restoration_and_collection.png">用户批准原图03（完整原始PNG）</a> · <a href="../../design/visual-renewal/USER_REVIEW_V040.md">返修合同</a> · <a href="../../design/visual-renewal/ASSET_REGISTRY.json">正式素材登记</a></p>
 <h2>先看新收据实际运行三态</h2><div class="grid">{''.join(focus_shots)}</div>
+<details><summary>展开439256／新版实际390×844页面对照</summary>{''.join(page_comparison)}</details>
 <h2>旧版／新版纸面同源导出对照</h2><p>纸面透明图不含玻璃、夹具、归档架或工具；实际场景分层请看上面的运行截图和连续影片。原缺签字段保持空白，修补不会产生新签收记录。</p>{''.join(comparison)}
 <h2>互动作用</h2><p>“读出票面、拉出一截、打开一层、盖个邮戳、敲敲箱盖、轻按铃铛”属于整理完成后的展品表演，不消耗零件、不重复发奖；清理修补和真实线索核验仍各有明确操作。</p>
 {''.join(sections)}

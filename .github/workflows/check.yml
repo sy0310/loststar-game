@@ -2,7 +2,9 @@ name: Vertical slice checks
 on: [push, pull_request]
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    # Pin a supported LTS image: the moving latest image's Ubuntu 26.04 package
+    # mirror stalled this PR's browser dependency install for over 16 minutes.
+    runs-on: ubuntu-24.04
     # The full six-project browser suite can exceed 20 minutes on a slower runner.
     # Keep every test and its own timeout; only the whole-job budget changes.
     timeout-minutes: 30
@@ -22,6 +24,7 @@ jobs:
       - run: npm run build:fusion
       - run: npm run build:v036
       - run: npx playwright install --with-deps chromium webkit
+        timeout-minutes: 5
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4
         if: always()

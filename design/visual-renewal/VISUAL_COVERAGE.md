@@ -1,5 +1,7 @@
 # 首星翻新覆盖表
 
+**V0.4.1更新：** 收据、展示动作和控件以240e067为准，见[返修说明](V041_RECEIPT_REVIEW.md)与[新固定包全部页面/三态/11段影片](../../artifacts/v041-receipt-review/index.html)。收据改为现代单纸/紫夹/归档架，六物完成态用具体互动按钮；20个入口×四配置及归航已用本版重录。世界/昼夜美术和计算未改，下表相关312秒/36秒实录仍明确属于f1397e2历史基线，不重复计作本版影片。v037存档和全部旧权益继续保留。
+
 运行源码 **f1397e268b4dec43a241833da077b08104451c8e**。原图48efa52；旧版运行基线51d682c。仅首星，继续v037当前档。这里区分实现、实际媒体、工程和手机审核，不以静态图或测试绿灯代替美术验收。
 
 [全部运行画面及多尺寸覆盖矩阵](../../artifacts/visual-renewal/index.html) · [六物18态](../../artifacts/visual-renewal/materials-overview.html) · [完整检查记录](../../artifacts/visual-renewal/verification.json)
