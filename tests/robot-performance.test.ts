@@ -2,7 +2,7 @@ import {describe,expect,it,vi} from 'vitest';
 import {advance,newGame,upgrade} from '../src/game/engine';
 import {createAssist,tapAssist} from '../src/game/assist';
 import {fusionCycleFraction,fusionRobotWork} from '../src/fusion/render-clock';
-import {createRobotPerformance,robotReceivedDurationMs} from '../src/fusion/robot-performance';
+import {createRobotPerformance,robotReceivedDurationMs,robotAssistVisualEnvelope,robotAssistVisualRules} from '../src/fusion/robot-performance';
 import {animatedRobotStage,createAnimatedRobotPainter,robotAnimationPose} from '../src/render/robot-animation';
 import {robotPose,robotScannerPoint,robotScannerJoint,robotScannerSource} from '../src/render/motion';
 
@@ -89,12 +89,37 @@ describe('layered limbs and actual contact',()=>{
     expect(robotScannerPoint(pose,0,{...animation,workSeconds:0,received:0})).toEqual(legacy);
   });
 
+  it('keeps feet on their real work phase in every visual tier, with stronger upper-body and scanner effort',()=>{
+    const fraction=.17,pose=robotPose(fraction),workSeconds=fraction*12;
+    const variants=[0,1/3,2/3,1].map(assistVisualIntensity=>robotAnimationPose(pose,fraction,
+      {workSeconds,received:.5,appliedWorkMs:300,assistRate:.6,assistVisualIntensity}));
+    expect(new Set(variants.map(frame=>frame.walkFrame)).size).toBe(1);
+    expect(new Set(variants.map(frame=>frame.bob)).size).toBe(1);
+    expect(variants[1].eyeLight).toBeGreaterThan(0);
+    expect(variants[2].lean).toBeGreaterThan(variants[1].lean);
+    expect(variants[3].lean).toBeGreaterThan(variants[2].lean);
+    expect(variants[3].scanAmplitude).toBeGreaterThan(variants[2].scanAmplitude);
+    expect(variants[3].scanAmplitude).toBeCloseTo(.42);
+    expect(variants[3].hands).toEqual(variants[0].hands);
+  });
+
+  it('registers the high-tier scanner to the leaned torso without shifting the feet or parcel',()=>{
+    const pose=robotPose(.4),animation={workSeconds:4.8,received:.3,appliedWorkMs:600,assistRate:.6,assistVisualIntensity:1};
+    const motion=robotAnimationPose(pose,.4,animation),source=robotScannerPoint(pose,0,animation);
+    const dx=robotScannerSource.x-robotScannerJoint.x,dy=robotScannerSource.y-robotScannerJoint.y;
+    const x=robotScannerJoint.x+dx*Math.cos(motion.scanAngle)-dy*Math.sin(motion.scanAngle);
+    const y=robotScannerJoint.y+dx*Math.sin(motion.scanAngle)+dy*Math.cos(motion.scanAngle);
+    expect(source.x).toBeCloseTo(pose.x-144*.54+(x+motion.lean*(y-125))*.9,9);
+    expect(source.y).toBeCloseTo(pose.y-144*.97+y*.9,9);
+    expect(motion.bob).toBe(0);
+  });
+
   it('retains ground contact, lift, carry, handoff and release at the fastest existing scanner/assist rate',()=>{
     const rate=2.1*1.6,duration=12000/rate,frames=[];
     let prior:ReturnType<typeof robotAnimationPose>|undefined,priorAction='';
     for(let elapsed=0;elapsed<duration;elapsed+=1000/60){
       const f=elapsed/duration,pose=robotPose(f);
-      const animation={workSeconds:f*12,received:0,appliedWorkMs:elapsed*.6,assistRate:.6};
+      const animation={workSeconds:f*12,received:0,appliedWorkMs:elapsed*.6,assistRate:.6,assistVisualIntensity:1};
       const motion=robotAnimationPose(pose,f,animation);
       frames.push({f,pose,motion});
       if(pose.action==='pickup'&&f>=.52||pose.action==='return'||pose.action==='unload'&&f<=.975){
@@ -109,6 +134,63 @@ describe('layered limbs and actual contact',()=>{
     expect(frames.some(({pose})=>pose.action==='pickup'&&pose.lift===0)).toBe(true);
     expect(frames.some(({pose})=>pose.action==='pickup'&&pose.lift===1)).toBe(true);
     expect(frames.some(({pose})=>pose.action==='unload'&&pose.parcel.delivered&&pose.parcel.visible)).toBe(true);
+  });
+});
+
+describe('three accepted-command visual tiers',()=>{
+  it('layers three real accepted inputs, then smoothly returns to idle without writing to the economy',()=>{
+    let state=newGame(epoch);
+    const performance=createRobotPerformance(()=>state),tiers:number[]=[];
+    for(let index=0;index<3;index++){
+      state=tapAssist(state,epoch+index*300);
+      performance.receive({token:index+1,kind:'accepted',at:index*300});
+      const frame=performance.frame(state.lastAt,index*300+robotAssistVisualRules.attackMs);
+      tiers.push(frame.assistVisualTier!);
+      expect(frame.assistVisualIntensity).toBeCloseTo((index+1)/3,8);
+      expect(frame.workSeconds).toBe(fusionRobotWork(state,state.lastAt).workSeconds);
+    }
+    expect(tiers).toEqual([1,2,3]);
+    const original=structuredClone(state),intensities:number[]=[];
+    let previous=performance.frame(state.lastAt,720).assistVisualIntensity!;
+    for(let visualNow=736;visualNow<=3840;visualNow+=16){
+      const frame=performance.frame(state.lastAt,visualNow),intensity=frame.assistVisualIntensity!;
+      expect(intensity).toBeLessThanOrEqual(previous+1e-12);
+      expect(previous-intensity).toBeLessThan(.011);
+      expect(frame.workSeconds).toBe(fusionRobotWork(state,state.lastAt).workSeconds);
+      intensities.push(intensity);previous=intensity;
+    }
+    expect(intensities[intensities.length-1]).toBe(0);
+    expect(performance.frame(state.lastAt,4000).assistVisualTier).toBe(0);
+    expect(state).toEqual(original);
+  });
+
+  it('does not raise the tier on refused input, a full queue, replay, or night attention',()=>{
+    let state=newGame(epoch);
+    const performance=createRobotPerformance(()=>state);
+    state=tapAssist(state,epoch);
+    performance.receive({token:1,kind:'accepted',at:0});
+    expect(performance.frame(epoch,120).assistVisualTier).toBe(1);
+    performance.receive({token:1,kind:'accepted',at:120});
+    performance.receive({token:2,kind:'rejected',at:120});
+    performance.receive({token:3,kind:'contact',at:120});
+    expect(performance.frame(epoch,240).assistVisualIntensity).toBeCloseTo(1/3);
+    state={...state,assist:{...state.assist!,pendingWorkMs:3000}};
+    performance.receive({token:4,kind:'rejected',at:240});
+    expect(performance.frame(epoch,360).assistVisualTier).toBe(1);
+    state={...state,world:{...state.world,elapsedMs:240000},assist:{...state.assist!,actionSeq:2}};
+    performance.receive({token:5,kind:'accepted',at:360});
+    expect(performance.frame(epoch,480).assistVisualIntensity).toBe(0);
+    expect(performance.frame(epoch,480).assistVisualTier).toBe(0);
+  });
+
+  it('uses a continuous attack and release with no residual pose after the envelope ends',()=>{
+    const {attackMs,holdMs,releaseMs}=robotAssistVisualRules;
+    for(const boundary of [0,attackMs,holdMs,holdMs+releaseMs]){
+      expect(Math.abs(robotAssistVisualEnvelope(boundary+.01)-robotAssistVisualEnvelope(boundary-.01))).toBeLessThan(1e-6);
+    }
+    expect(robotAssistVisualEnvelope(-1)).toBe(0);
+    expect(robotAssistVisualEnvelope(NaN)).toBe(0);
+    expect(robotAssistVisualEnvelope(holdMs+releaseMs)).toBe(0);
   });
 });
 

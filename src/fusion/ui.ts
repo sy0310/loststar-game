@@ -2,7 +2,7 @@ import './style.css';
 import {icon} from '../icons';
 import {discoveries, discoveryById, planetById} from '../content/catalog';
 import {curioPrices, projectAvailable, latestNightHistory} from './domain';
-import {drawCurioSpecimen, prepareCurioMaterial, prepareCurioTools} from './curio-condition';
+import {drawCurioSpecimen, prepareCurioMaterial, prepareCurioTools, curioConditionPresentation, curioTreatmentLabels, renderCurioTreatment, exportCurioMaterial} from './curio-condition';
 import {drawCurioAbilityRig,curioAbilityReady,type CurioAbilityRigResult,type AbilityRigRecord} from './curio-ability-rig';
 import {cost, MAX_LEVEL, publicRadar, tuning, type UpgradeId, type SaveData} from '../game/engine';
 import {growthCatalog, growthChange, growthLevel} from '../game/growth';
@@ -49,7 +49,7 @@ interface CasePreview {
 const escape = (value: string) => value.replace(/[&<>"']/g, character => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[character]!));
 const format = (value: number) => Math.floor(value).toLocaleString('zh-CN');
 const minutes = (milliseconds: number) => `${Math.max(1, Math.ceil(milliseconds / 60000))}分钟`;
-const conditionLabels = {found: '带着泥', clean: '已清理', stabilized: '已修补'};
+const conditionLabels = {found: '发现态', clean: '整理态', stabilized: '展示完成'};
 const recordOrigins: Record<string, string> = {marker: '管道箱标', residents: '生态观察窗', night: '收件站夜班'};
 const upgradeNames: Record<UpgradeId, string> = {scanner: '机器人', recycler: '飞船', radar: '雷达', cargo: '货舱'};
 
@@ -66,12 +66,17 @@ export function mountFusion(controller: FusionController) {
           <aside id="fusion-journey-intro" class="fu-journey-intro" hidden><div><strong>新周目 · 120零件起步</strong><span>初始设备已就位，收藏从第一次发现开始。</span><small id="fusion-backup-status"></small></div><button id="fusion-dismiss-intro" aria-label="收起新周目提示">×</button></aside>
           <div class="fu-world-shell">
             <div id="fusion-tap" role="button" tabindex="0" aria-label="点星球，协助探索"><div id="fusion-world"></div><span id="fusion-tap-hint">星球接通中…</span><span id="fusion-pick-reticle" class="fu-pick-reticle" aria-hidden="true" hidden></span></div><button id="fusion-scene-retry" class="fu-scene-retry" hidden>重新接通信号</button>
-            <span id="fusion-period" class="fu-period">白天</span><span id="fusion-surface-status" class="fu-surface-status" hidden></span><div id="fusion-inspection-panel" class="fu-inspection" hidden><canvas id="fusion-inspection" width="780" height="180" aria-label="同一球面的事件近景"></canvas><small>现场观察</small></div>
+            <span id="fusion-period" class="fu-period">白天</span><span id="fusion-surface-status" class="fu-surface-status" hidden></span>
           </div>
+          <section id="fusion-field-drawer" class="fu-field-drawer" aria-label="现场信息" hidden>
+            <header><strong id="fusion-field-title">现场观察</strong><span id="fusion-field-context"></span><button id="fusion-field-close" aria-label="收起现场信息">${icon('close')}</button></header>
+            <div id="fusion-inspection-panel" class="fu-inspection" hidden><canvas id="fusion-inspection" width="780" height="220" aria-label="同一球面的事件近景"></canvas></div>
+            <p id="fusion-field-summary"></p>
+          </section>
           <section class="fu-explore-controls">
             <div class="fu-action-line"><strong id="fusion-action">搜索箱堆</strong><span id="fusion-percent">0%</span></div>
             <div class="fu-progress" role="progressbar" aria-label="探索进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="fusion-assist-progress"></i><i id="fusion-progress"></i></div>
-            <div class="fu-action-bottom"><span id="fusion-auto">自动探索中</span><button id="fusion-upgrades" class="fu-primary">${icon('bolt')}升级</button></div>
+            <div class="fu-action-bottom"><span id="fusion-auto">自动探索中</span><button id="fusion-observe" class="fu-field-toggle" aria-controls="fusion-field-drawer" aria-expanded="false">观察</button><button id="fusion-upgrades" class="fu-primary">${icon('bolt')}升级</button></div>
             <button id="fusion-damage" class="fu-damage" hidden></button>
           </section>
           <button id="fusion-found" class="fu-found" hidden><span id="fusion-found-art"></span><span><small>新发现</small><strong id="fusion-found-name"></strong></span>${icon('arrow')}</button>
@@ -150,7 +155,7 @@ export function mountFusion(controller: FusionController) {
       const condition = (preview?.curios ?? controller.state.curios)[exhibit.id];
       if (!condition) return false;
       const trial=!preview&&drawer==='detail'&&detailId===exhibit.id?Math.min(1,Math.max(0,(performance.now()-curioTrialAt)/2600)):0;
-      drawCurioSpecimen(context, exhibit, image, condition, preview?.at ?? Date.now(),{seconds:preview?0:time,trial,reducedMotion:reducedMotion.matches,serviceEnvelope:service?.specimenEnvelope??1,drawAbility:exhibit.id==='tape'&&abilityReady?(canvas,material)=>{
+      drawCurioSpecimen(context, exhibit, image, condition, preview?.at ?? Date.now(),{seconds:preview?0:time,trial,reducedMotion:reducedMotion.matches,serviceEnvelope:service?.specimenEnvelope??1,drawAbility:exhibit.id==='tape'&&abilityReady&&(preview?.abilities??controller.state.progression.abilities).tape>0?(canvas,material)=>{
         const result=drawCurioAbilityRig(canvas,{id:'tape',image:material,seconds:preview?0:time,abilityLevel:(preview?.abilities??controller.state.progression.abilities).tape,experimentProgress:trial||undefined,serviceEnvelope:service?.specimenEnvelope??1,records:preview?.records??abilityRecords(),materialRevision:`${condition.condition}/${condition.action?.kind??''}/${condition.action?Math.round((Date.now()-condition.action.startedAt)/33):0}`,reducedMotion:reducedMotion.matches});abilityResults.set('tape',result);return true;
       }:undefined});
       return true;
@@ -192,6 +197,7 @@ export function mountFusion(controller: FusionController) {
   let manualInspectionUntil = 0;
   let manualInspectionPoint = {x: 416, y: 350};
   let followLiveInspection=false;
+  let fieldOpen = false;
   let reticleTimer: ReturnType<typeof setTimeout>;
   let tab: Tab = 'explore';
   let filter: Filter = 'artifact';
@@ -237,6 +243,7 @@ export function mountFusion(controller: FusionController) {
   }
 
   function selectTab(next: Tab) {
+    setFieldOpen(false);
     tab = next;
     for (const id of ['explore', 'collection', 'base'] as const) query(`#fusion-${id}`).hidden = id !== next;
     for (const button of app.querySelectorAll<HTMLElement>('[data-tab]')) button.setAttribute('aria-current', button.dataset.tab === next ? 'page' : 'false');
@@ -267,12 +274,14 @@ export function mountFusion(controller: FusionController) {
   }
 
   function showDrawer(kind: Drawer, title: string, content: string) {
+    setFieldOpen(false);
     interactions.hide();
     clearProjectHabitats();
     radar?.setActive(false);
     starMap?.setActive(false);
     focusCadence.reset();lastFocusAt=0;
     drawer = kind;
+    dialog.dataset.mode = kind === 'detail' && ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell'].includes(detailId) ? 'treatment' : 'drawer';
     query('#fusion-drawer-title').textContent = title;
     focusVisibility.disconnect();
     body.innerHTML = content;
@@ -286,6 +295,15 @@ export function mountFusion(controller: FusionController) {
     museum.setActive(false);
     setHabitatsActive(false);
     updateLiveDrawer();
+  }
+
+  function setFieldOpen(open: boolean) {
+    fieldOpen = open;
+    query('#fusion-field-drawer').hidden = !open;
+    query('#fusion-inspection-panel').hidden = !open;
+    query('#fusion-observe').setAttribute('aria-expanded', String(open));
+    query('#fusion-explore').dataset.fieldOpen = String(open);
+    inspectionCadence.reset();
   }
 
   function upgradeCard(id: UpgradeId) {
@@ -493,22 +511,29 @@ export function mountFusion(controller: FusionController) {
     curioTrialAt=-Infinity;
     detailId = id;
     showDrawer('detail', discovery.name, `
-      ${id === 'receipt' ? '<canvas id="fusion-paper-focus" width="640" height="700" role="img" aria-label="收据物理状态与修补近景"></canvas><div class="fu-paper-status"><span id="fusion-paper-condition"></span><span id="fusion-paper-missing"></span></div><div class="fu-progress"><i id="fusion-paper-progress"></i></div>' : `<canvas id="fusion-exhibit-focus" width="400" height="370" role="img" aria-label="${escape(discovery.name)}玻璃容器近景"></canvas>`}
+      ${id === 'receipt' || curioPrices[id] ? '<div id="fusion-treatment-loading" class="fu-treatment-loading" role="status"><span>整理台准备中…</span><button id="fusion-treatment-retry" hidden>重新接通</button></div>' : ''}
+      ${id === 'receipt' || curioPrices[id] ? '<ol class="fu-treatment-stages" aria-label="物品处理阶段"><li data-condition="found">01 发现</li><li data-condition="clean">02 整理</li><li data-condition="stabilized">03 展示</li></ol>' : ''}
+      ${id === 'receipt' ? '<canvas id="fusion-paper-focus" width="640" height="700" role="img" aria-label="收据物理状态与修补近景"></canvas><div class="fu-paper-status"><span id="fusion-paper-condition"></span><span id="fusion-paper-missing"></span></div><div class="fu-progress"><i id="fusion-paper-progress"></i></div>' : `<canvas id="fusion-exhibit-focus" width="${curioPrices[id] ? 640 : 400}" height="${curioPrices[id] ? 700 : 370}" role="img" aria-label="${escape(discovery.name)}${curioPrices[id] ? '独立整理台' : '玻璃容器近景'}"></canvas>`}
       <div class="fu-detail-actions">${id === 'receipt' ? '<button id="fusion-paper-primary" class="fu-primary"></button>' : ''}${curioPrices[id] ? '<button id="fusion-curio-primary" class="fu-primary"></button>' : ''}<button id="fusion-try">${state.journey?'试一试 · 免费':'试一试'}</button></div>
       <div id="interaction-feedback" class="fu-interaction" hidden><canvas width="320" height="180" aria-label="奇物互动演出"></canvas><p id="interaction"></p><button id="fusion-hide-interaction">收起</button></div>
       ${curioPrices[id] ? '<p id="fusion-curio-condition" class="fu-muted"></p><p id="fusion-curio-response" class="fu-curio-response" role="status" hidden></p>' : ''}${ability?`<section class="fu-ability-panel"><small>本体研究</small><div><strong id="fusion-ability-level"></strong><span id="fusion-ability-effect"></span></div><button id="fusion-ability-upgrade" class="fu-primary"></button><small id="fusion-ability-next" class="fu-ability-next" hidden></small></section>`:''}${['receipt','tape','nested','stamp','cosmic-parcel','bell'].includes(id)?'<button id="fusion-exhibit-engineering" class="fu-wide">展柜工程</button>':''}${flavor?`<div class="fu-curio-message"><small>${flavor.landmark} · 奇物留言</small><p>${flavor.line}</p></div>`:''}<details class="fu-details"><summary>它的来历</summary><p>${escape(discovery.description)}</p><p>${escape(discovery.fieldNote)}</p>${id === 'receipt' ? '<p id="fusion-paper-evidence"></p>' : ''}</details>`);
-    if (id === 'receipt') void prepareFocus().catch(() => toast('整理台暂未接通，请再试一次'));
+    const loadFailed = () => {
+      if (!dialog.open || drawer !== 'detail' || detailId !== id) return;
+      const loading = body.querySelector<HTMLElement>('#fusion-treatment-loading');
+      if (loading) {loading.hidden = false;loading.querySelector('span')!.textContent = '整理台暂未接通';query('#fusion-treatment-retry').hidden = false;}
+    };
+    if (id === 'receipt') void prepareFocus().catch(loadFailed);
     else {
-      void museum.ready.then(() => {
+      void Promise.all([museum.ready, prepareCurioTools()]).then(() => {
         if (!dialog.open || drawer !== 'detail' || detailId !== id) return;
         const canvas = query<HTMLCanvasElement>('#fusion-exhibit-focus');
         const index = ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell'].indexOf(id);
-        if (canvas && index >= 0) museum.renderExhibit(canvas, id, growthLevel(controller.state.game, `case-${index}`));
+        if (canvas && index >= 0) {if (!curioPrices[id]) museum.renderExhibit(canvas, id, growthLevel(controller.state.game, `case-${index}`));}
         else if (canvas) {
           canvas.replaceWith(document.createElement('div'));
           body.insertAdjacentHTML('afterbegin', `<div class="fu-detail-art">${itemArt(id)}</div>`);
         }
-      });
+      }).catch(loadFailed);
     }
     updateLiveDrawer();
   }
@@ -602,13 +627,13 @@ export function mountFusion(controller: FusionController) {
       const frame = receiptRestorationFrame(state.receipt, Date.now() / 1000);
       const main = receiptRestorationMainAction({...state.receipt, parts: state.game.resources});
       const primary = query<HTMLButtonElement>('#fusion-paper-primary');
-      const labels = {excavate: '取出', clean: '清理 40', repair: '修补 120', identify: '对照线索', 'visit-field': '去找线索'};
+      const labels = {excavate: '取出', clean: '清理纸面 40', repair: '修补纸角 120', identify: '对照线索', 'visit-field': '去找线索'};
       primary.textContent = state.receipt.activeAction ? '正在整理…' : labels[main.kind as keyof typeof labels];
       primary.dataset.kind = main.kind;
       primary.disabled = !focusReady || main.disabled;
       query<HTMLButtonElement>('#fusion-try').disabled = state.receipt.stage === 'buried' || !!state.receipt.activeAction;
       query<HTMLButtonElement>('#fusion-try').textContent=state.journey?'试一试 · 免费':refinementView(state).compareAction.enabled?'对照箱标':'试一试';
-      query('#fusion-paper-condition').textContent = state.receipt.stage === 'buried' ? '土样中' : conditionLabels[state.receipt.condition];
+      query('#fusion-paper-condition').textContent = state.receipt.stage === 'buried' ? '土样中 · 发现态' : curioConditionPresentation('receipt', state.receipt.condition).label;
       query('#fusion-paper-missing').textContent = `原件待证${frame.reading.missingCount}项`;
       query('#fusion-paper-missing').dataset.count = String(frame.reading.missingCount);
       query('#fusion-paper-progress').style.width = `${state.receipt.activeAction ? frame.progress * 100 : 0}%`;
@@ -619,11 +644,20 @@ export function mountFusion(controller: FusionController) {
       const primary = query<HTMLButtonElement>('#fusion-curio-primary');
       if (curio) {
         const next = curio.condition === 'found' ? 'clean' : 'repair';
-        primary.textContent = curio.action ? '正在整理…' : curio.condition === 'stabilized' ? '已整理' : `${next === 'clean' ? '清理' : '修补'} ${curioPrices[detailId][next]}`;
+        const labels = curioTreatmentLabels(detailId);
+        primary.textContent = curio.action ? (curio.action.kind === 'clean' ? labels.cleaning : labels.repairing) : curio.condition === 'stabilized' ? '展示完成' : `${labels[next]} ${curioPrices[detailId][next]}`;
         primary.dataset.kind = next;
-        primary.disabled = !!curio.action || curio.condition === 'stabilized' || state.game.resources < curioPrices[detailId][next];
-        query('#fusion-curio-condition').textContent = curio.action ? `${curio.action.kind === 'clean' ? '刷洗接触面' : '压合两处加固点'} · ${Math.min(100, Math.floor((Date.now() - curio.action.startedAt) / (curio.action.endsAt - curio.action.startedAt) * 100))}%` : conditionLabels[curio.condition];
-        query<HTMLButtonElement>('#fusion-try').disabled = !!curio.action;
+        const ready = body.querySelector<HTMLCanvasElement>('#fusion-exhibit-focus')?.dataset.ready === 'true';
+        primary.disabled = !ready || !!curio.action || curio.condition === 'stabilized' || state.game.resources < curioPrices[detailId][next];
+        const presentation = curioConditionPresentation(detailId, curio.condition);
+        query('#fusion-curio-condition').textContent = curio.action ? `${curio.action.kind === 'clean' ? labels.cleaning : labels.repairing} · ${Math.min(100, Math.floor((Date.now() - curio.action.startedAt) / (curio.action.endsAt - curio.action.startedAt) * 100))}%` : `${presentation.label} · ${presentation.detail}`;
+        query<HTMLButtonElement>('#fusion-try').disabled = !ready || !!curio.action;
+      }
+    }
+    if (drawer === 'detail') {
+      const condition = detailId === 'receipt' ? state.receipt.condition : state.curios[detailId]?.condition;
+      for (const step of body.querySelectorAll<HTMLElement>('.fu-treatment-stages [data-condition]')) {
+        step.setAttribute('aria-current', step.dataset.condition === condition ? 'step' : 'false');
       }
     }
     if (drawer === 'research') {
@@ -740,9 +774,11 @@ export function mountFusion(controller: FusionController) {
     const repair = game.station.lastRepair;
     const sorting=refinementView(state).sorting;
     const branchCloseup=!!sorting.researchActive||sorting.phase==='surveying'||sorting.phase==='building'||sorting.phase==='working'&&['verify','clear-paper'].includes(sorting.stage??'');
-    const branchStartedAt=sorting.researchActive?.startedAt??sorting.stageStartedAt;
-    const showInspection = tab === 'explore' && (branchCloseup&&game.lastAt-branchStartedAt<6000 || performance.now() < manualInspectionUntil || night && ['patrol', 'track', 'identify', 'contain', 'result', 'return'].includes(phase ?? '') || !!repair && game.lastAt - repair.at < 4000);
-    query('#fusion-inspection-panel').hidden = !showInspection;
+    const repairing = !!repair && game.lastAt - repair.at < 4000;
+    query('#fusion-field-title').textContent = night ? '夜间巡逻' : repairing ? '晨间修复' : '现场观察';
+    query('#fusion-field-context').textContent = night ? '自动值守' : branchCloseup ? '实地作业' : '退件平原';
+    query('#fusion-observe').textContent = night ? '巡逻' : '观察';
+    query('#fusion-field-summary').textContent = night ? `探照灯${game.world.slots[0] ? '工作中' : '停用'} · 隔离门${game.world.slots[1] ? '待命' : '停用'}` : repairing ? `已修复${repair!.points}点 · 实付${repair!.cost}零件` : surfaceStatus.textContent;
     const study=sorting.researchActive?sortingStudies.find(study=>study.id===sorting.researchActive!.id):undefined;
     const branchActions:Record<string,string>={surveying:'沿纸路勘测',building:'接通传送带',working:sorting.stage==='hauling'?'搬开分拣箱堆':sorting.stage==='verify'?'核验错位箱标':'清理卡纸层'};
     query('#fusion-action').textContent = night ? ({appear: '箱堆传来动静', track: '咔哒正在追踪', identify: '核对访客标记', contain: '引导访客入站', result: '正在归档结果', return: '咔哒正在回站'}[phase ?? ''] ?? '咔哒正在巡守') : projected.branch?(study?`观察${study.name}`:branchActions[sorting.phase]??'咔哒正在作业'):world.period === 'dawn' ? '清晨，继续探索' : '搜索箱堆';
@@ -821,7 +857,7 @@ export function mountFusion(controller: FusionController) {
     manualInspectionPoint = {x, y};
     manualInspectionUntil = performance.now() + 2200;
     inspectionCenter = {x, y};
-    query('#fusion-inspection-panel').hidden = false;
+    setFieldOpen(true);
     highlightPicked(x, y);
     pulse?.({token:++feedbackToken,kind:'inspect',x,y,at:performance.now()});
   }
@@ -904,6 +940,9 @@ export function mountFusion(controller: FusionController) {
     const button = (event.target as Element).closest<HTMLButtonElement>('button');
     if (!button || button.disabled) return;
     if (button.id === 'fusion-dismiss-intro') {introDismissed = true;query('#fusion-journey-intro').hidden = true;try {localStorage.setItem(introKey, String(controller.state.journey?.seed));} catch {}return;}
+    if (button.id === 'fusion-observe') {followLiveInspection = true;setFieldOpen(!fieldOpen);return;}
+    if (button.id === 'fusion-field-close') {setFieldOpen(false);return;}
+    if (button.id === 'fusion-treatment-retry') {showDetail(detailId);return;}
     if (button.dataset.tab) {selectTab(button.dataset.tab as Tab);return;}
     if (button.dataset.filter) {
       filter = button.dataset.filter as Filter;
@@ -1018,7 +1057,7 @@ export function mountFusion(controller: FusionController) {
       button.textContent = '重新回放';
       return;
     }
-    if (button.id === 'fusion-watch-world') {followLiveInspection=true;manualInspectionUntil=performance.now()+5000;closeDrawer();selectTab('explore');}
+    if (button.id === 'fusion-watch-world') {followLiveInspection=true;manualInspectionUntil=performance.now()+5000;closeDrawer();selectTab('explore');setFieldOpen(true);}
   });
   app.addEventListener('change', event => {
     const target = event.target as HTMLInputElement;
@@ -1115,11 +1154,22 @@ export function mountFusion(controller: FusionController) {
         const canvas = query<HTMLCanvasElement>('#fusion-exhibit-focus');
         const state = controller.state;
         if (canvas && museum.canvas.dataset.ready === 'true' && state.curios[detailId] && focusVisible.get(canvas)!==false) {
-          const index = ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell'].indexOf(detailId);
-          museum.renderExhibit(canvas, detailId, growthLevel(state.game, `case-${index}`), fusionRenderElapsed(state.game,Date.now()) / 1000);canvas.dataset.experimentPlaying=String(now-curioTrialAt>=0&&now-curioTrialAt<2600);canvas.dataset.item=detailId;canvas.dataset.lastInput=lastPointer;canvas.dataset.replay=String(curioTrialReplay);canvas.dataset.experimentStartedAt=String(curioTrialAt);decorateAbilityCanvas(canvas,detailId);painted=true;
+          const seconds = fusionRenderElapsed(state.game,Date.now()) / 1000;
+          const trial = Math.min(1, Math.max(0, (now-curioTrialAt)/2600));
+          const rendered = renderCurioTreatment(canvas, detailId, state.curios[detailId], Date.now(), {seconds, trial, reducedMotion: reducedMotion.matches,
+            drawAbility: detailId === 'tape' && abilityReady && state.progression.abilities.tape > 0 ? (context, image) => {
+              const result = drawCurioAbilityRig(context, {id:'tape', image, seconds, abilityLevel:state.progression.abilities.tape,
+                experimentProgress:trial || undefined, records:abilityRecords(), reducedMotion:reducedMotion.matches,
+                materialRevision:`${state.curios.tape.condition}/${state.curios.tape.action?.kind ?? ''}/${state.curios.tape.action ? Math.round(Date.now()/33) : 0}`});
+              abilityResults.set('tape',result);return true;
+            } : undefined});
+          canvas.dataset.experimentPlaying=String(now-curioTrialAt>=0&&now-curioTrialAt<2600);canvas.dataset.item=detailId;canvas.dataset.lastInput=lastPointer;canvas.dataset.replay=String(curioTrialReplay);canvas.dataset.experimentStartedAt=String(curioTrialAt);decorateAbilityCanvas(canvas,detailId);painted=rendered;
         }
       }
-      if(painted){if(lastFocusAt)focusMetrics.intervalsMs.push(now-lastFocusAt);lastFocusAt=now;focusMetrics.costsMs.push(performance.now()-began);focusMetrics.intervalsMs=focusMetrics.intervalsMs.slice(-1200);focusMetrics.costsMs=focusMetrics.costsMs.slice(-1200);}
+      if(painted){
+        if (drawer === 'detail') {const loading = body.querySelector<HTMLElement>('#fusion-treatment-loading');if(loading) loading.hidden = true;}
+        if(lastFocusAt)focusMetrics.intervalsMs.push(now-lastFocusAt);lastFocusAt=now;focusMetrics.costsMs.push(performance.now()-began);focusMetrics.intervalsMs=focusMetrics.intervalsMs.slice(-1200);focusMetrics.costsMs=focusMetrics.costsMs.slice(-1200);
+      }
     }
     if (dialog.open && drawer === 'project' && projectId === 'archive' && archiveReplay) {
       query('#fusion-replay-status').textContent = `第${archiveReplay.number}夜 · ${Math.floor(archiveReplay.seconds)}／60秒 · 处置回放`;
@@ -1146,6 +1196,13 @@ export function mountFusion(controller: FusionController) {
 
   return {
     worldRoot,
+    materialSnapshot:(id:string)=>{
+      const state=controller.state;
+      if(!state.game.collection.includes(id))return undefined;
+      const canvas=id==='receipt'?receiptTable?.exportMaterial(receiptRestorationFrame(state.receipt,Date.now()/1000))
+        :state.curios[id]?exportCurioMaterial(id,state.curios[id],Date.now()):undefined;
+      return canvas?.toDataURL('image/png');
+    },
     resetDiagnostics:()=>{museum.resetMetrics();focusMetrics.intervalsMs.length=0;focusMetrics.costsMs.length=0;lastFocusAt=0;feedbackMetrics.contactDispatchMs.length=0;feedbackMetrics.acceptedDispatchMs.length=0;feedbackMetrics.transactionMs.length=0;},
     diagnostics:()=>({view:tab,drawer:dialog.open?drawer:null,museum:museum.metrics(),focus:{clockMode:drawer==='case-preview'?'frozen':'realtime',sampleWindowMs:focusMetrics.intervalsMs.reduce((sum,value)=>sum+value,0),intervalsMs:[...focusMetrics.intervalsMs],costsMs:[...focusMetrics.costsMs]},input:{contactDispatchMs:[...feedbackMetrics.contactDispatchMs],acceptedDispatchMs:[...feedbackMetrics.acceptedDispatchMs],transactionMs:[...feedbackMetrics.transactionMs]}}),
     setScene(next: ExpeditionScene, onPulse: (event?:SceneFeedback) => void, getFocus?: () => {x: number; y: number}, unloadPoint?:()=>{x:number;y:number}) {

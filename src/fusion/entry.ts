@@ -24,6 +24,7 @@ async function start() {
     feedbackMetrics: () => extension.feedbackMetrics(),
     surfaceMetrics: () => extension.surfaceMetrics(),
     facilityMetrics: () => extension.facilityMetrics(),
+    materialSnapshot: (id:string) => handle.materialSnapshot(id),
     resetMetrics: () => scene.resetMetrics(),
     pickAtClient: (x: number, y: number) => scene.pickAtClient(x, y),
   }});

@@ -1,3 +1,4 @@
+import {drawPhysicalCurioRig} from './curio-material';
 interface Point {x:number; y:number}
 interface PartLayers {key:string; body:HTMLCanvasElement; part:HTMLCanvasElement; shadow:HTMLCanvasElement}
 const layers=new WeakMap<HTMLCanvasElement,PartLayers>();
@@ -25,6 +26,7 @@ function partLayers(image:HTMLCanvasElement,id:string,revision:string){
 
 /** Only the authored joint moves. The surrounding specimen keeps its registered support. */
 export function drawLocalCurioRig(c:CanvasRenderingContext2D,id:string,image:HTMLCanvasElement,revision:string,seconds:number,trial:number,reduced=false,serviceEnvelope=1,stability=1){
+  if(drawPhysicalCurioRig(c,id,image,seconds,trial,reduced,serviceEnvelope))return;
   if(!outlines[id]){c.drawImage(image,0,0);return;}
   const pieces=partLayers(image,id,revision);
   const active=trial>0&&trial<1?Math.sin(trial*Math.PI):0;

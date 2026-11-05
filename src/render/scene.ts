@@ -292,6 +292,10 @@ export class ExpeditionScene {
     this.canvas.dataset.robotReceived=String(drawnAnimation?.received??0);
     this.canvas.dataset.robotAppliedWorkMs=String(drawnAnimation?.appliedWorkMs??0);
     this.canvas.dataset.robotAssistRate=String(drawnAnimation?.assistRate??0);
+    this.canvas.dataset.robotAssistVisualIntensity=String(drawnAnimation?.assistVisualIntensity??0);
+    this.canvas.dataset.robotAssistVisualTier=String(drawnAnimation?.assistVisualTier??0);
+    this.canvas.dataset.robotTorsoLean=String(drawnMotion?.lean??0);
+    this.canvas.dataset.robotScanAmplitude=String(drawnMotion?.scanAmplitude??.18);
     this.canvas.dataset.robotAnimationAction=p.action;
     this.canvas.dataset.period=environment.period;
     this.canvas.dataset.residents=JSON.stringify(residents);

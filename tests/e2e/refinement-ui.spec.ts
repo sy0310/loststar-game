@@ -119,6 +119,7 @@ test('能力与展柜分别保存，工程按开工胶带等级定价，真实�
   expect((await saved(page)).progression.sorting.phase).toBe('cleared');
   await sorting(page);await page.locator('[data-refinement="study"]').tap();
   await expect(page.locator('#fusion-drawer')).toBeHidden();
+  await page.locator('#fusion-observe').tap();
   await expect(page.locator('#fusion-inspection-panel')).toBeVisible();
   await sorting(page);await expect(page.locator('[data-cancel-sorting-study]')).toBeVisible();
   const active=await saved(page);expect(active.progression.sorting.activeStudy?.id).toBe('belt-direction');

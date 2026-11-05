@@ -1,10 +1,12 @@
-import {robotScanAngle,robotScannerJoint,type robotPose} from './motion';
+import {robotScanAngle,robotScannerJoint,robotVisualEffort,type robotPose} from './motion';
 
 export interface RobotAnimationState {
   workSeconds:number;
   received:number;
   appliedWorkMs:number;
   assistRate:number;
+  assistVisualIntensity?:number;
+  assistVisualTier?:0|1|2|3;
 }
 type Pose=ReturnType<typeof robotPose>;
 type Point={x:number;y:number};
@@ -20,6 +22,7 @@ const scanArm:Outline=[[17,73],[46,73],[51,77],[51,87],[60,88],[65,87],[66,103],
 const scanFrontArm:Outline=[[98,84],[144,84],[144,132],[105,132],[107,118],[103,112],[99,107],[96,104],[96,92]];
 const backForearm:Outline=[[35,95],[43,91],[51,92],[60,95],[62,105],[52,115],[40,118],[35,111]];
 const frontForearm:Outline=[[62,105],[70,100],[80,99],[89,100],[98,103],[97,112],[86,122],[73,127],[62,123]];
+const walkFrontArm:Outline=[[98,93],[114,92],[126,105],[129,122],[118,131],[105,128],[98,116]];
 
 function path(c:CanvasRenderingContext2D,outline:Outline){
   c.moveTo(outline[0][0],outline[0][1]);for(const [x,y] of outline.slice(1))c.lineTo(x,y);c.closePath();
@@ -38,6 +41,7 @@ function body(c:CanvasRenderingContext2D,image:HTMLImageElement,frame:number,hol
 export function robotAnimationPose(pose:Pose,fraction:number,animation:RobotAnimationState){
   const f=((fraction%1)+1)%1,moving=pose.action==='walk'||pose.action==='return';
   const received=clamp(animation.received),workSeconds=animation.workSeconds;
+  const effort=robotVisualEffort(animation.assistVisualIntensity);
   const approach=pose.action==='pickup'?smooth((f-.49)/.03):1;
   const bend=pose.action==='pickup'?approach*(1-pose.lift):0;
   const retract=pose.action==='unload'?smooth((f-.975)/.02):0;
@@ -45,7 +49,11 @@ export function robotAnimationPose(pose:Pose,fraction:number,animation:RobotAnim
   const contact=blend(blend(held,pose.parcel,approach),held,retract);
   return {workSeconds,received,walkFrame:Math.floor(workSeconds*8)%4,
     bob:moving?Math.round(Math.sin(workSeconds*16)):0,
-    scanAngle:robotScanAngle(workSeconds,received),bend,
+    scanAngle:robotScanAngle(workSeconds,received,effort.intensity),bend,
+    lean:effort.lean,scanAmplitude:effort.scanAmplitude,
+    eyeLight:Math.max(received,effort.intensity*.72),
+    handResponse:received*.12+effort.intensity*Math.sin(workSeconds*8)*.035,
+    crouch:bend*(15+effort.intensity*5),
     hands:{back:{x:contact.x-9,y:contact.y-12},front:{x:contact.x+10,y:contact.y-10}}};
 }
 
@@ -79,30 +87,47 @@ function eyes(c:CanvasRenderingContext2D,image:HTMLImageElement,frame:number,rec
   c.fillStyle='#fff0b9';c.globalAlpha=received*.9;c.fillRect(63,eyesY+3,3,4);c.fillRect(83,eyesY+6,2,4);c.restore();
 }
 
+function upperBody(c:CanvasRenderingContext2D,lean:number,draw:()=>void){
+  c.save();c.beginPath();c.rect(0,0,160,125);c.rect(0,125,45,35);c.rect(115,125,45,35);c.clip();
+  c.transform(1,0,lean,1,-lean*125,0);draw();c.restore();
+}
+function legs(c:CanvasRenderingContext2D,image:HTMLImageElement,frame:number){
+  c.drawImage(image,frame%4*cell+45,Math.floor(frame/4)*cell+125,70,35,45,125,70,35);
+}
+
 export function drawAnimatedRobot(c:CanvasRenderingContext2D,image:HTMLImageElement,pose:Pose,fraction:number,animation:RobotAnimationState){
   const motion=robotAnimationPose(pose,fraction,animation),moving=pose.action==='walk'||pose.action==='return';
   c.save();c.translate(Math.round(pose.x),Math.round(pose.y+motion.bob));
   if(pose.action==='walk'&&pose.facing==='right')c.scale(-1,1);
   c.translate(origin.x,origin.y);c.scale(scale,scale);
   if(pose.action==='scan'){
-    body(c,image,4,[scanArm]);
-    c.save();c.translate(robotScannerJoint.x,robotScannerJoint.y);c.rotate(motion.scanAngle);
-    c.translate(-robotScannerJoint.x,-robotScannerJoint.y);part(c,image,4,scanArm);c.restore();
-    eyes(c,image,4,motion.received);
+    legs(c,image,4);
+    upperBody(c,motion.lean,()=>{
+      body(c,image,4,[scanArm]);
+      c.save();c.translate(robotScannerJoint.x,robotScannerJoint.y);c.rotate(motion.scanAngle);
+      c.translate(-robotScannerJoint.x,-robotScannerJoint.y);part(c,image,4,scanArm);c.restore();
+      eyes(c,image,4,motion.eyeLight);
+    });
   }else if(pose.action==='walk'){
-    atlas(c,image,motion.walkFrame);eyes(c,image,motion.walkFrame,motion.received);
+    legs(c,image,motion.walkFrame);
+    upperBody(c,motion.lean,()=>{
+      body(c,image,motion.walkFrame,[walkFrontArm]);
+      c.save();c.translate(105,96);c.rotate(-motion.handResponse);
+      c.translate(-105,-96);part(c,image,motion.walkFrame,walkFrontArm);c.restore();
+      eyes(c,image,motion.walkFrame,motion.eyeLight);
+    });
   }else{
     // The torso/legs and both hands remain separate. A continuous crouch and
     // articulated wrists replace the old hard switch from pickup cell 5 to 6.
-    c.drawImage(image,(moving?motion.walkFrame*cell:0)+45,moving?125:cell+125,70,35,45,125,70,35);
-    const torsoDrop=motion.bend*15;
-    c.save();c.translate(motion.bend*4,torsoDrop);c.beginPath();c.rect(0,0,160,125);c.clip();
-    body(c,image,4,[scanArm,scanFrontArm]);eyes(c,image,4,motion.received);c.restore();
+    legs(c,image,moving?motion.walkFrame:4);
+    const torsoDrop=motion.crouch;
+    c.save();c.translate(motion.bend*4,torsoDrop);
+    upperBody(c,motion.lean,()=>{body(c,image,4,[scanArm,scanFrontArm]);eyes(c,image,4,motion.eyeLight);});c.restore();
     const local=(p:Point)=>({x:(p.x-Math.round(pose.x)-origin.x)/scale,
       y:(p.y-Math.round(pose.y+motion.bob)-origin.y)/scale});
     const handBob=moving?motion.bob:0;
-    arm(c,image,{x:61+motion.bend*4,y:89+torsoDrop},local({...motion.hands.back,y:motion.hands.back.y+handBob}),false);
-    arm(c,image,{x:99+motion.bend*4,y:92+torsoDrop},local({...motion.hands.front,y:motion.hands.front.y+handBob}),true);
+    arm(c,image,{x:61+motion.bend*4+motion.lean*(89-125),y:89+torsoDrop},local({...motion.hands.back,y:motion.hands.back.y+handBob}),false);
+    arm(c,image,{x:99+motion.bend*4+motion.lean*(92-125),y:92+torsoDrop},local({...motion.hands.front,y:motion.hands.front.y+handBob}),true);
   }
   c.restore();
 }

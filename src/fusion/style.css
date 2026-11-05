@@ -302,3 +302,38 @@ button.fu-wallet {padding: 2px 3px 2px 8px;min-width: 84px;border-color: transpa
   .fu-journey-intro {left: 11px;right: 11px;}
 }
 .fu-surface-status {position: absolute;left: 17px;bottom: 81px;padding: 4px 7px;font-size: 10px;line-height: 1.4;color: #cdb8dc;background: #261e34b3;border-left: 2px solid #b799bb;pointer-events: none;}
+
+/* World, field instruments and treatment each own their layout area. */
+#fusion-world canvas {transform: none;}
+.fu-world-shell {min-height: 210px;}
+.fu-explore-controls {margin: 0 13px 13px;}
+.fu-action-bottom {gap: 8px;}
+.fu-action-bottom > span {flex: 1;min-width: 0;}
+.fu-field-toggle {padding: 8px 12px;font-size: 11px;color: #c8d9c1;}
+.fu-field-toggle[aria-expanded="true"] {border-color: #9eae94;background: #303b3c;}
+#fusion-tap-hint {bottom: 14px;}
+.fu-surface-status {bottom: 49px;}
+.fu-field-drawer {flex: 0 0 auto;margin: 0 13px 12px;border: 1px solid #7e7367;background: #211e2c;box-shadow: inset 0 2px #d3b97d22;}
+.fu-field-drawer > header {display: flex;align-items: center;gap: 8px;padding-left: 12px;border-bottom: 1px solid #756066;min-height: 44px;}
+.fu-field-drawer > header strong {font-size: 12px;font-weight: 500;color: #e5cfab;}
+.fu-field-drawer > header span {margin-left: auto;font-size: 10px;color: #b9c9ba;}
+.fu-field-drawer > header button {width: 44px;min-height: 44px;padding: 10px;background: transparent;border: 0;box-shadow: none;}
+.fu-field-drawer .fu-inspection {margin: 0;border: 0;box-shadow: none;}
+.fu-field-drawer > p {margin: 0;padding: 6px 11px;font-size: 10px;line-height: 1.5;color: #bfc3b0;}
+#fusion-found {position: relative;bottom: auto;flex: 0 0 auto;margin: 0 13px 12px;width: calc(100% - 26px);}
+#fusion-drawer[data-mode="treatment"] {inset: 0;margin: 0 auto;height: 100dvh;max-height: 100dvh;border-top: 0;border-radius: 0;}
+#fusion-drawer[data-mode="treatment"] .fu-drawer-heading {padding-top: calc(10px + env(safe-area-inset-top, 0px));}
+#fusion-drawer[data-mode="treatment"] #fusion-drawer-body {padding: 10px 14px calc(22px + env(safe-area-inset-bottom, 0px));}
+#fusion-drawer[data-mode="treatment"] #fusion-paper-focus,
+#fusion-drawer[data-mode="treatment"] #fusion-exhibit-focus {max-height: 48dvh;border-color: #9b7a60;background: #241d2e;}
+.fu-treatment-stages {display: grid;grid-template-columns: repeat(3, 1fr);gap: 5px;list-style: none;margin: 0 0 10px;padding: 0;}
+.fu-treatment-stages li {padding: 9px 3px;border-bottom: 2px solid #615367;font-size: 11px;color: #a99db1;text-align: center;}
+.fu-treatment-stages li[aria-current="step"] {border-color: #d6b276;color: #f0d5a5;background: #4d3a462e;}
+.fu-treatment-loading {padding: 14px;border: 1px solid #80686a;color: #cfc3b4;font-size: 12px;}
+.fu-treatment-loading button {margin: 8px 0 0;width: 100%;}
+#fusion-drawer[data-mode="treatment"] .fu-detail-actions {position: sticky;bottom: 0;z-index: 2;margin-inline: -2px;padding: 9px 2px;background: #241c31f5;box-shadow: 0 -5px 9px #241c3199;}
+#fusion-drawer[data-mode="treatment"] .fu-ability-panel {margin-top: 20px;}
+@media (max-height: 740px) {
+  .fu-field-drawer .fu-inspection canvas {max-height: 86px;object-fit: cover;}
+  .fu-field-drawer > p {padding-block: 3px;}
+}

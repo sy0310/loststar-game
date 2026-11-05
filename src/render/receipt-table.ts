@@ -295,8 +295,27 @@ export class V036ReceiptTable {
     this.patch(context, frame, false);
     context.drawImage(this.paper.canvas, 0, 0);
     context.drawImage(this.ink.canvas, 0, 0);
+    // Fold valleys belong to the surviving paper. Cleaning exposes them;
+    // pressing reduces their depth without inventing any missing original ink.
+    const folded = 1 - Math.min(frame.upperPatch,frame.lowerPatch);
+    context.save();context.globalCompositeOperation='source-atop';
+    for (const [y,tilt] of [[88,3],[143,-2],[200,4]]) {
+      const row=this.rows[y];if(!row)continue;
+      context.strokeStyle=`rgba(99,69,62,${.06+folded*.18})`;context.lineWidth=1.25;
+      context.beginPath();context.moveTo(row.left+3,y);context.lineTo(row.right-3,y+tilt);context.stroke();
+      context.strokeStyle=`rgba(255,236,192,${.08+folded*.17})`;context.lineWidth=.7;
+      context.beginPath();context.moveTo(row.left+3,y+1.8);context.lineTo(row.right-3,y+tilt+1.8);context.stroke();
+    }
+    context.restore();
     context.drawImage(this.remainingMud.canvas, 0, 0);
     this.patch(context, frame, true);
+  }
+
+  /** Real transparent material for review export; no evidence or wallet changes. */
+  exportMaterial(saved: ReceiptRestorationDrawOptions['restorationFrame']) {
+    this.compose(v037ReceiptFrameFromRestoration(saved));
+    const canvas=document.createElement('canvas');canvas.width=canvas.height=256;
+    canvas.getContext('2d')!.drawImage(this.composed.canvas,0,0);return canvas;
   }
 
   private paperMesh(frame: ReturnType<typeof v036ReceiptFrame>, reduced: boolean, ambience: number) {
