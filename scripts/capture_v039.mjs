@@ -14,14 +14,17 @@ const database = 'loststar.fusion.firstplanet.v037';
 const worldSelector = '#fusion-world canvas[data-ready="true"]';
 const metadata = JSON.parse(await readFile('releases/taptap/package-info-fusion.json', 'utf8'));
 if (metadata.version !== '0.3.9') throw new Error(`Build/package V0.3.9 before capture; metadata is ${metadata.version}`);
-const sourceCommit = execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim();
+const evidenceCheckoutCommit = execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim();
+const sourceCommit = metadata.sourceCommit;
 const runtimePaths = ['src', 'assets/runtime', 'package.json', 'package-lock.json', 'vite.config.ts', 'vite.fusion.config.ts'];
 const dirty = execFileSync('git', ['status', '--porcelain', '--', ...runtimePaths], {encoding: 'utf8'}).trim();
-if (sourceCommit !== metadata.sourceCommit || dirty) throw new Error(`Frozen source/package mismatch or dirty runtime: ${sourceCommit}\n${dirty}`);
+const changedRuntime = execFileSync('git', ['diff', '--name-only', sourceCommit, evidenceCheckoutCommit, '--', ...runtimePaths], {encoding: 'utf8'}).trim();
+execFileSync('git', ['merge-base', '--is-ancestor', sourceCommit, evidenceCheckoutCommit]);
+if (changedRuntime || dirty) throw new Error(`Frozen source/package mismatch or dirty runtime: ${sourceCommit}\n${changedRuntime}\n${dirty}`);
 const zip = await readFile(resolve(metadata.archive));
 const zipSha256 = createHash('sha256').update(zip).digest('hex');
 if (zipSha256 !== metadata.sha256 || zip.length !== metadata.bytes) throw new Error('Packaged ZIP differs from its metadata');
-const report = {mode, sourceCommit, sourceClean: true, package: metadata, zipSha256, base, database,
+const report = {mode, sourceCommit, evidenceCheckoutCommit, sourceClean: true, package: metadata, zipSha256, base, database,
   physicalPhone: false, touchEmulation: true, clockOverrides: false,
   method: 'Disposable browser contexts only. Fixtures come from ordinary model reducers with full action/expense audit. The v037 database name and player archive format are retained. No user browser profile is opened or erased.',
   cases: [], screenshots: [], materials: [], videos: [], errors: []};

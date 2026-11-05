@@ -41,8 +41,8 @@ all_materials = [item for report in reports.values() for item in report.get('mat
 all_videos = [item for report in reports.values() for item in report.get('videos', [])]
 errors = [error for report in reports.values() for error in report.get('errors', [])]
 assist = assist_cases[0] if assist_cases else None
-state_names = {'found': '发现 · 未整理', 'clean': '已清理', 'stabilized': '已修补／展示'}
-item_names = {'receipt': '退货收据', 'tape': '道歉胶带', 'bell': '闹铃'}
+state_names = {'found': '发现态', 'clean': '整理态', 'stabilized': '展示完成态'}
+item_names = {'receipt': '退货收据', 'tape': '道歉胶带', 'bell': '无人签收铃'}
 
 treatment_sections = []
 for case in treatment_cases:
@@ -99,6 +99,26 @@ seen = set()
 remaining = [item for item in remaining if not (item[0] in seen or seen.add(item[0]))]
 status = f'证据报告记录{len(errors)}项待查错误。' if errors else '报告未记录采集错误。' if reports else '尚未采集运行时媒体。'
 links = ' · '.join(f'<a href="{name}-evidence.json">{name}原始报告</a>' for name in reports)
+def supplemental(name):
+    file = out / f'{name}.json'
+    value = json.loads(file.read_text()) if file.exists() else None
+    if value and value.get('sourceCommit') != package.get('sourceCommit'):
+        raise ValueError(f'{name} does not describe the captured source')
+    return value
+
+verification = supplemental('verification')
+performance = supplemental('performance')
+self_test = supplemental('taptap-self-test')
+checks_html = '<p>完整检查结果待登记。</p>'
+if verification:
+    check = verification['localCheck']
+    checks_html = f'<p>原件20/20，{check["unitTests"]}项单测、{check["browserTests"]}项浏览器流程、五类生产构建及6组最终包新／旧档烟测通过。</p>'
+if performance:
+    rows = ''.join(f'<tr><td>{escape(case["engine"])}</td><td>{escape(case["view"])}</td><td>{case["actualPaint"]["medianMs"]:.1f}ms</td><td>{case["actualPaint"]["p95Ms"]:.1f}ms</td></tr>' for case in performance['cases'])
+    checks_html += f'<p>Apple M2 Pro、390×844、DPR2；单浏览器单页，无录屏。预热1.5秒，采样10秒。下表为实际绘制间隔，不是手机性能。</p><table><thead><tr><th>引擎</th><th>画面</th><th>中位数</th><th>P95</th></tr></thead><tbody>{rows}</tbody></table>'
+if self_test:
+    checks_html += f'<p>TapTap开发自测 <strong>{self_test["h5VersionId"]} / v0.3.9 / {self_test["sourceCommit"][:7]}</strong>，远端已回读，主包未切换；真实手机观感待扫码复测。</p>'
+checks_html += '<p><a href="verification.json">验证摘要</a> · <a href="check.log">完整日志</a> · <a href="e2e-results.json">浏览器结果</a> · <a href="package-smoke.json">最终包存档检查</a> · <a href="performance.json">性能原值</a> · <a href="taptap-self-test.json">脱敏上传核验</a></p>'
 
 content = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>失物星球 V0.3.9 · 实际画面审核</title><style>
@@ -109,21 +129,35 @@ h1,h2,h3{{color:#ebc992;line-height:1.35}}h2{{margin-top:48px}}p{{max-width:940p
 figure{{margin:0 0 18px;padding:10px;background:#282130;border:1px solid #675465;min-width:0}}img{{display:block;width:100%;height:auto}}figcaption{{font-size:13px;color:#c7beb8;padding:9px 2px 0}}
 .material img{{image-rendering:pixelated;object-fit:contain;height:220px;background:repeating-conic-gradient(#332b3b 0 25%,#514357 0 50%) 0/20px 20px}}
 .movie video{{display:block;width:100%;max-height:844px;background:#100d18}}.movie{{max-width:480px}}dl{{display:flex;flex-wrap:wrap;gap:16px}}dl>div{{min-width:130px;background:#282130;padding:12px}}dt{{font-size:12px;color:#c7beb8}}dd{{margin:6px 0 0;font-weight:600}}summary{{cursor:pointer;color:#ebc992}}.error{{color:#f3b5a7}}
+table{{border-collapse:collapse;width:100%;font-size:14px}}th,td{{padding:8px;text-align:left;border-bottom:1px solid #675465}}
 @media(max-width:680px){{body{{padding:14px}}.states{{grid-template-columns:1fr}}.pair{{grid-template-columns:1fr 1fr}}}}
 </style><h1>V0.3.9 实际画面审核</h1>
-<p>运行源码 <code>{escape(package.get('sourceCommit', '待打包'))}</code>。本轮审核三档助力动作、独立现场／巡逻抽屉，以及收据、胶带、闹铃的三种物理状态。</p>
+<p>运行源码 <code>{escape(package.get('sourceCommit', '待打包'))}</code>。本轮审核三档助力动作、独立现场／巡逻抽屉，以及收据、胶带、无人签收铃的三种物理状态。</p>
 <p class="note">以下均为桌面浏览器触控仿真。物件审阅档由普通模型实际发现、赚取和付费生成，能力等级为0，完整行为和账本留在报告中；它们不是新玩家初始画面。连续录像使用自然墙钟和真实触屏输入。采集仅使用独立临时浏览器上下文，沿用v037档案格式，未读取、清空或替换用户个人浏览器存档。真实手机观感仍待用户复测。</p>
 <p>{escape(status)} {links} · <a href="package-info.json">固定包信息</a> · <a href="http://127.0.0.1:4225/">本机运行包</a> · <a href="https://github.com/sy0310/loststar-game/pull/2">Draft PR #2</a></p>
 <h2>助力 · 低、中、高与自然回落</h2><p>强度来自实际接受的点按，行走前倾、扫描摆幅和步态由实绘诊断记录。应用工作和到货收入分别读取真实档案；视觉强度不直接发放奖励。关键帧从这段实录抽取，采集时没有用截图打断点击。</p>
 {''.join(movie(item) for item in assist_videos) or '<p>连续录像待采集。</p>'}{trace_rows}{key_html}
 <h2>同一世界 · 主场景与独立信息抽屉</h2><p>390×844同尺寸对照。抽屉近景来自正在运行的同一世界Canvas；报告记录世界、抽屉、控制区域的实际边界和交叠面积。夜景来自普通模型的真实夜间档案，已完成的揭晓保持不变。</p>{''.join(world) or '<p>世界／抽屉对照待采集。</p>'}
-<h2>三件物品 · 三种实际物理状态</h2><p>优先展示390×844 Chromium。每列为一个完整实际工作台，下方是只读materialSnapshot导出的原始透明PNG；棋盘格仅用于浏览器展示透明度，未写入图片。收据256×256，胶带和闹铃192×192。</p>
+<h2>三件物品 · 三种实际物理状态</h2><p>优先展示390×844 Chromium。每列为一个完整实际工作台，下方是只读materialSnapshot导出的原始透明PNG；棋盘格仅用于浏览器展示透明度，未写入图片。收据256×256，胶带和无人签收铃192×192。</p>
 {''.join(materials) or '<p>工作台与透明材质待采集。</p>'}
-<h2>清理→修复→免费试验 · 自然连续作业</h2><p>各件从当前时间的真实已发现档案开始；收据已取出，无需重复挖掘。按真实持久动作的开始、结束与物理状态等待完成。费用采用当前生产界面的现有规则报价，并用实际钱包、毛收入和自动维修支出逐段调和；收据另核对逐笔交易ID。胶带、闹铃的免费试验是现有界面动画，不虚构持久作业。各段时长按墙钟实测，视频只裁去加载前段，保持1倍速度。</p>
+<h2>清理→修复→免费试验 · 自然连续作业</h2><p>各件从当前时间的真实已发现档案开始；收据已取出，无需重复挖掘。按真实持久动作的开始、结束与物理状态等待完成。费用采用当前生产界面的现有规则报价，并用实际钱包、毛收入和自动维修支出逐段调和；收据另核对逐笔交易ID。胶带、无人签收铃的免费试验是现有界面动画，不虚构持久作业。各段时长按墙钟实测，视频只裁去加载前段，保持1倍速度。</p>
 {''.join(treatment_sections) or '<p>三件自然作业录像待采集。</p>'}
+<h2>验证与开发自测</h2>{checks_html}
 <h2>完整索引</h2><p>已登记{len(all_screens)}张实际页面／实录帧和{len(all_materials)}张透明材质。完整覆盖以原始报告为准；采集和布局检查不等同于用户视觉验收。</p>
 <details><summary>展开其余{len(remaining)}张</summary><div class="frames">{''.join(figure(file, caption, material) for file, caption, material in remaining)}</div></details>
 {('<details class="error"><summary>采集错误</summary><pre>' + escape(json.dumps(errors, ensure_ascii=False, indent=2)) + '</pre></details>') if errors else ''}
 </html>\n'''
 (out / 'index.html').write_text(content)
+sheet_rows = []
+for item_id, label in item_names.items():
+    cells = []
+    for stage, stage_label in state_names.items():
+        case = next((item for item in screen_cases if item.get('kind') == 'material' and item.get('engine') == 'chromium' and item.get('width') == 390 and item.get('id') == item_id and item.get('stage') == stage), None)
+        if case:
+            cells.append(f'<article><span>{escape(stage_label)}</span><img src="{escape(case["materialFile"])}" alt="{escape(label + stage_label)}"></article>')
+    sheet_rows.append(f'<section><h2>{escape(label)}</h2><div class="row">{"".join(cells)}</div></section>')
+sheet = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><style>
+body{{margin:0;background:#181421;color:#ecdfc9;font:16px/1.5 system-ui,sans-serif}}#sheet{{width:1080px;padding:30px;box-sizing:border-box}}h1{{font-size:24px;color:#efd09b;margin:0}}p{{font-size:13px;color:#bdb0c2;margin:8px 0 24px}}h2{{font-size:16px;color:#e2c195;margin:18px 0 8px}}.row{{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}}article{{border:1px solid #736073;background:#282131;padding:8px;text-align:center}}article span{{display:block;font-size:13px;color:#e5d0a5;margin-bottom:8px}}img{{display:block;margin:auto;width:256px;height:256px;object-fit:contain;image-rendering:pixelated;background:repeating-conic-gradient(#332b3b 0 25%,#514357 0 50%) 0/16px 16px}}
+</style><div id="sheet"><h1>V0.3.9 · 三件奇物，三种物理状态</h1><p>实际运行材质只读导出 · 源码 {escape(package.get('sourceCommit','')[:7])} · 能力等级0 · 棋盘格用于显示透明区域</p>{''.join(sheet_rows)}</div></html>'''
+(out / 'materials-overview.html').write_text(sheet)
 print(f'Built V039 gallery: {len(all_screens)} pages/frames, {len(all_materials)} materials, {len(all_videos)} videos; {len(errors)} capture errors')

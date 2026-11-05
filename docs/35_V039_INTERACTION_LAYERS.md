@@ -39,3 +39,72 @@
 ## 验证与交付
 
 以实际构建运行截图、连续录屏与透明材质导出审查。审阅档案由真实模型发现、赚取及付费生成，不能通过改图片伪装已付款，也不写入用户浏览器档案。实际手机表现与浏览器触控仿真分别记录。保持现有Draft PR，不合并、不正式发布。
+
+
+## 本轮实际交付
+
+运行源码 `51d682c289dc786c43fbb51697bdf285b9044f66`。截图、视频、透明材质、性能与上传包均对应这一固定源码；后续证据提交不改变游戏源码或运行素材。
+
+[统一审核页](../artifacts/v039-feedback/index.html)包含67张实际页面／连续帧、27张原始透明材质，以及[九图对照合页](../artifacts/v039-feedback/materials-overview.png)。合页由实际Canvas导出的材质拼成，棋盘格用于显示透明区域，不冒称一张游戏界面截图。完整工作台和主世界截图另行提供。
+
+- [36秒三档助力实录](../artifacts/v039-feedback/assist-three-tiers-36s.mp4)：自然墙钟、真实触屏，三组连续输入和停点，观测到0／1／2／3四个档位及归零。9次有效输入实际应用5400ms工作，完成3趟、毛收入24；视觉层不增加报酬。逐100ms轨迹保留接受、应用、姿态、工作、到货与账本。
+- [收据自然整理](../artifacts/v039-feedback/treatment-receipt-natural.mp4)、[胶带自然整理](../artifacts/v039-feedback/treatment-tape-natural.mp4)、[铃自然整理](../artifacts/v039-feedback/treatment-bell-natural.mp4)：各从真实模型生成的已发现档案开始，实际支付清理与修复、等待持久动作结束，再免费试验。没有加速浏览器时钟。
+- 三件×三态×三布局实际截图及透明PNG由同一实际物品渲染器导出。导出前后比对档案，接口只读；能力固定0便于隔离物理差异。审阅夹具记录真实模型赚取、发现、每次支出及剩余，不是玩家初始拥有全部收藏。
+- 观察／巡逻抽屉对照保留world／field／controls实际DOM边界，交叠面积为0。夜间继续同一球体与原守护计算，未创建新战斗页。
+
+| 物品 | 清理实付 | 修复实付 | 合计 | 重复试验 |
+| --- | ---: | ---: | ---: | --- |
+| 收据 | 40 | 120 | 160 | 免费，无额外报酬 |
+| 胶带 | 30 | 100 | 130 | 免费，无额外报酬 |
+| 无人签收铃 | 35 | 120 | 155 | 免费，无额外报酬 |
+
+费用沿用现有规则。原始报告用“开始余额＋期间毛收入−期间维修−结束余额”逐段核实实付，收据另核交易ID；未把整理期间正常探索收入误认成返还或免费修复。[实际处理账本](../artifacts/v039-feedback/treatment-evidence.json) · [助力轨迹](../artifacts/v039-feedback/assist-evidence.json) · [截图与模型夹具](../artifacts/v039-feedback/screens-evidence.json)
+
+## 工程与性能结果
+
+`npm run check`通过20/20真实原件、48文件309项单测、五类构建和426项浏览器流程，零失败、零跳过、零重试通过项。最终ZIP另通过6组新玩家／已有付费档案加载、购买和刷新烟测。旧源、备份、收藏、资金、能力、设备、已付费施工和雾种子继续保留，当前数据库仍为 `loststar.fusion.firstplanet.v037`。
+
+加载失败后可重试、原入口懒加载边界、材质首帧与按钮就绪联动、原生触控、三档衰减、夜间无助力、透明区域命中、存档防重复均有回归。引擎／模型／几何声明范围覆盖率为语句97.05%、分支95.81%、函数99.11%、行99.42%，不代表完整UI或渲染覆盖。
+
+运行源码51d682c的[PR CI](https://github.com/sy0310/loststar-game/actions/runs/42002824029)与[Push CI](https://github.com/sy0310/loststar-game/actions/runs/42002812309)均已成功。后续证据提交的最新状态见PR Checks。
+
+[验证摘要](../artifacts/v039-feedback/verification.json) · [完整日志](../artifacts/v039-feedback/check.log) · [426项结果](../artifacts/v039-feedback/e2e-results.json) · [最终包烟测](../artifacts/v039-feedback/package-smoke.json)
+
+Apple M2 Pro，390×844、DPR2、单自动化浏览器单页面；无录屏和其他浏览器测试，预热1.5秒、采样10秒。实际绘制间隔中位数Chromium16.7ms、WebKit17ms；下表列P95。主场景／抽屉记录世界Canvas，处理界面记录真实工作台绘制。
+
+| 画面 | Chromium P95 | WebKit P95 |
+| --- | ---: | ---: |
+| 主场景 | 18.1ms | 18.0ms |
+| 现场抽屉 | 16.8ms | 18.0ms |
+| 收据工作台 | 16.7ms | 33.0ms |
+| 胶带工作台 | 16.7ms | 33.0ms |
+| 铃工作台 | 16.7ms | 33.0ms |
+
+WebKit工作台有33ms绘制间隔，不能据此称稳定60fps。10秒采样中无超过100ms的rAF间隔，真实手机长期帧节奏与发热仍待测。Chromium粗粒度JS堆最大16.1MB，排除贴图、GPU及进程内存；WebKit未提供该接口。[性能原值](../artifacts/v039-feedback/performance.json)
+
+ZIP为5,004,339字节，展开5,295,112字节，88文件；SHA256为 `b71cc1bd3abac7bcda6e701057fc274e1578df35c1dcde9295149c5a774e8b7d`。新生成原片保留在源码目录，运行只导出六张透明WebP，共29,184字节。[固定包信息](../artifacts/v039-feedback/package-info.json)
+
+## 开发自测与审核边界
+
+TapTap开发自测 **436783 / v0.3.9 / 51d682c** 已上传并回读文件名、大小、方向和版本，主包模块前后相同，`is_releasing=false`。二维码在会话交付。未绑定主包、提审或正式发布。[脱敏上传核验](../artifacts/v039-feedback/taptap-self-test.json)
+
+当前是首星三件样板及交互层级的可审核版本。手机上的三档动作辨识、操作舒适度、原存档延续、减少动态、锁屏恢复和长期发热仍需新包复测；桌面触控仿真不算手机验收。其余奇物的进一步类型化以及后续星球制作，等待本组三样板审核后决定。旧档权益不会因样板换材质而重新收费。
+
+## 复现
+
+在源码提交上构建相对路径ZIP，解压到独立目录并在4225提供静态服务。采集期间保持该包不再构建覆盖。证据脚本可从后续证据提交运行，但会核对当前runtime树与包内源码提交完全相同，并检查实际ZIP哈希及页面版本。
+
+```bash
+npm run check
+npm run package:fusion
+npx vite build --ssr scripts/firstplanet_fixtures.ts --outDir releases/firstplanet-fixtures
+npx vite build --ssr scripts/feedback_fixtures.ts --outDir releases/feedback-fixtures
+node scripts/capture_v039.mjs assist
+node scripts/capture_v039.mjs screens
+node scripts/capture_v039.mjs treatment
+node scripts/smoke_v039_package.mjs
+node scripts/measure_v039.mjs
+python3 scripts/build_v039_gallery.py
+```
+
+`V039_URL`可指定另一固定包入口。性能测量在采集和其他浏览器测试结束后单独运行。源码与证据保留在现有Draft PR #2，不合并、不正式发布。
