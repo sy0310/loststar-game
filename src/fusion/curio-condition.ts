@@ -1,99 +1,201 @@
 import {itemCenter, type Exhibit} from '../render/museum-layout';
+import {createReceiptRestorationAssets, receiptRestorationRegistration} from '../render/receipt-restoration';
+import {restorationBrushPose, restorationBrushToolTransform} from '../render/restoration-brush';
+import robotUrl from '../../assets/runtime/robot-empty-v3.webp';
 import {drawLocalCurioRig} from './curio-local-rig';
 
-export type CurioState={condition:'found'|'clean'|'stabilized';action?:{kind:'clean'|'repair';startedAt:number;endsAt:number}};
+export type CurioState = {condition: 'found' | 'clean' | 'stabilized'; action?: {kind: 'clean' | 'repair'; startedAt: number; endsAt: number}};
+type Point = {x: number; y: number};
+interface RepairSite extends Point {width: number; height: number; angle: number}
 interface Material {
-  original:HTMLCanvasElement;
-  image:HTMLCanvasElement;
-  solid:{x:number;y:number}[];
-  anchor:{x:number;y:number};
-  contacts:Map<number,{x:number;y:number}>;
-  revision:string;
+  original: HTMLCanvasElement;
+  image: HTMLCanvasElement;
+  mud: HTMLCanvasElement;
+  remainingMud: HTMLCanvasElement;
+  solid: Point[];
+  rows: ({left: number; right: number} | undefined)[];
+  revision: string;
 }
-const materials=new WeakMap<HTMLImageElement,Material>();
-const make=()=>{const canvas=document.createElement('canvas');canvas.width=canvas.height=192;return canvas;};
+const repairs: Record<string, RepairSite[]> = {
+  tape: [{x: 40, y: 144, width: 27, height: 12, angle: -.42}, {x: 73, y: 126, width: 18, height: 9, angle: -.6}],
+  nested: [{x: 47, y: 96, width: 31, height: 11, angle: .54}, {x: 143, y: 97, width: 31, height: 11, angle: -.52}],
+  stamp: [{x: 100, y: 78, width: 29, height: 12, angle: .42}, {x: 87, y: 105, width: 26, height: 10, angle: .42}],
+  'cosmic-parcel': [{x: 27, y: 91, width: 33, height: 13, angle: 1.4}, {x: 161, y: 145, width: 30, height: 13, angle: -.5}],
+  bell: [{x: 45, y: 154, width: 28, height: 12, angle: .24}, {x: 146, y: 153, width: 28, height: 12, angle: -.24}],
+};
+const materials = new WeakMap<HTMLImageElement, Material>();
+const make = () => {const canvas = document.createElement('canvas');canvas.width = canvas.height = 192;return canvas;};
+let tools: ReturnType<typeof createReceiptRestorationAssets> | undefined;
+let toolsLoaded = false;
+let toolRobot: HTMLImageElement | undefined;
+let toolsPromise: Promise<void> | undefined;
 
-function contact(solid:{x:number;y:number}[],x:number,y:number){
-  let closest=solid[0]??{x:96,y:96};
-  let distance=Infinity;
-  for(const point of solid){const next=(point.x-x)**2+(point.y-y)**2;if(next<distance){distance=next;closest=point;}}
-  return closest;
+export function prepareCurioTools() {
+  if (!toolsPromise) {
+    tools = createReceiptRestorationAssets();
+    toolRobot = new Image();toolRobot.src = robotUrl;
+    toolsPromise = Promise.all([...Object.values(tools), toolRobot].map(image => image.decode())).then(() => {toolsLoaded = true;});
+  }
+  return toolsPromise;
 }
 
-function materialFor(image:HTMLImageElement){
-  const cached=materials.get(image);
-  if(cached)return cached;
-  const original=make(),context=original.getContext('2d')!;
-  const scale=192/Math.max(image.naturalWidth,image.naturalHeight);
-  context.drawImage(image,(192-image.naturalWidth*scale)/2,(192-image.naturalHeight*scale)/2,image.naturalWidth*scale,image.naturalHeight*scale);
-  const alpha=context.getImageData(0,0,192,192).data;
-  const solid:{x:number;y:number}[]=[];
-  for(let y=0;y<192;y+=2)for(let x=0;x<192;x+=2)if(alpha[(y*192+x)*4+3]>220)solid.push({x,y});
-  const value={original,image:make(),solid,anchor:contact(solid,123,116),contacts:new Map<number,{x:number;y:number}>(),revision:''};
-  materials.set(image,value);return value;
-}
-
-/** Stable physical material is cached independently of the live joint pose. */
-export function prepareCurioMaterial(image:HTMLImageElement,state:CurioState,now:number,id:string){
-  const material=materialFor(image);
-  const phase=state.action?Math.min(1,Math.max(0,(now-state.action.startedAt)/(state.action.endsAt-state.action.startedAt))):0;
-  const revision=`${state.condition}/${state.action?.kind??''}/${state.action?Math.round(phase*90):0}`;
-  if(material.revision!==revision){
-    const painter=material.image.getContext('2d')!;
-    painter.clearRect(0,0,192,192);painter.drawImage(material.original,0,0);
-    if(state.condition==='found'){
-      const colors=id==='stamp'?['#925d43','#b07d4a','#644347']:['#62594f','#a18d72','#776350'];
-      painter.globalAlpha=.8;
-      for(let i=0;i<35;i++){
-        const x=(i*37+id.length*11)%172+10,y=(i*29+13)%172+10;
-        if(state.action?.kind==='clean'&&x/192<phase)continue;
-        painter.fillStyle=colors[i%colors.length];painter.fillRect(x,y,8+i%6,5+i%5);
-      }
-      painter.globalAlpha=1;
-      painter.globalCompositeOperation='destination-in';painter.drawImage(material.original,0,0);painter.globalCompositeOperation='source-over';
+function materialFor(image: HTMLImageElement) {
+  const cached = materials.get(image);
+  if (cached) return cached;
+  const original = make(), context = original.getContext('2d')!;
+  const scale = 192 / Math.max(image.naturalWidth, image.naturalHeight);
+  context.drawImage(image, (192 - image.naturalWidth * scale) / 2, (192 - image.naturalHeight * scale) / 2, image.naturalWidth * scale, image.naturalHeight * scale);
+  const alpha = context.getImageData(0, 0, 192, 192).data;
+  const solid: Point[] = [];
+  const rows = Array.from({length: 192}, (_, y) => {
+    let left = 192, right = 0;
+    for (let x = 0; x < 192; x++) {
+      if (alpha[(y * 192 + x) * 4 + 3] < 210) continue;
+      left = Math.min(left, x);right = Math.max(right, x + 1);
+      if (x % 2 === 0 && y % 2 === 0) solid.push({x, y});
     }
-    const repaired=state.condition==='stabilized'?1:state.action?.kind==='repair'?phase:0;
-    if(repaired>0){
-      const anchor=material.anchor;
-      painter.save();painter.globalAlpha=repaired;painter.translate(anchor.x,anchor.y);painter.fillStyle='#d4bc91';
-      if(id==='tape')painter.fillRect(-10,0,17,4);
-      else if(id==='nested'){painter.fillRect(-9,-5,5,13);painter.fillRect(-13,-1,13,4);}
-      else if(id==='stamp'){painter.rotate(.5);painter.fillRect(-4,-9,6,18);}
-      else if(id==='cosmic-parcel'){painter.rotate(-.4);painter.fillRect(-10,-2,20,5);}
-      else if(id==='bell')painter.fillRect(-3,-6,6,12);
+    return right > left ? {left, right} : undefined;
+  });
+  const material = {original, image: make(), mud: make(), remainingMud: make(), solid, rows, revision: ''};
+  materials.set(image, material);
+  return material;
+}
+
+function sweepPoint(material: Material, pass: number, progress: number): Point {
+  const y = 12 + pass * 24;
+  const row = material.rows[Math.min(191, y)];
+  const left = (row?.left ?? 65) - 8, right = (row?.right ?? 127) + 8;
+  return {x: pass % 2 === 0 ? left + (right - left) * progress : right - (right - left) * progress, y};
+}
+
+function cleaningPose(material: Material, progress: number) {
+  const pose = restorationBrushPose(progress);
+  const sweep = Math.min(1, pose.local / .72);
+  let point = sweepPoint(material, pose.pass, sweep);
+  if (pose.local >= .72 && pose.pass < 7) {
+    const next = sweepPoint(material, pose.pass + 1, 0);
+    const transit = (pose.local - .72) / .28;
+    point = {x: point.x + (next.x - point.x) * transit, y: point.y + (next.y - point.y) * transit};
+  }
+  return {...pose, point};
+}
+
+function drawFibrePatch(context: CanvasRenderingContext2D, site: RepairSite, installed: number, back: boolean) {
+  if (!tools || !toolsLoaded || installed <= 0) return;
+  const target = receiptRestorationRegistration().receipt.patchTargets.lower.srcRect;
+  const descent = (1 - installed) * 13;
+  context.save();context.translate(site.x - descent * .2, site.y - descent);context.rotate(site.angle);
+  const width = site.width * (back ? 1.12 : 1), height = site.height * (back ? 1.2 : 1);
+  context.drawImage(back ? tools.patchBack : tools.patchFront, target.x - 1, target.y - 1, target.width + 2, target.height + 2, -width / 2, -height / 2, width, height);
+  context.restore();
+}
+
+/** The original mud texture is erased only by the same contact sweeps that drive the fan. */
+export function prepareCurioMaterial(image: HTMLImageElement, state: CurioState, now: number, id: string) {
+  const material = materialFor(image);
+  const phase = state.action ? Math.min(1, Math.max(0, (now - state.action.startedAt) / (state.action.endsAt - state.action.startedAt))) : 0;
+  const repaired = state.condition === 'stabilized' ? 1 : state.action?.kind === 'repair' ? phase : 0;
+  const revision = `${id}/${state.condition}/${state.action?.kind ?? ''}/${state.action ? Math.round(phase * 120) : 0}/${toolsLoaded}`;
+  if (material.revision !== revision) {
+    const painter = material.image.getContext('2d')!;
+    painter.clearRect(0, 0, 192, 192);
+    const sites = repairs[id] ?? [];
+    for (const [index, site] of sites.entries()) drawFibrePatch(painter, site, Math.min(1, Math.max(0, (repaired - index * .45) / .48)), true);
+    painter.drawImage(material.original, 0, 0);
+    // Small open seams remain visible after cleaning and are bridged by the saved fibre repairs.
+    if (repaired < 1) {
+      painter.save();painter.globalCompositeOperation = 'destination-out';painter.lineWidth = 2.5 * (1 - repaired);
+      for (const site of sites) {
+        painter.save();painter.translate(site.x, site.y);painter.rotate(site.angle);
+        painter.beginPath();painter.moveTo(-site.width * .32, -2);painter.lineTo(0, 1);painter.lineTo(site.width * .32, -1);painter.stroke();painter.restore();
+      }
       painter.restore();
     }
-    material.revision=revision;
+    if (state.condition === 'found' && toolsLoaded && tools) {
+      const dirt = material.mud.getContext('2d')!;
+      dirt.clearRect(0, 0, 192, 192);
+      dirt.globalAlpha = .88;
+      dirt.drawImage(tools.mud, 0, 0, 192, 192);
+      dirt.drawImage(tools.mud, 28, 2, 220, 234, 92, 42, 110, 135);
+      dirt.globalAlpha = 1;dirt.globalCompositeOperation = 'destination-in';dirt.drawImage(material.original, 0, 0);dirt.globalCompositeOperation = 'source-over';
+      const remaining = material.remainingMud.getContext('2d')!;
+      remaining.clearRect(0, 0, 192, 192);remaining.drawImage(material.mud, 0, 0);
+      if (state.action?.kind === 'clean') {
+        remaining.save();remaining.globalCompositeOperation = 'destination-out';remaining.lineCap = 'round';remaining.lineWidth = 34;
+        for (let pass = 0; pass < 8; pass++) {
+          const amount = Math.min(1, Math.max(0, (phase * 8 - pass) / .72));
+          if (!amount) continue;
+          const start = sweepPoint(material, pass, 0), end = sweepPoint(material, pass, amount);
+          remaining.beginPath();remaining.moveTo(start.x, start.y);remaining.lineTo(end.x, end.y);remaining.stroke();
+        }
+        remaining.restore();
+      }
+      painter.drawImage(material.remainingMud, 0, 0);
+    }
+    for (const [index, site] of sites.entries()) drawFibrePatch(painter, site, Math.min(1, Math.max(0, (repaired - index * .45) / .48)), false);
+    material.revision = revision;
   }
-  return {...material,phase,size:192 as const};
+  return {...material, phase, repaired, size: 192 as const};
 }
 
 export interface CurioPoseOptions {
-  seconds?:number;
-  trial?:number;
-  reducedMotion?:boolean;
-  serviceEnvelope?:number;
-  drawAbility?:(context:CanvasRenderingContext2D,image:HTMLCanvasElement)=>boolean;
+  seconds?: number;
+  trial?: number;
+  reducedMotion?: boolean;
+  serviceEnvelope?: number;
+  drawAbility?: (context: CanvasRenderingContext2D, image: HTMLCanvasElement) => boolean;
 }
 
-/** Registered specimen material and joint rig stay behind the foreground glass. */
-export function drawCurioSpecimen(context:CanvasRenderingContext2D,exhibit:Exhibit,image:HTMLImageElement,state:CurioState,now:number,options:CurioPoseOptions={}){
-  const material=prepareCurioMaterial(image,state,now,exhibit.id);
-  const center=itemCenter(exhibit),size=exhibit.item.size*exhibit.scale;
-  const seconds=options.seconds??now/1000;
-  context.save();context.translate(center.x,center.y);context.scale(size/192,size/192);context.translate(-96,-96);
-  if(!options.drawAbility?.(context,material.image))drawLocalCurioRig(context,exhibit.id,material.image,material.revision,seconds,(options.trial??0)*(options.serviceEnvelope??1),options.reducedMotion,options.serviceEnvelope??1);
-  if(state.action){
-    const index=Math.round(material.phase*90);
-    let tip=material.anchor;
-    if(state.action.kind==='clean'){
-      tip=material.contacts.get(index)??contact(material.solid,25+material.phase*142,100+Math.sin(material.phase*Math.PI*6)*25);
-      material.contacts.set(index,tip);
-    }
-    context.strokeStyle='#7e827b';context.lineWidth=3;context.beginPath();context.moveTo(171,160);context.lineTo(tip.x+18,tip.y-26);context.lineTo(tip.x,tip.y);context.stroke();
-    context.save();context.translate(tip.x,tip.y);context.rotate(-.6);context.fillStyle='#b98c63';context.fillRect(-2,-29,5,25);
-    context.fillStyle=state.action.kind==='clean'?'#d7c4a0':'#c1b9aa';context.fillRect(-7,-5,15,7);
-    if(state.action.kind==='clean'){context.fillStyle='#e7d7b4';for(let i=0;i<6;i++)context.fillRect(-6+i*2,2,1,5);}context.restore();
+function toolArm(context: CanvasRenderingContext2D, grip: Point, claw = false) {
+  if (!toolRobot) return;
+  if (claw) {
+    context.drawImage(toolRobot, 189, 272, 32, 31, grip.x - 8, grip.y - 7, 16, 16);
+    return;
   }
+  const elbow = {x: Math.max(160, grip.x + 24), y: grip.y + 31};
+  for (const [from, to] of [[{x: 199, y: 177}, elbow], [elbow, grip]]) {
+    const length = Math.hypot(to.x - from.x, to.y - from.y);
+    context.save();context.translate(from.x, from.y);context.rotate(Math.atan2(to.y - from.y, to.x - from.x) - Math.PI / 2);
+    context.drawImage(toolRobot, 411, 245, 26, 40, -6, -3, 12, length + 6);context.restore();
+  }
+  context.drawImage(toolRobot, 413, 247, 23, 23, elbow.x - 7, elbow.y - 7, 14, 14);
+}
+
+function drawTool(context: CanvasRenderingContext2D, material: Material, state: CurioState, phase: number, id: string) {
+  if (!tools || !toolsLoaded || !state.action || phase >= 1) return;
+  const registration = receiptRestorationRegistration().tools;
+  if (state.action.kind === 'clean') {
+    const pose = cleaningPose(material, phase), matrix = restorationBrushToolTransform(pose.pressure);
+    const grip = {x: pose.point.x + matrix.handleGrip.x * .48, y: pose.point.y - pose.lift * .55 + matrix.handleGrip.y * .48};
+    toolArm(context, grip);
+    context.save();context.translate(pose.point.x, pose.point.y - pose.lift * .55);context.scale(.48, .48);
+    context.save();context.transform(matrix.bristles.a, matrix.bristles.b, matrix.bristles.c, matrix.bristles.d, matrix.bristles.e, matrix.bristles.f);
+    context.drawImage(tools.brushBristles, 0, 0);context.restore();
+    context.drawImage(tools.brushHandle, matrix.handleOrigin.x, matrix.handleOrigin.y);context.restore();toolArm(context, grip, true);
+    return;
+  }
+  const sites = repairs[id] ?? [];
+  const index = phase < .5 ? 0 : 1, site = sites[index];
+  if (!site) return;
+  const local = phase * 2 - index;
+  const press = Math.min(1, local / .23) * (1 - Math.max(0, (local - .72) / .28));
+  const tool = registration.spatula;
+  const tip = {x: site.x + (1 - press) * 20, y: site.y - (1 - press) * 18};
+  const offset = {x: (tool.pivot.x - tool.contact.x) * .33, y: (tool.pivot.y - tool.contact.y) * .33};
+  const grip = {x: tip.x + offset.x * Math.cos(-.16) - offset.y * Math.sin(-.16), y: tip.y + offset.x * Math.sin(-.16) + offset.y * Math.cos(-.16)};
+  toolArm(context, grip);
+  context.save();context.translate(tip.x, tip.y);context.rotate(-.16);context.scale(.33, .33);
+  context.drawImage(tools.spatula, -tool.contact.x, -tool.contact.y);context.restore();toolArm(context, grip, true);
+}
+
+/** Registered specimen material and local joints remain behind the real foreground glass. */
+export function drawCurioSpecimen(context: CanvasRenderingContext2D, exhibit: Exhibit, image: HTMLImageElement, state: CurioState, now: number, options: CurioPoseOptions = {}) {
+  const material = prepareCurioMaterial(image, state, now, exhibit.id);
+  const center = itemCenter(exhibit), size = exhibit.item.size * exhibit.scale;
+  context.save();context.translate(center.x, center.y);context.scale(size / 192, size / 192);context.translate(-96, -96);
+  if (state.action) context.drawImage(material.image, 0, 0);
+  else if (!options.drawAbility?.(context, material.image)) drawLocalCurioRig(context, exhibit.id, material.image, material.revision, options.seconds ?? now / 1000,
+    (options.trial ?? 0) * (options.serviceEnvelope ?? 1), options.reducedMotion, options.serviceEnvelope ?? 1, material.repaired);
+  drawTool(context, material, state, material.phase, exhibit.id);
   context.restore();
 }

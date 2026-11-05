@@ -24,12 +24,12 @@ function partLayers(image:HTMLCanvasElement,id:string,revision:string){
 }
 
 /** Only the authored joint moves. The surrounding specimen keeps its registered support. */
-export function drawLocalCurioRig(c:CanvasRenderingContext2D,id:string,image:HTMLCanvasElement,revision:string,seconds:number,trial:number,reduced=false,serviceEnvelope=1){
+export function drawLocalCurioRig(c:CanvasRenderingContext2D,id:string,image:HTMLCanvasElement,revision:string,seconds:number,trial:number,reduced=false,serviceEnvelope=1,stability=1){
   if(!outlines[id]){c.drawImage(image,0,0);return;}
   const pieces=partLayers(image,id,revision);
   const active=trial>0&&trial<1?Math.sin(trial*Math.PI):0;
   const idle=Math.sin(seconds*(id==='bell'?1.7:1.1));
-  const amplitude=(reduced?.35:1)*serviceEnvelope;
+  const amplitude=(reduced?.35:1)*serviceEnvelope*(1+(1-stability)*.45);
   c.drawImage(pieces.shadow,0,0);c.drawImage(pieces.body,0,0);
   c.save();
   if(id==='nested')c.translate(0,-(4+idle*4)*amplitude-active*19*serviceEnvelope);

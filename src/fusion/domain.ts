@@ -13,7 +13,8 @@ import {
   type ReceiptRestorationState,
 } from '../review/receipt-restoration';
 import {fusionProjects, fusionTargets, type FusionSave, type FusionAction, type FusionResult, type FieldRecord} from './contracts';
-import {advanceProgression, cleanProgression, createProgression, reduceProgression} from './progression';
+import {advanceProgression, cleanProgression, createProgression, explorationWorkPosition, reduceProgression} from './progression';
+import {advanceJourney, cleanJourney, createJourney} from './surface';
 
 export const curioPrices: Record<string, {clean: number; repair: number}> = {
   tape: {clean: 30, repair: 100}, nested: {clean: 50, repair: 140},
@@ -45,10 +46,10 @@ function nightHistoryFrom(record: FieldRecord, game: SaveData): FieldRecord['nig
   return structuredClone({configuration, receipt});
 }
 
-export function createFusion(now: number, legacyRaw: string | null = null): FusionSave {
+export function createFusion(now: number, legacyRaw: string | null = null, options: {journey?: boolean; seed?: number} = {}): FusionSave {
   let game = newGame(now);
   let importedLegacy = false;
-  if (legacyRaw) {
+  if (legacyRaw && !options.journey) {
     try {
       const original = JSON.parse(legacyRaw) as SaveData;
       if (original && [1, 2].includes(original.version) && finite(original.lastAt) && original.lastAt <= 1e15) {
@@ -69,6 +70,7 @@ export function createFusion(now: number, legacyRaw: string | null = null): Fusi
   const state: FusionSave = {
     version: 1, game, receipt, projects: [], records: [], task: null, taskSeq: 0,
     importedLegacy, progression: createProgression(game),
+    ...(options.journey ? {journey: createJourney(options.seed ?? now)} : {}),
     curios: Object.fromEntries(Object.keys(curioPrices).filter(id => game.collection.includes(id))
       .map(id => [id, {condition: importedLegacy ? 'stabilized' as const : 'found' as const}])),
   };
@@ -135,6 +137,7 @@ export function restoreFusion(raw: string, now: number): FusionSave {
   state.taskSeq = Number.isSafeInteger(input.taskSeq) && input.taskSeq >= 0 ? input.taskSeq : 0;
   state.importedLegacy = input.importedLegacy === true;
   state.progression = cleanProgression(input.progression, game);
+  state.journey = cleanJourney(input.journey, game);
   state.curios = {};
   for (const id of Object.keys(curioPrices)) {
     const curio = input.curios?.[id];
@@ -193,6 +196,26 @@ function addObservation(state: FusionSave, id: string, at: number, source: strin
 
 function observeWorld(state: FusionSave, before: SaveData) {
   const game = state.game;
+  if (state.journey && !state.receipt.evidenceIds.includes('field-pipe-scan')) {
+    // A scan is an actual crossed exploration phase even when its Canvas is offscreen.
+    // The first receipt is unloaded at work 1, so its earliest attributable scan is 1.42.
+    const start = explorationWorkPosition(before);
+    const target = Math.max(1.42, Math.floor(start) + (start % 1 < .42 ? .42 : 1.42));
+    if (explorationWorkPosition(game) + 1e-8 >= target) {
+      let lower = before.lastAt;
+      let upper = Math.min(game.lastAt, before.lastAt + tuning(before).cargo * 1000);
+      while (lower < upper) {
+        const middle = Math.floor((lower + upper) / 2);
+        if (explorationWorkPosition(advance(before, middle)) + 1e-8 >= target) upper = middle;
+        else lower = middle + 1;
+      }
+      const observed = advance(before, lower);
+      const fraction = observed.cycleMs / tuning(observed).scanner;
+      if (observed.world.elapsedMs % 300000 < 240000 && fraction >= .40 && fraction < .52) {
+        addObservation(state, 'field-pipe-scan', lower, 'parcel/returns-plain/pipe-marker-p03');
+      }
+    }
+  }
   const phase = game.world.elapsedMs % 300000;
   const night = Math.floor(game.world.elapsedMs / 300000);
   const station = game.station.lastNight;
@@ -275,6 +298,7 @@ export function advanceFusion(previous: FusionSave, now: number, offline = false
   }
   observeWorld(state, previous.game);
   advanceProgression(state, previous.game);
+  advanceJourney(state);
   refreshNightReceipt(state);
   const task = state.task;
   if (task && now >= task.endsAt) {
@@ -408,6 +432,7 @@ export function reduceFusion(previous: FusionSave, action: FusionAction, now: nu
     }
   }
   state.receipt.parts = state.game.resources;
+  advanceJourney(state);
   refreshNightReceipt(state);
   return {state, result: {ok, message: message ?? (!ok ? '暂时无法操作' : undefined)}};
 }

@@ -279,3 +279,25 @@ button.fu-wallet {padding: 2px 3px 2px 8px;min-width: 84px;border-color: transpa
 .fu-curio-message small {font-size: 10px;color: #b2a7b1;}
 .fu-curio-message p {font-size: 13px;color: #dfcbaa;margin: 6px 0;}
 .fu-ability-panel .fu-ability-next {display: block;margin: 9px 0 0;font-size: 10px;color: #b7a6b7;line-height: 1.5;}
+
+/* The instrument tray sits close to the globe while all three destinations remain in reach. */
+.fu-world-shell {border-bottom: 0;}
+#fusion-world canvas {transform: translateY(-22px) scale(1.07);}
+.fu-explore-controls {position: relative;z-index: 1;margin: -32px 13px 17px;padding: 13px 13px 11px;border: 1px solid #9d795e;background: linear-gradient(140deg,#443042ed,#261f33f5);box-shadow: inset 0 2px #e8bf801b,0 5px 0 #100c1f55;}
+.fu-explore-controls::before,.fu-explore-controls::after {content: '';position: absolute;top: -3px;width: 9px;height: 3px;background: #e0b77f;}
+.fu-explore-controls::before {left: 11px;}.fu-explore-controls::after {right: 11px;}
+#fusion-tap-hint {bottom: 41px;color: #d7c9b5;}
+.fu-journey-intro {position: absolute;left: 13px;right: 13px;top: 11px;z-index: 3;display: flex;gap: 8px;padding: 9px 7px 9px 11px;background: #302439e8;border: 1px solid #a7825d;box-shadow: 0 3px #100d2055;}
+.fu-journey-intro > div {flex: 1;min-width: 0;}
+.fu-journey-intro strong,.fu-journey-intro span,.fu-journey-intro small {display: block;font-size: 10px;line-height: 1.6;}
+.fu-journey-intro strong {color: #f4d49d;font-size: 12px;}.fu-journey-intro span {color: #d2c4d5;}.fu-journey-intro small {color: #b7ccbb;}
+.fu-journey-intro button {align-self: center;min-width: 44px;padding: 4px;font-size: 20px;background: transparent;border-color: transparent;box-shadow: none;}
+.fu-collection-item > .fu-condition-art {width: 54px;height: 54px;flex: 0 0 54px;background: #171824;border: 1px solid #5c4d65;}
+#fusion-found-art .fu-condition-art {width: 42px;height: 42px;}
+.fu-curio-response {font-size: 12px;line-height: 1.7;color: #f1d1a0;padding: 10px 12px;border-left: 2px solid #ba925d;background: #382b3b;}
+#fusion-paper-focus {background: #2c2038;max-height: 49dvh;border-color: #a78461;}
+@media (max-width: 370px) {
+  .fu-explore-controls {margin-inline: 11px;margin-bottom: 13px;}
+  .fu-journey-intro {left: 11px;right: 11px;}
+}
+.fu-surface-status {position: absolute;left: 17px;bottom: 81px;padding: 4px 7px;font-size: 10px;line-height: 1.4;color: #cdb8dc;background: #261e34b3;border-left: 2px solid #b799bb;pointer-events: none;}

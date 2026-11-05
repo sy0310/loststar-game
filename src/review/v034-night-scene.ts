@@ -13,6 +13,8 @@ import {
   type V034NightSnapshot,
 } from './v034-night-model';
 import {v034BlendFromPatrol, v034Escape, v034NightLightState, v034NightStage, v034RelightState, v034RepairTool} from './v034-night-stage';
+import {robotScannerSource} from '../render/motion';
+import {nightRobotSourcePoint} from './night-robot';
 
 export interface V034NightSceneOptions {
   camera?: SceneCamera;
@@ -319,7 +321,7 @@ function drawMarkerScan(
   if (view.phase !== 'identify') return;
   const stage = v034NightStage(view);
   const observed = view.observations.some(item => item.evidenceId === 'field-pipe-scan');
-  const source = {x: stage.robot.x - 48, y: stage.robot.y - 66};
+  const source = nightRobotSourcePoint(robotScannerSource, false, stage);
   const target = {x: marker.x + marker.width / 2, y: marker.y + marker.height / 2};
   const angle = Math.atan2(target.y - source.y, target.x - source.x);
   const distance = Math.hypot(target.x - source.x, target.y - source.y);

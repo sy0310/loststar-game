@@ -1,6 +1,4 @@
-import backUrl from '../../assets/runtime/v036/fog-back.webp';
-import bodyUrl from '../../assets/runtime/v036/fog-body.webp';
-import rimUrl from '../../assets/runtime/v036/fog-rim.webp';
+import {createSurfaceFogRenderer} from '../render/surface-fog';
 import {newGame} from '../game/engine';
 import {createAssist, consumeAssistWork, assistRules, type AssistState} from '../game/assist';
 import {createFusion} from '../fusion/domain';
@@ -80,12 +78,6 @@ export function v036FogRobot(workMs: number): ReturnType<typeof robotPose> {
     parcel: {...base.parcel, x: 410, y: 272, visible: false, held: false, delivered: false}};
 }
 
-function load(url: string) {
-  return new Promise<HTMLImageElement>((resolve, reject) => {
-    const image = new Image();image.onload = () => resolve(image);image.onerror = reject;image.src = url;
-  });
-}
-
 export function mountV036Fog(root: HTMLElement) {
   root.innerHTML = '<div class="v036-world"></div><p class="v036-status" role="status">正在接通地表画面…</p><div class="v036-track" aria-label="星雾观察进度"><i></i></div>';
   const worldRoot = root.querySelector<HTMLElement>('.v036-world')!;
@@ -96,7 +88,6 @@ export function mountV036Fog(root: HTMLElement) {
   let assetError: string | null = null;
   let previous = 0, drawnAt = 0, requestedFrame = 0;
   let contact: {x: number; y: number; at: number; accepted: boolean | null} | null = null;
-  let art: HTMLImageElement[] = [];
   const intervals: number[] = [], drawTimes: number[] = [];
   const touchSamples: {at: number; firstDrawAt?: number; firstDrawMs?: number;
     acceptedAt?: number; acceptedDrawAt?: number; acceptedDrawMs?: number}[] = [];
@@ -107,92 +98,15 @@ export function mountV036Fog(root: HTMLElement) {
   fusion.progression.sorting.phase = 'observed';
   const machine = createSortingScene(() => fusion);
   const daily = createDailyResidentRenderer();
-  const layers: HTMLCanvasElement[] = [];
-  const groundLight = document.createElement('canvas');groundLight.width = 160;groundLight.height = 88;
-  const groundBounds = {x: V036_FOG_SITE.x - 160, y: V036_FOG_SITE.y - 90, width: 320, height: 176};
-  let groundLightReady = false;
-  const ready = Promise.all([Promise.all([backUrl, bodyUrl, rimUrl].map(load)), machine.ready, daily.ready])
-    .then(([images]) => {
-      art = images;
-      for (let i = 0; i < 3; i++) {const canvas = document.createElement('canvas');canvas.width = 256;canvas.height = 192;layers.push(canvas);}
-    }).catch(error => {
-      if (!destroyed) {
-        assetError = '星雾素材未接通，请刷新重试';
-        status.textContent = assetError;root.dataset.error = 'true';
-      }
-      throw error;
-    });
-
-  function groundResponse(context: CanvasRenderingContext2D, frame: SceneFrame) {
-    const strength = 1 - v036FogFrame(state.workMs).reveal;
-    if (strength <= 0) return;
-    if (!groundLightReady) {
-      const painter = groundLight.getContext('2d')!;
-      painter.imageSmoothingEnabled = false;
-      // Reuse the real terrain pixels and their alpha silhouette. Lighting is
-      // cached at a two-world-pixel scale, with no rectangular tint in space.
-      painter.drawImage(frame.globe, (52 - groundBounds.x) / 2, (70 - groundBounds.y) / 2, 332, 332);
-      const material = painter.getImageData(0, 0, groundLight.width, groundLight.height);
-      for (let y = 0; y < groundLight.height; y++) for (let x = 0; x < groundLight.width; x++) {
-        const index = (y * groundLight.width + x) * 4;
-        if (!material.data[index + 3]) continue;
-        const worldX = groundBounds.x + x * 2, worldY = groundBounds.y + y * 2;
-        const contact = Math.max(0, 1 - Math.hypot((worldX - V036_FOG_SITE.x) / 126,
-          (worldY - V036_FOG_SITE.y - 11) / 37)) ** 2 * .42;
-        const leftBounce = Math.max(0, 1 - Math.hypot((worldX - V036_FOG_SITE.x + 106) / 67,
-          (worldY - V036_FOG_SITE.y + 11) / 57)) ** 2;
-        const rightBounce = Math.max(0, 1 - Math.hypot((worldX - V036_FOG_SITE.x - 111) / 66,
-          (worldY - V036_FOG_SITE.y - 8) / 48)) ** 2;
-        const bounce = Math.max(leftBounce, rightBounce) * .23;
-        const weight = contact + bounce;
-        if (weight === 0) {material.data[index + 3] = 0;continue;}
-        const shadowTint = [.43, .36, .76];
-        const reflectedTint = [.56, .34, .88];
-        for (let channel = 0; channel < 3; channel++) {
-          const original = material.data[index + channel];
-          const shadow = original * shadowTint[channel];
-          const reflection = original + (255 - original) * reflectedTint[channel];
-          material.data[index + channel] = (shadow * contact + reflection * bounce) / weight;
-        }
-        material.data[index + 3] *= weight;
-      }
-      painter.putImageData(material, 0, 0);groundLightReady = true;
+  const fog = createSurfaceFogRenderer();
+  const site = {id: V036_FOG_SITE.id, anchor: V036_FOG_SITE, width: 270, variant: 0};
+  const ready = Promise.all([fog.ready, machine.ready, daily.ready]).then(() => {}).catch(error => {
+    if (!destroyed) {
+      assetError = '星雾素材未接通，请刷新重试';
+      status.textContent = assetError;root.dataset.error = 'true';
     }
-    context.save();context.globalAlpha = strength;
-    context.drawImage(groundLight, groundBounds.x, groundBounds.y, groundBounds.width, groundBounds.height);
-    context.restore();
-  }
-
-  function cloud(context: CanvasRenderingContext2D) {
-    const frame = v036FogFrame(state.workMs);
-    if (frame.reveal >= 1 || !art.length) return;
-    // Three registered volumes overlap vertically, so the upper shell and lower
-    // paper path are genuinely hidden without stretching a thin cloud sheet.
-    const anchors = [{x: 408, y: 283}, {x: 413, y: 315}, {x: 407, y: 325}];
-    for (let index = 0; index < 3; index++) {
-      const canvas = layers[index], c = canvas.getContext('2d')!;
-      c.clearRect(0, 0, 256, 192);c.imageSmoothingEnabled = false;c.drawImage(art[index], 0, 0);
-      const opening = clamp(frame.reveal * 1.25 - index * .1);
-      if (opening > 0) {
-        c.globalCompositeOperation = 'destination-out';
-        // An irregular expanding aperture follows the swept scanner. Its edge
-        // consumes opaque pixels first, leaving independent moving wisps.
-        for (let row = 0; row < 192; row += 3) for (let col = 0; col < 256; col += 3) {
-          const nx = (col - 128) / 151, ny = (row - 104) / 73;
-          const ripple = Math.sin(col * .073 + row * .091 + index * 1.3) * .075;
-          if (Math.hypot(nx, ny) + ripple < opening * 2.4) c.fillRect(col, row, 3, 3);
-        }
-        c.globalCompositeOperation = 'source-over';
-      }
-      const breath = reduced.matches ? 0 : Math.sin(state.elapsedMs / (1400 + index * 430) + index * 2);
-      const separation = frame.reveal * (index === 1 ? 0 : index === 0 ? -26 : 32);
-      const width = 270 + breath * 3;
-      context.save();context.translate(anchors[index].x + separation, anchors[index].y - frame.reveal * (12 + index * 5));
-      context.rotate(reduced.matches ? 0 : breath * .008 + frame.reveal * (index - 1) * .045);
-      context.drawImage(canvas, -width / 2, -170 / 256 * width, width, 192 / 256 * width);
-      context.restore();
-    }
-  }
+    throw error;
+  });
 
   function scanner(context: CanvasRenderingContext2D, frame: SceneFrame) {
     const view = v036FogFrame(state.workMs);
@@ -262,9 +176,9 @@ export function mountV036Fog(root: HTMLElement) {
     drawResident: daily.draw,
     residentPose: residentDailyPose,
     worldEntities: (context, frame) => [
-      {depth: 293, draw: () => groundResponse(context, frame)},
+      {depth: 293, draw: () => fog.groundResponse(context, frame, site, v036FogFrame(state.workMs).reveal)},
       ...machine.entities(context, frame),
-      {depth: 340, draw: () => cloud(context)},
+      {depth: 340, draw: () => fog.cloud(context, site, {elapsedMs: state.elapsedMs, reveal: v036FogFrame(state.workMs).reveal, reducedMotion: reduced.matches})},
       {depth: frame.robot.y + .1, draw: () => scanner(context, frame)},
     ],
     afterWorld: (context, frame) => {
@@ -343,8 +257,7 @@ export function mountV036Fog(root: HTMLElement) {
       assist: {...state.assist, acceptedAt: [...state.assist.acceptedAt]}, rejected: state.rejected,
       robot: v036FogRobot(state.workMs), target: {...V036_FOG_SITE},
       stateStorage: 'memory-only', rewards: 0, walletWrites: 0,
-      fogDecodedTextureBytes: art.reduce((sum, image) => sum + image.naturalWidth * image.naturalHeight * 4, 0),
-      groundRelightDecodedTextureBytes: groundLight.width * groundLight.height * 4,
+      ...fog.metrics(),
       inputSamples: touchSamples.map(sample => ({...sample})),
       inputDrawLatencyMs: touchSamples.flatMap(sample => sample.firstDrawMs === undefined ? [] : [sample.firstDrawMs]),
       inputTimingEndpoint: 'Canvas draw call, before browser presentation'};},

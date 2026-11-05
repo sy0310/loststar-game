@@ -19,6 +19,8 @@ export type MuseumSource={collection:string[]};
 export type MuseumOptions={
  receiptStudy?:boolean;
  receiptFrame?:()=>ReceiptRestorationFrame|undefined;
+ receiptPaperPending?:()=>boolean;
+ receiptPaperOverride?:(context:CanvasRenderingContext2D,options:import('./receipt-restoration').ReceiptRestorationDrawOptions)=>ReceiptRestorationDrawResult|undefined;
  receiptExtension?:(context:CanvasRenderingContext2D,options:{center:{x:number;y:number};frame:number;receiverY:number;seconds:number;carried?:boolean;cavity:{left:number;top:number;width:number;height:number};service?:ReturnType<typeof baseRobotPose>},restoration:ReceiptRestorationFrame,result:ReceiptRestorationDrawResult)=>void;
  drawSpecimen?:(context:CanvasRenderingContext2D,exhibit:Exhibit,t:number,image:HTMLImageElement,service?:ReturnType<typeof baseRobotPose>)=>boolean;
  specimenOpening?:(id:string)=>number;
@@ -70,7 +72,7 @@ export class MuseumScene {
  private schedule(){if(this.active&&this.visible&&!document.hidden&&!this.frame)this.frame=requestAnimationFrame(this.loop);}
  private loop=(ms:number)=>{this.frame=0;if(this.active&&this.visible&&!document.hidden&&this.cadence.draw(ms,this.reducedMotion.matches?1000/30:1000/60))this.draw(this.clock());this.schedule();};
  resetMetrics(){this.paintIntervals.length=0;this.paintCosts.length=0;this.lastPaintAt=0;}
- metrics(){return {sampleWindowMs:this.paintIntervals.reduce((sum,value)=>sum+value,0),active:this.active,visible:this.visible,frames:this.frames,intervalsMs:[...this.paintIntervals],costsMs:[...this.paintCosts]};}
+ metrics(){return {receiptMaterial:this.canvas.dataset.receiptMaterial??'none',receiptCondition:this.canvas.dataset.receiptCondition??'',receiptStage:this.canvas.dataset.receiptStage??'',sampleWindowMs:this.paintIntervals.reduce((sum,value)=>sum+value,0),active:this.active,visible:this.visible,frames:this.frames,intervalsMs:[...this.paintIntervals],costsMs:[...this.paintCosts]};}
  private draw(t:number){const c=this.c;if(!c||this.canvas.dataset.ready!=='true'||!this.room.complete||!this.room.naturalWidth)return;const began=performance.now();if(this.lastPaintAt)this.paintIntervals.push(began-this.lastPaintAt);this.lastPaintAt=began;this.paintIntervals=this.paintIntervals.slice(-1200);c.clearRect(0,0,768,960);this.paint(c,t);
   this.canvas.dataset.robotX=String(Math.round(this.pose.x));this.canvas.dataset.robotY=String(Math.round(this.pose.y));this.canvas.dataset.robotAction=this.pose.action;this.canvas.dataset.robotTarget=this.pose.target;
   this.root.dispatchEvent(new CustomEvent('robot-state',{detail:this.pose}));this.canvas.dataset.frame=String(++this.frames);this.paintCosts.push(performance.now()-began);this.paintCosts=this.paintCosts.slice(-1200);
@@ -109,14 +111,15 @@ export class MuseumScene {
    for(const [width,color] of [[8,'#35253e'],[5,'#b7956d'],[2,'#dfc497']] as const){c.lineWidth=width;c.strokeStyle=color;c.beginPath();c.moveTo(p.shoulder.x,p.shoulder.y);c.lineTo(elbow.x,elbow.y);c.lineTo(p.hand.x,p.hand.y);c.stroke();}
    c.fillStyle='#58425c';for(const joint of [p.shoulder,elbow,p.hand]){c.fillRect(joint.x-3,joint.y-3,6,6);c.fillStyle='#d2b482';c.fillRect(joint.x-1,joint.y-2,2,2);c.fillStyle='#58425c';}c.restore();
   }
-  if(p.lift>0&&this.source().collection.includes(p.target)){
+  if(p.lift>0&&this.source().collection.includes(p.target)&&!(p.target==='receipt'&&this.options.receiptPaperPending?.())){
    const e=exhibits.find(e=>e.id===p.target)!;
    const size=e.item.size*e.scale*(1-p.lift)+48*p.lift;
    const scale=size/e.item.size;
    const carried={...e,x:p.item.x-(e.item.x-e.base.x)*scale,y:p.item.y-(e.item.y-e.base.y)*scale,scale};
    const restoration=e.id==='receipt'?this.options.receiptFrame?.():undefined;
    if(restoration&&this.restorationRenderer&&this.restorationParts){
-    this.restorationRenderer.drawReceiptRestoration(c,this.restorationParts,{center:p.item,frame:size,seconds:t,receiverY:p.item.y+size/2,lights:[],glass:0,restorationFrame:{...restoration,phase:restoration.stage==='buried'?'buried':restoration.condition}});
+    const drawOptions={center:p.item,frame:size,seconds:t,receiverY:p.item.y+size/2,lights:[],glass:0,restorationFrame:{...restoration,phase:restoration.stage==='buried'?'buried' as const:restoration.condition}};
+    this.options.receiptPaperOverride?.(c,drawOptions)??this.restorationRenderer.drawReceiptRestoration(c,this.restorationParts,drawOptions);
    }else if(!this.options.drawSpecimen?.(c,carried,t,this.art[p.target as typeof exhibitIds[number]],p)){
     sprite(c,this.art[p.target as typeof exhibitIds[number]],p.item.x-size/2,p.item.y-size/2,size);
    }
@@ -171,8 +174,14 @@ export class MuseumScene {
  }
  private case(c:CanvasRenderingContext2D,e:Exhibit,t:number,forcedLevel?:number,install=1,experiment?:ReceiptExperimentFrame,restoration?:ReceiptRestorationFrame){
   const service=forcedLevel===undefined&&this.pose.target===e.id?this.pose:null,known=this.source().collection.includes(e.id),level=forcedLevel??this.level(`case-${exhibitIds.indexOf(e.id)}`),[back,front]=this.glass[e.id],s=e.scale,p=layerPoint(e,e.crop.x,e.crop.y),b=layerPoint(e,e.cavity.x,e.cavity.y),center=itemCenter(e),width=e.cavity.w*s,height=e.cavity.h*s;
+  const paperPending=e.id==='receipt'&&Boolean(this.options.receiptPaperPending?.());
+  if(e.id==='receipt'&&known&&paperPending)this.canvas.dataset.receiptMaterial='pending';
   const paperOverride:ReceiptStudyPaperOverride|undefined=restoration&&this.restorationRenderer&&this.restorationParts?(context,options)=>{
-   this.restorationStatus=this.restorationRenderer!.drawReceiptRestoration(context,this.restorationParts!,{...options,receiverY:options.receiverY!,restorationFrame:restoration});
+   const drawOptions={...options,receiverY:options.receiverY!,restorationFrame:restoration};
+   const overridden=this.options.receiptPaperOverride?.(context,drawOptions);
+   this.restorationStatus=overridden??this.restorationRenderer!.drawReceiptRestoration(context,this.restorationParts!,drawOptions);
+   this.canvas.dataset.receiptMaterial=overridden?'v036':'restoration';
+   this.canvas.dataset.receiptCondition=restoration.condition;this.canvas.dataset.receiptStage=restoration.stage;
    const floor=this.receiptRenderer!.receiptFloorGeometry(e,level);
    const aperture=level===3?this.receiptRenderer!.receiptVaultWindow(e):{left:b.x,top:b.y,width,height};
    const left=Math.max(b.x,aperture.left),top=Math.max(b.y,aperture.top),right=Math.min(b.x+width,aperture.left+aperture.width),bottom=Math.min(floor.frontY,aperture.top+aperture.height);
@@ -180,14 +189,14 @@ export class MuseumScene {
    return this.restorationStatus;
   }:undefined;
   if(known)this.options.caseEngineering?.(c,e,level,t,'back');
-  if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'&&level>0){this.specimenStatus=this.receiptRenderer.drawReceiptStudy(c,{e,t,level,install,known,specimenHidden:!!service&&service.lift>0,back,front,item:this.art.receipt,assets:this.receiptParts,experiment,paperOverride});if(known)this.options.caseEngineering?.(c,e,level,t,'front');return;}
+  if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'&&level>0){this.specimenStatus=this.receiptRenderer.drawReceiptStudy(c,{e,t,level,install,known,specimenHidden:paperPending||!!service&&service.lift>0,back,front,item:this.art.receipt,assets:this.receiptParts,experiment,paperOverride});if(known)this.options.caseEngineering?.(c,e,level,t,'front');return;}
   c.save();c.fillStyle='#120d2840';c.beginPath();c.ellipse(e.x,e.y-2,e.width*.43,5,0,0,Math.PI*2);c.fill();
   c.drawImage(back,e.crop.x,e.crop.y,e.crop.w,e.crop.h,p.x,p.y,e.crop.w*s,e.crop.h*s);
   if(this.options.receiptStudy&&this.receiptRenderer&&this.receiptParts&&e.id==='receipt'&&known)this.receiptRenderer.drawStudyReceiptFloor(c,e,level,install,this.receiptParts);
   if(level){c.strokeStyle=['','#ffe0a0','#9ce9e1','#e6b2ff'][level];c.lineWidth=level===3?3:2;c.beginPath();c.ellipse(e.x,e.y-9,e.width*.40,6,0,0,Math.PI*2);c.stroke();}
   const paperClipHeight=restoration&&this.receiptRenderer?this.receiptRenderer.receiptFloorGeometry(e,level).frontY-b.y:height;
   c.save();c.beginPath();c.rect(b.x,b.y,width,paperClipHeight);c.clip();
-  if(known&&!(service&&service.lift>0)){
+  if(known&&!paperPending&&!(service&&service.lift>0)){
    const phase=t+exhibitIds.indexOf(e.id),bob=Math.sin(phase*1.4)*2,iw=e.item.size*s;
    if(this.options.receiptStudy&&this.receiptParts&&this.receiptRenderer&&e.id==='receipt'){
     this.specimenStatus=this.receiptRenderer.drawStudyReceiptSpecimen(c,e,t,level,install,this.receiptParts,experiment,paperOverride);

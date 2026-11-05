@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest';
+import {beginReceiptRestoration, createReceiptRestorationState, advanceReceiptRestoration} from '../src/review/receipt-restoration';
 import {receiptRestorationRegistration} from '../src/render/receipt-restoration';
-import {v036BrushPose, v036ReceiptFrame, v036ReceiptGlassPlacement, v036BrushToolTransform} from '../src/review/v036-receipt';
+import {v036BrushPose, v036ReceiptFrame, v036ReceiptGlassPlacement, v036BrushToolTransform, v037ReceiptFrame} from '../src/review/v036-receipt';
 
 describe('V036 isolated receipt contact storyboard', () => {
   it('aligns the actual asymmetric glass floor with the paper receiver', () => {
@@ -100,5 +101,42 @@ describe('V036 isolated receipt contact storyboard', () => {
         expect(frame[key]).toBeLessThanOrEqual(1);
       }
     }
+  });
+});
+
+
+describe('V037 persisted receipt stage adapter', () => {
+  it('holds each saved physical state for any amount of idle time', () => {
+    const buried = createReceiptRestorationState(500);
+    expect(v037ReceiptFrame(buried, 86400).phase).toBe('soil');
+    const dirty = {...buried, stage: 'displayed' as const};
+    expect(v037ReceiptFrame(dirty, 86400)).toMatchObject({phase: 'dirty', cleaning: 0, upperPatch: 0, lowerPatch: 0, glass: 0, trying: false});
+    const clean = {...dirty, condition: 'clean' as const};
+    expect(v037ReceiptFrame(clean, 86400)).toMatchObject({phase: 'clean', cleaning: 1, upperPatch: 0, lowerPatch: 0, glass: 0});
+    const stable = {...clean, condition: 'stabilized' as const};
+    expect(v037ReceiptFrame(stable, 86400)).toMatchObject({phase: 'display', cleaning: 1, upperPatch: 1, lowerPatch: 1, glass: 1, trying: false});
+  });
+
+  it('runs the approved brush and two repairs only inside their real paid actions', () => {
+    const dirty = {...createReceiptRestorationState(500), stage: 'displayed' as const};
+    const cleaning = beginReceiptRestoration(dirty, 'clean', 'clean-once', 10).state;
+    expect(v037ReceiptFrame(cleaning, 11.9)).toMatchObject({phase: 'cleaning', cleaning: .5, upperPatch: 0, lowerPatch: 0});
+    const clean = advanceReceiptRestoration(cleaning, 14);
+    const repairing = beginReceiptRestoration(clean, 'repair', 'repair-once', 20).state;
+    const first = v037ReceiptFrame(repairing, 20 + 3.9 * .43);
+    expect(first.upperPatch).toBe(1);expect(first.lowerPatch).toBe(0);expect(first.glass).toBe(0);
+    const restored = advanceReceiptRestoration(repairing, 24);
+    expect(v037ReceiptFrame(restored, 86400).glass).toBe(1);
+    expect(restored.parts).toBe(340);expect(restored.transactions).toHaveLength(2);
+  });
+
+  it('replays free flavor while preserving the exact saved condition and blank signature', () => {
+    const dirty = {...createReceiptRestorationState(120), stage: 'displayed' as const};
+    const trying = beginReceiptRestoration(dirty, 'try', 'free-try', 5).state;
+    expect(v037ReceiptFrame(trying, 6.2)).toMatchObject({phase: 'trying', cleaning: 0, upperPatch: 0, lowerPatch: 0, glass: 0, missingSignature: true});
+    expect(v037ReceiptFrame(trying, 6.2).trial).toBeCloseTo(.5);
+    expect(trying.parts).toBe(120);expect(trying.evidenceIds).toEqual([]);expect(trying.transactions).toEqual([]);
+    const finished = advanceReceiptRestoration(trying, 8);
+    expect(v037ReceiptFrame(finished, 100)).toMatchObject({phase: 'dirty', trying: false, cleaning: 0});
   });
 });

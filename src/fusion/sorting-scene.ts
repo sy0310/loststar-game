@@ -11,7 +11,7 @@ import type {FusionSave} from './contracts';
 import {refinementView} from './progression';
 import {fusionCycleFraction} from './render-clock';
 import {tuning} from '../game/engine';
-import type {robotPose} from '../render/motion';
+import {robotScannerPoint, type robotPose} from '../render/motion';
 import type {SceneEntity, SceneFrame} from '../render/scene';
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
@@ -201,7 +201,7 @@ export function createSortingScene(getFusion?: () => FusionSave) {
   return {
     ready, active, target, pose,
     entities(context: CanvasRenderingContext2D, frame: SceneFrame): SceneEntity[] {
-      if (!getFusion || !art.length || view()?.phase === 'unknown') return [];
+      if (!getFusion || !art.length || view()?.phase === 'unknown' && !getFusion().journey) return [];
       return [
         {depth:anchor.y,hitTarget:{kind:'site',id:'sorting'},draw:()=>machine(context,frame)},
         {depth:anchor.y+.1,hitTarget:{kind:'site',id:'sorting'},draw:()=>{paper(context,frame);box(context,frame);}},
@@ -213,7 +213,7 @@ export function createSortingScene(getFusion?: () => FusionSave) {
       if (!sorting || !active() || !['day','dusk'].includes(frame.environment.period)) return;
       if (frame.robot.action === 'scan') {
         const targetPoint = target();
-        const source = {x:frame.robot.x-48,y:frame.robot.y-76};
+        const source = robotScannerPoint(frame.robot, frame.t);
         context.save();context.fillStyle = '#a0ddbf2b';context.beginPath();context.moveTo(source.x,source.y);
         context.lineTo(targetPoint.x-14,targetPoint.y-7);context.lineTo(targetPoint.x+14,targetPoint.y+7);context.closePath();context.fill();
         context.strokeStyle = '#c3f1ce';context.lineWidth = 1.7;context.strokeRect(targetPoint.x-13,targetPoint.y-9,26,18);

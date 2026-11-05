@@ -29,6 +29,15 @@ export function robotPose(fraction:number) {
       y:f<.935?hand.y+(extended.y-hand.y)*pass:extended.y+(435-extended.y)*release,held:release<1,delivered:release===1,visible:f<.995};
   return {action,...point,carrying:action==='return'||action==='unload',parcel,lift,release};
 }
+// The cyan scanner in the original 160px atlas cell, measured from its top left.
+export const robotScannerSource = {x: 29, y: 82} as const;
+export function robotScannerPoint(pose: Pick<ReturnType<typeof robotPose>, 'x' | 'y' | 'action' | 'facing'>, seconds = 0) {
+  const moving = pose.action === 'walk' || pose.action === 'return';
+  const bob = moving ? Math.round(Math.sin(seconds * 16)) : 0;
+  const mirrored = pose.action === 'walk' && pose.facing === 'right';
+  return {x: Math.round(pose.x) + (mirrored ? -1 : 1) * (-144 * .54 + robotScannerSource.x * 144 / 160),
+    y: Math.round(pose.y + bob) - 144 * .97 + robotScannerSource.y * 144 / 160};
+}
 function shipOrbit(seconds:number) {
   const angle=seconds/14*Math.PI*2-.8,rx=350,ry=175,tilt=-.18;
   const x=rx*Math.cos(angle),y=ry*Math.sin(angle);

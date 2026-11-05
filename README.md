@@ -8,6 +8,14 @@
 
 工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不发布正式版。2026-11-02 用户授权的 TapTap 开发自测上传见 [实机试玩记录](docs/13_TAPTAP_SELF_TEST.md)。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
 
+## V0.3.7 首星游玩接入
+
+两项认可样板已接入实际首星探索、六件奇物整理、收藏与基地。此次用户授权重新开始，首次开局采用120零件、初始设备、空收藏与白天。旧源保留并归档备份，刷新继续同一周目。
+
+当前开发入口为 `http://127.0.0.1:5173/?sample=first-planet`。当前玩家包由 `npm run package:fusion` 生成，生产预览使用 `npm run build:fusion` 与 `npx vite preview --config vite.fusion.config.ts --port 4220`。
+
+[本轮接入规则](docs/32_V037_FIRST_PLANET_INTEGRATION_PLAN.md) · [首星经济模拟](artifacts/first-planet/economy.md)
+
 ## V0.3.6 两个美术动作样板
 
 按最新PR，已导入两张新认可概念原图，制作一处真实地表星雾和一件收据的隔离Canvas样板。星雾分层扫描揭露已有分拣区，收据经历松土承托、逐道刷洗、双处纤维压补、玻璃陈列与免费打印演出。
@@ -31,15 +39,15 @@ TapTap开发自测 **435106 / v0.3.6 / 26521b4**。本机打包预览为 `http:/
 ```bash
 npm ci
 npm run dev
-# http://127.0.0.1:5173
+# http://127.0.0.1:5173/?sample=first-planet
 ```
 
 生产预览：
 
 ```bash
-npm run build
-npm run preview -- --port 4173
-# http://127.0.0.1:4173
+npm run build:fusion
+npx vite preview --config vite.fusion.config.ts --port 4220
+# http://127.0.0.1:4220
 ```
 
 无需后端、账号、密钥或广告。角色自动探索，页面切换不中断模拟。初次奇物约 12 秒、首位新居民约 36 秒、夜班事件约 3 分钟；不升级时首轮完整档案约 15.4 分钟（4分钟探索/1分钟守护）。雷达勘测首星真实现场，不快速弹出不能前往的世界。货舱初始离线上限 2 小时。

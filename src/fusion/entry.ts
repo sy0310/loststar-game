@@ -1,12 +1,13 @@
-import {FUSION_DATABASE, FUSION_REVIEW_DATABASE, openFusionStore} from './store';
+import {FUSION_DATABASE, FUSION_REVIEW_DATABASE, FUSION_JOURNEY_DATABASE, openFusionStore} from './store';
 import {mountFusion} from './ui';
 import {createFusionScene} from './scene';
 import {ExpeditionScene} from '../render/scene';
 
 async function start() {
   const sample = new URLSearchParams(location.search).get('sample');
-  const review = !import.meta.env.DEV || sample === 'refinement';
-  const controller = await openFusionStore({review});
+  const journey = !import.meta.env.DEV || sample === 'first-planet';
+  const review = !journey && sample === 'refinement';
+  const controller = await openFusionStore({review, journey});
   const handle = mountFusion(controller);
   const extension = createFusionScene(() => controller.state.game,
     (id, at, source) => void controller.act({type: 'observe', id, at, source}),
@@ -16,11 +17,12 @@ async function start() {
   handle.setScene(scene, event => extension.pulse(event), () => extension.focus(), () => extension.unloadPoint());
   scene.setActive(true);
   Object.assign(window, {__FUSION__: {
-    databaseName: review ? FUSION_REVIEW_DATABASE : FUSION_DATABASE,
+    databaseName: journey ? FUSION_JOURNEY_DATABASE : review ? FUSION_REVIEW_DATABASE : FUSION_DATABASE,
     metrics: () => scene.metrics(),
     uiMetrics: () => handle.diagnostics(),
     resetUiMetrics: () => handle.resetDiagnostics(),
     feedbackMetrics: () => extension.feedbackMetrics(),
+    surfaceMetrics: () => extension.surfaceMetrics(),
     resetMetrics: () => scene.resetMetrics(),
     pickAtClient: (x: number, y: number) => scene.pickAtClient(x, y),
   }});

@@ -3,6 +3,7 @@ import type {ReceiptRestorationKind, ReceiptRestorationState} from '../review/re
 import type {NightConfig} from '../prototype/night-model';
 import type {StationReceipt} from '../game/station';
 import type {AbilityId, ProgressionState, SortingActionKind, SortingStudyId} from './progression';
+import type {FirstPlanetJourney} from './surface';
 
 export interface FieldRecord {
   id: string;
@@ -29,6 +30,7 @@ export interface FusionSave {
   taskSeq: number;
   importedLegacy: boolean;
   progression: ProgressionState;
+  journey?: FirstPlanetJourney;
   curios: Record<string, {condition: 'found' | 'clean' | 'stabilized'; action?: {kind: 'clean' | 'repair'; startedAt: number; endsAt: number}}>;
 }
 export type FusionAction =
@@ -52,8 +54,14 @@ export interface FusionController {
   state: FusionSave;
   persisted: boolean;
   readonly migrationBlocked?: boolean;
+  readonly backupStatus?: FusionBackupStatus;
   act(action: FusionAction): Promise<FusionResult>;
   subscribe(listener: () => void): () => void;
+}
+export interface FusionBackupStatus {
+  status: 'pending' | 'saved' | 'unavailable';
+  accessibleSources: number;
+  failedSources: number;
 }
 export const fusionProjects = [
   {id: 'evidence-bench', name: '取证工作台', price: 1800, requires: 'receipt', effect: '切换纸面侧光，对照真实现场'},

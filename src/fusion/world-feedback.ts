@@ -1,4 +1,5 @@
 import type {SceneFrame} from '../render/scene';
+import {robotScannerPoint} from '../render/motion';
 
 export interface FusionFeedbackEvent {
   token: number;
@@ -23,12 +24,12 @@ export interface FusionFeedbackSample {token: number; kind: 'contact' | 'accepte
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 
 function ring(context: CanvasRenderingContext2D, x: number, y: number, radius: number, color: string, alpha: number) {
-  context.save();context.globalAlpha = alpha;context.strokeStyle = color;context.lineWidth = 3;
+  context.save();context.globalAlpha = alpha;context.strokeStyle = color;context.lineWidth = 1.5;
   context.beginPath();context.ellipse(x, y, radius, radius * .34, 0, 0, Math.PI * 2);context.stroke();
   context.fillStyle = color;
   for (let index = 0; index < 4; index++) {
     const angle = index * Math.PI / 2;
-    context.fillRect(Math.round(x + Math.cos(angle) * radius) - 2, Math.round(y + Math.sin(angle) * radius * .34) - 2, 4, 4);
+    context.fillRect(Math.round(x + Math.cos(angle) * radius) - 1, Math.round(y + Math.sin(angle) * radius * .34) - 1, 2, 2);
   }
   context.restore();
 }
@@ -65,7 +66,7 @@ export function createWorldFeedback() {
       const now = performance.now();
       const transform = context.getTransform();
       const inverse = transform.inverse();
-      const scanner = {x: frame.robot.x + (frame.robot.action === 'walk' && frame.robot.facing === 'right' ? 48 : -48), y: frame.robot.y - 76};
+      const scanner = robotScannerPoint(frame.robot, frame.t);
       if (appliedWork > lastWork + .001 && frame.environment.period !== 'night') workUntil = now + 380;
       lastWork = appliedWork;
       for (let index = strokes.length - 1; index >= 0; index--) {
@@ -80,7 +81,7 @@ export function createWorldFeedback() {
         if (now - endAt > 1150) {strokes.splice(index, 1);continue;}
         if (stroke.contactAt !== undefined && now - stroke.contactAt < 400) {
           const progress = clamp((now - stroke.contactAt) / 400);
-          ring(context, point.x, point.y, 10 + progress * 14, '#d6d8c4', (1 - progress) * .7);
+          ring(context, point.x, point.y, 5 + progress * 14, '#e8c79e', (1 - progress) * .7);
           firstDraw(stroke, 'contact', stroke.contactAt, now);
         }
         if (stroke.rejectedAt !== undefined) {
@@ -93,25 +94,23 @@ export function createWorldFeedback() {
         }
         if (stroke.acceptedAt === undefined || stroke.rejectedAt !== undefined || frame.environment.period === 'night') continue;
         const age = now - stroke.acceptedAt;
-        const progress = clamp(age / 780);
-        ring(context, point.x, point.y, 16 + progress * 23, '#9ee6ce', (1 - progress) * .85);
-        for (let particle = 0; particle < 6; particle++) {
-          const amount = clamp(progress * 1.45 - particle * .085);
-          if (amount <= 0 || amount >= 1) continue;
+        const progress = clamp(age / 650);
+        if (progress < 1) {
+          ring(context, point.x, point.y, 5 + progress * 20, '#efc897', (1 - progress) * .75);
+          const amount = clamp(age / 350);
           const x = point.x + (scanner.x - point.x) * amount;
-          const y = point.y + (scanner.y - point.y) * amount - Math.sin(amount * Math.PI) * 25;
-          context.save();context.globalAlpha = (1 - progress) * .9;context.fillStyle = '#315b59';
-          context.fillRect(Math.round(x) - 3, Math.round(y) - 3, 7, 7);
-          context.fillStyle = '#c1f4df';context.fillRect(Math.round(x) - 1, Math.round(y) - 1, 4, 4);context.restore();
+          const y = point.y + (scanner.y - point.y) * amount - Math.sin(amount * Math.PI) * 8;
+          context.save();context.globalAlpha = (1 - progress) * .9;
+          context.fillStyle = '#f6d69e';context.fillRect(Math.round(x) - 2, Math.round(y) - 2, 4, 4);context.restore();
+          firstDraw(stroke, 'accepted', stroke.acceptedAt, now);
         }
-        firstDraw(stroke, 'accepted', stroke.acceptedAt, now);
       }
       if (now < workUntil && frame.environment.period !== 'night') {
         const power = clamp((workUntil - now) / 380);
-        context.save();context.globalCompositeOperation = 'screen';context.globalAlpha = power * .42;
-        context.fillStyle = '#7fe7c6';context.beginPath();context.moveTo(scanner.x, scanner.y);
-        context.lineTo(frame.robot.x - 28, frame.robot.y + 2);context.lineTo(frame.robot.x + 18, frame.robot.y + 2);context.closePath();context.fill();context.restore();
-        ring(context, frame.robot.x, frame.robot.y + 2, 17 + Math.sin(now / 95) * 3, '#b6ead0', power * .6);
+        context.save();context.globalCompositeOperation = 'screen';context.globalAlpha = power * .65;
+        context.fillStyle = '#f6d69e';context.fillRect(Math.round(scanner.x) - 3, Math.round(scanner.y) - 2, 6, 4);
+        context.globalAlpha *= .45;
+        context.fillRect(Math.round(scanner.x) - 7, Math.round(scanner.y) - 4, 14, 8);context.restore();
       }
     },
   };

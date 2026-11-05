@@ -1,6 +1,6 @@
 {
   "name": "loststar-game",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "private": true,
   "type": "module",
   "scripts": {
@@ -46,7 +46,10 @@
     "package:v036": "python3 scripts/package_taptap.py --v036",
     "capture:v036": "node scripts/capture_v036.mjs",
     "measure:v036": "node scripts/measure_v036.mjs",
-    "gallery:v036": "python3 scripts/build_v036_gallery.py"
+    "gallery:v036": "python3 scripts/build_v036_gallery.py",
+    "simulate:firstplanet": "vite build --ssr scripts/simulate_firstplanet.ts --outDir releases/firstplanet-sim && node releases/firstplanet-sim/simulate_firstplanet.js",
+    "capture:firstplanet": "vite build --ssr scripts/firstplanet_fixtures.ts --outDir releases/firstplanet-fixtures && node scripts/capture_firstplanet.mjs",
+    "measure:firstplanet": "vite build --ssr scripts/firstplanet_fixtures.ts --outDir releases/firstplanet-fixtures && node scripts/measure_firstplanet.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
