@@ -77,6 +77,9 @@ async function open(browser, {name, engine = 'chromium', width = 390, height = 8
     page.on('response', response => {if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`);});
     await page.goto(base);
     await page.locator(worldSelector).waitFor({timeout: 30000});
+    // The first canvas frame can precede the live HUD update by one timer tick.
+    // Capture the usable scene, rather than a stale “connecting” hint over it.
+    await page.waitForFunction(() => document.querySelector('#fusion-tap')?.getAttribute('aria-disabled') === 'false');
     await page.waitForFunction(() => !!window.__FUSION__?.materialSnapshot);
     const build = await page.locator('.fu-build').innerText();
     if (!build.includes(metadata.version) || !build.includes(sourceCommit.slice(0, 7)) || build.includes('dirty')) throw new Error(`Unexpected served build: ${build}`);
@@ -526,6 +529,7 @@ async function pages(){
    await session.page.locator('#fusion-open-sorting').tap();await shot(session,`${engine}-${width}-sorting`,'drawer');await session.page.locator('#fusion-close').tap();
    await session.page.locator('[data-tab="collection"]').tap();
    for(const id of ['mouse','hermit','tagbird','night-shift']){
+    await session.page.locator(`.fu-filters [data-filter="${id==='night-shift'?'event':'creature'}"]`).tap();
     await session.page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();await session.page.waitForTimeout(600);
     await shot(session,`${engine}-${width}-detail-${id}`,'detail');await session.page.locator('#fusion-close').tap();
    }

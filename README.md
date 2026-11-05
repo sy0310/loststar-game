@@ -8,7 +8,17 @@
 
 工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不发布正式版。2026-11-02 用户授权的 TapTap 开发自测上传见 [实机试玩记录](docs/13_TAPTAP_SELF_TEST.md)。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
 
-## V0.3.9 三档助力与三态实物样板
+## V0.4.0 首星整体美术与交互翻新
+
+TapTap开发自测 **439256 / v0.4.0 / f1397e2**，继续当前v037存档，不重开。三张批准原图在48efa52真实入Git并远端回读3/3；完整球体、机器人/飞船/星雾、六物18态与连续工具处理、六柜及取放、同屏昼夜、全部可达页面使用统一新美术。
+
+本轮本地20/20原件、3/3原图、344单测、五构建、454浏览器流程、6组最终子目录包检查通过；48经济时点/12离线情形账本0异常。源码PR/Push CI成功。实际交付223项图像记录、54份透明导出及11段自然连续录像，已内部复审；真实手机、用户视觉验收仍待新码，不以测试绿灯代签。
+
+[完整交付、版本与已知事项](design/visual-renewal/DELIVERY.md) · [设计/旧版/新版与所有影片](artifacts/visual-renewal/index.html) · [六物18态](artifacts/visual-renewal/materials-overview.html) · [全页覆盖表](design/visual-renewal/VISUAL_COVERAGE.md)
+
+固定包本机预览：`http://127.0.0.1:4227/loststar-fusion/`。只更新Draft PR #2，不合并、不提审、不正式发布。
+
+## V0.3.9 三档助力与三态实物样板（历史）
 
 连续有效点击形成低／中／高三档动作，停点后平滑回落，实际工作与收益规则沿用。观察和巡逻使用底部独立布局抽屉，奇物处理使用同一H5内的独立全屏工作台。
 

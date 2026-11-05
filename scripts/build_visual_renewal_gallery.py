@@ -251,9 +251,16 @@ for item_id, label in ITEMS.items():
 world_cases = [x for x in material_cases if x.get('kind') == 'world-field' and x.get('engine') == 'chromium' and x.get('width') == 390]
 world_html = ''.join('<h3>' + esc({'unrevealed': '星雾未解', 'partial': '星雾半解', 'day': '揭晓后的白天', 'night': '同屏夜巡'}.get(case.get('period'), case.get('period'))) + '</h3><div class="pair">' + figure(case.get('mainFile'), '主场景：完整球体与简短状态') + figure(case.get('fieldFile'), '独立信息抽屉：' + case.get('drawerTitle', '现场观察')) + '</div>' for case in world_cases)
 
+assist_fog_proven = any(
+    case.get('initial', {}).get('journey', {}).get('sites')
+    and all(site.get('progress') == 0 for site in case['initial']['journey']['sites'])
+    and all(site.get('revealedAt') is not None for site in case.get('final', {}).get('journey', {}).get('sites', []))
+    and len(case.get('final', {}).get('journey', {}).get('sites', [])) == len(case['initial']['journey']['sites'])
+    for case in reports.get('assist', {}).get('cases', [])
+)
 video_groups = [
     ('助力三档与自然回落', lambda v: 'assist' in v['file'] or v['_mode'] == 'assist'),
-    ('区域星雾揭晓', lambda v: 'fog' in v['file'] or v['_mode'] == 'fog'),
+    ('区域星雾揭晓（与助力共用同一条连续实录，不另计录像）', lambda v: 'fog' in v['file'] or v['_mode'] == 'fog' or assist_fog_proven and v['_mode'] == 'assist'),
     ('六件清理、修复与免费冷幽默试验', lambda v: 'treatment-' in v['file'] or v['_mode'] == 'treatment'),
     ('跨柜整理与真实取放', lambda v: 'museum-' in v['file']),
     ('0→3级实际购买与安装', lambda v: 'installation' in v['file']),

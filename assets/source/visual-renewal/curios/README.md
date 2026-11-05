@@ -21,8 +21,23 @@
 
 ## 导出与层级
 
-运行 `node scripts/export_renewal_curios.mjs`。只读取本目录原创生产 PNG，不读取认可概念板。每张3格原图按等宽cell导出384×384独立全态PNG/WebP（不逐物auto-fit，保留同一支点/相近尺度）。输出另外12张body/joint透明PNG；实际动画对同一材质应用相同polygon，不移动整个物件。工具尖端/手握点和来源矩形见运行 `registration.json`。
+运行 `node scripts/export_renewal_curios.mjs`。前段导出原始图集与工具，随后自动执行 `export_renewal_curio_rig.mjs`，从正式物理分层确定性合成最终384×384三态。固定body及两处joint共享同一原件像素，B保留两个损坏位姿，C连续归位；发现态另叠独立材质污层。原始三格PNG保留为制作源与身份参考，最终运行18态以共用 `curioRigCommands` 的输出为准，不使用整张B/C交叉溶解。
 
-运行素材在 `assets/runtime/visual-renewal/curios/`。`registration.json` 包含每张PNG SHA256、source、尺寸、支点/接触点与层级。清理轨迹和两次结构接触点的唯一逻辑注册位于 `src/fusion/curio-renewal-model.ts`；不改存档或收费。
+运行素材在 `assets/runtime/visual-renewal/curios/`。`registration.json` 及 `rig-registration.json` 包含每张PNG SHA256、source、尺寸、支点与层级。清理轨迹在 `src/fusion/curio-renewal-model.ts`，机构和工具共享 `src/fusion/curio-rig-motion.ts` 的连续投影；不改存档或收费。
 
 `states-overview.png` 仅为18张真实PNG的并排检查合页，紫底不是运行材质，运行仍用透明独立图。初版 receipt/nested/tools 只保留来源审查，不被游戏加载。
+
+## 动态返修后的正式承托源
+
+`rig-v2/` 使用内置imagegen独立补绘：
+
+- `nested-empty-body.png`：完整开箱后壁、两枚后铰链、真实空内腔与箱角。原小内箱已移除并补绘箱底，运行时放入独立内箱，不把旧歪盖当承托。
+- `tape-empty-frame.png`：移除胶卷/胶尾后补绘真实铜轴与紫机架内腔。
+- `stamp-base.png`：移除柄轴与轴环后补绘原机械轴座和日期轮底座。
+- `bell-body.png`：移除顶杆/固定件后补绘完整铜壳及真实机构孔；无新增灯。
+- `cosmic-box-body.png`：移除封带/纸签后补绘原箱体，盖子始终完整固定。
+- `material-deposits.png`：3×2透明材质覆层图集，分别为浅旧指印、粘灰纤维、卡缝纸屑、紫残墨、纸签浅灰、铜绿；无旧字迹或整张脏物体，非程序噪声。
+
+以上均以已有原创生产sprite为精确对象参考，保持紫/铜/暖纸的材质、视角和身份。提示词核心为“只移除待动画的部件并绘制真实承托，不留矩形洞，不保留部件残影，透明外背景”。合成数据记录逐件source/target注册，运行和导出共同使用同一纯函数。机械臂只延伸等宽杆件，原细节袖套和铜轴按固定比例绘制。
+
+旧 `states-overview.png` 对应早期图集检查，最终18态应由最新运行PNG重新生成合页；动态未通过的候选不作为最终画质证明。

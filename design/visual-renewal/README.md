@@ -45,3 +45,7 @@ python3 design/visual-renewal/import_reference_pngs.py
 ## 校验记录
 
 2026-11-05：从真实下载 ZIP 导入，随后不带 `--source` 复验，3/3 原图的 PNG 签名、1448×1086 尺寸、字节数及 SHA256 全部符合清单。Git 二进制提交及远端逐文件回读另记于 `IMPORT_VERIFICATION.json`。
+
+## 当前实现交付
+
+V0.4.0运行源码f1397e2，TapTap开发自测439256。原图交接、全首星覆盖、实际十八态和连续影片、工程/账本/性能与手机待测边界见[完整交付](DELIVERY.md)及[覆盖表](VISUAL_COVERAGE.md)。这里只标内部可交用户审核，未代用户批准美术，不合并、不提审、不正式发布。
