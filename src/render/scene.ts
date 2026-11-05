@@ -34,6 +34,8 @@ export interface SceneExtension {
   residentPose?:typeof residentMotion;
   camera?:SceneCamera;
   hideLegacySorter?:boolean;
+  /** Explicit renderer contract: resident drawing owns all of its new textures. */
+  independentResidents?:boolean;
   worldEntities?:(context:CanvasRenderingContext2D,frame:SceneFrame)=>SceneEntity[];
   afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void;
 }
@@ -81,9 +83,21 @@ export class ExpeditionScene {
   }
   private load(){
     if(this.loading||this.destroyed)return;this.loading=true;
+    const independent=this.extension?.independentResidents===true;
+    // These compatibility arguments are never painted by an independent renderer.
+    // One in-memory pixel avoids fetching obsolete day poses, cycles or a hidden sorter.
+    let placeholder:HTMLImageElement|undefined;
+    if(independent||this.extension?.hideLegacySorter){
+      placeholder=new Image(1,1);
+      placeholder.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mNgAAIAAAUAAen63NgAAAAASUVORK5CYII=';
+    }
+    const emptyResident={dayContact:{x:0,y:0},frames:[]};
+    const independentArt:ResidentArt={registration:{residents:{mouse:emptyResident,hermit:emptyResident,tagbird:emptyResident}},images:{}};
     Promise.all([
-      Promise.all(Object.entries(urls).map(async([key,url])=>[key,await load(url)] as const)),
-      loadResidentArt(),
+      Promise.all(Object.entries(urls).map(async([key,url])=>[key,
+        independent&&['mouse','hermit','bird'].includes(key)||key==='sorter'&&this.extension?.hideLegacySorter
+          ?placeholder!:await load(url)] as const)),
+      independent?Promise.resolve(independentArt):loadResidentArt(),
       prepareRenewalRobot(),
       this.extension?.ready,
     ]).then(([entries,residentArt])=>{

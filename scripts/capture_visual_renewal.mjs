@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {resolve} from 'node:path';
 import {firstPlanetFixture} from '../releases/firstplanet-fixtures/firstplanet_fixtures.js';
-import {renewalFixture} from '../releases/renewal-fixtures/renewal_fixtures.js';
+import {renewalFixture,renewalPagesFixture} from '../releases/renewal-fixtures/renewal_fixtures.js';
 import {feedbackFixture} from '../releases/feedback-fixtures/feedback_fixtures.js';
 
 const mode = process.argv[2] ?? 'screens';
@@ -503,12 +503,32 @@ async function pages(){
  for(const [engine,width,height]of[['chromium',390,844],['chromium',360,800],['webkit',390,844],['chromium',1440,1000]]){
   const browser=await({chromium,webkit}[engine]).launch();let session;
   try{
-   const fixture=firstPlanetFixture(Date.now()+60000,1,'stabilized',{receiptAbility:0,tapeAbility:0});
+   const fixture=renewalPagesFixture(Date.now()+60000);
    session=await open(browser,{name:`${engine}-${width}-pages`,engine,width,height,fixture});
    for(const tab of ['collection','base','explore']){await session.page.locator(`[data-tab="${tab}"]`).tap();await session.page.waitForTimeout(300);await shot(session,`${engine}-${width}-${tab}`,'page');}
    for(const [id,label]of[['fusion-upgrades','equipment'],['fusion-map','map'],['fusion-wallet','wallet'],['fusion-settings','settings']]){await session.page.locator(`#${id}`).tap();await session.page.waitForTimeout(400);await shot(session,`${engine}-${width}-${label}`,'drawer');await session.page.locator('#fusion-close').tap();}
    await session.page.locator('[data-tab="base"]').tap();
    for(const label of ['build','research','station']){await session.page.locator(`.fu-base-actions [data-drawer="${label}"]`).tap();await shot(session,`${engine}-${width}-${label}`,'drawer');await session.page.locator('#fusion-close').tap();}
+   await session.page.locator('.fu-base-actions [data-drawer="station"]').tap();
+   await session.page.locator('#fusion-drawer details').evaluate(d=>d.open=true);
+   await shot(session,`${engine}-${width}-security`,'drawer');await session.page.locator('#fusion-close').tap();
+   for(const id of ['evidence-bench','habitat-window','archive']){
+    await session.page.locator('.fu-base-actions [data-drawer="build"]').tap();
+    await session.page.locator(`#fusion-drawer [data-open-project="${id}"]`).tap();await session.page.waitForTimeout(500);
+    await shot(session,`${engine}-${width}-project-${id}`,'project');
+    if(id==='archive'&&await session.page.locator('#fusion-replay-night').isEnabled()){
+     await session.page.locator('#fusion-replay-night').tap();await session.page.waitForTimeout(1700);
+     await shot(session,`${engine}-${width}-night-replay`,'replay');
+    }
+    await session.page.locator('#fusion-close').tap();
+   }
+   await session.page.locator('[data-tab="explore"]').tap();await session.page.locator('#fusion-upgrades').tap();
+   await session.page.locator('#fusion-open-sorting').tap();await shot(session,`${engine}-${width}-sorting`,'drawer');await session.page.locator('#fusion-close').tap();
+   await session.page.locator('[data-tab="collection"]').tap();
+   for(const id of ['mouse','hermit','tagbird','night-shift']){
+    await session.page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();await session.page.waitForTimeout(600);
+    await shot(session,`${engine}-${width}-detail-${id}`,'detail');await session.page.locator('#fusion-close').tap();
+   }
    report.cases.push({name:session.name,fixtureAudit:fixture.audit,initial:session.initial,final:await archive(session.page),kind:'reachable-pages',errors:session.errors});
   }finally{await close(session);await browser.close();}
  }
@@ -539,6 +559,15 @@ async function cases(){
   const fixture=renewalFixture(Date.now(),'funded');session=await open(browser,{name:'chromium-390-museum',fixture,video:true});
   await session.page.locator('[data-tab="base"]').tap();await session.page.waitForTimeout(600);const startAt=Date.now(),trace=[];
   for(let i=0;i<70;i++){await waitUntil(startAt+i*1000);trace.push({at:Date.now(),dataset:await session.page.locator('.museum-room canvas').evaluate(c=>({...c.dataset})),status:await session.page.locator('#fusion-robot-status').innerText()});}
+  // Read-only crops of the actual rendered room, not a fabricated phone page.
+  // Wait for the real robot to leave each cabinet's horizontal sightline.
+  for(const [index,id]of ['receipt','tape','nested','stamp','cosmic-parcel','bell'].entries()){
+   const x=[160,384,608][index%3],y=index<3?500:825;
+   await session.page.waitForFunction(x=>Math.abs(Number(document.querySelector('#museum-canvas').dataset.robotX)-x)>172,x,{timeout:30000});
+   const data=await session.page.locator('#museum-canvas').evaluate((room,{x,y})=>{const c=document.createElement('canvas');c.width=204;c.height=330;c.getContext('2d').drawImage(room,x-102,y-282,204,330,0,0,204,330);return c.toDataURL('image/png');},{x,y});
+   const file=`screens/glass-cabinet-${id}-native.png`;await writeFile(`${output}/${file}`,Buffer.from(data.split(',')[1],'base64'));
+   report.screenshots.push({name:`glass-cabinet-${id}-native`,file,kind:'native-canvas-crop',engine:'chromium',width:390,height:844,imagePixels:{width:204,height:330},caption:`${id} · 实际收藏室原生画布裁片（非手机页面截图）`,at:Date.now(),build:session.build});
+  }
   await close(session);await saveVideo(session,'museum-two-cabinets-70s.mp4',70,startAt);report.cases.push({name:'museum-robot',kind:'museum-continuous',trace,fixtureAudit:fixture.audit});
  }finally{await close(session);}
  try{

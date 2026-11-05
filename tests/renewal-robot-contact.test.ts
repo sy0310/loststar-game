@@ -1,12 +1,16 @@
 import {afterEach,describe,it,expect,vi} from 'vitest';
 import {drawRenewalRobot,prepareRenewalRobot} from '../src/render/renewal-robot';
-import {robotPose} from '../src/render/motion';
+import {robotPose,shipPose} from '../src/render/motion';
+import {nightStage,nightRobotRegistration,smoothInstall} from '../src/review/d1-motion';
+import {createNightRobot} from '../src/review/night-robot';
+import {nightRobotSourcePoint} from '../src/review/night-robot-geometry';
+import type {SceneFrame} from '../src/render/scene';
 
 type Matrix=[number,number,number,number,number,number];
 /** Minimal independent Canvas affine recorder. It observes the actual painted
  * glove origins after every renderer transform, not a copy of the inverse. */
 function recorder(){
- let matrix:Matrix=[1,0,0,1,0,0];const stack:Matrix[]=[],hands:{x:number;y:number;basis:number[]}[]=[],images:string[]=[];
+ let matrix:Matrix=[1,0,0,1,0,0];const stack:Matrix[]=[],hands:{x:number;y:number;basis:number[]}[]=[],images:string[]=[],joints:{x:number;y:number}[]=[];
  const multiply=(right:Matrix)=>{const[a,b,c,d,e,f]=matrix,[g,h,i,j,k,l]=right;matrix=[a*g+c*h,b*g+d*h,a*i+c*j,b*i+d*j,a*k+c*l+e,b*k+d*l+f];};
  const noop=()=>{};
  const context={
@@ -16,9 +20,10 @@ function recorder(){
   scale(x:number,y:number){multiply([x,0,0,y,0,0]);},
   transform(...next:Matrix){multiply(next);},
   drawImage(image:HTMLImageElement){images.push(image.src);if(image.src.includes('robot-grip-hand'))hands.push({x:matrix[4],y:matrix[5],basis:matrix.slice(0,4)});},
-  beginPath:noop,moveTo:noop,lineTo:noop,stroke:noop,arc:noop,fill:noop,fillRect:noop,
+  lineTo(x:number,y:number){joints.push({x:matrix[0]*x+matrix[2]*y+matrix[4],y:matrix[1]*x+matrix[3]*y+matrix[5]});},
+  beginPath:noop,moveTo:noop,stroke:noop,arc:noop,fill:noop,fillRect:noop,
  } as unknown as CanvasRenderingContext2D;
- return {context,hands,images};
+ return {context,hands,images,joints};
 }
 afterEach(()=>vi.unstubAllGlobals());
 describe('renewed night hand contact',()=>{
@@ -69,4 +74,30 @@ it('uses exactly the same wrist transform and cuff angle in body and foreground 
  drawRenewalRobot(front.context,pose,.94,animation,{...options,glovesOnly:true});
  expect(rear.hands).toHaveLength(0);expect(front.hands).toEqual(whole.hands);expect(front.hands).toHaveLength(2);
  expect(front.images.every(src=>src.includes('robot-grip-hand'))).toBe(true);
+});
+
+describe('actual night body and foreground passes',()=>{
+ for(const seconds of [26.8,27.4,27.9]){
+  it(`joins each painted cuff to its rear elbow during dock/release at ${seconds}s`,async()=>{
+   vi.stubGlobal('Image',class{src='';decode(){return Promise.resolve();}});await prepareRenewalRobot();
+   const stage=nightStage(seconds),atlas={src:'/assets/robot-atlas.webp'} as HTMLImageElement;
+   stage.robot={...stage.robot,x:316.37,y:429.46};stage.rig.bob=1.75;
+   const handles=[{x:286.381,y:383.99},{x:310.27,y:389.85}] as const;
+   const frame={t:seconds,robot:stage.robot,ship:shipPose(seconds),globe:atlas,environment:{period:'night',seconds,rest:1,light:1},output:{dataset:{}}} as SceneFrame;
+   const robot=createNightRobot(),body=recorder(),front=recorder();
+   robot.drawBody(body.context,frame,stage,atlas,handles);
+   robot.drawClaws(front.context,stage,atlas,handles);
+   expect(body.hands).toHaveLength(0);expect(body.joints).toHaveLength(2);expect(front.hands).toHaveLength(2);
+   expect(front.images.every(src=>src.includes('robot-grip-hand'))).toBe(true);
+   const release=smoothInstall((seconds-27.15)/.55);
+   front.hands.forEach((hand,index)=>{
+    const idle=nightRobotSourcePoint(nightRobotRegistration.unloadHands[index],false,stage);
+    expect(hand.x).toBeCloseTo(handles[index].x+(idle.x-handles[index].x)*release,8);
+    expect(hand.y).toBeCloseTo(handles[index].y+(idle.y-handles[index].y)*release,8);
+    // Painted cuff X axis points back to the exact elbow used by the body.
+    expect(hand.x+22*hand.basis[0]).toBeCloseTo(body.joints[index].x,8);
+    expect(hand.y+22*hand.basis[1]).toBeCloseTo(body.joints[index].y,8);
+   });
+  });
+ }
 });

@@ -12,6 +12,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: python3 scripts/validate_design_assets.py
+      - run: python3 design/visual-renewal/import_reference_pngs.py
       - run: npm run test:coverage
       - run: npm run build
       - run: npm run build:d1
@@ -25,7 +26,19 @@ jobs:
         with:
           name: browser-evidence
           path: |
-            artifacts/
+            artifacts/e2e-results.json
+            artifacts/mobile-*.png
+            artifacts/desktop-*.png
+            artifacts/webkit-*.png
             test-results/
             coverage/
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('artifacts/visual-renewal/screens-evidence.json') != ''
+        with:
+          name: visual-renewal-review
+          path: |
+            artifacts/visual-renewal/
+            !artifacts/visual-renewal/raw/
+            !artifacts/visual-renewal/internal/
           retention-days: 14

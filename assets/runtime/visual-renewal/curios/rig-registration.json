@@ -1,0 +1,781 @@
+{
+  "schema": 2,
+  "logicalSize": 192,
+  "exportCommand": "node scripts/export_renewal_curios.mjs",
+  "motionSource": "src/fusion/curio-rig-motion.ts",
+  "assets": [
+    {
+      "id": "receipt-rig-fixed",
+      "source": "assets/source/visual-renewal/curios/receipt-three-states-v2.png",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-rig-fixed.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-rig-fixed.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "f88156c8c223666a7f32f9cd8d883a4d6ca076a4826f5ca54a1d4feb034c5e27"
+    },
+    {
+      "id": "receipt-rig-joint0",
+      "source": "assets/source/visual-renewal/curios/receipt-three-states-v2.png",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-rig-joint0.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-rig-joint0.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "6fe7439be61ad2623e9475ea8d26f50fc15855c12ac29b482824484a7cab13c3",
+      "joint": 0
+    },
+    {
+      "id": "receipt-rig-joint1",
+      "source": "assets/source/visual-renewal/curios/receipt-three-states-v2.png",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-rig-joint1.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-rig-joint1.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "fbe6ce796a0d28a2ebbfa1b831bf19ce2d36ed71298b37f75d43ebedd38d5f93",
+      "joint": 1
+    },
+    {
+      "id": "receipt-rig-joint0-back",
+      "source": "assets/source/visual-renewal/curios/receipt-inner-blank.png",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-rig-joint0-back.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-rig-joint0-back.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "992c34c9b737ec7414f78f5f3de075e7e1e3af69a0b85e7185fd6f0cab6be0f3",
+      "joint": 0,
+      "side": "back"
+    },
+    {
+      "id": "receipt-rig-joint1-back",
+      "source": "assets/source/visual-renewal/curios/receipt-inner-blank.png",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-rig-joint1-back.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-rig-joint1-back.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "4761551c0fe576b5ef12a88fe78057a97846b9fae6943bbadc5e24b77210793d",
+      "joint": 1,
+      "side": "back"
+    },
+    {
+      "id": "receipt-rig-fibre",
+      "source": "assets/source/visual-renewal/curios/receipt-three-states-v2.png",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-rig-fibre.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-rig-fibre.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "3d80420eb2b810f9b0435791207afd1222d7a84b797ab8d50c893596cc9ee1bc"
+    },
+    {
+      "id": "tape-rig-fixed",
+      "source": "assets/source/visual-renewal/curios/rig-v2/tape-empty-frame.png",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-rig-fixed.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-rig-fixed.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "df6f00372f3ad89c9d449b5d52b580467801312aec7c818585f9153b8a4c3aeb"
+    },
+    {
+      "id": "tape-rig-joint0",
+      "source": "assets/source/visual-renewal/curios/tape-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-rig-joint0.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-rig-joint0.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "72cae2af2349ba10c06a8ae45a66e7f5415c8a1c71b7c5755a34c00a6453cb02",
+      "joint": 0
+    },
+    {
+      "id": "tape-rig-joint1",
+      "source": "assets/source/visual-renewal/curios/tape-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-rig-joint1.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-rig-joint1.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "46a6e7f83bb0354380109774ba0d79e804e6a7528c80419bde47bfbd32d40b28",
+      "joint": 1
+    },
+    {
+      "id": "tape-rig-front",
+      "source": "assets/source/visual-renewal/curios/tape-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-rig-front.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-rig-front.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "fba6f2fb77ea56ad3f5a6b90fd4b7e775a287066e926c072ce159246340ab64e"
+    },
+    {
+      "id": "nested-rig-fixed",
+      "source": "assets/source/visual-renewal/curios/rig-v2/nested-empty-body.png",
+      "runtime": "assets/runtime/visual-renewal/curios/nested-rig-fixed.png",
+      "webp": "assets/runtime/visual-renewal/curios/nested-rig-fixed.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "9511239beca5f24826b58efcdb06f5b925b8934e90cb6a6fb88e2846cf916885",
+      "rearHinge": [
+        [
+          80,
+          43
+        ],
+        [
+          166,
+          57
+        ]
+      ],
+      "sourceAnchors": [
+        [
+          509,
+          339
+        ],
+        [
+          1050,
+          430
+        ],
+        [
+          228,
+          625
+        ]
+      ],
+      "targetAnchors": [
+        [
+          78,
+          43
+        ],
+        [
+          166,
+          57
+        ],
+        [
+          34,
+          91
+        ]
+      ]
+    },
+    {
+      "id": "nested-rig-joint0",
+      "source": "assets/source/visual-renewal/curios/nested-three-states-v2.png",
+      "runtime": "assets/runtime/visual-renewal/curios/nested-rig-joint0.png",
+      "webp": "assets/runtime/visual-renewal/curios/nested-rig-joint0.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "2accca7724513f3d9ba1401fa6672800db8d718aa4e5b29da13225ed39906ce3",
+      "joint": 0,
+      "rearHinge": [
+        [
+          80,
+          43
+        ],
+        [
+          166,
+          57
+        ]
+      ]
+    },
+    {
+      "id": "nested-rig-corner",
+      "source": "assets/source/visual-renewal/curios/rig-v2/nested-empty-body.png",
+      "runtime": "assets/runtime/visual-renewal/curios/nested-rig-corner.png",
+      "webp": "assets/runtime/visual-renewal/curios/nested-rig-corner.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "c2f014fead00808203af477585ac63c5a21bbcd0fbd3a145a45b0a346dcc4528",
+      "joint": 1
+    },
+    {
+      "id": "nested-rig-inner",
+      "source": "assets/source/visual-renewal/curios/nested-three-states-v2.png",
+      "runtime": "assets/runtime/visual-renewal/curios/nested-rig-inner.png",
+      "webp": "assets/runtime/visual-renewal/curios/nested-rig-inner.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "369e2ba9d329f0dbd37cc1c8ce97db20ce0871550ef219c65b1def2ae2e381f2",
+      "joint": 1,
+      "reuse": "Same first layer, miniature internal box; no new reward"
+    },
+    {
+      "id": "nested-rig-front",
+      "source": "assets/source/visual-renewal/curios/rig-v2/nested-empty-body.png",
+      "runtime": "assets/runtime/visual-renewal/curios/nested-rig-front.png",
+      "webp": "assets/runtime/visual-renewal/curios/nested-rig-front.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "07c30041353eed1cd08a65a15eff4047557f6ba9654f00963c48748f20aeca71"
+    },
+    {
+      "id": "stamp-rig-fixed",
+      "source": "assets/source/visual-renewal/curios/rig-v2/stamp-base.png",
+      "runtime": "assets/runtime/visual-renewal/curios/stamp-rig-fixed.png",
+      "webp": "assets/runtime/visual-renewal/curios/stamp-rig-fixed.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "26760d6b5db83a44159f7199ea889a94404e077f22e9de8e912e6102f8c672ad"
+    },
+    {
+      "id": "stamp-rig-joint0",
+      "source": "assets/source/visual-renewal/curios/stamp-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/stamp-rig-joint0.png",
+      "webp": "assets/runtime/visual-renewal/curios/stamp-rig-joint0.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "c100f7dad85ad3e774cd81ecac72d85a2edeb6f53d3ed3f7f7285503258faaf1",
+      "joint": 0
+    },
+    {
+      "id": "stamp-rig-joint1",
+      "source": "assets/source/visual-renewal/curios/stamp-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/stamp-rig-joint1.png",
+      "webp": "assets/runtime/visual-renewal/curios/stamp-rig-joint1.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "5602075da4efc458a5f18c96f56a6f65668f1304a2e67d6411f7aeccd8005e77",
+      "joint": 1
+    },
+    {
+      "id": "cosmic-parcel-rig-fixed",
+      "source": "assets/source/visual-renewal/curios/rig-v2/cosmic-box-body.png",
+      "runtime": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-fixed.png",
+      "webp": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-fixed.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "30fa5774389bafdd288046c0ff30b57406e7cbb9dc857b76eb314e3f6347ead9"
+    },
+    {
+      "id": "cosmic-parcel-rig-joint0",
+      "source": "assets/source/visual-renewal/curios/cosmic-parcel-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-joint0.png",
+      "webp": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-joint0.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "96b24a43fa79e005ea682054962d24f4a5270969c5ab2996551647c3f7bf5315",
+      "joint": 0
+    },
+    {
+      "id": "cosmic-parcel-rig-joint1",
+      "source": "assets/source/visual-renewal/curios/cosmic-parcel-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-joint1.png",
+      "webp": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-joint1.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "75d87df1aac832f67b5ceb8485333424ce246b432d1f3b94bb07cf71bdfc2086",
+      "joint": 1
+    },
+    {
+      "id": "cosmic-parcel-rig-string",
+      "source": "assets/source/visual-renewal/curios/cosmic-parcel-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-string.png",
+      "webp": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-string.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "d4ba5116ee0cafed837efa9abc75b55f046a50ee6c4e3850c765cd37d4594332"
+    },
+    {
+      "id": "bell-rig-fixed",
+      "source": "assets/source/visual-renewal/curios/rig-v2/bell-body.png",
+      "runtime": "assets/runtime/visual-renewal/curios/bell-rig-fixed.png",
+      "webp": "assets/runtime/visual-renewal/curios/bell-rig-fixed.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "11c9047374fdd6e41f6c1c1491306e6c49766e4a13fcd899d5420f1e9bbd0679"
+    },
+    {
+      "id": "bell-rig-joint0",
+      "source": "assets/source/visual-renewal/curios/bell-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/bell-rig-joint0.png",
+      "webp": "assets/runtime/visual-renewal/curios/bell-rig-joint0.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "1434c77027f73b2231c82acc3c8d338c25817598e7a10ba792b3ceb6f0598bd3",
+      "joint": 0
+    },
+    {
+      "id": "bell-rig-joint1",
+      "source": "assets/source/visual-renewal/curios/bell-three-states.png",
+      "runtime": "assets/runtime/visual-renewal/curios/bell-rig-joint1.png",
+      "webp": "assets/runtime/visual-renewal/curios/bell-rig-joint1.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "physical-rig",
+      "logicalSize": 192,
+      "sha256": "2be8bed382bb27e9f57294ff71b1151e82afaabca193e61772fb101e2c28a7e9",
+      "joint": 1
+    },
+    {
+      "id": "receipt-rig-deposits",
+      "source": "assets/source/visual-renewal/curios/rig-v2/material-deposits.png",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-rig-deposits.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-rig-deposits.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "authored-material-deposits",
+      "logicalSize": 192,
+      "sha256": "231579bd59067d4b1db9def5de9341d0c87fafffe2778fe88b984f6267fc7000",
+      "sourceCell": [
+        0,
+        0
+      ],
+      "target": [
+        39,
+        61,
+        91,
+        66
+      ]
+    },
+    {
+      "id": "tape-rig-deposits",
+      "source": "assets/source/visual-renewal/curios/rig-v2/material-deposits.png",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-rig-deposits.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-rig-deposits.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "authored-material-deposits",
+      "logicalSize": 192,
+      "sha256": "4b18a8c1b51d94e47cebe504e8041251a08db389f1a6c1e2cd58052f78018ab2",
+      "sourceCell": [
+        1,
+        0
+      ],
+      "target": [
+        37,
+        43,
+        80,
+        96
+      ]
+    },
+    {
+      "id": "nested-rig-deposits",
+      "source": "assets/source/visual-renewal/curios/rig-v2/material-deposits.png",
+      "runtime": "assets/runtime/visual-renewal/curios/nested-rig-deposits.png",
+      "webp": "assets/runtime/visual-renewal/curios/nested-rig-deposits.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "authored-material-deposits",
+      "logicalSize": 192,
+      "sha256": "fecbd6472ca34bcdd5d7e98883b6488da3e969247bb1347a026b7791e36962fa",
+      "sourceCell": [
+        2,
+        0
+      ],
+      "target": [
+        36,
+        66,
+        117,
+        40
+      ]
+    },
+    {
+      "id": "stamp-rig-deposits",
+      "source": "assets/source/visual-renewal/curios/rig-v2/material-deposits.png",
+      "runtime": "assets/runtime/visual-renewal/curios/stamp-rig-deposits.png",
+      "webp": "assets/runtime/visual-renewal/curios/stamp-rig-deposits.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "authored-material-deposits",
+      "logicalSize": 192,
+      "sha256": "cfc17f98edb8bed4f480fd8db4e9aa516048cc96fc2089b692d508bebedf56ad",
+      "sourceCell": [
+        0,
+        1
+      ],
+      "target": [
+        43,
+        133,
+        113,
+        46
+      ]
+    },
+    {
+      "id": "cosmic-parcel-rig-deposits",
+      "source": "assets/source/visual-renewal/curios/rig-v2/material-deposits.png",
+      "runtime": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-deposits.png",
+      "webp": "assets/runtime/visual-renewal/curios/cosmic-parcel-rig-deposits.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "authored-material-deposits",
+      "logicalSize": 192,
+      "sha256": "2870e71f8cc931496a3e827658b6ddd65760ec5c8c03d5de2f06eff1b418a155",
+      "sourceCell": [
+        1,
+        1
+      ],
+      "target": [
+        64,
+        83,
+        39,
+        51
+      ]
+    },
+    {
+      "id": "bell-rig-deposits",
+      "source": "assets/source/visual-renewal/curios/rig-v2/material-deposits.png",
+      "runtime": "assets/runtime/visual-renewal/curios/bell-rig-deposits.png",
+      "webp": "assets/runtime/visual-renewal/curios/bell-rig-deposits.webp",
+      "width": 384,
+      "height": 384,
+      "layer": "authored-material-deposits",
+      "logicalSize": 192,
+      "sha256": "e40845e579804055449eb2b18089812f6c99cb7d42125d2b2cfe9d2649f39a80",
+      "sourceCell": [
+        2,
+        1
+      ],
+      "target": [
+        42,
+        62,
+        109,
+        73
+      ]
+    },
+    {
+      "id": "receipt-found",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-found.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-found.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "found",
+      "sha256": "d44d6be40dd3800ef98242370e1733788b3f517bea5a041047d0a96c7cf56c1b",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "receipt-clean",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-clean.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-clean.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "clean",
+      "sha256": "ea5b56d0a590ee6e4f0433e3641efe777e05f659aa0bc68c38b260eb6c4a3719",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "receipt-stabilized",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-stabilized.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-stabilized.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "stabilized",
+      "sha256": "9fd9eeec378844e641ea3530107c99a6c2224c15d5aa2581b45b8c604f74af4a",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "tape-found",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-found.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-found.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "found",
+      "sha256": "8d416886799113eeecb951d5d013c6e827d939653882f09dcbaa082af08622ea",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "tape-clean",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-clean.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-clean.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "clean",
+      "sha256": "293a12e6cd8f6fccd0fe67226366c758c88cc952e81b2c86b9f9d375ba9c8439",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "tape-stabilized",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-stabilized.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-stabilized.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "stabilized",
+      "sha256": "e4391d0ab39e9f07879c0ffca3faea2b54316b8ddd6c90e9dca02ef5d9df398a",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "nested-found",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/nested-found.png",
+      "webp": "assets/runtime/visual-renewal/curios/nested-found.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "found",
+      "sha256": "2aa7827fbad2a29341bc9795498e0a8a799e15891385e30b0ef370c16c26fc09",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "nested-clean",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/nested-clean.png",
+      "webp": "assets/runtime/visual-renewal/curios/nested-clean.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "clean",
+      "sha256": "bac717aa4b4bb3a9ee839b80fa31f9a6417811aa6a3cef086d1b48e9bac13728",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "nested-stabilized",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/nested-stabilized.png",
+      "webp": "assets/runtime/visual-renewal/curios/nested-stabilized.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "stabilized",
+      "sha256": "2e512cd8190f9379fd4c2f030c6e49fb3de1a98279c4368599d40c3e0b3f6393",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "stamp-found",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/stamp-found.png",
+      "webp": "assets/runtime/visual-renewal/curios/stamp-found.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "found",
+      "sha256": "bc266c933a12c08e4bccaff8f304852e41f2b0da6b0fbc5b0a61ea730fe8f2e3",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "stamp-clean",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/stamp-clean.png",
+      "webp": "assets/runtime/visual-renewal/curios/stamp-clean.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "clean",
+      "sha256": "aba02f6e2d2be7533f0481916b230d3f2b7788adba9699bb9cc09c3bcddba0a4",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "stamp-stabilized",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/stamp-stabilized.png",
+      "webp": "assets/runtime/visual-renewal/curios/stamp-stabilized.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "stabilized",
+      "sha256": "518533e31a50c0ce8a28d3795fa30c4530cc78dba63f5fc318eb05bd2c320a72",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "cosmic-parcel-found",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/cosmic-parcel-found.png",
+      "webp": "assets/runtime/visual-renewal/curios/cosmic-parcel-found.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "found",
+      "sha256": "f8542e8184b81d1d84453aa745082437b264aefc67a3f35f59b8603c93cbae24",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "cosmic-parcel-clean",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/cosmic-parcel-clean.png",
+      "webp": "assets/runtime/visual-renewal/curios/cosmic-parcel-clean.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "clean",
+      "sha256": "7f9e515924cf75d6783dc256ce6f2ae7a96327c8d8d7bf28046b7ecaf7d39e69",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "cosmic-parcel-stabilized",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/cosmic-parcel-stabilized.png",
+      "webp": "assets/runtime/visual-renewal/curios/cosmic-parcel-stabilized.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "stabilized",
+      "sha256": "4bd783214a71966348b8d5967271bad77f4e2e309a916fe4c20615d65cf9c8cc",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "bell-found",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/bell-found.png",
+      "webp": "assets/runtime/visual-renewal/curios/bell-found.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "found",
+      "sha256": "bc7eb7e7d5afa1cbcdfee404ce3f7edcb196c2c64f1caaaa5a76a846f271e34d",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bell-clean",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/bell-clean.png",
+      "webp": "assets/runtime/visual-renewal/curios/bell-clean.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "clean",
+      "sha256": "f43561e9b2a17a9dad431c4ec1e81eb2d1b90b0d8ce1806d982698f70165bab2",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bell-stabilized",
+      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "runtime": "assets/runtime/visual-renewal/curios/bell-stabilized.png",
+      "webp": "assets/runtime/visual-renewal/curios/bell-stabilized.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "layer": "canonical-specimen-state",
+      "state": "stabilized",
+      "sha256": "4ce7a165aa2e4702be1a0c5521e7dcc35cf728e595fb49eb7bc21b9f6afaea09",
+      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
+      "corrections": [
+        1,
+        1
+      ]
+    }
+  ]
+}

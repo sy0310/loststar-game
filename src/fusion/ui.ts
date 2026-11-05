@@ -1075,7 +1075,7 @@ export function mountFusion(controller: FusionController) {
     }
     if (button.id === 'fusion-replay-night') {
       const root = query('#fusion-archive-replay');
-      archiveReplay ??= new ArchiveNightReplay(root);
+      archiveReplay ??= new ArchiveNightReplay(root, () => controller.state);
       archiveReplay.mount(root);
       if (!archiveSource) return;
       archiveReplay.start(archiveSource);

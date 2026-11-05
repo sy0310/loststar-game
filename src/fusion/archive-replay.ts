@@ -1,6 +1,7 @@
 import {advance, newGame, type SaveData} from '../game/engine';
 import {ExpeditionScene} from '../render/scene';
 import {createFusionScene} from './scene';
+import type {FusionSave} from './contracts';
 
 /** Reconstruct only the last recorded configuration in an isolated render state. */
 export function archiveReplaySeed(history: SaveData, now: number): SaveData {
@@ -32,16 +33,21 @@ export class ArchiveNightReplay {
   private startedAt = 0;
   private elapsed = 0;
   private running = false;
+  private visualSource?: FusionSave;
   number = 0;
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, private getVisualSource?: () => FusionSave) {
+    // Rendering metadata is a local snapshot. Replay work, rewards and damage
+    // continue to use the isolated recorded game, never the player controller.
+    if (getVisualSource) this.visualSource = structuredClone(getVisualSource());
     const getState = () => {
       const elapsed = this.seconds * 1000;
       this.state = advance(this.state, this.startedAt + elapsed);
       const now = Date.now();
       return {...this.state, lastAt: now, world: {...this.state.world, lastAt: now}};
     };
-    const extension = createFusionScene(getState);
+    const visual = getVisualSource ? () => ({...this.visualSource!, game: getState()}) : undefined;
+    const extension = createFusionScene(getState, undefined, () => this.visualSource?.projects ?? [], visual);
     this.scene = new ExpeditionScene(parent, getState, extension);
     this.scene.canvas.setAttribute('aria-label', '上一夜实际配置的球面处置回放');
   }
@@ -59,6 +65,7 @@ export class ArchiveNightReplay {
   }
 
   start(history: SaveData) {
+    if (this.getVisualSource) this.visualSource = structuredClone(this.getVisualSource());
     this.startedAt = Date.now();
     this.state = archiveReplaySeed(history, this.startedAt);
     this.startedPerformance = performance.now();

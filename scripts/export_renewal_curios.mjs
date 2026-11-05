@@ -53,3 +53,5 @@ for(const id of ids){
 }
 await fs.writeFile(`${runtime}/registration.json`,JSON.stringify({schema:1,logicalSize:192,layers:layerSets,exportCommand:'node scripts/export_renewal_curios.mjs',assets:records},null,2)+'\n');
 console.log(`${records.length} registered PNGs and WebPs exported (18 states + 6 tools).`);
+
+await import("./export_renewal_curio_rig.mjs");

@@ -16,8 +16,8 @@ describe('renewed museum physical registration',()=>{
  it('keeps the two complete rows and their labels separate from the next row crown',()=>{
   for(const bay of renewalExhibits){
    expect(bay.x-100).toBeGreaterThanOrEqual(0);expect(bay.x+100).toBeLessThanOrEqual(768);
-   expect(bay.y+38).toBeLessThan(960);
-   if(bay.y===825)expect(bay.y-278).toBeGreaterThan(500+38);
+   expect(bay.y+44).toBeLessThan(960);
+   if(bay.y===825)expect(bay.y-278).toBeGreaterThan(500+44);
   }
   // The head may overlap the projected cabinetry; the real feet fit these 40px aisles.
   for(const footX of [270,500])for(const bay of renewalExhibits)expect(Math.abs(footX-bay.x)).toBeGreaterThanOrEqual(92+15);
@@ -34,5 +34,17 @@ describe('renewed museum physical registration',()=>{
   for(const bay of renewalExhibits)renewalDisplaySpecimen(bay,3);
   renewalMuseumPose(6.8,()=>3);
   expect(JSON.stringify(exhibits)).toBe(before);expect(baseRobotPose(6.8)).toEqual(pose);
+ });
+});
+
+describe('service route and reachable arms',()=>{
+ it('walks the real row-front route and brings the body to within an arm reach before touching',()=>{
+  for(const level of [0,1,2,3])for(let t=0;t<84;t+=.04){
+   const p=renewalMuseumPose(t,()=>level);
+   for(const bay of renewalExhibits)expect(Math.abs(p.x-bay.x)<95&&p.y>bay.y-65&&p.y<bay.y).toBe(false);
+   if(p.contact>.1){
+    expect(Math.hypot(p.hand.x-p.shoulder.x,p.hand.y-p.shoulder.y)).toBeLessThan(85);
+   }
+  }
  });
 });

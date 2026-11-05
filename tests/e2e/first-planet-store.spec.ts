@@ -168,7 +168,7 @@ test('首星收据材质加载失败时基地等待原材质，并从失败状�
   await page.clock.install({time: new Date(1800000000000)});
   let blocked = true;
   let requests = 0;
-  await page.route('**/receipt-found.webp*', async route => {
+  await page.route('**/receipt-rig-fixed.webp*', async route => {
     if (route.request().resourceType() !== 'image') {await route.continue();return;}
     requests++;
     if (blocked) await route.abort('failed');

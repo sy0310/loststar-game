@@ -21,12 +21,41 @@ export function renewalDisplaySpecimen(exhibit:Exhibit,level:number):Exhibit{
  const base=levelBase[Math.max(0,Math.min(3,level))],support=renewalCurioRegistration[exhibit.id as RenewalCurioId].support,size=exhibit.item.size;
  return {...exhibit,item:{...exhibit.item,x:-(support.x-96)*size/192,y:-base-13-(support.y-96)*size/192}};
 }
+type RoomPoint={x:number;y:number};
+const clamp=(n:number)=>Math.max(0,Math.min(1,n));
+const ease=(n:number)=>{const p=clamp(n);return p*p*(3-2*p);};
+/** Rounded measured aisle -> row-front -> short approach. Never crosses a cabinet footprint. */
+function approachRoute(exhibit:Exhibit,fraction:number):RoomPoint{
+ const corridor=exhibit.x<300?270:500,side=Math.sign(corridor-exhibit.x)||1;
+ const service={x:exhibit.x+side*35,y:exhibit.y+5};
+ const knots=[{x:384,y:918},{x:corridor,y:918},{x:corridor,y:service.y+54},{x:service.x,y:service.y+54},service];
+ const points:RoomPoint[]=[knots[0]],radius=10;
+ for(let i=1;i<knots.length-1;i++){
+  const before=knots[i-1],corner=knots[i],after=knots[i+1];
+  const l1=Math.hypot(corner.x-before.x,corner.y-before.y),l2=Math.hypot(after.x-corner.x,after.y-corner.y),r=Math.min(radius,l1/3,l2/3);
+  const start={x:corner.x+(before.x-corner.x)*r/l1,y:corner.y+(before.y-corner.y)*r/l1};
+  const end={x:corner.x+(after.x-corner.x)*r/l2,y:corner.y+(after.y-corner.y)*r/l2};points.push(start);
+  for(let step=1;step<=8;step++){const t=step/8;points.push({x:(1-t)**2*start.x+2*(1-t)*t*corner.x+t*t*end.x,y:(1-t)**2*start.y+2*(1-t)*t*corner.y+t*t*end.y});}
+ }
+ points.push(service);let length=0;const distances=[0];for(let i=1;i<points.length;i++){length+=Math.hypot(points[i].x-points[i-1].x,points[i].y-points[i-1].y);distances.push(length);}
+ const distance=ease(fraction)*length;let next=1;while(next<points.length-1&&distances[next]<distance)next++;
+ const a=points[next-1],b=points[next],blend=(distance-distances[next-1])/Math.max(.001,distances[next]-distances[next-1]);return{x:a.x+(b.x-a.x)*blend,y:a.y+(b.y-a.y)*blend};
+}
 export function renewalMuseumPose(seconds:number,level:(id:string)=>number){
  const p=baseRobotPose(seconds,renewalExhibits),e=renewalExhibits.find(e=>e.id===p.target)!,physical=renewalDisplaySpecimen(e,level(`case-${exhibitIds.indexOf(e.id)}`));
- const next=itemCenter(physical),previous=itemCenter(e),dx=next.x-previous.x,dy=next.y-previous.y;
- const direction=e.x<p.x?-1:1;
- return {...p,width:136,shoulder:{x:p.x+direction*20.4,y:p.y-58.65},item:{x:p.item.x+dx*(1-p.lift),y:p.item.y+dy*(1-p.lift)-21*p.lift},hand:{x:p.hand.x+dx*(1-p.lift)*p.contact,y:p.hand.y+dy*(1-p.lift)*p.contact-21*p.lift*p.contact}};
+ const t=Math.max(0,seconds)%14,moving=p.action==='walk'||p.action==='return';
+ const progress=p.action==='walk'?t/4:p.action==='return'?1-(t-10)/4:1;
+ const position=approachRoute(e,progress),towardBay=e.x<position.x?-1:1;
+ const ahead=approachRoute(e,Math.min(1,progress+.003)),behind=approachRoute(e,Math.max(0,progress-.003));
+ const walking=Math.sign(ahead.x-behind.x)*(p.action==='return'?-1:1);
+ const facing=moving&&Math.abs(ahead.x-behind.x)>.01?walking:towardBay;
+ const center=itemCenter(physical),inspect=ease((t-7.2)/.35)*(1-ease((t-7.85)/.35));
+ const held={x:position.x+towardBay*24,y:position.y-82-inspect*4};
+ const item={x:center.x+(held.x-center.x)*p.lift,y:center.y+(held.y-center.y)*p.lift};
+ const hand={x:position.x+towardBay*27+(item.x+towardBay*7-position.x-towardBay*27)*p.contact,y:position.y-48+(item.y+13-position.y+48)*p.contact};
+ return {...p,...position,turn:0,width:136,facing,shoulder:{x:position.x+towardBay*20.4,y:position.y-58.65},item,hand};
 }
+
 const image=(url:string)=>{const img=new Image();img.src=url;return img;};
 const smooth=(raw:number)=>{const t=Math.max(0,Math.min(1,raw));return t*t*(3-2*t);};
 export class RenewalMuseum {
@@ -106,9 +135,9 @@ export class RenewalMuseum {
    c.fillStyle='#f6d39a';for(let i=0;i<3;i++)c.fillRect(e.x-28+i*28,e.y-8-Math.sin(progress*Math.PI)*9,3,3);
   }
   // One independently registered, real-rendered nameplate. No baked text or double pedestal.
-  const plaque=known?labels[exhibitIds.indexOf(e.id)]:'等待下一次发现';
-  c.fillStyle='#1e1238';c.fillRect(e.x-92,e.y+8,184,30);c.strokeStyle=known?'#dca456':'#795d8c';c.lineWidth=1.5;c.strokeRect(e.x-92,e.y+8,184,30);
-  c.fillStyle=known?'#ffe0a2':'#b9a6ca';c.font='20px "PingFang SC", sans-serif';c.textAlign='center';c.textBaseline='alphabetic';c.fillText(plaque,e.x,e.y+30,176);
+  const plaque=known?labels[exhibitIds.indexOf(e.id)]:'等待发现';
+  c.fillStyle='#1e1238';c.fillRect(e.x-92,e.y+8,184,36);c.strokeStyle=known?'#dca456':'#795d8c';c.lineWidth=1.5;c.strokeRect(e.x-92,e.y+8,184,36);
+  c.fillStyle=known?'#ffe0a2':'#b9a6ca';c.font='30px "PingFang SC", sans-serif';c.textAlign='center';c.textBaseline='alphabetic';c.fillText(plaque,e.x,e.y+36,176);
   c.restore();return {physical,center,geometry};
  }
  drawRoom(c:CanvasRenderingContext2D,t:number,reduced=false,level:(id:string)=>number=()=>0){

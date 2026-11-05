@@ -180,7 +180,7 @@ function csv(values: Record<string, unknown>[]) {
   return [keys.join(','), ...values.map(row => keys.map(key => JSON.stringify(row[key] ?? '')).join(','))].join('\n') + '\n';
 }
 writeFileSync(`${output}/economy.json`, JSON.stringify({sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim(),
-  sourceState: 'Current working tree, including pending changes. sourceCommit identifies the base HEAD.',
+  sourceState: execFileSync('git', ['status', '--porcelain', '--', 'src', 'assets/runtime', 'package.json', 'package-lock.json'], {encoding: 'utf8'}).trim() ? 'Working tree has pending runtime changes; sourceCommit identifies its base HEAD.' : 'Frozen runtime source; sourceCommit identifies the unchanged runtime.',
   policy: 'Each second chooses at most one real action. Optional purchases leave54 before automatic maintenance. Receipt restoration, scanner/recycler1, security1, other curio restoration, abilities1, existing sorting work and three90-part studies, equipment up to3, cabinets, base projects. Idle uses automatic exploration and this purchase policy. Assist adds one tap attempt per second through the real daytime and queue limits.',
   archiveScope: 'Restart27049 passes a read-only27049 source into the real fresh-campaign model and begins120. Full original bytes and legacy ownership are checked here. IndexedDB source backup and atomic first-write are exercised separately by first-planet-store.spec.ts.',
   checks, rows, offline}, null, 2) + '\n');

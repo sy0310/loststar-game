@@ -1,11 +1,19 @@
 import {chromium, webkit} from '@playwright/test';
 import {readFile, writeFile} from 'node:fs/promises';
 import os from 'node:os';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import {firstPlanetFixture} from '../releases/firstplanet-fixtures/firstplanet_fixtures.js';
 const base=process.env.RENEWAL_URL??'http://127.0.0.1:4226/';
 const metadata=JSON.parse(await readFile('releases/taptap/package-info-fusion.json','utf8'));
+const runtimePaths=['src','assets/runtime','package.json','package-lock.json','vite.config.ts','vite.fusion.config.ts'];
+const checkout=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+const dirty=execFileSync('git',['status','--porcelain','--',...runtimePaths],{encoding:'utf8'}).trim();
+const difference=execFileSync('git',['diff','--name-only',metadata.sourceCommit,checkout,'--',...runtimePaths],{encoding:'utf8'}).trim();
+const bytes=await readFile(metadata.archive);
+if(dirty||difference||createHash('sha256').update(bytes).digest('hex')!==metadata.sha256)throw Error('Performance capture requires the unchanged frozen source and exact package');
 const summarize=values=>{const a=[...values].sort((x,y)=>x-y);return{samples:a.length,medianMs:a[Math.floor(a.length*.5)]??null,p95Ms:a[Math.floor(a.length*.95)]??null,over100Ms:a.filter(x=>x>100).length};};
-const report={sourceCommit:metadata.sourceCommit,base,physicalPhone:false,host:{cpu:os.cpus()[0].model,platform:os.platform(),architecture:os.arch()},
+const report={sourceCommit:metadata.sourceCommit,base,zipSha256:metadata.sha256,physicalPhone:false,textureMemory:'Not measured. Decoded image, GPU and total-process residency are not inferred from the JavaScript heap.',host:{cpu:os.cpus()[0].model,platform:os.platform(),architecture:os.arch()},
  method:{viewport:{width:390,height:844},dpr:2,concurrency:1,recording:false,warmupMs:1500,sampleMs:10000,heap:'Chromium coarse JS heap only; excludes texture, GPU and process memory.'},cases:[]};
 for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]){
  const browser=await type.launch();
@@ -33,7 +41,7 @@ for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]){
     clearInterval(window.__v039HeapTimer);return{raf:intervals.slice(1),world:window.__FUSION__.metrics(),ui:window.__FUSION__.uiMetrics(),heap:window.__v039Heap};});
    const field=['explore','field'].includes(view),actualIntervals=field?null:view==='collection'?sample.ui.museum.intervalsMs??[]:sample.ui.focus.intervalsMs;
    report.cases.push({engine,view,build,raf:summarize(sample.raf),actualPaint:field?{samples:sample.world.frames,medianMs:sample.world.medianFrameMs,p95Ms:sample.world.p95FrameMs}:summarize(actualIntervals),
-    meanDrawMs:field?sample.world.meanDrawMs:sample.ui.focus.costsMs.reduce((a,b)=>a+b,0)/Math.max(1,sample.ui.focus.costsMs.length),
+    meanDrawMs:field?sample.world.meanDrawMs:(view==='collection'?sample.ui.museum.costsMs:sample.ui.focus.costsMs).reduce((a,b)=>a+b,0)/Math.max(1,(view==='collection'?sample.ui.museum.costsMs:sample.ui.focus.costsMs).length),
     heap:{samples:sample.heap.length,maximumBytes:sample.heap.length?Math.max(...sample.heap):null},errors});
    if(errors.length)throw Error(JSON.stringify(errors));
   }finally{await context.close();}

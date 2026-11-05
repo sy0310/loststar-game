@@ -205,11 +205,17 @@ test('融合：展柜付款后立即看真实前后近景，反复切换不重�
 test('融合：慢加载时显示接通状态，空场景点击不会提前排入助力', async ({page}) => {
   let release!: () => void;
   const gate = new Promise<void>(resolve => {release = resolve;});
-  await page.route('**/*.webp', async route => {
-    if (route.request().resourceType() === 'image' && route.request().url().includes('parcel-globe')) await gate;
+  let intercepted!: () => void;
+  const loading = new Promise<void>(resolve => {intercepted = resolve;});
+  await page.route('**/visual-renewal/world/globe.webp*', async route => {
+    if (route.request().resourceType() === 'image') {
+      intercepted();
+      await gate;
+    }
     await route.continue();
   });
   await page.goto('/?sample=fusion', {waitUntil: 'domcontentloaded'});
+  await loading;
   await expect(page.locator('#fusion-tap')).toHaveAttribute('aria-disabled', 'true');
   await expect(page.locator('#fusion-tap-hint')).toContainText('接通');
   await page.locator('#fusion-tap').dispatchEvent('keydown', {key: 'Enter', repeat: false});

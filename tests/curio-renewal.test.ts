@@ -1,3 +1,4 @@
+import {curioRigContact} from '../src/fusion/curio-rig-motion';
 import {expect,test} from 'vitest';
 import {renewalCurioIds,renewalCurioRegistration,renewalReceiptCurioState,renewalTreatmentFrame,renewalBuriedReceiptPose} from '../src/fusion/curio-renewal-model';
 import {createReceiptRestorationState,beginReceiptRestoration} from '../src/review/receipt-restoration';
@@ -25,7 +26,7 @@ test('两次结构施力只在工具压住的时间内发生，不在进场和�
  }
 });
 test('工具接触点跟随同一归位插值，完成态固定在最终座位',()=>{
- for(const id of renewalCurioIds){const reg=renewalCurioRegistration[id];for(const p of [.2,.4,.68,.85]){const f=at(id,'repair',p),r=reg.repairs[f.step],remain=1-f.corrections[f.step];expect(f.repairContact).toEqual({x:r.contact.x+r.from.x*remain,y:r.contact.y+r.from.y*remain});}}
+ for(const id of renewalCurioIds){const reg=renewalCurioRegistration[id];for(const p of [.2,.4,.68,.85]){const f=at(id,'repair',p),r=reg.repairs[f.step],remain=1-f.corrections[f.step];expect(f.repairContact).toEqual(curioRigContact(id,f.step,f.corrections));}}
 });
 test('收据只是已有秒制动作到渲染毫秒的投影，不补签收、不改费用或旧权益',()=>{
  let source=createReceiptRestorationState(27049,3);source={...source,stage:'displayed'};

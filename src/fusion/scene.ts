@@ -193,6 +193,7 @@ export function createFusionScene(
     ...layer,
     ready: Promise.all([layer.ready, daily.ready, prepareFusionAnomalies(), engineering.ready, sorting.ready, surface.ready, mast?.ready]).then(() => {}),
     hideLegacySorter: journey,
+    independentResidents: true,
     robotAnimation: journey ? () => {
       if (snapshot().environment.period === 'night') return undefined;
       return robotPerformance.frame();

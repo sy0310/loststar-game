@@ -1,5 +1,6 @@
 import {expect,test,type Page} from '@playwright/test';
 import {firstPlanetFixture} from '../../scripts/firstplanet_fixtures';
+import {renewalPagesFixture} from '../../scripts/renewal_fixtures';
 import type {FusionSave} from '../../src/fusion/contracts';
 const epoch=1800000000000;
 const database='loststar.fusion.firstplanet.v037';
@@ -42,6 +43,30 @@ test('设置声音与大字在同一游戏持久化，画面与主要操作保�
  const bounds=await page.locator('#fusion-upgrades').boundingBox();expect(bounds!.height).toBeGreaterThanOrEqual(44);expect(bounds!.y+bounds!.height).toBeLessThanOrEqual(await page.evaluate(()=>innerHeight));expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 
+test('减少动态仍有真实跨柜行走，后台暂停绘制并在返回后续接世界与旧权益',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.clock.install({time:new Date(epoch)});await page.clock.pauseAt(new Date(epoch+1000));
+ const fixture=firstPlanetFixture(epoch+1000,2,'stabilized');await seed(page,fixture.state);await open(page);
+ await page.locator('[data-tab="base"]').tap();const canvas=page.locator('#museum-canvas');await expect(canvas).toHaveAttribute('data-ready','true');
+ const position=await canvas.evaluate(c=>[c.dataset.robotX,c.dataset.robotY]);await page.clock.runFor(3100);
+ expect(await canvas.evaluate(c=>[c.dataset.robotX,c.dataset.robotY])).not.toEqual(position);
+ const before=await read(page);await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});Object.defineProperty(document,'visibilityState',{configurable:true,get:()=> 'hidden'});document.dispatchEvent(new Event('visibilitychange'));});
+ const frame=await canvas.getAttribute('data-frame');await page.clock.fastForward(61000);await page.clock.runFor(100);expect(await canvas.getAttribute('data-frame')).toBe(frame);
+ await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});Object.defineProperty(document,'visibilityState',{configurable:true,get:()=> 'visible'});document.dispatchEvent(new Event('visibilitychange'));});
+ await page.clock.runFor(700);expect(Number(await canvas.getAttribute('data-frame'))).toBeGreaterThan(Number(frame));
+ const after=await read(page);expect(after.game.world.elapsedMs).toBeGreaterThan(before.game.world.elapsedMs+60000);
+ expect(after.game.growth).toEqual(before.game.growth);expect(after.journey!.seed).toBe(before.journey!.seed);expect(after.curios).toEqual(before.curios);expect(after.progression.abilities).toEqual(before.progression.abilities);
+});
+
+test('实际归档回放复用翻新设施与单分拣机，隔离回放不重结算夜班或收费',async({page})=>{
+ await page.clock.install({time:new Date(epoch)});await page.clock.pauseAt(new Date(epoch+1000));
+ const fixture=renewalPagesFixture(epoch+1000);await seed(page,fixture.state);await open(page);
+ await page.locator('[data-tab="base"]').tap();await page.locator('.fu-base-actions [data-drawer="build"]').tap();await page.locator('#fusion-drawer [data-open-project="archive"]').tap();
+ const before=await read(page);await page.locator('#fusion-replay-night').tap();const replay=page.locator('#fusion-archive-replay canvas');await expect(replay).toHaveAttribute('data-ready','true');await page.clock.runFor(1200);
+ await expect(replay).toHaveAttribute('data-legacy-sorter-count','0');await expect(replay).toHaveAttribute('data-sorting-entity-id','parcel/old-sorting');await expect(replay).toHaveAttribute('data-robot-render-passes','1');
+ const after=await read(page);expect(after.game.world.settledNights).toBe(before.game.world.settledNights);expect(after.game.station.repairSpent).toBe(before.game.station.repairSpent);expect(before.game.resources+after.game.station.grossIncome-before.game.station.grossIncome-after.game.resources).toBe(0);
+});
+
 test('单张柜体加载失败不冻结独立工作台，恢复网络后收藏室可显式重试',async({page})=>{
  await page.clock.install({time:new Date(epoch)});await page.clock.pauseAt(new Date(epoch+1000));
  const fixture=firstPlanetFixture(epoch+60000,0,'stabilized',{receiptAbility:0,tapeAbility:0});await seed(page,fixture.state);
@@ -63,7 +88,7 @@ test('柜体升级播放真实安装帧，物件与费用维持原已购模型',
 
 test('关键奇物材质失败有显式恢复入口，重连后六柜无需重新购买',async({page})=>{
  await page.clock.install({time:new Date(epoch)});await page.clock.pauseAt(new Date(epoch+1000));const fixture=firstPlanetFixture(epoch+60000,1,'stabilized',{receiptAbility:0,tapeAbility:0});await seed(page,fixture.state);
- await page.route('**/tape-found.webp*',route=>route.request().resourceType()==='image'?route.abort():route.continue());await open(page);await page.locator('[data-tab="base"]').tap();await page.clock.runFor(300);await expect(page.locator('#fusion-museum-retry')).toBeVisible();
- const before=await read(page);await page.unroute('**/tape-found.webp*');await page.locator('#fusion-museum-retry').tap();await expect(page.locator('#fusion-museum-retry')).toBeHidden();expect(rights(await read(page))).toEqual(rights(before));
+ await page.route('**/tape-rig-fixed.webp*',route=>route.request().resourceType()==='image'?route.abort():route.continue());await open(page);await page.locator('[data-tab="base"]').tap();await page.clock.runFor(300);await expect(page.locator('#fusion-museum-retry')).toBeVisible();
+ const before=await read(page);await page.unroute('**/tape-rig-fixed.webp*');await page.locator('#fusion-museum-retry').tap();await expect(page.locator('#fusion-museum-retry')).toBeHidden();expect(rights(await read(page))).toEqual(rights(before));
  await page.locator('[data-tab="collection"]').tap();await page.locator('#fusion-collection-list [data-detail="tape"]').tap();await expect(page.locator('#fusion-exhibit-focus')).toHaveAttribute('data-ready','true');
 });

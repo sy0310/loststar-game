@@ -3,13 +3,14 @@ import {itemCenter,type Exhibit} from '../render/museum-layout';
 import {curioActionProgress,type CurioState} from './curio-material';
 import {receiptRestorationFrame,type ReceiptRestorationState} from '../review/receipt-restoration';
 import {isRenewalCurio,renewalCurioIds,renewalCurioRegistration,renewalReceiptCurioState,renewalTreatmentFrame,renewalBuriedReceiptPose,type RenewalCurioId,type RenewalPoint,type RenewalTool} from './curio-renewal-model';
+import {curioRigCommands,type RigId} from './curio-rig-motion';
 import registration from '../../assets/runtime/visual-renewal/curios/registration.json';
 export {curioConditionPresentation,curioTreatmentLabels,curioPhysicalFrame,curioMaterialRegistration} from './curio-material';
 export {renewalReceiptCurioState,renewalTreatmentFrame,renewalCurioRegistration} from './curio-renewal-model';
 export type {CurioState} from './curio-material';
 
 export interface CurioPoseOptions {seconds?:number;trial?:number;reducedMotion?:boolean;serviceEnvelope?:number;buried?:boolean;excavation?:number;drawAbility?:(context:CanvasRenderingContext2D,image:HTMLCanvasElement)=>boolean}
-interface Material {original:HTMLCanvasElement;image:HTMLCanvasElement;cleanMask:HTMLCanvasElement;revision:string;phase:number;repaired:number;size:384}
+interface Material {original:HTMLCanvasElement;image:HTMLCanvasElement;cleanMask:HTMLCanvasElement;dirty:HTMLCanvasElement;revision:string;phase:number;repaired:number;corrections:readonly number[];size:384}
 type ToolContact={tool:string;x:number;y:number;pressed:boolean};
 const urls=import.meta.glob('../../assets/runtime/visual-renewal/curios/*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 const images=new Map<string,HTMLImageElement>(),materials=new Map<string,Material>();
@@ -20,14 +21,13 @@ const make=(size=384)=>{const c=document.createElement('canvas');c.width=c.heigh
 const clamp=(p:number)=>Number.isFinite(p)?Math.max(0,Math.min(1,p)):0;
 const smooth=(p:number)=>{const t=clamp(p);return t*t*(3-2*t);};
 function path(c:CanvasRenderingContext2D,points:readonly RenewalPoint[]){c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();}
-function specimen(id:string,state:string){return images.get(`${id}-${state}`);}
 function sprite(name:string){return images.get(name);}
 function drawImage(c:CanvasRenderingContext2D,image:CanvasImageSource){c.drawImage(image,0,0,192,192);}
 
 /** New material bytes are critical: failure does not pretend a paid treatment is ready. */
 export function prepareCurioTools():Promise<void>{
  if(!toolsPromise){
-  const entries=Object.entries(urls).filter(([name])=>!name.endsWith('/restoration-workbench.webp'));
+  const entries=Object.entries(urls).filter(([name])=>/\/(?:tool-|excavation-|receipt-inner-blank|[^/]+-rig-)/.test(name));
   toolsPromise=Promise.all(entries.map(async([name,url])=>{
    const key=name.split('/').at(-1)!.replace('.webp','');let image=images.get(key);
    if(!image){image=new Image();image.src=url;images.set(key,image);}
@@ -50,110 +50,68 @@ function cleanMask(c:CanvasRenderingContext2D,id:RenewalCurioId,progress:number)
  c.stroke();
 }
 
-/** All six use independent authored A/B/C textures; only contacted tracks reveal B. */
+/** The same commands make both runtime specimens and the delivered PNG states. */
+function paintPhysicalRig(c:CanvasRenderingContext2D,id:RigId,corrections:readonly number[],seconds=0,trial=0,reduced=true){
+ for(const command of curioRigCommands(id,corrections,seconds,trial,reduced)){
+  const image=sprite(command.key);if(!image?.naturalWidth)continue;
+  c.save();c.transform(...command.matrix);if(command.clip){c.beginPath();c.rect(...command.clip);c.clip();}if(command.polygon){path(c,command.polygon);c.clip();}drawImage(c,image);c.restore();
+ }
+}
+
+/** Dirty overlays are erased by actual sweeps; the common opaque body is never erased. */
 export function prepareCurioMaterial(_image:HTMLImageElement|undefined,state:CurioState,now:number,id:string):Material{
- let material=materials.get(id);if(!material){material={original:make(),image:make(),cleanMask:make(),revision:'',phase:0,repaired:0,size:384};materials.set(id,material);}
+ let material=materials.get(id);if(!material){material={original:make(),image:make(),cleanMask:make(),dirty:make(),revision:'',phase:0,repaired:0,corrections:[0,0],size:384};materials.set(id,material);}
  const phase=curioActionProgress(state,now),repaired=state.condition==='stabilized'?1:state.action?.kind==='repair'?phase:0;
  const revision=`${id}/${state.condition}/${state.action?.kind??''}/${state.action?Math.round(phase*180):0}/${toolsLoaded}`;
  if(material.revision!==revision){
-  const c=material.image.getContext('2d')!;c.clearRect(0,0,384,384);c.imageSmoothingEnabled=false;
+  const c=material.image.getContext('2d')!;c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='source-over';c.clearRect(0,0,384,384);c.imageSmoothingEnabled=false;
   if(isRenewalCurio(id)&&toolsLoaded){
-   const source=specimen(id,state.condition),clean=specimen(id,'clean'),done=specimen(id,'stabilized');
-   if(source&&clean&&done){
-    const o=material.original.getContext('2d')!;o.clearRect(0,0,384,384);o.drawImage(done,0,0,384,384);
-    c.save();c.scale(2,2);drawImage(c,source);
+   const frame=renewalTreatmentFrame(id,state,now);material.corrections=frame.corrections;
+   c.save();c.scale(2,2);paintPhysicalRig(c,id,frame.corrections);c.restore();
+   if(frame.cleaning<1){
+    const dirty=material.dirty,d=dirty.getContext('2d')!;d.setTransform(1,0,0,1,0,0);d.globalCompositeOperation='source-over';d.clearRect(0,0,384,384);
+    const deposits=sprite(`${id}-rig-deposits`);if(deposits)d.drawImage(deposits,0,0,384,384);
     if(state.action?.kind==='clean'){
-     // The saved B material is revealed only on the exact sweeps used by the brush.
-     const mask=material.cleanMask,m=mask.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalCompositeOperation='source-over';m.clearRect(0,0,384,384);m.save();m.scale(2,2);m.beginPath();cleanMask(m,id,phase);
-     m.restore();
-     // Erase A under the same opaque track before revealing B, including alpha edges.
-     c.save();c.globalCompositeOperation='destination-out';c.drawImage(mask,0,0,192,192);c.restore();
-     m.save();m.scale(2,2);m.globalCompositeOperation='source-in';drawImage(m,clean);m.restore();
-     c.drawImage(mask,0,0,192,192);
-    }else if(state.action?.kind==='repair'){
-     const frame=renewalTreatmentFrame(id,state,now);
-     const surface=(frame.corrections[0]+frame.corrections[1])/2;
-     if(surface>0){
-      // Small authored pose/texture residuals outside structural regions settle
-      // only while one of the tools is actually pressing, never on state commit.
-      c.save();c.beginPath();c.rect(0,0,192,192);
-      for(const repair of renewalCurioRegistration[id].repairs){const points=repair.zone;c.moveTo(points[0].x,points[0].y);for(const p of points.slice(1))c.lineTo(p.x,p.y);c.closePath();}
-      c.clip('evenodd');c.clearRect(0,0,192,192);c.globalAlpha=1-surface;drawImage(c,clean);c.globalAlpha=surface;drawImage(c,done);c.restore();
-     }
-     for(const [index,repair]of renewalCurioRegistration[id].repairs.entries()){
-      const amount=frame.corrections[index];if(amount<=0)continue;
-      c.save();path(c,repair.zone);c.clip();
-      // Replace only the authored joint after a measured tool has engaged it.
-      // Its registration moves from the damaged joint into its real seat.
-      c.clearRect(0,0,192,192);c.save();c.translate(repair.contact.x,repair.contact.y);
-      c.translate(repair.from.x*(1-amount),repair.from.y*(1-amount));c.rotate(repair.angle*(1-amount));c.translate(-repair.contact.x,-repair.contact.y);
-      drawImage(c,done);c.restore();c.restore();
-     }
-     // All registered corrections reach exact C before the tool withdraws.
+     const mask=material.cleanMask,m=mask.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalCompositeOperation='source-over';m.clearRect(0,0,384,384);m.save();m.scale(2,2);m.beginPath();cleanMask(m,id,phase);m.restore();
+     d.save();d.globalCompositeOperation='destination-out';d.drawImage(mask,0,0);d.restore();
     }
-    c.restore();
+    d.save();d.globalCompositeOperation='destination-in';d.drawImage(material.image,0,0);d.restore();c.drawImage(dirty,0,0);
    }
+   const o=material.original.getContext('2d')!;o.clearRect(0,0,384,384);o.save();o.scale(2,2);paintPhysicalRig(o,id,[1,1]);o.restore();
   }
   material.revision=revision;
  }
  material.phase=phase;material.repaired=repaired;return material;
 }
 
-interface PartLayers {revision:string;body:HTMLCanvasElement;part:HTMLCanvasElement;under:HTMLCanvasElement}
-const rigs=new Map<string,PartLayers>();
-const rigPolygons:Record<RenewalCurioId,readonly RenewalPoint[]>={
- receipt:[{x:0,y:137},{x:150,y:137},{x:150,y:192},{x:0,y:192}],
- tape:[{x:22,y:122},{x:33,y:108},{x:65,y:92},{x:85,y:92},{x:78,y:107},{x:57,y:126},{x:50,y:142},{x:23,y:142}],
- nested:[{x:30,y:85},{x:77,y:40},{x:166,y:57},{x:166,y:79},{x:132,y:113},{x:30,y:97}],
- stamp:[{x:43,y:0},{x:132,y:0},{x:142,y:119},{x:67,y:121}],
- 'cosmic-parcel':[{x:22,y:39},{x:111,y:17},{x:174,y:41},{x:181,y:79},{x:68,y:105},{x:22,y:77}],
- bell:[{x:74,y:15},{x:119,y:15},{x:119,y:64},{x:74,y:64}],
-};
-function rigFor(id:RenewalCurioId,material:Material){
- let r=rigs.get(id);if(r?.revision===material.revision)return r;
- r??={revision:'',body:make(),part:make(),under:make()};
- for(const canvas of [r.body,r.part,r.under]){const c=canvas.getContext('2d')!;c.globalCompositeOperation='source-over';c.clearRect(0,0,384,384);}
- const p=r.part.getContext('2d')!;p.drawImage(material.image,0,0);p.save();p.scale(2,2);p.globalCompositeOperation='destination-in';path(p,rigPolygons[id]);p.fill();p.restore();
- const b=r.body.getContext('2d')!;b.drawImage(material.image,0,0);b.globalCompositeOperation='destination-out';b.drawImage(r.part,0,0);b.globalCompositeOperation='source-over';
- const u=r.under.getContext('2d')!;const clean=specimen(id,'clean');
- if(clean&&(id==='nested'||id==='cosmic-parcel')){
-  u.save();u.scale(2,2);path(u,rigPolygons[id]);u.clip();
-  // Only the existing internal layer is exposed, never a second copy of the outer lid.
-  u.beginPath();u.rect(0,id==='nested'?83:88,192,29);u.clip();drawImage(u,clean);u.restore();
- }
- r.revision=material.revision;rigs.set(id,r);return r;
-}
-
-/** Local joints move; feet/support stay fixed. No whole-icon bobbing substitutes for animation. */
+const idleRigs=new Map<string,{key:string;image:HTMLCanvasElement}>();
+/** A physical joint cycle, with one common fixed body and no copy of the old broken specimen. */
 export function drawRenewalCurioRig(c:CanvasRenderingContext2D,id:RenewalCurioId,material:Material,seconds:number,trial=0,reduced=false,envelope=1){
- const r=rigFor(id,material),active=trial>0&&trial<1?Math.sin(trial*Math.PI):0;
- const motion=reduced?0:envelope*(material.repaired<.995?.25:1),idle=Math.sin(seconds*1.3);
- drawImage(c,r.under);drawImage(c,r.body);c.save();
- if(id==='receipt'){
-  // Connected strips curl around the fixed upper edge, never lift the whole sheet.
-  c.restore();const start=137;
-  for(let y=start;y<192;y+=3){const local=(y-start)/(192-start),wave=(Math.sin(seconds*1.1)*1.3+active*7)*motion*local*local;
-   c.drawImage(r.part,0,y*2,384,6,0,y-wave,192,3+Math.abs(wave)*.05);}
-  return;
+ if(material.repaired<.995){drawImage(c,material.image);return;}
+ const active=trial>0&&trial<1?Math.sin(trial*Math.PI):0;
+ if(active>0){paintPhysicalRig(c,id,[1,1],seconds,trial,reduced);}
+ else {
+  const key=`${material.revision}/${reduced?0:Math.floor(seconds*20)}/${envelope<.01}`;
+  let cache=idleRigs.get(id);if(!cache){cache={key:'',image:make()};idleRigs.set(id,cache);}
+  if(cache.key!==key){const context=cache.image.getContext('2d')!;context.clearRect(0,0,384,384);context.save();context.scale(2,2);paintPhysicalRig(context,id,[1,1],seconds,0,reduced||envelope<.01);context.restore();cache.key=key;}
+  drawImage(c,cache.image);
  }
- if(id==='tape'){c.translate(80,96);c.rotate((idle*.025+active*.22)*motion);c.translate(-80,-96-active*4*motion);}
- if(id==='nested'){
-  const opening=((idle+1)*.018+active*.82)*motion;
-  // Project a hinged plane: back-edge vector (86,14) is invariant throughout.
-  c.translate(80,43);c.transform(1,.23377*opening,0,1-1.43599*opening,0,0);c.translate(-80,-43);
+ if(id==='cosmic-parcel'&&trial>0&&trial<1){
+  const pulse=(start:number)=>trial>start&&trial<start+.12?Math.sin((trial-start)/.12*Math.PI):0;
+  const first=pulse(.43),second=pulse(.70),flash=Math.max(first,second)*(reduced?.45:1);
+  if(flash>.01){
+   c.save();c.globalCompositeOperation='screen';c.globalAlpha=flash*.72;c.strokeStyle='#d7aeff';c.lineWidth=.85;
+   // These two edges are the actual closed lid seam of the fixed box, not a ring.
+   c.beginPath();c.moveTo(19,84);c.lineTo(118,101);c.lineTo(175,64);c.stroke();
+   c.fillStyle='#fff0cb';const points=first>second?[{x:40,y:88},{x:103,y:98}]:[{x:132,y:92},{x:156,y:77}];
+   for(const p of points){c.fillRect(p.x,p.y,1.5,1.5);c.fillRect(p.x+.5,p.y-1,0.5,3.5);}
+   c.restore();
+  }
  }
- if(id==='stamp'){c.translate(103,118);c.rotate(idle*.01*motion);c.translate(-103,-118+active*9*motion);}
- if(id==='cosmic-parcel'){const pulse=(start:number)=>trial>start&&trial<start+.13?Math.sin((trial-start)/.13*Math.PI):0;const knock=(pulse(.43)+pulse(.70))*3*motion;c.translate(173,69);c.rotate(-(.012+idle*.012+active*.04)*motion);c.translate(-173,-69+knock);}
- if(id==='bell'){const delayed=trial>.42?Math.sin(clamp((trial-.42)/.58)*Math.PI):0;c.translate(0,((idle+1)*.6+delayed*8)*motion);}
- drawImage(c,r.part);c.restore();
  if(id==='tape'&&active>.05){
   const paper=sprite('receipt-inner-blank');
   if(paper){c.drawImage(paper,77,61,86,137,5,151,24,25);c.drawImage(paper,106,61,86,137,32,151,24,25);}
   drawTapeBridge(c,material.image,[{x:45,y:122},{x:31,y:139},{x:28,y:157},{x:42,y:163}],active,8);
- }
- if(active>.1&&id==='nested'){
-  // The tiny final nested layer carries the exact first-layer mark, not new loot.
-  c.save();c.translate(91,78-active*5);c.scale(.23,.23);c.drawImage(material.image,0,0,384,384,0,0,192,192);c.restore();
  }
  if(active>.15&&id==='stamp'){
   c.save();c.translate(76,179);c.fillStyle='#e8c88f';c.fillRect(0,0,44,12);c.fillStyle='#7f5176';c.font='bold 6px monospace';c.fillText('昨天 ←',3,8);c.restore();
@@ -163,9 +121,23 @@ export function drawRenewalCurioRig(c:CanvasRenderingContext2D,id:RenewalCurioId
 
 const toolEntries=new Map(registration.assets.filter(a=>a.id.startsWith('tool-')).map(a=>[a.id,a]));
 function arm(c:CanvasRenderingContext2D,grip:RenewalPoint){
- const forearm=sprite('tool-forearm'),hand=sprite('tool-gripper');if(!forearm||!hand)return;
- const elbow={x:Math.min(230,grip.x+37),y:grip.y+34},origin={x:265,y:213};
- for(const [a,b]of [[origin,elbow],[elbow,grip]]){const length=Math.hypot(b.x-a.x,b.y-a.y);c.save();c.translate(a.x,a.y);c.rotate(Math.atan2(b.y-a.y,b.x-a.x)-Math.PI/2);c.drawImage(forearm,0,0,forearm.naturalWidth,forearm.naturalHeight,-8,-6,16,length+12);c.restore();}
+ const sleeve=sprite('tool-forearm'),hand=sprite('tool-gripper');if(!sleeve||!hand)return;
+ const elbow={x:Math.min(218,grip.x+52),y:Math.min(187,grip.y+49)},origin={x:242,y:177};
+ // Telescoping members keep their authored width. Only straight metal rods
+ // extend; the detailed enamel sleeve and brass bearings are never stretched.
+ for(const [a,b]of [[origin,elbow],[elbow,grip]]){
+  const length=Math.hypot(b.x-a.x,b.y-a.y),angle=Math.atan2(b.y-a.y,b.x-a.x);
+  c.save();c.translate(a.x,a.y);c.rotate(angle);
+  c.fillStyle='#271638';c.fillRect(-5,-7,length+10,14);c.fillStyle='#9c623c';c.fillRect(-3,-5,length+6,10);
+  c.fillStyle='#e8b575';c.fillRect(-2,-4,length+4,7);c.fillStyle='#fff0bf';c.fillRect(-1,-4,length+2,2);c.fillStyle='#74505b';c.fillRect(-1,3,length+2,2);
+  for(let x=9;x<length-7;x+=18){c.fillStyle='#b37a50';c.fillRect(x,-3,2,6);c.fillStyle='#f5d49d';c.fillRect(x+2,-3,1,5);}
+  c.translate(length-10,0);c.rotate(Math.PI/2);c.drawImage(sleeve,-9,-11,18,29.25);c.restore();
+ }
+ function bearing(p:RenewalPoint,r:number){
+  for(const [radius,color]of [[r+2,'#271638'],[r,'#a4693d'],[r-2,'#f7d399'],[r-4,'#b47b49']] as const){c.fillStyle=color;for(let y=-radius;y<=radius;y+=2){const w=Math.floor(Math.sqrt(Math.max(0,radius*radius-y*y))/2)*2;c.fillRect(Math.round(p.x-w),Math.round(p.y+y),w*2,2);}}
+  c.fillStyle='#5c3c55';c.fillRect(Math.round(p.x)-1,Math.round(p.y)-4,2,8);
+ }
+ bearing(origin,10);bearing(elbow,8);bearing(grip,5);
  c.drawImage(hand,grip.x-12,grip.y-9,24,17);
 }
 function registeredTool(c:CanvasRenderingContext2D,name:RenewalTool,tip:RenewalPoint,angle:number){
