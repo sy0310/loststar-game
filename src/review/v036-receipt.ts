@@ -1,7 +1,6 @@
 import {
   createReceiptRestorationAssets,
   receiptRestorationRegistration,
-  restorationBrushTransform,
   restorationMeshPoint,
   restorationPaperMesh,
   restorationPaperRig,
@@ -14,7 +13,9 @@ import robotUrl from '../../assets/runtime/robot-empty-v3.webp';
 
 const WIDTH = 640;
 const HEIGHT = 700;
-const PAPER_SIZE = 310;
+const PAPER_SIZE = 340;
+const BRUSH_SCALE = .78;
+const BRUSH_CONTACT_WIDTH = 42;
 const RECEIVER = {x: 320, y: 490};
 const DURATION = 28;
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
@@ -90,9 +91,31 @@ export function v036BrushPose(progress: number) {
     local,
     source: {x: forward ? sweep * 256 : 256 - sweep * 256, y: 16 + pass * 32 + (pass < 7 ? 32 * transit : 0)},
     pressure: local < .72 ? ease(local / .06) * (1 - ease((local - .65) / .07)) : 0,
-    lift: local > .72 ? Math.sin(transit * Math.PI) * 19 : 0,
+    lift: local > .72 ? Math.sin(transit * Math.PI) * 30 : 0,
     contact: local < .72 && progress > 0 && progress < 1,
   };
+}
+
+/** The soft fan compresses along its fibres while the actual contact stays fixed. */
+export function v036BrushToolTransform(pressure: number) {
+  const brush = receiptRestorationRegistration().tools.brush;
+  const dx = brush.root.x - brush.contact.x;
+  const dy = brush.root.y - brush.contact.y;
+  const length = Math.hypot(dx, dy);
+  const nx = dx / length;
+  const ny = dy / length;
+  const along = 1 - clamp(pressure) * .30;
+  const across = 1 + clamp(pressure) * .20;
+  const a = across + (along - across) * nx * nx;
+  const b = (along - across) * nx * ny;
+  const c = b;
+  const d = across + (along - across) * ny * ny;
+  const e = -a * brush.contact.x - c * brush.contact.y;
+  const f = -b * brush.contact.x - d * brush.contact.y;
+  const handleOrigin = {x: a * brush.root.x + c * brush.root.y + e - brush.root.x,
+    y: b * brush.root.x + d * brush.root.y + f - brush.root.y};
+  return {bristles: {a, b, c, d, e, f}, handleOrigin,
+    handleGrip: {x: handleOrigin.x + brush.pivot.x, y: handleOrigin.y + brush.pivot.y}};
 }
 
 const labels: Record<V036ReceiptPhase, string> = {
@@ -247,7 +270,7 @@ class ReceiptTable {
     context.drawImage(this.mud.canvas, 0, 0);
     context.save();
     context.globalCompositeOperation = 'destination-out';
-    context.lineWidth = 36;
+    context.lineWidth = BRUSH_CONTACT_WIDTH;
     context.lineCap = 'round';
     const work = progress * 8;
     for (let pass = 0; pass < 8; pass++) {
@@ -279,8 +302,17 @@ class ReceiptTable {
       const width = target.srcRect.width * this.fit.scale;
       const height = target.srcRect.height * this.fit.scale;
       const descent = (1 - installed) * 16;
+      const widthScale = front ? 1.32 : 1.62;
+      const heightScale = name === 'upper' ? (front ? 1.18 : 1.38) : (front ? 1.78 : 2.12);
+      const bridge = this.normalizedSource(target.bridgeCenter);
+      const scaledWidth = (width + 4) * widthScale;
+      const scaledHeight = (height + 4) * heightScale;
+      // A broad matte rear-fibre bridge and a smaller front tab leave the torn edge legible.
+      // Both patches settle around the measured tear/curl root, away from the original ink.
+      const x = bridge.x - scaledWidth / 2 - descent * .4;
+      const y = bridge.y - scaledHeight / 2 - descent;
       context.drawImage(image, corner.x - 2, corner.y - 2, width + 4, height + 4,
-        corner.x - 2 - descent * .4, corner.y - 2 - descent, width + 4, height + 4);
+        x, y, scaledWidth, scaledHeight);
     }
   }
 
@@ -312,10 +344,10 @@ class ReceiptTable {
       pivot: {x: RECEIVER.x, y: RECEIVER.y - Math.sin(lift * Math.PI) * 11}, pivotU: .51,
       sectionTilts,
       rotation: .22 * (1 - frame.release),
-      upperLift: (1 - frame.upperPatch) * (7 + Math.sin(frame.elapsed * 2) * (reduced ? 0 : 1.5)),
-      upperOut: (1 - frame.upperPatch) * 5,
-      lowerSpread: -6 * (1 - lowerPatch) + lowerPatch * trial * 8,
-      lowerLift: 5 * (1 - lowerPatch),
+      upperLift: (1 - frame.upperPatch) * (14 + Math.sin(frame.elapsed * 2) * (reduced ? 0 : 2.3)),
+      upperOut: (1 - frame.upperPatch) * 9,
+      lowerSpread: -13 * (1 - lowerPatch) + lowerPatch * (6 + trial * 16),
+      lowerLift: 14 * (1 - lowerPatch),
       pullBend: Math.sin(frame.release * Math.PI) * 10,
     });
   }
@@ -438,19 +470,21 @@ class ReceiptTable {
     }
     const point = restorationMeshPoint(mesh, source.x / 256, source.y / 256);
     const brush = this.registration.tools.brush;
-    const matrix = restorationBrushTransform(brush.root, brush.contact, pose.pressure);
+    const matrix = v036BrushToolTransform(pose.pressure);
     const dirty = this.dirtyBristles.context;
     dirty.clearRect(0, 0, 192, 163);
     dirty.drawImage(this.assets.brushBristles, 0, 0);
     dirty.save();dirty.globalCompositeOperation = 'source-atop';dirty.globalAlpha = frame.cleaning * .5;
     dirty.drawImage(this.mud.canvas, 55, 65, 110, 110, 0, 80, 96, 83);dirty.restore();
-    const handleGrip = {x: point.x + (brush.pivot.x - brush.contact.x) * .53,
-      y: point.y - pose.lift + (brush.pivot.y - brush.contact.y) * .53};
+    const handleGrip = {x: point.x + matrix.handleGrip.x * BRUSH_SCALE,
+      y: point.y - pose.lift + matrix.handleGrip.y * BRUSH_SCALE};
     this.mechanicalArm(context, handleGrip, false);
-    context.save();context.translate(point.x, point.y - pose.lift);context.scale(.53, .53);
+    context.save();context.translate(point.x, point.y - pose.lift);context.scale(BRUSH_SCALE, BRUSH_SCALE);
     context.save();context.transform(matrix.bristles.a, matrix.bristles.b, matrix.bristles.c, matrix.bristles.d, matrix.bristles.e, matrix.bristles.f);
     context.drawImage(this.dirtyBristles.canvas, 0, 0);context.restore();
-    context.drawImage(this.assets.brushHandle, matrix.handleOrigin.x, matrix.handleOrigin.y);context.restore();
+    context.drawImage(this.assets.brushHandle, matrix.handleOrigin.x, matrix.handleOrigin.y);
+    context.drawImage(this.robot, 160 + 29, 160 + 112, 32, 31, matrix.handleGrip.x - 16, matrix.handleGrip.y - 15, 32, 31);
+    context.restore();
     this.contact = {tool: 'brush', x: point.x, y: point.y, pressed: pose.contact};
     if (!pose.contact) return;
     context.fillStyle = '#b98d6c';

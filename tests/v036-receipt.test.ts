@@ -1,5 +1,6 @@
 import {describe, expect, it} from 'vitest';
-import {v036BrushPose, v036ReceiptFrame, v036ReceiptGlassPlacement} from '../src/review/v036-receipt';
+import {receiptRestorationRegistration} from '../src/render/receipt-restoration';
+import {v036BrushPose, v036ReceiptFrame, v036ReceiptGlassPlacement, v036BrushToolTransform} from '../src/review/v036-receipt';
 
 describe('V036 isolated receipt contact storyboard', () => {
   it('aligns the actual asymmetric glass floor with the paper receiver', () => {
@@ -44,6 +45,26 @@ describe('V036 isolated receipt contact storyboard', () => {
     expect(second.upperPatch).toBe(1);
     expect(second.lowerPatch).toBe(1);
     expect(second.glass).toBe(0);
+  });
+
+  it('compresses the soft fan at its actual contact while its handle and arm remain attached', () => {
+    const brush = receiptRestorationRegistration().tools.brush;
+    const free = v036BrushToolTransform(0);
+    const pressed = v036BrushToolTransform(1);
+    for (const pressure of [0, .25, .5, .75, 1]) {
+      const transform = v036BrushToolTransform(pressure);
+      const m = transform.bristles;
+      expect(m.a * brush.contact.x + m.c * brush.contact.y + m.e).toBeCloseTo(0);
+      expect(m.b * brush.contact.x + m.d * brush.contact.y + m.f).toBeCloseTo(0);
+      // The handle root follows the deformed bristle root, and the arm grips that actual handle.
+      expect(transform.handleOrigin.x + brush.root.x).toBeCloseTo(m.a * brush.root.x + m.c * brush.root.y + m.e);
+      expect(transform.handleOrigin.y + brush.root.y).toBeCloseTo(m.b * brush.root.x + m.d * brush.root.y + m.f);
+      expect(transform.handleGrip.x).toBeCloseTo(transform.handleOrigin.x + brush.pivot.x);
+      expect(transform.handleGrip.y).toBeCloseTo(transform.handleOrigin.y + brush.pivot.y);
+    }
+    const freeLength = Math.hypot(free.handleOrigin.x + brush.root.x, free.handleOrigin.y + brush.root.y);
+    const pressedLength = Math.hypot(pressed.handleOrigin.x + brush.root.x, pressed.handleOrigin.y + brush.root.y);
+    expect(pressedLength / freeLength).toBeCloseTo(.7);
   });
 
   it('lifts the brush on every return stroke without dirt contact', () => {

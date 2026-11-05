@@ -108,6 +108,9 @@ export function mountV036Fog(root: HTMLElement) {
   const machine = createSortingScene(() => fusion);
   const daily = createDailyResidentRenderer();
   const layers: HTMLCanvasElement[] = [];
+  const groundLight = document.createElement('canvas');groundLight.width = 160;groundLight.height = 88;
+  const groundBounds = {x: V036_FOG_SITE.x - 160, y: V036_FOG_SITE.y - 90, width: 320, height: 176};
+  let groundLightReady = false;
   const ready = Promise.all([Promise.all([backUrl, bodyUrl, rimUrl].map(load)), machine.ready, daily.ready])
     .then(([images]) => {
       art = images;
@@ -119,6 +122,46 @@ export function mountV036Fog(root: HTMLElement) {
       }
       throw error;
     });
+
+  function groundResponse(context: CanvasRenderingContext2D, frame: SceneFrame) {
+    const strength = 1 - v036FogFrame(state.workMs).reveal;
+    if (strength <= 0) return;
+    if (!groundLightReady) {
+      const painter = groundLight.getContext('2d')!;
+      painter.imageSmoothingEnabled = false;
+      // Reuse the real terrain pixels and their alpha silhouette. Lighting is
+      // cached at a two-world-pixel scale, with no rectangular tint in space.
+      painter.drawImage(frame.globe, (52 - groundBounds.x) / 2, (70 - groundBounds.y) / 2, 332, 332);
+      const material = painter.getImageData(0, 0, groundLight.width, groundLight.height);
+      for (let y = 0; y < groundLight.height; y++) for (let x = 0; x < groundLight.width; x++) {
+        const index = (y * groundLight.width + x) * 4;
+        if (!material.data[index + 3]) continue;
+        const worldX = groundBounds.x + x * 2, worldY = groundBounds.y + y * 2;
+        const contact = Math.max(0, 1 - Math.hypot((worldX - V036_FOG_SITE.x) / 126,
+          (worldY - V036_FOG_SITE.y - 11) / 37)) ** 2 * .42;
+        const leftBounce = Math.max(0, 1 - Math.hypot((worldX - V036_FOG_SITE.x + 106) / 67,
+          (worldY - V036_FOG_SITE.y + 11) / 57)) ** 2;
+        const rightBounce = Math.max(0, 1 - Math.hypot((worldX - V036_FOG_SITE.x - 111) / 66,
+          (worldY - V036_FOG_SITE.y - 8) / 48)) ** 2;
+        const bounce = Math.max(leftBounce, rightBounce) * .23;
+        const weight = contact + bounce;
+        if (weight === 0) {material.data[index + 3] = 0;continue;}
+        const shadowTint = [.43, .36, .76];
+        const reflectedTint = [.56, .34, .88];
+        for (let channel = 0; channel < 3; channel++) {
+          const original = material.data[index + channel];
+          const shadow = original * shadowTint[channel];
+          const reflection = original + (255 - original) * reflectedTint[channel];
+          material.data[index + channel] = (shadow * contact + reflection * bounce) / weight;
+        }
+        material.data[index + 3] *= weight;
+      }
+      painter.putImageData(material, 0, 0);groundLightReady = true;
+    }
+    context.save();context.globalAlpha = strength;
+    context.drawImage(groundLight, groundBounds.x, groundBounds.y, groundBounds.width, groundBounds.height);
+    context.restore();
+  }
 
   function cloud(context: CanvasRenderingContext2D) {
     const frame = v036FogFrame(state.workMs);
@@ -219,6 +262,7 @@ export function mountV036Fog(root: HTMLElement) {
     drawResident: daily.draw,
     residentPose: residentDailyPose,
     worldEntities: (context, frame) => [
+      {depth: 293, draw: () => groundResponse(context, frame)},
       ...machine.entities(context, frame),
       {depth: 340, draw: () => cloud(context)},
       {depth: frame.robot.y + .1, draw: () => scanner(context, frame)},
@@ -300,6 +344,7 @@ export function mountV036Fog(root: HTMLElement) {
       robot: v036FogRobot(state.workMs), target: {...V036_FOG_SITE},
       stateStorage: 'memory-only', rewards: 0, walletWrites: 0,
       fogDecodedTextureBytes: art.reduce((sum, image) => sum + image.naturalWidth * image.naturalHeight * 4, 0),
+      groundRelightDecodedTextureBytes: groundLight.width * groundLight.height * 4,
       inputSamples: touchSamples.map(sample => ({...sample})),
       inputDrawLatencyMs: touchSamples.flatMap(sample => sample.firstDrawMs === undefined ? [] : [sample.firstDrawMs]),
       inputTimingEndpoint: 'Canvas draw call, before browser presentation'};},

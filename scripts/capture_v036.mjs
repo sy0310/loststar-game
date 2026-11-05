@@ -63,7 +63,7 @@ for (const [engine, width, height] of [['chromium', 360, 800], ['chromium', 390,
       await page.locator('[data-control="replay"]').tap();
       const started = performance.now();
       const frames = [], phases = [], inputs = [];
-      const targets = study === 'fog' ? [1, 7.5, 11.5, 14, 18.2] : [1, 3, 5.5, 7, 10.8, 14.5, 16.8, 18.9, 23, 26, 28.2];
+      const targets = study === 'fog' ? [1, 7.5, 11.5, 15, 18] : [1, 3, 5.5, 7, 10.8, 14.5, 16.8, 18.9, 23, 26, 28];
       let next = 0, lastPhase = '', tapped = 0;
       const stopAt = study === 'fog' ? 21 : 35;
       while ((performance.now() - started) / 1000 < stopAt) {
@@ -105,4 +105,5 @@ for (const [engine, width, height] of [['chromium', 360, 800], ['chromium', 390,
   await browser.close();
 }
 await writeFile(`${output}/${rehearse ? 'rehearsal' : 'evidence'}.json`, JSON.stringify(report, null, 2) + '\n');
+if (!rehearse) await import('./finalize_v036_evidence.mjs');
 console.log(JSON.stringify({mode: report.mode, cases: report.cases.length}));
