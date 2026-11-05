@@ -528,7 +528,16 @@ export function mountFusion(controller: FusionController) {
         if (!dialog.open || drawer !== 'detail' || detailId !== id) return;
         const canvas = query<HTMLCanvasElement>('#fusion-exhibit-focus');
         const index = ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell'].indexOf(id);
-        if (canvas && index >= 0) {if (!curioPrices[id]) museum.renderExhibit(canvas, id, growthLevel(controller.state.game, `case-${index}`));}
+        if (canvas && index >= 0) {
+          if (curioPrices[id]) {
+            // Decode completion paints its first usable frame immediately. Button
+            // readiness must not depend on a later simulation timer or rAF tick.
+            const current = controller.state;
+            if (renderCurioTreatment(canvas,id,current.curios[id],Date.now(),{seconds:fusionRenderElapsed(current.game,Date.now())/1000,reducedMotion:reducedMotion.matches})) {
+              query('#fusion-treatment-loading').hidden = true;updateLiveDrawer();
+            }
+          } else museum.renderExhibit(canvas, id, growthLevel(controller.state.game, `case-${index}`));
+        }
         else if (canvas) {
           canvas.replaceWith(document.createElement('div'));
           body.insertAdjacentHTML('afterbegin', `<div class="fu-detail-art">${itemArt(id)}</div>`);

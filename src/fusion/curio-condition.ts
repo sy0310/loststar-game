@@ -4,7 +4,6 @@ import {restorationBrushPose, restorationBrushToolTransform} from '../render/res
 import robotUrl from '../../assets/runtime/robot-empty-v3.webp';
 import {drawLocalCurioRig} from './curio-local-rig';
 import {textures} from '../ui/art';
-import workbenchUrl from '../../assets/runtime/v036/restoration-workbench.webp';
 import {curioActionProgress, curioPhysicalFrame,curioSupportContacts, isMaterialCurio, paintCurioPhysicalMaterial, type CurioState} from './curio-material';
 export {curioConditionPresentation, curioTreatmentLabels, curioPhysicalFrame, curioMaterialRegistration} from './curio-material';
 export type {CurioState} from './curio-material';
@@ -35,6 +34,7 @@ let toolsPromise: Promise<void> | undefined;
 let workbench: HTMLImageElement | undefined;
 let workbenchPromise: Promise<void> | undefined;
 const specimens = new Map<string, HTMLImageElement>();
+const workbenchUrl = new URL('../../assets/runtime/v036/restoration-workbench.webp', import.meta.url).href;
 const treatmentLayers = new Map<string, HTMLImageElement>();
 const treatmentUrls = import.meta.glob('../../assets/runtime/v039/*.webp', {eager: true, query: '?url', import: 'default'}) as Record<string,string>;
 type TreatmentToolRegistration = {file: string;contact: Point; pivot: Point;width: number;height: number};
