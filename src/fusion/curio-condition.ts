@@ -34,7 +34,9 @@ export function prepareCurioTools() {
   if (!toolsPromise) {
     tools = createReceiptRestorationAssets();
     toolRobot = new Image();toolRobot.src = robotUrl;
-    toolsPromise = Promise.all([...Object.values(tools), toolRobot].map(image => image.decode())).then(() => {toolsLoaded = true;});
+    toolsPromise = Promise.all([...Object.values(tools), toolRobot].map(image => image.decode()))
+      .then(() => {toolsLoaded = true;})
+      .catch(error => {toolsPromise = undefined;throw error;});
   }
   return toolsPromise;
 }
