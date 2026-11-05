@@ -1,3 +1,5 @@
+import {modernReceiptBounds} from './receipt-paper-model';
+import {receiptReadingRecords,receiptReadingLabel} from './receipt-reading-model';
 import blankPaperUrl from '../../assets/runtime/visual-renewal/curios/receipt-inner-blank.webp';
 
 export interface AbilityRigRecord {id: string; at: number; detail: string; source?: string; code?: string; orientation?: string}
@@ -54,98 +56,36 @@ function openingAt(options: CurioAbilityRigOptions) {
   return idle * (options.serviceEnvelope ?? 1);
 }
 
-const paperAttachmentCache=new WeakMap<object,{revision:string;attachments:AbilityAttachments}>();
-function renewalPaperAttachments(options:CurioAbilityRigOptions):AbilityAttachments|undefined{
- const source=options.image;if(!('width' in source)||Number(source.width)!==384||!('getContext' in source))return;
- const revision=options.materialRevision??'renewal';const cached=paperAttachmentCache.get(source);if(cached?.revision===revision)return cached.attachments;
- const context=(source as HTMLCanvasElement).getContext('2d');if(!context)return;
- const pixels=context.getImageData(0,0,384,384).data,leftEdge:{x:number;y:number}[]=[],rightEdge:{x:number;y:number}[]=[];
- for(let y=72;y<=144;y+=6){let left=192,right=0;for(let x=0;x<192;x++){if(pixels[((y*2)*384+x*2)*4+3]<128)continue;left=Math.min(left,x);right=Math.max(right,x);}if(right>left){leftEdge.push({x:left,y});rightEdge.push({x:right,y});}}
- if(leftEdge.length<2)return;
- const attachments={leftTop:leftEdge[0],leftBottom:leftEdge.at(-1)!,rightTop:rightEdge[0],rightBottom:rightEdge.at(-1)!,leftEdge,rightEdge};paperAttachmentCache.set(source,{revision,attachments});return attachments;
-}
-
-function receipt(context: CanvasRenderingContext2D, options: CurioAbilityRigOptions, extension: number): CurioAbilityRigResult {
-  if (!options.baseAlreadyDrawn) context.drawImage(options.image, 0, 0, 192, 192);
-  const level = Math.min(2, Math.max(0, options.abilityLevel));
-  const records = (options.records ?? []).filter(record => Number.isFinite(record.at) && record.detail.length > 0);
-  if (!level || extension <= .001 || !blankPaper?.complete || !blankPaper.naturalWidth) {
-    return {bounds: {x: 20, y: 0, width: 152, height: 192}, extension: 0, usedRecordIds: []};
+/** Modern receipt: the original rectangle never grows appendices at any research level. */
+function receipt(context:CanvasRenderingContext2D,options:CurioAbilityRigOptions,_extension:number):CurioAbilityRigResult{
+ if(!options.baseAlreadyDrawn)context.drawImage(options.image,0,0,192,192);
+ const level=Math.min(2,Math.max(0,Math.floor(options.abilityLevel)));
+ const records=receiptReadingRecords(options.records??[],level);
+ const trial=options.experimentProgress!==undefined&&options.experimentProgress>0&&options.experimentProgress<1?options.experimentProgress:0;
+ const envelope=clamp(options.serviceEnvelope??1);
+ const reading=(level>0||trial>0)&&envelope>.02;
+ if(reading){
+  const progress=trial||((options.seconds%7)/7);
+  const scan=trial?Math.sin(trial*Math.PI):options.reducedMotion?.32:.42;
+  // Scan existing original ink rows only: no text, marks or signature are printed onto the sheet.
+  const y=options.reducedMotion?83:58+progress*64;
+  context.save();context.beginPath();context.moveTo(57,57);context.lineTo(147,59);context.lineTo(139,124);context.lineTo(48,122);context.closePath();context.clip();
+  context.globalCompositeOperation='screen';context.globalAlpha=scan*envelope;
+  context.fillStyle='#68dafa';context.fillRect(46,y-1.8,104,3.6);context.fillStyle='#d7ffff';context.fillRect(46,y-.35,104,.7);context.restore();
+  // This independent reader sits between archival feet. It does not enlarge paper bounds.
+  context.save();context.globalAlpha=envelope;context.fillStyle='#a56b45';context.fillRect(56,174,1.5,4);context.fillRect(137,174,1.5,4);
+  context.fillStyle='#2e1b42';context.fillRect(54,177,88,15);context.strokeStyle='#e3a454';context.lineWidth=1;context.strokeRect(54.5,177.5,87,14);
+  context.fillStyle='#152c37';context.fillRect(57,180,82,9);
+  context.font='5px monospace';context.textAlign='left';context.fillStyle='#8de7e7';
+  if(!level)context.fillText('RET-031 / P03',60,186.5);
+  else if(!records.length)context.fillText('等待现场线索',60,186.5);
+  else{
+   const labels=records.map(r=>`${receiptReadingLabel(r)} ${r.orientation==='inverted'?'180°':'0°'}`);
+   context.fillText(`${level===1?'Ⅰ':'Ⅱ'} ${labels.join(' / ')}`,60,186.5);
   }
-  const attachments = options.attachments ?? renewalPaperAttachments(options) ?? {
-    rightTop: {x: 136,y: 74},rightBottom: {x: 133,y: 143},
-    leftTop: {x: 61,y: 74},leftBottom: {x: 57,y: 143},
-  };
-  const wings = level === 1 ? ['right'] as const : ['right','left'] as const;
-  const usedRecordIds: string[] = [];
-  let left = 20, right = 172, top = 0, bottom = 192;
-  for (let panel = 0; panel < wings.length; panel++) {
-    const side = wings[panel];
-    const hingeTop = side === 'right' ? attachments.rightTop : attachments.leftTop;
-    const hingeBottom = side === 'right' ? attachments.rightBottom : attachments.leftBottom;
-    const opening = smooth(extension * 1.3 - panel * .18);
-    const edge = (side === 'right' ? attachments.rightEdge : attachments.leftEdge) ?? [hingeTop,hingeBottom];
-    const cavity = options.cavity ?? {left:-18,top:-10,width:228,height:220};
-    const margin = side === 'right' ? cavity.left + cavity.width - Math.max(...edge.map(point=>point.x))
-      : Math.min(...edge.map(point=>point.x)) - cavity.left;
-    const width = Math.min(48, Math.max(0,margin - 4)) * opening;
-    if (width < .2) continue;
-    const direction = side === 'right' ? 1 : -1;
-    // Both vertices of the inner edge are sampled from the current physical
-    // paper mesh. The appendix hinges from that edge, including trial bends.
-    const spread = {x: direction * width,y: -6 * Math.sin(opening * Math.PI / 2)};
-    const height = Math.hypot(hingeBottom.x-hingeTop.x,hingeBottom.y-hingeTop.y);
-    // Each strip follows the actual alpha edge of the deforming original.
-    // This keeps concave scroll edges continuously joined along the whole fold.
-    for (let strip=0;strip<edge.length-1;strip++) {
-      const start=edge[strip],end=edge[strip+1];
-      const stripHeight=Math.hypot(end.x-start.x,end.y-start.y);
-      context.save();
-      context.transform(spread.x/46,spread.y/46,(end.x-start.x)/stripHeight,(end.y-start.y)/stripHeight,start.x,start.y);
-      context.drawImage(blankPaper,77+panel*29,61+137*strip/(edge.length-1),86,137/(edge.length-1),-.8,-.3,47.6,stripHeight+.6);
-      context.fillStyle=panel?'#5c405728':'#fff0bc16';context.fillRect(0,0,46,stripHeight);
-      const crease=context.createLinearGradient(0,0,9,0);
-      crease.addColorStop(0,'#4c354970');crease.addColorStop(1,'#71515a00');
-      context.fillStyle=crease;context.fillRect(0,0,9,stripHeight);
-      context.fillStyle='#b69370';context.fillRect(45,0,1,stripHeight);context.restore();
-    }
-    context.save();
-    context.beginPath();context.moveTo(edge[0].x,edge[0].y);
-    for (const point of edge) context.lineTo(point.x,point.y);
-    for (let index=edge.length-1;index>=0;index--) context.lineTo(edge[index].x+spread.x,edge[index].y+spread.y);
-    context.closePath();context.clip();
-    const record = records[panel];
-    if (record && opening > .2) {
-      const code = record.code ?? /\bP(?:03|30)\b/.exec(`${record.source ?? ''} ${record.detail}`.toUpperCase())?.[0];
-      const lines = [
-        {y:15,text:code ?? '已记录',font:'bold 8px monospace'},
-        {y:29,text:new Date(record.at).toISOString().slice(5,10),font:'5px monospace'},
-        {y:38,text:record.orientation === 'inverted' ? '180°' : record.code ? '0°' : '',font:'5px monospace'},
-      ];
-      for (const line of lines) {
-        const position=clamp(line.y/height)*(edge.length-1);
-        const index=Math.min(edge.length-2,Math.floor(position));
-        const amount=position-index,start=edge[index],end=edge[index+1];
-        const baseline={x:start.x+(end.x-start.x)*amount,y:start.y+(end.y-start.y)*amount};
-        context.save();context.translate(baseline.x,baseline.y);
-        context.transform(spread.x/46,spread.y/46,0,1,0,0);
-        if(direction<0){context.translate(46,0);context.scale(-1,1);}
-        context.fillStyle='#745059';context.font=line.font;context.textAlign='left';context.fillText(line.text,7,0);
-        context.fillStyle='#b69b7c';context.fillRect(7,4,27,1);context.restore();
-      }
-      if (!usedRecordIds.includes(record.id)) usedRecordIds.push(record.id);
-    }
-    context.restore();
-    // A narrow curled seam overlaps the source by one native pixel. It reads
-    // as the continuous sheet thickness instead of a detached rectangular card.
-    context.save();context.strokeStyle='#bc9676';context.lineWidth=1.3;
-    context.beginPath();context.moveTo(edge[0].x,edge[0].y);for(const point of edge) context.lineTo(point.x,point.y);context.stroke();context.restore();
-    for (const point of edge) {
-      left=Math.min(left,point.x+spread.x);right=Math.max(right,point.x+spread.x);
-      top=Math.min(top,point.y+spread.y);bottom=Math.max(bottom,point.y+spread.y);
-    }
-  }
-  return {bounds:{x:left,y:top,width:right-left,height:bottom-top},extension,usedRecordIds};
+  context.restore();
+ }
+ return{bounds:{...modernReceiptBounds},extension:0,usedRecordIds:reading?records.map(r=>r.id):[]};
 }
 
 interface TapeLayers {revision: string; body: HTMLCanvasElement; tail: HTMLCanvasElement; renewal:boolean}

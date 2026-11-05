@@ -47,4 +47,4 @@ for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]){
   }finally{await context.close();}
  }}finally{await browser.close();}
 }
-await writeFile('artifacts/visual-renewal/performance.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report.cases));
+await writeFile(`${process.env.RENEWAL_OUTPUT??'artifacts/visual-renewal'}/performance.json`,JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report.cases));

@@ -8,13 +8,16 @@ import {renewalFixture,renewalPagesFixture} from '../releases/renewal-fixtures/r
 import {feedbackFixture} from '../releases/feedback-fixtures/feedback_fixtures.js';
 
 const mode = process.argv[2] ?? 'screens';
-if (!['screens', 'assist', 'treatment', 'pages', 'life', 'cases', 'excavation'].includes(mode)) throw new Error('Expected screens, assist, or treatment');
-const output = resolve('artifacts/visual-renewal');
+if (!['screens', 'assist', 'treatment', 'pages', 'life', 'cases', 'excavation', 'reading'].includes(mode)) throw new Error('Unknown renewal capture mode');
+// A review revision gets its own evidence directory. Never relabel or overwrite
+// a previous package's recordings with the current checkout's source SHA.
+const output = resolve(process.env.RENEWAL_OUTPUT ?? 'artifacts/visual-renewal');
 const base = process.env.RENEWAL_URL ?? 'http://127.0.0.1:4226/';
 const database = 'loststar.fusion.firstplanet.v037';
 const worldSelector = '#fusion-world canvas[data-ready="true"]';
 const metadata = JSON.parse(await readFile('releases/taptap/package-info-fusion.json', 'utf8'));
-if (metadata.version !== '0.4.0') throw new Error(`Build/package V0.4.0 before capture; metadata is ${metadata.version}`);
+const expectedVersion = process.env.RENEWAL_VERSION ?? '0.4.0';
+if (metadata.version !== expectedVersion) throw new Error(`Build/package V${expectedVersion} before capture; metadata is ${metadata.version}`);
 const evidenceCheckoutCommit = execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim();
 const sourceCommit = metadata.sourceCommit;
 const runtimePaths = ['src', 'assets/runtime', 'package.json', 'package-lock.json', 'vite.config.ts', 'vite.fusion.config.ts'];
@@ -403,7 +406,7 @@ async function paidTreatment(session, id, kind) {
     receiptTransactions: transactions, observations, ongoingFile: ongoing.file, completeFile: done.file};
 }
 
-async function freeTreatmentTrial(session, id) {
+async function freeTreatmentTrial(session, id, prefix=`treatment-${id}`) {
   const before = await archive(session.page), clickedAt = Date.now();
   await session.page.locator('#fusion-drawer[open][data-mode="treatment"] #fusion-try').tap();
   let sourceAction = null, source, ongoing;
@@ -412,7 +415,7 @@ async function freeTreatmentTrial(session, id) {
     sourceAction = treatmentState(started, id).action;
     source = 'Existing durable receipt try action; actual startedAtSeconds/durationSeconds';
     await waitUntil(sourceAction.startedAt + (sourceAction.endsAt - sourceAction.startedAt) * .5);
-    ongoing = await shot(session, `treatment-${id}-free-try-ongoing`, 'treatment-trial');
+    ongoing = await shot(session, `${prefix}-free-try-ongoing`, 'treatment-trial');
     await waitTreatment(session, id, (current, state) => !current.action && state.receipt.completedActionIds.includes(sourceAction.key),
       Math.max(10000, sourceAction.endsAt - Date.now() + 4000));
   } else {
@@ -421,10 +424,10 @@ async function freeTreatmentTrial(session, id) {
     source = 'Existing visual-only curio trial (UI 2600ms), native wall time; no saved action is created';
     await session.page.locator('#fusion-curio-response:not([hidden])').waitFor();
     await waitUntil(clickedAt + 1300);
-    ongoing = await shot(session, `treatment-${id}-free-try-ongoing`, 'treatment-trial');
+    ongoing = await shot(session, `${prefix}-free-try-ongoing`, 'treatment-trial');
     await waitUntil(clickedAt + 3000);
   }
-  const complete = await shot(session, `treatment-${id}-free-try-complete`, 'treatment-trial');
+  const complete = await shot(session, `${prefix}-free-try-complete`, 'treatment-trial');
   const after = await archive(session.page), ledger = treatmentLedger(before, after);
   const free = ledger.charged === 0 && after.receipt.transactions.length === before.receipt.transactions.length;
   if (!free || treatmentState(after, id).condition !== 'stabilized') throw new Error(`${id}: free trial charged or changed physical condition`);
@@ -501,6 +504,34 @@ async function saveVideo(session,file,durationSeconds,startAt){
  execFileSync('ffmpeg',['-y','-i',session.raw,'-vf',`trim=start=${leadInSeconds}:duration=${durationSeconds},setpts=PTS-STARTPTS`,'-an','-c:v','libx264','-preset','fast','-crf','24','-pix_fmt','yuv420p','-movflags','+faststart',`${output}/${file}`],{stdio:'ignore'});
  const probe=JSON.parse(execFileSync('ffprobe',['-v','quiet','-show_format','-show_streams','-of','json',`${output}/${file}`],{encoding:'utf8'}));
  const entry={file,durationSeconds,speed:1,probe,physicalPhone:false,nativeWallClock:true};report.videos.push(entry);return entry;
+}
+/** Research remains a real owned right. These are ordinary earned fixtures,
+ * followed by native free display actions, never invented receipt evidence. */
+async function reading(){
+ const browser=await chromium.launch();
+ try{for(const level of [0,1,2]){
+  let session;
+  try{
+   const fixture=firstPlanetFixture(Date.now(),level,'stabilized',{receiptAbility:level,tapeAbility:0});
+   session=await open(browser,{name:`chromium-390-receipt-reading-${level}`,fixture,video:true});
+   await session.page.locator('[data-tab="collection"]').tap();
+   await session.page.locator('#fusion-collection-list [data-detail="receipt"]').tap();
+   await session.page.locator('#fusion-paper-focus[data-ready="true"][data-focus="glass-case"]').waitFor();
+   const startAt=Date.now(),before=await archive(session.page);
+   const initial=await shot(session,`receipt-reading-${level}-before`,'receipt-reading');
+   await session.page.waitForTimeout(1200);
+   const trial=await freeTreatmentTrial(session,'receipt',`receipt-reading-${level}`);
+   await session.page.waitForTimeout(1500);
+   const data=await session.page.locator('#fusion-paper-focus').evaluate(c=>({...c.dataset}));
+   const after=await archive(session.page),ledger=treatmentLedger(before,after);
+   const final=await shot(session,`receipt-reading-${level}-after`,'receipt-reading');
+   if(ledger.charged!==0||JSON.stringify(before.records)!==JSON.stringify(after.records)||JSON.stringify(before.receipt.verifiedEvidenceIds)!==JSON.stringify(after.receipt.verifiedEvidenceIds))throw Error('Display reading charged or manufactured a fact');
+   if(level){const bounds=JSON.parse(data.abilityBounds);if(!(bounds.width>80&&bounds.width<=152))throw Error('Research enlarged or lost the original paper');}
+   const durationSeconds=(Date.now()-startAt)/1000;
+   report.cases.push({name:session.name,kind:'receipt-reading',abilityLevel:level,fixtureAudit:fixture.audit,before,after,ledger,trial,focus:data,initialFile:initial.file,finalFile:final.file,durationSeconds,originalFactsUnchanged:true});
+   await close(session);await saveVideo(session,`receipt-reading-level-${level}.mp4`,durationSeconds,startAt);
+  }finally{await close(session);}
+ }}finally{await browser.close();}
 }
 async function pages(){
  for(const [engine,width,height]of[['chromium',390,844],['chromium',360,800],['webkit',390,844],['chromium',1440,1000]]){
@@ -591,6 +622,7 @@ try {
   else if(mode==='pages') await pages();
   else if(mode==='life') await life();
   else if(mode==='excavation') await excavation();
+  else if(mode==='reading') await reading();
   else await cases();
 } catch (error) {report.errors.push(error.stack ?? String(error));process.exitCode = 1;console.error(error);}
 finally {

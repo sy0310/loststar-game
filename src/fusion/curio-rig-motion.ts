@@ -1,3 +1,4 @@
+import {modernReceiptRepairContact} from './receipt-paper-model';
 /** Shared by Canvas rendering and the deterministic PNG exporter. No DOM or save access. */
 export type RigId='receipt'|'tape'|'nested'|'stamp'|'cosmic-parcel'|'bell';
 export type RigMatrix=readonly[number,number,number,number,number,number];
@@ -68,7 +69,7 @@ export function curioRigCommands(id:RigId,corrections:readonly number[],seconds=
 /** Exact specimen-local point used by the same tool which moves the joint. */
 export function curioRigContact(id:RigId,step:number,corrections:readonly number[]):RigPoint{
  const c0=clamp(corrections[0]??0),c1=clamp(corrections[1]??0),b0=1-c0,b1=1-c1;
- if(id==='receipt')return step===0?receiptCurlPoint({x:151,y:34},b0):rigTransform(receiptFold(b1),{x:25,y:160});
+ if(id==='receipt')return modernReceiptRepairContact(step,corrections);
  if(id==='tape')return step===0?rigTransform(rotate({x:125,y:76},-.14*b0,-4*b0,3*b0),{x:125,y:70}):tapeTailPoint({x:45,y:125},b1);
  if(id==='nested')return step===0?rigTransform(lidMatrix(c0,c1),{x:130,y:105}):cornerPoint({x:38,y:151},b1);
  if(id==='stamp')return step===0?rigTransform(rotate({x:98,y:103},-.30*b0,-3*b0,3*b0),{x:97,y:89}):rigTransform(rotate({x:98,y:108},-.22*b1,-4*b1,-5*b1),{x:98,y:108});

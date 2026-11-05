@@ -8,6 +8,12 @@ const urls=import.meta.glob('../../assets/runtime/visual-renewal/museum/case-*.w
 const furnishingUrls=import.meta.glob('../../assets/runtime/visual-renewal/museum/{string-lights,paper-garden,memorial-plaque,armillary}.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 const cavities=[{top:59,floor:300},{top:72,floor:270},{top:77,floor:248},{top:80,floor:232}];
 const levelBase=[44,54,62,72],levelCap=[36,46,48,50];
+/** Fit the complete owned case, including its separate plaque and floor shadow. */
+export function renewalExhibitViewport(level:number,width:number,height:number){
+ const index=Math.max(0,Math.min(3,Math.floor(level))),top=-levelBase[index]-156-levelCap[index]-4,bottom=48;
+ const scale=Math.min((width-40)/210,(height-40)/(bottom-top));
+ return {scale,top,bottom,originY:(height-(bottom-top)*scale)/2-top*scale};
+}
 const labels=['未购买收据','道歉胶带','套娃包裹','昨日邮戳','收件人：宇宙','无人签收铃'];
 /** New room registration. The display cavity and walking aisles belong to the same camera. */
 export const renewalExhibits:Exhibit[]=exhibitIds.map((id,index)=>({
@@ -52,7 +58,11 @@ export function renewalMuseumPose(seconds:number,level:(id:string)=>number){
  const center=itemCenter(physical),inspect=ease((t-7.2)/.35)*(1-ease((t-7.85)/.35));
  const held={x:position.x+towardBay*24,y:position.y-82-inspect*4};
  const item={x:center.x+(held.x-center.x)*p.lift,y:center.y+(held.y-center.y)*p.lift};
- const hand={x:position.x+towardBay*27+(item.x+towardBay*7-position.x-towardBay*27)*p.contact,y:position.y-48+(item.y+13-position.y+48)*p.contact};
+ // Handle the modern receipt by its nearer bottom brass retainer (134/40,165
+ // in the 192-unit material), following the same mount through the whole lift.
+ const receipt=e.id==='receipt',gripX=receipt?-towardBay*38*physical.item.size/192:towardBay*7;
+ const gripY=receipt?69*physical.item.size/192:13;
+ const hand={x:position.x+towardBay*27+(item.x+gripX-position.x-towardBay*27)*p.contact,y:position.y-48+(item.y+gripY-position.y+48)*p.contact};
  return {...p,...position,turn:0,width:136,facing,shoulder:{x:position.x+towardBay*20.4,y:position.y-58.65},item,hand};
 }
 
@@ -83,9 +93,9 @@ export class RenewalMuseum {
   const x=e.x,w=e.id==='receipt'?79:e.id==='stamp'?62:94;
   c.fillStyle='#100b2480';c.beginPath();c.ellipse(x,floor-4,w*.50,7,0,0,Math.PI*2);c.fill();
   c.fillStyle='#2f1a4c';c.fillRect(x-w/2,floor-12,w,9);c.fillStyle='#e3a454';c.fillRect(x-w/2,floor-13,w,2);c.fillStyle='#8a514b';c.fillRect(x-w/2+3,floor-4,w-6,3);
-  if(e.id==='receipt'){
-   for(const side of [-1,1]){c.fillStyle='#8464aa';c.fillRect(x+side*35-3,floor-76,6,65);c.fillStyle='#f2c47c';c.fillRect(x+side*35-5,floor-78,10,5);}
-  }else if(e.id==='tape'){
+  // The receipt owns its registered archive backboard and retaining lip. A
+  // second pair of generic columns would cut through that single-paper mount.
+  if(e.id==='tape'){
    c.fillStyle='#5a3572';c.fillRect(x-31,floor-43,8,31);c.fillRect(x+23,floor-43,8,31);c.fillStyle='#e6aa62';c.fillRect(x-31,floor-45,62,5);
   }else if(e.id==='stamp'){
    c.fillStyle='#bf9764';c.fillRect(x-23,floor-20,46,6);c.fillStyle='#ecd2a0';c.fillRect(x-18,floor-24,36,4);
@@ -93,7 +103,7 @@ export class RenewalMuseum {
    c.fillStyle='#c98c4f';for(const side of [-1,1])c.fillRect(x+side*36-4,floor-24,8,12);
   }else if(e.id==='bell'){
    c.fillStyle='#9c667b';c.fillRect(x-42,floor-18,84,5);c.fillStyle='#edc883';c.fillRect(x-39,floor-19,78,2);
-  }else{
+  }else if(e.id!=='receipt'){
    c.strokeStyle='#dda35a';c.lineWidth=3;c.strokeRect(x-38,floor-21,76,9);
   }
   if(level<2)return;

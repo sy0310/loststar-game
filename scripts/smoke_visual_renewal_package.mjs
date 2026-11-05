@@ -97,5 +97,5 @@ for (const [engine, width, height] of [['chromium', 360, 800], ['chromium', 390,
     }
   } finally {await browser.close();}
 }
-await writeFile('artifacts/visual-renewal/package-smoke.json', JSON.stringify({sourceCommit: metadata.sourceCommit, base, physicalPhone: false, nativeTouchEmulation: true, clockOverrides: false, cases}, null, 2) + '\n');
+await writeFile(`${process.env.RENEWAL_OUTPUT??'artifacts/visual-renewal'}/package-smoke.json`, JSON.stringify({sourceCommit: metadata.sourceCommit, base, physicalPhone: false, nativeTouchEmulation: true, clockOverrides: false, cases}, null, 2) + '\n');
 console.log(`${cases.length} packaged new/existing-archive cases passed`);

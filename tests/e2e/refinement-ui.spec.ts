@@ -110,11 +110,12 @@ test('能力与展柜分别保存，工程按开工胶带等级定价，真实�
   const verify=await saved(page);
   expect(verify.progression.sorting.stage).toBe('verify');
   expect(verify.progression.sorting.facts.filter(fact=>fact.kind==='label').map(fact=>fact.code).sort()).toEqual(['P03','P30']);
-  await detail(page,'receipt');await expect(page.locator('#fusion-try')).toHaveText('对照箱标');await page.locator('#fusion-try').tap();
+  await detail(page,'receipt');await expect(page.locator('#fusion-compare-label')).toHaveText('对照箱标');await page.locator('#fusion-compare-label').tap();
   await expect.poll(async()=>(await saved(page)).progression.sorting.compared).toBe(true);
   await page.clock.runFor(900);await expect(page.locator('#fusion-paper-focus')).toHaveAttribute('data-ability-level','1');
   await expect(page.locator('#fusion-paper-focus')).toHaveAttribute('data-used-record-ids',/label\/P30/);
-  const bounds=JSON.parse((await page.locator('#fusion-paper-focus').getAttribute('data-ability-bounds'))!);expect(bounds.width).toBeGreaterThan(152);
+  // Research reads real labels on the same paper; it must not grow extra sheets.
+  const bounds=JSON.parse((await page.locator('#fusion-paper-focus').getAttribute('data-ability-bounds'))!);expect(bounds.width).toBeGreaterThan(80);expect(bounds.width).toBeLessThanOrEqual(152);
   await page.locator('#fusion-close').tap();await advance(page,18000);await advance(page,29000);
   expect((await saved(page)).progression.sorting.phase).toBe('cleared');
   await sorting(page);await page.locator('[data-refinement="study"]').tap();

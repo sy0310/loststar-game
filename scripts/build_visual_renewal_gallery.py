@@ -86,7 +86,9 @@ if review_file.is_file() and source:
     for heading in re.findall(r'^## .*$', review_file.read_text(encoding='utf-8'), re.M):
         if source[:7] in heading and any(word in heading for word in ('不上传', '未通过', '拒绝')):
             review_status = 'rejected'
-if review_status in ('rejected', 'needs_revision'):
+if review_status == 'user_changes_requested':
+    review_banner = '<p class="rejected"><strong>用户实机要求返修：本版收据三态尚未通过美术审核。</strong>收据应按批准原图重画为现代矩形纸票、紫色角夹整理与玻璃陈列；“试一试·免费”入口语义和控件像素细节也在修改。本页保留439256的真实历史证据，不把工程或此前内部复审冒充用户认可。</p>'
+elif review_status in ('rejected', 'needs_revision'):
     review_banner = '<p class="rejected"><strong>本候选动态审核未通过，不可上传或交付为已完成版本。</strong>本页仅保留该候选的实测诊断，工程测试绿灯不覆盖视觉问题。新候选需要重新冻结源码、采集与审核。</p>'
 elif review_status in ('internal_review_passed', 'passed'):
     review_banner = '<p class="note">已登记本源码的内部画面复审结果；最终美术验收及真实手机体验仍由用户审核，不能由此推定手机通过。</p>'

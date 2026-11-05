@@ -1,4 +1,6 @@
-import {drawTapeBridge} from './curio-ability-rig';
+import {drawTapeBridge,drawCurioAbilityRig} from './curio-ability-rig';
+import {modernReceiptPose,modernReceiptClampAmount,type ReceiptPaperPose} from './receipt-paper-model';
+import {drawModernReceiptPaper,drawModernReceiptClamps,drawModernReceiptHolder} from './receipt-paper-renderer';
 import {itemCenter,type Exhibit} from '../render/museum-layout';
 import {curioActionProgress,type CurioState} from './curio-material';
 import {receiptRestorationFrame,type ReceiptRestorationState} from '../review/receipt-restoration';
@@ -10,9 +12,9 @@ export {renewalReceiptCurioState,renewalTreatmentFrame,renewalCurioRegistration}
 export type {CurioState} from './curio-material';
 
 export interface CurioPoseOptions {seconds?:number;trial?:number;reducedMotion?:boolean;serviceEnvelope?:number;buried?:boolean;excavation?:number;drawAbility?:(context:CanvasRenderingContext2D,image:HTMLCanvasElement)=>boolean}
-interface Material {original:HTMLCanvasElement;image:HTMLCanvasElement;cleanMask:HTMLCanvasElement;dirty:HTMLCanvasElement;revision:string;phase:number;repaired:number;corrections:readonly number[];size:384}
+interface Material {original:HTMLCanvasElement;image:HTMLCanvasElement;cleanMask:HTMLCanvasElement;dirty:HTMLCanvasElement;revision:string;phase:number;repaired:number;corrections:readonly number[];size:384;paperSurface?:HTMLCanvasElement;paperPose?:ReceiptPaperPose;cleaning?:number}
 type ToolContact={tool:string;x:number;y:number;pressed:boolean};
-const urls=import.meta.glob('../../assets/runtime/visual-renewal/curios/*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
+const urls={...import.meta.glob('../../assets/runtime/visual-renewal/curios/*.webp',{eager:true,query:'?url',import:'default'}),...import.meta.glob('../../assets/runtime/visual-renewal/receipt-modern/*.webp',{eager:true,query:'?url',import:'default'})} as Record<string,string>;
 const images=new Map<string,HTMLImageElement>(),materials=new Map<string,Material>();
 let toolsPromise:Promise<void>|undefined,toolsLoaded=false;
 let workbench:HTMLImageElement|undefined,workbenchPromise:Promise<void>|undefined;
@@ -27,7 +29,7 @@ function drawImage(c:CanvasRenderingContext2D,image:CanvasImageSource){c.drawIma
 /** New material bytes are critical: failure does not pretend a paid treatment is ready. */
 export function prepareCurioTools():Promise<void>{
  if(!toolsPromise){
-  const entries=Object.entries(urls).filter(([name])=>/\/(?:tool-|excavation-|receipt-inner-blank|[^/]+-rig-)/.test(name));
+  const entries=Object.entries(urls).filter(([name])=>name.includes('/receipt-modern/')||(/\/(?:tool-|excavation-|receipt-inner-blank|[^/]+-rig-)/.test(name)&&!name.includes('/receipt-rig-')));
   toolsPromise=Promise.all(entries.map(async([name,url])=>{
    const key=name.split('/').at(-1)!.replace('.webp','');let image=images.get(key);
    if(!image){image=new Image();image.src=url;images.set(key,image);}
@@ -67,6 +69,29 @@ export function prepareCurioMaterial(_image:HTMLImageElement|undefined,state:Cur
   const c=material.image.getContext('2d')!;c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='source-over';c.clearRect(0,0,384,384);c.imageSmoothingEnabled=false;
   if(isRenewalCurio(id)&&toolsLoaded){
    const frame=renewalTreatmentFrame(id,state,now);material.corrections=frame.corrections;
+   if(id==='receipt'){
+    const surface=material.paperSurface??(material.paperSurface=make()),p=surface.getContext('2d')!;
+    p.setTransform(1,0,0,1,0,0);p.globalCompositeOperation='source-over';p.clearRect(0,0,384,384);
+    const master=sprite('receipt-paper-master');if(master)p.drawImage(master,0,0,384,384);
+    // Soil is the only erased layer. Original printing remains on the same opaque paper.
+    if(frame.cleaning<1){
+     const d=material.dirty.getContext('2d')!;d.setTransform(1,0,0,1,0,0);d.globalCompositeOperation='source-over';d.clearRect(0,0,384,384);
+     const dirt=sprite('receipt-paper-deposits');if(dirt)d.drawImage(dirt,0,0,384,384);
+     if(state.action?.kind==='clean'){
+      const m=material.cleanMask.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalCompositeOperation='source-over';m.clearRect(0,0,384,384);m.save();m.scale(2,2);m.beginPath();cleanMask(m,id,phase);m.restore();
+      d.globalCompositeOperation='destination-out';d.drawImage(material.cleanMask,0,0);d.globalCompositeOperation='source-over';
+     }
+     d.globalCompositeOperation='destination-in';if(master)d.drawImage(master,0,0,384,384);d.globalCompositeOperation='source-over';p.drawImage(material.dirty,0,0);
+    }
+    const crease=sprite('receipt-paper-creases');
+    if(crease){
+     // Each pressure stroke flattens only its own crease ridge, never the printed sheet.
+     for(let i=0;i<2;i++){p.save();p.globalAlpha=1-frame.corrections[i];p.beginPath();p.rect(0,i?196:0,384,i?188:196);p.clip();p.drawImage(crease,0,0,384,384);p.restore();}
+    }
+    material.paperPose=modernReceiptPose(frame.cleaning,frame.corrections);material.cleaning=frame.cleaning;
+    c.save();c.scale(2,2);drawModernReceiptPaper(c,surface,material.paperPose,revision);c.restore();
+    const o=material.original.getContext('2d')!;o.clearRect(0,0,384,384);if(master)o.drawImage(master,0,0,384,384);
+   }else{
    c.save();c.scale(2,2);paintPhysicalRig(c,id,frame.corrections);c.restore();
    if(frame.cleaning<1){
     const dirty=material.dirty,d=dirty.getContext('2d')!;d.setTransform(1,0,0,1,0,0);d.globalCompositeOperation='source-over';d.clearRect(0,0,384,384);
@@ -78,6 +103,7 @@ export function prepareCurioMaterial(_image:HTMLImageElement|undefined,state:Cur
     d.save();d.globalCompositeOperation='destination-in';d.drawImage(material.image,0,0);d.restore();c.drawImage(dirty,0,0);
    }
    const o=material.original.getContext('2d')!;o.clearRect(0,0,384,384);o.save();o.scale(2,2);paintPhysicalRig(o,id,[1,1]);o.restore();
+   }
   }
   material.revision=revision;
  }
@@ -172,12 +198,31 @@ function drawBuriedReceipt(c:CanvasRenderingContext2D,material:Material,progress
  }
 }
 
+const receiptAnimation={key:'',image:undefined as HTMLCanvasElement|undefined};
+function drawReceiptComposition(c:CanvasRenderingContext2D,material:Material,options:CurioPoseOptions,display:boolean){
+ const pose=material.paperPose??modernReceiptPose(1,[1,1]);
+ const trial=(options.trial??0)*(options.serviceEnvelope??1),seconds=options.seconds??0;
+ let image=material.image;
+ if(material.repaired>=.995&&material.paperSurface){
+  const key=`${material.revision}/${options.reducedMotion?0:Math.floor(seconds*20)}/${Math.round(trial*1000)}/${options.serviceEnvelope??1}`;
+  image=receiptAnimation.image??(receiptAnimation.image=make());
+  if(receiptAnimation.key!==key){const p=image.getContext('2d')!;p.clearRect(0,0,384,384);p.save();p.scale(2,2);drawModernReceiptPaper(p,material.paperSurface,modernReceiptPose(1,[1,1],seconds,trial,options.reducedMotion,options.serviceEnvelope),material.revision);p.restore();receiptAnimation.key=key;}
+ }
+ const clips=modernReceiptClampAmount(material.cleaning??1,material.repaired);
+ if(display)drawModernReceiptHolder(c,sprite,'back');
+ drawModernReceiptClamps(c,sprite,pose,clips,'back');
+ if(!options.drawAbility?.(c,image))drawCurioAbilityRig(c,{id:'receipt',image,seconds,abilityLevel:0,experimentProgress:trial||undefined,reducedMotion:options.reducedMotion,serviceEnvelope:options.serviceEnvelope});
+ drawModernReceiptClamps(c,sprite,pose,clips,'front');
+ if(display)drawModernReceiptHolder(c,sprite,'front');
+}
+
 /** Shared specimen path for collection AND home. Contains no case pixels. */
 export function drawCurioSpecimen(c:CanvasRenderingContext2D,exhibit:Exhibit,image:HTMLImageElement,state:CurioState,now:number,options:CurioPoseOptions={}){
  if(!isRenewalCurio(exhibit.id)||!toolsLoaded)return false;
  const material=prepareCurioMaterial(image,state,now,exhibit.id),center=itemCenter(exhibit),size=exhibit.item.size*exhibit.scale;
  c.save();c.translate(center.x-size/2,center.y-size/2);c.scale(size/192,size/192);c.imageSmoothingEnabled=false;
  if(exhibit.id==='receipt'&&options.buried)drawBuriedReceipt(c,material,options.excavation??0,false);
+ else if(exhibit.id==='receipt')drawReceiptComposition(c,material,options,true);
  else if(state.action)drawImage(c,material.image);else if(!options.drawAbility?.(c,material.image))drawRenewalCurioRig(c,exhibit.id,material,options.seconds??now/1000,(options.trial??0)*(options.serviceEnvelope??1),options.reducedMotion,options.serviceEnvelope??1);
  c.restore();return true;
 }
@@ -187,12 +232,13 @@ function paintWorkbench(canvas:HTMLCanvasElement,id:RenewalCurioId,state:CurioSt
  const c=canvas.getContext('2d');if(!c)return false;
  const material=prepareCurioMaterial(undefined,state,now,id),frame=renewalTreatmentFrame(id,state,now);
  c.save();c.clearRect(0,0,canvas.width,canvas.height);c.scale(canvas.width/640,canvas.height/700);c.imageSmoothingEnabled=false;c.drawImage(workbench,0,0,640,700);
- const x=106,y=191,size=428,scale=size/192;
- c.save();c.globalAlpha=.31;c.fillStyle='#25132e';c.beginPath();c.ellipse(x+frame.progress*0+renewalCurioRegistration[id].support.x*scale,y+renewalCurioRegistration[id].support.y*scale+1,122,7,0,0,Math.PI*2);c.fill();c.restore();
+ const x=id==='receipt'?128:106,y=id==='receipt'?178:191,size=id==='receipt'?384:428,scale=size/192;
+ c.save();c.globalAlpha=.31;c.fillStyle='#25132e';c.beginPath();c.ellipse(x+frame.progress*0+renewalCurioRegistration[id].support.x*scale,y+(id==='receipt'&&state.condition!=='stabilized'?166:renewalCurioRegistration[id].support.y)*scale+1,122,7,0,0,Math.PI*2);c.fill();c.restore();
  c.save();c.translate(x,y);c.scale(scale,scale);
  if(buried){
   drawBuriedReceipt(c,material,options.excavation??options.trial??0,true);
- }else if(state.action)drawImage(c,material.image);
+ }else if(id==='receipt')drawReceiptComposition(c,material,options,state.condition==='stabilized');
+ else if(state.action)drawImage(c,material.image);
  else if(!options.drawAbility?.(c,material.image))drawRenewalCurioRig(c,id,material,options.seconds??now/1000,options.trial??0,options.reducedMotion,options.serviceEnvelope??1);
  if(id==='bell'&&options.trial&&options.trial>.02&&options.trial<.42){
   const retract=smooth((options.trial-.18)/.24);arm(c,{x:132+retract*93,y:108+retract*32});

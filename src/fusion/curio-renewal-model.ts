@@ -1,3 +1,4 @@
+import {modernReceiptCleanPaths,modernReceiptSupport,modernReceiptRepairContact,modernReceiptPose,modernReceiptPoint} from './receipt-paper-model';
 import {curioRigContact} from './curio-rig-motion';
 import {curioActionProgress,type CurioState} from './curio-material';
 import type {ReceiptRestorationState} from '../review/receipt-restoration';
@@ -9,10 +10,10 @@ const clamp=(n:number)=>Number.isFinite(n)?Math.max(0,Math.min(1,n)):0;
 const smooth=(n:number)=>{const p=clamp(n);return p*p*(3-2*p);};
 /** Measured in the shared 192 logical specimen plane; never changes persisted facts. */
 export const renewalCurioRegistration:Record<RenewalCurioId,{
- material:string;support:RenewalPoint;cleanPaths:readonly [RenewalPoint,RenewalPoint][];
+ material:string;support:RenewalPoint;cleanPaths:readonly (readonly [RenewalPoint,RenewalPoint])[];
  repairs:readonly {contact:RenewalPoint;tool:RenewalTool;zone:readonly RenewalPoint[];from:RenewalPoint;angle:number}[];
 }>={
- receipt:{material:'aged-paper',support:{x:96,y:169},cleanPaths:[[{"x":48,"y":18},{"x":132,"y":18}],[{"x":149,"y":40},{"x":44,"y":40}],[{"x":41,"y":62},{"x":150,"y":62}],[{"x":147,"y":84},{"x":37,"y":84}],[{"x":33,"y":105},{"x":144,"y":105}],[{"x":141,"y":127},{"x":26,"y":127}],[{"x":20,"y":149},{"x":136,"y":149}],[{"x":122,"y":171},{"x":20,"y":171}]],repairs:[{contact:{x:145,y:35},tool:'spatula',zone:[{x:118,y:0},{x:192,y:0},{x:192,y:68},{x:116,y:68}],from:{x:0,y:9},angle:.10},{contact:{x:45,y:152},tool:'spatula',zone:[{x:0,y:122},{x:111,y:122},{x:112,y:192},{x:0,y:192}],from:{x:8,y:-6},angle:-.10}]},
+ receipt:{material:'thermal-receipt-paper',support:modernReceiptSupport,cleanPaths:modernReceiptCleanPaths,repairs:[{contact:{x:109,y:59},tool:'spatula',zone:[{x:37,y:37},{x:158,y:37},{x:158,y:81},{x:37,y:81}],from:{x:0,y:3},angle:0},{contact:{x:67,y:126},tool:'spatula',zone:[{x:28,y:105},{x:153,y:105},{x:153,y:150},{x:28,y:150}],from:{x:0,y:-3},angle:0}]},
  tape:{material:'adhesive-roll',support:{x:109,y:161},cleanPaths:[[{"x":76,"y":40},{"x":139,"y":40}],[{"x":165,"y":57},{"x":69,"y":57}],[{"x":52,"y":73},{"x":166,"y":73}],[{"x":167,"y":90},{"x":50,"y":90}],[{"x":28,"y":107},{"x":167,"y":107}],[{"x":167,"y":124},{"x":19,"y":124}],[{"x":15,"y":140},{"x":167,"y":140}],[{"x":149,"y":157},{"x":15,"y":157}]],repairs:[{contact:{x:113,y:64},tool:'tweezers',zone:[{x:61,y:13},{x:171,y:13},{x:180,y:90},{x:70,y:93}],from:{x:-4,y:4},angle:-.08},{contact:{x:46,y:121},tool:'spatula',zone:[{x:0,y:95},{x:92,y:92},{x:93,y:174},{x:0,y:174}],from:{x:-3,y:10},angle:.12}]},
  nested:{material:'corrugated-cardboard',support:{x:96,y:168},cleanPaths:[[{"x":67,"y":38},{"x":164,"y":38}],[{"x":170,"y":56},{"x":42,"y":56}],[{"x":27,"y":75},{"x":170,"y":75}],[{"x":170,"y":93},{"x":27,"y":93}],[{"x":35,"y":111},{"x":171,"y":111}],[{"x":171,"y":129},{"x":36,"y":129}],[{"x":38,"y":148},{"x":157,"y":148}],[{"x":144,"y":166},{"x":42,"y":166}]],repairs:[{contact:{x:139,y:63},tool:'tweezers',zone:[{x:30,y:8},{x:183,y:18},{x:188,y:110},{x:26,y:105}],from:{x:-4,y:-9},angle:-.05},{contact:{x:38,y:137},tool:'spatula',zone:[{x:0,y:100},{x:99,y:100},{x:107,y:192},{x:0,y:192}],from:{x:-4,y:4},angle:-.03}]},
  stamp:{material:'inked-copper-mechanism',support:{x:106,y:179},cleanPaths:[[{"x":41,"y":16},{"x":98,"y":16}],[{"x":99,"y":39},{"x":36,"y":39}],[{"x":37,"y":62},{"x":97,"y":62}],[{"x":111,"y":85},{"x":60,"y":85}],[{"x":57,"y":108},{"x":167,"y":108}],[{"x":169,"y":131},{"x":48,"y":131}],[{"x":46,"y":154},{"x":169,"y":154}],[{"x":158,"y":177},{"x":47,"y":177}]],repairs:[{contact:{x:97,y:89},tool:'tweezers',zone:[{x:20,y:0},{x:149,y:0},{x:153,y:119},{x:29,y:115}],from:{x:-11,y:3},angle:-.14},{contact:{x:108,y:113},tool:'screwdriver',zone:[{x:49,y:96},{x:163,y:95},{x:175,y:160},{x:43,y:154}],from:{x:-4,y:-5},angle:-.10}]},
@@ -37,7 +38,8 @@ export function renewalTreatmentFrame(id:RenewalCurioId,state:CurioState,now:num
  const step=Math.min(1,Math.floor(repairing*2)),repairLocal=repairing===1?1:repairing*2-step;
  const corrections=[smooth((repairing*2-.23)/.44),smooth((repairing*2-1.23)/.44)];
  const repair=registration.repairs[step],remain=1-corrections[step];
- const repairContact=curioRigContact(id,step,corrections);
+ const repairContact=id==='receipt'?modernReceiptRepairContact(step,corrections):curioRigContact(id,step,corrections);
+ if(id==='receipt')contact=modernReceiptPoint(contact,modernReceiptPose(cleaning,corrections));
  const pressure=clamp(repairLocal/.23)*(1-clamp((repairLocal-.72)/.28));
  return{progress,cleaning,repairing,pass,local,contact,cleaningContact,step,repairLocal,corrections,repairContact,pressure,tool:state.action?.kind==='clean'?(id==='tape'&&pass<4||id==='nested'&&pass<3?'tweezers':'brush'):repair.tool,complete:state.condition==='stabilized'||repairing===1};
 }

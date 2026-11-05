@@ -3,6 +3,7 @@
 from pathlib import Path
 import hashlib
 import json
+import os
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,7 +31,7 @@ report = {
     'result': 'Business, economy, store, work clock and fog-persistence bytes are checked against the approved baseline. This does not replace runtime archive tests.',
     'files': records,
 }
-target = ROOT / 'artifacts/visual-renewal/model-invariants.json'
+target = ROOT / os.environ.get('RENEWAL_OUTPUT', 'artifacts/visual-renewal') / 'model-invariants.json'
 target.parent.mkdir(parents=True, exist_ok=True)
 target.write_text(json.dumps(report, indent=2) + '\n')
 different = [row['path'] for row in records if not row['identicalToBaseline']]

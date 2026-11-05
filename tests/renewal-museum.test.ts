@@ -1,10 +1,18 @@
 import {describe,expect,it} from 'vitest';
 import {exhibits,itemCenter} from '../src/render/museum-layout';
-import {renewalExhibits,renewalDisplaySpecimen,renewalMuseumPose} from '../src/render/renewal-museum';
+import {renewalExhibits,renewalDisplaySpecimen,renewalMuseumPose,renewalExhibitViewport} from '../src/render/renewal-museum';
 import {renewalCurioRegistration,type RenewalCurioId} from '../src/fusion/curio-renewal-model';
 import {baseRobotPose} from '../src/render/base-motion';
 
 describe('renewed museum physical registration',()=>{
+ it('fits every owned glass case and its complete separate plaque in the detail canvas',()=>{
+  for(const level of [0,1,2,3])for(const [width,height] of [[640,700],[400,370]]){
+   const view=renewalExhibitViewport(level,width,height);
+   expect(view.originY+view.top*view.scale).toBeGreaterThanOrEqual(19.99);
+   expect(view.originY+view.bottom*view.scale).toBeLessThanOrEqual(height-19.99);
+   expect(210*view.scale).toBeLessThanOrEqual(width-39.99);
+  }
+ });
  it('uses the actual sole of every material at every paid cabinet level',()=>{
   for(const level of [0,1,2,3])for(const bay of renewalExhibits){
    const item=renewalDisplaySpecimen(bay,level),center=itemCenter(item),support=renewalCurioRegistration[bay.id as RenewalCurioId].support;

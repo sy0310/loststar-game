@@ -676,57 +676,6 @@
       ]
     },
     {
-      "id": "receipt-found",
-      "source": "assets/source/visual-renewal/curios/rig-v2",
-      "runtime": "assets/runtime/visual-renewal/curios/receipt-found.png",
-      "webp": "assets/runtime/visual-renewal/curios/receipt-found.webp",
-      "width": 384,
-      "height": 384,
-      "logicalSize": 192,
-      "layer": "canonical-specimen-state",
-      "state": "found",
-      "sha256": "d44d6be40dd3800ef98242370e1733788b3f517bea5a041047d0a96c7cf56c1b",
-      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
-      "corrections": [
-        0,
-        0
-      ]
-    },
-    {
-      "id": "receipt-clean",
-      "source": "assets/source/visual-renewal/curios/rig-v2",
-      "runtime": "assets/runtime/visual-renewal/curios/receipt-clean.png",
-      "webp": "assets/runtime/visual-renewal/curios/receipt-clean.webp",
-      "width": 384,
-      "height": 384,
-      "logicalSize": 192,
-      "layer": "canonical-specimen-state",
-      "state": "clean",
-      "sha256": "ea5b56d0a590ee6e4f0433e3641efe777e05f659aa0bc68c38b260eb6c4a3719",
-      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
-      "corrections": [
-        0,
-        0
-      ]
-    },
-    {
-      "id": "receipt-stabilized",
-      "source": "assets/source/visual-renewal/curios/rig-v2",
-      "runtime": "assets/runtime/visual-renewal/curios/receipt-stabilized.png",
-      "webp": "assets/runtime/visual-renewal/curios/receipt-stabilized.webp",
-      "width": 384,
-      "height": 384,
-      "logicalSize": 192,
-      "layer": "canonical-specimen-state",
-      "state": "stabilized",
-      "sha256": "9fd9eeec378844e641ea3530107c99a6c2224c15d5aa2581b45b8c604f74af4a",
-      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
-      "corrections": [
-        1,
-        1
-      ]
-    },
-    {
       "id": "tape-found",
       "source": "assets/source/visual-renewal/curios/rig-v2",
       "runtime": "assets/runtime/visual-renewal/curios/tape-found.png",
@@ -980,7 +929,44 @@
         1,
         1
       ]
+    },
+    {
+      "id": "receipt-found",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-found.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-found.webp",
+      "width": 384,
+      "height": 384,
+      "source": "assets/source/visual-renewal/receipt-proposal/paper-atlas-v2.png",
+      "layer": "canonical-single-sheet-state",
+      "condition": "found",
+      "composition": "One modern printed master, connected row field, independent crease/soil. No crossfade or paper wings.",
+      "sha256": "e324bc37b838486b57b95e3450cd50272a076ff8490a7c881a465877d12f8021"
+    },
+    {
+      "id": "receipt-clean",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-clean.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-clean.webp",
+      "width": 384,
+      "height": 384,
+      "source": "assets/source/visual-renewal/receipt-proposal/paper-atlas-v2.png",
+      "layer": "canonical-single-sheet-state",
+      "condition": "clean",
+      "composition": "One modern printed master, connected row field, independent crease/soil. No crossfade or paper wings.",
+      "sha256": "f0dee3b2b963e38d504c13acb6f10dcba97597c6d7638afe0896f4e7ce40e2d0"
+    },
+    {
+      "id": "receipt-stabilized",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-stabilized.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-stabilized.webp",
+      "width": 384,
+      "height": 384,
+      "source": "assets/source/visual-renewal/receipt-proposal/paper-atlas-v2.png",
+      "layer": "canonical-single-sheet-state",
+      "condition": "stabilized",
+      "composition": "One modern printed master, connected row field, independent crease/soil. No crossfade or paper wings.",
+      "sha256": "0f1e66f1b384e6bd910af7ce8e20fda2da95e963fb5c08425ba98a366e133f12"
     }
   ],
-  "physicalRig": "rig-registration.json"
+  "physicalRig": "rig-registration.json",
+  "modernReceipt": "../receipt-modern/registration.json"
 }

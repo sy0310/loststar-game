@@ -55,3 +55,6 @@ await fs.writeFile(`${runtime}/registration.json`,JSON.stringify({schema:1,logic
 console.log(`${records.length} registered PNGs and WebPs exported (18 states + 6 tools).`);
 
 await import("./export_renewal_curio_rig.mjs");
+
+// User-approved modern single receipt supersedes its retired parchment rig only.
+await import('./export_modern_receipt.mjs');

@@ -173,7 +173,7 @@ for (const cohort of cohorts) for (const hours of [8, 24, 72]) {
     revealedSites: surfaceView(claimed.state).filter(site => site.revealed).length, duplicateClaimRejected: !twice.result.ok});
 }
 
-const output = 'artifacts/visual-renewal';
+const output = process.env.RENEWAL_OUTPUT ?? 'artifacts/visual-renewal';
 mkdirSync(output, {recursive: true});
 function csv(values: Record<string, unknown>[]) {
   const keys = Object.keys(values[0]);

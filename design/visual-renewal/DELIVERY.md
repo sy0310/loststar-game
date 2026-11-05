@@ -1,5 +1,7 @@
 # V0.4.0 首星整体翻新交付
 
+> 用户实际试玩439256后要求返修收据造型、展示互动入口和控件像素密度。本文保留该包的真实历史证据，不是用户美术认可；最新执行范围见 [USER_REVIEW_V040.md](USER_REVIEW_V040.md)。
+
 运行源码 **f1397e268b4dec43a241833da077b08104451c8e**；开发自测 **439256 / v0.4.0**。继续 [Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)，不合并、不提审、不正式发布。保留`loststar.fusion.firstplanet.v037`，只翻新首星的美术与交互，没有第二星完整远征、新货币或新战斗系统。
 
 [设计／旧版／新版实际画面、全部录像和多尺寸矩阵](../../artifacts/visual-renewal/index.html) · [六物18态](../../artifacts/visual-renewal/materials-overview.html) · [逐项覆盖表](VISUAL_COVERAGE.md) · [验证原值](../../artifacts/visual-renewal/verification.json)

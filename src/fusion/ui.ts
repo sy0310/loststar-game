@@ -54,6 +54,7 @@ const conditionLabels = {found: '发现态', clean: '整理态', stabilized: '�
 const recordOrigins: Record<string, string> = {marker: '管道箱标', residents: '生态观察窗', night: '收件站夜班'};
 const upgradeNames: Record<UpgradeId, string> = {scanner: '机器人', recycler: '飞船', radar: '雷达', cargo: '货舱'};
 const trialLines:Record<string,string>={receipt:'订单没下，退货先到。',tape:'对不起，又粘人了。',nested:'拆到最后，还是第一层。',stamp:'今天的事，昨天再办。','cosmic-parcel':'远处回敲了两下。',bell:'你一转身，它就上班。'};
+const exhibitActionLabels:Record<string,string>={receipt:'读出票面',tape:'拉出一截',nested:'打开一层',stamp:'盖个邮戳','cosmic-parcel':'敲敲箱盖',bell:'轻按铃铛'};
 
 export function mountFusion(controller: FusionController) {
   const app = document.querySelector<HTMLElement>('#app')!;
@@ -123,7 +124,7 @@ export function mountFusion(controller: FusionController) {
   let materialLoadFailed=false;
   void prepareCurioTools().then(() => {materialLoadFailed=false;collectionSignature = '';museum.refresh();}).catch(() => {materialLoadFailed=true;museumRetry.hidden=false;});
   void curioAbilityReady().then(()=>{abilityReady=true;}).catch(()=>{});
-  function abilityRecords(receiptLevel?:number):AbilityRigRecord[]{
+  function abilityRecords(receiptLevel=controller.state.progression.abilities.receipt):AbilityRigRecord[]{
     const state=controller.state;
     const facts:AbilityRigRecord[]=state.progression.sorting.facts.map(fact=>({id:fact.id,at:fact.at,detail:fact.detail,source:fact.nodeId,code:fact.code,orientation:fact.orientation}));
     for(const observation of state.receipt.observations){
@@ -142,7 +143,7 @@ export function mountFusion(controller: FusionController) {
       const condition = exhibit.id === 'receipt' ? renewalReceiptCurioState(preview?.receipt ?? controller.state.receipt) : (preview?.curios ?? controller.state.curios)[exhibit.id];
       if (!condition) return false;
       const paper=exhibit.id==='receipt'?receiptRestorationFrame(preview?.receipt??controller.state.receipt,(preview?.at??Date.now())/1000):undefined;
-      const trial=!preview&&drawer==='detail'&&detailId===exhibit.id?Math.min(1,Math.max(0,(performance.now()-curioTrialAt)/2600)):0;
+      const trial=paper?.phase==='trying'?paper.trying:!preview&&drawer==='detail'&&detailId===exhibit.id?Math.min(1,Math.max(0,(performance.now()-curioTrialAt)/2600)):0;
       drawCurioSpecimen(context, exhibit, image, condition, preview?.at ?? Date.now(),{buried:paper?.stage==='buried',excavation:paper?.excavation,seconds:preview?0:time,trial,reducedMotion:reducedMotion.matches,serviceEnvelope:service?.specimenEnvelope??1,drawAbility:(exhibit.id==='tape'||exhibit.id==='receipt')&&abilityReady&&(preview?.abilities??controller.state.progression.abilities)[exhibit.id]>0?(canvas,material)=>{
         const result=drawCurioAbilityRig(canvas,{id:exhibit.id as 'receipt'|'tape',image:material,seconds:preview?0:time,abilityLevel:(preview?.abilities??controller.state.progression.abilities)[exhibit.id as 'receipt'|'tape'],experimentProgress:trial||undefined,serviceEnvelope:service?.specimenEnvelope??1,records:preview?.records??abilityRecords(),materialRevision:`${condition.condition}/${condition.action?.kind??''}/${condition.action?Math.round((Date.now()-condition.action.startedAt)/33):0}`,reducedMotion:reducedMotion.matches});abilityResults.set(exhibit.id,result);return true;
       }:undefined});
@@ -482,6 +483,69 @@ export function mountFusion(controller: FusionController) {
     showDrawer('return', '失物号回来了', `<div class="fu-return-art">${icon('rocket')}</div><div class="fu-reward"><small>本次带回</small><b>+${format(cargo.resources)}<span>零件</span></b></div><p class="fu-muted">有效探索${Math.floor(cargo.seconds / 60)}分钟${cargo.maintenance ? ` · 维修${cargo.maintenance}零件` : ''}</p><div class="fu-return-items">${cargo.discoveries.map(id => `<div>${itemArt(id)}<span>${escape(discoveryById(id)?.name ?? '')}</span></div>`).join('')}</div><button id="fusion-claim" class="fu-wide fu-primary">收下成果</button>`);
   }
 
+  function syncReceiptLoading(canvas:HTMLCanvasElement) {
+    if (drawer !== 'detail' || detailId !== 'receipt') return;
+    const loading=body.querySelector<HTMLElement>('#fusion-treatment-loading');
+    if (!loading) return;
+    const fallback=canvas.dataset.receiptGlassFallback==='true';
+    loading.hidden=!fallback;
+    if (fallback) {
+      loading.querySelector('span')!.textContent=canvas.dataset.receiptGlassStatus==='error'?'展柜暂未接通，先在整理台查看':'展柜接通中，先在整理台查看';
+      const retry=loading.querySelector<HTMLButtonElement>('#fusion-treatment-retry')!;
+      retry.hidden=false;retry.disabled=museumRoot.dataset.loading==='true';retry.textContent='重试展柜';
+    }
+  }
+
+  /** The physical C state uses the already-owned cabinet; the durable receipt
+   * action/fact model remains the only source of condition and trial progress. */
+  function paintReceiptFocus(canvas:HTMLCanvasElement,wallAt=Date.now()) {
+    const state=controller.state,seconds=fusionRenderElapsed(state.game,wallAt)/1000;
+    const frame=receiptRestorationFrame(state.receipt,wallAt/1000);
+    const display=drawer==='detail'&&detailId==='receipt'&&state.receipt.stage==='displayed'&&state.receipt.condition==='stabilized';
+    let painted=false,view:'glass-case'|'workbench'='workbench';
+    if (display&&museum.canvas.dataset.ready==='true'&&!materialLoadFailed) {
+      // Bench and museum have independent frame counters. Use the renderer's
+      // actual successful time write, avoiding equal-counter false fallbacks.
+      delete canvas.dataset.seconds;
+      museum.renderExhibit(canvas,'receipt',growthLevel(state.game,'case-0'),seconds);
+      painted=canvas.dataset.ready==='true'&&canvas.dataset.seconds===String(seconds);
+      if(painted){
+        view='glass-case';
+        canvas.dataset.condition=frame.condition;canvas.dataset.materialStage=frame.condition;
+        canvas.dataset.restorationPhase=frame.phase;canvas.dataset.restorationCondition=frame.condition;
+        canvas.dataset.restorationCleaning=String(frame.cleaning);canvas.dataset.restorationRepairing=String(frame.repairing);canvas.dataset.restorationExcavation=String(frame.excavation);
+        canvas.dataset.restorationOriginalCode=frame.original.artifactCode;canvas.dataset.restorationMissing=String(frame.reading.missingCount);canvas.dataset.phase=frame.phase;
+        canvas.dataset.cleanCoverage=String(frame.cleaning);canvas.dataset.cleanProgress=String(frame.cleaning);canvas.dataset.repairProgress=String(frame.repairing);
+        canvas.dataset.structureAligned=String(frame.repairing);canvas.dataset.structurePressed=String(frame.repairing);
+        // A display has no active cleaning tool; don't retain an old bench contact.
+        for(const key of ['toolContact','contact','contactX','contactY'])canvas.dataset[key]='';
+        delete canvas.dataset.lampAvailable;
+      }
+    }
+    if (!painted) {
+      painted=Boolean(renderRenewalReceipt(canvas,state.receipt,wallAt,{
+        seconds,reducedMotion:reducedMotion.matches,
+        drawAbility:abilityReady&&state.progression.abilities.receipt>0?(context,image)=>{
+          const result=drawCurioAbilityRig(context,{id:'receipt',image,seconds,
+            abilityLevel:state.progression.abilities.receipt,experimentProgress:frame.phase==='trying'?frame.trying:undefined,
+            records:abilityRecords(state.progression.abilities.receipt),reducedMotion:reducedMotion.matches,
+            materialRevision:`${state.receipt.condition}/${state.receipt.activeAction?.id??''}`});
+          abilityResults.set('receipt',result);return true;
+        }:undefined,
+      }));
+    }
+    if(painted){
+      canvas.dataset.focus=view;canvas.dataset.receiptView=view;
+      canvas.dataset.receiptGlassFallback=String(display&&view!=='glass-case');
+      canvas.dataset.receiptGlassStatus=museum.canvas.dataset.ready??'pending';
+      if(view==='glass-case')canvas.dataset.receiptCaseLevel=String(growthLevel(state.game,'case-0'));
+      else{for(const key of ['receiptCaseLevel','level','installProgress','seconds'])delete canvas.dataset[key];}
+      canvas.setAttribute('aria-label',view==='glass-case'?'收据展示完成态与已购玻璃柜近景':'收据物理状态与修补近景');
+      decorateAbilityCanvas(canvas,'receipt');syncReceiptLoading(canvas);
+    }
+    return painted;
+  }
+
   async function prepareFocus() {
     if (!paperReady) {
       paperLoading ??= prepareCurioWorkbench().then(() => {
@@ -492,11 +556,37 @@ export function mountFusion(controller: FusionController) {
     focusReady = true;
     const canvas=body.querySelector<HTMLCanvasElement>('#fusion-paper-focus');
     if(canvas&&dialog.open){
-      if(renderRenewalReceipt(canvas,controller.state.receipt,Date.now(),{seconds:fusionRenderElapsed(controller.state.game,Date.now())/1000,reducedMotion:reducedMotion.matches})){
-        const loading=body.querySelector<HTMLElement>('#fusion-treatment-loading');if(loading)loading.hidden=true;
-      }
+      if(!paintReceiptFocus(canvas))focusReady=false;
     }
     updateLiveDrawer();
+  }
+
+  function exhibitInteractionState(id: string) {
+    if (!exhibitActionLabels[id]) return undefined;
+    const state = controller.state;
+    const receipt = id === 'receipt';
+    const condition = receipt ? state.receipt.condition : state.curios[id]?.condition;
+    const completed = condition === 'stabilized' && (!receipt || state.receipt.stage === 'displayed');
+    const canvas = body.querySelector<HTMLCanvasElement>(receipt ? '#fusion-paper-focus' : '#fusion-exhibit-focus');
+    const renderedCondition = canvas?.dataset.condition ?? canvas?.dataset.restorationCondition ?? canvas?.dataset.materialStage;
+    const ready = canvas?.dataset.ready === 'true' && renderedCondition === condition && (!receipt || focusReady);
+    const busy = receipt ? !!state.receipt.activeAction : !!state.curios[id]?.action;
+    return {condition, completed, ready, busy, canvas, renderedCondition};
+  }
+
+  function updateExhibitInteraction() {
+    if (drawer !== 'detail') return;
+    const panel = body.querySelector<HTMLElement>('#fusion-exhibit-interaction');
+    const button = body.querySelector<HTMLButtonElement>('#fusion-try');
+    const view = exhibitInteractionState(detailId);
+    if (!panel || !button || !view) return;
+    panel.hidden = !view.completed || !view.ready;
+    panel.dataset.focus = view.canvas?.dataset.focus ?? view.canvas?.id ?? '';
+    panel.dataset.condition = view.condition ?? '';
+    panel.dataset.renderedCondition = view.renderedCondition ?? '';
+    button.hidden = panel.hidden;
+    button.disabled = panel.hidden || view.busy;
+    button.textContent = exhibitActionLabels[detailId];
   }
 
   function showDetail(id: string) {
@@ -505,13 +595,15 @@ export function mountFusion(controller: FusionController) {
     const discovery = discoveryById(id)!;
     const ability=id==='receipt'||id==='tape'?refinementView(state).abilities[id]:undefined;
     const flavor=parcelFlavor(id,{abilityLevel:ability?.level??0,sortingKnown:state.progression.sorting.phase!=='unknown'});
+    const exhibit = Boolean(exhibitActionLabels[id]);
     curioTrialAt=-Infinity;
     detailId = id;
     showDrawer('detail', discovery.name, `
       ${id === 'receipt' || curioPrices[id] ? '<div id="fusion-treatment-loading" class="fu-treatment-loading" role="status"><span>整理台准备中…</span><button id="fusion-treatment-retry" hidden>重新接通</button></div>' : ''}
       ${id === 'receipt' || curioPrices[id] ? '<ol class="fu-treatment-stages" aria-label="物品处理阶段"><li data-condition="found">01 发现</li><li data-condition="clean">02 整理</li><li data-condition="stabilized">03 展示</li></ol>' : ''}
       ${id === 'receipt' ? '<canvas id="fusion-paper-focus" width="640" height="700" role="img" aria-label="收据物理状态与修补近景"></canvas><div class="fu-paper-status"><span id="fusion-paper-condition"></span><span id="fusion-paper-missing"></span></div><div class="fu-progress"><i id="fusion-paper-progress"></i></div>' : `<canvas id="fusion-exhibit-focus" width="${curioPrices[id] ? 640 : 400}" height="${curioPrices[id] ? 700 : 370}" role="img" aria-label="${escape(discovery.name)}${curioPrices[id] ? '独立整理台' : '玻璃容器近景'}"></canvas>`}
-      <div class="fu-detail-actions">${id === 'receipt' ? '<button id="fusion-paper-primary" class="fu-primary"></button>' : ''}${curioPrices[id] ? '<button id="fusion-curio-primary" class="fu-primary"></button>' : ''}<button id="fusion-try">${state.journey?'试一试 · 免费':'试一试'}</button></div>
+      <div id="fusion-treatment-actions" class="fu-detail-actions">${id === 'receipt' ? '<button id="fusion-paper-primary" class="fu-primary"></button><button id="fusion-compare-label" hidden>对照箱标</button>' : ''}${curioPrices[id] ? '<button id="fusion-curio-primary" class="fu-primary"></button>' : ''}${exhibit ? '' : '<button id="fusion-try">试一试</button>'}</div>
+      ${exhibit ? `<section id="fusion-exhibit-interaction" class="fu-exhibit-interaction" aria-labelledby="fusion-exhibit-title" hidden><header><strong id="fusion-exhibit-title">展品互动</strong><small id="fusion-exhibit-note">不耗零件</small></header><button id="fusion-try" aria-describedby="fusion-exhibit-note" disabled hidden>${exhibitActionLabels[id]}</button></section>` : ''}
       <div id="interaction-feedback" class="fu-interaction" hidden><canvas width="320" height="180" aria-label="奇物互动演出"></canvas><p id="interaction"></p><button id="fusion-hide-interaction">收起</button></div>
       ${curioPrices[id] ? '<p id="fusion-curio-condition" class="fu-muted"></p>' : ''}${id==='receipt'||curioPrices[id]?'<p id="fusion-curio-response" class="fu-curio-response" role="status" hidden></p>':''}${ability?`<section class="fu-ability-panel"><small>本体研究</small><div><strong id="fusion-ability-level"></strong><span id="fusion-ability-effect"></span></div><button id="fusion-ability-upgrade" class="fu-primary"></button><small id="fusion-ability-next" class="fu-ability-next" hidden></small></section>`:''}${['receipt','tape','nested','stamp','cosmic-parcel','bell'].includes(id)?'<button id="fusion-exhibit-engineering" class="fu-wide">展柜工程</button>':''}${flavor?`<div class="fu-curio-message"><small>${flavor.landmark} · 奇物留言</small><p>${flavor.line}</p></div>`:''}<details class="fu-details"><summary>它的来历</summary><p>${escape(discovery.description)}</p><p>${escape(discovery.fieldNote)}</p>${id === 'receipt' ? '<p id="fusion-paper-evidence"></p>' : ''}</details>`);
     const loadFailed = () => {
@@ -634,11 +726,14 @@ export function mountFusion(controller: FusionController) {
       const main = receiptRestorationMainAction({...state.receipt, parts: state.game.resources});
       const primary = query<HTMLButtonElement>('#fusion-paper-primary');
       const labels = {excavate: '取出', clean: '清理纸面 40', repair: '修补纸角 120', identify: '对照线索', 'visit-field': '去找线索'};
-      primary.textContent = state.receipt.activeAction ? '正在整理…' : labels[main.kind as keyof typeof labels];
+      const active = state.receipt.activeAction?.kind;
+      primary.textContent = active && active !== 'try' ? ({excavate:'正在取出…',clean:'正在清理…',repair:'正在修补…',identify:'正在对照…'} as const)[active] : labels[main.kind as keyof typeof labels];
       primary.dataset.kind = main.kind;
       primary.disabled = !focusReady || main.disabled;
-      query<HTMLButtonElement>('#fusion-try').disabled = state.receipt.stage === 'buried' || !!state.receipt.activeAction;
-      query<HTMLButtonElement>('#fusion-try').textContent=state.journey?'试一试 · 免费':refinementView(state).compareAction.enabled?'对照箱标':'试一试';
+      const compare = refinementView(state).compareAction;
+      const compareButton = query<HTMLButtonElement>('#fusion-compare-label');
+      compareButton.hidden = Boolean(state.journey) || state.receipt.condition !== 'stabilized' || !compare.enabled;
+      compareButton.disabled = !exhibitInteractionState('receipt')?.ready || !!state.receipt.activeAction || !compare.enabled;
       query('#fusion-paper-condition').textContent = state.receipt.stage === 'buried' ? '土样中 · 发现态' : curioConditionPresentation('receipt', state.receipt.condition).label;
       query('#fusion-paper-missing').textContent = `原件待证${frame.reading.missingCount}项`;
       query('#fusion-paper-missing').dataset.count = String(frame.reading.missingCount);
@@ -655,9 +750,10 @@ export function mountFusion(controller: FusionController) {
         primary.dataset.kind = next;
         const ready = body.querySelector<HTMLCanvasElement>('#fusion-exhibit-focus')?.dataset.ready === 'true';
         primary.disabled = !ready || !!curio.action || curio.condition === 'stabilized' || state.game.resources < curioPrices[detailId][next];
+        primary.hidden = curio.condition === 'stabilized' && !curio.action;
+        query('#fusion-treatment-actions').hidden = primary.hidden;
         const presentation = curioConditionPresentation(detailId, curio.condition);
         query('#fusion-curio-condition').textContent = curio.action ? `${curio.action.kind === 'clean' ? labels.cleaning : labels.repairing} · ${Math.min(100, Math.floor((Date.now() - curio.action.startedAt) / (curio.action.endsAt - curio.action.startedAt) * 100))}%` : `${presentation.label} · ${presentation.detail}`;
-        query<HTMLButtonElement>('#fusion-try').disabled = !ready || !!curio.action;
       }
     }
     if (drawer === 'detail') {
@@ -665,6 +761,7 @@ export function mountFusion(controller: FusionController) {
       for (const step of body.querySelectorAll<HTMLElement>('.fu-treatment-stages [data-condition]')) {
         step.setAttribute('aria-current', step.dataset.condition === condition ? 'step' : 'false');
       }
+      updateExhibitInteraction();
     }
     if (drawer === 'research') {
       const task = state.task;
@@ -949,7 +1046,20 @@ export function mountFusion(controller: FusionController) {
     if (button.id === 'fusion-dismiss-intro') {introDismissed = true;query('#fusion-journey-intro').hidden = true;try {localStorage.setItem(introKey, String(controller.state.journey?.seed));} catch {}return;}
     if (button.id === 'fusion-observe') {followLiveInspection = true;setFieldOpen(!fieldOpen);return;}
     if (button.id === 'fusion-field-close') {setFieldOpen(false);return;}
-    if (button.id === 'fusion-treatment-retry') {showDetail(detailId);return;}
+    if (button.id === 'fusion-treatment-retry') {
+      const canvas=body.querySelector<HTMLCanvasElement>('#fusion-paper-focus');
+      if(detailId==='receipt'&&canvas?.dataset.receiptGlassFallback==='true'){
+        button.disabled=true;
+        try{await museum.retry();}
+        catch{/* The independent bench remains usable if glass recovery fails. */}
+        finally{button.disabled=false;}
+        if(dialog.open&&drawer==='detail'&&detailId==='receipt'){
+          paintReceiptFocus(canvas);updateLiveDrawer();
+        }
+        return;
+      }
+      showDetail(detailId);return;
+    }
     if (button.dataset.tab) {selectTab(button.dataset.tab as Tab);return;}
     if (button.dataset.filter) {
       filter = button.dataset.filter as Filter;
@@ -1054,17 +1164,43 @@ export function mountFusion(controller: FusionController) {
     if (button.id === 'fusion-curio-primary') {
       await act({type: 'curio', id: detailId, kind: button.dataset.kind as 'clean' | 'repair'});return;
     }
-    if (button.id === 'fusion-try') {
-      soundCue('interaction',detailId);
-      const response=body.querySelector<HTMLElement>('#fusion-curio-response');
-      if(response&&trialLines[detailId]){response.hidden=false;response.textContent=trialLines[detailId];}
-      if(detailHabitat){detailHabitat.interact();const feedback=query('#interaction-feedback');feedback.hidden=false;feedback.querySelector('canvas')!.hidden=true;query('#interaction').textContent=discoveryById(detailId)!.interaction;return;}
-      if(['tape','nested','stamp','cosmic-parcel','bell'].includes(detailId)){curioTrialAt=performance.now();curioTrialReplay++;return;}
-      if (detailId === 'receipt') {if (!controller.state.journey) {const compare=refinementView(controller.state).compareAction;if(compare.enabled)await act(compare.action);}await act({type: 'paper', kind: 'try'});}
-      else {
-        interactions.show(detailId, lastPointer);
-        requestAnimationFrame(() => query('#interaction-feedback').scrollIntoView({block: 'nearest'}));
+    if (button.id === 'fusion-compare-label') {
+      if (detailId !== 'receipt' || controller.state.journey) return;
+      const view = exhibitInteractionState('receipt');
+      const compare = refinementView(controller.state).compareAction;
+      if (!view?.completed || !view.ready || view.busy || !compare.enabled) return;
+      const result = await act(compare.action);
+      if (result.ok) {
+        // Preserve the old real-label comparison and its paper-reading animation;
+        // the separate exhibit action below never performs a factual comparison.
+        await act({type: 'paper', kind: 'try'});
+        view.canvas?.scrollIntoView({block:'nearest'});
       }
+      return;
+    }
+    if (button.id === 'fusion-try') {
+      const interactionId = detailId;
+      const exhibit = exhibitInteractionState(interactionId);
+      if (exhibit) {
+        // A stale click or a loading frame cannot start a text-only performance.
+        if (!exhibit.completed || !exhibit.ready || exhibit.busy) return;
+        if (interactionId === 'receipt') {
+          const result = await act({type: 'paper', kind: 'try'});
+          if (!result.ok || !dialog.open || drawer !== 'detail' || detailId !== interactionId) return;
+        } else {
+          curioTrialAt=performance.now();curioTrialReplay++;
+        }
+        soundCue('interaction',interactionId);
+        const response=body.querySelector<HTMLElement>('#fusion-curio-response');
+        if(response&&trialLines[interactionId]){response.hidden=false;response.textContent=trialLines[interactionId];}
+        exhibit.canvas?.scrollIntoView({block:'nearest'});
+        updateExhibitInteraction();
+        return;
+      }
+      soundCue('interaction',detailId);
+      if(detailHabitat){detailHabitat.interact();const feedback=query('#interaction-feedback');feedback.hidden=false;feedback.querySelector('canvas')!.hidden=true;query('#interaction').textContent=discoveryById(detailId)!.interaction;return;}
+      interactions.show(detailId, lastPointer);
+      requestAnimationFrame(() => query('#interaction-feedback').scrollIntoView({block: 'nearest'}));
       return;
     }
     if (button.id === 'fusion-hide-interaction') {interactions.hide();query('#interaction-feedback').hidden=true;return;}
@@ -1145,20 +1281,8 @@ export function mountFusion(controller: FusionController) {
       const canvas = query<HTMLCanvasElement>('#fusion-paper-focus');
       if (canvas && focusReady && focusVisible.get(canvas)!==false) {
         lastFocusPaint = now;
-        const state = controller.state;
-        const frame = receiptRestorationFrame(state.receipt, Date.now() / 1000);
-        const rendered=renderRenewalReceipt(canvas,state.receipt,Date.now(),{
-          seconds:fusionRenderElapsed(state.game,Date.now())/1000,reducedMotion:reducedMotion.matches,
-          drawAbility:abilityReady&&state.progression.abilities.receipt>0?(context,image)=>{
-            const result=drawCurioAbilityRig(context,{id:'receipt',image,seconds:fusionRenderElapsed(state.game,Date.now())/1000,
-              abilityLevel:state.progression.abilities.receipt,experimentProgress:frame.phase==='trying'?frame.trying:undefined,
-              records:abilityRecords(state.progression.abilities.receipt),reducedMotion:reducedMotion.matches,
-              materialRevision:`${state.receipt.condition}/${state.receipt.activeAction?.id??''}`});
-            abilityResults.set('receipt',result);return true;
-          }:undefined,
-        });
-        if(!rendered){focusReady=false;}
-        decorateAbilityCanvas(canvas,'receipt');painted=true;
+        painted=paintReceiptFocus(canvas);
+        if(!painted){focusReady=false;}
         if (sideLight && drawer === 'project' && projectId === 'evidence-bench') {
           const context = canvas.getContext('2d')!;
           context.save();context.globalCompositeOperation = 'soft-light';
@@ -1184,7 +1308,11 @@ export function mountFusion(controller: FusionController) {
         }
       }
       if(painted){
-        if (drawer === 'detail') {const loading = body.querySelector<HTMLElement>('#fusion-treatment-loading');if(loading) loading.hidden = true;}
+        if (drawer === 'detail') {
+          const loading = body.querySelector<HTMLElement>('#fusion-treatment-loading');
+          if(detailId==='receipt'&&canvas)syncReceiptLoading(canvas);else if(loading)loading.hidden=true;
+          updateExhibitInteraction();
+        }
         if(lastFocusAt)focusMetrics.intervalsMs.push(now-lastFocusAt);lastFocusAt=now;focusMetrics.costsMs.push(performance.now()-began);focusMetrics.intervalsMs=focusMetrics.intervalsMs.slice(-1200);focusMetrics.costsMs=focusMetrics.costsMs.slice(-1200);
       }
     }

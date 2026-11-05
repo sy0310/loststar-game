@@ -1,22 +1,7 @@
-/** Original UI glyphs: integer-grid silhouettes, shared by all renewed surfaces. */
-const glyphs:Record<string,string>={
- planet:'M8 1h8v2h4v4h2v10h-2v4h-4v2H8v-2H4v-4H2V7h2V3h4z M8 3v2H6v2H4v10h2v2h2v2h8v-2h2v-2h2V7h-2V5h-2V3z M11 4h2v16h-2z M4 11h16v2H4z',
- rocket:'M13 1h8v8h-2v4h-4v4h-4v4H3v-8h4V9h4V5h2z M15 5v4h4V5z M5 15v4h4v-2H7v-2z',
- radar:'M7 1h10v2h4v4h2v10h-2v4h-4v2H7v-2H3v-4H1V7h2V3h4z M7 3v2H5v2H3v10h2v2h2v2h10v-2h2v-2h2V7h-2V5h-2V3z M11 5h2v8h-2z M13 9h2V7h2v2h-2v2h-2z M5 11h4v2H5z M11 15h2v4h-2z',
- book:'M2 3h8v2h4V3h8v16h-8v2h-4v-2H2z M4 5v12h6v2h1V7h-1V5z M13 7v12h1v-2h6V5h-6v2z M6 8h3v2H6z M15 8h3v2h-3z M6 12h3v2H6z M15 12h3v2h-3z',
- base:'M10 1h4v2h2v2h2v2h2v2h2v14H2V9h2V7h2V5h2V3h2z M4 11v10h5v-8h6v8h5V11z M11 15v6h2v-6z',
- bolt:'M12 1h7v2h-2v4h-2v2h6v2h-2v4h-2v2h-2v4h-2v2h-3v-8H3v-2h2V9h2V5h2V3h3z',
- cube:'M9 2h6v2h4v2h3v12h-4v2h-4v2h-4v-2H6v-2H2V6h3V4h4z M4 8v8h2v2h5v-6H8v-2H6V8z M13 12v8h3v-2h4V8h-2v2h-3v2z M8 6v2h3v2h2V8h3V6h-3V4h-2v2z',
- gear:'M9 1h6v4h4V3h2v6h2v6h-4v4h2v2h-6v2H9v-4H5v2H3v-6H1V9h4V5H3V3h6z M9 7v2H7v6h2v2h6v-2h2V9h-2V7z M9 9h6v6H9z',
- arrow:'M13 3h2v2h2v2h2v2h2v6h-2v2h-2v2h-2v2h-2v-6H3V9h10z',
- close:'M4 3h3v3h3v3h4V6h3V3h3v4h-3v3h-3v4h3v3h3v4h-3v-3h-3v-3h-4v3H7v3H4v-4h3v-3h3v-4H7V7H4z',
- receipt:'M6 1h12v22h-3v-2h-3v2H9v-2H6z M8 3v16h2v-2h6V3z M10 5h4v2h-4z M10 9h4v2h-4z M10 13h4v2h-4z',
- tape:'M7 2h10v2h4v4h2v8h-4v4H9v2H1v-4h4v-2H1V8h2V4h4z M7 4v2H5v6h2v2h10v-2h2V6h-2V4z M9 6h6v6H9z',
- nested:'M9 1h6v2h4v2h3v16H2V5h3V3h4z M4 7v12h7v-8H8V9H6V7z M13 11v8h7V7h-2v2h-3v2z M9 5v2h6V5z',
- mouse:'M3 2h6v4h6V2h6v6h-2v10h-4v4H9v-4H5V8H3z M7 8v8h4v2h2v-2h4V8z M9 10h2v2H9z M14 10h2v2h-2z',
- signal:'M10 1h4v4h2v4h2v4h2v4h2v6H2v-6h2v-4h2V9h2V5h2z M10 7v8h4V7z M10 17v3h4v-3z',
-};
-export const icon=(id:string,cls='')=>`<svg class="icon fu-pixel-icon ${cls}" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" shape-rendering="crispEdges" aria-hidden="true"><path d="${glyphs[id]??glyphs.planet}"/></svg>`;
+import {controlIcon} from './control-icons';
+
+/** Same UI contract and dimensions; artwork now uses the authored 48-unit controls. */
+export const icon=controlIcon;
 
 export const renewalChapter=(mark:string,title:string,line:string)=>`<div class="fu-chapter"><span aria-hidden="true">${icon(mark)}</span><div><small>失物号 · 退件平原</small><strong>${title}</strong><p>${line}</p></div></div>`;
 
