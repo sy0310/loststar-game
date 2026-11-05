@@ -3,7 +3,7 @@ import {readFile, writeFile, mkdir} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 
-const base = process.env.V036_URL ?? 'http://127.0.0.1:4216/';
+const base = process.env.V036_URL ?? 'http://127.0.0.1:4217/';
 const source = JSON.parse(await readFile('releases/taptap/package-info-v036.json', 'utf8'));
 const percentile = (values, q) => {
   const sorted = [...values].sort((a, b) => a - b);

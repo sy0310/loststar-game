@@ -4,7 +4,7 @@ import {execFileSync} from 'node:child_process';
 import {resolve} from 'node:path';
 
 const output = resolve('artifacts/v036');
-const base = process.env.V036_URL ?? 'http://127.0.0.1:4216/';
+const base = process.env.V036_URL ?? 'http://127.0.0.1:4217/';
 const rehearse = process.argv.includes('--rehearse');
 const packageInfo = JSON.parse(await readFile('releases/taptap/package-info-v036.json', 'utf8'));
 await mkdir(`${output}/raw`, {recursive: true});
