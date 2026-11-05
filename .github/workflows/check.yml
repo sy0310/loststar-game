@@ -39,11 +39,13 @@ jobs:
             coverage/
           retention-days: 14
       - uses: actions/upload-artifact@v4
-        if: always() && hashFiles('artifacts/visual-renewal/screens-evidence.json') != ''
+        if: always() && (hashFiles('artifacts/v041-receipt-review/screens-evidence.json') != '' || hashFiles('artifacts/visual-renewal/screens-evidence.json') != '')
         with:
           name: visual-renewal-review
           path: |
             artifacts/visual-renewal/
+            artifacts/v041-receipt-review/
             !artifacts/visual-renewal/raw/
             !artifacts/visual-renewal/internal/
+            !artifacts/v041-receipt-review/raw/
           retention-days: 14
