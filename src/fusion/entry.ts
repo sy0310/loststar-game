@@ -23,6 +23,7 @@ async function start() {
     resetUiMetrics: () => handle.resetDiagnostics(),
     feedbackMetrics: () => extension.feedbackMetrics(),
     surfaceMetrics: () => extension.surfaceMetrics(),
+    facilityMetrics: () => extension.facilityMetrics(),
     resetMetrics: () => scene.resetMetrics(),
     pickAtClient: (x: number, y: number) => scene.pickAtClient(x, y),
   }});

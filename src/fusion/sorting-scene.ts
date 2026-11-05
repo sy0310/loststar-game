@@ -13,13 +13,15 @@ import {fusionCycleFraction} from './render-clock';
 import {tuning} from '../game/engine';
 import {robotScannerPoint, type robotPose} from '../render/motion';
 import type {SceneEntity, SceneFrame} from '../render/scene';
+import {firstPlanetFacilities, sortingMachinePoint} from './facilities';
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const smooth = (value: number) => {const t = clamp(value);return t * t * (3 - 2 * t);};
-const anchor = {x: 410, y: 315};
-const scale = 148 / 320;
-const origin = {x: anchor.x - 116 * scale, y: anchor.y - 279 * scale};
-const point = (x: number, y: number) => ({x: origin.x + x * scale, y: origin.y + y * scale});
+const registration = firstPlanetFacilities.sortingMachine;
+const anchor = registration.anchor;
+const scale = registration.width / registration.nativeSize;
+const origin = sortingMachinePoint(0, 0);
+const point = sortingMachinePoint;
 const labels = {P03: point(87, 166), P30: point(213, 118)};
 const mouth = point(90, 205);
 const feet = [[52,259],[116,279],[194,249],[259,219]];
@@ -200,28 +202,32 @@ export function createSortingScene(getFusion?: () => FusionSave) {
   }
   return {
     ready, active, target, pose,
+    diagnostics: () => ({...registration, anchor: {...anchor}, phase: view()?.phase ?? 'absent',
+      labels: {P03: {...labels.P03}, P30: {...labels.P30}}, mouth: {...mouth}}),
     entities(context: CanvasRenderingContext2D, frame: SceneFrame): SceneEntity[] {
       if (!getFusion || !art.length || view()?.phase === 'unknown' && !getFusion().journey) return [];
       return [
         {depth:anchor.y,hitTarget:{kind:'site',id:'sorting'},draw:()=>machine(context,frame)},
         {depth:anchor.y+.1,hitTarget:{kind:'site',id:'sorting'},draw:()=>{paper(context,frame);box(context,frame);}},
-        {depth:anchor.y+.2,hitTarget:{kind:'site',id:'sorting'},draw:()=>context.drawImage(art[1],origin.x,origin.y,148,148)},
+        {depth:anchor.y+.2,hitTarget:{kind:'site',id:'sorting'},draw:()=>context.drawImage(art[1],origin.x,origin.y,registration.width,registration.width)},
       ];
     },
     afterWorld(context: CanvasRenderingContext2D, frame: SceneFrame) {
       const sorting = view();
+      if (sorting) Object.assign(frame.output.dataset, {
+        sortingEntityId: registration.id, sortingRenderer: registration.renderer,
+        sortingAnchor: JSON.stringify(anchor), sortingLayers: JSON.stringify(registration.layers),
+        sortingPhase: sorting.phase, sortingStage: sorting.stage ?? '', sortingWork: String(sorting.workDone),
+      });
       if (!sorting || !active() || !['day','dusk'].includes(frame.environment.period)) return;
       if (frame.robot.action === 'scan') {
         const targetPoint = target();
-        const source = robotScannerPoint(frame.robot, frame.t);
+        const source = robotScannerPoint(frame.robot, frame.t, frame.robotAnimation);
         context.save();context.fillStyle = '#a0ddbf2b';context.beginPath();context.moveTo(source.x,source.y);
         context.lineTo(targetPoint.x-14,targetPoint.y-7);context.lineTo(targetPoint.x+14,targetPoint.y+7);context.closePath();context.fill();
         context.strokeStyle = '#c3f1ce';context.lineWidth = 1.7;context.strokeRect(targetPoint.x-13,targetPoint.y-9,26,18);
         context.fillStyle = '#e3e9ae';context.fillRect(targetPoint.x-9,targetPoint.y-6+((clock(frame)*16)%11),18,2);context.restore();
       }
-      frame.output.dataset.sortingPhase = sorting.phase;
-      frame.output.dataset.sortingStage = sorting.stage ?? '';
-      frame.output.dataset.sortingWork = String(sorting.workDone);
     },
   };
 }

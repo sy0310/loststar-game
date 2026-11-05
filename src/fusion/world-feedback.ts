@@ -66,7 +66,7 @@ export function createWorldFeedback() {
       const now = performance.now();
       const transform = context.getTransform();
       const inverse = transform.inverse();
-      const scanner = robotScannerPoint(frame.robot, frame.t);
+      const scanner = robotScannerPoint(frame.robot, frame.t, frame.robotAnimation);
       if (appliedWork > lastWork + .001 && frame.environment.period !== 'night') workUntil = now + 380;
       lastWork = appliedWork;
       for (let index = strokes.length - 1; index >= 0; index--) {

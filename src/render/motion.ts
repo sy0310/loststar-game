@@ -31,12 +31,23 @@ export function robotPose(fraction:number) {
 }
 // The cyan scanner in the original 160px atlas cell, measured from its top left.
 export const robotScannerSource = {x: 29, y: 82} as const;
-export function robotScannerPoint(pose: Pick<ReturnType<typeof robotPose>, 'x' | 'y' | 'action' | 'facing'>, seconds = 0) {
+export const robotScannerJoint = {x:65,y:94} as const;
+export function robotScanAngle(workSeconds:number,received=0) {
+  return Math.sin(workSeconds*4.2)*.18-received*.16;
+}
+export function robotScannerPoint(pose: Pick<ReturnType<typeof robotPose>, 'x' | 'y' | 'action' | 'facing'>, seconds = 0,
+  animation?:{workSeconds:number;received:number}) {
+  seconds=animation?.workSeconds??seconds;
   const moving = pose.action === 'walk' || pose.action === 'return';
   const bob = moving ? Math.round(Math.sin(seconds * 16)) : 0;
   const mirrored = pose.action === 'walk' && pose.facing === 'right';
-  return {x: Math.round(pose.x) + (mirrored ? -1 : 1) * (-144 * .54 + robotScannerSource.x * 144 / 160),
-    y: Math.round(pose.y + bob) - 144 * .97 + robotScannerSource.y * 144 / 160};
+  let source:{x:number;y:number}=robotScannerSource;
+  if(animation&&pose.action==='scan'){
+    const angle=robotScanAngle(seconds,animation.received),dx=source.x-robotScannerJoint.x,dy=source.y-robotScannerJoint.y;
+    source={x:robotScannerJoint.x+dx*Math.cos(angle)-dy*Math.sin(angle),y:robotScannerJoint.y+dx*Math.sin(angle)+dy*Math.cos(angle)};
+  }
+  return {x: Math.round(pose.x) + (mirrored ? -1 : 1) * (-144 * .54 + source.x * 144 / 160),
+    y: Math.round(pose.y + bob) - 144 * .97 + source.y * 144 / 160};
 }
 function shipOrbit(seconds:number) {
   const angle=seconds/14*Math.PI*2-.8,rx=350,ry=175,tilt=-.18;

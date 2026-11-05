@@ -7,6 +7,7 @@ import hermitUrl from '../../assets/runtime/hermit.webp';
 import birdUrl from '../../assets/runtime/tagbird.webp';
 import sorterUrl from '../../assets/runtime/sorter.webp';
 import { robotPose, shipPose } from './motion';
+import {createAnimatedRobotPainter,robotAnimationPose,type RobotAnimationState} from './robot-animation';
 import { tuning, type SaveData } from '../game/engine';
 import {worldView} from '../game/world';
 import {residentEnvironment, residentMotion, residentIds, type ResidentEnvironment} from './resident-motion';
@@ -16,23 +17,30 @@ export type {ScenePick} from './scene-picking';
 
 const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl};
 type Art = Record<keyof typeof urls, HTMLImageElement>;
-export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement;environment:ResidentEnvironment;output:HTMLCanvasElement}
+export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;robotAnimation?:RobotAnimationState;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement;environment:ResidentEnvironment;output:HTMLCanvasElement}
 export interface SceneCamera {scale:number;x:number;y:number;offsetX?:number;offsetY?:number}
 export interface SceneEntity {depth:number;draw:()=>void;hitTarget?:SceneHitTarget}
 export interface SceneExtension {
   ready?:Promise<void>;
   cycleFraction?:(base:number,seconds:number)=>number;
   robotPose?:(base:ReturnType<typeof robotPose>,seconds:number)=>ReturnType<typeof robotPose>|undefined;
+  robotAnimation?:(base:ReturnType<typeof robotPose>,seconds:number)=>RobotAnimationState|undefined;
   shipPose?:(base:ReturnType<typeof shipPose>,seconds:number)=>ReturnType<typeof shipPose>;
   drawRobot?:(context:CanvasRenderingContext2D,frame:SceneFrame,atlas:HTMLImageElement)=>boolean|void;
   environment?:(seconds:number)=>ResidentEnvironment;
   drawResident?:typeof drawResident;
   residentPose?:typeof residentMotion;
   camera?:SceneCamera;
+  hideLegacySorter?:boolean;
   worldEntities?:(context:CanvasRenderingContext2D,frame:SceneFrame)=>SceneEntity[];
   afterWorld:(context:CanvasRenderingContext2D,frame:SceneFrame)=>void;
 }
 const load=(url:string)=>new Promise<HTMLImageElement>((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=url;});
+
+/** Dynamic canvases opt into invalidation; ordinary immutable atlas masks stay cached. */
+export function cachedSceneAlphaMask<T>(cached:{mask:T;revision?:string}|undefined,revision:string|undefined,read:()=>T){
+  return cached&&cached.revision===revision?cached:{mask:read(),revision};
+}
 
 export class ExpeditionScene {
   readonly canvas: HTMLCanvasElement;
@@ -56,7 +64,8 @@ export class ExpeditionScene {
   private destroyed=false;
   private hitCommands: SceneImageCommand[] = [];
   private hitTarget: SceneHitTarget | undefined;
-  private alphaMasks = new WeakMap<HTMLImageElement | HTMLCanvasElement, SceneAlphaMask>();
+  private alphaMasks = new WeakMap<HTMLImageElement | HTMLCanvasElement, {mask:SceneAlphaMask;revision?:string}>();
+  private robotPainter = createAnimatedRobotPainter();
   ready=false;
 
   constructor(parent:HTMLElement,private getState:()=>SaveData,private extension?:SceneExtension) {
@@ -107,13 +116,16 @@ export class ExpeditionScene {
   }
   private imageMask(image:HTMLImageElement | HTMLCanvasElement){
     const cached=this.alphaMasks.get(image);
-    if(cached)return cached;
-    const canvas=document.createElement('canvas');canvas.width=image instanceof HTMLImageElement?image.naturalWidth:image.width;canvas.height=image instanceof HTMLImageElement?image.naturalHeight:image.height;
-    const context=canvas.getContext('2d')!;context.drawImage(image,0,0);
+    const revision=image.dataset.hitRevision;
+    if(cached&&cached.revision===revision)return cached.mask;
+    const canvas=image instanceof HTMLCanvasElement?image:document.createElement('canvas');
+    if(image instanceof HTMLImageElement){canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;}
+    const context=canvas.getContext('2d')!;if(image instanceof HTMLImageElement)context.drawImage(image,0,0);
     const pixels=context.getImageData(0,0,canvas.width,canvas.height).data;
     const alpha=new Uint8Array(canvas.width*canvas.height);
     for(let index=0;index<alpha.length;index++)alpha[index]=pixels[index*4+3];
-    const mask={width:canvas.width,height:canvas.height,alpha};this.alphaMasks.set(image,mask);return mask;
+    const entry=cachedSceneAlphaMask(cached,revision,()=>({width:canvas.width,height:canvas.height,alpha}));
+    this.alphaMasks.set(image,entry);return entry.mask;
   }
   private recordImageHits(context:CanvasRenderingContext2D){
     const original=context.drawImage.bind(context);
@@ -178,17 +190,19 @@ export class ExpeditionScene {
     }else c.drawImage(atlas,(frame%4)*cell,Math.floor(frame/4)*cell,cell,cell,dx,dy,w,w);
     c.restore();
   }
-  private drawRobot(t:number,f:number,p=robotPose(f)){
+  private drawRobot(t:number,f:number,p=robotPose(f),animation?:RobotAnimationState){
     const c=this.ctx,moving=p.action==='walk'||p.action==='return';
+    t=animation?.workSeconds??t;
     this.shadow(p.x,p.y,31);
     const walkFrame=Math.floor(t*8)%4;
     let frame=moving?walkFrame:p.action==='scan'?4:p.action==='pickup'?(f<.575?5:6):7;
     if(p.action==='unload'&&f<.925)frame=6;
     if(p.action==='unload'&&f>.976)frame=1;
-    const bob=moving?Math.round(Math.sin(t*16))*1:0;
-    this.actor(frame,p.x,p.y+bob,144,p.action==='walk'&&p.facing==='right',p.action==='return',t);
+    const bob=animation?robotAnimationPose(p,f,animation).bob:moving?Math.round(Math.sin(t*16))*1:0;
+    if(animation)this.robotPainter.draw(c,this.art.robot,p,f,animation);
+    else this.actor(frame,p.x,p.y+bob,144,p.action==='walk'&&p.facing==='right',p.action==='return',t);
     if(p.parcel.visible)this.parcel(p.parcel.x,p.parcel.y+(p.action==='return'?bob:0),24);
-    if(p.action==='scan'){
+    if(p.action==='scan'&&!animation){
       const tx=p.parcel.x,ty=p.parcel.y;
       c.save();c.fillStyle='#62ebd42d';c.beginPath();c.moveTo(p.x-48,p.y-76);c.lineTo(tx-26,ty);c.lineTo(tx+25,ty);c.fill();
       c.lineWidth=2;c.strokeStyle='#94fff0';c.setLineDash([5,4]);c.beginPath();c.ellipse(tx,ty,27+Math.sin(t*5)*4,10,0,0,Math.PI*2);c.stroke();c.setLineDash([]);
@@ -222,7 +236,9 @@ export class ExpeditionScene {
     const f=this.extension?.cycleFraction?.(baseFraction,t)??baseFraction,p=this.extension?.robotPose?.(robotPose(f),t)??robotPose(f);
     const environment=this.extension?.environment?.(t)??residentEnvironment(worldView(s),t);
     const baseShip=shipPose(t),ship=this.extension?.shipPose?.(baseShip,t)??baseShip;
-    const frame={t,robot:p,ship,globe:this.art.globe,environment,output:this.canvas};
+    const robotAnimation=this.extension?.robotAnimation?.(p,t);
+    const frame={t,robot:p,robotAnimation,ship,globe:this.art.globe,environment,output:this.canvas};
+    let robotRenderPasses=0,robotRenderSource='base';
     c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);this.positionWorld(c);
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
     if(ship.back)this.drawShip(t,ship);
@@ -232,9 +248,13 @@ export class ExpeditionScene {
     // Independent material accents attach to specific pipe/terrain points.
     this.lamp(345,634,'#e9ae70',t);this.lamp(488,610,'#94dcdb',t+.5);this.lamp(193,548,'#e9ae70',t+1);
     const entities:(SceneEntity&{hit?:SceneHitTarget})[]=[
-      {depth:294,hit:{kind:'planet',id:'parcel'},draw:()=>{this.shadow(568,294,38);this.sprite(this.art.sorter,568,294,101,101);this.lamp(557,208,'#8ff3df',t);const step=Math.floor(t*3)%3;c.fillStyle='#d7b46d';for(let i=0;i<3;i++)c.fillRect(526+i*7+step,278+i*2,3,2);}},
+      ...this.extension?.hideLegacySorter?[]:[{depth:294,hit:{kind:'planet' as const,id:'parcel'},draw:()=>{this.shadow(568,294,38);this.sprite(this.art.sorter,568,294,101,101);this.lamp(557,208,'#8ff3df',t);const step=Math.floor(t*3)%3;c.fillStyle='#d7b46d';for(let i=0;i<3;i++)c.fillRect(526+i*7+step,278+i*2,3,2);}}],
       {depth:417,hit:{kind:'planet',id:'parcel'},draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);c.fillStyle='#624b66';c.fillRect(270,437,38,9);c.fillStyle='#bb957c';c.fillRect(270,434,38,5);c.fillStyle='#88d9c6';c.fillRect(277,438,24,2);}},
-      {depth:p.y,hit:{kind:'robot',id:'robot'},draw:()=>{if(!this.extension?.drawRobot||this.extension.drawRobot(c,frame,this.art.robot)===false)this.drawRobot(t,f,p);}},
+      {depth:p.y,hit:{kind:'robot',id:'robot'},draw:()=>{
+        robotRenderPasses++;
+        if(this.extension?.drawRobot&&this.extension.drawRobot(c,frame,this.art.robot)!==false){robotRenderSource='extension';return;}
+        this.drawRobot(t,f,p,robotAnimation);
+      }},
       {depth:449,draw:()=>this.parcel(438,449,26)},
       {depth:294.5,draw:()=>{
     c.fillStyle='#694771';c.fillRect(600,206,3,52);c.fillStyle='#f9c77c';c.fillRect(599,202,5,5);c.fillStyle='#c9758b';c.beginPath();c.moveTo(603,209);c.lineTo(635,213+Math.sin(t*3)*2);c.lineTo(631,229+Math.sin(t*3)*2);c.lineTo(603,226);c.fill();
@@ -261,6 +281,18 @@ export class ExpeditionScene {
       c.restore();
     }
     this.canvas.dataset.action=p.action;this.canvas.dataset.ship=ship.back?'back':'front';
+    const drawnAnimation=robotAnimation&&robotRenderSource==='base'?robotAnimation:undefined;
+    const drawnMotion=drawnAnimation?robotAnimationPose(p,f,drawnAnimation):undefined;
+    this.canvas.dataset.legacySorterCount=this.extension?.hideLegacySorter?'0':'1';
+    this.canvas.dataset.robotRenderPasses=String(robotRenderPasses);
+    this.canvas.dataset.robotRenderSource=robotRenderSource;
+    this.canvas.dataset.robotWorkSeconds=String(drawnAnimation?.workSeconds??t);
+    this.canvas.dataset.robotGaitFrame=String(drawnMotion?(p.action==='walk'||p.action==='return'?drawnMotion.walkFrame:4):Math.floor(t*8)%4);
+    this.canvas.dataset.robotScanAngle=String(p.action==='scan'?(drawnMotion?.scanAngle??0):0);
+    this.canvas.dataset.robotReceived=String(drawnAnimation?.received??0);
+    this.canvas.dataset.robotAppliedWorkMs=String(drawnAnimation?.appliedWorkMs??0);
+    this.canvas.dataset.robotAssistRate=String(drawnAnimation?.assistRate??0);
+    this.canvas.dataset.robotAnimationAction=p.action;
     this.canvas.dataset.period=environment.period;
     this.canvas.dataset.residents=JSON.stringify(residents);
     for(const resident of residents)this.canvas.setAttribute(`data-resident-${resident.id}`,resident.action);

@@ -21,9 +21,12 @@ export interface V034NightSceneOptions {
   patrolIntruders?: boolean;
   patrolRobotPose?: SceneExtension['robotPose'];
   patrolContents?: NightStudyOptions['idleContents'];
+  beaconSource?: () => {x: number; y: number};
+  patrolCarrierOnlyAtNight?: boolean;
 }
 
 const marker = {x: 408, y: 389, width: 43, height: 18};
+const defaultBeaconSource = {x: 559, y: 208};
 
 function softLight(
   context: CanvasRenderingContext2D,
@@ -73,13 +76,14 @@ function drawStationLights(
   context: CanvasRenderingContext2D,
   stage: NightStage,
   view: V034NightSnapshot,
+  beaconSource = defaultBeaconSource,
 ) {
   const night = view.environment.light;
   if (night <= 0) return;
   const receiving = stage.phase === 'dock' ? .1 : 0;
   softLight(context, 283, 390, 64, '#ebbd81', (.18 + receiving) * night);
   softLight(context, 359, 334, 46, '#e6b57b', .18 * night);
-  softLight(context, 558, 210, 37, '#b1dfd0', .14 * night);
+  softLight(context, beaconSource.x - 1, beaconSource.y + 2, 37, '#b1dfd0', .14 * night);
   context.save();
   context.globalCompositeOperation = 'screen';
   let fault = 0;
@@ -342,28 +346,29 @@ function drawMarkerScan(
   context.restore();
 }
 
-function drawGuidance(
+export function drawV034BeaconGuidance(
   context: CanvasRenderingContext2D,
   view: V034NightSnapshot,
+  source = defaultBeaconSource,
 ) {
   if (!view.facilities.beacon.guiding) return;
   const target = v034NightStage(view).target;
   const strength = .11 + view.facilities.beacon.level * .025;
   context.save();
   context.globalCompositeOperation = 'screen';
-  const light = context.createLinearGradient(559, 208, target.x, target.y);
+  const light = context.createLinearGradient(source.x, source.y, target.x, target.y);
   light.addColorStop(0, `rgba(189,225,202,${strength + .06})`);
   light.addColorStop(1, `rgba(189,225,202,${strength})`);
   context.fillStyle = light;
   context.beginPath();
-  context.moveTo(556, 208);
+  context.moveTo(source.x - 3, source.y);
   context.lineTo(target.x - 25, target.y + 4);
   context.lineTo(target.x + 25, target.y + 4);
-  context.lineTo(562, 208);
+  context.lineTo(source.x + 3, source.y);
   context.closePath();
   context.fill();
   context.fillStyle = '#d8f3c7';
-  context.fillRect(555, 207, 9, 3);
+  context.fillRect(source.x - 4, source.y - 1, 9, 3);
   context.restore();
 }
 
@@ -545,7 +550,9 @@ export function createV034NightScene(model: Pick<V034NightModel, 'snapshot' | 'g
     worldEntities(context, frame) {
       const view = model.snapshot(frame.t);
       const entities = [{depth: marker.y + marker.height, draw: () => drawMarker(context)}];
-      entities.push(...study.worldEntities?.(context, frame) ?? []);
+      const carrierVisible = !options.patrolCarrierOnlyAtNight || view.environment.period === 'night' || view.eventSeconds !== null;
+      frame.output.dataset.patrolCarrierVisible = String(carrierVisible);
+      if (carrierVisible) entities.push(...study.worldEntities?.(context, frame) ?? []);
       if (view.eventSeconds === null) return entities;
       const stage = stageAt(frame.t);
       entities.push({depth: stage.robot.y + .25, draw: () => drawSealedIndicator(context, stage, view)});
@@ -582,12 +589,13 @@ export function createV034NightScene(model: Pick<V034NightModel, 'snapshot' | 'g
       drawNightAtmosphere(context, view);
       stationRelight.draw(context);
       workRelight.draw(context);
-      drawStationLights(context, stage, view);
+      const beaconSource = options.beaconSource?.() ?? defaultBeaconSource;
+      drawStationLights(context, stage, view, beaconSource);
       if (view.eventSeconds !== null) {
         drawSearchlight(context, frame, stage, view, beamTexture);
         drawAttention(context, frame, stage, view);
         drawDoorSignals(context, stage, view);
-        drawGuidance(context, view);
+        drawV034BeaconGuidance(context, view, beaconSource);
         drawMarkerScan(context, frame, view, scanTexture);
         drawDamage(context, view);
         drawImpact(context, view);

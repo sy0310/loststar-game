@@ -1,6 +1,6 @@
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import {createFusion} from '../src/fusion/domain';
-import {createFusionSurfaceFog} from '../src/fusion/surface-fog';
+import {createFusionSurfaceFog, defaultFusionFogScale, fusionFogScales, readFusionFogScale} from '../src/fusion/surface-fog';
 import {robotPose, shipPose} from '../src/render/motion';
 import type {SceneFrame} from '../src/render/scene';
 
@@ -26,6 +26,15 @@ beforeEach(() => {
 afterEach(() => {vi.restoreAllMocks();vi.unstubAllGlobals();});
 
 describe('durable surface fog rendering', () => {
+  it('limits the comparison to two presentation scales without accepting arbitrary persisted geometry', () => {
+    expect(readFusionFogScale('?fog-scale=regional')).toBe('regional');
+    expect(readFusionFogScale('?fog-scale=legacy')).toBe('legacy');
+    for (const query of ['', '?fog-scale=900', '?fog-scale=other', '?receipt=999']) {
+      expect(readFusionFogScale(query)).toBe(defaultFusionFogScale);
+    }
+    expect(fusionFogScales.regional).toEqual({receipt: 156, residents: 196, sorting: 274});
+  });
+
   it('keeps legacy campaigns clear without requesting fog textures', async () => {
     const state = createFusion(5000);
     const fog = createFusionSurfaceFog(() => state);
@@ -38,7 +47,7 @@ describe('durable surface fog rendering', () => {
   it('registers three real sites and keeps their clouds behind the robot', async () => {
     const state = createFusion(5000, null, {journey: true, seed: 317});
     const before = JSON.stringify(state);
-    const fog = createFusionSurfaceFog(() => state);
+    const fog = createFusionSurfaceFog(() => state, {scale: 'legacy'});
     expect(fog.entities(context, frame())).toEqual([]);
     expect(fog.metrics()).toMatchObject({active: true, fogDecodedTextureBytes: 0});
     expect(images).toBe(0);
@@ -72,6 +81,32 @@ describe('durable surface fog rendering', () => {
     expect(fog.metrics().sites[0].visualReveal).toBe(1);
     expect(fog.metrics().rewardsFromPaint).toBe(0);
     expect(JSON.stringify(state)).toBe(before);
+  });
+
+  it('compares the same durable anchors, seed, work and archive at regional scale', async () => {
+    const state = createFusion(5000, null, {journey: true, seed: 317});
+    state.journey!.sites[1].progress = .8;
+    const before = JSON.stringify(state);
+    const legacy = createFusionSurfaceFog(() => state, {scale: 'legacy'});
+    const regional = createFusionSurfaceFog(() => state, {scale: 'regional'});
+    await Promise.all([legacy.ready, regional.ready]);
+    legacy.entities(context, frame());regional.entities(context, frame());
+    expect(regional.metrics().scale).toBe('regional');
+    expect(regional.metrics().sites.map(site => site.width)).toEqual([156, 196, 274]);
+    expect(regional.metrics().sites.map(({width: _width, ...site}) => site))
+      .toEqual(legacy.metrics().sites.map(({width: _width, ...site}) => site));
+    expect(JSON.stringify(state)).toBe(before);
+  });
+
+  it('keeps an unknown sorting shell behind its cloud even if the robot walks further back', async () => {
+    const state = createFusion(5000, null, {journey: true, seed: 317});
+    const fog = createFusionSurfaceFog(() => state, {scale: 'regional'});
+    await fog.ready;
+    const behind = frame();behind.robot = {...behind.robot, x: 340, y: 300};
+    const clouds = fog.entities(context, behind).filter(entity => entity.hitTarget);
+    expect(clouds[2].depth).toBeGreaterThan(315.2);
+    expect(clouds[2].depth).toBeLessThan(340);
+    expect(fog.metrics().sites[2].name).toBeUndefined();
   });
 
   it('keeps established discoveries clear on reload and follows the world night light', async () => {
