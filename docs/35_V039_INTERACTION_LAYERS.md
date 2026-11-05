@@ -110,3 +110,5 @@ python3 scripts/build_v039_gallery.py
 `V039_URL`可指定另一固定包入口。性能测量在采集和其他浏览器测试结束后单独运行。源码与证据保留在现有Draft PR #2，不合并、不正式发布。
 
 多标签导入回归使用同源静态写档页，避免另一份正在运行的旧控制器随后自动保存旧内存，覆回夹具写入。四种浏览器布局各重复三次，12次通过；游戏源码与上传包未变。[回归记录](../artifacts/v039-feedback/cross-tab-regression.json)
+
+工作积分回归按小数8位毫秒比对，允许逐帧与整段浮点求和的IEEE-754舍入差；零件、周期和奖励仍精确相等。四布局各重复三次，12次通过，未修改游戏计算。[精度回归](../artifacts/v039-feedback/work-precision-regression.json)

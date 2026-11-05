@@ -146,7 +146,9 @@ test('三次真实接受形成低中高视觉助力，停止后平滑归零且�
   }
   expected = advanceFusion(expected, after.game.lastAt);
   expect(after.game.assist?.enqueuedWorkMs).toBe(1800);
-  expect(after.game.assist?.appliedWorkMs).toBe(expected.game.assist?.appliedWorkMs);
+  // Frame-by-frame integration and one model advance can differ by IEEE-754
+  // rounding; keep sub-nanosecond tolerance while checking integer rewards exactly.
+  expect(after.game.assist!.appliedWorkMs).toBeCloseTo(expected.game.assist!.appliedWorkMs, 8);
   expect(after.game.cycles).toBeGreaterThan(before.game.cycles);
   expect(after.game.cycles).toBe(expected.game.cycles);
   expect(after.game.resources).toBe(expected.game.resources);
