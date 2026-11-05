@@ -265,6 +265,7 @@ function drawTool(context: CanvasRenderingContext2D, material: Material, state: 
     let site: Point = {...physical.repairContact};
     if (physical.step === 0) site = id === 'tape' ? {x:site.x-7*(1-physical.aligned),y:site.y+7*(1-physical.aligned)}
       : {x:site.x+5*(1-physical.aligned),y:site.y+4*(1-physical.aligned)};
+    else if (id === 'bell') site = {x:site.x-3*(1-physical.pressed),y:site.y+4*(1-physical.pressed)};
     const tip = {x:site.x+(1-press)*23,y:site.y-(1-press)*20};
     const name = id === 'tape' ? physical.step === 0 ? 'tweezers' : 'spatula'
       : physical.step === 0 ? 'screwdriver' : 'spatula';
