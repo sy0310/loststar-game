@@ -1,3 +1,4 @@
+import {firstPlanetFacilities} from '../fusion/facilities';
 export type Action = 'walk' | 'scan' | 'pickup' | 'return' | 'unload';
 type Point = readonly [number, number];
 const OUTBOUND: Point[] = [[327,454],[225,435],[226,370],[310,340],[474,356]];
@@ -21,16 +22,16 @@ export function robotPose(fraction:number) {
   const smooth=(u:number)=>{const t=Math.max(0,Math.min(1,u));return t*t*(3-2*t);};
   const lift=smooth((f-.52)/.1),pass=smooth((f-.91)/.025),release=smooth((f-.935)/.04);
   const hand={x:point.x-22,y:point.y-28};
-  const extended={x:293,y:419};
+  const extended=firstPlanetFacilities.reception.unload.grip;
   const parcel=action==='walk'||action==='scan'?{x:465,y:357,held:false,delivered:false,visible:action==='scan'}:
     action==='pickup'?{x:465+(hand.x-465)*lift,y:357+(hand.y-357)*lift,held:lift>.95,delivered:false,visible:true}:
     action==='return'?{...hand,held:true,delivered:false,visible:true}:
-    {x:f<.935?hand.x+(extended.x-hand.x)*pass:extended.x+(291-extended.x)*release,
-      y:f<.935?hand.y+(extended.y-hand.y)*pass:extended.y+(435-extended.y)*release,held:release<1,delivered:release===1,visible:f<.995};
+    {x:f<.935?hand.x+(extended.x-hand.x)*pass:extended.x+(firstPlanetFacilities.reception.unload.tray.x-extended.x)*release,
+      y:f<.935?hand.y+(extended.y-hand.y)*pass:extended.y+(firstPlanetFacilities.reception.unload.tray.y-extended.y)*release,held:release<1,delivered:release===1,visible:f<.995};
   return {action,...point,carrying:action==='return'||action==='unload',parcel,lift,release};
 }
-// The cyan scanner in the original 160px atlas cell, measured from its top left.
-export const robotScannerSource = {x: 29, y: 82} as const;
+// Actual cyan-lens centroid in the renewed 160px logical pose cell.
+export const robotScannerSource = {x: 23, y: 83} as const;
 export const robotScannerJoint = {x:65,y:94} as const;
 export function robotVisualEffort(intensity=0){
   const i=Number.isFinite(intensity)?Math.max(0,Math.min(1,intensity)):0;
@@ -68,10 +69,10 @@ function shipOrbit(seconds:number) {
 // Calibrated against the 256px runtime cells, NOT the atlas's transparent center.
 // Nose-to-nozzle axes include each drawing's 3/4 perspective.
 export const shipViews=[
-  {cell:0,anchor:{x:9,y:139},nose:{x:246,y:169}},
-  {cell:1,anchor:{x:128,y:66},nose:{x:128,y:224}},
-  {cell:2,anchor:{x:247,y:141},nose:{x:10,y:181}},
-  {cell:3,anchor:{x:132,y:223},nose:{x:128,y:31}},
+  {cell:0,anchor:{x:12,y:139},nose:{x:244,y:137},light:{x:154,y:177}},
+  {cell:1,anchor:{x:128,y:60},nose:{x:128,y:232},light:{x:128,y:185}},
+  {cell:2,anchor:{x:244,y:139},nose:{x:12,y:137},light:{x:106,y:177}},
+  {cell:3,anchor:{x:128,y:225},nose:{x:128,y:25},light:{x:128,y:124}},
 ];
 function shipBody(seconds:number){
   const p=shipOrbit(seconds),width=112*p.scale,center={x:p.x,y:p.y-width*.28};

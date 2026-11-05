@@ -1,12 +1,14 @@
-import globeUrl from '../../assets/runtime/parcel-globe.webp';
-import robotUrl from '../../assets/runtime/robot-empty-v3.webp';
-import shipUrl from '../../assets/runtime/ship-directions-v3.webp';
-import warehouseUrl from '../../assets/runtime/warehouse.webp';
+import spaceUrl from '../../assets/runtime/visual-renewal/world/space.webp';
+import {prepareRenewalRobot,isRenewalRobot} from './renewal-robot';
+import globeUrl from '../../assets/runtime/visual-renewal/world/globe.webp';
+import robotUrl from '../../assets/runtime/visual-renewal/world/robot-atlas.webp';
+import shipUrl from '../../assets/runtime/visual-renewal/world/ship-atlas.webp';
+import warehouseUrl from '../../assets/runtime/visual-renewal/world/station.webp';
 import mouseUrl from '../../assets/runtime/mouse.webp';
 import hermitUrl from '../../assets/runtime/hermit.webp';
 import birdUrl from '../../assets/runtime/tagbird.webp';
 import sorterUrl from '../../assets/runtime/sorter.webp';
-import { robotPose, shipPose } from './motion';
+import { robotPose, shipPose, shipViews } from './motion';
 import {createAnimatedRobotPainter,robotAnimationPose,type RobotAnimationState} from './robot-animation';
 import { tuning, type SaveData } from '../game/engine';
 import {worldView} from '../game/world';
@@ -15,7 +17,7 @@ import {drawResident, loadResidentArt, type ResidentArt} from './residents';
 import {pickSceneCommands, sceneClientPoint, type SceneAlphaMask, type SceneHitTarget, type SceneImageCommand, type ScenePick} from './scene-picking';
 export type {ScenePick} from './scene-picking';
 
-const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl};
+const urls = {globe:globeUrl,robot:robotUrl,ship:shipUrl,warehouse:warehouseUrl,mouse:mouseUrl,hermit:hermitUrl,bird:birdUrl,sorter:sorterUrl,space:spaceUrl};
 type Art = Record<keyof typeof urls, HTMLImageElement>;
 export interface SceneFrame {t:number;robot:ReturnType<typeof robotPose>;robotAnimation?:RobotAnimationState;ship:ReturnType<typeof shipPose>;globe:HTMLImageElement;environment:ResidentEnvironment;output:HTMLCanvasElement}
 export interface SceneCamera {scale:number;x:number;y:number;offsetX?:number;offsetY?:number}
@@ -50,7 +52,6 @@ export class ExpeditionScene {
   private worldContext: CanvasRenderingContext2D;
   private art!: Art;
   private residentArt!: ResidentArt;
-  private backdrop: HTMLCanvasElement;
   private frame=0;
   private start=performance.now();
   private lastFrame=0;
@@ -71,26 +72,19 @@ export class ExpeditionScene {
   constructor(parent:HTMLElement,private getState:()=>SaveData,private extension?:SceneExtension) {
     this.canvas=document.createElement('canvas');this.canvas.width=832;this.canvas.height=740;
     this.canvas.setAttribute('aria-label','退件平原动态远征：咔哒绕过仓库自动探索，失物号连续前后绕轨');this.canvas.setAttribute('role','img');
-    parent.append(this.canvas);this.ctx=this.outputContext=this.canvas.getContext('2d',{alpha:false})!;
+    parent.append(this.canvas);this.ctx=this.outputContext=this.canvas.getContext('2d',{alpha:true})!;
     this.world=document.createElement('canvas');this.world.width=832;this.world.height=740;
     this.worldContext=this.world.getContext('2d')!;
     this.recordImageHits(this.outputContext);
     this.recordImageHits(this.worldContext);
-    this.backdrop=document.createElement('canvas');this.backdrop.width=832;this.backdrop.height=740;
-    const c=this.backdrop.getContext('2d')!;
-    const nebula=c.createRadialGradient(440,390,10,440,390,490);
-    nebula.addColorStop(0,'#382748');nebula.addColorStop(.65,'#201b3a');nebula.addColorStop(1,'#17152e');c.fillStyle=nebula;c.fillRect(0,0,832,740);
-    for(let i=0;i<140;i++){
-      const x=(i*97.31+18)%832,y=(i*i*13.37+19)%740,size=i%13===0?3:1;
-      c.fillStyle=i%13===0?'#d4b8dd':i%5===0?'#8885b7':'#4e456d';c.fillRect(x,y,size,size);
-      if(i%23===0){c.fillStyle='#a68bc77a';c.fillRect(x-3,y+1,9,1);c.fillRect(x+1,y-3,1,9);}
-    }
+
   }
   private load(){
     if(this.loading||this.destroyed)return;this.loading=true;
     Promise.all([
       Promise.all(Object.entries(urls).map(async([key,url])=>[key,await load(url)] as const)),
       loadResidentArt(),
+      prepareRenewalRobot(),
       this.extension?.ready,
     ]).then(([entries,residentArt])=>{
       if(this.destroyed)return;
@@ -176,7 +170,9 @@ export class ExpeditionScene {
     c.fillStyle='#e7ffff';c.fillRect(0,-p.scale,length*.55,2*p.scale);c.restore();
     for(const layer of p.layers){
       c.save();c.globalAlpha=layer.alpha;c.translate(layer.x,layer.y);c.rotate(layer.rotation);
-      c.drawImage(this.art.ship,layer.cell%2*256,Math.floor(layer.cell/2)*256,256,256,-w/2,-w/2,w,w);c.restore();
+      c.drawImage(this.art.ship,layer.cell%2*256,Math.floor(layer.cell/2)*256,256,256,-w/2,-w/2,w,w);
+      const lens=shipViews[layer.cell].light,px=(lens.x-128)*w/256,py=(lens.y-128)*w/256;
+      c.fillStyle='#5d3b61';c.fillRect(px-1.6,py-1.1,3.2,2.2);c.fillStyle='#ffe1a5';c.fillRect(px-1,py-.6,2,1.2);c.restore();
     }
     this.hitTarget=previousTarget;
   }
@@ -199,7 +195,7 @@ export class ExpeditionScene {
     if(p.action==='unload'&&f<.925)frame=6;
     if(p.action==='unload'&&f>.976)frame=1;
     const bob=animation?robotAnimationPose(p,f,animation).bob:moving?Math.round(Math.sin(t*16))*1:0;
-    if(animation)this.robotPainter.draw(c,this.art.robot,p,f,animation);
+    if(animation||isRenewalRobot(this.art.robot))this.robotPainter.draw(c,this.art.robot,p,f,animation??{workSeconds:t,received:0,appliedWorkMs:0,assistRate:0});
     else this.actor(frame,p.x,p.y+bob,144,p.action==='walk'&&p.facing==='right',p.action==='return',t);
     if(p.parcel.visible)this.parcel(p.parcel.x,p.parcel.y+(p.action==='return'?bob:0),24);
     if(p.action==='scan'&&!animation){
@@ -212,7 +208,7 @@ export class ExpeditionScene {
       for(let i=0;i<7;i++){c.fillStyle=i%2?'#fff3bc':'#f4b66e';c.fillRect(p.x-35+Math.cos(i+t*2)*35,p.y-44+Math.sin(i+t*2)*25,3,3);}
     }
     if(p.action==='unload'){
-      const pulse=Math.sin((f-.91)/.09*Math.PI);c.fillStyle=`rgba(141,255,216,${pulse*.7})`;c.fillRect(277,438,29,3);c.fillRect(280,431,3,12);
+      const pulse=Math.sin((f-.91)/.09*Math.PI);c.fillStyle=`rgba(141,255,216,${pulse*.7})`;c.fillRect(277,406,24,2);c.fillRect(280,400,2,8);
     }
   }
   private parcel(x:number,y:number,size:number){
@@ -239,17 +235,26 @@ export class ExpeditionScene {
     const robotAnimation=this.extension?.robotAnimation?.(p,t);
     const frame={t,robot:p,robotAnimation,ship,globe:this.art.globe,environment,output:this.canvas};
     let robotRenderPasses=0,robotRenderSource='base';
-    c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.drawImage(this.backdrop,0,0);this.positionWorld(c);
+    c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,832,740);
+    c.drawImage(this.art.space,0,0,832,740);
+    // Blend only the independent space backdrop into the shell's matching
+    // starfield. The globe/actors are painted afterwards and never enter this mask.
+    c.save();c.globalCompositeOperation='destination-in';
+    const spaceEdge=c.createLinearGradient(0,0,0,740);
+    spaceEdge.addColorStop(0,'#ffffff00');spaceEdge.addColorStop(40/740,'#ffffffff');
+    spaceEdge.addColorStop(700/740,'#ffffffff');spaceEdge.addColorStop(1,'#ffffff00');
+    c.fillStyle=spaceEdge;c.fillRect(0,0,832,740);c.restore();
+    this.positionWorld(c);
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
     if(ship.back)this.drawShip(t,ship);
     c=this.worldContext;this.ctx=c;
     c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,832,740);c.imageSmoothingEnabled=false;this.positionWorld(c);
     this.withHitTarget({kind:'planet',id:'parcel'},()=>c.drawImage(this.art.globe,52,70,664,664));
     // Independent material accents attach to specific pipe/terrain points.
-    this.lamp(345,634,'#e9ae70',t);this.lamp(488,610,'#94dcdb',t+.5);this.lamp(193,548,'#e9ae70',t+1);
+    this.lamp(534,604,'#ffc271',t);this.lamp(535,615,'#f4af56',t+.5);
     const entities:(SceneEntity&{hit?:SceneHitTarget})[]=[
       ...this.extension?.hideLegacySorter?[]:[{depth:294,hit:{kind:'planet' as const,id:'parcel'},draw:()=>{this.shadow(568,294,38);this.sprite(this.art.sorter,568,294,101,101);this.lamp(557,208,'#8ff3df',t);const step=Math.floor(t*3)%3;c.fillStyle='#d7b46d';for(let i=0;i<3;i++)c.fillRect(526+i*7+step,278+i*2,3,2);}}],
-      {depth:417,hit:{kind:'planet',id:'parcel'},draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(271,330,'#91efe3',t);c.fillStyle='#624b66';c.fillRect(270,437,38,9);c.fillStyle='#bb957c';c.fillRect(270,434,38,5);c.fillStyle='#88d9c6';c.fillRect(277,438,24,2);}},
+      {depth:417,hit:{kind:'planet',id:'parcel'},draw:()=>{this.shadow(315,417,69);this.sprite(this.art.warehouse,315,417,170,156);this.lamp(245,351,'#f4c579',t);c.fillStyle='#c59760';c.fillRect(274,406,26,2);}},
       {depth:p.y,hit:{kind:'robot',id:'robot'},draw:()=>{
         robotRenderPasses++;
         if(this.extension?.drawRobot&&this.extension.drawRobot(c,frame,this.art.robot)!==false){robotRenderSource='extension';return;}

@@ -2,8 +2,8 @@ import {nightDoor, nightRobotRegistration, nightStage, smoothInstall, type Night
 import {bellHoldMs} from '../game/guard-tuning';
 import {nightRules} from '../prototype/night-model';
 import type {V034NightSnapshot} from './v034-night-model';
-import type {robotPose, shipPose} from '../render/motion';
-import {nightRobotSourcePoint} from './night-robot';
+import {shipViews,type robotPose,type shipPose} from '../render/motion';
+import {nightRobotSourcePoint} from './night-robot-geometry';
 
 /** Keeps the complete registered globe inside the existing 832×740 canvas. */
 export const v034NightCamera = {scale: 1.085, x: 384, y: 402, offsetX: 0, offsetY: -29};
@@ -166,12 +166,7 @@ export function v034RepairTool(view: V034NightSnapshot) {
 
 // Measured light panels on the existing directional hulls. The source points
 // follow their registered sprite layers and share their nozzle-aligned blend.
-const searchlightSources = [
-  {x: 154, y: 177},
-  {x: 128, y: 185},
-  {x: 106, y: 177},
-  {x: 128, y: 124},
-];
+const searchlightSources = shipViews.map(view=>view.light);
 
 export function v034SearchlightSource(ship: ReturnType<typeof shipPose>) {
   const source = {x: 0, y: 0};

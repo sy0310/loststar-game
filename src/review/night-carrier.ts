@@ -14,8 +14,8 @@ interface CarrierRegistration {
   displayScale?:number;
 }
 type CarrierLayers=Record<'back'|'front'|'lid',HTMLImageElement>;
-const imagePaths=import.meta.glob('../../assets/runtime/d1-refinement/carry-case-*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
-const registrations=import.meta.glob('../../assets/runtime/d1-refinement/carry-case-registration.json',{eager:true,import:'default'}) as Record<string,CarrierRegistration>;
+const imagePaths=import.meta.glob('../../assets/runtime/visual-renewal/world/field-case-*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
+const registrations=import.meta.glob('../../assets/runtime/visual-renewal/world/field-case-registration.json',{eager:true,import:'default'}) as Record<string,CarrierRegistration>;
 
 function loadImage(url:string){
   const image=new Image();image.src=url;
@@ -36,7 +36,7 @@ export function createNightCarrier(){
       rect.h=rect.h??rect.height!;
     }
     const pairs=await Promise.all(['back','front','lid'].map(async layer=>{
-      const url=imagePaths[`../../assets/runtime/d1-refinement/carry-case-${layer}.webp`];
+      const url=imagePaths[`../../assets/runtime/visual-renewal/world/field-case-${layer}.webp`];
       if(!url)throw Error(`Missing carrier ${layer}`);
       return [layer,await loadImage(url)] as const;
     }));

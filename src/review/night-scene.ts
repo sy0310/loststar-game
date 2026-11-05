@@ -1,4 +1,5 @@
-import invaderUrl from '../../assets/runtime/invader-v02.webp';
+import {firstPlanetFacilities} from '../fusion/facilities';
+import invaderUrl from '../../assets/runtime/visual-renewal/world/visitor-paper-awake.webp';
 import type {SceneExtension,SceneFrame} from '../render/scene';
 import {nightStage,nightCamera,nightDoor,reviewEnvironment,smoothInstall,type NightStage} from './d1-motion';
 import {lightNightWorld} from './night-lighting';
@@ -106,12 +107,12 @@ export function createNightStudy(
   function beacon(context:CanvasRenderingContext2D,stage:NightStage){
     const alarm=stage.phase==='signal'||stage.phase==='travel';
     context.save();
-    context.fillStyle=alarm?'#f8dbaa':'#96c8bd';context.fillRect(554,206,10,4);
+    context.fillStyle=alarm?'#f8dbaa':'#96c8bd';context.fillRect(firstPlanetFacilities.securityMast.emitter.x-5,firstPlanetFacilities.securityMast.emitter.y-2,10,4);
     if(alarm){
       const wave=(stage.seconds*.5)%1;
       context.globalAlpha=(1-wave)*.35;
       context.strokeStyle='#e8c28f';context.lineWidth=2;
-      context.beginPath();context.ellipse(559,208,10+wave*21,4+wave*8,0,0,Math.PI*2);context.stroke();
+      context.beginPath();context.ellipse(firstPlanetFacilities.securityMast.emitter.x,firstPlanetFacilities.securityMast.emitter.y,10+wave*21,4+wave*8,0,0,Math.PI*2);context.stroke();
     }
     context.restore();
   }
@@ -124,11 +125,13 @@ export function createNightStudy(
     const glow=context.createLinearGradient(283,365,283,407);
     glow.addColorStop(0,'#e8c48708');glow.addColorStop(1,'#edbd7040');
     context.fillStyle=glow;context.fillRect(255,360,56,50);
-    const shutter=Math.round(43*(1-stage.gate));
-    context.fillStyle='#584b66';context.fillRect(256,364,54,shutter);
-    for(let y=366;y<364+shutter;y+=5){
-      context.fillStyle='#86738b';context.fillRect(256,y,54,2);
-      context.fillStyle='#443d58';context.fillRect(256,y+3,54,1);
+    const top=Math.min(...nightDoor.opening.map(p=>p.y)),left=Math.min(...nightDoor.opening.map(p=>p.x));
+    const width=Math.max(...nightDoor.opening.map(p=>p.x))-left,height=Math.max(...nightDoor.opening.map(p=>p.y))-top;
+    const shutter=Math.round(height*(1-stage.gate));
+    context.fillStyle='#67496f';context.fillRect(left,top,width,shutter);
+    for(let y=top+2;y<top+shutter;y+=5){
+      context.fillStyle='#aa79ae';context.fillRect(left,y,width,2);
+      context.fillStyle='#443052';context.fillRect(left,y+3,width,1);
     }
     context.restore();
   }
@@ -179,7 +182,7 @@ export function createNightStudy(
       if(seconds===null)return false;
       robotAtlas=atlas;
       const stage=stageAt(seconds);
-      robot.drawBody(context,frame,stage,atlas);
+      robot.drawBody(context,frame,stage,atlas,carrier.handles(stage));
     },
     worldEntities(context,frame){
       const seconds=timelineAt(frame.t).nightSeconds;

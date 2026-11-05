@@ -1,6 +1,6 @@
-import backUrl from '../../assets/runtime/v036/fog-back.webp';
-import bodyUrl from '../../assets/runtime/v036/fog-body.webp';
-import rimUrl from '../../assets/runtime/v036/fog-rim.webp';
+import backUrl from '../../assets/runtime/visual-renewal/world/fog-back.webp';
+import bodyUrl from '../../assets/runtime/visual-renewal/world/fog-body.webp';
+import rimUrl from '../../assets/runtime/visual-renewal/world/fog-rim.webp';
 import type {SceneFrame} from './scene';
 
 export interface SurfaceFogSite {

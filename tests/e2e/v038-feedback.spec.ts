@@ -1,3 +1,4 @@
+import {firstPlanetFacilities} from '../../src/fusion/facilities';
 import {expect, test, type Page} from '@playwright/test';
 import {feedbackFixture} from '../../scripts/feedback_fixtures';
 import {v034NightCamera} from '../../src/review/v034-night-stage';
@@ -84,7 +85,7 @@ test('助力收到动作与实际工作分别推进，固定扫描帧已替换�
   await expect(canvas).toHaveAttribute('data-robot-render-passes', '1');
   await expect(canvas).toHaveAttribute('data-patrol-carrier-visible', 'false');
   await page.keyboard.press('Tab');
-  for (let index = 0; index < 8 && !await page.locator('#fusion-tap').evaluate(element => element === document.activeElement); index++) await page.keyboard.press('Tab');
+  for (let index = 0; index < 16 && !await page.locator('#fusion-tap').evaluate(element => element === document.activeElement); index++) await page.keyboard.press('Tab');
   expect(await page.locator('#fusion-tap').evaluate(element => ({focused: element === document.activeElement, width: getComputedStyle(element).outlineWidth}))).toEqual({focused: true, width: '2px'});
   expect(await page.locator('body').ariaSnapshot()).not.toMatch(/回声菌星|倒置海星|钟摆荒原星|无人游乐星|未签收之星/);
 });
@@ -125,7 +126,7 @@ test('夜间仍有收容匣和注册安保灯，点按只关注实际事件，�
   const canvas = page.locator('#fusion-world canvas');
   await expect(canvas).toHaveAttribute('data-period', 'night');
   await expect(canvas).toHaveAttribute('data-patrol-carrier-visible', 'true');
-  await expect(canvas).toHaveAttribute('data-security-emitter', '{"x":559,"y":208}');
+  await expect(canvas).toHaveAttribute('data-security-emitter', JSON.stringify(firstPlanetFacilities.securityMast.emitter));
   const gait = await canvas.getAttribute('data-robot-gait-frame');
   await page.clock.runFor(350);
   expect(await canvas.getAttribute('data-robot-gait-frame')).not.toBe(gait);

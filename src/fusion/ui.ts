@@ -1,8 +1,11 @@
 import './style.css';
-import {icon} from '../icons';
+import {icon, renewalChapter, renewalArtUrl} from './renewal-ui';
+import {readPreferences, savePreferences} from '../ui/preferences';
+import {SoundDesk} from '../ui/audio';
+import {soundCue} from '../ui/discovery';
 import {discoveries, discoveryById, planetById} from '../content/catalog';
 import {curioPrices, projectAvailable, latestNightHistory} from './domain';
-import {drawCurioSpecimen, prepareCurioMaterial, prepareCurioTools, prepareCurioWorkbench, curioConditionPresentation, curioTreatmentLabels, renderCurioTreatment, exportCurioMaterial} from './curio-condition';
+import {drawCurioSpecimen, prepareCurioMaterial, prepareCurioTools, prepareCurioWorkbench, curioConditionPresentation, curioTreatmentLabels, renderCurioTreatment, exportCurioMaterial, renderRenewalReceipt, exportRenewalReceiptMaterial, renewalReceiptCurioState} from './curio-condition';
 import {drawCurioAbilityRig,curioAbilityReady,type CurioAbilityRigResult,type AbilityRigRecord} from './curio-ability-rig';
 import {cost, MAX_LEVEL, publicRadar, tuning, type UpgradeId, type SaveData} from '../game/engine';
 import {growthCatalog, growthChange, growthLevel} from '../game/growth';
@@ -24,13 +27,11 @@ import {RadarScene} from '../render/radar-scene';
 import {StarMapScene} from '../render/star-map';
 import type {ExpeditionScene} from '../render/scene';
 import {receiptRestorationFrame, receiptRestorationMainAction} from '../review/receipt-restoration';
-import type {V036ReceiptTable} from '../render/receipt-table';
 import {InteractionDirector} from '../ui/interaction';
-import {equipment, itemArt} from '../ui/art';
 import {fusionProjects, fusionTargets, type FusionAction, type FusionController, type FusionSave} from './contracts';
 
 type Tab = 'explore' | 'collection' | 'base';
-type Drawer = 'upgrades' | 'station' | 'build' | 'research' | 'map' | 'return' | 'project' | 'detail' | 'case-preview' | 'wallet' | 'sorting';
+type Drawer = 'upgrades' | 'station' | 'build' | 'research' | 'map' | 'return' | 'project' | 'detail' | 'case-preview' | 'wallet' | 'sorting' | 'settings';
 type Filter = 'artifact' | 'creature' | 'event';
 type SceneFeedback=FusionFeedbackEvent;
 interface CasePreview {
@@ -52,18 +53,25 @@ const minutes = (milliseconds: number) => `${Math.max(1, Math.ceil(milliseconds 
 const conditionLabels = {found: '发现态', clean: '整理态', stabilized: '展示完成'};
 const recordOrigins: Record<string, string> = {marker: '管道箱标', residents: '生态观察窗', night: '收件站夜班'};
 const upgradeNames: Record<UpgradeId, string> = {scanner: '机器人', recycler: '飞船', radar: '雷达', cargo: '货舱'};
+const trialLines:Record<string,string>={receipt:'订单没下，退货先到。',tape:'对不起，又粘人了。',nested:'拆到最后，还是第一层。',stamp:'今天的事，昨天再办。','cosmic-parcel':'远处回敲了两下。',bell:'你一转身，它就上班。'};
 
 export function mountFusion(controller: FusionController) {
   const app = document.querySelector<HTMLElement>('#app')!;
+  const preferences = readPreferences();
+  document.documentElement.dataset.textSize = preferences.textSize;
+  const sounds = new SoundDesk(preferences.muted);
+  function itemArt(id:string){const condition=id==='receipt'?controller.state.receipt.condition:controller.state.curios[id]?.condition??'found';return `<img class="pixel-art" src="${renewalArtUrl(id,condition)}" alt="" decoding="async">`;}
+
   app.innerHTML = `
     <div id="fusion-app">
       <header class="fu-header">
-        <button id="fusion-map" class="fu-location" aria-label="打开星图"><span>退货箱星</span><small>退件平原 ${icon('arrow')}</small></button>
+        <button id="fusion-map" class="fu-location" aria-label="打开星图"><span class="fu-location-emblem" aria-hidden="true">${icon('planet')}</span><span>退货箱星</span><small>退件平原 ${icon('arrow')}</small></button>
         <button id="fusion-wallet" class="fu-wallet" aria-label="零件余额，查看推荐用途">${icon('cube')}<b id="fusion-parts">120</b><small>零件</small></button>
+        <button id="fusion-settings" class="fu-settings" aria-label="打开设置">${icon('gear')}</button>
       </header>
       <main id="fusion-scroll">
         <section id="fusion-explore" class="fu-view">
-          <aside id="fusion-journey-intro" class="fu-journey-intro" hidden><div><strong>新周目 · 120零件起步</strong><span>初始设备已就位，收藏从第一次发现开始。</span><small id="fusion-backup-status"></small></div><button id="fusion-dismiss-intro" aria-label="收起新周目提示">×</button></aside>
+          <aside id="fusion-journey-intro" class="fu-journey-intro" hidden><div><strong>收件站已接通</strong><span>自动探索进行中，点一下帮咔哒搭把手。</span><small id="fusion-backup-status"></small></div><button id="fusion-dismiss-intro" aria-label="收起探索提示">×</button></aside>
           <div class="fu-world-shell">
             <div id="fusion-tap" role="button" tabindex="0" aria-label="点星球，协助探索"><div id="fusion-world"></div><span id="fusion-tap-hint">星球接通中…</span><span id="fusion-pick-reticle" class="fu-pick-reticle" aria-hidden="true" hidden></span></div><button id="fusion-scene-retry" class="fu-scene-retry" hidden>重新接通信号</button>
             <span id="fusion-period" class="fu-period">白天</span><span id="fusion-surface-status" class="fu-surface-status" hidden></span>
@@ -82,7 +90,7 @@ export function mountFusion(controller: FusionController) {
           <button id="fusion-found" class="fu-found" hidden><span id="fusion-found-art"></span><span><small>新发现</small><strong id="fusion-found-name"></strong></span>${icon('arrow')}</button>
         </section>
         <section id="fusion-collection" class="fu-view" hidden>
-          <div class="fu-page-heading"><div><small>失物档案</small><h1>每一件，都有来历</h1></div><span id="fusion-collection-count"></span></div>
+          <div class="fu-page-heading"><div><small>失物档案 · 陈列与观察</small><h1>失物收藏室</h1></div><span id="fusion-collection-count"></span></div>
           <div id="fusion-collection-dock"></div>
           <div class="fu-filters" role="group" aria-label="收藏分类"><button data-filter="artifact" aria-pressed="true">奇物</button><button data-filter="creature" aria-pressed="false">居民</button><button data-filter="event" aria-pressed="false">事件</button></div>
           <div id="fusion-collection-list"></div>
@@ -112,7 +120,8 @@ export function mountFusion(controller: FusionController) {
   const museumRoot = query('#fusion-museum');
   const abilityResults=new Map<string,CurioAbilityRigResult>();
   let abilityReady=false;
-  void prepareCurioTools().then(() => {collectionSignature = '';museum.refresh();}).catch(() => {});
+  let materialLoadFailed=false;
+  void prepareCurioTools().then(() => {materialLoadFailed=false;collectionSignature = '';museum.refresh();}).catch(() => {materialLoadFailed=true;museumRetry.hidden=false;});
   void curioAbilityReady().then(()=>{abilityReady=true;}).catch(()=>{});
   function abilityRecords(receiptLevel?:number):AbilityRigRecord[]{
     const state=controller.state;
@@ -123,40 +132,19 @@ export function mountFusion(controller: FusionController) {
     if(receiptLevel===1)facts.sort((a,b)=>Number(b.code==='P30')-Number(a.code==='P30'));
     return facts;
   }
-  let receiptTableRenderer: typeof import('../render/receipt-table') | undefined;
-  let receiptTable: V036ReceiptTable | undefined;
-  let receiptTableReady: Promise<V036ReceiptTable> | undefined;
   let paperLoading: Promise<void> | undefined;
-  let paperRetryAt = 0;
   const museum = new MuseumScene(museumRoot, () => controller.state.game, id => growthLevel(controller.state.game, id), () => fusionRenderElapsed(controller.state.game, Date.now()) / 1000, {
-    receiptStudy: true,
-    receiptPaperPending: () => Boolean(controller.state.journey && controller.state.game.collection.includes('receipt') && !paperReady),
-    receiptPaperOverride: (context, options) => receiptTable?.drawSpecimen(context, options),
-    caseEngineering: drawCaseEngineering,
-    receiptFrame: () => {
-      if (!paperReady || !controller.state.game.collection.includes('receipt')) return undefined;
-      const preview = drawer === 'case-preview' ? casePreview : undefined;
-      return receiptRestorationFrame(preview?.receipt ?? controller.state.receipt, (preview?.at ?? Date.now()) / 1000);
-    },
-    receiptExtension:(context,options,frame,result)=>{
-      const preview=drawer==='case-preview'?casePreview:undefined;
-      const level=(preview?.abilities??controller.state.progression.abilities).receipt;
-      if(!abilityReady||level===0||frame.stage==='buried'||options.carried)return;
-      context.save();context.translate(options.center.x-options.frame/2,options.center.y-options.frame/2);context.scale(options.frame/192,options.frame/192);
-      const toLocal=(point:{x:number;y:number})=>({x:(point.x-options.center.x+options.frame/2)*192/options.frame,y:(point.y-options.center.y+options.frame/2)*192/options.frame});
-      const attachments={leftTop:toLocal(result.attachments.leftTop),leftBottom:toLocal(result.attachments.leftBottom),rightTop:toLocal(result.attachments.rightTop),rightBottom:toLocal(result.attachments.rightBottom),leftEdge:result.attachments.leftEdge?.map(toLocal),rightEdge:result.attachments.rightEdge?.map(toLocal)};
-      const corner=toLocal({x:options.cavity.left,y:options.cavity.top});
-      const cavity={left:corner.x,top:corner.y,width:options.cavity.width*192/options.frame,height:options.cavity.height*192/options.frame};
-      const rigResult=drawCurioAbilityRig(context,{id:'receipt',image:museum.canvas,seconds:preview?0:options.seconds,abilityLevel:level,experimentProgress:frame.phase==='trying'?frame.trying:undefined,records:preview?.records??abilityRecords(level),baseAlreadyDrawn:true,attachments,cavity,serviceEnvelope:options.service?.specimenEnvelope??1,receiverY:(options.receiverY-options.center.y+options.frame/2)*192/options.frame,reducedMotion:reducedMotion.matches});
-      abilityResults.set('receipt',rigResult);context.restore();
-    },
+    renewal: true,
+    receiptFrame: () => controller.state.game.collection.includes('receipt') ? receiptRestorationFrame((drawer==='case-preview'?casePreview?.receipt:undefined)??controller.state.receipt,Date.now()/1000) : undefined,
+    receiptPaperPending: () => materialLoadFailed,
     drawSpecimen: (context, exhibit, time, image, service) => {
       const preview = drawer === 'case-preview' ? casePreview : undefined;
-      const condition = (preview?.curios ?? controller.state.curios)[exhibit.id];
+      const condition = exhibit.id === 'receipt' ? renewalReceiptCurioState(preview?.receipt ?? controller.state.receipt) : (preview?.curios ?? controller.state.curios)[exhibit.id];
       if (!condition) return false;
+      const paper=exhibit.id==='receipt'?receiptRestorationFrame(preview?.receipt??controller.state.receipt,(preview?.at??Date.now())/1000):undefined;
       const trial=!preview&&drawer==='detail'&&detailId===exhibit.id?Math.min(1,Math.max(0,(performance.now()-curioTrialAt)/2600)):0;
-      drawCurioSpecimen(context, exhibit, image, condition, preview?.at ?? Date.now(),{seconds:preview?0:time,trial,reducedMotion:reducedMotion.matches,serviceEnvelope:service?.specimenEnvelope??1,drawAbility:exhibit.id==='tape'&&abilityReady&&(preview?.abilities??controller.state.progression.abilities).tape>0?(canvas,material)=>{
-        const result=drawCurioAbilityRig(canvas,{id:'tape',image:material,seconds:preview?0:time,abilityLevel:(preview?.abilities??controller.state.progression.abilities).tape,experimentProgress:trial||undefined,serviceEnvelope:service?.specimenEnvelope??1,records:preview?.records??abilityRecords(),materialRevision:`${condition.condition}/${condition.action?.kind??''}/${condition.action?Math.round((Date.now()-condition.action.startedAt)/33):0}`,reducedMotion:reducedMotion.matches});abilityResults.set('tape',result);return true;
+      drawCurioSpecimen(context, exhibit, image, condition, preview?.at ?? Date.now(),{buried:paper?.stage==='buried',excavation:paper?.excavation,seconds:preview?0:time,trial,reducedMotion:reducedMotion.matches,serviceEnvelope:service?.specimenEnvelope??1,drawAbility:(exhibit.id==='tape'||exhibit.id==='receipt')&&abilityReady&&(preview?.abilities??controller.state.progression.abilities)[exhibit.id]>0?(canvas,material)=>{
+        const result=drawCurioAbilityRig(canvas,{id:exhibit.id as 'receipt'|'tape',image:material,seconds:preview?0:time,abilityLevel:(preview?.abilities??controller.state.progression.abilities)[exhibit.id as 'receipt'|'tape'],experimentProgress:trial||undefined,serviceEnvelope:service?.specimenEnvelope??1,records:preview?.records??abilityRecords(),materialRevision:`${condition.condition}/${condition.action?.kind??''}/${condition.action?Math.round((Date.now()-condition.action.startedAt)/33):0}`,reducedMotion:reducedMotion.matches});abilityResults.set(exhibit.id,result);return true;
       }:undefined});
       return true;
     },
@@ -167,11 +155,14 @@ export function mountFusion(controller: FusionController) {
     },
   });
   const habitats: FusionHabitatScene[] = [];
+  const museumRetry = document.createElement('button');
+  museumRetry.id='fusion-museum-retry';museumRetry.className='fu-museum-retry';museumRetry.textContent='重新接通收藏室';museumRetry.hidden=true;museumRoot.append(museumRetry);
   const projectHabitats: FusionHabitatScene[] = [];
+  let detailHabitat: FusionHabitatScene | undefined;
   const visibleHabitats=new WeakSet<FusionHabitatScene>();
   const habitatObservers=new Map<FusionHabitatScene,IntersectionObserver>();
   function setHabitatsActive(active:boolean){for(const habitat of habitats)habitat.setActive(active&&visibleHabitats.has(habitat));}
-  const interactions = new InteractionDirector(body);
+  const interactions = new InteractionDirector(body, renewalArtUrl);
   let scene: ExpeditionScene | undefined;
   let pulse: ((event?:SceneFeedback) => void) | undefined;
   let getUnloadPoint: (() => {x:number;y:number}) | undefined;
@@ -226,6 +217,7 @@ export function mountFusion(controller: FusionController) {
   let casePreview: CasePreview | undefined;
   let casePreviewLevel = 0;
   let casePreviewDirty = false;
+  let casePreviewStartedAt = 0;
 
   function toast(message: string) {
     const element = query('#fusion-toast');
@@ -259,7 +251,7 @@ export function mountFusion(controller: FusionController) {
   function clearProjectHabitats() {
     archiveReplay?.stop();
     for (const habitat of projectHabitats){habitatObservers.get(habitat)?.disconnect();habitatObservers.delete(habitat);habitat.dispose();}
-    projectHabitats.length = 0;
+    projectHabitats.length = 0;detailHabitat=undefined;
   }
 
   function closeDrawer() {
@@ -317,7 +309,7 @@ export function mountFusion(controller: FusionController) {
         : id === 'radar' ? `${current.radar.toFixed(2)} → ${next.radar.toFixed(2)}倍勘测`
           : `${current.cargo / 3600} → ${next.cargo / 3600}小时离线`;
     const hint = {scanner: '探索更快', recycler: '带回更多', radar: '听见更多回波', cargo: '安心离开久一点'}[id];
-    return `<article class="fu-upgrade"><img src="${equipment[id]}" alt=""><div><header><h3>${upgradeNames[id]}</h3><small>Lv${level}</small></header><p>${hint}</p><strong>${level < MAX_LEVEL ? effect : '已完成本阶段升级'}</strong></div><button data-upgrade="${id}" data-expected="${level}" ${level >= MAX_LEVEL || state.resources < cost(state, id) ? 'disabled' : ''}>${level >= MAX_LEVEL ? '已完成' : `升级 ${cost(state, id)}`}</button></article>`;
+    return `<article class="fu-upgrade"><span class="fu-equipment-glyph" aria-hidden="true">${icon(({scanner:"gear",recycler:"rocket",radar:"radar",cargo:"cube"})[id])}</span><div><header><h3>${upgradeNames[id]}</h3><small>Lv${level}</small></header><p>${hint}</p><strong>${level < MAX_LEVEL ? effect : '已完成本阶段升级'}</strong></div><button data-upgrade="${id}" data-expected="${level}" ${level >= MAX_LEVEL || state.resources < cost(state, id) ? 'disabled' : ''}>${level >= MAX_LEVEL ? '已完成' : `升级 ${cost(state, id)}`}</button></article>`;
   }
 
   function commandButton(view:RefinementActionView, name:string, extra='') {
@@ -340,7 +332,14 @@ export function mountFusion(controller: FusionController) {
   }
 
   function openUpgrades() {
-    showDrawer('upgrades', '设备升级', `${sortingSummary()}<div class="fu-upgrade-list">${upgradeCard('scanner')}${upgradeCard('recycler')}</div><details class="fu-details"><summary>其他设备</summary>${upgradeCard('radar')}${upgradeCard('cargo')}</details><div class="fu-drawer-links"><button data-drawer="build">基地工程</button><button data-drawer="research">定向调查</button></div>`);
+    showDrawer('upgrades', '设备升级', `${renewalChapter("gear","给咔哒搭把手","升级永久生效，探索照常继续。")}${sortingSummary()}<div class="fu-upgrade-list">${upgradeCard('scanner')}${upgradeCard('recycler')}</div><details class="fu-details"><summary>其他设备</summary>${upgradeCard('radar')}${upgradeCard('cargo')}</details><div class="fu-drawer-links"><button data-drawer="build">基地工程</button><button data-drawer="research">定向调查</button></div>`);
+  }
+
+  function openSettings() {
+    showDrawer('settings', '收件站设置', `${renewalChapter('gear', '按你的习惯亮灯', '只调整本机显示与声音。')}
+      <section class="fu-settings-section"><h3>无线电声音</h3><p class="fu-muted">轻量原创短音 · 默认静音</p><button class="fu-wide" data-preference="sound" aria-pressed="${!preferences.muted}">${preferences.muted ? '接通声音' : '静音'}</button></section>
+      <section class="fu-settings-section"><h3>文字大小</h3><div class="fu-mode-buttons">${[['normal','标准'],['large','大字']].map(([value,label]) => `<button data-preference="text" data-value="${value}" aria-pressed="${preferences.textSize===value}">${label}</button>`).join('')}</div></section>
+      <div class="fu-result"><strong>进度一直留在这里</strong><p>本次翻新沿用原存档与已购权益。</p><p>减少动态：${reducedMotion.matches ? '已跟随系统开启' : '跟随系统'}</p></div><p class="fu-muted">开发自测 ${__BUILD_INFO__.version} · ${__BUILD_INFO__.commit}${__BUILD_INFO__.dirty ? ' · 本地修改' : ''}</p>`);
   }
 
   function openWallet() {
@@ -380,7 +379,7 @@ export function mountFusion(controller: FusionController) {
     const night = worldView(state).phase === 'night';
     const report = state.station.lastNight;
     showDrawer('station', '收件站', `
-      <div class="fu-integrity"><b id="fusion-station-value">${state.station.integrity}<small>/100</small></b><span>基地完整度</span></div>
+      ${renewalChapter("base","灯亮着，就有人回家","安保自动值守，清晨按实际损伤维修。")}<div class="fu-integrity"><b id="fusion-station-value">${state.station.integrity}<small>/100</small></b><span>基地完整度</span></div>
       <div class="fu-progress"><i id="fusion-station-progress" style="width:${state.station.integrity}%"></i></div>
       <label class="fu-switch">自动维修<input id="fusion-auto-repair" type="checkbox" ${state.station.autoRepair ? 'checked' : ''}></label>
       <p class="fu-muted">每点${repairPrice(state)}零件，清晨按实际损伤维修。</p>
@@ -393,7 +392,8 @@ export function mountFusion(controller: FusionController) {
     const state = controller.state.game;
     const entry = growthCatalog.find(item => item.id === id)!;
     const level = growthLevel(state, id);
-    const change = growthChange(state, id);
+    const caseNames = ['基础玻璃罩', '灯座与铭牌', '专属微景装置', '独立典藏舱'];
+    const change = id.startsWith('case-') ? {before:caseNames[level],after:caseNames[Math.min(3,level+1)]} : growthChange(state, id);
     const available = !entry.requires || state.collection.includes(entry.requires);
     const price = entry.costs[level];
     return `<article class="fu-growth" data-growth-id="${id}"><div><h3>${entry.name}<small>Lv${level}</small></h3><p>${escape(level >= entry.costs.length ? change.before : `${change.before} → ${change.after}`)}</p></div><button data-growth="${id}" data-expected="${level}" ${!available || price === undefined || state.resources < price ? 'disabled' : ''}>${!available ? '等待发现' : price === undefined ? '已建成' : `升级 ${price}`}</button></article>`;
@@ -405,7 +405,7 @@ export function mountFusion(controller: FusionController) {
       ['生态与基地', growthCatalog.filter(entry => ['生态', '设施', '装饰'].includes(entry.group))],
       ['勘探模块', growthCatalog.filter(entry => entry.group === '研究')],
     ] as const;
-    showDrawer('build', '基地建设', `${fusionProjects.map(project => {
+    showDrawer('build', '基地建设', `${renewalChapter("base","把失物安顿好","永久建设 · 已购权益直接保留")}${fusionProjects.map(project => {
       const owned = controller.state.projects.includes(project.id);
       const available = projectAvailable(controller.state, project.id);
       return `<article class="fu-project"><div><small>永久工程</small><h3>${project.name}</h3><p>${project.effect}</p></div><button ${owned ? `data-open-project="${project.id}"` : `data-project="${project.id}"`} ${!owned && !available.available ? 'disabled' : ''}>${owned ? '进入' : available.available ? `建设 ${project.price}` : available.reason}</button></article>`;
@@ -421,19 +421,19 @@ export function mountFusion(controller: FusionController) {
     };
     casePreviewLevel = casePreview.after;
     casePreviewDirty = true;
+    casePreviewStartedAt = performance.now();
     showDrawer('case-preview', `${entry.name}已升级`, `
       <canvas id="fusion-case-preview" width="400" height="430" role="img" aria-label="同一展柜升级前后近景"></canvas>
       <div class="fu-mode-buttons"><button data-case-preview="${before}" aria-pressed="false">升级前 Lv${before}</button><button data-case-preview="${casePreview.after}" aria-pressed="true">升级后 Lv${casePreview.after}</button></div>
       <p class="fu-muted">本次花费${price}零件</p><button id="fusion-return-build" class="fu-wide">返回建设</button>`);
     await museum.ready;
-    if (id === 'case-0') await prepareFocus();
     casePreviewDirty = true;
   }
 
   function openResearch() {
     const state = controller.state;
     showDrawer('research', '定向调查', `
-      <div id="fusion-active-task"></div>
+      ${renewalChapter("radar","让线索带路","投入补给，观察真实发生的事。")}<div id="fusion-active-task"></div>
       ${fusionTargets.map(target => `<article class="fu-project"><div><h3>${target.name}</h3><p>${target.effect}</p><small>${minutes(target.duration)} · ${target.price}零件</small></div><button data-task="${target.id}" ${state.task || state.game.resources < target.price ? 'disabled' : ''}>安排</button></article>`).join('')}
       <details class="fu-details"><summary>调查规则</summary><p class="fu-muted">离线继续计时，完成还需对应现场实际发生。已有记录可复核，取消按剩余时间退还零件。</p></details>
       <div class="fu-records">${renderRecords(state.records.slice(-8).reverse())}</div>`);
@@ -464,7 +464,7 @@ export function mountFusion(controller: FusionController) {
 
   function openMap() {
     const state = controller.state.game;
-    showDrawer('map', '星域雷达', `<div id="fusion-local-radar" class="fu-radar"></div><div class="fu-map-status"><strong id="fusion-radar-stage"></strong><span id="fusion-radar-percent"></span></div><p id="fusion-radar-note" class="fu-muted"></p><details class="fu-details"><summary>已确认航路</summary><div id="fusion-star-map"></div><div id="fusion-routes"></div></details>`);
+    showDrawer('map', '星域雷达', `${renewalChapter("radar","听一听，宇宙有回音","扫描继续进行，确认后才留下坐标。")}<div id="fusion-local-radar" class="fu-radar"></div><div class="fu-map-status"><strong id="fusion-radar-stage"></strong><span id="fusion-radar-percent"></span></div><p id="fusion-radar-note" class="fu-muted"></p><details class="fu-details"><summary>已确认航路</summary><div id="fusion-star-map"></div><div id="fusion-routes"></div></details>`);
     radar = new RadarScene(query('#fusion-local-radar'), () => publicRadar(controller.state.game));
     radar.setActive(true);
     starMap = new StarMapScene(query('#fusion-star-map'), () => {
@@ -484,21 +484,18 @@ export function mountFusion(controller: FusionController) {
 
   async function prepareFocus() {
     if (!paperReady) {
-      paperLoading ??= (async () => {
-        await museum.ready;
-        if (controller.state.journey) {
-          receiptTableRenderer ??= await import('../render/receipt-table');
-          receiptTableReady ??= receiptTableRenderer.createV036ReceiptTable().catch(error => {receiptTableReady = undefined;throw error;});
-          receiptTable = await receiptTableReady;
-        }
-        await museum.prepareReceiptRestoration();
-        paperReady = true;
-        museum.refresh();
-        museum.setActive(tab !== 'explore' && !dialog.open);
-      })().catch(error => {paperRetryAt = performance.now() + 2000;throw error;}).finally(() => {paperLoading = undefined;});
+      paperLoading ??= prepareCurioWorkbench().then(() => {
+        paperReady = true;materialLoadFailed=false;
+      }).catch(error => {throw error;}).finally(() => {paperLoading=undefined;});
       await paperLoading;
     }
     focusReady = true;
+    const canvas=body.querySelector<HTMLCanvasElement>('#fusion-paper-focus');
+    if(canvas&&dialog.open){
+      if(renderRenewalReceipt(canvas,controller.state.receipt,Date.now(),{seconds:fusionRenderElapsed(controller.state.game,Date.now())/1000,reducedMotion:reducedMotion.matches})){
+        const loading=body.querySelector<HTMLElement>('#fusion-treatment-loading');if(loading)loading.hidden=true;
+      }
+    }
     updateLiveDrawer();
   }
 
@@ -516,15 +513,21 @@ export function mountFusion(controller: FusionController) {
       ${id === 'receipt' ? '<canvas id="fusion-paper-focus" width="640" height="700" role="img" aria-label="收据物理状态与修补近景"></canvas><div class="fu-paper-status"><span id="fusion-paper-condition"></span><span id="fusion-paper-missing"></span></div><div class="fu-progress"><i id="fusion-paper-progress"></i></div>' : `<canvas id="fusion-exhibit-focus" width="${curioPrices[id] ? 640 : 400}" height="${curioPrices[id] ? 700 : 370}" role="img" aria-label="${escape(discovery.name)}${curioPrices[id] ? '独立整理台' : '玻璃容器近景'}"></canvas>`}
       <div class="fu-detail-actions">${id === 'receipt' ? '<button id="fusion-paper-primary" class="fu-primary"></button>' : ''}${curioPrices[id] ? '<button id="fusion-curio-primary" class="fu-primary"></button>' : ''}<button id="fusion-try">${state.journey?'试一试 · 免费':'试一试'}</button></div>
       <div id="interaction-feedback" class="fu-interaction" hidden><canvas width="320" height="180" aria-label="奇物互动演出"></canvas><p id="interaction"></p><button id="fusion-hide-interaction">收起</button></div>
-      ${curioPrices[id] ? '<p id="fusion-curio-condition" class="fu-muted"></p><p id="fusion-curio-response" class="fu-curio-response" role="status" hidden></p>' : ''}${ability?`<section class="fu-ability-panel"><small>本体研究</small><div><strong id="fusion-ability-level"></strong><span id="fusion-ability-effect"></span></div><button id="fusion-ability-upgrade" class="fu-primary"></button><small id="fusion-ability-next" class="fu-ability-next" hidden></small></section>`:''}${['receipt','tape','nested','stamp','cosmic-parcel','bell'].includes(id)?'<button id="fusion-exhibit-engineering" class="fu-wide">展柜工程</button>':''}${flavor?`<div class="fu-curio-message"><small>${flavor.landmark} · 奇物留言</small><p>${flavor.line}</p></div>`:''}<details class="fu-details"><summary>它的来历</summary><p>${escape(discovery.description)}</p><p>${escape(discovery.fieldNote)}</p>${id === 'receipt' ? '<p id="fusion-paper-evidence"></p>' : ''}</details>`);
+      ${curioPrices[id] ? '<p id="fusion-curio-condition" class="fu-muted"></p>' : ''}${id==='receipt'||curioPrices[id]?'<p id="fusion-curio-response" class="fu-curio-response" role="status" hidden></p>':''}${ability?`<section class="fu-ability-panel"><small>本体研究</small><div><strong id="fusion-ability-level"></strong><span id="fusion-ability-effect"></span></div><button id="fusion-ability-upgrade" class="fu-primary"></button><small id="fusion-ability-next" class="fu-ability-next" hidden></small></section>`:''}${['receipt','tape','nested','stamp','cosmic-parcel','bell'].includes(id)?'<button id="fusion-exhibit-engineering" class="fu-wide">展柜工程</button>':''}${flavor?`<div class="fu-curio-message"><small>${flavor.landmark} · 奇物留言</small><p>${flavor.line}</p></div>`:''}<details class="fu-details"><summary>它的来历</summary><p>${escape(discovery.description)}</p><p>${escape(discovery.fieldNote)}</p>${id === 'receipt' ? '<p id="fusion-paper-evidence"></p>' : ''}</details>`);
     const loadFailed = () => {
       if (!dialog.open || drawer !== 'detail' || detailId !== id) return;
       const loading = body.querySelector<HTMLElement>('#fusion-treatment-loading');
       if (loading) {loading.hidden = false;loading.querySelector('span')!.textContent = '整理台暂未接通';query('#fusion-treatment-retry').hidden = false;}
     };
-    if (id === 'receipt') void prepareFocus().catch(loadFailed);
+    if (residentIds.includes(id as typeof residentIds[number])) {
+      const canvas=body.querySelector('#fusion-exhibit-focus');
+      const root=document.createElement('div');root.id='fusion-detail-habitat';root.className='fu-habitat-window';canvas?.replaceWith(root);
+      detailHabitat=new FusionHabitatScene(root,id as typeof residentIds[number],()=>controller.state.game,()=>growthLevel(controller.state.game,`habitat-${residentIds.indexOf(id as typeof residentIds[number])}`));
+      projectHabitats.push(detailHabitat);detailHabitat.setActive(true);
+    } else if (id === 'receipt') void prepareFocus().catch(loadFailed);
     else {
-      void Promise.all([museum.ready, prepareCurioWorkbench()]).then(() => {
+      void prepareCurioWorkbench().then(() => {
+        materialLoadFailed=false;
         if (!dialog.open || drawer !== 'detail' || detailId !== id) return;
         const canvas = query<HTMLCanvasElement>('#fusion-exhibit-focus');
         const index = ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell'].indexOf(id);
@@ -575,18 +578,12 @@ export function mountFusion(controller: FusionController) {
     try {
       await image.decode();
       await prepareCurioTools();
-      if (id === 'receipt') await prepareFocus();
       if (!image.isConnected) return;
       const canvas = document.createElement('canvas');canvas.width = canvas.height = 96;canvas.className = 'fu-condition-art';canvas.setAttribute('aria-hidden', 'true');
       const context = canvas.getContext('2d')!;context.imageSmoothingEnabled = false;
       const state = controller.state;
-      if (id === 'receipt' && receiptTable) {
-        receiptTable.drawSpecimen(context, {center: {x: 48, y: 48}, frame: 85, receiverY: 91, seconds: 0, lights: [], glass: 0, restorationFrame: receiptRestorationFrame(state.receipt, Date.now() / 1000)});
-        canvas.dataset.condition = state.receipt.stage === 'buried' ? 'buried' : state.receipt.condition;
-      } else if (state.curios[id]) {
-        const material = prepareCurioMaterial(image, state.curios[id], Date.now(), id);
-        context.drawImage(material.image, 0, 0, 96, 96);canvas.dataset.condition = state.curios[id].condition;
-      }
+      const condition=id==='receipt'?renewalReceiptCurioState(state.receipt):state.curios[id];
+      if(condition){const material=prepareCurioMaterial(image,condition,Date.now(),id);context.drawImage(material.image,0,0,96,96);canvas.dataset.condition=condition.condition;}
       image.replaceWith(canvas);
     } catch {}
   }
@@ -741,6 +738,7 @@ export function mountFusion(controller: FusionController) {
   function update() {
     const state = controller.state;
     const game = state.game;
+    museumRetry.hidden = museum.canvas.dataset.ready !== 'error' && !materialLoadFailed;
     const blocked=Boolean((controller as FusionController&{migrationBlocked?:boolean}).migrationBlocked);
     if(wasMigrationBlocked&&!blocked){previousGross=game.station.grossIncome;previousIncomeAt=game.lastAt;previousCycles=game.cycles;previousCollection=new Set(game.collection);}
     wasMigrationBlocked=blocked;
@@ -812,7 +810,6 @@ export function mountFusion(controller: FusionController) {
       clearTimeout(foundTimer);
       foundTimer = setTimeout(() => {query('#fusion-found').hidden = true;}, 5000);
     }
-    if (game.collection.includes('receipt') && !paperReady && performance.now() >= paperRetryAt) void prepareFocus().catch(() => {});
     const signature = `${game.collection.join(',')}/${filter}/${state.receipt.condition}/${state.receipt.stage}/${Object.entries(state.curios).map(([id, curio]) => `${id}:${curio.condition}:${curio.action?.kind ?? ''}`).join(',')}`;
     if (signature !== collectionSignature) {collectionSignature = signature;renderCollection();museum.refresh();}
     const baseKey = `${game.collection.join(',')}/${JSON.stringify(game.growth)}/${state.projects.join(',')}`;
@@ -893,6 +890,7 @@ export function mountFusion(controller: FusionController) {
     feedbackMetrics.transactionMs.push(completed-started);if(feedbackMetrics.transactionMs.length>240)feedbackMetrics.transactionMs.shift();
     dispatchFeedback({token,kind:result.ok?'accepted':'rejected',...target,at:completed,reason:result.ok?undefined:assistStatus(controller.state.game).reason??result.message},completed);
     if(result.ok){
+      soundCue('scan');
       query('.fu-explore-controls .fu-progress').animate([{boxShadow:'0 0 0 1px #bfe8cd',filter:'brightness(1.7)'},{boxShadow:'0 0 0 0px transparent',filter:'brightness(1)'}],{duration:reducedMotion.matches?160:520});
     }
   }
@@ -961,6 +959,20 @@ export function mountFusion(controller: FusionController) {
     const id = button.dataset.detail ?? button.dataset.exhibit;
     if (id) {showDetail(id);return;}
     if (button.id === 'fusion-close') {closeDrawer();return;}
+    if (button.id === 'fusion-settings') {openSettings();return;}
+    if (button.id === 'fusion-museum-retry') {
+      button.disabled=true;
+      try {await Promise.all([prepareCurioTools(),museum.retry()]);materialLoadFailed=false;museum.refresh();museum.setActive(tab!=='explore'&&!dialog.open);}
+      catch {toast('信号还未接通，请再试一次');}
+      finally {button.disabled=false;museumRetry.hidden=museum.canvas.dataset.ready!=='error'&&!materialLoadFailed;}
+      return;
+    }
+    if (button.dataset.preference) {
+      if (button.dataset.preference === 'sound') {preferences.muted=!preferences.muted;await sounds.setMuted(preferences.muted);if(!preferences.muted)soundCue('interaction');}
+      if (button.dataset.preference === 'text') preferences.textSize=button.dataset.value==='large'?'large':'normal';
+      if (!savePreferences(preferences)) toast('设置暂存中，本次仍然生效');
+      openSettings();return;
+    }
     if (button.id === 'fusion-wallet') {openWallet();return;}
     if (button.id === 'fusion-open-sorting'||button.id==='fusion-open-sorting-study') {openSorting();return;}
     if (button.id === 'fusion-go-field') {closeDrawer();selectTab('explore');return;}
@@ -1015,6 +1027,7 @@ export function mountFusion(controller: FusionController) {
     if (button.dataset.casePreview !== undefined) {
       casePreviewLevel = Number(button.dataset.casePreview);
       casePreviewDirty = true;
+      casePreviewStartedAt = performance.now();
       for (const option of body.querySelectorAll<HTMLElement>('[data-case-preview]')) option.setAttribute('aria-pressed', String(option === button));
       return;
     }
@@ -1042,7 +1055,11 @@ export function mountFusion(controller: FusionController) {
       await act({type: 'curio', id: detailId, kind: button.dataset.kind as 'clean' | 'repair'});return;
     }
     if (button.id === 'fusion-try') {
-      if(['tape','nested','stamp','cosmic-parcel','bell'].includes(detailId)){curioTrialAt=performance.now();curioTrialReplay++;const response=query('#fusion-curio-response');response.hidden=false;response.textContent=discoveryById(detailId)!.interaction;return;}
+      soundCue('interaction',detailId);
+      const response=body.querySelector<HTMLElement>('#fusion-curio-response');
+      if(response&&trialLines[detailId]){response.hidden=false;response.textContent=trialLines[detailId];}
+      if(detailHabitat){detailHabitat.interact();const feedback=query('#interaction-feedback');feedback.hidden=false;feedback.querySelector('canvas')!.hidden=true;query('#interaction').textContent=discoveryById(detailId)!.interaction;return;}
+      if(['tape','nested','stamp','cosmic-parcel','bell'].includes(detailId)){curioTrialAt=performance.now();curioTrialReplay++;return;}
       if (detailId === 'receipt') {if (!controller.state.journey) {const compare=refinementView(controller.state).compareAction;if(compare.enabled)await act(compare.action);}await act({type: 'paper', kind: 'try'});}
       else {
         interactions.show(detailId, lastPointer);
@@ -1050,7 +1067,7 @@ export function mountFusion(controller: FusionController) {
       }
       return;
     }
-    if (button.id === 'fusion-hide-interaction') {interactions.hide();return;}
+    if (button.id === 'fusion-hide-interaction') {interactions.hide();query('#interaction-feedback').hidden=true;return;}
     if (button.dataset.light) {
       sideLight = button.dataset.light === 'side';
       for (const option of body.querySelectorAll<HTMLElement>('[data-light]')) option.setAttribute('aria-pressed', String(option === button));
@@ -1113,11 +1130,12 @@ export function mountFusion(controller: FusionController) {
       const began=performance.now();
       let painted=false;
       lastFocusPaint = now;
-      if (drawer === 'case-preview' && casePreviewDirty && casePreview && museum.canvas.dataset.ready === 'true' && (casePreview.id !== 'case-0' || paperReady)) {
+      if (drawer === 'case-preview' && (casePreviewDirty || now-casePreviewStartedAt<2200) && casePreview && museum.canvas.dataset.ready === 'true') {
         const canvas = query<HTMLCanvasElement>('#fusion-case-preview');
         const index = Number(casePreview.id.slice(5));
         const id = ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell'][index];
-        museum.renderExhibit(canvas, id, casePreviewLevel, 0);painted=true;
+        const install=Math.max(0,Math.min(1,(now-casePreviewStartedAt)/1800));
+        museum.renderExhibit(canvas, id, casePreviewLevel, Math.max(0,now-casePreviewStartedAt)/1000,install*install*(3-2*install));painted=true;
         canvas.dataset.before = String(casePreview.before);
         canvas.dataset.after = String(casePreview.after);
         canvas.dataset.price = String(casePreview.price);
@@ -1129,27 +1147,17 @@ export function mountFusion(controller: FusionController) {
         lastFocusPaint = now;
         const state = controller.state;
         const frame = receiptRestorationFrame(state.receipt, Date.now() / 1000);
-        if (drawer === 'detail' && receiptTable && receiptTableRenderer) {
-          const context = canvas.getContext('2d')!;
-          const visual = receiptTableRenderer.v037ReceiptFrame(state.receipt, Date.now() / 1000);
-          const result = receiptTable.draw(context, visual, reducedMotion.matches, fusionRenderElapsed(state.game, Date.now()) / 1000, canvasContext => {
-            const level = state.progression.abilities.receipt;
-            if (!abilityReady || !level || frame.stage === 'buried') return;
-            const normalize = (point: {x: number; y: number}) => ({x: (point.x - 150) * 192 / 340, y: (point.y - 150) * 192 / 340});
-            const attachments = receiptTable!.paperAttachments();
-            canvasContext.save();canvasContext.translate(150, 150);canvasContext.scale(340 / 192, 340 / 192);
-            const rig = drawCurioAbilityRig(canvasContext, {id: 'receipt', image: canvas, seconds: fusionRenderElapsed(state.game, Date.now()) / 1000,
-              abilityLevel: level, experimentProgress: frame.phase === 'trying' ? frame.trying : undefined, records: abilityRecords(level), baseAlreadyDrawn: true,
-              attachments: {leftTop: normalize(attachments.leftTop), leftBottom: normalize(attachments.leftBottom), rightTop: normalize(attachments.rightTop), rightBottom: normalize(attachments.rightBottom), leftEdge: attachments.leftEdge.map(normalize), rightEdge: attachments.rightEdge.map(normalize)},
-              cavity: {left: -70, top: -35, width: 332, height: 227}, receiverY: 192, reducedMotion: reducedMotion.matches});
-            abilityResults.set('receipt', rig);canvasContext.restore();
-          });
-          canvas.dataset.ready = 'true';canvas.dataset.restorationPhase = frame.phase;canvas.dataset.restorationCondition = frame.condition;
-          canvas.dataset.restorationCleaning = String(frame.cleaning);canvas.dataset.restorationRepairing = String(frame.repairing);canvas.dataset.restorationExcavation = String(frame.excavation);
-          canvas.dataset.restorationOriginalCode = 'RET-031';canvas.dataset.restorationMissing = String(frame.reading.missingCount);
-          canvas.dataset.cleanCoverage = String(result.cleanCoverage);canvas.dataset.contact = result.contact?.tool ?? '';canvas.dataset.phase = visual.phase;
-          canvas.dataset.frame = String(Number(canvas.dataset.frame ?? 0) + 1);
-        } else museum.renderFocused(canvas, 'receipt', growthLevel(state.game, 'case-0'), fusionRenderElapsed(state.game,Date.now()) / 1000, 1, 'specimen', undefined, frame);
+        const rendered=renderRenewalReceipt(canvas,state.receipt,Date.now(),{
+          seconds:fusionRenderElapsed(state.game,Date.now())/1000,reducedMotion:reducedMotion.matches,
+          drawAbility:abilityReady&&state.progression.abilities.receipt>0?(context,image)=>{
+            const result=drawCurioAbilityRig(context,{id:'receipt',image,seconds:fusionRenderElapsed(state.game,Date.now())/1000,
+              abilityLevel:state.progression.abilities.receipt,experimentProgress:frame.phase==='trying'?frame.trying:undefined,
+              records:abilityRecords(state.progression.abilities.receipt),reducedMotion:reducedMotion.matches,
+              materialRevision:`${state.receipt.condition}/${state.receipt.activeAction?.id??''}`});
+            abilityResults.set('receipt',result);return true;
+          }:undefined,
+        });
+        if(!rendered){focusReady=false;}
         decorateAbilityCanvas(canvas,'receipt');painted=true;
         if (sideLight && drawer === 'project' && projectId === 'evidence-bench') {
           const context = canvas.getContext('2d')!;
@@ -1162,7 +1170,7 @@ export function mountFusion(controller: FusionController) {
       if (drawer === 'detail' && curioPrices[detailId]) {
         const canvas = query<HTMLCanvasElement>('#fusion-exhibit-focus');
         const state = controller.state;
-        if (canvas && museum.canvas.dataset.ready === 'true' && state.curios[detailId] && focusVisible.get(canvas)!==false) {
+        if (canvas && state.curios[detailId] && focusVisible.get(canvas)!==false) {
           const seconds = fusionRenderElapsed(state.game,Date.now()) / 1000;
           const trial = Math.min(1, Math.max(0, (now-curioTrialAt)/2600));
           const rendered = renderCurioTreatment(canvas, detailId, state.curios[detailId], Date.now(), {seconds, trial, reducedMotion: reducedMotion.matches,
@@ -1208,7 +1216,7 @@ export function mountFusion(controller: FusionController) {
     materialSnapshot:(id:string)=>{
       const state=controller.state;
       if(!state.game.collection.includes(id))return undefined;
-      const canvas=id==='receipt'?receiptTable?.exportMaterial(receiptRestorationFrame(state.receipt,Date.now()/1000))
+      const canvas=id==='receipt'?exportRenewalReceiptMaterial(state.receipt,Date.now())
         :state.curios[id]?exportCurioMaterial(id,state.curios[id],Date.now()):undefined;
       return canvas?.toDataURL('image/png');
     },

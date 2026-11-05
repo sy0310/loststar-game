@@ -60,8 +60,8 @@ describe('single first-planet sorting facility', () => {
       expect(entities.map(entity => entity.hitTarget)).toEqual(Array(3).fill({kind: 'site', id: 'sorting'}));
       entities.forEach(entity => entity.draw());
       scene.afterWorld(paint.context, current);
-      expect(paint.images.filter(paint => paint.image.src?.includes('sorting-machine-back.webp'))).toHaveLength(1);
-      expect(paint.images.filter(paint => paint.image.src?.includes('sorting-machine-front.webp'))).toHaveLength(1);
+      expect(paint.images.filter(paint => paint.image.src?.includes('sorter-back.webp'))).toHaveLength(1);
+      expect(paint.images.filter(paint => paint.image.src?.includes('sorter-front.webp'))).toHaveLength(1);
       expect(paint.images.some(paint => paint.image.src?.endsWith('/sorter.webp'))).toBe(false);
       expect(scene.diagnostics()).toMatchObject({id: 'parcel/old-sorting', phase, anchor: {x: 410, y: 315}});
       expect(current.output.dataset).toMatchObject({sortingEntityId: 'parcel/old-sorting', sortingPhase: phase});
@@ -78,18 +78,19 @@ describe('single first-planet sorting facility', () => {
     expect(scene.entities(paintRecorder().context, frame())).toEqual([]);
   });
 
-  it('draws only a cropped beacon cap at the old contact, with its actual registered light source', async () => {
+  it('draws one dedicated original lamp at the retained foot, with its registered lens and guidance source', async () => {
     const mast = createSecurityMast(), current = frame(), paint = paintRecorder();
     current.environment = {period: 'night', seconds: 250, light: 1, rest: 1};
     await mast.ready;
     const entities = mast.entities(paint.context, current);
     expect(entities).toHaveLength(1);
     entities[0].draw();
-    const cap = paint.images.filter(paint => paint.image.src?.endsWith('/sorter.webp'));
+    const cap = paint.images.filter(paint => paint.image.src?.endsWith('/security-mast.webp'));
     expect(cap).toHaveLength(1);
-    expect(cap[0].coordinates.slice(0, 4)).toEqual([128, 0, 48, 45]);
-    expect(paint.gradients).toContainEqual([559, 208, 1, 559, 208, 22]);
-    expect(current.output.dataset).toMatchObject({securityEntityId: 'parcel/security-mast', securityEmitter: '{"x":559,"y":208}'});
+    expect(cap[0].coordinates.slice(0, 2)).toEqual([568-32*86/209,294-228*86/209]);
+    expect(paint.images.some(paint=>paint.image.src?.endsWith('/sorter.webp'))).toBe(false);
+    expect(paint.gradients).toContainEqual([557.3, 208, 1, 557.3, 208, 22]);
+    expect(current.output.dataset).toMatchObject({securityEntityId: 'parcel/security-mast', securityEmitter: '{"x":557.3,"y":208}'});
     expect(mast.diagnostics().anchor).toEqual({x: 568, y: 294});
     const copiedSource = mast.source();copiedSource.x = 0;
     expect(mast.source()).toEqual(firstPlanetFacilities.securityMast.emitter);
@@ -106,8 +107,8 @@ describe('single first-planet sorting facility', () => {
     expect(shifted.rectangles).toEqual([[89, 126, 9, 3]]);
     const original = paintRecorder();
     drawV034BeaconGuidance(original.context, view);
-    expect(original.gradients[0].slice(0, 2)).toEqual([559, 208]);
-    expect(original.points[0]).toEqual([556, 208]);
+    expect(original.gradients[0].slice(0, 2)).toEqual([557.3, 208]);
+    expect(original.points[0]).toEqual([554.3, 208]);
     const inactive = paintRecorder();
     drawV034BeaconGuidance(inactive.context, base);
     if (!base.facilities.beacon.guiding) expect(inactive.gradients).toEqual([]);

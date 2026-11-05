@@ -26,21 +26,21 @@ export class RadarScene {
     const t=now/1000,status=this.getStatus(),radius=218,angle=t*Math.PI/4;
     c.clearRect(0,0,480,480);c.save();c.translate(240,240);c.imageSmoothingEnabled=false;
     c.beginPath();c.arc(0,0,232,0,Math.PI*2);c.clip();
-    c.fillStyle='#142f3d';c.fillRect(-240,-240,480,480);
+    c.fillStyle='#24183c';c.fillRect(-240,-240,480,480);
     // A stepped fan stays visible on WebViews that do not render conic gradients.
     for(let i=0;i<16;i++){
-      c.fillStyle=`rgba(105,255,205,${.02+(16-i)/16*.18})`;c.beginPath();c.moveTo(0,0);c.arc(0,0,radius,angle-i*.045,angle-(i+1)*.045,true);c.closePath();c.fill();
+      c.fillStyle=`rgba(128,225,222,${.02+(16-i)/16*.18})`;c.beginPath();c.moveTo(0,0);c.arc(0,0,radius,angle-i*.045,angle-(i+1)*.045,true);c.closePath();c.fill();
     }
-    c.lineWidth=2;c.strokeStyle='#85cdbc55';
+    c.lineWidth=2;c.strokeStyle='#c99a7155';
     for(const r of [62,122,182,218]){c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.stroke();}
-    c.strokeStyle='#78cfb94d';c.beginPath();c.moveTo(-218,0);c.lineTo(218,0);c.moveTo(0,-218);c.lineTo(0,218);c.stroke();
+    c.strokeStyle='#a785b44d';c.beginPath();c.moveTo(-218,0);c.lineTo(218,0);c.moveTo(0,-218);c.lineTo(0,218);c.stroke();
     for(let i=0;i<3;i++){
-      const phase=(t*.3+i/3)%1;c.strokeStyle=`rgba(135,255,219,${(1-phase)*.55})`;c.lineWidth=3;c.beginPath();c.arc(0,0,22+phase*196,0,Math.PI*2);c.stroke();
+      const phase=(t*.3+i/3)%1;c.strokeStyle=`rgba(195,158,244,${(1-phase)*.55})`;c.lineWidth=3;c.beginPath();c.arc(0,0,22+phase*196,0,Math.PI*2);c.stroke();
     }
-    c.strokeStyle='#c3ffe2';c.lineWidth=3;c.beginPath();c.moveTo(0,0);c.lineTo(Math.cos(angle)*radius,Math.sin(angle)*radius);c.stroke();
+    c.strokeStyle='#b7f3ed';c.lineWidth=3;c.beginPath();c.moveTo(0,0);c.lineTo(Math.cos(angle)*radius,Math.sin(angle)*radius);c.stroke();
     for(let i=0;i<18;i++){
       const theta=i*2.4,r=50+(i*37)%150,a=.1+.12*Math.max(0,Math.cos(theta-angle));
-      c.fillStyle=`rgba(150,240,210,${a})`;c.fillRect(Math.round(Math.cos(theta)*r),Math.round(Math.sin(theta)*r),2,2);
+      c.fillStyle=`rgba(203,177,235,${a})`;c.fillRect(Math.round(Math.cos(theta)*r),Math.round(Math.sin(theta)*r),2,2);
     }
     if(status.stage==='anomaly'||status.stage==='locking'){
       // This is a measured return on the known planet, never an unknown world node.

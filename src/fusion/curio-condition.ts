@@ -1,347 +1,247 @@
-import {itemCenter, type Exhibit} from '../render/museum-layout';
-import {createReceiptRestorationAssets, receiptRestorationRegistration} from '../render/receipt-restoration';
-import {restorationBrushPose, restorationBrushToolTransform} from '../render/restoration-brush';
-import robotUrl from '../../assets/runtime/robot-empty-v3.webp';
-import {drawLocalCurioRig} from './curio-local-rig';
-import {textures} from '../ui/art';
-import {curioActionProgress, curioPhysicalFrame,curioSupportContacts, isMaterialCurio, paintCurioPhysicalMaterial, type CurioState} from './curio-material';
-export {curioConditionPresentation, curioTreatmentLabels, curioPhysicalFrame, curioMaterialRegistration} from './curio-material';
+import {drawTapeBridge} from './curio-ability-rig';
+import {itemCenter,type Exhibit} from '../render/museum-layout';
+import {curioActionProgress,type CurioState} from './curio-material';
+import {receiptRestorationFrame,type ReceiptRestorationState} from '../review/receipt-restoration';
+import {isRenewalCurio,renewalCurioIds,renewalCurioRegistration,renewalReceiptCurioState,renewalTreatmentFrame,renewalBuriedReceiptPose,type RenewalCurioId,type RenewalPoint,type RenewalTool} from './curio-renewal-model';
+import registration from '../../assets/runtime/visual-renewal/curios/registration.json';
+export {curioConditionPresentation,curioTreatmentLabels,curioPhysicalFrame,curioMaterialRegistration} from './curio-material';
+export {renewalReceiptCurioState,renewalTreatmentFrame,renewalCurioRegistration} from './curio-renewal-model';
 export type {CurioState} from './curio-material';
 
-type Point = {x: number; y: number};
-interface RepairSite extends Point {width: number; height: number; angle: number}
-interface Material {
-  original: HTMLCanvasElement;
-  image: HTMLCanvasElement;
-  mud: HTMLCanvasElement;
-  remainingMud: HTMLCanvasElement;
-  solid: Point[];
-  rows: ({left: number; right: number} | undefined)[];
-  revision: string;
+export interface CurioPoseOptions {seconds?:number;trial?:number;reducedMotion?:boolean;serviceEnvelope?:number;buried?:boolean;excavation?:number;drawAbility?:(context:CanvasRenderingContext2D,image:HTMLCanvasElement)=>boolean}
+interface Material {original:HTMLCanvasElement;image:HTMLCanvasElement;cleanMask:HTMLCanvasElement;revision:string;phase:number;repaired:number;size:384}
+type ToolContact={tool:string;x:number;y:number;pressed:boolean};
+const urls=import.meta.glob('../../assets/runtime/visual-renewal/curios/*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
+const images=new Map<string,HTMLImageElement>(),materials=new Map<string,Material>();
+let toolsPromise:Promise<void>|undefined,toolsLoaded=false;
+let workbench:HTMLImageElement|undefined,workbenchPromise:Promise<void>|undefined;
+const workbenchUrl=new URL('../../assets/runtime/visual-renewal/curios/restoration-workbench.webp',import.meta.url).href;
+const make=(size=384)=>{const c=document.createElement('canvas');c.width=c.height=size;return c;};
+const clamp=(p:number)=>Number.isFinite(p)?Math.max(0,Math.min(1,p)):0;
+const smooth=(p:number)=>{const t=clamp(p);return t*t*(3-2*t);};
+function path(c:CanvasRenderingContext2D,points:readonly RenewalPoint[]){c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();}
+function specimen(id:string,state:string){return images.get(`${id}-${state}`);}
+function sprite(name:string){return images.get(name);}
+function drawImage(c:CanvasRenderingContext2D,image:CanvasImageSource){c.drawImage(image,0,0,192,192);}
+
+/** New material bytes are critical: failure does not pretend a paid treatment is ready. */
+export function prepareCurioTools():Promise<void>{
+ if(!toolsPromise){
+  const entries=Object.entries(urls).filter(([name])=>!name.endsWith('/restoration-workbench.webp'));
+  toolsPromise=Promise.all(entries.map(async([name,url])=>{
+   const key=name.split('/').at(-1)!.replace('.webp','');let image=images.get(key);
+   if(!image){image=new Image();image.src=url;images.set(key,image);}
+   try{await image.decode();}catch(error){if(images.get(key)===image)images.delete(key);throw error;}
+  })).then(()=>{toolsLoaded=true;}).catch(error=>{toolsLoaded=false;toolsPromise=undefined;throw error;});
+ }
+ return toolsPromise;
 }
-const repairs: Record<string, RepairSite[]> = {
-  nested: [{x: 47, y: 96, width: 31, height: 11, angle: .54}, {x: 143, y: 97, width: 31, height: 11, angle: -.52}],
-  stamp: [{x: 100, y: 78, width: 29, height: 12, angle: .42}, {x: 87, y: 105, width: 26, height: 10, angle: .42}],
-  'cosmic-parcel': [{x: 27, y: 91, width: 33, height: 13, angle: 1.4}, {x: 161, y: 145, width: 30, height: 13, angle: -.5}],
+/** Scenery is decoded on opening the workspace, preserving the load-failure payment gate. */
+export function prepareCurioWorkbench():Promise<void>{
+ if(!workbenchPromise)workbenchPromise=prepareCurioTools().then(async()=>{const image=new Image();image.src=workbenchUrl;await image.decode();workbench=image;}).catch(error=>{workbenchPromise=undefined;throw error;});
+ return workbenchPromise;
+}
+
+function cleanMask(c:CanvasRenderingContext2D,id:RenewalCurioId,progress:number){
+ c.lineCap='round';c.lineWidth=27;
+ for(const [i,[a,b]]of renewalCurioRegistration[id].cleanPaths.entries()){
+  const p=clamp((progress*8-i)/.72);if(!p)continue;c.moveTo(a.x,a.y);c.lineTo(a.x+(b.x-a.x)*p,a.y+(b.y-a.y)*p);
+ }
+ c.stroke();
+}
+
+/** All six use independent authored A/B/C textures; only contacted tracks reveal B. */
+export function prepareCurioMaterial(_image:HTMLImageElement|undefined,state:CurioState,now:number,id:string):Material{
+ let material=materials.get(id);if(!material){material={original:make(),image:make(),cleanMask:make(),revision:'',phase:0,repaired:0,size:384};materials.set(id,material);}
+ const phase=curioActionProgress(state,now),repaired=state.condition==='stabilized'?1:state.action?.kind==='repair'?phase:0;
+ const revision=`${id}/${state.condition}/${state.action?.kind??''}/${state.action?Math.round(phase*180):0}/${toolsLoaded}`;
+ if(material.revision!==revision){
+  const c=material.image.getContext('2d')!;c.clearRect(0,0,384,384);c.imageSmoothingEnabled=false;
+  if(isRenewalCurio(id)&&toolsLoaded){
+   const source=specimen(id,state.condition),clean=specimen(id,'clean'),done=specimen(id,'stabilized');
+   if(source&&clean&&done){
+    const o=material.original.getContext('2d')!;o.clearRect(0,0,384,384);o.drawImage(done,0,0,384,384);
+    c.save();c.scale(2,2);drawImage(c,source);
+    if(state.action?.kind==='clean'){
+     // The saved B material is revealed only on the exact sweeps used by the brush.
+     const mask=material.cleanMask,m=mask.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalCompositeOperation='source-over';m.clearRect(0,0,384,384);m.save();m.scale(2,2);m.beginPath();cleanMask(m,id,phase);
+     m.restore();
+     // Erase A under the same opaque track before revealing B, including alpha edges.
+     c.save();c.globalCompositeOperation='destination-out';c.drawImage(mask,0,0,192,192);c.restore();
+     m.save();m.scale(2,2);m.globalCompositeOperation='source-in';drawImage(m,clean);m.restore();
+     c.drawImage(mask,0,0,192,192);
+    }else if(state.action?.kind==='repair'){
+     const frame=renewalTreatmentFrame(id,state,now);
+     const surface=(frame.corrections[0]+frame.corrections[1])/2;
+     if(surface>0){
+      // Small authored pose/texture residuals outside structural regions settle
+      // only while one of the tools is actually pressing, never on state commit.
+      c.save();c.beginPath();c.rect(0,0,192,192);
+      for(const repair of renewalCurioRegistration[id].repairs){const points=repair.zone;c.moveTo(points[0].x,points[0].y);for(const p of points.slice(1))c.lineTo(p.x,p.y);c.closePath();}
+      c.clip('evenodd');c.clearRect(0,0,192,192);c.globalAlpha=1-surface;drawImage(c,clean);c.globalAlpha=surface;drawImage(c,done);c.restore();
+     }
+     for(const [index,repair]of renewalCurioRegistration[id].repairs.entries()){
+      const amount=frame.corrections[index];if(amount<=0)continue;
+      c.save();path(c,repair.zone);c.clip();
+      // Replace only the authored joint after a measured tool has engaged it.
+      // Its registration moves from the damaged joint into its real seat.
+      c.clearRect(0,0,192,192);c.save();c.translate(repair.contact.x,repair.contact.y);
+      c.translate(repair.from.x*(1-amount),repair.from.y*(1-amount));c.rotate(repair.angle*(1-amount));c.translate(-repair.contact.x,-repair.contact.y);
+      drawImage(c,done);c.restore();c.restore();
+     }
+     // All registered corrections reach exact C before the tool withdraws.
+    }
+    c.restore();
+   }
+  }
+  material.revision=revision;
+ }
+ material.phase=phase;material.repaired=repaired;return material;
+}
+
+interface PartLayers {revision:string;body:HTMLCanvasElement;part:HTMLCanvasElement;under:HTMLCanvasElement}
+const rigs=new Map<string,PartLayers>();
+const rigPolygons:Record<RenewalCurioId,readonly RenewalPoint[]>={
+ receipt:[{x:0,y:137},{x:150,y:137},{x:150,y:192},{x:0,y:192}],
+ tape:[{x:22,y:122},{x:33,y:108},{x:65,y:92},{x:85,y:92},{x:78,y:107},{x:57,y:126},{x:50,y:142},{x:23,y:142}],
+ nested:[{x:30,y:85},{x:77,y:40},{x:166,y:57},{x:166,y:79},{x:132,y:113},{x:30,y:97}],
+ stamp:[{x:43,y:0},{x:132,y:0},{x:142,y:119},{x:67,y:121}],
+ 'cosmic-parcel':[{x:22,y:39},{x:111,y:17},{x:174,y:41},{x:181,y:79},{x:68,y:105},{x:22,y:77}],
+ bell:[{x:74,y:15},{x:119,y:15},{x:119,y:64},{x:74,y:64}],
 };
-const materials = new WeakMap<HTMLImageElement, Material>();
-const make = () => {const canvas = document.createElement('canvas');canvas.width = canvas.height = 192;return canvas;};
-let tools: ReturnType<typeof createReceiptRestorationAssets> | undefined;
-let toolsLoaded = false;
-let toolRobot: HTMLImageElement | undefined;
-let armJoint: HTMLCanvasElement | undefined;
-let toolsPromise: Promise<void> | undefined;
-let workbench: HTMLImageElement | undefined;
-let workbenchPromise: Promise<void> | undefined;
-const specimens = new Map<string, HTMLImageElement>();
-const workbenchUrl = new URL('../../assets/runtime/v036/restoration-workbench.webp', import.meta.url).href;
-const treatmentLayers = new Map<string, HTMLImageElement>();
-const treatmentUrls = import.meta.glob('../../assets/runtime/v039/*.webp', {eager: true, query: '?url', import: 'default'}) as Record<string,string>;
-type TreatmentToolRegistration = {file: string;contact: Point; pivot: Point;width: number;height: number};
-const treatmentRegistrations = import.meta.glob('../../assets/runtime/v039/registration.json', {eager: true, import: 'default'}) as Record<string,{tools?: Record<string,TreatmentToolRegistration>}>;
-
-export function prepareCurioTools() {
-  if (!toolsPromise) {
-    tools = createReceiptRestorationAssets();
-    toolRobot = new Image();toolRobot.src = robotUrl;
-    for (const id of ['tape','bell','nested','stamp','cosmic-parcel']) {
-      const image = new Image();image.src = textures[id as keyof typeof textures];specimens.set(id,image);
-    }
-    for (const [path,url] of Object.entries(treatmentUrls)) {
-      const image = new Image();image.src = url;treatmentLayers.set(path.split('/').at(-1)!.replace('.webp',''),image);
-    }
-    for(const [name,registration] of Object.entries(treatmentRegistrations['../../assets/runtime/v039/registration.json']?.tools??{})){
-      const image=treatmentLayers.get(registration.file.split('/').at(-1)!.replace('.webp',''));if(image)treatmentLayers.set(name,image);
-    }
-    toolsPromise = Promise.all([
-      ...[...Object.values(tools), toolRobot, ...specimens.values()].map(image => image.decode()),
-      // A failed optional detail layer uses the existing material/tool fallback.
-      ...[...new Set(treatmentLayers.values())].map(image => image.decode().catch(() => {})),
-    ])
-      .then(() => {toolsLoaded = true;})
-      .catch(error => {toolsPromise = undefined;throw error;});
-  }
-  return toolsPromise;
+function rigFor(id:RenewalCurioId,material:Material){
+ let r=rigs.get(id);if(r?.revision===material.revision)return r;
+ r??={revision:'',body:make(),part:make(),under:make()};
+ for(const canvas of [r.body,r.part,r.under]){const c=canvas.getContext('2d')!;c.globalCompositeOperation='source-over';c.clearRect(0,0,384,384);}
+ const p=r.part.getContext('2d')!;p.drawImage(material.image,0,0);p.save();p.scale(2,2);p.globalCompositeOperation='destination-in';path(p,rigPolygons[id]);p.fill();p.restore();
+ const b=r.body.getContext('2d')!;b.drawImage(material.image,0,0);b.globalCompositeOperation='destination-out';b.drawImage(r.part,0,0);b.globalCompositeOperation='source-over';
+ const u=r.under.getContext('2d')!;const clean=specimen(id,'clean');
+ if(clean&&(id==='nested'||id==='cosmic-parcel')){
+  u.save();u.scale(2,2);path(u,rigPolygons[id]);u.clip();
+  // Only the existing internal layer is exposed, never a second copy of the outer lid.
+  u.beginPath();u.rect(0,id==='nested'?83:88,192,29);u.clip();drawImage(u,clean);u.restore();
+ }
+ r.revision=material.revision;rigs.set(id,r);return r;
 }
 
-/** Workbench scenery is requested only when its independent workspace opens. */
-export function prepareCurioWorkbench() {
-  if (!workbenchPromise) {
-    workbenchPromise = prepareCurioTools().then(async () => {
-      const image = new Image();image.src = workbenchUrl;
-      await image.decode();workbench = image;
-    }).catch(error => {workbenchPromise = undefined;throw error;});
-  }
-  return workbenchPromise;
+/** Local joints move; feet/support stay fixed. No whole-icon bobbing substitutes for animation. */
+export function drawRenewalCurioRig(c:CanvasRenderingContext2D,id:RenewalCurioId,material:Material,seconds:number,trial=0,reduced=false,envelope=1){
+ const r=rigFor(id,material),active=trial>0&&trial<1?Math.sin(trial*Math.PI):0;
+ const motion=reduced?0:envelope*(material.repaired<.995?.25:1),idle=Math.sin(seconds*1.3);
+ drawImage(c,r.under);drawImage(c,r.body);c.save();
+ if(id==='receipt'){
+  // Connected strips curl around the fixed upper edge, never lift the whole sheet.
+  c.restore();const start=137;
+  for(let y=start;y<192;y+=3){const local=(y-start)/(192-start),wave=(Math.sin(seconds*1.1)*1.3+active*7)*motion*local*local;
+   c.drawImage(r.part,0,y*2,384,6,0,y-wave,192,3+Math.abs(wave)*.05);}
+  return;
+ }
+ if(id==='tape'){c.translate(80,96);c.rotate((idle*.025+active*.22)*motion);c.translate(-80,-96-active*4*motion);}
+ if(id==='nested'){
+  const opening=((idle+1)*.018+active*.82)*motion;
+  // Project a hinged plane: back-edge vector (86,14) is invariant throughout.
+  c.translate(80,43);c.transform(1,.23377*opening,0,1-1.43599*opening,0,0);c.translate(-80,-43);
+ }
+ if(id==='stamp'){c.translate(103,118);c.rotate(idle*.01*motion);c.translate(-103,-118+active*9*motion);}
+ if(id==='cosmic-parcel'){const pulse=(start:number)=>trial>start&&trial<start+.13?Math.sin((trial-start)/.13*Math.PI):0;const knock=(pulse(.43)+pulse(.70))*3*motion;c.translate(173,69);c.rotate(-(.012+idle*.012+active*.04)*motion);c.translate(-173,-69+knock);}
+ if(id==='bell'){const delayed=trial>.42?Math.sin(clamp((trial-.42)/.58)*Math.PI):0;c.translate(0,((idle+1)*.6+delayed*8)*motion);}
+ drawImage(c,r.part);c.restore();
+ if(id==='tape'&&active>.05){
+  const paper=sprite('receipt-inner-blank');
+  if(paper){c.drawImage(paper,77,61,86,137,5,151,24,25);c.drawImage(paper,106,61,86,137,32,151,24,25);}
+  drawTapeBridge(c,material.image,[{x:45,y:122},{x:31,y:139},{x:28,y:157},{x:42,y:163}],active,8);
+ }
+ if(active>.1&&id==='nested'){
+  // The tiny final nested layer carries the exact first-layer mark, not new loot.
+  c.save();c.translate(91,78-active*5);c.scale(.23,.23);c.drawImage(material.image,0,0,384,384,0,0,192,192);c.restore();
+ }
+ if(active>.15&&id==='stamp'){
+  c.save();c.translate(76,179);c.fillStyle='#e8c88f';c.fillRect(0,0,44,12);c.fillStyle='#7f5176';c.font='bold 6px monospace';c.fillText('昨天 ←',3,8);c.restore();
+ }
+ if(id==='bell'&&trial>.45&&trial<1&&!reduced){c.save();c.strokeStyle='#ffe1a2';c.lineWidth=.85;c.globalAlpha=active*.7;for(let i=0;i<2;i++){const w=((trial-.45)*3+i*.5)%1;c.beginPath();c.ellipse(99,140,44+w*31,11+w*9,0,0,Math.PI*2);c.stroke();}c.restore();}
 }
 
-function materialFor(image: HTMLImageElement) {
-  const cached = materials.get(image);
-  if (cached) return cached;
-  const original = make(), context = original.getContext('2d')!;
-  context.imageSmoothingEnabled = false;
-  const scale = 192 / Math.max(image.naturalWidth, image.naturalHeight);
-  context.drawImage(image, (192 - image.naturalWidth * scale) / 2, (192 - image.naturalHeight * scale) / 2, image.naturalWidth * scale, image.naturalHeight * scale);
-  const alpha = context.getImageData(0, 0, 192, 192).data;
-  const solid: Point[] = [];
-  const rows = Array.from({length: 192}, (_, y) => {
-    let left = 192, right = 0;
-    for (let x = 0; x < 192; x++) {
-      if (alpha[(y * 192 + x) * 4 + 3] < 210) continue;
-      left = Math.min(left, x);right = Math.max(right, x + 1);
-      if (x % 2 === 0 && y % 2 === 0) solid.push({x, y});
-    }
-    return right > left ? {left, right} : undefined;
-  });
-  const material = {original, image: make(), mud: make(), remainingMud: make(), solid, rows, revision: ''};
-  materials.set(image, material);
-  return material;
+const toolEntries=new Map(registration.assets.filter(a=>a.id.startsWith('tool-')).map(a=>[a.id,a]));
+function arm(c:CanvasRenderingContext2D,grip:RenewalPoint){
+ const forearm=sprite('tool-forearm'),hand=sprite('tool-gripper');if(!forearm||!hand)return;
+ const elbow={x:Math.min(230,grip.x+37),y:grip.y+34},origin={x:265,y:213};
+ for(const [a,b]of [[origin,elbow],[elbow,grip]]){const length=Math.hypot(b.x-a.x,b.y-a.y);c.save();c.translate(a.x,a.y);c.rotate(Math.atan2(b.y-a.y,b.x-a.x)-Math.PI/2);c.drawImage(forearm,0,0,forearm.naturalWidth,forearm.naturalHeight,-8,-6,16,length+12);c.restore();}
+ c.drawImage(hand,grip.x-12,grip.y-9,24,17);
+}
+function registeredTool(c:CanvasRenderingContext2D,name:RenewalTool,tip:RenewalPoint,angle:number){
+ const image=sprite(`tool-${name}`),entry=toolEntries.get(`tool-${name}`);if(!image||!entry?.contact||!entry.pivot)return;
+ const scale=(name==='brush'?77:70)/Math.max(image.naturalWidth,image.naturalHeight);
+ const dx=(entry.pivot.x-entry.contact.x)*scale,dy=(entry.pivot.y-entry.contact.y)*scale;
+ const grip={x:tip.x+dx*Math.cos(angle)-dy*Math.sin(angle),y:tip.y+dx*Math.sin(angle)+dy*Math.cos(angle)};
+ arm(c,grip);c.save();c.translate(tip.x,tip.y);c.rotate(angle);c.scale(scale,scale);c.drawImage(image,-entry.contact.x,-entry.contact.y);c.restore();
+}
+function drawTool(c:CanvasRenderingContext2D,id:RenewalCurioId,state:CurioState,now:number):ToolContact|undefined{
+ if(!state.action||curioActionProgress(state,now)>=1)return;
+ const f=renewalTreatmentFrame(id,state,now);
+ if(state.action.kind==='clean'){
+  const lift=f.cleaningContact?0:Math.sin(clamp((f.local-.72)/.28)*Math.PI)*12;
+  registeredTool(c,f.tool,f.contact.y<0?f.contact:{x:f.contact.x,y:f.contact.y-lift},.52+Math.sin(f.local*6.28)*.05);
+  return{tool:f.tool,...f.contact,pressed:f.cleaningContact};
+ }
+ const site=f.repairContact,tip={x:site.x+(1-f.pressure)*23,y:site.y-(1-f.pressure)*19};
+ registeredTool(c,f.tool,tip,.55+(f.tool==='screwdriver'&&f.pressure>.95?Math.sin(f.repairLocal*30)*.07:0));
+ return{tool:f.tool,...site,pressed:f.pressure>.95};
 }
 
-function sweepPoint(material: Material, pass: number, progress: number): Point {
-  const y = 12 + pass * 24;
-  const row = material.rows[Math.min(191, y)];
-  const left = (row?.left ?? 65) - 8, right = (row?.right ?? 127) + 8;
-  return {x: pass % 2 === 0 ? left + (right - left) * progress : right - (right - left) * progress, y};
+/** One sample-bank composition, with the front soil occluding all but a paper corner. */
+function drawBuriedReceipt(c:CanvasRenderingContext2D,material:Material,progress:number,withTool:boolean){
+ const pose=renewalBuriedReceiptPose(progress),rear=sprite('excavation-rear'),front=sprite('excavation-front');
+ if(rear)c.drawImage(rear,0,67,192,120);
+ c.save();c.translate(pose.pivot.x,pose.pivot.y);c.rotate(pose.angle);c.scale(1,pose.scaleY);c.translate(-pose.pivot.x,-pose.pivot.y);drawImage(c,material.image);c.restore();
+ if(front){c.save();c.globalAlpha=1-pose.settle;c.drawImage(front,0,133,192,55);c.restore();}
+ if(withTool){
+  const contact=pose.progress<.36?{x:128+pose.loosen*4,y:139-pose.loosen*3}:pose.edgeContact;
+  registeredTool(c,pose.progress<.36?'spatula':'tweezers',contact,.5-pose.tilt*.25);
+ }
 }
 
-function cleaningPose(material: Material, progress: number) {
-  const pose = restorationBrushPose(progress);
-  const sweep = Math.min(1, pose.local / .72);
-  let point = sweepPoint(material, pose.pass, sweep);
-  if (pose.local >= .72 && pose.pass < 7) {
-    const next = sweepPoint(material, pose.pass + 1, 0);
-    const transit = (pose.local - .72) / .28;
-    point = {x: point.x + (next.x - point.x) * transit, y: point.y + (next.y - point.y) * transit};
-  }
-  return {...pose, point};
+/** Shared specimen path for collection AND home. Contains no case pixels. */
+export function drawCurioSpecimen(c:CanvasRenderingContext2D,exhibit:Exhibit,image:HTMLImageElement,state:CurioState,now:number,options:CurioPoseOptions={}){
+ if(!isRenewalCurio(exhibit.id)||!toolsLoaded)return false;
+ const material=prepareCurioMaterial(image,state,now,exhibit.id),center=itemCenter(exhibit),size=exhibit.item.size*exhibit.scale;
+ c.save();c.translate(center.x-size/2,center.y-size/2);c.scale(size/192,size/192);c.imageSmoothingEnabled=false;
+ if(exhibit.id==='receipt'&&options.buried)drawBuriedReceipt(c,material,options.excavation??0,false);
+ else if(state.action)drawImage(c,material.image);else if(!options.drawAbility?.(c,material.image))drawRenewalCurioRig(c,exhibit.id,material,options.seconds??now/1000,(options.trial??0)*(options.serviceEnvelope??1),options.reducedMotion,options.serviceEnvelope??1);
+ c.restore();return true;
 }
 
-function drawFibrePatch(context: CanvasRenderingContext2D, site: RepairSite, installed: number, back: boolean) {
-  if (!tools || !toolsLoaded || installed <= 0) return;
-  const target = receiptRestorationRegistration().receipt.patchTargets.lower.srcRect;
-  const descent = (1 - installed) * 13;
-  context.save();context.translate(site.x - descent * .2, site.y - descent);context.rotate(site.angle);
-  const width = site.width * (back ? 1.12 : 1), height = site.height * (back ? 1.2 : 1);
-  context.drawImage(back ? tools.patchBack : tools.patchFront, target.x - 1, target.y - 1, target.width + 2, target.height + 2, -width / 2, -height / 2, width, height);
-  context.restore();
+function paintWorkbench(canvas:HTMLCanvasElement,id:RenewalCurioId,state:CurioState,now:number,options:CurioPoseOptions={},buried=false){
+ if(!toolsLoaded||!workbench?.naturalWidth)return false;
+ const c=canvas.getContext('2d');if(!c)return false;
+ const material=prepareCurioMaterial(undefined,state,now,id),frame=renewalTreatmentFrame(id,state,now);
+ c.save();c.clearRect(0,0,canvas.width,canvas.height);c.scale(canvas.width/640,canvas.height/700);c.imageSmoothingEnabled=false;c.drawImage(workbench,0,0,640,700);
+ const x=106,y=191,size=428,scale=size/192;
+ c.save();c.globalAlpha=.31;c.fillStyle='#25132e';c.beginPath();c.ellipse(x+frame.progress*0+renewalCurioRegistration[id].support.x*scale,y+renewalCurioRegistration[id].support.y*scale+1,122,7,0,0,Math.PI*2);c.fill();c.restore();
+ c.save();c.translate(x,y);c.scale(scale,scale);
+ if(buried){
+  drawBuriedReceipt(c,material,options.excavation??options.trial??0,true);
+ }else if(state.action)drawImage(c,material.image);
+ else if(!options.drawAbility?.(c,material.image))drawRenewalCurioRig(c,id,material,options.seconds??now/1000,options.trial??0,options.reducedMotion,options.serviceEnvelope??1);
+ if(id==='bell'&&options.trial&&options.trial>.02&&options.trial<.42){
+  const retract=smooth((options.trial-.18)/.24);arm(c,{x:132+retract*93,y:108+retract*32});
+ }
+ const contact=buried?undefined:drawTool(c,id,state,now);c.restore();c.restore();
+ canvas.dataset.ready='true';canvas.dataset.materialStage=state.condition;canvas.dataset.condition=state.condition;canvas.dataset.type=renewalCurioRegistration[id].material;
+ canvas.dataset.cleanProgress=String(frame.cleaning);canvas.dataset.repairProgress=String(frame.repairing);canvas.dataset.toolContact=contact?.pressed?contact.tool:'';canvas.dataset.contact=contact?.tool??'';
+ canvas.dataset.contactX=contact?String(x+contact.x*scale):'';canvas.dataset.contactY=contact?String(y+contact.y*scale):'';
+ canvas.dataset.structureAligned=String(frame.corrections[0]);canvas.dataset.structurePressed=String(frame.corrections[1]);canvas.dataset.lampAvailable='false';canvas.dataset.frame=String(Number(canvas.dataset.frame??0)+1);
+ return{cleanCoverage:frame.cleaning,contact};
 }
+export function renderCurioTreatment(canvas:HTMLCanvasElement,id:string,state:CurioState,now:number,options:CurioPoseOptions={}){return isRenewalCurio(id)?!!paintWorkbench(canvas,id,state,now,options):false;}
 
-/** The original mud texture is erased only by the same contact sweeps that drive the fan. */
-export function prepareCurioMaterial(image: HTMLImageElement, state: CurioState, now: number, id: string) {
-  const material = materialFor(image);
-  const phase = curioActionProgress(state,now);
-  const repaired = state.condition === 'stabilized' ? 1 : state.action?.kind === 'repair' ? phase : 0;
-  const revision = `${id}/${state.condition}/${state.action?.kind ?? ''}/${state.action ? Math.round(phase * 120) : 0}/${toolsLoaded}`;
-  if (material.revision !== revision) {
-    const painter = material.image.getContext('2d')!;
-    painter.clearRect(0, 0, 192, 192);
-    if (isMaterialCurio(id)) {
-      paintCurioPhysicalMaterial(material.image,material.original,id,state,now,{
-        dust: treatmentLayers.get(id === 'tape' ? 'tape-adhesive-dust' : 'bell-rust'),
-      });
-      material.revision = revision;
-      return {...material,phase,repaired,size:192 as const};
-    }
-    const sites = repairs[id] ?? [];
-    for (const [index, site] of sites.entries()) drawFibrePatch(painter, site, Math.min(1, Math.max(0, (repaired - index * .45) / .48)), true);
-    painter.drawImage(material.original, 0, 0);
-    // Small open seams remain visible after cleaning and are bridged by the saved fibre repairs.
-    if (repaired < 1) {
-      painter.save();painter.globalCompositeOperation = 'destination-out';painter.lineWidth = 2.5 * (1 - repaired);
-      for (const site of sites) {
-        painter.save();painter.translate(site.x, site.y);painter.rotate(site.angle);
-        painter.beginPath();painter.moveTo(-site.width * .32, -2);painter.lineTo(0, 1);painter.lineTo(site.width * .32, -1);painter.stroke();painter.restore();
-      }
-      painter.restore();
-    }
-    if (state.condition === 'found' && toolsLoaded && tools) {
-      const dirt = material.mud.getContext('2d')!;
-      dirt.clearRect(0, 0, 192, 192);
-      dirt.globalAlpha = .88;
-      dirt.drawImage(tools.mud, 0, 0, 192, 192);
-      dirt.drawImage(tools.mud, 28, 2, 220, 234, 92, 42, 110, 135);
-      dirt.globalAlpha = 1;dirt.globalCompositeOperation = 'destination-in';dirt.drawImage(material.original, 0, 0);dirt.globalCompositeOperation = 'source-over';
-      const remaining = material.remainingMud.getContext('2d')!;
-      remaining.clearRect(0, 0, 192, 192);remaining.drawImage(material.mud, 0, 0);
-      if (state.action?.kind === 'clean') {
-        remaining.save();remaining.globalCompositeOperation = 'destination-out';remaining.lineCap = 'round';remaining.lineWidth = 34;
-        for (let pass = 0; pass < 8; pass++) {
-          const amount = Math.min(1, Math.max(0, (phase * 8 - pass) / .72));
-          if (!amount) continue;
-          const start = sweepPoint(material, pass, 0), end = sweepPoint(material, pass, amount);
-          remaining.beginPath();remaining.moveTo(start.x, start.y);remaining.lineTo(end.x, end.y);remaining.stroke();
-        }
-        remaining.restore();
-      }
-      painter.drawImage(material.remainingMud, 0, 0);
-    }
-    for (const [index, site] of sites.entries()) drawFibrePatch(painter, site, Math.min(1, Math.max(0, (repaired - index * .45) / .48)), false);
-    material.revision = revision;
-  }
-  return {...material, phase, repaired, size: 192 as const};
+/** The same receipt bytes and original fact model, now in the unified new workbench. */
+export function renderRenewalReceipt(canvas:HTMLCanvasElement,state:ReceiptRestorationState,now:number,options:CurioPoseOptions={}){
+ const frame=receiptRestorationFrame(state,now/1000),curio=renewalReceiptCurioState(state);
+ const result=paintWorkbench(canvas,'receipt',curio,now,{...options,excavation:frame.excavation,trial:frame.phase==='trying'?frame.trying:options.trial},frame.stage==='buried');
+ if(!result)return false;
+ canvas.dataset.restorationPhase=frame.phase;canvas.dataset.restorationCondition=frame.condition;canvas.dataset.restorationCleaning=String(frame.cleaning);canvas.dataset.restorationRepairing=String(frame.repairing);canvas.dataset.restorationExcavation=String(frame.excavation);canvas.dataset.restorationOriginalCode='RET-031';canvas.dataset.restorationMissing=String(frame.reading.missingCount);canvas.dataset.cleanCoverage=String(result.cleanCoverage);canvas.dataset.phase=frame.phase;
+ return result;
 }
-
-export interface CurioPoseOptions {
-  seconds?: number;
-  trial?: number;
-  reducedMotion?: boolean;
-  serviceEnvelope?: number;
-  drawAbility?: (context: CanvasRenderingContext2D, image: HTMLCanvasElement) => boolean;
-}
-
-function toolArm(context: CanvasRenderingContext2D, grip: Point, claw = false) {
-  if (!toolRobot) return;
-  if (claw) {
-    // Register the hollow of the original C-shaped claw around the tool handle.
-    context.drawImage(toolRobot, 189, 272, 32, 31, grip.x - 9.6, grip.y - 13.1, 22, 21.3);
-    return;
-  }
-  if(!armJoint){
-    // The copper ear bearing is an actual outlined part of the same original
-    // robot. A measured contour removes adjacent head/neck pixels, not its rim.
-    armJoint=document.createElement('canvas');armJoint.width=28;armJoint.height=35;
-    const joint=armJoint.getContext('2d')!;joint.imageSmoothingEnabled=false;
-    joint.drawImage(toolRobot,100,51,28,35,0,0,28,35);
-    joint.globalCompositeOperation='destination-in';joint.beginPath();
-    for(const [i,p]of [{x:9,y:0},{x:18,y:1},{x:26,y:8},{x:28,y:18},{x:24,y:28},{x:17,y:35},{x:8,y:34},{x:1,y:26},{x:0,y:14},{x:3,y:6}].entries()){
-      if(i)joint.lineTo(p.x,p.y);else joint.moveTo(p.x,p.y);
-    }
-    joint.closePath();joint.fill();
-  }
-  const elbow = {x: Math.max(180, grip.x + 38), y: grip.y + 34};
-  for (const [from, to] of [[{x: 286, y: 202}, elbow], [elbow, grip]]) {
-    const length = Math.hypot(to.x - from.x, to.y - from.y);
-    context.save();context.translate(from.x, from.y);context.rotate(Math.atan2(to.y - from.y, to.x - from.x) - Math.PI / 2);
-    // (411,245,26,40) previously contained mostly transparent padding and the
-    // narrow side of a purple arm. This tight cream/copper forearm is opaque
-    // across its centre, keeping its bevel and warm original surface visible.
-    context.drawImage(toolRobot,102,97,23,25,-9,-4,18,length+8);context.restore();
-  }
-  context.drawImage(armJoint,elbow.x-11,elbow.y-13.75,22,27.5);
-  context.drawImage(armJoint,grip.x-8,grip.y-10,16,20);
-}
-
-function drawRegisteredTool(context: CanvasRenderingContext2D, name: string, tip: Point, angle: number) {
-  if (!tools) return;
-  const image = treatmentLayers.get(name);
-  const registration = treatmentRegistrations['../../assets/runtime/v039/registration.json']?.tools?.[name];
-  const fallback = receiptRestorationRegistration().tools.spatula;
-  const available = !!image?.naturalWidth && !!registration;
-  const tool = available ? registration : fallback;
-  const sprite = available ? image : tools.spatula;
-  const scale = available ? 72 / Math.max(registration.width,registration.height) : .33;
-  const offset = {x: (tool.pivot.x-tool.contact.x)*scale,y: (tool.pivot.y-tool.contact.y)*scale};
-  const grip = {x: tip.x+offset.x*Math.cos(angle)-offset.y*Math.sin(angle),y: tip.y+offset.x*Math.sin(angle)+offset.y*Math.cos(angle)};
-  toolArm(context,grip);
-  context.save();context.translate(tip.x,tip.y);context.rotate(angle);context.scale(scale,scale);
-  context.drawImage(sprite,-tool.contact.x,-tool.contact.y);context.restore();toolArm(context,grip,true);
-}
-
-function drawTool(context: CanvasRenderingContext2D, material: Material, state: CurioState, phase: number, id: string) {
-  if (!tools || !toolsLoaded || !state.action || phase >= 1) return;
-  const registration = receiptRestorationRegistration().tools;
-  const physical = isMaterialCurio(id) ? curioPhysicalFrame(id,state,state.action.startedAt+(state.action.endsAt-state.action.startedAt)*phase) : undefined;
-  if (state.action.kind === 'clean') {
-    const originalPose = cleaningPose(material, phase);
-    const pose = physical ? {...originalPose,point:physical.contact} : originalPose;
-    const matrix = restorationBrushToolTransform(pose.pressure);
-    if (id === 'tape' && physical && physical.pass < 4 && treatmentLayers.has('tweezers')) {
-      const point = {x: pose.point.x,y: pose.point.y-pose.lift*.55};
-      drawRegisteredTool(context,'tweezers',point,-.28);
-      return {tool:'tweezers',...pose.point,pressed:pose.contact};
-    }
-    const grip = {x: pose.point.x + matrix.handleGrip.x * .48, y: pose.point.y - pose.lift * .55 + matrix.handleGrip.y * .48};
-    toolArm(context, grip);
-    context.save();context.translate(pose.point.x, pose.point.y - pose.lift * .55);context.scale(.48, .48);
-    context.save();context.transform(matrix.bristles.a, matrix.bristles.b, matrix.bristles.c, matrix.bristles.d, matrix.bristles.e, matrix.bristles.f);
-    context.drawImage(tools.brushBristles, 0, 0);context.restore();
-    context.drawImage(tools.brushHandle, matrix.handleOrigin.x, matrix.handleOrigin.y);context.restore();toolArm(context, grip, true);
-    return {tool:'brush',...pose.point,pressed:pose.contact};
-  }
-  if (physical) {
-    const local = physical.repairLocal;
-    const press = Math.min(1,local/.23)*(1-Math.max(0,(local-.72)/.28));
-    let site: Point = {...physical.repairContact};
-    if (physical.step === 0) site = id === 'tape' ? {x:site.x-7*(1-physical.aligned),y:site.y+7*(1-physical.aligned)}
-      : {x:site.x+5*(1-physical.aligned),y:site.y+4*(1-physical.aligned)};
-    else if (id === 'bell') site = {x:site.x-3*(1-physical.pressed),y:site.y+4*(1-physical.pressed)};
-    const tip = {x:site.x+(1-press)*23,y:site.y-(1-press)*20};
-    const name = id === 'tape' ? physical.step === 0 ? 'tweezers' : 'spatula'
-      : physical.step === 0 ? 'screwdriver' : 'spatula';
-    const angle = name === 'screwdriver' ? -.35 + (press > .95 ? Math.sin(local*27)*.09 : 0) : -.16;
-    drawRegisteredTool(context,name,tip,angle);
-    return {tool:name,...site,pressed:press>.95};
-  }
-  const sites = repairs[id] ?? [];
-  const index = phase < .5 ? 0 : 1, site = sites[index];
-  if (!site) return;
-  const local = phase * 2 - index;
-  const press = Math.min(1, local / .23) * (1 - Math.max(0, (local - .72) / .28));
-  const tool = registration.spatula;
-  const tip = {x: site.x + (1 - press) * 20, y: site.y - (1 - press) * 18};
-  const offset = {x: (tool.pivot.x - tool.contact.x) * .33, y: (tool.pivot.y - tool.contact.y) * .33};
-  const grip = {x: tip.x + offset.x * Math.cos(-.16) - offset.y * Math.sin(-.16), y: tip.y + offset.x * Math.sin(-.16) + offset.y * Math.cos(-.16)};
-  toolArm(context, grip);
-  context.save();context.translate(tip.x, tip.y);context.rotate(-.16);context.scale(.33, .33);
-  context.drawImage(tools.spatula, -tool.contact.x, -tool.contact.y);context.restore();toolArm(context, grip, true);
-  return {tool:'spatula',...site,pressed:press>.95};
-}
-
-/** Registered specimen material and local joints remain behind the real foreground glass. */
-export function drawCurioSpecimen(context: CanvasRenderingContext2D, exhibit: Exhibit, image: HTMLImageElement, state: CurioState, now: number, options: CurioPoseOptions = {}) {
-  const material = prepareCurioMaterial(image, state, now, exhibit.id);
-  const center = itemCenter(exhibit), size = exhibit.item.size * exhibit.scale;
-  context.save();context.translate(center.x, center.y);context.scale(size / 192, size / 192);context.translate(-96, -96);
-  if (state.action) context.drawImage(material.image, 0, 0);
-  else if (!options.drawAbility?.(context, material.image)) drawLocalCurioRig(context, exhibit.id, material.image, material.revision, options.seconds ?? now / 1000,
-    (options.trial ?? 0) * (options.serviceEnvelope ?? 1), options.reducedMotion, options.serviceEnvelope ?? 1, material.repaired);
-  drawTool(context, material, state, material.phase, exhibit.id);
-  context.restore();
-}
-
-/** The same actual specimen on the shared workbench, without a cabinet or save mutation. */
-export function renderCurioTreatment(canvas: HTMLCanvasElement, id: string, state: CurioState, now: number, options: CurioPoseOptions = {}) {
-  const context=canvas.getContext('2d'), image=specimens.get(id);
-  if(!context||!toolsLoaded||!image||!workbench?.naturalWidth)return false;
-  const material=prepareCurioMaterial(image,state,now,id);
-  context.save();context.clearRect(0,0,canvas.width,canvas.height);context.scale(canvas.width/640,canvas.height/700);context.imageSmoothingEnabled=false;
-  if(workbench)context.drawImage(workbench,0,0,640,700);
-  else {context.fillStyle='#30223f';context.fillRect(0,0,640,700);}
-  const x=150,y=id==='bell'?159:id==='tape'?184:150,size=340;
-  context.save();context.fillStyle='#24192b';context.globalAlpha=.40;
-  if(isMaterialCurio(id)){
-    for(const contact of curioSupportContacts(id,state,now)){
-      context.beginPath();context.ellipse(x+contact.point.x*size/192,y+contact.point.y*size/192+1,contact.radiusX*size/192,contact.radiusY*size/192,0,0,Math.PI*2);context.fill();
-    }
-  }else{context.beginPath();context.ellipse(320,490,151,20,0,0,Math.PI*2);context.fill();}
-  context.restore();
-  const completed=state.condition==='stabilized';
-  if(completed){
-    // The original restoration tray provides a physical support, not a second case.
-    const tray=receiptRestorationRegistration().tools.tray;
-    if(tools)context.drawImage(tools.tray,0,0,tray.size.width,tray.size.height,134,470,372,69);
-  }
-  context.save();context.translate(x,y);context.scale(size/192,size/192);
-  if(state.action)context.drawImage(material.image,0,0);
-  else if(!options.drawAbility?.(context,material.image))drawLocalCurioRig(context,id,material.image,material.revision,options.seconds??now/1000,
-    options.trial??0,options.reducedMotion,options.serviceEnvelope??1,material.repaired);
-  const contact=drawTool(context,material,state,material.phase,id);
-  context.restore();context.restore();
-  const physical=isMaterialCurio(id)?curioPhysicalFrame(id,state,now):undefined;
-  canvas.dataset.ready='true';canvas.dataset.materialStage=state.condition;canvas.dataset.condition=state.condition;
-  canvas.dataset.type=id==='tape'?'adhesive':id==='bell'?'copper-mechanism':'original';
-  canvas.dataset.cleanProgress=String(physical?.cleaning??(state.condition==='found'?material.phase:1));
-  canvas.dataset.repairProgress=String(material.repaired);canvas.dataset.toolContact=contact?.pressed?contact.tool:'';
-  canvas.dataset.contact=contact?.tool??'';
-  canvas.dataset.contactX=contact?String(x+contact.x*size/192):'';canvas.dataset.contactY=contact?String(y+contact.y*size/192):'';
-  canvas.dataset.structureAligned=String(physical?.aligned??material.repaired);canvas.dataset.structurePressed=String(physical?.pressed??material.repaired);
-  canvas.dataset.lampAvailable='false';canvas.dataset.frame=String(Number(canvas.dataset.frame??0)+1);
-  return true;
-}
-
-/** Copy because the live material canvas is intentionally reused by its renderer. */
-export function exportCurioMaterial(id: string, state: CurioState, now: number) {
-  const image=specimens.get(id);if(!image||!toolsLoaded)return undefined;
-  const material=prepareCurioMaterial(image,state,now,id), canvas=make();canvas.getContext('2d')!.drawImage(material.image,0,0);return canvas;
-}
+/** Full-resolution copy: no mutation, no temporary canvas shared with a renderer. */
+export function exportCurioMaterial(id:string,state:CurioState,now:number){if(!toolsLoaded||!isRenewalCurio(id))return undefined;const result=make();result.getContext('2d')!.drawImage(prepareCurioMaterial(undefined,state,now,id).image,0,0);return result;}
+export function exportRenewalReceiptMaterial(state:ReceiptRestorationState,now:number){return exportCurioMaterial('receipt',renewalReceiptCurioState(state),now);}

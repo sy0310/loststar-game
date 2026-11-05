@@ -1,3 +1,4 @@
+import {firstPlanetFacilities} from '../fusion/facilities';
 import radarDeviceUrl from '../../assets/runtime/equipment-radar.webp';
 import gateDeviceUrl from '../../assets/runtime/sorter.webp';
 import type {StationState,ResearchState} from '../game/station';
@@ -14,6 +15,7 @@ export interface GuardLayerOptions {
   showEquipment?: boolean;
   showSearchLine?: boolean;
   showIntruders?: boolean;
+  showStatusLabels?: boolean;
 }
 
 export function guardLayer(getVisual:()=>GuardVisual,options:GuardLayerOptions={}):SceneExtension {
@@ -31,14 +33,14 @@ export function guardLayer(getVisual:()=>GuardVisual,options:GuardLayerOptions={
       const warmth=v.phase==='dusk'?Math.sin(v.light/.65*Math.PI/2)*.17:v.phase==='night'?Math.max(0,1-v.nightBase/3)*.17:0;
       tintWorld(c,'#e5b485',warmth);
       tintWorld(c,'#737da9',v.light);
-      for(const [x,y] of [[271,330],[557,208],[345,634],[488,610]]){
+      for(const [x,y] of [[245,351],[firstPlanetFacilities.securityMast.emitter.x,208],[534,604],[535,615]]){
         c.save();c.globalAlpha=v.light;const g=c.createRadialGradient(x+3,y+2,1,x+3,y+2,30);g.addColorStop(0,'#ffe4a666');g.addColorStop(1,'#ffe4a600');c.fillStyle=g;c.fillRect(x-28,y-28,60,60);c.fillStyle='#ffecb4';c.fillRect(x,y,7,4);c.restore();
       }
     }
     const age=((v.at??Date.now())-(v.station?.lastRepair?.at??0))/1000,repairing=!!v.station?.lastRepair&&age>=0&&age<4,from=v.station?.lastRepair?.from??100,visualIntegrity=repairing?from+(v.station!.integrity-from)*Math.min(1,age/3):v.station?.integrity??100;
     if(visualIntegrity<100){const cracks=[[300,400],[325,415],[286,421],[339,420],[311,392],[293,391]];c.save();c.lineWidth=3;for(let i=0;i<Math.min(6,Math.ceil((100-visualIntegrity)/6));i++){const [x,y]=cracks[i];c.strokeStyle='#21172e';c.beginPath();c.moveTo(x-5,y-10);c.lineTo(x+3,y-3);c.lineTo(x-2,y+4);c.lineTo(x+8,y+11);c.stroke();c.strokeStyle='#cd895d';c.lineWidth=1;c.stroke();}c.fillStyle=Math.sin(t*6)>.0?'#ffb990':'#bf648b';c.fillRect(273,430,7,5);c.restore();}
-    const hitAge=((v.at??Date.now())-(v.station?.lastHitAt??0))/1000;if(v.station?.lastHitAt&&hitAge>=0&&hitAge<1.5){c.save();c.globalAlpha=1-hitAge/1.5;c.strokeStyle='#ffb17c';c.lineWidth=3;c.beginPath();c.ellipse(315,417,24+hitAge*27,10+hitAge*10,0,0,Math.PI*2);c.stroke();for(let i=0;i<8;i++){c.fillStyle=i%2?'#ffe2a8':'#bb719b';c.fillRect(315+Math.cos(i*2.4)*hitAge*40,400-Math.sin(i)*12-hitAge*19,3,3);}c.font='24px sans-serif';c.fillStyle='#ffe0a3';c.textAlign='center';c.fillText(v.station.lastHitPoints?`护板 −${v.station.lastHitPoints}`:'护板碰撞',315,284);c.restore();}
-    if(repairing){c.save();const x=292+Math.sin(t*4)*9,y=425+Math.cos(t*3)*3;c.strokeStyle='#8bd8d1';c.lineWidth=3;c.beginPath();c.moveTo(frame.robot.x-16,frame.robot.y-59);c.lineTo(x,y);c.stroke();c.fillStyle='#fff2be';for(let i=0;i<9;i++){const f=(t*3+i*.13)%1;c.globalAlpha=1-f;c.fillRect(x+Math.cos(i*2)*f*31,y+Math.sin(i*3)*f*19,2+i%2,3);}c.globalAlpha=1;c.strokeStyle='#bde9d4';c.lineWidth=2;c.strokeRect(278,411,36,23);c.fillStyle='#173d40dd';c.fillRect(257,285,168,32);c.fillStyle='#d4ffdb';c.font='22px sans-serif';c.textAlign='center';c.fillText(`修复 +${v.station!.lastRepair!.points} · −${v.station!.lastRepair!.cost}零件`,341,309,156);c.restore();}
+    const hitAge=((v.at??Date.now())-(v.station?.lastHitAt??0))/1000;if(v.station?.lastHitAt&&hitAge>=0&&hitAge<1.5){c.save();c.globalAlpha=1-hitAge/1.5;c.strokeStyle='#ffb17c';c.lineWidth=3;c.beginPath();c.ellipse(315,417,24+hitAge*27,10+hitAge*10,0,0,Math.PI*2);c.stroke();for(let i=0;i<8;i++){c.fillStyle=i%2?'#ffe2a8':'#bb719b';c.fillRect(315+Math.cos(i*2.4)*hitAge*40,400-Math.sin(i)*12-hitAge*19,3,3);}if(options.showStatusLabels!==false){c.font='24px sans-serif';c.fillStyle='#ffe0a3';c.textAlign='center';c.fillText(v.station.lastHitPoints?`护板 −${v.station.lastHitPoints}`:'护板碰撞',315,284);}c.restore();}
+    if(repairing){c.save();const x=292+Math.sin(t*4)*9,y=401+Math.cos(t*3)*2;c.strokeStyle='#8bd8d1';c.lineWidth=3;c.beginPath();c.moveTo(frame.robot.x-16,frame.robot.y-59);c.lineTo(x,y);c.stroke();c.fillStyle='#fff2be';for(let i=0;i<9;i++){const f=(t*3+i*.13)%1;c.globalAlpha=1-f;c.fillRect(x+Math.cos(i*2)*f*31,y+Math.sin(i*3)*f*19,2+i%2,3);}c.globalAlpha=1;c.strokeStyle='#bde9d4';c.lineWidth=2;c.strokeRect(279,382,31,23);if(options.showStatusLabels!==false){c.fillStyle='#173d40dd';c.fillRect(257,285,168,32);c.fillStyle='#d4ffdb';c.font='22px sans-serif';c.textAlign='center';c.fillText(`修复 +${v.station!.lastRepair!.points} · −${v.station!.lastRepair!.cost}零件`,341,309,156);}c.restore();}
     if(v.repairBay){c.fillStyle='#85cec0';for(let i=0;i<v.repairBay;i++)c.fillRect(268+i*8,444,5,6);}
     if(v.research?.active){c.save();c.strokeStyle='#a1e1db88';c.lineWidth=1;c.setLineDash([4,6]);c.beginPath();c.ellipse(476,384,58+(t*8)%24,18,0,0,Math.PI*2);c.stroke();c.restore();}
     const production=!!v.station;

@@ -1,3 +1,6 @@
+import {nightRobotSourcePoint} from './night-robot-geometry';
+export {nightRobotSourcePoint} from './night-robot-geometry';
+import {drawRenewalRobot,isRenewalRobot} from '../render/renewal-robot';
 import type {SceneFrame} from '../render/scene';
 import {nightRobotRegistration,smoothInstall,type NightStage} from './d1-motion';
 
@@ -20,17 +23,19 @@ function poseAt(stage:NightStage,time:number):Pose{
   return {frame:stage.rig.unload>.5?7:6,flip:false};
 }
 
-/** Native cell coordinates registered with the same origin, tilt and bob as the body. */
-export function nightRobotSourcePoint(point:NightPoint,flip:boolean,stage:NightStage){
-  const x=(origin.x+point.x*scale)*(flip?-1:1),y=origin.y+point.y*scale;
-  const angle=stage.rig.tilt;
-  return {x:stage.robot.x+x*Math.cos(angle)-y*Math.sin(angle),
-    y:stage.robot.y+x*Math.sin(angle)+y*Math.cos(angle)+stage.rig.bob};
+function renewalNightHands(stage:NightStage,handles:HandPair):HandPair{
+ const pose=poseAt(stage,stage.seconds),release=smoothInstall((stage.seconds-27.15)/.55);
+ const sources=pose.frame===5?nightRobotRegistration.pickupHands:pose.frame===7?nightRobotRegistration.unloadHands:nightRobotRegistration.carryHands;
+ return handles.map((handle,index)=>{const actual=nightRobotSourcePoint(sources[index],pose.flip,stage);return {x:handle.x+(actual.x-handle.x)*release,y:handle.y+(actual.y-handle.y)*release};}) as unknown as HandPair;
 }
 
 /** Complete original poses keep the rounded upper arms and body identity. */
 export function createNightRobot(){
-  function drawBody(context:CanvasRenderingContext2D,frame:SceneFrame,stage:NightStage,atlas:HTMLImageElement){
+  function drawBody(context:CanvasRenderingContext2D,frame:SceneFrame,stage:NightStage,atlas:HTMLImageElement,handles?:HandPair){
+    if(isRenewalRobot(atlas)){
+      const handling=['contain','escort','dock'].includes(stage.phase);
+      if(drawRenewalRobot(context,stage.robot,stage.fraction,{workSeconds:stage.seconds,received:0,appliedWorkMs:0,assistRate:0},{hands:handling&&handles?renewalNightHands(stage,handles):undefined,hideGloves:handling,tilt:stage.rig.tilt,bob:stage.rig.bob,flip:stage.phase==='travel'&&stage.robot.facing==='right'}))return;
+    }
     context.save();context.fillStyle='#201b3378';context.beginPath();
     context.ellipse(stage.robot.x,stage.robot.y-5,27,6,0,0,Math.PI*2);context.fill();
     context.translate(Math.round(stage.robot.x),Math.round(stage.robot.y+stage.rig.bob));
@@ -50,6 +55,10 @@ export function createNightRobot(){
   function drawClaws(context:CanvasRenderingContext2D,stage:NightStage,atlas:HTMLImageElement,handles:HandPair){
     if(!['contain','escort','dock'].includes(stage.phase))return;
     const pose=poseAt(stage,stage.seconds);
+    if(isRenewalRobot(atlas)){
+      drawRenewalRobot(context,stage.robot,stage.fraction,{workSeconds:stage.seconds,received:0,appliedWorkMs:0,assistRate:0},{hands:renewalNightHands(stage,handles),glovesOnly:true,tilt:stage.rig.tilt,bob:stage.rig.bob,flip:false});
+      return;
+    }
     if(pose.frame<5)return;
     const sourceHands=pose.frame===5?nightRobotRegistration.pickupHands:pose.frame===7?nightRobotRegistration.unloadHands:nightRobotRegistration.carryHands;
     for(let index=0;index<2;index++){

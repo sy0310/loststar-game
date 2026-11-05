@@ -1,5 +1,30 @@
 import type {SceneFrame} from '../render/scene';
 import type {NightActorFrame} from '../prototype/night-model';
+const visitorUrls=import.meta.glob('../../assets/runtime/visual-renewal/world/visitor-{box,moth}-{awake,folded}.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
+let visitorArt:Record<string,HTMLImageElement>={};
+let visitorReady:Promise<void>|undefined;
+export function prepareFusionAnomalies(){
+  visitorReady??=Promise.all(Object.entries(visitorUrls).map(async([path,url])=>{const image=new Image();image.src=url;await image.decode();return [path.split('/').at(-1)!,image] as const;})).then(entries=>{visitorArt=Object.fromEntries(entries);}).catch(error=>{visitorReady=undefined;throw error;});
+  return visitorReady;
+}
+function drawVisitor(context:CanvasRenderingContext2D,actor:NightActorFrame,seconds:number){
+  const id=actor.id===0?'box':'moth',image=visitorArt[`visitor-${id}-awake.webp`];
+  if(!image)return false;
+  const fold=actor.status==='intercepted'?1-actor.alpha:0;
+  context.save();context.scale(.34,.34);context.translate(-96,-166);
+  context.globalAlpha*=1-fold;
+  if(id==='box'){
+    context.drawImage(image,0,71,192,121,0,71,192,121);
+    context.save();context.translate(138,71);context.rotate(actor.stunned?0:Math.sin(seconds*5.2)*.035);context.drawImage(image,0,0,192,71,-138,-71,192,71);context.restore();
+  }else{
+    const flap=actor.stunned ? .65 : .5+Math.abs(Math.sin(seconds*11))*.5;
+    context.drawImage(image,79,0,35,192,79,0,35,192);
+    for(const side of [-1,1]){context.save();context.translate(96,100);context.scale(flap,1);if(side<0)context.drawImage(image,0,0,79,192,-96,-100,79,192);else context.drawImage(image,114,0,78,192,18,-100,78,192);context.restore();}
+  }
+  if(fold>0){context.globalAlpha=fold;context.drawImage(visitorArt[`visitor-${id}-folded.webp`],0,0);}
+  context.restore();return true;
+}
+
 
 export function anomalyPoint(actor: Pick<NightActorFrame, 'id' | 'progress' | 'status' | 'alpha'>, seconds: number) {
   const progress = actor.progress;
@@ -77,8 +102,10 @@ export function drawFusionAnomaly(context: CanvasRenderingContext2D, actor: Nigh
   context.fillStyle = '#17182e70';context.beginPath();context.ellipse(point.x, point.groundY + 2, actor.id === 0 ? 22 : 16, 5, 0, 0, Math.PI * 2);context.fill();
   context.translate(Math.round(point.x), Math.round(point.y));
   context.scale(1.25, 1.25);
-  if (actor.id === 0) drawBox(context, actor, frame.environment.seconds);
-  else drawMoth(context, actor, frame.environment.seconds);
+  if(!drawVisitor(context,actor,frame.environment.seconds)){
+    if (actor.id === 0) drawBox(context, actor, frame.environment.seconds);
+    else drawMoth(context, actor, frame.environment.seconds);
+  }
   if (actor.stunned) {
     context.fillStyle = '#d8f4d5';context.fillRect(-30, -18, 2, 5);context.fillRect(29, -18, 2, 5);
     context.strokeStyle = '#d8f4d580';context.lineWidth = 1;
@@ -89,6 +116,8 @@ export function drawFusionAnomaly(context: CanvasRenderingContext2D, actor: Nigh
 
 export function drawContainedAnomaly(context: CanvasRenderingContext2D, id: number, position: {x: number; y: number}, opacity: number) {
   context.save();context.globalAlpha = opacity;context.translate(position.x, position.y + 8);
+  const image=visitorArt[`visitor-${id===0?'box':'moth'}-folded.webp`];
+  if(image){context.drawImage(image,-16,-28,32,32);context.restore();return;}
   if (id === 0) {
     context.fillStyle = '#4e3c4d';context.fillRect(-12, -14, 24, 14);
     context.fillStyle = '#c8a578';context.fillRect(-10, -13, 20, 11);

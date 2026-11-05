@@ -71,8 +71,8 @@ it('binds morning repair to the registered claw and the actual warehouse seam', 
   const tool = v034RepairTool(repairing);
   expect(tool.grip).toEqual(nightRobotSourcePoint(nightRobotRegistration.unloadHands[1], false, stage));
   expect(tool.length).toBeLessThan(12);
-  expect(tool.tip.x).toBeCloseTo(294.91, 3);
-  expect(tool.tip.y).toBeCloseTo(402.895, 3);
+  expect(tool.tip.x).toBeCloseTo(295.91, 3);
+  expect(tool.tip.y).toBeCloseTo(400.775, 3);
   expect(v034NightStage(model.snapshot(35)).phase).toBe('done');
 });
 

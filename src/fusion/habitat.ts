@@ -1,16 +1,15 @@
 import type {SaveData} from '../game/engine';
 import {worldView} from '../game/world';
 import {residentEnvironment, type ResidentId} from '../render/resident-motion';
-import {loadResidentArt} from '../render/residents';
-import {createDailyResidentRenderer} from '../render/v034-residents';
-import {residentDailyPose} from '../review/resident-daily';
-import {textures} from '../ui/art';
 import {fusionRenderElapsed} from './render-clock';
 import {FrameCadence} from '../render/frame-cadence';
+import {loadRenewalResidents,drawRenewalResident} from '../render/renewal-residents';
+import controlUrl from '../../assets/runtime/visual-renewal/museum/case-2-back.webp';
+import {residentDailyPose} from '../review/resident-daily';
 
-const backgroundUrls = import.meta.glob('../../assets/runtime/habitat-*-v02.webp', {
+const backgroundUrls = import.meta.glob('../../assets/runtime/visual-renewal/museum/habitat-*.webp', {
   eager: true, query: '?url', import: 'default',
-}) as Record<string, string>;
+}) as Record<string,string>;
 const habitatRegistration = {
   mouse: {support: {x: 565, y: 447}, target: {x: 308, y: 184}, scale: 1.45, lamp: {x: 202, y: 67}},
   hermit: {support: {x: 164, y: 400}, target: {x: 315, y: 184}, scale: 1.5, lamp: {x: 122, y: 88}},
@@ -26,14 +25,12 @@ async function decode(url: string) {
 
 let sharedArt: Promise<Awaited<ReturnType<typeof loadHabitatArt>>> | undefined;
 async function loadHabitatArt() {
-  const daily = createDailyResidentRenderer();
-  const [art, dayPairs, backgrounds] = await Promise.all([
-    loadResidentArt(),
-    Promise.all((['mouse', 'hermit', 'tagbird'] as const).map(async id => [id, await decode(textures[id])] as const)),
-    Promise.all((['mouse', 'hermit', 'tagbird'] as const).map(async id => [id, await decode(backgroundUrls[`../../assets/runtime/habitat-${id}-v02.webp`])] as const)),
-    daily.ready,
-  ]);
-  return {art, daily, dayImages: Object.fromEntries(dayPairs), backgrounds: Object.fromEntries(backgrounds)};
+ const [renewal,backgrounds,control]=await Promise.all([
+  loadRenewalResidents(),
+  Promise.all((['mouse','hermit','tagbird'] as const).map(async id=>[id,await decode(backgroundUrls[`../../assets/runtime/visual-renewal/museum/habitat-${id}.webp`])] as const)),
+  decode(controlUrl),
+ ]);
+ return {renewal,control,backgrounds:Object.fromEntries(backgrounds)};
 }
 function habitatArt() {
   if (!sharedArt) sharedArt = loadHabitatArt().catch(error => {sharedArt = undefined;throw error;});
@@ -49,6 +46,7 @@ export class FusionHabitatScene {
   private active = false;
   private disposed = false;
   private frame = 0;
+  private interactionAt = -Infinity;
   private cadence = new FrameCadence();
 
   constructor(
@@ -82,6 +80,15 @@ export class FusionHabitatScene {
     if (active && this.assets) this.draw();
   }
 
+  /** A free local observation animation; never changes discovery, currency or the world clock. */
+  interact() {
+    if(this.disposed||!this.getState().collection.includes(this.id))return false;
+    if(performance.now()-this.interactionAt<2600)return true;
+    this.interactionAt=performance.now();
+    if(this.assets)this.draw();
+    return true;
+  }
+
   dispose() {
     this.active = false;
     this.disposed = true;
@@ -104,6 +111,9 @@ export class FusionHabitatScene {
     const elapsed = fusionRenderElapsed(state, Date.now());
     const visualState = {...state, world: {...state.world, elapsedMs: elapsed}};
     const environment = residentEnvironment(worldView(visualState), elapsed / 1000);
+    const trialAge=(performance.now()-this.interactionAt)/1000;
+    const trial=trialAge>=0&&trialAge<2.6;
+    const observationEnvironment=trial?{...environment,period:'day' as const,rest:0,seconds:({mouse:5.1,hermit:4.3,tagbird:.1}[this.id])+trialAge*.7}:environment;
     const known = state.collection.includes(this.id);
     const level = Math.max(0, Math.min(3, this.level()));
     const context = this.context;
@@ -121,7 +131,9 @@ export class FusionHabitatScene {
       context.translate(registration.target.x - registration.support.x * registration.scale,
         registration.target.y - registration.support.y * registration.scale);
       context.scale(registration.scale, registration.scale);
-      const pose = this.assets.daily.draw(context, this.id, environment, this.assets.art, this.assets.dayImages[this.id]);
+      const settled=residentDailyPose(this.id,environment);
+      const ramp=(n:number)=>{const p=Math.max(0,Math.min(1,n));return p*p*(3-2*p);};
+      const pose = drawRenewalResident(context,this.id,observationEnvironment,this.assets.renewal,trial?{origin:settled,blend:ramp(trialAge/.35)*ramp((2.6-trialAge)/.45)}:undefined);
       context.restore();
       this.canvas.dataset.action = pose.action;
       this.canvas.dataset.source = pose.source;
@@ -145,6 +157,7 @@ export class FusionHabitatScene {
     context.restore();
     this.drawGlass(level);
     this.canvas.dataset.period = environment.period;
+    this.canvas.dataset.trial=String(trial);
     this.canvas.dataset.worldMs = String(state.world.elapsedMs);
     this.canvas.dataset.frame = String(Math.floor(elapsed / 65));
     this.canvas.dataset.level = String(level);
@@ -152,22 +165,24 @@ export class FusionHabitatScene {
   }
 
   private drawEquipment(level: number) {
-    const context = this.context;
-    context.fillStyle = '#302b42';context.fillRect(513, 159, 57, 32);
-    context.fillStyle = '#aa8965';context.fillRect(515, 156, 53, 4);
-    context.fillStyle = '#587c7d';context.fillRect(520, 165, 40, 17);
-    context.fillStyle = '#a6d2b8';context.fillRect(524, 169, 22 + level * 3, 2);
-    context.fillRect(524, 174, 13 + level * 4, 2);
-    context.fillStyle = '#e5c894';context.fillRect(516, 186, 4, 3);context.fillRect(563, 186, 3, 3);
-    if (level < 2) return;
-    for (let index = 0; index < 4; index++) {
-      const x = 473 + index * 8;
-      const y = 172 - index % 2 * 7;
-      context.fillStyle = '#506d69';context.fillRect(x, y, 2, 26);
-      context.fillStyle = '#a9ba8d';context.fillRect(x - 5, y + 3, 6, 3);context.fillRect(x + 1, y - 3, 7, 4);
-      context.fillStyle = '#dec7a1';context.fillRect(x + 3, y - 2, 2, 1);
+    const c=this.context;
+    // The same authored copper instrument used by the display microclimate,
+    // registered as a small habitat-side controller rather than a flat UI block.
+    c.fillStyle='#24134265';c.beginPath();c.ellipse(543,194,30,5,0,0,Math.PI*2);c.fill();
+    c.drawImage(this.assets!.control,246,140,62,144,520,110,53,84);
+    c.fillStyle='#68dafa';c.fillRect(541,145,15,2);
+    if(level<2)return;
+    c.fillStyle='#39224f';c.fillRect(461,187,54,10);c.fillStyle='#e3a454';c.fillRect(461,185,54,3);
+    if(this.id==='mouse'){
+      for(let i=0;i<4;i++){c.fillStyle=i%2?'#e6bb7e':'#f6d6a0';c.fillRect(468+i*2,180-i*3,36,3);c.fillStyle='#9f77b7';c.fillRect(471+i*2,180-i*3,17,1);}
+    }else if(this.id==='hermit'){
+      c.fillStyle='#e3a454';c.fillRect(470,162,32,23);c.fillStyle='#aa6d50';c.fillRect(470,173,32,12);c.fillStyle='#f5d7a0';c.fillRect(483,162,7,23);c.fillStyle='#ead0a0';c.fillRect(474,170,8,5);
+    }else{
+      c.strokeStyle='#e3a454';c.lineWidth=4;c.beginPath();c.moveTo(468,185);c.lineTo(468,145);c.quadraticCurveTo(484,133,500,145);c.lineTo(500,185);c.stroke();c.fillStyle='#c89c69';c.fillRect(469,161,31,4);
     }
-    context.fillStyle = '#b8957b';context.fillRect(469, 194, 35, 5);
+    if(level<3)return;
+    c.strokeStyle='#c49758';c.lineWidth=3;c.beginPath();c.moveTo(571,186);c.lineTo(577,186);c.lineTo(577,96);c.lineTo(525,96);c.stroke();
+    c.fillStyle='#e3a454';c.fillRect(520,91,59,5);c.fillStyle='#ffe0a2';c.fillRect(523,96,49,2);
   }
 
   private drawGlass(level: number) {

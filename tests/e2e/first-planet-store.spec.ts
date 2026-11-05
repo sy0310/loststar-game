@@ -153,22 +153,22 @@ test('首星首次发现后直接进入基地和收藏，实际纸面使用认�
   await expect.poll(async () => (await readArchive(page)).game.collection.includes('receipt')).toBe(true);
   await page.locator('[data-tab="base"]').click();
   const base = page.locator('#fusion-base-dock canvas');
-  await expect(base).toHaveAttribute('data-receipt-material', 'v036');
+  await expect(base).toHaveAttribute('data-receipt-material', 'renewal');
   await expect(base).toHaveAttribute('data-receipt-condition', 'found');
   await expect(base).toHaveAttribute('data-receipt-stage', 'buried');
   await expect(page.locator('#fusion-drawer')).not.toBeVisible();
   await page.locator('[data-tab="collection"]').click();
   const collection = page.locator('#fusion-collection-dock canvas');
-  await expect(collection).toHaveAttribute('data-receipt-material', 'v036');
+  await expect(collection).toHaveAttribute('data-receipt-material', 'renewal');
   const metrics = await page.evaluate(() => (window as unknown as {__FUSION__: {uiMetrics(): {museum: {receiptMaterial: string; receiptCondition: string; receiptStage: string}}}}).__FUSION__.uiMetrics().museum);
-  expect(metrics).toMatchObject({receiptMaterial: 'v036', receiptCondition: 'found', receiptStage: 'buried'});
+  expect(metrics).toMatchObject({receiptMaterial: 'renewal', receiptCondition: 'found', receiptStage: 'buried'});
 });
 
 test('首星收据材质加载失败时基地等待原材质，并从失败状态重新加载', async ({page}) => {
   await page.clock.install({time: new Date(1800000000000)});
   let blocked = true;
   let requests = 0;
-  await page.route('**/restoration-workbench.webp*', async route => {
+  await page.route('**/receipt-found.webp*', async route => {
     if (route.request().resourceType() !== 'image') {await route.continue();return;}
     requests++;
     if (blocked) await route.abort('failed');
@@ -176,7 +176,7 @@ test('首星收据材质加载失败时基地等待原材质，并从失败状�
   });
   await page.goto('/?sample=first-planet');
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
-  expect(requests).toBe(0);
+  expect(requests).toBeGreaterThan(0);
   await page.clock.fastForward(12200);
   await page.clock.runFor(300);
   await expect.poll(async () => (await readArchive(page)).game.collection.includes('receipt')).toBe(true);
@@ -186,8 +186,9 @@ test('首星收据材质加载失败时基地等待原材质，并从失败状�
   await expect(canvas).toHaveAttribute('data-receipt-material', 'pending');
   await expect(page.locator('#fusion-drawer')).not.toBeVisible();
   blocked = false;
-  await page.clock.runFor(2500);
+  await page.locator('#fusion-museum-retry').click();
+  await page.clock.runFor(300);
   await expect.poll(() => requests).toBeGreaterThan(1);
-  await expect(canvas).toHaveAttribute('data-receipt-material', 'v036');
+  await expect(canvas).toHaveAttribute('data-receipt-material', 'renewal');
   await expect(canvas).toHaveAttribute('data-receipt-stage', 'buried');
 });

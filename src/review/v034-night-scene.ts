@@ -1,4 +1,5 @@
-import invaderUrl from '../../assets/runtime/invader-v02.webp';
+import {firstPlanetFacilities} from '../fusion/facilities';
+import invaderUrl from '../../assets/runtime/visual-renewal/world/visitor-paper-awake.webp';
 import {worldView} from '../game/world';
 import {guardLayer} from '../render/guard-scene';
 import {tintWorld} from '../render/world-lighting';
@@ -13,8 +14,7 @@ import {
   type V034NightSnapshot,
 } from './v034-night-model';
 import {v034BlendFromPatrol, v034Escape, v034NightLightState, v034NightStage, v034RelightState, v034RepairTool} from './v034-night-stage';
-import {robotScannerSource} from '../render/motion';
-import {nightRobotSourcePoint} from './night-robot';
+import {robotScannerPoint} from '../render/motion';
 
 export interface V034NightSceneOptions {
   camera?: SceneCamera;
@@ -26,7 +26,7 @@ export interface V034NightSceneOptions {
 }
 
 const marker = {x: 408, y: 389, width: 43, height: 18};
-const defaultBeaconSource = {x: 559, y: 208};
+const defaultBeaconSource:{x:number;y:number} = firstPlanetFacilities.securityMast.emitter;
 
 function softLight(
   context: CanvasRenderingContext2D,
@@ -82,6 +82,7 @@ function drawStationLights(
   if (night <= 0) return;
   const receiving = stage.phase === 'dock' ? .1 : 0;
   softLight(context, 283, 390, 64, '#ebbd81', (.18 + receiving) * night);
+  softLight(context,245,351,28,'#f4c579',.28*night);
   softLight(context, 359, 334, 46, '#e6b57b', .18 * night);
   softLight(context, beaconSource.x - 1, beaconSource.y + 2, 37, '#b1dfd0', .14 * night);
   context.save();
@@ -97,9 +98,9 @@ function drawStationLights(
   context.translate(230, 261);
   context.scale(170 / 256, 170 / 256);
   for (const points of [
-    [[177, 109], [189, 104], [189, 124], [177, 129]],
-    [[193, 102], [207, 97], [207, 118], [193, 123]],
-    [[213, 95], [231, 89], [231, 110], [213, 116]],
+    [[166,119],[184,111],[184,133],[166,142]],
+    [[197,105],[215,97],[215,120],[197,128]],
+    [[226,91],[241,84],[241,107],[226,114]],
   ]) {
     context.beginPath();
     context.moveTo(points[0][0], points[0][1]);
@@ -253,13 +254,14 @@ function drawDoorSignals(
     context.fillRect(x, y + 13, 3, 7);
   }
   if (active) {
-    const bottom = 364 + 43 * (1 - stage.gate);
+    const top=Math.min(...nightDoor.opening.map(point=>point.y)),height=Math.max(...nightDoor.opening.map(point=>point.y))-top;
+    const bottom = top + height * (1 - stage.gate);
     context.save();
     doorClip(context);
     context.fillStyle = '#f1cd8b';
     context.fillRect(260, bottom - 2, 45, 2);
     context.globalAlpha *= .4;
-    for (let y = 369; y < bottom; y += 6) context.fillRect(260, y, 45, 1);
+    for (let y = top+5; y < bottom; y += 6) context.fillRect(260, y, 45, 1);
     context.restore();
   }
   context.restore();
@@ -325,7 +327,7 @@ function drawMarkerScan(
   if (view.phase !== 'identify') return;
   const stage = v034NightStage(view);
   const observed = view.observations.some(item => item.evidenceId === 'field-pipe-scan');
-  const source = nightRobotSourcePoint(robotScannerSource, false, stage);
+  const source = robotScannerPoint(stage.robot,stage.seconds,{workSeconds:stage.seconds,received:0,assistVisualIntensity:0});
   const target = {x: marker.x + marker.width / 2, y: marker.y + marker.height / 2};
   const angle = Math.atan2(target.y - source.y, target.x - source.x);
   const distance = Math.hypot(target.x - source.x, target.y - source.y);
@@ -498,7 +500,7 @@ export function createV034NightScene(model: Pick<V034NightModel, 'snapshot' | 'g
       at: state.lastAt,
       repairBay: 0,
     };
-  }, {showEquipment: false, showSearchLine: false, showIntruders: options.patrolIntruders});
+  }, {showEquipment: false, showSearchLine: false, showIntruders: options.patrolIntruders,showStatusLabels:false});
   const stageAt = (seconds: number) => {
     currentSeconds = seconds;
     const view = model.snapshot(seconds);

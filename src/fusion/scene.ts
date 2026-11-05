@@ -1,16 +1,17 @@
+import {createRenewalEngineering} from '../render/renewal-engineering';
 import type {SaveData} from '../game/engine';
 import {tuning} from '../game/engine';
 import {nightAt, type NightActorFrame} from '../prototype/night-model';
 import {robotPose, robotScannerPoint, shipPose} from '../render/motion';
 import type {SceneExtension, SceneFrame} from '../render/scene';
-import {createDailyResidentRenderer} from '../render/v034-residents';
+import {createRenewalResidentRenderer} from '../render/renewal-residents';
 import {residentDailyPose} from '../review/resident-daily';
 import {createRelightPatch, createV034NightScene} from '../review/v034-night-scene';
 import {v034NightCamera, v034NightStage, v034SearchlightSource} from '../review/v034-night-stage';
 import {v034ShipPose} from '../review/v034-camera';
 import type {V034NightSnapshot} from '../review/v034-night-model';
 import {fusionNightPlan, fusionNightSnapshot} from './runtime-night';
-import {anomalyPoint, drawContainedAnomaly, drawFusionAnomaly} from './anomalies';
+import {anomalyPoint, drawContainedAnomaly, drawFusionAnomaly, prepareFusionAnomalies} from './anomalies';
 import {fusionCycleFraction, fusionRenderElapsed} from './render-clock';
 import {createWorldFeedback, type FusionFeedbackEvent} from './world-feedback';
 import type {FusionSave} from './contracts';
@@ -160,7 +161,7 @@ export function createFusionScene(
   const journey = Boolean(getFusion?.().journey);
   const robotPerformance = createRobotPerformance(getState);
   const mast = journey ? createSecurityMast() : undefined;
-  const daily = createDailyResidentRenderer();
+  const daily = createRenewalResidentRenderer();
   const encounterLight = createRelightPatch();
   const layer = createV034NightScene({getState, snapshot}, {
     camera: v034NightCamera, patrolIntruders: false, beaconSource: mast?.source, patrolCarrierOnlyAtNight: journey,
@@ -178,6 +179,7 @@ export function createFusionScene(
   });
   const feedback = createWorldFeedback();
   const sorting = createSortingScene(getFusion);
+  const engineering=createRenewalEngineering(getState);
   const surface = createFusionSurfaceFog(getFusion);
   let feedbackToken = 0;
   let focus = {x: 416, y: 350};
@@ -189,7 +191,7 @@ export function createFusionScene(
   };
   return {
     ...layer,
-    ready: Promise.all([layer.ready, daily.ready, sorting.ready, surface.ready, mast?.ready]).then(() => {}),
+    ready: Promise.all([layer.ready, daily.ready, prepareFusionAnomalies(), engineering.ready, sorting.ready, surface.ready, mast?.ready]).then(() => {}),
     hideLegacySorter: journey,
     robotAnimation: journey ? () => {
       if (snapshot().environment.period === 'night') return undefined;
@@ -201,7 +203,7 @@ export function createFusionScene(
     },
     drawResident(context, id, environment, art, image) {
       if (!getState().collection.includes(id)) return {...residentDailyPose(id, environment), action: 'unseen', source: 'hidden', flightArt: false};
-      return daily.draw(context, id, environment, art, image);
+      return daily.draw(context, id, environment)!;
     },
     residentPose: residentDailyPose,
     cycleFraction(base, seconds) {
@@ -215,8 +217,8 @@ export function createFusionScene(
       robotPerformance.receive(input);
     },
     focus: () => focus,
-    unloadPoint: () => ({x: 32 + v034NightCamera.x + (291 - v034NightCamera.x) * v034NightCamera.scale + v034NightCamera.offsetX,
-      y: v034NightCamera.y + (435 - v034NightCamera.y) * v034NightCamera.scale + v034NightCamera.offsetY}),
+    unloadPoint: () => ({x: 32 + v034NightCamera.x + (firstPlanetFacilities.reception.unload.tray.x - v034NightCamera.x) * v034NightCamera.scale + v034NightCamera.offsetX,
+      y: v034NightCamera.y + (firstPlanetFacilities.reception.unload.tray.y - v034NightCamera.y) * v034NightCamera.scale + v034NightCamera.offsetY}),
     feedbackMetrics: () => feedback.metrics(),
     surfaceMetrics: () => surface.metrics(),
     facilityMetrics: () => ({singleSorter: journey, registrations: firstPlanetFacilities}),
@@ -243,6 +245,7 @@ export function createFusionScene(
     worldEntities(context, frame) {
       const entities = layer.worldEntities?.(context, frame) ?? [];
       entities.push(...sorting.entities(context, frame));
+      entities.push(...engineering.entities(context,frame));
       entities.push(...surface.entities(context, frame));
       const view = snapshot();
       if (mast) entities.push(...mast.entities(context, frame, view.facilities.beacon.enabled ? 1 : 0));

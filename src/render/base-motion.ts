@@ -24,10 +24,10 @@ function aisle(target: {x: number; y: number}, fraction: number) {
   return {x: target.x, y: hub.y + directionY * (radius + distance - horizontal - cornerLength), turn: 1};
 }
 
-export function baseRobotPose(seconds: number) {
+export function baseRobotPose(seconds: number, layout: typeof bays = bays) {
   const time = Math.max(0, seconds);
   const index = Math.floor(time / 14) % visits.length;
-  const bay = bays[visits[index]];
+  const bay = layout[visits[index]];
   const t = time % 14;
   const service = {x: visits[index] % 3 === 0 ? 270 : 500, y: bay.y + 42};
   let action: 'walk' | 'observe' | 'open' | 'lift' | 'inspect' | 'place' | 'wipe' | 'return';

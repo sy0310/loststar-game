@@ -1,3 +1,4 @@
+import {firstPlanetFacilities} from '../fusion/facilities';
 import {robotPose} from '../render/motion';
 import {exhibits,itemCenter} from '../render/museum-layout';
 import type {ResidentEnvironment} from '../render/resident-motion';
@@ -26,8 +27,8 @@ export const nightRobotRegistration={
 // Original 256×235 warehouse source, drawn at (230,261) with scale 170/256.
 // The old (291,435) loading lip sits below this actual facade opening.
 export const nightDoor={
-  opening:[{x:258.55,y:365.22},{x:307.03,y:371.20},{x:307.03,y:404.39},{x:258.55,y:398.41}],
-  light:{x:283,y:388},
+  opening:firstPlanetFacilities.reception.doorOpening,
+  light:firstPlanetFacilities.reception.doorLight,
 };
 
 /** Read-only storyboard time. It never advances a save, money or the night model. */

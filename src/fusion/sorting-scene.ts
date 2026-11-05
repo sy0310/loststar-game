@@ -1,11 +1,11 @@
-import backUrl from '../../assets/runtime/refinement/sorting-machine-back.webp';
-import frontUrl from '../../assets/runtime/refinement/sorting-machine-front.webp';
-import rollersUrl from '../../assets/runtime/refinement/sorting-rollers.webp';
-import flap0Url from '../../assets/runtime/refinement/sorting-curtain-0.webp';
-import flap1Url from '../../assets/runtime/refinement/sorting-curtain-1.webp';
-import flap2Url from '../../assets/runtime/refinement/sorting-curtain-2.webp';
-import jamUrl from '../../assets/runtime/refinement/sorting-paper-jam.webp';
-import tapeUrl from '../../assets/runtime/tape.webp';
+import backUrl from '../../assets/runtime/visual-renewal/world/sorter-back.webp';
+import frontUrl from '../../assets/runtime/visual-renewal/world/sorter-front.webp';
+import rollersUrl from '../../assets/runtime/visual-renewal/world/sorter-rollers.webp';
+import flap0Url from '../../assets/runtime/visual-renewal/world/sorter-curtain-0.webp';
+import flap1Url from '../../assets/runtime/visual-renewal/world/sorter-curtain-1.webp';
+import flap2Url from '../../assets/runtime/visual-renewal/world/sorter-curtain-2.webp';
+import jamUrl from '../../assets/runtime/visual-renewal/world/sorter-paper-jam.webp';
+import tapeUrl from '../../assets/runtime/visual-renewal/curios/tape-stabilized.webp';
 import {drawTapeBridge} from './curio-ability-rig';
 import type {FusionSave} from './contracts';
 import {refinementView} from './progression';
@@ -25,7 +25,7 @@ const point = sortingMachinePoint;
 const labels = {P03: point(87, 166), P30: point(213, 118)};
 const mouth = point(90, 205);
 const feet = [[52,259],[116,279],[194,249],[259,219]];
-const flapPivots = [[114,144],[133,148],[153,152]];
+const flapPivots = [[90,145],[113,151],[139,158]];
 const load = (url: string) => new Promise<HTMLImageElement>((resolve, reject) => {
   const image = new Image();image.onload = () => resolve(image);image.onerror = reject;image.src = url;
 });
@@ -100,6 +100,7 @@ export function createSortingScene(getFusion?: () => FusionSave) {
     context.save();context.translate(origin.x, origin.y);context.scale(scale, scale);
     context.fillStyle = '#302736b0';
     for (const [x,y] of feet) {context.beginPath();context.ellipse(x,y + 1,14,4,0,0,Math.PI*2);context.fill();}
+    context.fillStyle='#33213d';context.beginPath();context.moveTo(72,136);context.lineTo(152,158);context.lineTo(151,215);context.lineTo(74,201);context.closePath();context.fill();
     context.drawImage(art[0],0,0);
     // The original belt pixels were removed from the rear shell. Each anchored
     // roller rotates within its own strip, then the complete plane is projected.
@@ -110,10 +111,9 @@ export function createSortingScene(getFusion?: () => FusionSave) {
       if (shift) beltContext.drawImage(art[2],0,top,128,12,0,top + 12 - shift,128,12);
     }
     context.save();
-    context.transform(57/128,19/128,60/96,-36/96,43,213);
+    context.transform(63/128,19/128,68/96,-40/96,27,255);
     context.drawImage(belt,0,0);context.restore();
-    context.fillStyle = '#332b3d';context.beginPath();context.moveTo(104,140);context.lineTo(164,154);
-    context.lineTo(161,194);context.lineTo(103,176);context.closePath();context.fill();
+
     for (let index = 0; index < 3; index++) {
       const [x,y] = flapPivots[index];
       const angle = moving ? Math.sin(rotation * .6 - index * .8) * .12 : 0;

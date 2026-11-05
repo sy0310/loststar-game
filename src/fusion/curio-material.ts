@@ -19,6 +19,18 @@ const profiles: Record<string, {
     details: {found: '粘灰结团 · 翘边 · 断头错位', clean: '粘面已净 · 断头仍分离翘起', stabilized: '断头对齐 · 胶边压合 · 自行吐带'},
     clean: '去粘灰', repair: '对齐断头', cleaning: '挑除粘灰 · 清扫胶边', repairing: '夹回断头 · 顺边压合',
   },
+  nested: {
+    details: {found: '纸屑卡缝 · 箱角压瘪 · 套层歪斜', clean: '箱缝已净 · 箱盖与内层仍错位', stabilized: '导向归正 · 箱角压稳 · 套层依次开合'},
+    clean: '挑出卡纸', repair: '校正套层', cleaning: '挑纸屑 · 清箱缝', repairing: '扶正箱盖 · 压稳箱角',
+  },
+  stamp: {
+    details: {found: '残墨结块 · 柄轴歪卡 · 铜沿氧化', clean: '原日期露出 · 柄轴与轴环仍卡住', stabilized: '柄轴回正 · 轴环归位 · 昨日依旧'},
+    clean: '去残墨', repair: '校准柄轴', cleaning: '清印面 · 拭铜沿', repairing: '扶正柄轴 · 归位轴环',
+  },
+  'cosmic-parcel': {
+    details: {found: '封带松脱 · 封签卷起 · 箱缝错位', clean: '原地址露出 · 封带与封签仍松', stabilized: '封带张紧 · 原签压平 · 箱缝回应'},
+    clean: '清理封签', repair: '张紧封带', cleaning: '拭原签 · 清带缝', repairing: '张紧封带 · 固定原签',
+  },
   bell: {
     details: {found: '铜沿锈蚀 · 顶杆卡住 · 固定件松脱', clean: '锈斑已除 · 顶杆仍卡住 · 固定件待归槽', stabilized: '顶杆复位 · 固定件归槽 · 轻按应答'},
     clean: '除锈', repair: '复位铃机构', cleaning: '沿铜沿除锈', repairing: '紧固归槽 · 复位顶杆',

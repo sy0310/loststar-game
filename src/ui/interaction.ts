@@ -9,14 +9,14 @@ export class InteractionDirector {
   private id='';
   private context:CanvasRenderingContext2D|null=null;
   private element:HTMLElement|null=null;
-  constructor(private root:HTMLElement){}
+  constructor(private root:HTMLElement,private art:(id:string)=>string=id=>textures[discoveryById(id)!.icon]){}
   show(id:string,input:string){
     this.hide();this.id=id;this.element=this.root.querySelector('#interaction-feedback');if(!this.element)return;
     const d=discoveryById(id)!;this.element.hidden=false;this.element.dataset.item=id;
     this.element.dataset.lastInput=input;this.element.dataset.replay=String(++this.replay);this.element.dataset.playing='true';
     this.root.querySelector('#interaction')!.textContent=d.interaction;
     const canvas=this.element.querySelector('canvas')!;this.context=canvas.getContext('2d');
-    this.image=new Image();this.image.src=textures[d.icon];this.started=performance.now();this.draw(this.started);this.frame=requestAnimationFrame(this.loop);
+    this.image=new Image();this.image.src=this.art(id);this.started=performance.now();this.draw(this.started);this.frame=requestAnimationFrame(this.loop);
   }
   hide(){cancelAnimationFrame(this.frame);if(this.element){this.element.hidden=true;this.element.dataset.playing='false';}this.element=null;}
   private loop=(now:number)=>{

@@ -31,7 +31,7 @@ it('独立包裹对齐空手图集的双手中点，先递交再落到收货台'
   const carry=robotPose(.8);
   expect(carry.parcel.x-carry.x).toBeCloseTo(-22,0);
   expect(carry.parcel.y-carry.y).toBeCloseTo(-28,0);
-  // Cell 7 extends both hands to the left before releasing onto the tray at (291,435).
-  const handoff=robotPose(.935);expect(handoff.parcel.x).toBeCloseTo(293,0);expect(handoff.parcel.y).toBeCloseTo(419,0);
-  const delivered=robotPose(.98);expect(delivered.parcel).toMatchObject({x:291,y:435,delivered:true,held:false});
+  // Cell 7 extends both hands to the left before releasing onto the new receiving aperture tray at (291,403).
+  const handoff=robotPose(.935);expect(handoff.parcel.x).toBeCloseTo(293,0);expect(handoff.parcel.y).toBeCloseTo(389,0);
+  const delivered=robotPose(.98);expect(delivered.parcel).toMatchObject({x:291,y:403,delivered:true,held:false});
 });

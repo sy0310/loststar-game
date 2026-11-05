@@ -1,3 +1,4 @@
+import {drawRenewalRobot,isRenewalRobot} from './renewal-robot';
 import {robotScanAngle,robotScannerJoint,robotVisualEffort,type robotPose} from './motion';
 
 export interface RobotAnimationState {
@@ -96,6 +97,7 @@ function legs(c:CanvasRenderingContext2D,image:HTMLImageElement,frame:number){
 }
 
 export function drawAnimatedRobot(c:CanvasRenderingContext2D,image:HTMLImageElement,pose:Pose,fraction:number,animation:RobotAnimationState){
+  if(isRenewalRobot(image)&&drawRenewalRobot(c,pose,fraction,animation))return;
   const motion=robotAnimationPose(pose,fraction,animation),moving=pose.action==='walk'||pose.action==='return';
   c.save();c.translate(Math.round(pose.x),Math.round(pose.y+motion.bob));
   if(pose.action==='walk'&&pose.facing==='right')c.scale(-1,1);

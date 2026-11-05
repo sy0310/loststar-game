@@ -1,4 +1,4 @@
-import blankPaperUrl from '../../assets/runtime/d1-refinement/receipt-inner-blank.webp';
+import blankPaperUrl from '../../assets/runtime/visual-renewal/curios/receipt-inner-blank.webp';
 
 export interface AbilityRigRecord {id: string; at: number; detail: string; source?: string; code?: string; orientation?: string}
 export interface AbilityAttachments {
@@ -54,6 +54,17 @@ function openingAt(options: CurioAbilityRigOptions) {
   return idle * (options.serviceEnvelope ?? 1);
 }
 
+const paperAttachmentCache=new WeakMap<object,{revision:string;attachments:AbilityAttachments}>();
+function renewalPaperAttachments(options:CurioAbilityRigOptions):AbilityAttachments|undefined{
+ const source=options.image;if(!('width' in source)||Number(source.width)!==384||!('getContext' in source))return;
+ const revision=options.materialRevision??'renewal';const cached=paperAttachmentCache.get(source);if(cached?.revision===revision)return cached.attachments;
+ const context=(source as HTMLCanvasElement).getContext('2d');if(!context)return;
+ const pixels=context.getImageData(0,0,384,384).data,leftEdge:{x:number;y:number}[]=[],rightEdge:{x:number;y:number}[]=[];
+ for(let y=72;y<=144;y+=6){let left=192,right=0;for(let x=0;x<192;x++){if(pixels[((y*2)*384+x*2)*4+3]<128)continue;left=Math.min(left,x);right=Math.max(right,x);}if(right>left){leftEdge.push({x:left,y});rightEdge.push({x:right,y});}}
+ if(leftEdge.length<2)return;
+ const attachments={leftTop:leftEdge[0],leftBottom:leftEdge.at(-1)!,rightTop:rightEdge[0],rightBottom:rightEdge.at(-1)!,leftEdge,rightEdge};paperAttachmentCache.set(source,{revision,attachments});return attachments;
+}
+
 function receipt(context: CanvasRenderingContext2D, options: CurioAbilityRigOptions, extension: number): CurioAbilityRigResult {
   if (!options.baseAlreadyDrawn) context.drawImage(options.image, 0, 0, 192, 192);
   const level = Math.min(2, Math.max(0, options.abilityLevel));
@@ -61,7 +72,7 @@ function receipt(context: CanvasRenderingContext2D, options: CurioAbilityRigOpti
   if (!level || extension <= .001 || !blankPaper?.complete || !blankPaper.naturalWidth) {
     return {bounds: {x: 20, y: 0, width: 152, height: 192}, extension: 0, usedRecordIds: []};
   }
-  const attachments = options.attachments ?? {
+  const attachments = options.attachments ?? renewalPaperAttachments(options) ?? {
     rightTop: {x: 136,y: 74},rightBottom: {x: 133,y: 143},
     leftTop: {x: 61,y: 74},leftBottom: {x: 57,y: 143},
   };
@@ -137,7 +148,7 @@ function receipt(context: CanvasRenderingContext2D, options: CurioAbilityRigOpti
   return {bounds:{x:left,y:top,width:right-left,height:bottom-top},extension,usedRecordIds};
 }
 
-interface TapeLayers {revision: string; body: HTMLCanvasElement; tail: HTMLCanvasElement}
+interface TapeLayers {revision: string; body: HTMLCanvasElement; tail: HTMLCanvasElement; renewal:boolean}
 const tapeLayers = new WeakMap<object, TapeLayers>();
 function tapeMaterial(image: CanvasImageSource, revision: string) {
   const cached = tapeLayers.get(image);
@@ -147,12 +158,13 @@ function tapeMaterial(image: CanvasImageSource, revision: string) {
   const foreground = tail.getContext('2d')!;
   foreground.drawImage(image, 0, 0, 192, 192);
   foreground.globalCompositeOperation = 'destination-in';foreground.fillStyle = '#fff';
-  foreground.beginPath();foreground.moveTo(1, 154);foreground.lineTo(14, 136);foreground.lineTo(48, 124);
-  foreground.lineTo(76, 126);foreground.lineTo(93, 137);foreground.lineTo(73, 153);foreground.lineTo(54, 160);
-  foreground.lineTo(45, 177);foreground.lineTo(8, 176);foreground.closePath();foreground.fill();
+  const renewal='width' in image&&Number(image.width)===384;
+  foreground.beginPath();
+  const outline=renewal?[[22,122],[33,108],[65,92],[85,92],[78,107],[57,126],[50,142],[23,142]]:[[1,154],[14,136],[48,124],[76,126],[93,137],[73,153],[54,160],[45,177],[8,176]];
+  outline.forEach(([x,y],i)=>i?foreground.lineTo(x,y):foreground.moveTo(x,y));foreground.closePath();foreground.fill();
   const background = body.getContext('2d')!;
   background.drawImage(image, 0, 0, 192, 192);background.globalCompositeOperation = 'destination-out';background.drawImage(tail, 0, 0);
-  const value = {revision, body, tail};tapeLayers.set(image, value);return value;
+  const value = {revision, body, tail,renewal};tapeLayers.set(image, value);return value;
 }
 
 export function drawTapeBridge(context: CanvasRenderingContext2D, image: CanvasImageSource,
@@ -167,7 +179,9 @@ export function drawTapeBridge(context: CanvasRenderingContext2D, image: CanvasI
     const angle = Math.atan2(end.y - start.y, end.x - start.x);
     context.save();context.translate(start.x, start.y);context.rotate(angle);
     context.fillStyle = '#64505d';context.fillRect(-1, -width / 2, length + 2, width + 2);
-    context.drawImage(image, 24, 141, 43, 13, 0, -width / 2, length, width);
+    const renewal='width' in image&&Number(image.width)===384;
+    if(renewal)context.drawImage(image,58,244,48,20,0,-width/2,length,width);
+    else context.drawImage(image,24,141,43,13,0,-width/2,length,width);
     context.fillStyle = '#ead7a6';context.globalAlpha = .55;context.fillRect(0, -width / 2, length, 1);
     context.restore();
     remaining -= length;
@@ -193,22 +207,23 @@ function tape(context: CanvasRenderingContext2D, options: CurioAbilityRigOptions
   }
   if (!options.baseAlreadyDrawn) context.drawImage(material.body, 0, 0);
   if (level > 0) {
-    const path = [{x: 80, y: 131}, {x: 113, y: 139}, {x: 153, y: 149}, {x: 192, y: 151},
+    const path = [{x: material.renewal?45:80, y: material.renewal?123:131}, {x: 113, y: 139}, {x: 153, y: 149}, {x: 192, y: 151},
       {x: 220, y: 143}, {x: 234, y: 133}, {x: 226, y: 125}, {x: 203, y: 128}, {x: 201, y: 146}];
     drawTapeBridge(context, options.image, path, active, 12);
     if (level >= 2) drawTapeBridge(context, options.image,
-      [{x: 84, y: 133}, {x: 117, y: 158}, {x: 162, y: 168}, {x: 206, y: 162}, {x: 230, y: 149}, {x: 222, y: 137}], clamp(active * 1.18 - .15), 10);
+      [{x: material.renewal?48:84, y: material.renewal?127:133}, {x: 117, y: 158}, {x: 162, y: 168}, {x: 206, y: 162}, {x: 230, y: 149}, {x: 222, y: 137}], clamp(active * 1.18 - .15), 10);
   }
   if (level === 0 && trial > 0) {
     drawTapeBridge(context, options.image,
-      [{x: 80, y: 131}, {x: 51, y: 150}, {x: 24, y: 165}, {x: 4, y: 177}, {x: -18, y: 178}], trial, 12);
+      [{x: material.renewal?45:80, y: material.renewal?123:131}, {x: 51, y: 150}, {x: 24, y: 165}, {x: 4, y: 177}, {x: -18, y: 178}], trial, 12);
     if (trial > .72) {
       context.save();context.globalAlpha = (trial - .72) / .28;
       context.fillStyle = '#825b59';context.font = 'bold 8px monospace';context.textAlign = 'left';
       context.fillText('对不起', -16, 180);context.restore();
     }
   }
-  context.save();context.translate(80, 131);context.rotate(Math.sin(options.seconds * 1.4) * .035 + active * .04);context.translate(-80, -131);
+  const hinge=material.renewal?{x:80,y:96}:{x:80,y:131};
+  context.save();context.translate(hinge.x,hinge.y);context.rotate(Math.sin(options.seconds * 1.4) * .035 + active * .04);context.translate(-hinge.x,-hinge.y);
   context.drawImage(material.tail, 0, 0);context.restore();
   return {bounds: {x: 0, y: 0, width: level ? 244 : 192, height: 192}, extension: active, usedRecordIds: []};
 }
