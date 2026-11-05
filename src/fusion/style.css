@@ -51,7 +51,10 @@ button.fu-wallet{display:grid;grid-template-columns:17px auto;gap:1px 6px;align-
 :is(#fusion-app,#fusion-drawer) button:disabled{box-shadow:inset 0 1px #f0dfc116,inset 0 -2px #160b2966,0 1px #10091e;}
 :is(#fusion-app,#fusion-drawer) .fu-nav button:not([aria-current="page"]){border-image-source:none;box-shadow:none;}
 :is(#fusion-app,#fusion-drawer) .fu-nav button:not([aria-current="page"]) .fu-pixel-icon{filter:saturate(.5) brightness(.8);}
-:is(#fusion-app,#fusion-drawer) .fu-location,:is(#fusion-app,#fusion-drawer) .exhibit-hits button,:is(#fusion-app,#fusion-drawer) .fu-field-drawer>header button,:is(#fusion-app,#fusion-drawer) .fu-journey-intro button{border-image:none!important;box-shadow:none!important;text-shadow:none;}
+/* Keep explicit longhands. The production CSS compressor erased the default
+   shorthand value from `border-image:none!important`, leaving invalid CSS and
+   painting six DOM hit frames above the robot even though Canvas depth was right. */
+:is(#fusion-app,#fusion-drawer) .fu-location,:is(#fusion-app,#fusion-drawer) .exhibit-hits button,:is(#fusion-app,#fusion-drawer) .fu-field-drawer>header button,:is(#fusion-app,#fusion-drawer) .fu-journey-intro button{border-image-source:none!important;border-image-width:0!important;box-shadow:none!important;text-shadow:none;}
 :is(#fusion-app,#fusion-drawer) .fu-switch input[type="checkbox"]{
  appearance:none;-webkit-appearance:none;flex-shrink:0;border:1px solid #9d735e;border-radius:1px;
  background:#2c1b3d;box-shadow:inset 0 1px #10091e,inset 0 0 0 3px #170e2c,0 1px #ba866655;

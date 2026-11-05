@@ -1,6 +1,6 @@
 # V0.4.2 胶带与铃的独立机械素材
 
-本目录保留六张内置 `image_gen` 原始PNG；完整大小、SHA256、调用ID、参考用途与prompt要点见 [PROMPTS_AND_PROVENANCE.json](PROMPTS_AND_PROVENANCE.json)。未用API/CLI fallback，未用其他游戏素材，也未从完成图硬裁出带底色的活动机构。旧造型图片仅供造型、材质和角度参考，新部件均重新生成。
+本目录保留七张内置 `image_gen` 原始PNG；完整大小、SHA256、调用ID、参考用途与prompt要点见 [PROMPTS_AND_PROVENANCE.json](PROMPTS_AND_PROVENANCE.json)。未用API/CLI fallback，未用其他游戏素材，也未从完成图硬裁出带底色的活动机构。旧造型图片仅供造型、材质和角度参考，新部件均重新生成。
 
 | 原始PNG | 当前用途 | 未使用/退役部分 |
 |---|---|---|
@@ -9,7 +9,8 @@
 | `tape-support-parts-v2.png` | 真后轴座、开孔前轴座、实体轴、锁轴帽 | 不使用V1方向错误的轴承关系 |
 | `tape-roll-open-v2.png` | 原纸卷形状的真实透明轴孔与干净轮廓 | 取代V1不透明暗芯与彩色边晕 |
 | `material-deposits-v1.png` | 仅右半铃的局部氧化层 | 左半胶带杂团未采用，不能回接 |
-| `tape-lint-v2.png` | 三根真实稀疏纤维；54×70 native灰棕粘灰，严格裁在同一带面 | 无纸块、托纸、堆叠物或第二条带 |
+| `tape-lint-v2.png` | 保留历史源 | 全量回归发现A/B差异仍弱，已由V3替换 |
+| `tape-lint-mat-v3.png` | 同一胶面上的薄灰棕纤维粘结层；原位置112,197、54×70 native，实际带alpha裁剪并沿刷线移除 | 无纸块、堆叠支架或另一条带；不改变B/C、机构或费用 |
 
 ## 几何、材质与唯一运行通路
 
@@ -35,3 +36,7 @@ node scripts/export_mechanisms_v042.mjs
 `static-registration.json`是静态作者装配资料，不能当作运行验收；`registration.json`记录实际候选运行素材、六态、WebP字节/尺寸/hash以及审核阶段。Root已进行390原生密帧内部预审；最终统一源码包、完整回归和TapTap手机视觉审核仍由root交付，测试通过不等于用户美术验收。样板静态390合成图不是真实手机截图。
 
 本批仅胶带/铃。现代单张收据与其他三物不重画；存档、货币、费用、奖励和业务模块不在本批修改范围。
+
+## V3粘灰可读性返修
+
+完整回归494项中胶带三态4配置未通过，不能把490项通过写作全绿。V3由内置image_gen新增真实薄纤维毡源，让发现态有清楚的局部面积和厚度；整理后仍是原来的同一条带。位置沿用112,197，不为旧取景移动污渍。Root已批准原生A/B对照；浏览器四配置/完整回归和手机验收须由root重跑与记录。`export_mechanism_deposits_v042.mjs --tape-only`可只导出本次局部污染层；完整导出命令仍可复现。

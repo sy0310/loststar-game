@@ -23,8 +23,7 @@ function noNewRightsOrCharges(before:FusionSave,after:FusionSave){
 }
 test.beforeEach(async({page})=>{await page.clock.install({time:new Date(epoch)});await page.clock.pauseAt(new Date(epoch+1000));});
 
-test('胶带0/Ⅰ/Ⅱ复用一个出口与主轴，连续抽回且陈旧连点不能重置机构',async({page})=>{
- for(const level of [0,1,2] as const){
+for(const level of [0,1,2] as const)test(`胶带${level}级复用同一出口与主轴，连续抽回且陈旧连点不能重置机构`,async({page})=>{
   await seed(page,level);await detail(page,'tape');const button=page.locator('#fusion-try'),before=await archive(page),idle=await data(page);
   expect(idle.mechanism).toBe('tape');expect(Number(idle.tapeLength)).toBe(0);
   await button.tap();await page.clock.runFor(550);const feed=await data(page);expect(Number(feed.tapeLength)).toBeGreaterThan(0);expect(Number(feed.tapeRollAngle)).toBeGreaterThan(0);expect(feed.toolContact).toBe('true');await expect(button).toBeDisabled();
@@ -32,7 +31,6 @@ test('胶带0/Ⅰ/Ⅱ复用一个出口与主轴，连续抽回且陈旧连点�
   await button.evaluate((b:HTMLButtonElement)=>{b.disabled=false;b.dispatchEvent(new MouseEvent('click',{bubbles:true}));});await page.clock.runFor(150);const uninterrupted=await data(page);expect(uninterrupted.experimentStartedAt).toBe(started);expect(uninterrupted.replay).toBe(replay);
   await page.clock.runFor(2100);const end=await data(page);expect(Number(end.tapeLength)).toBe(0);expect(Number(end.tapeRollAngle)).toBe(0);expect(end.mechanismPhase).toBe('idle');await expect(button).toBeEnabled();
   await button.tap();await page.clock.runFor(2800);expect(Number((await data(page)).replay)).toBe(Number(replay)+1);noNewRightsOrCharges(before,await archive(page));
- }
 });
 
 test('铃铛接触后同轴压下，触底才震荡和响铃，松手回弹不重结算',async({page})=>{

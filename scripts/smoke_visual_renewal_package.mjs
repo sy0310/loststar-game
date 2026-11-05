@@ -90,9 +90,14 @@ for (const [engine, width, height] of [['chromium', 360, 800], ['chromium', 390,
           checks.originalLocalStorage = await page.evaluate(() => localStorage.getItem('loststar.save.v1') === 'old-source-27049-kept-exactly');
           if (Date.now() >= fixture.state.game.lastAt) throw new Error('Held-archive window exceeded');
         }
+        // Inspect the compressed final CSS, not just the dev server. A broken
+        // important shorthand previously painted DOM frames above the robot.
+        await page.locator('[data-tab="base"]').tap();await page.locator('#museum-canvas[data-ready="true"]').waitFor();
+        const hitLayerStyles=await page.locator('.fu-location,.exhibit-hits button').evaluateAll(elements=>elements.map(e=>{const s=getComputedStyle(e);return{target:e.dataset.exhibit??'location',borderImageSource:s.borderImageSource==='none'?'none':'painted',borderImageWidth:s.borderImageWidth,background:s.backgroundColor,shadow:s.boxShadow};}));
+        checks.noPaintedHitFrames=hitLayerStyles.length===7&&hitLayerStyles.every(s=>s.borderImageSource==='none'&&s.borderImageWidth.split(/\s+/).every(n=>parseFloat(n)===0)&&s.background==='rgba(0, 0, 0, 0)'&&s.shadow==='none');
         if (Object.values(checks).some(value => !value) || errors.length) throw new Error(`${engine}/${kind}: ${JSON.stringify({checks, errors})}`);
         cases.push({engine, viewport: {width, height}, kind, build, checks, balance: after.game.resources,
-          collectionCount: after.game.collection.length, fixtureAudit: fixture?.audit, errors});
+          collectionCount: after.game.collection.length, fixtureAudit: fixture?.audit,hitLayerStyles, errors});
       } finally {await context.close();}
     }
   } finally {await browser.close();}

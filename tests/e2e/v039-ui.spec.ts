@@ -237,17 +237,23 @@ async function openTreatment(page: Page, id: string) {
   return canvas;
 }
 
-async function specimenPixels(page: Page, selector: string) {
-  return page.locator(selector).evaluate(element => {
-    // Sample only the physical item, excluding labels, stage tabs and action controls.
-    const pixels = (element as HTMLCanvasElement).getContext('2d')!.getImageData(150, 150, 340, 340).data;
+async function specimenPixels(page: Page, selector: string, id: string) {
+  return page.locator(selector).evaluate((element, id) => {
+    // Read actual focus pixels, excluding DOM labels, tabs and action controls.
+    // Receipt retains its historical focus-view check (C includes owned glass);
+    // its single-paper continuity is tested separately by receipt renderer tests.
+    // The renewal workbench places a complete non-paper specimen in a 428px
+    // plane at (106,191). The old y<490 crop cut off the tape's physical tip
+    // and its alignment defect. Keep the same 4px stride and >50 threshold.
+    const region = id === 'receipt' ? {x:150,y:150,size:340} : {x:106,y:191,size:428};
+    const pixels = (element as HTMLCanvasElement).getContext('2d')!.getImageData(region.x, region.y, region.size, region.size).data;
     const sample: number[] = [];
-    for (let y = 0; y < 340; y += 4) for (let x = 0; x < 340; x += 4) {
-      const index = (y * 340 + x) * 4;
+    for (let y = 0; y < region.size; y += 4) for (let x = 0; x < region.size; x += 4) {
+      const index = (y * region.size + x) * 4;
       sample.push(pixels[index], pixels[index + 1], pixels[index + 2]);
     }
     return sample;
-  });
+  }, id);
 }
 
 for (const id of ['receipt', 'tape', 'bell'] as const) {
@@ -302,12 +308,13 @@ for (const id of ['receipt', 'tape', 'bell'] as const) {
           expect(Number(await canvas.getAttribute('data-structure-pressed'))).toBe(condition === 'stabilized' ? 1 : 0);
         }
       }
-      samples.push(await specimenPixels(page, id === 'receipt' ? '#fusion-paper-focus' : '#fusion-exhibit-focus'));
+      samples.push(await specimenPixels(page, id === 'receipt' ? '#fusion-paper-focus' : '#fusion-exhibit-focus', id));
       const after = await readArchive(page);
       expect(after.progression.payments).toEqual(before.progression.payments);
       expect(after.receipt.condition).toBe(before.receipt.condition);
       expect(after.curios[id]?.condition).toBe(before.curios[id]?.condition);
     }
+    const differences:number[]=[];
     for (let index = 1; index < samples.length; index++) {
       let changed = 0;
       for (let pixel = 0; pixel < samples[index].length; pixel += 3) {
@@ -316,8 +323,10 @@ for (const id of ['receipt', 'tape', 'bell'] as const) {
           + Math.abs(samples[index][pixel + 2] - samples[index - 1][pixel + 2]);
         if (difference > 15) changed++;
       }
-      expect(changed).toBeGreaterThan(50);
+      differences.push(changed);
     }
+    await test.info().attach(`${id}-actual-state-pixel-differences.json`,{body:JSON.stringify({id,stages:['found','clean','stabilized'],pixelStride:4,rgbThreshold:15,requiredChangedPixels:50,differences,scope:id==='receipt'?'actual focus view; C includes owned glass':'complete actual 428px workbench specimen plane'}),contentType:'application/json'});
+    differences.forEach((changed,index)=>expect(changed,`${id}: ${index===0?'found→clean':'clean→stabilized'}`).toBeGreaterThan(50));
   });
 }
 

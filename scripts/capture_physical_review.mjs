@@ -18,6 +18,7 @@ execFileSync('git',['merge-base','--is-ancestor',metadata.sourceCommit,checkout]
 const zip=await readFile(metadata.archive);if(zip.length!==metadata.bytes||createHash('sha256').update(zip).digest('hex')!==metadata.sha256)throw Error('ZIP mismatch');
 await mkdir(`${output}/raw`,{recursive:true});await mkdir(`${output}/screens`,{recursive:true});
 const report={mode,sourceCommit:metadata.sourceCommit,evidenceCheckoutCommit:checkout,package:metadata,zipSha256:metadata.sha256,sourceClean:true,base,physicalPhone:false,touchEmulation:true,clockOverrides:false,cases:[],screenshots:[],videos:[],errors:[]};
+report.collectorSha256=createHash('sha256').update(await readFile(new URL(import.meta.url))).digest('hex');
 const database='loststar.fusion.firstplanet.v037',browser=await chromium.launch();
 const until=async time=>{while(Date.now()<time)await new Promise(r=>setTimeout(r,Math.min(200,time-Date.now())));};
 async function archive(page){return page.evaluate(name=>new Promise((resolve,reject)=>{const r=indexedDB.open(name,1);r.onerror=()=>reject(r.error);r.onsuccess=()=>{const d=r.result,g=d.transaction('archive').objectStore('archive').get('current');g.onsuccess=()=>{d.close();resolve(g.result);};g.onerror=()=>reject(g.error);};}),database);}
@@ -43,7 +44,15 @@ async function close(s,file,start,duration){
  const entry={file,durationSeconds:duration,speed:1,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex'),probe,leadInSeconds:lead,alignment:{createdBefore:s.createdBefore,createdAfter:s.createdAfter},audioRecorded:false};report.videos.push(entry);return entry;
 }
 async function museum(){
+ if(process.env.PHYSICAL_MUSEUM_RESUME==='1'){
+  const file=`${output}/museum-capture-attempt1.json`,raw=await readFile(file),prior=JSON.parse(raw);
+  if(prior.sourceCommit!==metadata.sourceCommit||prior.zipSha256!==metadata.sha256)throw Error('Cannot resume a different source/package');
+  const good=prior.cases.filter(c=>c.kind==='museum-continuous'&&c.targets.length===6&&c.minBodyClearance>=6&&c.maxHandReach<=85&&!c.errors.length);
+  report.cases.push(...good);report.videos.push(...good.map(c=>c.video));report.screenshots.push(...prior.screenshots.filter(s=>good.some(c=>s.name.startsWith(c.name+'-'))));
+  report.resumedFrom={file:'museum-capture-attempt1.json',sha256:createHash('sha256').update(raw).digest('hex'),retainedCases:good.map(c=>c.name),previousCollectorErrors:prior.errors,note:'Only complete source/ZIP-bound recordings are reused. The first collector used an impossible X-only clear test for the centre cabinet; remaining groups and full native crops are recaptured using real 2D bounds.'};
+ }
  for(const kind of ['all-0','all-3','mixed']){
+  if(report.cases.some(c=>c.name===`museum-${kind}`))continue;
   const fixture=kind==='mixed'?physicalMuseumFixture(Date.now()):firstPlanetFixture(Date.now(),kind==='all-3'?3:0,'stabilized');
   const s=await open(`museum-${kind}`,fixture);await s.page.locator('[data-tab="base"]').tap();await s.page.locator('#museum-canvas[data-ready="true"]').waitFor();
   const start=Date.now(),trace=[],shots=new Set();
@@ -54,9 +63,16 @@ async function museum(){
   }
   if(kind==='all-3')for(const [index,id]of ['receipt','tape','nested','stamp','cosmic-parcel','bell'].entries()){
    const x=[104,384,664][index%3],y=index<3?500:825;
-   await s.page.waitForFunction(x=>Math.abs(Number(document.querySelector('#museum-canvas').dataset.robotX)-x)>172,x,{timeout:30000});
-   const data=await s.page.locator('#museum-canvas').evaluate((room,{x,y})=>{const c=document.createElement('canvas');c.width=196;c.height=290;c.getContext('2d').drawImage(room,x-98,y-282,196,290,0,0,196,290);return c.toDataURL('image/png');},{x,y});
-   const file=`screens/glass-cabinet-${id}-native.png`;await writeFile(`${output}/${file}`,Buffer.from(data.split(',')[1],'base64'));report.screenshots.push({name:`glass-cabinet-${id}`,file,kind:'native-canvas-crop',imagePixels:{width:196,height:290},engine:'chromium',width:390,height:844});
+   // The centre column cannot be cleared with an X-only test: both real
+   // aisles are 140px from it. Use the whole actual actor rectangle and the
+   // complete case crop, including the taller hood and floor shadow.
+   await s.page.waitForFunction(({x,y,id})=>{
+    const c=document.querySelector('#museum-canvas'),a=JSON.parse(c.dataset.actorBounds),r={left:x-98,right:x+98,top:y-300,bottom:y+20};
+    const disjoint=a.right<r.left||a.left>r.right||a.bottom<r.top||a.top>r.bottom;
+    return disjoint&&(c.dataset.robotTarget!==id||['walk','return','observe'].includes(c.dataset.servicePhase));
+   },{x,y,id},{timeout:30000});
+   const data=await s.page.locator('#museum-canvas').evaluate((room,{x,y})=>{const c=document.createElement('canvas');c.width=196;c.height=320;c.getContext('2d').drawImage(room,x-98,y-300,196,320,0,0,196,320);return c.toDataURL('image/png');},{x,y});
+   const file=`screens/glass-cabinet-${id}-native.png`;await writeFile(`${output}/${file}`,Buffer.from(data.split(',')[1],'base64'));report.screenshots.push({name:`glass-cabinet-${id}`,file,kind:'native-canvas-crop',imagePixels:{width:196,height:320},engine:'chromium',width:390,height:844});
   }
   const actual=trace.filter(d=>d.spaceVersion),targets=[...new Set(actual.filter(d=>d.servicePhase==='inspect').map(d=>d.robotTarget))];
   const entry={name:s.name,kind:'museum-continuous',fixtureAudit:fixture.audit,trace,initial:s.initial,final:await archive(s.page),targets,minBodyClearance:Math.min(...actual.map(d=>Number(d.bodyClearance))),maxHandReach:Math.max(...actual.map(d=>Number(d.handReach))),errors:s.errors};
