@@ -1,0 +1,888 @@
+{
+  "schema": 1,
+  "provenance": "OpenAI image_gen original production sprites; approved PNG boards used as style reference only; no reference-board crops",
+  "exportScript": "scripts/export_visual_renewal_world.mjs",
+  "alpha": "Original broad almost-transparent generation haze removed by alpha<128 threshold; no opaque background retained.",
+  "assets": [
+    {
+      "id": "globe",
+      "source": "assets/source/visual-renewal/world/globe-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/globe.webp",
+      "width": 768,
+      "height": 768,
+      "pivot": {
+        "x": 384,
+        "y": 384
+      },
+      "layers": [
+        "closed-sphere-terrain-and-lower-shell"
+      ],
+      "world": {
+        "x": 52,
+        "y": 70,
+        "width": 664,
+        "height": 664
+      },
+      "sourceSha256": "2927f0a8afb6d1dcc7fd087a66a0a6e353cf116e460018d1edc05d216ee9bcfc",
+      "sha256": "6f0e69513d39a36adb50e9ee814b06795567ca0f3ed785e230b6f24a0d7c1d9c"
+    },
+    {
+      "id": "station",
+      "source": "assets/source/visual-renewal/world/station-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/station.webp",
+      "width": 256,
+      "height": 235,
+      "pivot": {
+        "x": 128,
+        "y": 235
+      },
+      "layers": [
+        "station"
+      ],
+      "world": {
+        "x": 315,
+        "y": 417,
+        "width": 170,
+        "height": 156
+      },
+      "opening": [
+        {
+          "x": 52,
+          "y": 135
+        },
+        {
+          "x": 115,
+          "y": 136
+        },
+        {
+          "x": 115,
+          "y": 211
+        },
+        {
+          "x": 52,
+          "y": 209
+        }
+      ],
+      "windowPolygons": [
+        [
+          [
+            166,
+            119
+          ],
+          [
+            184,
+            111
+          ],
+          [
+            184,
+            133
+          ],
+          [
+            166,
+            142
+          ]
+        ],
+        [
+          [
+            197,
+            105
+          ],
+          [
+            215,
+            97
+          ],
+          [
+            215,
+            120
+          ],
+          [
+            197,
+            128
+          ]
+        ],
+        [
+          [
+            226,
+            91
+          ],
+          [
+            241,
+            84
+          ],
+          [
+            241,
+            107
+          ],
+          [
+            226,
+            114
+          ]
+        ]
+      ],
+      "sourceSha256": "68fb2541b88f8a5bec1401eb1dde827500e5d6c8e7bb1f29b520a181400f1195",
+      "sha256": "221f771612e8ce5603356196efec7fabc2e54a52d906bdc8c034784ef97cf091"
+    },
+    {
+      "id": "fog-back",
+      "source": "assets/source/visual-renewal/world/fog-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/fog-back.webp",
+      "width": 256,
+      "height": 192,
+      "pivot": {
+        "x": 128,
+        "y": 170
+      },
+      "layers": [
+        "fog-back"
+      ],
+      "layer": 0,
+      "sourceSha256": "08946a248b0c81418d37307e27a3ffe00dacb90272e4905a14144ccb581e3e91",
+      "sha256": "9d9623b55f9f14acfa7f5db6bb0adc9ef5363062422dd55a93530bf5df7fb103"
+    },
+    {
+      "id": "fog-body",
+      "source": "assets/source/visual-renewal/world/fog-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/fog-body.webp",
+      "width": 256,
+      "height": 192,
+      "pivot": {
+        "x": 128,
+        "y": 170
+      },
+      "layers": [
+        "fog-body"
+      ],
+      "layer": 1,
+      "sourceSha256": "08946a248b0c81418d37307e27a3ffe00dacb90272e4905a14144ccb581e3e91",
+      "sha256": "e645acefc42bfb2abb095b007c1990c1c6a143bd5cde931c2137e6192dd31e07"
+    },
+    {
+      "id": "fog-rim",
+      "source": "assets/source/visual-renewal/world/fog-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/fog-rim.webp",
+      "width": 256,
+      "height": 192,
+      "pivot": {
+        "x": 128,
+        "y": 170
+      },
+      "layers": [
+        "fog-rim"
+      ],
+      "layer": 2,
+      "sourceSha256": "08946a248b0c81418d37307e27a3ffe00dacb90272e4905a14144ccb581e3e91",
+      "sha256": "7b00b19db005be3d8c68d677aff2181966e9a174f836a9138db7d6535e5ee253"
+    },
+    {
+      "id": "robot-head",
+      "source": "assets/source/visual-renewal/world/robot-parts-cleaned.png",
+      "runtime": "assets/runtime/visual-renewal/world/robot-head.webp",
+      "width": 386,
+      "height": 292,
+      "pivot": {
+        "x": 193,
+        "y": 292
+      },
+      "layers": [
+        "robot-head"
+      ],
+      "layer": "head",
+      "sourceSha256": "ead8624b537b5866fdc330d452bd09ed32275c82e06c2eca4d7d08d80bb2813c",
+      "sha256": "ba5c2532ccfe73801e34012c82f86ab19d71cb506849bc1371d0f5658194fd50"
+    },
+    {
+      "id": "robot-torso",
+      "source": "assets/source/visual-renewal/world/robot-parts-cleaned.png",
+      "runtime": "assets/runtime/visual-renewal/world/robot-torso.webp",
+      "width": 358,
+      "height": 285,
+      "pivot": {
+        "x": 179,
+        "y": 285
+      },
+      "layers": [
+        "robot-torso"
+      ],
+      "layer": "torso",
+      "sourceSha256": "ead8624b537b5866fdc330d452bd09ed32275c82e06c2eca4d7d08d80bb2813c",
+      "sha256": "78214514b6c00fd6761c7b805d42610dd3ece05d0d7effdba293a3820c76c806"
+    },
+    {
+      "id": "robot-scanner-hand",
+      "source": "assets/source/visual-renewal/world/robot-parts-cleaned.png",
+      "runtime": "assets/runtime/visual-renewal/world/robot-scanner-hand.webp",
+      "width": 382,
+      "height": 240,
+      "pivot": {
+        "x": 191,
+        "y": 240
+      },
+      "layers": [
+        "robot-scanner-hand"
+      ],
+      "layer": "scanner-hand",
+      "sourceSha256": "ead8624b537b5866fdc330d452bd09ed32275c82e06c2eca4d7d08d80bb2813c",
+      "sha256": "11bf9ae3f47f20eaec4d69bad8b0b3f475905f1a92d717015726c643760df2c3"
+    },
+    {
+      "id": "robot-grip-hand",
+      "source": "assets/source/visual-renewal/world/robot-parts-cleaned.png",
+      "runtime": "assets/runtime/visual-renewal/world/robot-grip-hand.webp",
+      "width": 334,
+      "height": 231,
+      "pivot": {
+        "x": 167,
+        "y": 231
+      },
+      "layers": [
+        "robot-grip-hand"
+      ],
+      "layer": "grip-hand",
+      "sourceSha256": "ead8624b537b5866fdc330d452bd09ed32275c82e06c2eca4d7d08d80bb2813c",
+      "sha256": "315e98087156e5465d7b1c57a6c493bf7dcb1cd8e44936b0e3ea7f97f18e6b0d"
+    },
+    {
+      "id": "robot-leg-left",
+      "source": "assets/source/visual-renewal/world/robot-parts-cleaned.png",
+      "runtime": "assets/runtime/visual-renewal/world/robot-leg-left.webp",
+      "width": 225,
+      "height": 367,
+      "pivot": {
+        "x": 112.5,
+        "y": 367
+      },
+      "layers": [
+        "robot-leg-left"
+      ],
+      "layer": "leg-left",
+      "sourceSha256": "ead8624b537b5866fdc330d452bd09ed32275c82e06c2eca4d7d08d80bb2813c",
+      "sha256": "3dc1b863021b9e64e0d1bf169a7fb0f8cda18b203eb932375e10271b1e2bf623"
+    },
+    {
+      "id": "robot-leg-right",
+      "source": "assets/source/visual-renewal/world/robot-parts-cleaned.png",
+      "runtime": "assets/runtime/visual-renewal/world/robot-leg-right.webp",
+      "width": 225,
+      "height": 367,
+      "pivot": {
+        "x": 112.5,
+        "y": 367
+      },
+      "layers": [
+        "robot-leg-right"
+      ],
+      "layer": "leg-right",
+      "sourceSha256": "ead8624b537b5866fdc330d452bd09ed32275c82e06c2eca4d7d08d80bb2813c",
+      "sha256": "afbfe1cb73bad977026b92871603771e5679037a85cfb57c7b8031ffc6873079"
+    },
+    {
+      "id": "robot-atlas",
+      "source": "assets/source/visual-renewal/world/robot-parts-cleaned.png",
+      "runtime": "assets/runtime/visual-renewal/world/robot-atlas.webp",
+      "width": 640,
+      "height": 320,
+      "pivot": {
+        "x": 86.4,
+        "y": 155.2
+      },
+      "layers": [
+        "robot-atlas"
+      ],
+      "frame": {
+        "width": 160,
+        "height": 160,
+        "columns": 4,
+        "rows": 2
+      },
+      "feet": {
+        "x": 80,
+        "y": 155
+      },
+      "scanner": {
+        "x": 23,
+        "y": 83
+      },
+      "hands": {
+        "pickup": [
+          {
+            "x": 40,
+            "y": 129
+          },
+          {
+            "x": 102,
+            "y": 129
+          }
+        ],
+        "carry": [
+          {
+            "x": 47,
+            "y": 104
+          },
+          {
+            "x": 73,
+            "y": 110
+          }
+        ],
+        "unload": [
+          {
+            "x": 32,
+            "y": 99
+          },
+          {
+            "x": 57,
+            "y": 106
+          }
+        ]
+      },
+      "sourceSha256": "ead8624b537b5866fdc330d452bd09ed32275c82e06c2eca4d7d08d80bb2813c",
+      "sha256": "bfe12a79d43546028eee65cc3104e765a178788d552b55cb19203f471f56985f"
+    },
+    {
+      "id": "ship-atlas",
+      "source": "assets/source/visual-renewal/world/ship-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/ship-atlas.webp",
+      "width": 512,
+      "height": 512,
+      "pivot": {
+        "x": 128,
+        "y": 128
+      },
+      "layers": [
+        "ship-atlas"
+      ],
+      "frame": {
+        "width": 256,
+        "height": 256,
+        "columns": 2,
+        "rows": 2
+      },
+      "views": [
+        {
+          "anchor": {
+            "x": 12,
+            "y": 139
+          },
+          "nose": {
+            "x": 244,
+            "y": 137
+          },
+          "light": {
+            "x": 154,
+            "y": 177
+          },
+          "cell": 0,
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "bounds": {
+            "x": 10,
+            "y": 56,
+            "width": 236,
+            "height": 144
+          }
+        },
+        {
+          "anchor": {
+            "x": 128,
+            "y": 60
+          },
+          "nose": {
+            "x": 128,
+            "y": 232
+          },
+          "light": {
+            "x": 128,
+            "y": 185
+          },
+          "cell": 1,
+          "frame": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "bounds": {
+            "x": 22,
+            "y": 18,
+            "width": 212,
+            "height": 220
+          }
+        },
+        {
+          "anchor": {
+            "x": 244,
+            "y": 139
+          },
+          "nose": {
+            "x": 12,
+            "y": 137
+          },
+          "light": {
+            "x": 106,
+            "y": 177
+          },
+          "cell": 2,
+          "frame": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "bounds": {
+            "x": 10,
+            "y": 56,
+            "width": 236,
+            "height": 144
+          }
+        },
+        {
+          "anchor": {
+            "x": 128,
+            "y": 225
+          },
+          "nose": {
+            "x": 128,
+            "y": 25
+          },
+          "light": {
+            "x": 128,
+            "y": 124
+          },
+          "cell": 3,
+          "frame": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "bounds": {
+            "x": 10,
+            "y": 18,
+            "width": 236,
+            "height": 219
+          }
+        }
+      ],
+      "sourceSha256": "3c9265bd0a48dec64f06e41e48130b1a3648c4dd469031feea10aee535bd75e3",
+      "sha256": "624e47a3176ad3c5ab2dadc29f028378c0162c40351079594093025bf8c0d2e0"
+    },
+    {
+      "id": "security-mast",
+      "source": "assets/source/visual-renewal/world/security-mast-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/security-mast.webp",
+      "width": 48,
+      "height": 228,
+      "pivot": {
+        "x": 24,
+        "y": 228
+      },
+      "layers": [
+        "security-mast"
+      ],
+      "anchorWorld": {
+        "x": 568,
+        "y": 294
+      },
+      "emitterWorld": {
+        "x": 559,
+        "y": 208
+      },
+      "sourceSha256": "ed551a19731fccdd527ddeb04dd2b9581b89ffbef5f0719af1611e223f9dd9c6",
+      "sha256": "1668e17d77d79fe1cb22462507a18e765027c48dbe7d1063f69a4b371f0c8f50"
+    },
+    {
+      "id": "sorter-complete",
+      "source": "assets/source/visual-renewal/world/sorter-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/sorter-complete.webp",
+      "width": 320,
+      "height": 320,
+      "pivot": {
+        "x": 116,
+        "y": 279
+      },
+      "layers": [
+        "rear-shell",
+        "moving-rollers",
+        "curtains",
+        "front-lip"
+      ],
+      "world": {
+        "x": 410,
+        "y": 315,
+        "width": 148
+      },
+      "sourceSha256": "64ed325740097711ee99f0e49d4429fc365b78568eecea06d88dd344707b8370",
+      "sha256": "469c5fde569864ac058872cf574e9d9b4f4e39a582221bdcf344f2523897f40d"
+    },
+    {
+      "id": "sorter-back",
+      "source": "assets/source/visual-renewal/world/sorter-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/sorter-back.webp",
+      "width": 320,
+      "height": 320,
+      "pivot": {
+        "x": 116,
+        "y": 279
+      },
+      "layers": [
+        "sorter-back"
+      ],
+      "sourceSha256": "64ed325740097711ee99f0e49d4429fc365b78568eecea06d88dd344707b8370",
+      "sha256": "f6995574f82c6c3e65b15e22308447ecba08be6bf8af621269adf225dcd3c5a3"
+    },
+    {
+      "id": "sorter-front",
+      "source": "assets/source/visual-renewal/world/sorter-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/sorter-front.webp",
+      "width": 320,
+      "height": 320,
+      "pivot": {
+        "x": 116,
+        "y": 279
+      },
+      "layers": [
+        "sorter-front"
+      ],
+      "sourceSha256": "64ed325740097711ee99f0e49d4429fc365b78568eecea06d88dd344707b8370",
+      "sha256": "e7ff13788ff8422fa5d42b3d17aecb94bff620172a18d21d1e194d81e6a2f3f7"
+    },
+    {
+      "id": "sorter-curtain-0",
+      "source": "assets/source/visual-renewal/world/sorter-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/sorter-curtain-0.webp",
+      "width": 320,
+      "height": 320,
+      "pivot": {
+        "x": 90,
+        "y": 145
+      },
+      "layers": [
+        "sorter-curtain-0"
+      ],
+      "sourceSha256": "64ed325740097711ee99f0e49d4429fc365b78568eecea06d88dd344707b8370",
+      "sha256": "a3118dacc41f1d41bdc7e72683372996a3997e4cd92e85656b478ff6b71d7f7d"
+    },
+    {
+      "id": "sorter-curtain-1",
+      "source": "assets/source/visual-renewal/world/sorter-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/sorter-curtain-1.webp",
+      "width": 320,
+      "height": 320,
+      "pivot": {
+        "x": 113,
+        "y": 151
+      },
+      "layers": [
+        "sorter-curtain-1"
+      ],
+      "sourceSha256": "64ed325740097711ee99f0e49d4429fc365b78568eecea06d88dd344707b8370",
+      "sha256": "632c0a9e65fff156c80b739763bb3ee8129b2e5131b7e6db0b7f75cd69302db7"
+    },
+    {
+      "id": "sorter-curtain-2",
+      "source": "assets/source/visual-renewal/world/sorter-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/sorter-curtain-2.webp",
+      "width": 320,
+      "height": 320,
+      "pivot": {
+        "x": 139,
+        "y": 158
+      },
+      "layers": [
+        "sorter-curtain-2"
+      ],
+      "sourceSha256": "64ed325740097711ee99f0e49d4429fc365b78568eecea06d88dd344707b8370",
+      "sha256": "48d3cc25e1336ab4c585fd7bddca15ba7bb5ddad9dd0a431e3403f96d09095a6"
+    },
+    {
+      "id": "sorter-rollers",
+      "source": "assets/source/visual-renewal/world/sorter-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/sorter-rollers.webp",
+      "width": 128,
+      "height": 96,
+      "pivot": {
+        "x": 0,
+        "y": 0
+      },
+      "layers": [
+        "sorter-rollers"
+      ],
+      "plane": [
+        [
+          27,
+          255
+        ],
+        [
+          95,
+          215
+        ],
+        [
+          149,
+          227
+        ],
+        [
+          90,
+          274
+        ]
+      ],
+      "sourceSha256": "64ed325740097711ee99f0e49d4429fc365b78568eecea06d88dd344707b8370",
+      "sha256": "bff4d12808bfe660de675bb995eaf5f61b1716c6baae0528d3cac4149ec1c577"
+    },
+    {
+      "id": "sorter-paper-jam",
+      "source": "assets/source/visual-renewal/world/paper-jam-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/sorter-paper-jam.webp",
+      "width": 224,
+      "height": 112,
+      "pivot": {
+        "x": 112,
+        "y": 106
+      },
+      "layers": [
+        "sorter-paper-jam"
+      ],
+      "sourceSha256": "7b61fb271d3bfdef39010d0998b39f0cf1aae3ec237ea9058877d0a2e6d801d9",
+      "sha256": "c3dc85ba90810f66d1eb47d2563c5d0b4e1fd0490814e5643a799ec0b2933dc2"
+    },
+    {
+      "id": "space",
+      "source": "assets/source/visual-renewal/world/space-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/space.webp",
+      "width": 832,
+      "height": 740,
+      "pivot": {
+        "x": 0,
+        "y": 0
+      },
+      "layers": [
+        "space"
+      ],
+      "sourceSha256": "d0d7f1747f34b51622955c6101f4c7cd29599fa307a4a5fe23fe400c5255a551",
+      "sha256": "7f250ce10edc1466c1a9f0b9463a1a6058ec26d73da6345da848e5c1ae9e62d9"
+    },
+    {
+      "id": "visitor-box-awake",
+      "source": "assets/source/visual-renewal/world/night-visitors-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/visitor-box-awake.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 166
+      },
+      "layers": [
+        "visitor-box-awake"
+      ],
+      "state": "awake",
+      "sourceSha256": "490d4fb42cc34dc78fbc861515e04ce0f3ddfa17df13aa26ae08c2a9f5dec740",
+      "sha256": "d44eaae065da050a7251f0bfd25d83f97e4a5c3acef02404fd50565bcf6f3efe"
+    },
+    {
+      "id": "visitor-moth-awake",
+      "source": "assets/source/visual-renewal/world/night-visitors-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/visitor-moth-awake.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 166
+      },
+      "layers": [
+        "visitor-moth-awake"
+      ],
+      "state": "awake",
+      "sourceSha256": "490d4fb42cc34dc78fbc861515e04ce0f3ddfa17df13aa26ae08c2a9f5dec740",
+      "sha256": "d901967618ebdc1b551bc76230205b0930752f2faa63bbed859bfa306ffc8ac1"
+    },
+    {
+      "id": "visitor-paper-awake",
+      "source": "assets/source/visual-renewal/world/night-visitors-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/visitor-paper-awake.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 166
+      },
+      "layers": [
+        "visitor-paper-awake"
+      ],
+      "state": "awake",
+      "sourceSha256": "490d4fb42cc34dc78fbc861515e04ce0f3ddfa17df13aa26ae08c2a9f5dec740",
+      "sha256": "1ba839d3165887d9f64eb3f112dbf73f6c4d4b370efacbbeb66a45193141bf4e"
+    },
+    {
+      "id": "visitor-box-folded",
+      "source": "assets/source/visual-renewal/world/night-visitors-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/visitor-box-folded.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 166
+      },
+      "layers": [
+        "visitor-box-folded"
+      ],
+      "state": "folded",
+      "sourceSha256": "490d4fb42cc34dc78fbc861515e04ce0f3ddfa17df13aa26ae08c2a9f5dec740",
+      "sha256": "c78a725004fbb005f520c64cb2c2ab2573fa37c4bfa4ed3cf4103dc392cf8559"
+    },
+    {
+      "id": "visitor-moth-folded",
+      "source": "assets/source/visual-renewal/world/night-visitors-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/visitor-moth-folded.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 166
+      },
+      "layers": [
+        "visitor-moth-folded"
+      ],
+      "state": "folded",
+      "sourceSha256": "490d4fb42cc34dc78fbc861515e04ce0f3ddfa17df13aa26ae08c2a9f5dec740",
+      "sha256": "9c4f41e035af0667f9a913994b1dfd578333e78193163fea54b994bdc5c1ee99"
+    },
+    {
+      "id": "visitor-paper-folded",
+      "source": "assets/source/visual-renewal/world/night-visitors-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/visitor-paper-folded.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 166
+      },
+      "layers": [
+        "visitor-paper-folded"
+      ],
+      "state": "folded",
+      "sourceSha256": "490d4fb42cc34dc78fbc861515e04ce0f3ddfa17df13aa26ae08c2a9f5dec740",
+      "sha256": "1535186f4fdfe256ba5d25bd8d97ada76fd14ca1d52919e53f15e8797502ea7b"
+    },
+    {
+      "id": "field-case-back",
+      "source": "assets/source/visual-renewal/world/field-case-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/field-case-back.webp",
+      "width": 320,
+      "height": 256,
+      "pivot": {
+        "x": 168,
+        "y": 57
+      },
+      "layers": [
+        "field-case-back"
+      ],
+      "layer": "back",
+      "sourceSha256": "bb42bafe0296d62316188cbb7cd79ebf67c36480bf9ed15999b56a71cd7555a6",
+      "sha256": "6eb10d5a999172afebc3e34023148f03e2f073dae3b5fee35f677f600086fe72"
+    },
+    {
+      "id": "field-case-front",
+      "source": "assets/source/visual-renewal/world/field-case-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/field-case-front.webp",
+      "width": 320,
+      "height": 256,
+      "pivot": {
+        "x": 168,
+        "y": 57
+      },
+      "layers": [
+        "field-case-front"
+      ],
+      "layer": "front",
+      "sourceSha256": "bb42bafe0296d62316188cbb7cd79ebf67c36480bf9ed15999b56a71cd7555a6",
+      "sha256": "15e9b0b2e87d20e1956db0e6736453c51052824ac14f65e405c05fe72a8cb369"
+    },
+    {
+      "id": "field-case-lid",
+      "source": "assets/source/visual-renewal/world/field-case-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/field-case-lid.webp",
+      "width": 320,
+      "height": 256,
+      "pivot": {
+        "x": 168,
+        "y": 57
+      },
+      "layers": [
+        "field-case-lid"
+      ],
+      "layer": "lid",
+      "sourceSha256": "bb42bafe0296d62316188cbb7cd79ebf67c36480bf9ed15999b56a71cd7555a6",
+      "sha256": "80410dc66c50072c3f482c1b5beb8639275b6fe2748351ca57f466d260e030aa"
+    },
+    {
+      "id": "engineering-dock",
+      "source": "assets/source/visual-renewal/world/engineering-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/engineering-dock.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 180
+      },
+      "layers": [
+        "engineering-dock"
+      ],
+      "entitlement": "dock",
+      "sourceSha256": "d11e77b0fa2e830a9c88c711911342c65af09d6f5be18b3237d925c791a8d779",
+      "sha256": "939e8c19d63c02f25bbf4128245f61a80413534a3067f62d8e5ab70b4b44e23f"
+    },
+    {
+      "id": "engineering-receiver",
+      "source": "assets/source/visual-renewal/world/engineering-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/engineering-receiver.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 180
+      },
+      "layers": [
+        "engineering-receiver"
+      ],
+      "entitlement": "receiver",
+      "sourceSha256": "d11e77b0fa2e830a9c88c711911342c65af09d6f5be18b3237d925c791a8d779",
+      "sha256": "76d62b8932e7cb5155b3f508373fae3cd36ad0cdfb7793e34185a0fc163a9b5c"
+    },
+    {
+      "id": "engineering-repair-bay",
+      "source": "assets/source/visual-renewal/world/engineering-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/engineering-repair-bay.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 180
+      },
+      "layers": [
+        "engineering-repair-bay"
+      ],
+      "entitlement": "repair-bay",
+      "sourceSha256": "d11e77b0fa2e830a9c88c711911342c65af09d6f5be18b3237d925c791a8d779",
+      "sha256": "fa3d5b847142ff62ad5486963a8acae9f138e49cb00e7004361ec316ad94c122"
+    },
+    {
+      "id": "engineering-drive",
+      "source": "assets/source/visual-renewal/world/engineering-original.png",
+      "runtime": "assets/runtime/visual-renewal/world/engineering-drive.webp",
+      "width": 192,
+      "height": 192,
+      "pivot": {
+        "x": 96,
+        "y": 180
+      },
+      "layers": [
+        "engineering-drive"
+      ],
+      "entitlement": "drive",
+      "sourceSha256": "d11e77b0fa2e830a9c88c711911342c65af09d6f5be18b3237d925c791a8d779",
+      "sha256": "141003aab0eaf69cb97075bcf6f1e8e43c8007ea0604a0803085b514911a781e"
+    }
+  ]
+}
