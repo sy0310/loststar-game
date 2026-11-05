@@ -55,5 +55,13 @@
       "conclusion": "success",
       "url": "https://github.com/sy0310/loststar-game/actions/runs/42002812309"
     }
-  ]
+  ],
+  "harnessRegression": {
+    "command": "npx playwright test tests/e2e/exhibition.spec.ts --grep 已有航路 --repeat-each=3",
+    "cases": 12,
+    "failures": 0,
+    "flaky": 0,
+    "reason": "Use a same-origin static import writer; a second live app would autosave stale in-memory state over the raw test import.",
+    "runtimeChanged": false
+  }
 }

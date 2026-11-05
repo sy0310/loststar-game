@@ -29,6 +29,8 @@ test('星际扫描持续经过异常与核对，弱信号自动重试，无提�
 
 test('已有航路从另一标签恢复时图鉴即时同步，不给未完成内容伪造外形或远征',async({page,context})=>{
  await page.goto('/?start=base');await page.getByRole('button',{name:'图鉴',exact:true}).click();await page.getByRole('button',{name:/^星球/}).click();await expect(page.locator('.planet-card')).toHaveCount(1);
- const other=await context.newPage();await other.goto('/?start=base');await other.evaluate(()=>{const key='loststar.save.v1',s=JSON.parse(localStorage.getItem(key)!);s.planets.push('echo');localStorage.setItem(key,JSON.stringify(s));});
- await expect(page.locator('.planet-card')).toHaveCount(2);const known=page.locator('.planet-card').filter({hasText:'回声菌星'});await expect(known).toBeDisabled();await expect(known.locator('img')).toHaveCount(0);await expect(known).toContainText('远征未开放');await other.close();
+ // The external writer is a same-origin fixture, not a second live controller
+ // that can immediately autosave its stale in-memory state over this import.
+ const other=await context.newPage();await other.goto('/tests/fixtures/fusion-store.html');await other.evaluate(()=>{const key='loststar.save.v1',s=JSON.parse(localStorage.getItem(key)!);s.planets.push('echo');localStorage.setItem(key,JSON.stringify(s));});await other.close();
+ await expect(page.locator('.planet-card')).toHaveCount(2);const known=page.locator('.planet-card').filter({hasText:'回声菌星'});await expect(known).toBeDisabled();await expect(known.locator('img')).toHaveCount(0);await expect(known).toContainText('远征未开放');
 });
