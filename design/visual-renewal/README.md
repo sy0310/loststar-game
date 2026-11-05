@@ -4,7 +4,7 @@
 
 ## 原图与上传状态
 
-**交接时 PNG 在附件 ZIP 中，尚未写入 GitHub；不能因本文存在就声称原图已入库。** 本目录提供任务书、清单及导入脚本。Codex 收到 `loststar_visual_renewal_pack.zip` 后，先导入三张原图、按 SHA256 校验、提交并推送，远端可读后再开始翻新。
+**原图已导入 Git，三张均通过 3/3 校验。** 来源为本机下载的 `loststar_visual_renewal_pack.zip`，使用本目录脚本导入，原始字节未压缩或重采样。提交记录及远端回读结果见下方校验记录；此状态仅代表参考原图交接，不代表翻新完成或手机视觉验收通过。
 
 ```bash
 python3 design/visual-renewal/import_reference_pngs.py --source /本机真实路径/loststar_visual_renewal_pack.zip
@@ -33,3 +33,15 @@ python3 design/visual-renewal/import_reference_pngs.py
 ## 执行入口
 
 完整任务：[CODEX_FULL_RENEWAL.md](CODEX_FULL_RENEWAL.md)。用户已授权按该方向推进全部首星翻新；分阶段自检后继续实施，最终手机体验由用户验收。继续现有Draft PR #2，不合并、不正式发布、不清存档。
+
+## 原图预览
+
+![像素美术生产基准](approved/01_pixel_art_production_baseline.png)
+
+![首星探索界面](approved/02_first_planet_exploration.png)
+
+![奇物修复与收藏室](approved/03_curio_restoration_and_collection.png)
+
+## 校验记录
+
+2026-11-05：从真实下载 ZIP 导入，随后不带 `--source` 复验，3/3 原图的 PNG 签名、1448×1086 尺寸、字节数及 SHA256 全部符合清单。Git 二进制提交及远端逐文件回读另记于 `IMPORT_VERIFICATION.json`。
