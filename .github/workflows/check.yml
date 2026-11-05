@@ -23,6 +23,20 @@ jobs:
       - run: npm run build:v034
       - run: npm run build:fusion
       - run: npm run build:v036
+      - name: Use Ubuntu archive for browser dependencies
+        run: |
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          paths = [Path('/etc/apt/sources.list'), *Path('/etc/apt/sources.list.d').glob('*')]
+          for path in paths:
+              if not path.is_file() or path.suffix not in ('.list', '.sources'):
+                  continue
+              original = path.read_text()
+              updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+              if updated != original:
+                  path.write_text(updated)
+                  print(f'Using Ubuntu archive in {path.name}')
+          PY
       - run: npx playwright install --with-deps chromium webkit
         timeout-minutes: 5
       - run: npm run test:e2e
