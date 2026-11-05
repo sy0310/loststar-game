@@ -8,6 +8,7 @@ export default defineConfig({
   define:{__BUILD_INFO__:JSON.stringify({version,commit,dirty})},
   plugins:[{name:'d1-development-entry',apply:'serve',transformIndexHtml:{order:'pre',handler(html,context){
     const sample=new URL(context.originalUrl??context.path,'http://localhost').searchParams.get('sample');
+    if(sample==='art-v036')return html.replace('src="/src/main.ts"','src="/src/review/v036-entry.ts"');
     if(sample==='fusion'||sample==='refinement')return html.replace('src="/src/main.ts"','src="/src/fusion/entry.ts"');
     if(sample==='week1')return html.replace('src="/src/main.ts"','src="/src/review/v034-entry.ts"');
     return sample==='night-d1'||sample==='receipt-d1'?html.replace('src="/src/main.ts"','src="/src/entry.ts"'):html;

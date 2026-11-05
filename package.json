@@ -1,6 +1,6 @@
 {
   "name": "loststar-game",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,7 @@
     "test:e2e": "playwright test",
     "capture": "node scripts/capture.mjs",
     "check:assets": "python3 scripts/validate_design_assets.py",
-    "check": "npm run check:assets && npm run test:coverage && npm run build && npm run build:d1 && npm run build:v034 && npm run build:fusion && npm run test:e2e",
+    "check": "npm run check:assets && npm run test:coverage && npm run build && npm run build:d1 && npm run build:v034 && npm run build:fusion && npm run build:v036 && npm run test:e2e",
     "assets:export": "node scripts/export_assets.mjs",
     "report": "node scripts/report.mjs",
     "capture:review": "node scripts/capture_review.mjs",
@@ -41,7 +41,12 @@
     "simulate:refinement": "vite build --ssr scripts/simulate_refinement.ts --outDir releases/refinement-sim && node releases/refinement-sim/simulate_refinement.js",
     "capture:refinement": "vite build --ssr scripts/refinement_fixtures.ts --outDir releases/refinement-fixtures && node scripts/capture_refinement.mjs",
     "measure:refinement": "vite build --ssr scripts/refinement_fixtures.ts --outDir releases/refinement-fixtures && node scripts/measure_refinement.mjs",
-    "gallery:refinement": "python3 scripts/build_refinement_gallery.py"
+    "gallery:refinement": "python3 scripts/build_refinement_gallery.py",
+    "build:v036": "tsc --noEmit && vite build --config vite.v036.config.ts",
+    "package:v036": "python3 scripts/package_taptap.py --v036",
+    "capture:v036": "node scripts/capture_v036.mjs",
+    "measure:v036": "node scripts/measure_v036.mjs",
+    "gallery:v036": "python3 scripts/build_v036_gallery.py"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

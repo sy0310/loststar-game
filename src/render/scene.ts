@@ -53,6 +53,7 @@ export class ExpeditionScene {
   private focusKind='parcel';
   private active=false;
   private loading=false;
+  private destroyed=false;
   private hitCommands: SceneImageCommand[] = [];
   private hitTarget: SceneHitTarget | undefined;
   private alphaMasks = new WeakMap<HTMLImageElement | HTMLCanvasElement, SceneAlphaMask>();
@@ -77,15 +78,16 @@ export class ExpeditionScene {
     }
   }
   private load(){
-    if(this.loading)return;this.loading=true;
+    if(this.loading||this.destroyed)return;this.loading=true;
     Promise.all([
       Promise.all(Object.entries(urls).map(async([key,url])=>[key,await load(url)] as const)),
       loadResidentArt(),
-    ]).then(async ([entries,residentArt])=>{
-      if(this.extension?.ready)await this.extension.ready;
+      this.extension?.ready,
+    ]).then(([entries,residentArt])=>{
+      if(this.destroyed)return;
       this.residentArt=residentArt;
       this.art=Object.fromEntries(entries) as Art;this.ready=true;this.canvas.dataset.ready='true';this.loop();
-    }).catch(()=>{const parent=this.canvas.parentElement!;parent.dataset.error='true';parent.insertAdjacentText('beforeend','通信暂时中断，请刷新恢复场景。');});
+    }).catch(()=>{const parent=this.canvas.parentElement;if(this.destroyed||!parent)return;parent.dataset.error='true';parent.insertAdjacentText('beforeend','通信暂时中断，请刷新恢复场景。');});
   }
   setActive(active:boolean){this.active=active;this.lastFrame=0;if(active&&!this.ready)this.load();}
   celebrate(kind:string){this.focusKind=kind;this.focusUntil=performance.now()+2200;}
@@ -132,6 +134,7 @@ export class ExpeditionScene {
     try{draw();}finally{this.hitTarget=previous;}
   }
   private loop=()=>{
+    if(this.destroyed)return;
     const now=performance.now();
     if(this.active&&document.visibilityState==='visible'){
       if(this.lastFrame){this.intervals.push(now-this.lastFrame);if(this.intervals.length>1800)this.intervals.shift();}
@@ -263,5 +266,5 @@ export class ExpeditionScene {
     for(const resident of residents)this.canvas.setAttribute(`data-resident-${resident.id}`,resident.action);
     this.drawTimes.push(performance.now()-began);if(this.drawTimes.length>1800)this.drawTimes.shift();
   }
-  destroy(){cancelAnimationFrame(this.frame);}
+  destroy(){this.destroyed=true;this.active=false;cancelAnimationFrame(this.frame);}
 }

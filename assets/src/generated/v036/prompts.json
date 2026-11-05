@@ -1,0 +1,69 @@
+{
+  "generator": "OpenAI built-in image_gen",
+  "conceptImagesPresentAtGeneration": "v1/v2 fog absent; v3 fog and workbench present and visually inspected",
+  "outputs": [
+    {
+      "file": "star-fog-layers-v1.png",
+      "transparentBackground": true,
+      "referenceImages": [
+        {
+          "file": "assets/src/generated/parcel-globe.png",
+          "role": "Existing project palette, lighting and pixel density only"
+        }
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: ORIGINAL GAME SPRITE SHEET, three independent transparent fog layers for a high-fidelity pixel-art 2.5D miniature planet game. The reference image is ONLY the existing game palette, light direction and pixel density, do not include the planet or terrain. Create a tall canvas divided into THREE EQUAL HORIZONTAL ROWS with generous transparent separation. Each row contains ONE low horizontal bank of alien purple-pink star mist, all three rows aligned centered and similar width, no ground or objects. TOP ROW: distant dark indigo-violet rounded billows, subtle mauve tops and warm amber reflected light along lower-left base, soft contour defined with deliberate stepped pixel clusters. MIDDLE ROW: opaque rich lilac/mauve rolling middle cloud, scalloped overlapping voluminous lobes, pink-lavender upper edges, deep blue-violet cores, richly organized pixel shading. BOTTOM ROW: a shallower crescent-like front rim of luminous pink-violet mist with an open transparent middle/back, a few small flowing curls and fine warm golden reflected pixels. These will be combined as BACK / MAIN / FRONT layers in Canvas, so there must be no labels, no UI, no stars beyond each cloud, no geometric polygons, no blurred photographic smoke, no ground shadows, no rectangle gradient plates. Fine production-quality pixel painting at roughly 320-pixel native sprite width per cloud, nearest-neighbor visibly stepped edges. A cloud must feel like cool mysterious luminous volume touching a warm orange miniature world. Genuine transparent alpha everywhere outside the mist, no checkerboard painted into the image."
+    },
+    {
+      "file": "star-fog-layers-v2.png",
+      "transparentBackground": true,
+      "referenceImages": [
+        {
+          "file": "assets/src/generated/v036/star-fog-layers-v1.png",
+          "role": "Edit target preserving mist material and light while correcting overly flat silhouette"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Production GAME SPRITE SHEET revision. Keep the reference cloud's exact finely pixel-painted violet-magenta material, pale lavender highlights and amber reflected light. Change the SHAPE ONLY: the three cloud layers must be MUCH TALLER AND MORE COMPACT, with a roughly semicircular dome silhouette that can hide a small building. Three horizontal rows, one layer per row, separated by true transparent space. Each cloud's visible bounds should be roughly 850 pixels wide by 430 pixels tall WITHIN its 1024x512 row, centered on x512 and ending at local y480. No low thin horizontal fog banks. TOP ROW back layer: tall domed masses formed of big rounded dark indigo and mauve billows, luminous violet rim. MIDDLE ROW main layer: similarly tall dense domed pile of overlapping mist, opaque violet inner volume, lavender magenta and warm amber edges, ground-contact base. BOTTOM ROW front layer: deep U-shaped crescent of purple curls, side lobes rise to half cloud height, lower front is full-volume mist, central upper area transparent so the back/body can show through. Fine intentional 2D pixel clusters, stepped edges, no blur. These layers will overlap on ONE building, so no text, labels, borders, ground plane, stars or unrelated objects. Actual transparent RGBA background and separated layers."
+    },
+    {
+      "file": "star-fog-layers-v3.png",
+      "transparentBackground": true,
+      "referenceImages": [
+        {
+          "file": "design/v036/reference/失物星球探索流程概念图.png",
+          "role": "User-approved style reference, viewed before generation"
+        },
+        {
+          "file": "assets/src/generated/v036/star-fog-layers-v2.png",
+          "role": "Edit target with rejected hard flat lower edges"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Asset type: original TRANSPARENT PIXEL-ART GAME FOG LAYERS. Image 1 is the USER-APPROVED CONCEPT STYLE REFERENCE, use its rounded lilac-purple star mist, warm peach/golden rim, rare small embedded star motes and shaded luminous volume. Image 2 is the EDIT TARGET sprite sheet, preserve its back/body/front separated rows and approximate scale. Correct its hard horizontal sliced-off lower edges. Each of the three sprites must have an irregular naturally tapering lower silhouette, rolling little clouds, wispy curls and thin transparent holes, NO STRAIGHT HORIZONTAL BASELINE ANYWHERE. Leave AT LEAST 40 transparent pixels around each sprite, including below it, so every mist curl is fully contained and never cropped by row boundaries. Three independent layers on a tall canvas in top/middle/bottom rows. Top dark rounded rear mist dome, middle dense bright lilac rounded body with subtle purple interior, bottom U-shaped scalloped front crescent. Cloud banks should be compact dome silhouettes around 850px wide and 350px tall in each 1024x512 row. Each lower edge must have organic protruding and receding small lobes across the entire width, no flat cut and no ground-plane line. Pixel painting with deliberate crisp clusters, fine warm-lit edges, no Gaussian blur or rectangular glow plate. NO planet, buildings, robot, question marks, lettering, UI frame, watermark or copied concept scene. Genuine alpha-transparent background. These are layered material assets, not a concept poster."
+    },
+    {
+      "file": "restoration-workbench-v1.png",
+      "transparentBackground": false,
+      "referenceImages": [
+        {
+          "file": "design/v036/reference/失物星球_奇物修复展陈方案.png",
+          "role": "User-approved style reference, viewed before generation"
+        },
+        {
+          "file": "assets/src/generated/v034/restoration-tools-v1.png",
+          "role": "Project tray/bristle tool material/light reference"
+        }
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: ONE ORIGINAL GAME RESTORATION WORKBENCH BACKGROUND with an EMPTY CENTRAL ACTION AREA, intended for actual independently animated paper and tools, not a poster. Image 1 is the user-approved style reference: beautifully detailed high-precision pixel painting, purple-blue enamel and masonry, honey brass rails and warm gold workshop lamps, mysterious welcoming collector workshop. Image 2 is ONLY the existing tray/bristle tool material/light reference, do NOT draw the tools or tray. Produce a nearly square vertical 640:700 composition. Camera frontal with slight downward view. A warm brass desk lamp on the far left at x12% y31%, casting soft warm illumination toward a clear workspace. Deep violet tiled/recessed workshop wall in back, tasteful small glass jars and spools on shelves only at far left/right edges. In the lower third a purple-enamel restoration workbench surface starts at y65% and its brass front edge is at y80%, with supports below. The large center x28%-72%, y18%-68% MUST remain visually quiet and EMPTY for a tall upright paper artifact and moving brush. This is a real working alcove with sensible perspective, contact surface and warm atmospheric light, NOT a frame around a screenshot. Show finer textured purplish grid cutting mat on tabletop and a few tiny tasteful screws, no central clutter. Same coherent pixel scale, intentional pixel clusters and crisp highlight edges, not smooth 3D render. No receipt, paper, brush, scalpel, hands, robot, character, text, symbols, numbers, UI buttons, speech balloons, instructional panels, menu, watermark, or concept-poster borders. Edge decorations minimal enough that central paper remains the hero. Fill the canvas with original workshop environment."
+    },
+    {
+      "file": "restoration-workbench-v2.png",
+      "transparentBackground": false,
+      "referenceImages": [
+        {
+          "file": "assets/src/generated/v036/restoration-workbench-v1.png",
+          "role": "Edit target, remove celestial bodies while preserving room and blank workspace"
+        }
+      ],
+      "prompt": "Use case: precise-object-edit. Edit ONLY the TOP WINDOW SKY of this existing game-workbench background. Remove the large purple moon/planet and the smaller round moon/planet shapes visible through the upper windows. Fill those exact areas with matching deep indigo STARFIELD, tiny purple stars, empty distant space. Keep every other pixel-art object and composition unchanged: same warm golden restoration desk lamp on left, same quiet empty central dark purple wall, same edge shelves and bottles/spools, same empty purple-grid tabletop and brass front edge, same workshop columns and ivy, exact camera and overall palette. No planets, moons, asteroids or recognizable worlds anywhere. No paper, tools, robot or new objects. Maintain the same image size, aspect ratio, crisp detailed pixel-art material. This is an isolated restoration stage background, sky is decoration only, not an undiscovered star map."
+    }
+  ]
+}

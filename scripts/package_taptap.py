@@ -19,8 +19,10 @@ def main():
     modes.add_argument('--d1', dest='mode', action='store_const', const='d1', help='Package the read-only D1 art/motion review, without touching real saves')
     modes.add_argument('--v034', dest='mode', action='store_const', const='week1', help='Package the isolated week-one design review')
     modes.add_argument('--fusion', dest='mode', action='store_const', const='fusion', help='Package integrated exploration, collection and base playtest')
+    modes.add_argument('--v036', dest='mode', action='store_const', const='v036', help='Package two isolated art and contact-animation samples without player save access')
     args = parser.parse_args()
     profiles = {
+        'v036': ('loststar-v036', 'vite.v036.config.ts', '-v036-art', 'package-info-v036.json', 'Two isolated visual samples: local surface fog and receipt restoration; no player save access, wallet or rewards'),
         'fusion': ('loststar-fusion', 'vite.fusion.config.ts', '-fusion', 'package-info-fusion.json', 'Integrated tap-assisted exploration, collection and base development playtest; independent migrated archive'),
         'game': ('loststar', None, '', 'package-info.json', 'Single-entry H5 with shared home museum and integrated expedition day/night'),
         'night': ('loststar-night', 'vite.night.config.ts', '-night-lab', 'package-info-night.json', 'separate opt-in night prototype'),
