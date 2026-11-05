@@ -5,8 +5,7 @@ import flap0Url from '../../assets/runtime/visual-renewal/world/sorter-curtain-0
 import flap1Url from '../../assets/runtime/visual-renewal/world/sorter-curtain-1.webp';
 import flap2Url from '../../assets/runtime/visual-renewal/world/sorter-curtain-2.webp';
 import jamUrl from '../../assets/runtime/visual-renewal/world/sorter-paper-jam.webp';
-import tapeUrl from '../../assets/runtime/visual-renewal/curios/tape-stabilized.webp';
-import {drawTapeBridge} from './curio-ability-rig';
+import {drawAppliedTape,prepareCurioMechanisms} from './curio-mechanism-renderer';
 import type {FusionSave} from './contracts';
 import {refinementView} from './progression';
 import {fusionCycleFraction} from './render-clock';
@@ -34,7 +33,9 @@ type Pose = ReturnType<typeof robotPose>;
 /** Registered machine parts share one ground contact and the existing core work clock. */
 export function createSortingScene(getFusion?: () => FusionSave) {
   let art: HTMLImageElement[] = [];
-  const ready = Promise.all([backUrl,frontUrl,rollersUrl,flap0Url,flap1Url,flap2Url,jamUrl,tapeUrl].map(load)).then(images => {art = images;});
+  const ready = Promise.all([backUrl,frontUrl,rollersUrl,flap0Url,flap1Url,flap2Url,jamUrl].map(load)).then(images => {art = images;});
+  // Specimen readiness gates treatment, while exploration keeps rendering if optional installed tape is unavailable.
+  void prepareCurioMechanisms().catch(()=>{});
   const belt = document.createElement('canvas');belt.width = 128;belt.height = 96;
   const beltContext = belt.getContext('2d')!;
   let offset = {x: 0, y: 0};
@@ -139,9 +140,9 @@ export function createSortingScene(getFusion?: () => FusionSave) {
     }
     const tapeLevel = getFusion!().progression.sorting.buildTapeLevel;
     if (built > .66 && tapeLevel > 0) {
-      drawTapeBridge(context,art[7],[{x:222,y:176},{x:239,y:181},{x:248,y:190},{x:238,y:199},{x:220,y:194}],1,9);
-      if (tapeLevel === 2) drawTapeBridge(context,art[7],
-        [{x:122,y:219},{x:142,y:223},{x:155,y:220},{x:162,y:211},{x:155,y:206}],1,9);
+      drawAppliedTape(context,[{x:222,y:176},{x:239,y:181},{x:248,y:190},{x:238,y:199},{x:220,y:194}],9);
+      if (tapeLevel === 2) drawAppliedTape(context,
+        [{x:122,y:219},{x:142,y:223},{x:155,y:220},{x:162,y:211},{x:155,y:206}],9);
     }
     for (const code of ['P03','P30'] as const) {
       const fact = sorting.sourceFacts.find(item => item.kind === 'label' && item.code === code);

@@ -27,15 +27,22 @@ jobs:
         run: |
           sudo python3 - <<'PY'
           from pathlib import Path
-          paths = [Path('/etc/apt/sources.list'), *Path('/etc/apt/sources.list.d').glob('*')]
+          mirrorlist = Path('/etc/apt/apt-mirrors.txt')
+          paths = [Path('/etc/apt/sources.list'), mirrorlist, *Path('/etc/apt/sources.list.d').glob('*')]
+          checked = 0
           for path in paths:
-              if not path.is_file() or path.suffix not in ('.list', '.sources'):
+              if not path.is_file() or (path != mirrorlist and path.suffix not in ('.list', '.sources')):
                   continue
+              checked += 1
               original = path.read_text()
               updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
               if updated != original:
                   path.write_text(updated)
                   print(f'Using Ubuntu archive in {path.name}')
+              if 'azure.archive.ubuntu.com/ubuntu' in path.read_text():
+                  raise RuntimeError(f'Azure Ubuntu mirror remains in {path.name}')
+          if not checked:
+              raise RuntimeError('No Ubuntu APT source files found')
           PY
       - run: npx playwright install --with-deps chromium webkit
         timeout-minutes: 5
@@ -53,13 +60,15 @@ jobs:
             coverage/
           retention-days: 14
       - uses: actions/upload-artifact@v4
-        if: always() && (hashFiles('artifacts/v041-receipt-review/screens-evidence.json') != '' || hashFiles('artifacts/visual-renewal/screens-evidence.json') != '')
+        if: always() && (hashFiles('artifacts/v042-physical-review/museum-physical-evidence.json') != '' || hashFiles('artifacts/v041-receipt-review/screens-evidence.json') != '' || hashFiles('artifacts/visual-renewal/screens-evidence.json') != '')
         with:
           name: visual-renewal-review
           path: |
             artifacts/visual-renewal/
             artifacts/v041-receipt-review/
+            artifacts/v042-physical-review/
             !artifacts/visual-renewal/raw/
             !artifacts/visual-renewal/internal/
             !artifacts/v041-receipt-review/raw/
+            !artifacts/v042-physical-review/raw/
           retention-days: 14

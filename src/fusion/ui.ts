@@ -7,6 +7,7 @@ import {discoveries, discoveryById, planetById} from '../content/catalog';
 import {curioPrices, projectAvailable, latestNightHistory} from './domain';
 import {drawCurioSpecimen, prepareCurioMaterial, prepareCurioTools, prepareCurioWorkbench, curioConditionPresentation, curioTreatmentLabels, renderCurioTreatment, exportCurioMaterial, renderRenewalReceipt, exportRenewalReceiptMaterial, renewalReceiptCurioState} from './curio-condition';
 import {drawCurioAbilityRig,curioAbilityReady,type CurioAbilityRigResult,type AbilityRigRecord} from './curio-ability-rig';
+import {mechanismTrialMs} from './curio-mechanism-model';
 import {cost, MAX_LEVEL, publicRadar, tuning, type UpgradeId, type SaveData} from '../game/engine';
 import {growthCatalog, growthChange, growthLevel} from '../game/growth';
 import {repairPrice,explorationFactor,planBoost} from '../game/station';
@@ -122,8 +123,12 @@ export function mountFusion(controller: FusionController) {
   const abilityResults=new Map<string,CurioAbilityRigResult>();
   let abilityReady=false;
   let materialLoadFailed=false;
-  void prepareCurioTools().then(() => {materialLoadFailed=false;collectionSignature = '';museum.refresh();}).catch(() => {materialLoadFailed=true;museumRetry.hidden=false;});
-  void curioAbilityReady().then(()=>{abilityReady=true;}).catch(()=>{});
+  async function prepareExhibitAssets(workbench=false){
+    await(workbench?prepareCurioWorkbench():prepareCurioTools());
+    await curioAbilityReady();
+    abilityReady=true;materialLoadFailed=false;
+  }
+  void prepareExhibitAssets().then(() => {collectionSignature = '';museum.refresh();}).catch(() => {materialLoadFailed=true;museumRetry.hidden=false;});
   function abilityRecords(receiptLevel=controller.state.progression.abilities.receipt):AbilityRigRecord[]{
     const state=controller.state;
     const facts:AbilityRigRecord[]=state.progression.sorting.facts.map(fact=>({id:fact.id,at:fact.at,detail:fact.detail,source:fact.nodeId,code:fact.code,orientation:fact.orientation}));
@@ -136,6 +141,9 @@ export function mountFusion(controller: FusionController) {
   let paperLoading: Promise<void> | undefined;
   const museum = new MuseumScene(museumRoot, () => controller.state.game, id => growthLevel(controller.state.game, id), () => fusionRenderElapsed(controller.state.game, Date.now()) / 1000, {
     renewal: true,
+    specimenHandlingReady: id => !materialLoadFailed && abilityReady && (id === 'receipt'
+      ? controller.state.receipt.stage === 'displayed' && controller.state.receipt.condition === 'stabilized'
+      : controller.state.curios[id]?.condition === 'stabilized'),
     receiptFrame: () => controller.state.game.collection.includes('receipt') ? receiptRestorationFrame((drawer==='case-preview'?casePreview?.receipt:undefined)??controller.state.receipt,Date.now()/1000) : undefined,
     receiptPaperPending: () => materialLoadFailed,
     drawSpecimen: (context, exhibit, time, image, service) => {
@@ -143,7 +151,7 @@ export function mountFusion(controller: FusionController) {
       const condition = exhibit.id === 'receipt' ? renewalReceiptCurioState(preview?.receipt ?? controller.state.receipt) : (preview?.curios ?? controller.state.curios)[exhibit.id];
       if (!condition) return false;
       const paper=exhibit.id==='receipt'?receiptRestorationFrame(preview?.receipt??controller.state.receipt,(preview?.at??Date.now())/1000):undefined;
-      const trial=paper?.phase==='trying'?paper.trying:!preview&&drawer==='detail'&&detailId===exhibit.id?Math.min(1,Math.max(0,(performance.now()-curioTrialAt)/2600)):0;
+      const trial=paper?.phase==='trying'?paper.trying:!preview&&drawer==='detail'&&detailId===exhibit.id?Math.min(1,Math.max(0,(performance.now()-curioTrialAt)/mechanismTrialMs)):0;
       drawCurioSpecimen(context, exhibit, image, condition, preview?.at ?? Date.now(),{buried:paper?.stage==='buried',excavation:paper?.excavation,seconds:preview?0:time,trial,reducedMotion:reducedMotion.matches,serviceEnvelope:service?.specimenEnvelope??1,drawAbility:(exhibit.id==='tape'||exhibit.id==='receipt')&&abilityReady&&(preview?.abilities??controller.state.progression.abilities)[exhibit.id]>0?(canvas,material)=>{
         const result=drawCurioAbilityRig(canvas,{id:exhibit.id as 'receipt'|'tape',image:material,seconds:preview?0:time,abilityLevel:(preview?.abilities??controller.state.progression.abilities)[exhibit.id as 'receipt'|'tape'],experimentProgress:trial||undefined,serviceEnvelope:service?.specimenEnvelope??1,records:preview?.records??abilityRecords(),materialRevision:`${condition.condition}/${condition.action?.kind??''}/${condition.action?Math.round((Date.now()-condition.action.startedAt)/33):0}`,reducedMotion:reducedMotion.matches});abilityResults.set(exhibit.id,result);return true;
       }:undefined});
@@ -175,10 +183,11 @@ export function mountFusion(controller: FusionController) {
   let lastFocusAt = 0;
   const focusVisible=new WeakMap<Element,boolean>();
   const focusVisibility=new IntersectionObserver(entries=>{for(const entry of entries)focusVisible.set(entry.target,entry.isIntersecting);});
-  document.addEventListener('visibilitychange',()=>{focusCadence.reset();inspectionCadence.reset();lastFocusAt=0;});
+  document.addEventListener('visibilitychange',()=>{focusCadence.reset();inspectionCadence.reset();lastFocusAt=0;if(document.hidden)bellSoundReplay=curioTrialReplay;});
   let feedbackToken = 0;
   let curioTrialAt = -Infinity;
   let curioTrialReplay=0;
+  let bellSoundReplay=0;
   let previousGross = controller.state.game.station.grossIncome;
   let previousIncomeAt = controller.state.game.lastAt;
   let previousRecycler = tuning(controller.state.game).recycler;
@@ -548,7 +557,7 @@ export function mountFusion(controller: FusionController) {
 
   async function prepareFocus() {
     if (!paperReady) {
-      paperLoading ??= prepareCurioWorkbench().then(() => {
+      paperLoading ??= prepareExhibitAssets(true).then(() => {
         paperReady = true;materialLoadFailed=false;
       }).catch(error => {throw error;}).finally(() => {paperLoading=undefined;});
       await paperLoading;
@@ -570,7 +579,8 @@ export function mountFusion(controller: FusionController) {
     const canvas = body.querySelector<HTMLCanvasElement>(receipt ? '#fusion-paper-focus' : '#fusion-exhibit-focus');
     const renderedCondition = canvas?.dataset.condition ?? canvas?.dataset.restorationCondition ?? canvas?.dataset.materialStage;
     const ready = canvas?.dataset.ready === 'true' && renderedCondition === condition && (!receipt || focusReady);
-    const busy = receipt ? !!state.receipt.activeAction : !!state.curios[id]?.action;
+    const mechanismPlaying=(id==='tape'||id==='bell')&&performance.now()>=curioTrialAt&&performance.now()-curioTrialAt<mechanismTrialMs;
+    const busy = receipt ? !!state.receipt.activeAction : !!state.curios[id]?.action||mechanismPlaying;
     return {condition, completed, ready, busy, canvas, renderedCondition};
   }
 
@@ -586,6 +596,7 @@ export function mountFusion(controller: FusionController) {
     panel.dataset.renderedCondition = view.renderedCondition ?? '';
     button.hidden = panel.hidden;
     button.disabled = panel.hidden || view.busy;
+    button.setAttribute('aria-busy',String(view.busy));
     button.textContent = exhibitActionLabels[detailId];
   }
 
@@ -618,7 +629,7 @@ export function mountFusion(controller: FusionController) {
       projectHabitats.push(detailHabitat);detailHabitat.setActive(true);
     } else if (id === 'receipt') void prepareFocus().catch(loadFailed);
     else {
-      void prepareCurioWorkbench().then(() => {
+      void prepareExhibitAssets(true).then(() => {
         materialLoadFailed=false;
         if (!dialog.open || drawer !== 'detail' || detailId !== id) return;
         const canvas = query<HTMLCanvasElement>('#fusion-exhibit-focus');
@@ -1072,7 +1083,7 @@ export function mountFusion(controller: FusionController) {
     if (button.id === 'fusion-settings') {openSettings();return;}
     if (button.id === 'fusion-museum-retry') {
       button.disabled=true;
-      try {await Promise.all([prepareCurioTools(),museum.retry()]);materialLoadFailed=false;museum.refresh();museum.setActive(tab!=='explore'&&!dialog.open);}
+      try {await Promise.all([prepareExhibitAssets(),museum.retry()]);museum.refresh();museum.setActive(tab!=='explore'&&!dialog.open);}
       catch {toast('信号还未接通，请再试一次');}
       finally {button.disabled=false;museumRetry.hidden=museum.canvas.dataset.ready!=='error'&&!materialLoadFailed;}
       return;
@@ -1190,7 +1201,8 @@ export function mountFusion(controller: FusionController) {
         } else {
           curioTrialAt=performance.now();curioTrialReplay++;
         }
-        soundCue('interaction',interactionId);
+        // The bell rings from its painted bottom-of-stroke frame, not from input.
+        if(interactionId!=='bell')soundCue('interaction',interactionId);
         const response=body.querySelector<HTMLElement>('#fusion-curio-response');
         if(response&&trialLines[interactionId]){response.hidden=false;response.textContent=trialLines[interactionId];}
         exhibit.canvas?.scrollIntoView({block:'nearest'});
@@ -1296,7 +1308,7 @@ export function mountFusion(controller: FusionController) {
         const state = controller.state;
         if (canvas && state.curios[detailId] && focusVisible.get(canvas)!==false) {
           const seconds = fusionRenderElapsed(state.game,Date.now()) / 1000;
-          const trial = Math.min(1, Math.max(0, (now-curioTrialAt)/2600));
+          const trial = Math.min(1, Math.max(0, (now-curioTrialAt)/mechanismTrialMs));
           const rendered = renderCurioTreatment(canvas, detailId, state.curios[detailId], Date.now(), {seconds, trial, reducedMotion: reducedMotion.matches,
             drawAbility: detailId === 'tape' && abilityReady && state.progression.abilities.tape > 0 ? (context, image) => {
               const result = drawCurioAbilityRig(context, {id:'tape', image, seconds, abilityLevel:state.progression.abilities.tape,
@@ -1304,7 +1316,10 @@ export function mountFusion(controller: FusionController) {
                 materialRevision:`${state.curios.tape.condition}/${state.curios.tape.action?.kind ?? ''}/${state.curios.tape.action ? Math.round(Date.now()/33) : 0}`});
               abilityResults.set('tape',result);return true;
             } : undefined});
-          canvas.dataset.experimentPlaying=String(now-curioTrialAt>=0&&now-curioTrialAt<2600);canvas.dataset.item=detailId;canvas.dataset.lastInput=lastPointer;canvas.dataset.replay=String(curioTrialReplay);canvas.dataset.experimentStartedAt=String(curioTrialAt);decorateAbilityCanvas(canvas,detailId);painted=rendered;
+          canvas.dataset.experimentPlaying=String(now-curioTrialAt>=0&&now-curioTrialAt<mechanismTrialMs);canvas.dataset.item=detailId;canvas.dataset.lastInput=lastPointer;canvas.dataset.replay=String(curioTrialReplay);canvas.dataset.experimentStartedAt=String(curioTrialAt);decorateAbilityCanvas(canvas,detailId);painted=rendered;
+          if(rendered&&detailId==='bell'&&bellSoundReplay!==curioTrialReplay&&canvas.dataset.bellTriggered==='true'&&canvas.dataset.toolContact==='true'&&!document.hidden){
+            bellSoundReplay=curioTrialReplay;soundCue('curio-bell','bell');
+          }
         }
       }
       if(painted){

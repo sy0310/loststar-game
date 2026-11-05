@@ -58,3 +58,6 @@ await import("./export_renewal_curio_rig.mjs");
 
 // User-approved modern single receipt supersedes its retired parchment rig only.
 await import('./export_modern_receipt.mjs');
+
+// Static-approved v042 tape/bell mechanisms replace only their six retired screenshot-cut states.
+await import('./export_mechanisms_v042.mjs');

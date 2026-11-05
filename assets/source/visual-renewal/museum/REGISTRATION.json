@@ -16,7 +16,7 @@
   "runtimeRegistration": {
     "caseContacts": [
       [
-        160,
+        104,
         500
       ],
       [
@@ -24,11 +24,11 @@
         500
       ],
       [
-        608,
+        664,
         500
       ],
       [
-        160,
+        104,
         825
       ],
       [
@@ -36,23 +36,23 @@
         825
       ],
       [
-        608,
+        664,
         825
       ]
     ],
     "aisleCenters": [
-      270,
-      500
+      244,
+      524
     ],
-    "aisleFootprintWidth": 30,
+    "aisleFootprintWidth": 80,
     "caseLayers": [
-      "rear glass and structure",
-      "fitted support and contact shadow",
-      "registered three-state specimen",
-      "front reflection",
-      "real Canvas Chinese nameplate"
+      "rear hood and interior",
+      "moving fitted tray and registered specimen",
+      "fixed near posts and base face",
+      "five telescoping transparent panes and fixed rails",
+      "real Canvas Chinese nameplate inside the base face"
     ],
-    "caseInnerHeight": 156,
+    "caseInnerHeight": 168,
     "caseBaseHeights": [
       44,
       54,
@@ -60,7 +60,14 @@
       72
     ],
     "specimenContact": "curio-renewal-model.support aligned with floor-13; cell centre is not the contact",
-    "robot": "shared renewal-robot rig; width136 world; carrying uses same specimen geometry"
+    "robot": "shared renewal-robot rig; width136 world unchanged; rebase -2/+2 after measured alpha+joint transit envelope; stowed transit; museum-only finite 49/48 local links; real same-side two-point specimen grips",
+    "registrationSource": "src/render/museum-space.ts",
+    "caseWidth": 172,
+    "caseInnerWidth": 128,
+    "aisleClearWidth": 108,
+    "transitBodyWidth": 96,
+    "handlingRegistration": "src/fusion/curio-museum-handling.ts",
+    "paneRegistration": "assets/source/visual-renewal/museum/PANE_REGISTRATION.json"
   },
   "exportCommand": "node scripts/export_renewal_museum.mjs",
   "assets": [
@@ -88,12 +95,12 @@
           918
         ],
         "verticalX": [
-          270,
-          500
+          244,
+          524
         ],
         "cabinetContacts": [
           [
-            160,
+            104,
             500
           ],
           [
@@ -101,11 +108,11 @@
             500
           ],
           [
-            608,
+            664,
             500
           ],
           [
-            160,
+            104,
             825
           ],
           [
@@ -113,7 +120,7 @@
             825
           ],
           [
-            608,
+            664,
             825
           ]
         ]

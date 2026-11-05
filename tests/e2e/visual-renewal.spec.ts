@@ -88,7 +88,7 @@ test('柜体升级播放真实安装帧，物件与费用维持原已购模型',
 
 test('关键奇物材质失败有显式恢复入口，重连后六柜无需重新购买',async({page})=>{
  await page.clock.install({time:new Date(epoch)});await page.clock.pauseAt(new Date(epoch+1000));const fixture=firstPlanetFixture(epoch+60000,1,'stabilized',{receiptAbility:0,tapeAbility:0});await seed(page,fixture.state);
- await page.route('**/tape-rig-fixed.webp*',route=>route.request().resourceType()==='image'?route.abort():route.continue());await open(page);await page.locator('[data-tab="base"]').tap();await page.clock.runFor(300);await expect(page.locator('#fusion-museum-retry')).toBeVisible();
- const before=await read(page);await page.unroute('**/tape-rig-fixed.webp*');await page.locator('#fusion-museum-retry').tap();await expect(page.locator('#fusion-museum-retry')).toBeHidden();expect(rights(await read(page))).toEqual(rights(before));
+ await page.route('**/tape-frame-back.webp*',route=>route.request().resourceType()==='image'?route.abort():route.continue());await open(page);await page.locator('[data-tab="base"]').tap();await page.clock.runFor(300);await expect(page.locator('#fusion-museum-retry')).toBeVisible();
+ const before=await read(page);await page.unroute('**/tape-frame-back.webp*');await page.locator('#fusion-museum-retry').tap();await expect(page.locator('#fusion-museum-retry')).toBeHidden();expect(rights(await read(page))).toEqual(rights(before));
  await page.locator('[data-tab="collection"]').tap();await page.locator('#fusion-collection-list [data-detail="tape"]').tap();await expect(page.locator('#fusion-exhibit-focus')).toHaveAttribute('data-ready','true');
 });

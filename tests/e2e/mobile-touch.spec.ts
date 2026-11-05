@@ -220,6 +220,12 @@ test('融合原生触控：点星球有助力，六件奇物可反复互动且�
       expect(await canvas.screenshot()).not.toEqual(first);
       const replay = await canvas.getAttribute('data-replay');
       const started = await canvas.getAttribute('data-experiment-started-at');
+      if(id==='tape'||id==='bell'){
+        // A physical mechanism must finish returning before a second touch;
+        // replayability does not mean interrupting a loaded shaft or tape.
+        await expect(trial).toBeDisabled();
+        await expect(trial).toBeEnabled({timeout:5000});
+      }
       await tap(page, trial);
       await expect(canvas).not.toHaveAttribute('data-replay', replay!);
       await expect(canvas).not.toHaveAttribute('data-experiment-started-at', started!);

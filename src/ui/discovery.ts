@@ -2,7 +2,7 @@ import type { Discovery } from '../content/types';
 import { itemArt } from './art';
 import { icon } from '../icons';
 
-export type SoundCue = 'scan' | 'pickup' | 'discovery-parcel' | 'discovery-resident' | 'discovery-glitch' | 'upgrade' | 'return' | 'interaction';
+export type SoundCue = 'scan' | 'pickup' | 'discovery-parcel' | 'discovery-resident' | 'discovery-glitch' | 'upgrade' | 'return' | 'interaction' | 'curio-bell';
 export function soundCue(cue:SoundCue,id?:string) {
   window.dispatchEvent(new CustomEvent('loststar:sound-cue',{detail:{cue,id}}));
 }

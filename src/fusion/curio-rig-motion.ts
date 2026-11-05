@@ -1,3 +1,4 @@
+import {mechanismRepairContact} from './curio-mechanism-model';
 import {modernReceiptRepairContact} from './receipt-paper-model';
 /** Shared by Canvas rendering and the deterministic PNG exporter. No DOM or save access. */
 export type RigId='receipt'|'tape'|'nested'|'stamp'|'cosmic-parcel'|'bell';
@@ -70,10 +71,10 @@ export function curioRigCommands(id:RigId,corrections:readonly number[],seconds=
 export function curioRigContact(id:RigId,step:number,corrections:readonly number[]):RigPoint{
  const c0=clamp(corrections[0]??0),c1=clamp(corrections[1]??0),b0=1-c0,b1=1-c1;
  if(id==='receipt')return modernReceiptRepairContact(step,corrections);
- if(id==='tape')return step===0?rigTransform(rotate({x:125,y:76},-.14*b0,-4*b0,3*b0),{x:125,y:70}):tapeTailPoint({x:45,y:125},b1);
+ if(id==='tape')return mechanismRepairContact(id,step,corrections);
  if(id==='nested')return step===0?rigTransform(lidMatrix(c0,c1),{x:130,y:105}):cornerPoint({x:38,y:151},b1);
  if(id==='stamp')return step===0?rigTransform(rotate({x:98,y:103},-.30*b0,-3*b0,3*b0),{x:97,y:89}):rigTransform(rotate({x:98,y:108},-.22*b1,-4*b1,-5*b1),{x:98,y:108});
  if(id==='cosmic-parcel')return step===0?cosmicBandPoint({x:89,y:53},b0):rigTransform(tagMatrix(b1),{x:82,y:128});
- return step===0?rigTransform(rotate({x:142,y:139},.35*b0,1+6*b0,3-5*b0),{x:142,y:139}):{x:97,y:32+16*b1};
+ return mechanismRepairContact('bell',step,corrections);
 }
 export const curioRigHinge=(corrections:readonly number[],p:RigPoint,trial=0)=>rigTransform(lidMatrix(clamp(corrections[0]??0),clamp(corrections[1]??0),trial),p);

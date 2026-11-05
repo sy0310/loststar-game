@@ -1,4 +1,6 @@
-import {drawTapeBridge,drawCurioAbilityRig} from './curio-ability-rig';
+import {prepareCurioMechanisms,drawCurioMechanism,registerMechanismMaterial,mechanismMaterialMeta,mechanismActuatorGrip,drawMechanismActuator} from './curio-mechanism-renderer';
+import {mechanismFrame} from './curio-mechanism-model';
+import {drawCurioAbilityRig} from './curio-ability-rig';
 import {modernReceiptPose,modernReceiptClampAmount,type ReceiptPaperPose} from './receipt-paper-model';
 import {drawModernReceiptPaper,drawModernReceiptClamps,drawModernReceiptHolder} from './receipt-paper-renderer';
 import {itemCenter,type Exhibit} from '../render/museum-layout';
@@ -29,12 +31,12 @@ function drawImage(c:CanvasRenderingContext2D,image:CanvasImageSource){c.drawIma
 /** New material bytes are critical: failure does not pretend a paid treatment is ready. */
 export function prepareCurioTools():Promise<void>{
  if(!toolsPromise){
-  const entries=Object.entries(urls).filter(([name])=>name.includes('/receipt-modern/')||(/\/(?:tool-|excavation-|receipt-inner-blank|[^/]+-rig-)/.test(name)&&!name.includes('/receipt-rig-')));
-  toolsPromise=Promise.all(entries.map(async([name,url])=>{
+  const entries=Object.entries(urls).filter(([name])=>name.includes('/receipt-modern/')||(/\/(?:tool-|excavation-|[^/]+-rig-)/.test(name)&&!name.includes('/receipt-rig-')&&!name.includes('/tape-rig-')&&!name.includes('/bell-rig-')));
+  toolsPromise=Promise.all([prepareCurioMechanisms(),...entries.map(async([name,url])=>{
    const key=name.split('/').at(-1)!.replace('.webp','');let image=images.get(key);
    if(!image){image=new Image();image.src=url;images.set(key,image);}
    try{await image.decode();}catch(error){if(images.get(key)===image)images.delete(key);throw error;}
-  })).then(()=>{toolsLoaded=true;}).catch(error=>{toolsLoaded=false;toolsPromise=undefined;throw error;});
+  })]).then(()=>{toolsLoaded=true;}).catch(error=>{toolsLoaded=false;toolsPromise=undefined;throw error;});
  }
  return toolsPromise;
 }
@@ -69,7 +71,11 @@ export function prepareCurioMaterial(_image:HTMLImageElement|undefined,state:Cur
   const c=material.image.getContext('2d')!;c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='source-over';c.clearRect(0,0,384,384);c.imageSmoothingEnabled=false;
   if(isRenewalCurio(id)&&toolsLoaded){
    const frame=renewalTreatmentFrame(id,state,now);material.corrections=frame.corrections;
-   if(id==='receipt'){
+   if(id==='tape'||id==='bell'){
+    registerMechanismMaterial(material.image,{corrections:frame.corrections,cleaning:frame.cleaning,revision});
+    c.save();c.scale(2,2);drawCurioMechanism(c,id,{corrections:frame.corrections,cleaning:frame.cleaning,reducedMotion:true});c.restore();
+    const o=material.original.getContext('2d')!;o.clearRect(0,0,384,384);o.save();o.scale(2,2);drawCurioMechanism(o,id,{corrections:[1,1],cleaning:1,reducedMotion:true});o.restore();
+   }else if(id==='receipt'){
     const surface=material.paperSurface??(material.paperSurface=make()),p=surface.getContext('2d')!;
     p.setTransform(1,0,0,1,0,0);p.globalCompositeOperation='source-over';p.clearRect(0,0,384,384);
     const master=sprite('receipt-paper-master');if(master)p.drawImage(master,0,0,384,384);
@@ -113,6 +119,7 @@ export function prepareCurioMaterial(_image:HTMLImageElement|undefined,state:Cur
 const idleRigs=new Map<string,{key:string;image:HTMLCanvasElement}>();
 /** A physical joint cycle, with one common fixed body and no copy of the old broken specimen. */
 export function drawRenewalCurioRig(c:CanvasRenderingContext2D,id:RenewalCurioId,material:Material,seconds:number,trial=0,reduced=false,envelope=1){
+ if(id==='tape'||id==='bell'){drawCurioMechanism(c,id,{...mechanismMaterialMeta(material.image),seconds,trial,reducedMotion:reduced,serviceEnvelope:envelope});return;}
  if(material.repaired<.995){drawImage(c,material.image);return;}
  const active=trial>0&&trial<1?Math.sin(trial*Math.PI):0;
  if(active>0){paintPhysicalRig(c,id,[1,1],seconds,trial,reduced);}
@@ -134,21 +141,17 @@ export function drawRenewalCurioRig(c:CanvasRenderingContext2D,id:RenewalCurioId
    c.restore();
   }
  }
- if(id==='tape'&&active>.05){
-  const paper=sprite('receipt-inner-blank');
-  if(paper){c.drawImage(paper,77,61,86,137,5,151,24,25);c.drawImage(paper,106,61,86,137,32,151,24,25);}
-  drawTapeBridge(c,material.image,[{x:45,y:122},{x:31,y:139},{x:28,y:157},{x:42,y:163}],active,8);
- }
  if(active>.15&&id==='stamp'){
   c.save();c.translate(76,179);c.fillStyle='#e8c88f';c.fillRect(0,0,44,12);c.fillStyle='#7f5176';c.font='bold 6px monospace';c.fillText('昨天 ←',3,8);c.restore();
  }
- if(id==='bell'&&trial>.45&&trial<1&&!reduced){c.save();c.strokeStyle='#ffe1a2';c.lineWidth=.85;c.globalAlpha=active*.7;for(let i=0;i<2;i++){const w=((trial-.45)*3+i*.5)%1;c.beginPath();c.ellipse(99,140,44+w*31,11+w*9,0,0,Math.PI*2);c.stroke();}c.restore();}
+
 }
 
 const toolEntries=new Map(registration.assets.filter(a=>a.id.startsWith('tool-')).map(a=>[a.id,a]));
-function arm(c:CanvasRenderingContext2D,grip:RenewalPoint){
+function arm(c:CanvasRenderingContext2D,grip:RenewalPoint,freeDock?:number){
  const sleeve=sprite('tool-forearm'),hand=sprite('tool-gripper');if(!sleeve||!hand)return;
- const elbow={x:Math.min(218,grip.x+52),y:Math.min(187,grip.y+49)},origin={x:242,y:177};
+ const dock=freeDock===undefined?0:clamp(freeDock);
+ const elbow={x:Math.min(218+(freeDock===undefined?0:dock*50),grip.x+52),y:Math.min(187,grip.y+49)},origin={x:242+(freeDock===undefined?0:dock*24),y:177};
  // Telescoping members keep their authored width. Only straight metal rods
  // extend; the detailed enamel sleeve and brass bearings are never stretched.
  for(const [a,b]of [[origin,elbow],[elbow,grip]]){
@@ -240,13 +243,18 @@ function paintWorkbench(canvas:HTMLCanvasElement,id:RenewalCurioId,state:CurioSt
  }else if(id==='receipt')drawReceiptComposition(c,material,options,state.condition==='stabilized');
  else if(state.action)drawImage(c,material.image);
  else if(!options.drawAbility?.(c,material.image))drawRenewalCurioRig(c,id,material,options.seconds??now/1000,options.trial??0,options.reducedMotion,options.serviceEnvelope??1);
- if(id==='bell'&&options.trial&&options.trial>.02&&options.trial<.42){
-  const retract=smooth((options.trial-.18)/.24);arm(c,{x:132+retract*93,y:108+retract*32});
- }
+ if((id==='tape'||id==='bell')&&!state.action){const mechanical=mechanismFrame(id,{...mechanismMaterialMeta(material.image),seconds:options.seconds,trial:options.trial,reducedMotion:options.reducedMotion,serviceEnvelope:options.serviceEnvelope});const grip=mechanismActuatorGrip(id,mechanical);if(grip){arm(c,grip,mechanical.tool.dock);drawMechanismActuator(c,id,mechanical);}}
  const contact=buried?undefined:drawTool(c,id,state,now);c.restore();c.restore();
  canvas.dataset.ready='true';canvas.dataset.materialStage=state.condition;canvas.dataset.condition=state.condition;canvas.dataset.type=renewalCurioRegistration[id].material;
  canvas.dataset.cleanProgress=String(frame.cleaning);canvas.dataset.repairProgress=String(frame.repairing);canvas.dataset.toolContact=contact?.pressed?contact.tool:'';canvas.dataset.contact=contact?.tool??'';
  canvas.dataset.contactX=contact?String(x+contact.x*scale):'';canvas.dataset.contactY=contact?String(y+contact.y*scale):'';
+ if(id==='tape'||id==='bell'){
+  const mechanical=mechanismFrame(id,{...mechanismMaterialMeta(material.image),seconds:options.seconds,trial:options.trial,reducedMotion:options.reducedMotion,serviceEnvelope:options.serviceEnvelope});
+  canvas.dataset.mechanism=id;canvas.dataset.mechanismPhase=mechanical.phase;canvas.dataset.mechanismTime=String(mechanical.trialTime);
+  canvas.dataset.tapeLength=String(mechanical.tape?.length??0);canvas.dataset.rollAngle=String(mechanical.tape?.rollAngle??0);canvas.dataset.tapeRollAngle=canvas.dataset.rollAngle;
+  canvas.dataset.bellStroke=String(mechanical.bell?.stroke??0);canvas.dataset.bellTriggered=String(mechanical.bell?.triggered??false);
+  if(!state.action){canvas.dataset.toolContact=String(mechanical.tool.contact);canvas.dataset.contactX=String(x+mechanical.tool.tip.x*scale);canvas.dataset.contactY=String(y+mechanical.tool.tip.y*scale);}
+ }
  canvas.dataset.structureAligned=String(frame.corrections[0]);canvas.dataset.structurePressed=String(frame.corrections[1]);canvas.dataset.lampAvailable='false';canvas.dataset.frame=String(Number(canvas.dataset.frame??0)+1);
  return{cleanCoverage:frame.cleaning,contact};
 }

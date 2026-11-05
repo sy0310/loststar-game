@@ -33,14 +33,14 @@ function link(context:CanvasRenderingContext2D,from:Point,to:Point){
   context.fillStyle='#c39359';context.beginPath();context.arc(from.x-1,from.y-1,4,0,Math.PI*2);context.fill();
   context.fillStyle='#ffe1a0';context.fillRect(from.x-2,from.y-3,3,2);
 }
-function elbow(shoulder:Point,wrist:Point,side:number){
+function elbow(shoulder:Point,wrist:Point,side:number,lengths?:readonly[number,number]){
   const dx=wrist.x-shoulder.x,dy=wrist.y-shoulder.y,distance=Math.max(.001,Math.hypot(dx,dy));
-  const upper=Math.max(25,distance-21.5),lower=22,d=Math.min(upper+lower-.01,Math.max(Math.abs(upper-lower)+.01,distance));
+  const upper=lengths?.[0]??Math.max(25,distance-21.5),lower=lengths?.[1]??22,d=Math.min(upper+lower-.01,Math.max(Math.abs(upper-lower)+.01,distance));
   const along=(upper*upper-lower*lower+d*d)/(2*d),height=Math.sqrt(Math.max(0,upper*upper-along*along));
   return {x:shoulder.x+dx/distance*along-dy/distance*height*side,y:shoulder.y+dy/distance*along+dx/distance*height*side};
 }
-function grip(context:CanvasRenderingContext2D,shoulder:Point,wrist:Point,front:boolean,hideGlove=false,glovesOnly=false){
-  const joint=elbow(shoulder,wrist,front?-1:1);if(!glovesOnly)link(context,shoulder,joint);
+function grip(context:CanvasRenderingContext2D,shoulder:Point,wrist:Point,front:boolean,hideGlove=false,glovesOnly=false,lengths?:readonly[number,number]){
+  const joint=elbow(shoulder,wrist,front?-1:1,lengths);if(!glovesOnly){link(context,shoulder,joint);if(lengths)link(context,joint,wrist);}
   // The painted cuff terminates at the articulated elbow. Fingers share the
   // actual parcel/case grip coordinates, rather than a static atlas position.
   if(!hideGlove){context.save();context.translate(wrist.x,wrist.y);context.rotate(Math.atan2(joint.y-wrist.y,joint.x-wrist.x));context.drawImage(art!.hand,-8,-14,35,26);context.restore();}
@@ -52,6 +52,8 @@ export interface RenewalRobotOptions {
   tilt?:number;
   bob?:number;
   flip?:boolean;
+  /** Museum-only physical rig. Other scenes keep their existing pose and reach. */
+  museum?:{stowed:boolean;service:number;armLengths:readonly[number,number]};
 }
 /** Original layers share the old foot/parcel coordinates, but have independent
  * head, torso, hips, painted forearms and actual contact-constrained wrists. */
@@ -65,7 +67,7 @@ export function drawRenewalRobot(context:CanvasRenderingContext2D,pose:Pose,frac
   // A hidden parcel may instead be an anomaly/beam target, never a hand target.
   const handling=Boolean(options.hands)||(['pickup','return','unload'].includes(pose.action)&&pose.parcel.visible);
   const approach=handling&&pose.action==='pickup'?smooth((fraction-.49)/.03):1;
-  const bend=handling&&pose.action==='pickup'?approach*(1-pose.lift):0,crouch=bend*(15+intensity*5);
+  const bend=options.museum?0:handling&&pose.action==='pickup'?approach*(1-pose.lift):0,crouch=bend*(15+intensity*5);
   const retract=handling&&pose.action==='unload'?smooth((fraction-.975)/.02):0;
   const held={x:pose.x-22,y:pose.y-28};
   const contact={x:(held.x+(pose.parcel.x-held.x)*approach)*(1-retract)+held.x*retract,y:(held.y+(pose.parcel.y-held.y)*approach)*(1-retract)+held.y*retract};
@@ -82,25 +84,27 @@ export function drawRenewalRobot(context:CanvasRenderingContext2D,pose:Pose,frac
   };
   context.save();context.translate(root.x,root.y);context.rotate(tilt);if(flip)context.scale(-1,1);context.translate(origin.x,origin.y);context.scale(scale,scale);
   const torsoX=48+bend*4-lean*45;
-  const backShoulder={x:56+bend*4+lean*(86-125),y:86+crouch};
-  const frontShoulder={x:104+bend*4+lean*(89-125),y:89+crouch};
+  const museumAmount=handling?clamp(options.museum?.service??0):0,museumWork=museumAmount>0;
+  const backShoulder=museumWork?{x:56-2*museumAmount,y:86}:{x:56+bend*4+lean*(86-125),y:86+crouch};
+  const frontShoulder=museumWork?{x:104-50*museumAmount,y:89+11*museumAmount}:{x:104+bend*4+lean*(89-125),y:89+crouch};
+  const armLengths=museumWork?[25+(options.museum!.armLengths[0]-25)*museumAmount,22+(options.museum!.armLengths[1]-22)*museumAmount] as const:undefined;
   if(options.glovesOnly){
-    if(handling){grip(context,backShoulder,local(worldHands[0]),false,false,true);grip(context,frontShoulder,local(worldHands[1]),true,false,true);}
+    if(handling){grip(context,backShoulder,local(worldHands[0]),false,false,true,armLengths);grip(context,frontShoulder,local(worldHands[1]),true,false,true,armLengths);}
     context.restore();return true;
   }
   const leg=(image:HTMLImageElement,x:number,sign:number)=>{context.save();context.translate(x,119+crouch*.25);const stride=moving?Math.sin(phase+sign*Math.PI*.5):0;context.rotate(stride*(.14+effort*.08));context.drawImage(image,-13,-2,26,40-crouch*.22);context.restore();};
   leg(art.leftLeg,62,-1);leg(art.rightLeg,97,1);
-  if(handling)grip(context,backShoulder,local(worldHands[0]),false,options.hideGloves);
+  if(handling)grip(context,backShoulder,local(worldHands[0]),false,options.hideGloves,false,armLengths);
   context.drawImage(art.torso,torsoX,73+crouch,64,50);
   context.save();context.translate(78+bend*4-lean*85,77+crouch-received*4);context.rotate(-received*.035);context.drawImage(art.head,-43,-63,86,65);context.restore();
   if(!handling){
     const joint={x:65+lean*(94-125),y:94+crouch};
     link(context,backShoulder,joint);
     const scanAngle=pose.action==='scan'?Math.sin(time*4.2)*(.18+effort*.24)-received*.16:Math.sin(phase)*.06-received*.11;
-    context.save();context.transform(1,0,lean,1,-lean*125,0);context.translate(65,94+crouch);context.rotate(scanAngle);context.drawImage(art.scanner,-48,-20,49,38);context.restore();
+    context.save();context.transform(1,0,lean,1,-lean*125,0);context.translate(65,options.museum?.stowed?113:94+crouch);context.rotate(options.museum?.stowed?Math.PI*.5:scanAngle);context.drawImage(art.scanner,-48,-20,49,38);context.restore();
     const hand={x:115+lean*(107-125),y:108+crouch+Math.sin(phase)*2};
-    grip(context,frontShoulder,hand,true,options.hideGloves);
-  }else grip(context,frontShoulder,local(worldHands[1]),true,options.hideGloves);
+    grip(context,frontShoulder,hand,true,options.hideGloves,false,armLengths);
+  }else grip(context,frontShoulder,local(worldHands[1]),true,options.hideGloves,false,armLengths);
   if(received>0||intensity>0){
     // Short eye glints and a raised head form the low-tier acknowledgement.
     context.globalAlpha=Math.max(received,intensity*.65);context.fillStyle='#e4ffff';

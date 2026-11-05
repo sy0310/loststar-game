@@ -85,7 +85,8 @@
       "height": 384,
       "layer": "physical-rig",
       "logicalSize": 192,
-      "sha256": "df6f00372f3ad89c9d449b5d52b580467801312aec7c818585f9153b8a4c3aeb"
+      "sha256": "df6f00372f3ad89c9d449b5d52b580467801312aec7c818585f9153b8a4c3aeb",
+      "retiredFromPlayer": true
     },
     {
       "id": "tape-rig-joint0",
@@ -97,7 +98,8 @@
       "layer": "physical-rig",
       "logicalSize": 192,
       "sha256": "72cae2af2349ba10c06a8ae45a66e7f5415c8a1c71b7c5755a34c00a6453cb02",
-      "joint": 0
+      "joint": 0,
+      "retiredFromPlayer": true
     },
     {
       "id": "tape-rig-joint1",
@@ -109,7 +111,8 @@
       "layer": "physical-rig",
       "logicalSize": 192,
       "sha256": "46a6e7f83bb0354380109774ba0d79e804e6a7528c80419bde47bfbd32d40b28",
-      "joint": 1
+      "joint": 1,
+      "retiredFromPlayer": true
     },
     {
       "id": "tape-rig-front",
@@ -120,7 +123,8 @@
       "height": 384,
       "layer": "physical-rig",
       "logicalSize": 192,
-      "sha256": "fba6f2fb77ea56ad3f5a6b90fd4b7e775a287066e926c072ce159246340ab64e"
+      "sha256": "fba6f2fb77ea56ad3f5a6b90fd4b7e775a287066e926c072ce159246340ab64e",
+      "retiredFromPlayer": true
     },
     {
       "id": "nested-rig-fixed",
@@ -319,7 +323,8 @@
       "height": 384,
       "layer": "physical-rig",
       "logicalSize": 192,
-      "sha256": "11c9047374fdd6e41f6c1c1491306e6c49766e4a13fcd899d5420f1e9bbd0679"
+      "sha256": "11c9047374fdd6e41f6c1c1491306e6c49766e4a13fcd899d5420f1e9bbd0679",
+      "retiredFromPlayer": true
     },
     {
       "id": "bell-rig-joint0",
@@ -331,7 +336,8 @@
       "layer": "physical-rig",
       "logicalSize": 192,
       "sha256": "1434c77027f73b2231c82acc3c8d338c25817598e7a10ba792b3ceb6f0598bd3",
-      "joint": 0
+      "joint": 0,
+      "retiredFromPlayer": true
     },
     {
       "id": "bell-rig-joint1",
@@ -343,7 +349,8 @@
       "layer": "physical-rig",
       "logicalSize": 192,
       "sha256": "2be8bed382bb27e9f57294ff71b1151e82afaabca193e61772fb101e2c28a7e9",
-      "joint": 1
+      "joint": 1,
+      "retiredFromPlayer": true
     },
     {
       "id": "receipt-rig-deposits",
@@ -385,7 +392,8 @@
         43,
         80,
         96
-      ]
+      ],
+      "retiredFromPlayer": true
     },
     {
       "id": "nested-rig-deposits",
@@ -469,7 +477,8 @@
         62,
         109,
         73
-      ]
+      ],
+      "retiredFromPlayer": true
     },
     {
       "id": "receipt-found",
@@ -516,57 +525,6 @@
       "layer": "canonical-specimen-state",
       "state": "stabilized",
       "sha256": "9fd9eeec378844e641ea3530107c99a6c2224c15d5aa2581b45b8c604f74af4a",
-      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
-      "corrections": [
-        1,
-        1
-      ]
-    },
-    {
-      "id": "tape-found",
-      "source": "assets/source/visual-renewal/curios/rig-v2",
-      "runtime": "assets/runtime/visual-renewal/curios/tape-found.png",
-      "webp": "assets/runtime/visual-renewal/curios/tape-found.webp",
-      "width": 384,
-      "height": 384,
-      "logicalSize": 192,
-      "layer": "canonical-specimen-state",
-      "state": "found",
-      "sha256": "8d416886799113eeecb951d5d013c6e827d939653882f09dcbaa082af08622ea",
-      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
-      "corrections": [
-        0,
-        0
-      ]
-    },
-    {
-      "id": "tape-clean",
-      "source": "assets/source/visual-renewal/curios/rig-v2",
-      "runtime": "assets/runtime/visual-renewal/curios/tape-clean.png",
-      "webp": "assets/runtime/visual-renewal/curios/tape-clean.webp",
-      "width": 384,
-      "height": 384,
-      "logicalSize": 192,
-      "layer": "canonical-specimen-state",
-      "state": "clean",
-      "sha256": "293a12e6cd8f6fccd0fe67226366c758c88cc952e81b2c86b9f9d375ba9c8439",
-      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
-      "corrections": [
-        0,
-        0
-      ]
-    },
-    {
-      "id": "tape-stabilized",
-      "source": "assets/source/visual-renewal/curios/rig-v2",
-      "runtime": "assets/runtime/visual-renewal/curios/tape-stabilized.png",
-      "webp": "assets/runtime/visual-renewal/curios/tape-stabilized.webp",
-      "width": 384,
-      "height": 384,
-      "logicalSize": 192,
-      "layer": "canonical-specimen-state",
-      "state": "stabilized",
-      "sha256": "e4391d0ab39e9f07879c0ffca3faea2b54316b8ddd6c90e9dca02ef5d9df398a",
       "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
       "corrections": [
         1,
@@ -727,55 +685,89 @@
       ]
     },
     {
+      "id": "tape-found",
+      "source": "assets/source/visual-renewal/mechanisms-v042",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-found.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-found.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "state": "found",
+      "layer": "canonical physical mechanism state",
+      "motionSource": "src/fusion/curio-mechanism-model.ts",
+      "composition": "Identical pure mechanismDrawCommands + rasterMechanismRibbon as room/workbench/abilities; no screenshot-cut bridge or paper props",
+      "sha256": "54b636742054d24ff3744445cf3fb7b8c909a5e154c1147809e451ec750b7b57"
+    },
+    {
+      "id": "tape-clean",
+      "source": "assets/source/visual-renewal/mechanisms-v042",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-clean.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-clean.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "state": "clean",
+      "layer": "canonical physical mechanism state",
+      "motionSource": "src/fusion/curio-mechanism-model.ts",
+      "composition": "Identical pure mechanismDrawCommands + rasterMechanismRibbon as room/workbench/abilities; no screenshot-cut bridge or paper props",
+      "sha256": "305a6518486c7a59b45c519fe442b6084fd92303e4c5d460011f4d35ac295467"
+    },
+    {
+      "id": "tape-stabilized",
+      "source": "assets/source/visual-renewal/mechanisms-v042",
+      "runtime": "assets/runtime/visual-renewal/curios/tape-stabilized.png",
+      "webp": "assets/runtime/visual-renewal/curios/tape-stabilized.webp",
+      "width": 384,
+      "height": 384,
+      "logicalSize": 192,
+      "state": "stabilized",
+      "layer": "canonical physical mechanism state",
+      "motionSource": "src/fusion/curio-mechanism-model.ts",
+      "composition": "Identical pure mechanismDrawCommands + rasterMechanismRibbon as room/workbench/abilities; no screenshot-cut bridge or paper props",
+      "sha256": "9b7ff84039f6ab5cbda577954b038324a1600870e5cf558d955001d8dc9ce393"
+    },
+    {
       "id": "bell-found",
-      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "source": "assets/source/visual-renewal/mechanisms-v042",
       "runtime": "assets/runtime/visual-renewal/curios/bell-found.png",
       "webp": "assets/runtime/visual-renewal/curios/bell-found.webp",
       "width": 384,
       "height": 384,
       "logicalSize": 192,
-      "layer": "canonical-specimen-state",
       "state": "found",
-      "sha256": "bc7eb7e7d5afa1cbcdfee404ce3f7edcb196c2c64f1caaaa5a76a846f271e34d",
-      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
-      "corrections": [
-        0,
-        0
-      ]
+      "layer": "canonical physical mechanism state",
+      "motionSource": "src/fusion/curio-mechanism-model.ts",
+      "composition": "Identical pure mechanismDrawCommands + rasterMechanismRibbon as room/workbench/abilities; no screenshot-cut bridge or paper props",
+      "sha256": "4fecbca7755783501dc1892db6cb9eb922f852e430da7bfd1205950fe10949c3"
     },
     {
       "id": "bell-clean",
-      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "source": "assets/source/visual-renewal/mechanisms-v042",
       "runtime": "assets/runtime/visual-renewal/curios/bell-clean.png",
       "webp": "assets/runtime/visual-renewal/curios/bell-clean.webp",
       "width": 384,
       "height": 384,
       "logicalSize": 192,
-      "layer": "canonical-specimen-state",
       "state": "clean",
-      "sha256": "f43561e9b2a17a9dad431c4ec1e81eb2d1b90b0d8ce1806d982698f70165bab2",
-      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
-      "corrections": [
-        0,
-        0
-      ]
+      "layer": "canonical physical mechanism state",
+      "motionSource": "src/fusion/curio-mechanism-model.ts",
+      "composition": "Identical pure mechanismDrawCommands + rasterMechanismRibbon as room/workbench/abilities; no screenshot-cut bridge or paper props",
+      "sha256": "0197b7640a55c02c4d4953653f654e192c5216c6a16b4b63200a607b94a162a4"
     },
     {
       "id": "bell-stabilized",
-      "source": "assets/source/visual-renewal/curios/rig-v2",
+      "source": "assets/source/visual-renewal/mechanisms-v042",
       "runtime": "assets/runtime/visual-renewal/curios/bell-stabilized.png",
       "webp": "assets/runtime/visual-renewal/curios/bell-stabilized.webp",
       "width": 384,
       "height": 384,
       "logicalSize": 192,
-      "layer": "canonical-specimen-state",
       "state": "stabilized",
-      "sha256": "4ce7a165aa2e4702be1a0c5521e7dcc35cf728e595fb49eb7bc21b9f6afaea09",
-      "composition": "Same curioRigCommands physical layers as runtime; no B/C crossfade",
-      "corrections": [
-        1,
-        1
-      ]
+      "layer": "canonical physical mechanism state",
+      "motionSource": "src/fusion/curio-mechanism-model.ts",
+      "composition": "Identical pure mechanismDrawCommands + rasterMechanismRibbon as room/workbench/abilities; no screenshot-cut bridge or paper props",
+      "sha256": "30eba4cd6b260695951659989f50baba85ad97b0cd201a025ee5c53bfd5ca0f6"
     }
-  ]
+  ],
+  "mechanisms": "../mechanisms-v042/registration.json"
 }

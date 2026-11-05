@@ -3,6 +3,8 @@ import renewalRobotAtlasUrl from '../../assets/runtime/visual-renewal/world/robo
 import renewalRoomUrl from '../../assets/runtime/visual-renewal/museum/room.webp';
 import {RenewalMuseum,renewalExhibits,renewalDisplaySpecimen,renewalExhibitViewport} from './renewal-museum';
 import {prepareRenewalRobot,drawRenewalRobot} from './renewal-robot';
+import {museumCaseGeometry,museumSpace,type MuseumRect} from './museum-space';
+import type {MuseumServicePose} from './museum-service';
 import {baseRobotPose} from './base-motion';
 import {FrameCadence} from './frame-cadence';
 import {exhibits,exhibitIds,itemCenter,layerPoint,type Exhibit} from './museum-layout';
@@ -29,6 +31,7 @@ export type MuseumOptions={
  receiptExtension?:(context:CanvasRenderingContext2D,options:{center:{x:number;y:number};frame:number;receiverY:number;seconds:number;carried?:boolean;cavity:{left:number;top:number;width:number;height:number};service?:ReturnType<typeof baseRobotPose>},restoration:ReceiptRestorationFrame,result:ReceiptRestorationDrawResult)=>void;
  drawSpecimen?:(context:CanvasRenderingContext2D,exhibit:Exhibit,t:number,image:HTMLImageElement,service?:ReturnType<typeof baseRobotPose>)=>boolean;
  specimenOpening?:(id:string)=>number;
+ specimenHandlingReady?:(id:string)=>boolean;
  caseEngineering?:(context:CanvasRenderingContext2D,exhibit:Exhibit,level:number,t:number,layer:'back'|'front')=>void;
 };
 function image(url:string){const img=new Image();img.src=url;return img;}
@@ -37,7 +40,7 @@ function sprite(c:CanvasRenderingContext2D,img:HTMLImageElement|undefined,x:numb
 export class MuseumScene {
  readonly canvas=document.createElement('canvas');ready:Promise<void>;
  private c:CanvasRenderingContext2D|null;private active=false;private visible=true;private frame=0;private frames=0;private cadence=new FrameCadence();private reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
- private room:HTMLImageElement;private robot:HTMLImageElement;private renewal?:RenewalMuseum;private pose=baseRobotPose(0);private art:Record<string,HTMLImageElement>;
+ private room:HTMLImageElement;private robot:HTMLImageElement;private renewal?:RenewalMuseum;private pose:ReturnType<typeof baseRobotPose>&Partial<MuseumServicePose>=baseRobotPose(0);private art:Record<string,HTMLImageElement>;
  private glass:Record<string,HTMLImageElement[]>;
  private receiptParts?:ReceiptStudyAssets;
  private receiptRenderer?:typeof import('./receipt-study');
@@ -53,7 +56,7 @@ export class MuseumScene {
   this.glass=options.renewal?{}:Object.fromEntries(exhibitIds.map(id=>[id,[image(layers[`../../assets/runtime/case-${id}-back.webp`]),image(layers[`../../assets/runtime/case-${id}-front.webp`])]]));
   if(options.renewal)this.renewal=new RenewalMuseum();
   root.classList.add('museum-room');this.canvas.id='museum-canvas';this.canvas.width=768;this.canvas.height=960;this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','失物收藏室：六个独立玻璃容器，藏品在玻璃内轻轻活动');root.append(this.canvas);this.c=this.canvas.getContext('2d');
-  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=(options.renewal?renewalExhibits:exhibits).map(e=>{const p=layerPoint(e,e.crop.x,e.crop.y);return `<button data-exhibit="${e.id}" data-detail="${e.id}" style="left:${p.x/768*100}%;top:${p.y/960*100}%;width:${Math.max(96,e.crop.w*e.scale)/768*100}%;height:${Math.max(96,e.crop.h*e.scale)/960*100}%"></button>`;}).join('');root.append(hits);this.ready=this.load();const visibility=new IntersectionObserver(entries=>{this.visible=entries.some(entry=>entry.isIntersecting);if(!this.visible)this.lastPaintAt=0;this.cadence.reset();this.schedule();});visibility.observe(this.canvas);document.addEventListener('visibilitychange',()=>{this.cadence.reset();this.schedule();});
+  const hits=document.createElement('div');hits.className='exhibit-hits';hits.innerHTML=(options.renewal?renewalExhibits:exhibits).map(e=>{const p=layerPoint(e,e.crop.x,e.crop.y);return `<button data-exhibit="${e.id}" data-detail="${e.id}" style="left:${p.x/768*100}%;top:${p.y/960*100}%;width:${Math.max(96,e.crop.w*e.scale)/768*100}%;height:${Math.max(96,e.crop.h*e.scale)/960*100}%"></button>`;}).join('');root.append(hits);this.ready=this.load();const visibility=new IntersectionObserver(entries=>{this.visible=entries.some(entry=>entry.isIntersecting);if(!this.visible){this.lastPaintAt=0;this.renewal?.resetVisit();}this.cadence.reset();this.schedule();});visibility.observe(this.canvas);document.addEventListener('visibilitychange',()=>{if(document.hidden)this.renewal?.resetVisit();this.cadence.reset();this.schedule();});
  }
  private images(){return [this.robot,this.room,...Object.values(this.art),...Object.values(this.glass).flat(),...Object.values(this.receiptParts??{}),...Object.values(this.restorationParts??{})];}
  async load(){this.root.dataset.loading='true';try{if(!this.renewal&&this.options.receiptStudy&&!this.receiptParts){this.receiptRenderer??=await import('./receipt-study');this.receiptParts=this.receiptRenderer.createReceiptStudyAssets();}await Promise.all([this.renewal?.ready,this.renewal?prepareRenewalRobot():undefined,...this.images().map(i=>i.decode())]);this.canvas.dataset.ready='true';this.draw(this.clock());this.refresh();}catch{this.canvas.dataset.ready='error';this.root.setAttribute('aria-label','收藏室暂未接通，请返回后重试');}finally{this.root.dataset.loading='false';}}
@@ -77,8 +80,8 @@ export class MuseumScene {
  }
  mount(parent:HTMLElement){parent.append(this.root);}
  async retry(){if(this.renewal)void this.renewal.retry().catch(()=>{});for(const img of this.images()){if(img.src.startsWith('data:'))continue;const url=new URL(img.src);url.searchParams.set('retry',String(Date.now()));img.src=url.href;}this.ready=this.load();await this.ready;}
- refresh(){for(const id of exhibitIds){const b=this.root.querySelector<HTMLButtonElement>(`[data-exhibit="${id}"]`)!;const known=this.source().collection.includes(id);b.disabled=!known;b.setAttribute('aria-label',known?`放大${discoveryById(id)!.name}`:'空展柜，等待下一次发现');}}
- setActive(value:boolean){if(this.active!==value)this.cadence.reset();this.active=value;if(!value)this.lastPaintAt=0;this.refresh();if(value&&this.visible&&!document.hidden)this.draw(this.clock());if(!value){cancelAnimationFrame(this.frame);this.frame=0;}this.schedule();}
+ refresh(){for(const id of exhibitIds){const b=this.root.querySelector<HTMLButtonElement>(`[data-exhibit="${id}"]`)!;const known=this.source().collection.includes(id);b.disabled=!known;b.setAttribute('aria-label',known?`放大${discoveryById(id)!.name}`:'空展柜，等待下一次发现');if(this.renewal){const e=renewalExhibits.find(e=>e.id===id)!,g=museumCaseGeometry(e,this.level(`case-${exhibitIds.indexOf(id)}`)),hit=g.hitbox;b.style.left=`${hit.left/768*100}%`;b.style.top=`${hit.top/960*100}%`;b.style.width=`${(hit.right-hit.left)/768*100}%`;b.style.height=`${(hit.bottom-hit.top)/960*100}%`;}}}
+ setActive(value:boolean){if(this.active!==value){this.cadence.reset();this.renewal?.resetVisit();}this.active=value;if(!value)this.lastPaintAt=0;this.refresh();if(value&&this.visible&&!document.hidden)this.draw(this.clock());if(!value){cancelAnimationFrame(this.frame);this.frame=0;}this.schedule();}
  private schedule(){if(this.active&&this.visible&&!document.hidden&&!this.frame)this.frame=requestAnimationFrame(this.loop);}
  private loop=(ms:number)=>{this.frame=0;if(this.active&&this.visible&&!document.hidden&&this.cadence.draw(ms,this.reducedMotion.matches?1000/30:1000/60))this.draw(this.clock());this.schedule();};
  resetMetrics(){this.paintIntervals.length=0;this.paintCosts.length=0;this.lastPaintAt=0;}
@@ -108,19 +111,20 @@ export class MuseumScene {
   if(this.level('deco-2')){c.fillStyle='#cf9beb';c.fillRect(580,236,56,27);c.fillStyle='#fff0c9';c.font='16px monospace';c.fillText('LR–01',584,255);}
   if(this.level('deco-3')){c.strokeStyle='#ffdc8b';c.lineWidth=2;for(let i=0;i<5;i++){c.beginPath();c.arc(55,285,22+i*9,t*.1,t*.1+Math.PI*1.5);c.stroke();}}
  }
- private drawRobot(c:CanvasRenderingContext2D,t:number){
+ private drawRobot(c:CanvasRenderingContext2D,t:number):(()=>void)|undefined{
   const p=this.pose,moving=p.action==='walk'||p.action==='return';
   let foregroundHands:(()=>void)|undefined;
   const frame=moving?Math.floor(t*8)%4:p.action==='observe'?4:p.action==='wipe'?7:6;
   const w=p.width,feet=this.renewal?155:[149,147,149,148,148,148,149,149][frame];
   if(this.renewal){
    const ratio=p.width/144,local=(point:{x:number;y:number})=>({x:p.x+(point.x-p.x)/ratio,y:p.y+(point.y-p.y)/ratio});
-   const handling=p.contact>.02;const action=handling?'pickup' as const:moving?'walk' as const:'scan' as const;
-   c.save();c.fillStyle='#100c2880';c.beginPath();c.ellipse(p.x,p.y+1,31,7,0,0,Math.PI*2);c.fill();
+   const handling=(p.armDeployment??p.contact)>.001;const action=handling?'pickup' as const:moving?'walk' as const:'scan' as const;
+   c.save();c.fillStyle='#100c2880';c.beginPath();c.ellipse(p.x+(p.facing>0?8:-8),p.y+1,31,7,0,0,Math.PI*2);c.fill();
    c.restore();
    const drawRig=(glovesOnly=false)=>{
     c.save();c.translate(p.x,p.y);c.scale(ratio,ratio);c.translate(-p.x,-p.y);
-    drawRenewalRobot(c,{x:p.x,y:p.y,action,facing:p.facing>0?'right':'left',carrying:p.lift>0,parcel:{...local(p.item),held:p.lift>0,delivered:false,visible:p.lift>0},lift:p.lift,release:0},.62,{workSeconds:t,received:0,appliedWorkMs:0,assistRate:0},{hands:handling?[local({x:p.hand.x-5,y:p.hand.y}),local({x:p.hand.x+5,y:p.hand.y})]:undefined,hideGloves:handling&&!glovesOnly,glovesOnly,flip:p.facing>0,bob:0});c.restore();
+    const flip=p.facing>0,rigX=p.x+(flip?2:-2)/ratio;
+    drawRenewalRobot(c,{x:rigX,y:p.y,action,facing:p.facing>0?'right':'left',carrying:p.lift>0,parcel:{...local(p.item),held:p.lift>0,delivered:false,visible:p.lift>0},lift:p.lift,release:0},.62,{workSeconds:t,received:0,appliedWorkMs:0,assistRate:0},{hands:handling?(p.hands??[{x:p.hand.x-5,y:p.hand.y},{x:p.hand.x+5,y:p.hand.y}]).map(local) as [typeof p.hand,typeof p.hand]:undefined,hideGloves:handling&&!glovesOnly,glovesOnly,flip,bob:0,museum:{stowed:!handling,service:p.armDeployment??(handling?1:0),armLengths:[49,48]}});c.restore();
    };
    drawRig();if(handling)foregroundHands=()=>drawRig(true);
   }else{
@@ -134,7 +138,7 @@ export class MuseumScene {
    for(const [width,color] of [[8,'#35253e'],[5,'#b7956d'],[2,'#dfc497']] as const){c.lineWidth=width;c.strokeStyle=color;c.beginPath();c.moveTo(p.shoulder.x,p.shoulder.y);c.lineTo(elbow.x,elbow.y);c.lineTo(p.hand.x,p.hand.y);c.stroke();}
    c.fillStyle='#58425c';for(const joint of [p.shoulder,elbow,p.hand]){c.fillRect(joint.x-3,joint.y-3,6,6);c.fillStyle='#d2b482';c.fillRect(joint.x-1,joint.y-2,2,2);c.fillStyle='#58425c';}c.restore();
   }
-  if(p.lift>0&&this.source().collection.includes(p.target)&&!(!this.renewal&&p.target==='receipt'&&this.options.receiptPaperPending?.())){
+  if(!this.renewal&&p.lift>0&&this.source().collection.includes(p.target)&&!(p.target==='receipt'&&this.options.receiptPaperPending?.())){
    const raw=(this.renewal?renewalExhibits:exhibits).find(e=>e.id===p.target)!;const level=this.level(`case-${exhibitIds.indexOf(raw.id)}`);const e=this.renewal?renewalDisplaySpecimen(raw,level):raw;
    const size=this.renewal?e.item.size*e.scale:e.item.size*e.scale*(1-p.lift)+48*p.lift;
    const scale=size/e.item.size;
@@ -147,24 +151,41 @@ export class MuseumScene {
     sprite(c,this.art[p.target as typeof exhibitIds[number]],p.item.x-size/2,p.item.y-size/2,size);
    }
   }
-  if(p.contact>0&&this.renewal)foregroundHands?.();
   if(p.contact>0&&!this.renewal){
    const grip=4+(1-p.lift)*3;c.strokeStyle='#3c2d43';c.lineWidth=4;
    c.beginPath();c.moveTo(p.hand.x-grip,p.hand.y+3);c.lineTo(p.hand.x-grip,p.hand.y-3);c.lineTo(p.hand.x-grip+3,p.hand.y-5);
    c.moveTo(p.hand.x+grip,p.hand.y+3);c.lineTo(p.hand.x+grip,p.hand.y-3);c.lineTo(p.hand.x+grip-3,p.hand.y-5);c.stroke();
    c.strokeStyle='#dbc39b';c.lineWidth=1;c.stroke();
   }
+  return foregroundHands;
  }
 
  private paintRenewal(c:CanvasRenderingContext2D,t:number,onlyExhibit?:string){
-  const renewal=this.renewal!;renewal.drawRoom(c,t,this.reducedMotion.matches,this.level);this.pose=renewal.pose(t,this.level);
-  const entities=renewalExhibits.filter(e=>!onlyExhibit||e.id===onlyExhibit).map(e=>({depth:e.y,draw:()=>{renewal.drawExhibit(c,e,t,this.source().collection.includes(e.id),this.level(`case-${exhibitIds.indexOf(e.id)}`),this.art[e.id],this.options,this.pose.target===e.id?this.pose:undefined);}}));
-  if(!onlyExhibit)entities.push({depth:this.pose.y,draw:()=>this.drawRobot(c,t)});
+  const renewal=this.renewal!;renewal.drawRoom(c,t,this.reducedMotion.matches,this.level);this.pose=renewal.pose(t,this.level,id=>this.source().collection.includes(id)&&(this.options.specimenHandlingReady?.(id)??(id!=='receipt'||this.options.receiptFrame?.()?.condition==='stabilized')));
+  const pose=this.pose as MuseumServicePose,entities:{label:string;depth:number;draw:()=>void}[]=[];
+  for(const e of renewalExhibits.filter(e=>!onlyExhibit||e.id===onlyExhibit)){
+   const level=this.level(`case-${exhibitIds.indexOf(e.id)}`),g=museumCaseGeometry(e,level),service=pose.target===e.id?pose:undefined,known=this.source().collection.includes(e.id);
+   entities.push({label:`${e.id}:rear`,depth:g.solid.top,draw:()=>renewal.drawCaseRear(c,e,t,level)});
+   entities.push({label:`${e.id}:contents`,depth:service?.trayDepth??e.y,draw:()=>renewal.drawCaseContents(c,e,t,known,level,this.art[e.id],this.options,service)});
+   entities.push({label:`${e.id}:near`,depth:g.solid.bottom,draw:()=>renewal.drawCaseNear(c,e,t,known,level,this.options,service)});
+  }
+  if(!onlyExhibit){let hands:(()=>void)|undefined;entities.push({label:'robot:body',depth:pose.y,draw:()=>{hands=this.drawRobot(c,t);}});if(pose.armDeployment>.001)entities.push({label:'robot:gloves',depth:Math.max(pose.y,pose.itemDepth)+.1,draw:()=>hands?.()});if(this.level('dock'))entities.push({label:'dock',depth:935,draw:()=>renewal.drawForegroundFacilities(c,t,this.level,this.reducedMotion.matches)});}
   entities.sort((a,b)=>a.depth-b.depth).forEach(entity=>entity.draw());
-  renewal.drawForegroundFacilities(c,t,this.level,this.reducedMotion.matches);
+  if(this.canvas.dataset.spaceDebug==='true')this.drawMuseumSpace(c,pose);
   const receipt=this.options.receiptFrame?.();
   this.canvas.dataset.visualGeneration='renewal';this.canvas.dataset.receiptMaterial=this.options.receiptPaperPending?.()?'pending':receipt?'renewal':'none';
   this.canvas.dataset.receiptCondition=receipt?.condition??'';this.canvas.dataset.receiptStage=receipt?.stage??'';
+  this.canvas.dataset.spaceVersion=museumSpace.version;this.canvas.dataset.servicePhase=pose.servicePhase;this.canvas.dataset.caseLevel=String(pose.caseLevel);
+  this.canvas.dataset.bodyClearance=pose.bodyClearance.toFixed(3);this.canvas.dataset.handReach=pose.handReach.toFixed(3);this.canvas.dataset.doorLift=pose.opening.toFixed(4);this.canvas.dataset.trayExtension=pose.trayExtension.toFixed(3);
+  this.canvas.dataset.actorBounds=JSON.stringify(pose.actorBounds);this.canvas.dataset.feetBounds=JSON.stringify(pose.feetBounds);this.canvas.dataset.itemBounds=JSON.stringify(pose.itemBounds);this.canvas.dataset.handContacts=pose.contact>.001?JSON.stringify(pose.hands):'[]';
+  this.canvas.dataset.armDeployment=pose.armDeployment.toFixed(4);this.canvas.dataset.contact=pose.contact.toFixed(4);this.canvas.dataset.drawOrder=JSON.stringify(entities.map(({label,depth})=>({label,depth})));
+ }
+ private drawMuseumSpace(c:CanvasRenderingContext2D,pose:MuseumServicePose){
+  const box=(r:MuseumRect,color:string)=>{c.strokeStyle=color;c.strokeRect(r.left,r.top,r.right-r.left,r.bottom-r.top);};
+  c.save();c.lineWidth=2;for(const e of renewalExhibits){const g=museumCaseGeometry(e,this.level(`case-${exhibitIds.indexOf(e.id)}`));box(g.solid,'#ff7890');box(g.aperture,'#75edc8');box(g.hitbox,'#a78bea');}
+  box(pose.actorBounds,'#68dafa');box(pose.bodyGroundBounds,'#e4e69f');box(pose.feetBounds,'#ffc970');box(pose.itemBounds,'#f49ee8');box(pose.trayBounds,'#fff2bd');
+  if(pose.armDeployment>.001)for(let i=0;i<2;i++){c.strokeStyle='#f7e3a6';c.beginPath();c.moveTo(pose.shoulders[i].x,pose.shoulders[i].y);c.lineTo(pose.hands[i].x,pose.hands[i].y);c.stroke();c.fillRect(pose.hands[i].x-3,pose.hands[i].y-3,6,6);}
+  c.fillStyle='#100b22dd';c.fillRect(175,915,390,34);c.fillStyle='#fff0b8';c.font='15px monospace';c.textAlign='center';c.textBaseline='middle';c.fillText(`${pose.target} / ${pose.servicePhase} / arm ${pose.handReach.toFixed(1)}`,370,932);c.restore();
  }
  renderExhibit(canvas:HTMLCanvasElement,id:string,level:number,t=0,installation=1){if(this.renewal){const e=renewalExhibits.find(e=>e.id===id),c=canvas.getContext('2d');if(!e||!c||this.canvas.dataset.ready!=='true')return;const {scale,originY}=renewalExhibitViewport(level,canvas.width,canvas.height);c.save();c.setTransform(1,0,0,1,0,0);c.fillStyle='#241342';c.fillRect(0,0,canvas.width,canvas.height);c.translate(canvas.width/2-e.x*scale,originY-e.y*scale);c.scale(scale,scale);this.renewal.drawExhibit(c,e,t,this.source().collection.includes(id),level,this.art[id],this.options,undefined,installation);c.restore();canvas.dataset.installProgress=String(installation);canvas.dataset.ready='true';canvas.dataset.level=String(level);canvas.dataset.frame=String(++this.frames);canvas.dataset.seconds=String(t);return;}const e=exhibits.find(e=>e.id===id);if(!e||this.canvas.dataset.ready!=='true')return;const c=canvas.getContext('2d');if(!c)return;const scale=Math.min((canvas.width-48)/e.crop.w,(canvas.height-70)/(e.base.y-e.crop.y));c.imageSmoothingEnabled=false;c.fillStyle='#201a32';c.fillRect(0,0,canvas.width,canvas.height);this.case(c,{...e,x:canvas.width/2,y:canvas.height-48,scale,width:e.base.w*scale},t,level,1,undefined,id==='receipt'?this.options.receiptFrame?.():undefined);canvas.dataset.ready='true';canvas.dataset.level=String(level);canvas.dataset.frame=String(++this.frames);canvas.dataset.seconds=String(t);}
  /** D1 compares real structural parts in one fixed room camera, never one fitted poster per level. */

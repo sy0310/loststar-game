@@ -10,6 +10,11 @@ export const motifs:Record<SoundCue,Tone[]>={
   return:[392,494,587,784].map((hz,i)=>({at:i*.09,hz,duration:.27,gain:.045,wave:'triangle'})),
   upgrade:[{at:0,hz:294,to:588,duration:.17,gain:.055,wave:'triangle'},{at:.18,hz:784,duration:.2,gain:.05,wave:'triangle'}],
   interaction:[{at:0,hz:440,to:400,duration:.09,gain:.04,wave:'triangle'}],
+  'curio-bell':[
+    {at:0,hz:880,duration:.56,gain:.045,wave:'sine'},
+    {at:0,hz:2341,duration:.30,gain:.018,wave:'sine'},
+    {at:.004,hz:3846,duration:.13,gain:.008,wave:'sine'},
+  ],
 };
 export function scheduleMotif(context:BaseAudioContext,destination:AudioNode,cue:SoundCue,at=context.currentTime) {
   const nodes:OscillatorNode[]=[];
