@@ -2,7 +2,7 @@ import './style.css';
 import {icon} from '../icons';
 import {discoveries, discoveryById, planetById} from '../content/catalog';
 import {curioPrices, projectAvailable, latestNightHistory} from './domain';
-import {drawCurioSpecimen, prepareCurioMaterial, prepareCurioTools, curioConditionPresentation, curioTreatmentLabels, renderCurioTreatment, exportCurioMaterial} from './curio-condition';
+import {drawCurioSpecimen, prepareCurioMaterial, prepareCurioTools, prepareCurioWorkbench, curioConditionPresentation, curioTreatmentLabels, renderCurioTreatment, exportCurioMaterial} from './curio-condition';
 import {drawCurioAbilityRig,curioAbilityReady,type CurioAbilityRigResult,type AbilityRigRecord} from './curio-ability-rig';
 import {cost, MAX_LEVEL, publicRadar, tuning, type UpgradeId, type SaveData} from '../game/engine';
 import {growthCatalog, growthChange, growthLevel} from '../game/growth';
@@ -524,7 +524,7 @@ export function mountFusion(controller: FusionController) {
     };
     if (id === 'receipt') void prepareFocus().catch(loadFailed);
     else {
-      void Promise.all([museum.ready, prepareCurioTools()]).then(() => {
+      void Promise.all([museum.ready, prepareCurioWorkbench()]).then(() => {
         if (!dialog.open || drawer !== 'detail' || detailId !== id) return;
         const canvas = query<HTMLCanvasElement>('#fusion-exhibit-focus');
         const index = ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell'].indexOf(id);

@@ -33,6 +33,7 @@ let toolRobot: HTMLImageElement | undefined;
 let armJoint: HTMLCanvasElement | undefined;
 let toolsPromise: Promise<void> | undefined;
 let workbench: HTMLImageElement | undefined;
+let workbenchPromise: Promise<void> | undefined;
 const specimens = new Map<string, HTMLImageElement>();
 const treatmentLayers = new Map<string, HTMLImageElement>();
 const treatmentUrls = import.meta.glob('../../assets/runtime/v039/*.webp', {eager: true, query: '?url', import: 'default'}) as Record<string,string>;
@@ -43,7 +44,6 @@ export function prepareCurioTools() {
   if (!toolsPromise) {
     tools = createReceiptRestorationAssets();
     toolRobot = new Image();toolRobot.src = robotUrl;
-    workbench = new Image();workbench.src = workbenchUrl;
     for (const id of ['tape','bell','nested','stamp','cosmic-parcel']) {
       const image = new Image();image.src = textures[id as keyof typeof textures];specimens.set(id,image);
     }
@@ -54,7 +54,7 @@ export function prepareCurioTools() {
       const image=treatmentLayers.get(registration.file.split('/').at(-1)!.replace('.webp',''));if(image)treatmentLayers.set(name,image);
     }
     toolsPromise = Promise.all([
-      ...[...Object.values(tools), toolRobot, workbench, ...specimens.values()].map(image => image.decode()),
+      ...[...Object.values(tools), toolRobot, ...specimens.values()].map(image => image.decode()),
       // A failed optional detail layer uses the existing material/tool fallback.
       ...[...new Set(treatmentLayers.values())].map(image => image.decode().catch(() => {})),
     ])
@@ -62,6 +62,17 @@ export function prepareCurioTools() {
       .catch(error => {toolsPromise = undefined;throw error;});
   }
   return toolsPromise;
+}
+
+/** Workbench scenery is requested only when its independent workspace opens. */
+export function prepareCurioWorkbench() {
+  if (!workbenchPromise) {
+    workbenchPromise = prepareCurioTools().then(async () => {
+      const image = new Image();image.src = workbenchUrl;
+      await image.decode();workbench = image;
+    }).catch(error => {workbenchPromise = undefined;throw error;});
+  }
+  return workbenchPromise;
 }
 
 function materialFor(image: HTMLImageElement) {
@@ -291,7 +302,7 @@ export function drawCurioSpecimen(context: CanvasRenderingContext2D, exhibit: Ex
 /** The same actual specimen on the shared workbench, without a cabinet or save mutation. */
 export function renderCurioTreatment(canvas: HTMLCanvasElement, id: string, state: CurioState, now: number, options: CurioPoseOptions = {}) {
   const context=canvas.getContext('2d'), image=specimens.get(id);
-  if(!context||!toolsLoaded||!image)return false;
+  if(!context||!toolsLoaded||!image||!workbench?.naturalWidth)return false;
   const material=prepareCurioMaterial(image,state,now,id);
   context.save();context.clearRect(0,0,canvas.width,canvas.height);context.scale(canvas.width/640,canvas.height/700);context.imageSmoothingEnabled=false;
   if(workbench)context.drawImage(workbench,0,0,640,700);
