@@ -135,11 +135,50 @@ if (mode === 'fresh') {
     await page.waitForTimeout(220);
   }
   await page.locator('[data-tab="base"]').tap();
-  await page.locator('[data-drawer="station"]').tap();
+  await page.locator('#fusion-base-integrity').tap();
   await page.waitForTimeout(400);await shot(page, 'maintenance-390');
   const finalState = await state(page);
   const video = await finishVideo(context, page, 'full-day-night-310s');
   report.cases.push({name: 'cycle', playerFixture: false, phases, milestones, finalState, errors, video});
+  await browser.close();
+} else if (mode === 'curio-care') {
+  const browser = await chromium.launch();
+  const {context, page, errors} = await open(browser, 390, 844, true);
+  const fixture = firstPlanetFixture(Date.now(), 1, 'found');
+  await install(page, fixture.state);await dismissIntro(page);
+  await page.locator('[data-tab="collection"]').tap();
+  for (const id of ['tape', 'nested', 'stamp', 'cosmic-parcel', 'bell']) {
+    await page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();
+    await page.waitForTimeout(300);await shot(page, `care-${id}-dirty-390`);
+    await page.locator('#fusion-curio-primary').tap();
+    await waitState(page, save => save.curios[id].action?.kind === 'clean');
+    await page.waitForTimeout(1400);await shot(page, `care-${id}-brushing-390`);
+    await waitState(page, save => !save.curios[id].action);
+    await shot(page, `care-${id}-clean-390`);
+    await page.locator('#fusion-curio-primary').tap();
+    await waitState(page, save => save.curios[id].action?.kind === 'repair');
+    await page.waitForTimeout(1400);await shot(page, `care-${id}-repairing-390`);
+    await waitState(page, save => !save.curios[id].action);
+    await shot(page, `care-${id}-stabilized-390`);
+    await page.locator('#fusion-close').tap();
+  }
+  const finalState = await state(page);
+  const video = await finishVideo(context, page, 'five-curios-cleaning-repair');
+  report.cases.push({name: 'curio-care', playerFixture: true, fixtureAudit: fixture.audit, finalState, errors, video});
+  await browser.close();
+} else if (mode === 'base') {
+  const browser = await chromium.launch();
+  const {context, page, errors} = await open(browser, 390, 844, true);
+  const fixture = firstPlanetFixture(Date.now(), 3);
+  await install(page, fixture.state);await dismissIntro(page);
+  await page.locator('[data-tab="base"]').tap();
+  await page.waitForTimeout(1500);
+  await shot(page, 'base-patrol-00-390');
+  await page.waitForTimeout(15000);await shot(page, 'base-patrol-15-390');
+  await page.waitForTimeout(15000);await shot(page, 'base-patrol-30-390');
+  await page.waitForTimeout(5000);
+  const video = await finishVideo(context, page, 'base-robot-sorting-35s');
+  report.cases.push({name: 'base', playerFixture: true, fixtureAudit: fixture.audit, errors, video});
   await browser.close();
 } else {
   for (const [engine, width, height] of [['chromium', 360, 800], ['chromium', 390, 844], ['webkit', 390, 844]]) {

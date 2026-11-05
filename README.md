@@ -14,7 +14,9 @@
 
 当前开发入口为 `http://127.0.0.1:5173/?sample=first-planet`。当前玩家包由 `npm run package:fusion` 生成，生产预览使用 `npm run build:fusion` 与 `npx vite preview --config vite.fusion.config.ts --port 4220`。
 
-[本轮接入规则](docs/32_V037_FIRST_PLANET_INTEGRATION_PLAN.md) · [首星经济模拟](artifacts/first-planet/economy.md)
+TapTap开发自测 **435439 / v0.3.7 / b7f7326**。本机实际打包预览为 `http://127.0.0.1:4221/`。
+
+[本轮交付与验证](docs/33_V037_FIRST_PLANET_DELIVERY.md) · [实际截图与连续动画](artifacts/first-planet/index.html) · [首星经济模拟](artifacts/first-planet/economy.md)
 
 ## V0.3.6 两个美术动作样板
 

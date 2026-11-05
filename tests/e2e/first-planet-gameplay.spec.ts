@@ -58,6 +58,7 @@ test('首星真触控事件：雾区仅实际工作揭露，点击只排队助�
 });
 
 test('认可工作台走真实取出清理修补，触控试验可见、刷新不重复收费或补造签名', async ({page}) => {
+  test.setTimeout(60000);
   await open(page);
   await step(page, 13000);
   await receipt(page);

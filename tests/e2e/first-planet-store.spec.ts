@@ -148,7 +148,8 @@ test('首星首次发现后直接进入基地和收藏，实际纸面使用认�
   await page.clock.install({time: new Date(1800000000000)});
   await page.goto('/?sample=first-planet');
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
-  await page.clock.runFor(12500);
+  await page.clock.fastForward(12200);
+  await page.clock.runFor(300);
   await expect.poll(async () => (await readArchive(page)).game.collection.includes('receipt')).toBe(true);
   await page.locator('[data-tab="base"]').click();
   const base = page.locator('#fusion-base-dock canvas');
@@ -176,7 +177,8 @@ test('首星收据材质加载失败时基地等待原材质，并从失败状�
   await page.goto('/?sample=first-planet');
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
   expect(requests).toBe(0);
-  await page.clock.runFor(12500);
+  await page.clock.fastForward(12200);
+  await page.clock.runFor(300);
   await expect.poll(async () => (await readArchive(page)).game.collection.includes('receipt')).toBe(true);
   await expect.poll(() => requests).toBeGreaterThan(0);
   await page.locator('[data-tab="base"]').click();

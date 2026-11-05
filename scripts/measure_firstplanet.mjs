@@ -14,7 +14,6 @@ const summarize = values => {
 const report = {sourceCommit: packageInfo.sourceCommit,
   method: {physicalPhone: false, viewport: {width: 390, height: 844}, dpr: 2,
     warmupMs: 1500, sampleMs: 10000, concurrency: 1, recording: false,
-    inputEndpoint: 'First Canvas draw call before browser presentation',
     heap: 'Chromium performance.memory coarse JS heap samples. Excludes texture, GPU and process memory.'},
   host: {platform: os.platform(), architecture: os.arch(), cpu: os.cpus()[0].model}, cases: []};
 for (const [engine, type] of [['chromium', chromium], ['webkit', webkit]]) {
@@ -66,7 +65,7 @@ for (const [engine, type] of [['chromium', chromium], ['webkit', webkit]]) {
     if (!sample.build?.includes(packageInfo.sourceCommit.slice(0, 7))) throw new Error('Measured package SHA mismatch');
     const frameData = view === 'fog' ? sample.scene : view.startsWith('base') ? sample.ui.museum : sample.ui.focus;
     report.cases.push({engine, view, ...sample, raf: summarize(sample.raf), actualPaint: view === 'fog' ? {samples: sample.scene.frames, medianMs: sample.scene.medianFrameMs, p95Ms: sample.scene.p95FrameMs} : summarize(frameData.intervalsMs ?? []),
-      drawCost: view === 'fog' ? {meanMs: sample.scene.meanDrawMs} : summarize(frameData.costsMs ?? []), heap: {samples: sample.heap.length, maximumBytes: Math.max(0, ...sample.heap)}, errors});
+      drawCost: view === 'fog' ? {meanMs: sample.scene.meanDrawMs} : summarize(frameData.costsMs ?? []), heap: {samples: sample.heap.length, maximumBytes: sample.heap.length ? Math.max(...sample.heap) : null}, errors});
     await context.close();
   }
   await browser.close();
