@@ -600,13 +600,18 @@ async function cases(){
   // Wait for the real robot to leave each cabinet's horizontal sightline.
   for(const [index,id]of ['receipt','tape','nested','stamp','cosmic-parcel','bell'].entries()){
    const x=[104,384,664][index%3],y=index<3?500:825;
-   await session.page.waitForFunction(x=>Math.abs(Number(document.querySelector('#museum-canvas').dataset.robotX)-x)>172,x,{timeout:30000});
+   await session.page.waitForFunction(({x,y})=>{
+    const dataset=document.querySelector('#museum-canvas').dataset,raw=dataset.actorBounds;
+    if(!raw||!['walk','return'].includes(dataset.servicePhase))return false;
+    const actor=JSON.parse(raw),crop={left:x-102,right:x+102,top:y-282,bottom:y+48};
+    return actor.right<crop.left||actor.left>crop.right||actor.bottom<crop.top||actor.top>crop.bottom;
+   },{x,y},{timeout:30000});
    const data=await session.page.locator('#museum-canvas').evaluate((room,{x,y})=>{const c=document.createElement('canvas');c.width=204;c.height=330;c.getContext('2d').drawImage(room,x-102,y-282,204,330,0,0,204,330);return c.toDataURL('image/png');},{x,y});
-   const file=`screens/glass-cabinet-${id}-native.png`;await writeFile(`${output}/${file}`,Buffer.from(data.split(',')[1],'base64'));
-   report.screenshots.push({name:`glass-cabinet-${id}-native`,file,kind:'native-canvas-crop',engine:'chromium',width:390,height:844,imagePixels:{width:204,height:330},caption:`${id} · 实际收藏室原生画布裁片（非手机页面截图）`,at:Date.now(),build:session.build});
+   const file=`screens/case-lv0-glass-${id}-native.png`;await writeFile(`${output}/${file}`,Buffer.from(data.split(',')[1],'base64'));
+   report.screenshots.push({name:`case-lv0-glass-${id}-native`,file,kind:'native-canvas-crop',engine:'chromium',width:390,height:844,imagePixels:{width:204,height:330},caption:`${id} · 基础柜实际原生画布裁片（非手机页面截图）`,at:Date.now(),build:session.build});
   }
   await close(session);await saveVideo(session,'museum-two-cabinets-70s.mp4',70,startAt);report.cases.push({name:'museum-robot',kind:'museum-continuous',trace,fixtureAudit:fixture.audit});
- }finally{await close(session);}
+ }catch(error){await browser.close();throw error;}finally{await close(session);}
  try{
   const fixture=renewalFixture(Date.now(),'funded');session=await open(browser,{name:'chromium-390-case-install',fixture,video:true});await session.page.locator('[data-tab="base"]').tap();const startAt=Date.now(),upgrades=[];
   await session.page.locator('.fu-base-actions [data-drawer="build"]').tap();

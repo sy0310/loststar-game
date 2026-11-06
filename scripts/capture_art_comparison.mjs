@@ -91,6 +91,10 @@ async function screenshot(page, entry, scene) {
   });
   check(layout.noOverflow, `${entry.name}/${scene}: horizontal overflow`);
   if (scene === 'workbench-stamp') check(layout.stage === 'clean', 'Workbench comparison must show actual clean stamp');
+  if (scene === 'collection') {
+    const navTop=await page.locator('#fusion-app > .fu-nav').evaluate(e=>e.getBoundingClientRect().top);
+    check(layout.museum&&layout.museum.y>=0&&layout.museum.bottom<=navTop+1,'Collection comparison must frame the entire real museum above navigation');
+  }
   const file = `comparison/${mode}-${entry.engine}-${entry.width}-${scene}.png`, at = Date.now();
   await page.screenshot({path: `${output}/${file}`, scale: 'css'});
   const bytes = await readFile(`${output}/${file}`), saved = await state(page);
@@ -153,6 +157,7 @@ async function capture(browser, engine, width, height) {
     await page.waitForTimeout(300);await screenshot(page, entry, 'workbench-stamp');
     await page.locator('#fusion-close').tap();
     await page.locator('#museum-canvas[data-ready="true"]').waitFor();
+    await page.locator('#fusion-scroll').evaluate(e=>{e.scrollTop=0;});
     await page.locator('#fusion-collection-list img').evaluateAll(async images => {await Promise.all(images.map(image => image.decode()));});
     await page.waitForTimeout(300);await screenshot(page, entry, 'collection');
     await page.waitForLoadState('networkidle');await Promise.all(pending);

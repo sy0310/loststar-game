@@ -85,3 +85,16 @@ test('邮戳试验实际把票面退一天，套娃延后揭示原箱；重播�
  const after=await read(page);expect(after.game.collection).toEqual(before.game.collection);expect(after.records).toEqual(before.records);expect(after.curios).toEqual(before.curios);
  expect(before.game.resources+after.game.station.grossIncome-before.game.station.grossIncome-(after.game.station.repairSpent-before.game.station.repairSpent)-after.game.resources).toBe(0);
 });
+
+test('收据两种柜级的反转短句与动画同屏可读，不落到竖屏下方',async({page})=>{
+ await clock(page);
+ for(const level of [0,3]){
+  await install(page,firstPlanetFixture(epoch+1000,level,'stabilized',{receiptAbility:0,tapeAbility:0}).state);
+  await page.locator('[data-tab="collection"]').tap();await page.locator('#fusion-collection-list [data-detail="receipt"]').tap();await expect(page.locator('#fusion-paper-focus')).toHaveAttribute('data-ready','true');
+  await page.locator('#fusion-try').tap();await page.clock.runFor(1500);
+  const response=page.locator('#fusion-curio-response');await expect(response).toHaveText('订单没下，退货先到。');await expect(response).toBeInViewport({ratio:1});
+  const box=await response.boundingBox(),view=await page.evaluate(()=>innerHeight);expect(box!.y).toBeGreaterThanOrEqual(0);expect(box!.y+box!.height).toBeLessThanOrEqual(view);
+  const paper=await page.locator('#fusion-paper-focus').boundingBox();expect(paper!.y+paper!.height).toBeLessThanOrEqual(box!.y);
+  await page.clock.runFor(1500);
+ }
+});
