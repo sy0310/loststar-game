@@ -161,7 +161,17 @@ export async function validateAssets({registry, registration, readFile}) {
         const actualSize = await sharp(object).metadata(), actualPlacement = {left: Math.round(bounds[0] + bounds[2] - actualSize.width / 2), top: Math.round(bounds[3] * 2 - actualSize.height)};
         if (!equal(size, {width: actualSize.width, height: actualSize.height}) || !equal(placement, actualPlacement)) error('IDENTITY_SUPPORT_MAPPING', `${key}: exported size/placement differs from identity support bounds`);
         const reconstructed = await sharp({create: {width: 384, height: 384, channels: 4, background: '#00000000'}}).composite([{input: object, ...placement}]).ensureAlpha().raw().toBuffer();
-        if (!visibleBytes(reconstructed).equals(pngVisible)) error('SOURCE_EXPORT_MAPPING', `${key}: recorded whole-image placement does not reproduce runtime pixels`);
+        if (!visibleBytes(reconstructed).equals(pngVisible)) {
+          let pixels=0,alpha=0,maxChannelDelta=0;const samples=[];
+          for(let i=0;i<reconstructed.length;i+=4){
+            if(reconstructed[i+3]!==png.data[i+3])alpha++;
+            if((reconstructed[i+3]||png.data[i+3])&&[0,1,2,3].some(k=>reconstructed[i+k]!==png.data[i+k])){
+              pixels++;for(let k=0;k<4;k++)maxChannelDelta=Math.max(maxChannelDelta,Math.abs(reconstructed[i+k]-png.data[i+k]));
+              if(samples.length<8)samples.push({x:i/4%384,y:Math.floor(i/4/384),expected:[...png.data.subarray(i,i+4)],reconstructed:[...reconstructed.subarray(i,i+4)]});
+            }
+          }
+          error('SOURCE_EXPORT_MAPPING', `${key}: recorded whole-image placement does not reproduce runtime pixels; ${JSON.stringify({pixels,alpha,maxChannelDelta,samples,platform:process.platform,arch:process.arch,versions:sharp.versions})}`);
+        }
       }
       checks.push({id: `asset:${key}`, source: entry.source, runtime: entry.runtime, visibleSha256: digest});
     } catch (cause) {error('ASSET_READ_OR_DECODE', `${key}: ${cause.message}`);}
