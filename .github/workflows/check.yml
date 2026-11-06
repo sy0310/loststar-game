@@ -10,6 +10,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Evidence-only commits must verify the frozen runtime's ancestry and
+          # original source/asset trees, not substitute the current checkout SHA.
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22

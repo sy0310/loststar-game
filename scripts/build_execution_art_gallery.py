@@ -51,15 +51,19 @@ def evidence_file(file, parent=OUT):
 
 
 def report_source(report):
-    explicit = report.get("sourceCommit") or report.get("runtimeSourceSha")
-    if explicit:
-        return explicit
     runtime = report.get("runtimeSource")
-    return runtime.get("sourceSha") if isinstance(runtime, dict) else runtime
+    candidates = (report.get("sourceCommit"), report.get("runtimeSourceSha"),
+                  runtime.get("sourceSha") if isinstance(runtime, dict) else runtime)
+    return next((value for value in candidates if isinstance(value, str) and len(value) == 40
+                 and all(char in "0123456789abcdef" for char in value)), None)
 
 
 def report_zip(report):
-    return report.get("zipSha256") or report.get("package", {}).get("sha256") or report.get("archive", {}).get("sha256")
+    package, archive = report.get("package"), report.get("archive")
+    candidates = (report.get("zipSha256"), package.get("sha256") if isinstance(package, dict) else None,
+                  archive.get("sha256") if isinstance(archive, dict) else None)
+    return next((value for value in candidates if isinstance(value, str) and len(value) == 64
+                 and all(char in "0123456789abcdef" for char in value)), None)
 
 
 core = {file: read_json(OUT / file) for file in CORE_FILES}
@@ -95,7 +99,10 @@ assert {row["id"] for row in requirements} == set(acceptance["requiredIds"]), "C
 # Discover detailed reports without promoting an old/unbound report to current.
 inventory, media, seen_files = [], [], set()
 for path in sorted(OUT.rglob("*.json")):
-    if "raw" in path.parts or "derivedframes" in path.parts or path.name in ("gallery-status.json", "gallery-layout.json"):
+    # The proof hashes the final index. Keep it and its computed wrapper in the
+    # explicit links below, outside this generated inventory to avoid a circular
+    # index -> proof -> index dependency. Their current hashes remain in proof/QA.
+    if "raw" in path.parts or "derivedframes" in path.parts or path.name in ("gallery-status.json", "gallery-layout.json", "proof.json", "verification.json", "delivery-gate.json"):
         continue
     report = read_json(path)
     if not isinstance(report, dict):
@@ -198,9 +205,11 @@ for scene in approved:
     comparison_sections.append(f'<section><h3>{scene_names[scene]}</h3><div class="comparison">{panels}</div></section>')
 
 videos = [item for item in media if item["kind"] == "videos"]
-stamp_video = next(item for item in videos if item.get("id") == "stamp" and item.get("kind") == "videos")
+stamp_video = next((item for item in videos if item.get("id") == "stamp" and item.get("captureKind") == "natural-clean-then-repair"),
+                   next(item for item in videos if item.get("id") == "stamp"))
 representatives = [stamp_video]
-museum_video = next((item for item in videos if "museum" in item["file"]), None)
+museum_video = next((item for item in videos if Path(item["file"]).name == "museum-all-3-100s.mp4"),
+                    next((item for item in videos if "museum" in item["file"]), None))
 bell_video = next((item for item in videos if "bell" in item["file"]
                    and ("trial" in (item.get("captureKind") or "") or "mechanism" in item["sourceReport"])), None)
 if museum_video:
@@ -234,10 +243,14 @@ page = f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta n
 p,code,li,figcaption,td,th,summary{{overflow-wrap:anywhere}}code,figcaption{{font-size:12px}}.notice{{padding:14px;background:#3c254b;border:2px solid #c99960}}figure{{margin:0 0 14px;min-width:0;max-width:100%}}img,video{{display:block;width:100%;max-width:100%;height:auto;background:#29183c}}img{{image-rendering:pixelated}}figcaption{{padding:8px 0}}.comparison{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}}.comparison img{{height:560px;object-fit:contain}}.concept img{{image-rendering:auto}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px;align-items:start}}.film{{max-width:390px;justify-self:center}}video{{max-height:650px;object-fit:contain}}details{{border:1px solid #77546c;margin:12px 0;padding:0 10px 10px;min-width:0}}summary{{cursor:pointer;padding:12px 0;font-weight:600}}table{{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}}th,td{{padding:8px;border:1px solid #77546c;vertical-align:top}}th{{text-align:left;width:12%}}.state-col{{width:20%}}.overview img{{width:100%;height:auto}}
 @media(max-width:650px){{main{{padding:12px}}h1{{font-size:23px}}.comparison{{grid-template-columns:1fr}}.comparison img{{height:auto;max-height:none}}table,thead,tbody,tr,th,td{{display:block;width:100%}}thead{{display:none}}tr{{margin-bottom:10px}}th,td{{border-bottom:0}}td:last-child{{border-bottom:1px solid #77546c}}}}
 </style></head><body><main><h1>首星执行核查与美术精修 · V0.4.4</h1>
-<p class="notice">待用户/真机验收。用户对上一版“大部分可以”仅作方向认可，不替代逐对象最终签收。实现、当前证据、内部视觉、真实手机分别记录；下表照录现有权威登记，不因截图数量或RGBA一致而自动通过。</p>
+<p class="notice">待用户/真机验收。工程通过不等于美术或手机通过。</p>
+<p>V0.4.4 / <code>{source[:7]}</code> · <a href="package-info.json">当前包信息</a></p>
+<p><a href="{esc(contract_link)}">本轮合同</a> · <a href="{esc(coverage_link)}">{len(requirements)}项要求与缺口</a> · <a href="{esc(registry_link)}">权威登记</a></p>
+<details><summary>来源与保留规则</summary>
 <p>本轮实际运行源码 <code>{source}</code><br>固定ZIP <code>{zip_sha}</code><br>比较基线 V0.4.3 / <code>{BASELINE}</code><br>历史ZIP <code>{BASELINE_ZIP}</code>。历史页和加载JS直接核对原ZIP；不宣称当时工作树等于旧源码。</p>
 <p>保留六物18张完整三态、原费用/时长、已购权益、主动免费互动与v037存档；新绘与明确复用按原注册逐项追溯，复用C不冒称新生成。不裁概念海报作运行素材，不恢复分片/擦污生成下一态。</p>
-<p><a href="{esc(contract_link)}">本轮合同</a> · <a href="{esc(coverage_link)}">全部有效要求与当前缺口</a> · <a href="{esc(registry_link)}">原位置权威登记</a></p>
+<p>用户对上一版“大部分可以”仅作方向认可，不替代逐对象最终签收。实现、当前证据、内部视觉、真实手机分别记录；下表照录现有权威登记，不因截图数量或RGBA一致而自动通过。</p>
+</details>
 <h2>六物18态 · 实际同包完整PNG总览</h2>{figure(overview_file, "18张完整384导出在实际工作台底色上并排；点击打开原尺寸。非手机整页截图。", "overview")}
 <h2>批准参考／精修前／精修后 · 三个重点场景</h2><p>每个批准PNG均完整显示，不裁取局部冒充设计原图。前后画面均为同一普通clean夹具、390×844原生实际页面；自然世界时钟继续运行，动画相位不伪装完全相同。</p>{''.join(comparison_sections)}
 <h2>代表性自然时间录像</h2><div class="grid">{''.join(film(item, "本轮实际固定包代表实录") for item in representatives)}</div>
