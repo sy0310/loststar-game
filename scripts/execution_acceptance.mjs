@@ -160,7 +160,11 @@ export async function validateAssets({registry, registration, readFile}) {
         const object = await sharp(sourceRaw).extract(crop).resize({width: Math.round((bounds[2] - bounds[0]) * 2), height: Math.round((bounds[3] - bounds[1]) * 2), fit: 'inside', kernel: 'nearest'}).png().toBuffer();
         const actualSize = await sharp(object).metadata(), actualPlacement = {left: Math.round(bounds[0] + bounds[2] - actualSize.width / 2), top: Math.round(bounds[3] * 2 - actualSize.height)};
         if (!equal(size, {width: actualSize.width, height: actualSize.height}) || !equal(placement, actualPlacement)) error('IDENTITY_SUPPORT_MAPPING', `${key}: exported size/placement differs from identity support bounds`);
-        const reconstructed = await sharp({create: {width: 384, height: 384, channels: 4, background: '#00000000'}}).composite([{input: object, ...placement}]).ensureAlpha().raw().toBuffer();
+        // Match the actual exporter through its PNG output boundary before
+        // decoding RGBA. A raw libvips pipeline can retain a premultiplied
+        // intermediate; that is not the exported image the player receives.
+        const reconstructedPng=await sharp({create: {width: 384, height: 384, channels: 4, background: '#00000000'}}).composite([{input: object, ...placement}]).png({compressionLevel:9}).toBuffer();
+        const reconstructed=(await decode(reconstructedPng)).data;
         if (!visibleBytes(reconstructed).equals(pngVisible)) {
           let pixels=0,alpha=0,maxChannelDelta=0;const samples=[];
           for(let i=0;i<reconstructed.length;i+=4){
