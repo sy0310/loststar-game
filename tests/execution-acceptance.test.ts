@@ -2,6 +2,7 @@ import {beforeAll, describe, expect, test} from 'vitest';
 import {readFile} from 'node:fs/promises';
 import sharp from 'sharp';
 import {CURIOS, STAGES, MINIMUM_REQUIREMENT_IDS, REGISTRATION_PATH, createReader, hashRuntimeEntries, isRepoPath, minimumIdsFromContract, readZipEntries, sha256, validateAcceptance, validateAssets, validateProof, validateRequirements, validateRuntimeContracts} from '../scripts/execution_acceptance.mjs';
+import {exportWholeCurioState, registeredWholeStateMasters} from '../scripts/export_whole_curio_states.mjs';
 
 const contractPath = 'design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md';
 const rootReader = createReader(process.cwd());
@@ -49,6 +50,21 @@ async function assetFixture() {
   const registration = {schema: 1, version: '0.4.3', assets: assetRows};
   files.set(REGISTRATION_PATH, Buffer.from(JSON.stringify(registration)));
   return {files, registration, registry: {files: rows, completeCurioStateCount: 18, curioStates, moduleRegistrations: [{path: REGISTRATION_PATH, data: clone(registration)}]}};
+}
+
+async function registeredMasterFixture() {
+  const registry = JSON.parse((await rootReader('design/visual-renewal/ASSET_REGISTRY.json')).toString());
+  const registration = JSON.parse((await rootReader(REGISTRATION_PATH)).toString());
+  const result = await exportWholeCurioState({id: 'tape', state: 'clean', readFile: rootReader});
+  registration.assets[registration.assets.findIndex((row: any) => row.id === 'tape-clean')] = result.entry;
+  const files = new Map<string, Buffer>([[REGISTRATION_PATH, Buffer.from(JSON.stringify(registration))], [result.entry.runtime, result.png], [result.entry.webp, result.webp]]);
+  registry.moduleRegistrations.find((row: any) => row.path === REGISTRATION_PATH).data = clone(registration);
+  for (const [name, bytes] of [[registeredWholeStateMasters['tape-clean'].path, await rootReader(registeredWholeStateMasters['tape-clean'].path)], [result.entry.runtime, result.png], [result.entry.webp, result.webp]] as [string, Buffer][]) {
+    const row = {path: name, kind: name.includes('/source/') ? 'source' : 'runtime', bytes: bytes.length, sha256: sha256(bytes), width: 384, height: 384};
+    const index = registry.files.findIndex((entry: any) => entry.path === name);
+    if (index < 0) registry.files.push(row); else registry.files[index] = {...registry.files[index], ...row};
+  }
+  return {registry, registration, files, readFile: memoryReader(files, true)};
 }
 
 /** Small standard stored ZIP; all mutation fixtures remain in memory. */
@@ -126,6 +142,50 @@ describe('six identities × three decoded images and actual source/export mappin
     files.set(second.runtime, files.get(first.runtime)!); files.set(second.webp, files.get(first.webp)!);
     expect(codes(await validateAssets({...fixture, readFile: memoryReader(files)}))).toContain('DUPLICATE_VISIBLE_IMAGE');
   });
+});
+
+describe('registered production master preserves actual B bytes without alpha tolerances', () => {
+  test('single-asset export is deterministic and preserves all on-disk runtime PNGs and the authoring original', async () => {
+    const paths = CURIOS.flatMap(id => STAGES.map(state => `assets/runtime/visual-renewal/whole-states-v043/${id}-${state}.png`));
+    const before = await Promise.all(paths.map(async name => sha256(await rootReader(name))));
+    const originalPath = 'assets/source/visual-renewal/whole-states-v043/tape/tape-clean.png', originalBefore = await rootReader(originalPath);
+    const first = await exportWholeCurioState({id: 'tape', state: 'clean', readFile: rootReader});
+    const second = await exportWholeCurioState({id: 'tape', state: 'clean', readFile: rootReader});
+    expect(first.png.equals(await rootReader(first.entry.runtime))).toBe(true);
+    expect(first.png.equals(second.png)).toBe(true); expect(first.webp.equals(second.webp)).toBe(true);
+    expect(first.entry.source).toBe(originalPath); expect(first.entry.sourceSha256).toBe(sha256(originalBefore));
+    expect(first.entry.canonicalReuse).toBe(false); expect(first.entry.registeredMaster).toEqual(registeredWholeStateMasters['tape-clean']);
+    expect((await sharp(first.webp).ensureAlpha().raw().toBuffer()).length).toBe(384 * 384 * 4);
+    expect((await rootReader(originalPath)).equals(originalBefore)).toBe(true);
+    expect(await Promise.all(paths.map(async name => sha256(await rootReader(name))))).toEqual(before);
+  }, 15000);
+
+  test('actual registered master validates exact visible pixels while the other seventeen retain strict source reconstruction', async () => {
+    const fixture = await registeredMasterFixture();
+    expect((await validateAssets(fixture)).errors).toEqual([]);
+    const entry = fixture.registration.assets.find((row: any) => row.id === 'tape-clean');
+    const png = await sharp(await fixture.readFile(entry.runtime)).ensureAlpha().raw().toBuffer(), webp = await sharp(await fixture.readFile(entry.webp)).ensureAlpha().raw().toBuffer();
+    let mismatch = 0;
+    for (let i = 0; i < png.length; i += 4) if (webp[i + 3] !== png[i + 3] || png[i + 3] && !webp.subarray(i, i + 3).equals(png.subarray(i, i + 3))) mismatch++;
+    expect(mismatch).toBe(0);
+  }, 15000);
+
+  test('master bytes, path, canonical-reuse flag and original-source checksum mutations fail closed', async () => {
+    const fixture = await registeredMasterFixture();
+    const mutate = async (change: (entry: any, files: Map<string, Buffer>) => void) => {
+      const registration = clone(fixture.registration), files = new Map(fixture.files), entry = registration.assets.find((row: any) => row.id === 'tape-clean');
+      change(entry, files);
+      return codes(await validateAssets({...fixture, registration, readFile: memoryReader(files, true)}));
+    };
+    expect(await mutate((entry, files) => files.set(entry.registeredMaster.path, Buffer.from('replaced-master')))).toContain('ASSET_READ_OR_DECODE');
+    expect(await mutate(entry => {entry.registeredMaster.path = entry.source;})).toContain('REGISTERED_MASTER_METADATA');
+    expect(await mutate(entry => {entry.canonicalReuse = true;})).toContain('REGISTERED_MASTER_CANONICAL_REUSE');
+    expect(await mutate(entry => {entry.sourceSha256 = '0'.repeat(64);})).toContain('STATE_HASH');
+    expect(await mutate(entry => {delete entry.registeredMaster;})).toContain('REGISTERED_MASTER_METADATA');
+    const wrongMaster = registeredWholeStateMasters['tape-clean'].path;
+    await expect(exportWholeCurioState({id: 'tape', state: 'clean', readFile: async name => name === wrongMaster ? rootReader('assets/runtime/visual-renewal/whole-states-v043/tape-stabilized.png') : rootReader(name)})).rejects.toThrow('registered production master bytes');
+    await expect(exportWholeCurioState({id: 'tape', state: 'clean', raw: await rootReader('assets/source/visual-renewal/whole-states-v043/tape/tape-found.png'), readFile: rootReader})).rejects.toThrow('original authoring source');
+  }, 30000);
 });
 
 describe('production contract probes inspect executable selectors and forced preview events', () => {

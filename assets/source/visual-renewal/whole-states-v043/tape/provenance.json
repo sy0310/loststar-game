@@ -7,7 +7,8 @@
     "All four generated A/B PNGs are unmodified full image_gen outputs; archivedOriginal and canonical A/B are byte-identical.",
     "No runtime files, registry, source code or commits modified by this art task.",
     "Original C remains the existing approved free mechanism appearance, copied byte-for-byte from d97ca2a.",
-    "Images are concept/source art assets for root review, not a production-ready layered original or sprite atlas."
+    "Images are concept/source art assets for root review, not a production-ready layered original or sprite atlas.",
+    "V0.4.4 portability registration appends one byte-identical 384px production master for clean B. This is reuse of an existing isolated production output, not new drawing or a claim of user art acceptance; canonical.clean continues to name the unmodified 1254px original."
   ],
   "records": [
     {
@@ -99,6 +100,48 @@
       "pngColorType": 6,
       "wholeImage": true,
       "composited": false
+    },
+    {
+      "asset": "tape",
+      "state": "clean-production-master",
+      "file": "tape-clean-master384.png",
+      "createdAt": "2026-11-06T06:38:10.635Z",
+      "method": "Exact byte copy of the isolated V0.4.3 production PNG; no screenshot, redraw, compositing, scaling, pixel edits or alpha tolerance.",
+      "originCommit": "ff917872227b0f28a452dee1642d9cc8606251db",
+      "originRuntimePath": "assets/runtime/visual-renewal/whole-states-v043/tape-clean.png",
+      "originBlobSha1": "514e4da1a31184e641abf9736936015a4307d852",
+      "originalSource": "assets/source/visual-renewal/whole-states-v043/tape/tape-clean.png",
+      "originalSourceSha256": "6dfe2ecf80888259f5b8b8f84afd5eda37359bda469f4f86855ae51dbfebea2b",
+      "originalSourceDimensions": {
+        "width": 1254,
+        "height": 1254
+      },
+      "originalExport": {
+        "sourceExteriorCrop": {
+          "left": 109,
+          "top": 86,
+          "width": 982,
+          "height": 992
+        },
+        "wholeImageSize": {
+          "width": 296,
+          "height": 299
+        },
+        "wholeImagePlacement": {
+          "left": 32,
+          "top": 27
+        }
+      },
+      "bytes": 185252,
+      "sha256": "78507b7d016f4fe79effcd08718a532ed6e75144b828da14c9b67f81978164a4",
+      "width": 384,
+      "height": 384,
+      "pngColorType": 6,
+      "wholeImage": true,
+      "canonicalReuse": false,
+      "newDrawing": false,
+      "userVisualApproval": false,
+      "reason": "Preserve established V0.4.3 production pixels across libvips platforms. Linux reconstruction differs at one alpha boundary row; current export reads this checksummed whole production master directly, while the unmodified 1254×1254 generated original and its original crop/support mapping remain registered."
     }
   ],
   "canonical": {
@@ -168,5 +211,49 @@
     "revisions": "A2 chosen: visible continuous adhesive fibres on lower band, no loose paper stack",
     "physicalPhone": false,
     "userVisualApproval": false
+  },
+  "productionMasters": {
+    "clean": {
+      "asset": "tape",
+      "state": "clean-production-master",
+      "file": "tape-clean-master384.png",
+      "createdAt": "2026-11-06T06:38:10.635Z",
+      "method": "Exact byte copy of the isolated V0.4.3 production PNG; no screenshot, redraw, compositing, scaling, pixel edits or alpha tolerance.",
+      "originCommit": "ff917872227b0f28a452dee1642d9cc8606251db",
+      "originRuntimePath": "assets/runtime/visual-renewal/whole-states-v043/tape-clean.png",
+      "originBlobSha1": "514e4da1a31184e641abf9736936015a4307d852",
+      "originalSource": "assets/source/visual-renewal/whole-states-v043/tape/tape-clean.png",
+      "originalSourceSha256": "6dfe2ecf80888259f5b8b8f84afd5eda37359bda469f4f86855ae51dbfebea2b",
+      "originalSourceDimensions": {
+        "width": 1254,
+        "height": 1254
+      },
+      "originalExport": {
+        "sourceExteriorCrop": {
+          "left": 109,
+          "top": 86,
+          "width": 982,
+          "height": 992
+        },
+        "wholeImageSize": {
+          "width": 296,
+          "height": 299
+        },
+        "wholeImagePlacement": {
+          "left": 32,
+          "top": 27
+        }
+      },
+      "bytes": 185252,
+      "sha256": "78507b7d016f4fe79effcd08718a532ed6e75144b828da14c9b67f81978164a4",
+      "width": 384,
+      "height": 384,
+      "pngColorType": 6,
+      "wholeImage": true,
+      "canonicalReuse": false,
+      "newDrawing": false,
+      "userVisualApproval": false,
+      "reason": "Preserve established V0.4.3 production pixels across libvips platforms. Linux reconstruction differs at one alpha boundary row; current export reads this checksummed whole production master directly, while the unmodified 1254×1254 generated original and its original crop/support mapping remain registered."
+    }
   }
 }

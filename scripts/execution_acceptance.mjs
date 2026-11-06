@@ -83,12 +83,13 @@ async function decode(bytes) {
 export async function validateAssets({registry, registration, readFile}) {
   const errors = [], checks = [], digests = new Map();
   const error = (code, message) => errors.push(failure(code, message, 'ART-01'));
-  let exportBounds;
+  let exportBounds, exportMasters = {};
   try {
     const exporter = (await readFile('scripts/export_whole_curio_states.mjs')).toString();
-    const declaration = parseFile('exporter.mjs', exporter).program.body.find(node => node.type === 'VariableDeclaration' && node.declarations.some(item => item.id?.name === 'bounds'))?.declarations.find(item => item.id?.name === 'bounds');
-    if (!declaration?.init) throw Error('Missing deterministic identity bounds');
-    exportBounds = vm.runInNewContext(`(${exporter.slice(declaration.init.start, declaration.init.end)})`, {}, {timeout: 1000});
+    const declarations = parseFile('exporter.mjs', exporter).program.body.filter(node => node.type === 'VariableDeclaration').flatMap(node => node.declarations);
+    const value = name => {const declaration = declarations.find(item => item.id?.name === name); return declaration?.init ? vm.runInNewContext(`(${exporter.slice(declaration.init.start, declaration.init.end)})`, {}, {timeout: 1000}) : undefined;};
+    exportBounds = value('bounds'); exportMasters = value('registeredWholeStateMasters') ?? {};
+    if (!exportBounds) throw Error('Missing deterministic identity bounds');
   } catch (cause) {error('EXPORT_BOUNDS', cause.message);}
   const registered = new Map();
   for (const row of registry.files ?? []) {
@@ -128,6 +129,9 @@ export async function validateAssets({registry, registration, readFile}) {
     if (entry.runtime !== `${base}.png` || entry.webp !== `${base}.webp` || entry.source !== original) error('STATE_PATH_MAPPING', key);
     if (entry.width !== 384 || entry.height !== 384 || entry.logicalSize !== 192) error('STATE_DIMENSIONS', key);
     if (typeof entry.canonicalReuse !== 'boolean' || entry.canonicalReuse && entry.state !== 'stabilized') error('SOURCE_ORIGIN', `${key}: reuse must be explicit and only approved stabilized images may be reused`);
+    const expectedMaster = exportMasters[key];
+    if ((entry.registeredMaster || expectedMaster) && (!expectedMaster || !equal(entry.registeredMaster, expectedMaster))) error('REGISTERED_MASTER_METADATA', `${key}: production master metadata must exactly match the explicit exporter registration`);
+    if ((entry.registeredMaster || expectedMaster) && entry.canonicalReuse) error('REGISTERED_MASTER_CANONICAL_REUSE', `${key}: an archived B production master is not approved-C reuse`);
     try {
       const sourceRaw = await readFile(entry.source), pngRaw = await readFile(entry.runtime), webpRaw = await readFile(entry.webp);
       const source = await decode(sourceRaw), png = await decode(pngRaw), webp = await decode(webpRaw);
@@ -147,7 +151,30 @@ export async function validateAssets({registry, registration, readFile}) {
       digests.set(digest, key);
       const placement = entry.wholeImagePlacement, size = entry.wholeImageSize, crop = entry.sourceExteriorCrop;
       if (![placement?.left, placement?.top, size?.width, size?.height].every(Number.isInteger) || placement.left < 0 || placement.top < 0 || size.width <= 0 || size.height <= 0 || placement.left + size.width > 384 || placement.top + size.height > 384) error('PLACEMENT_REGISTRATION', key);
-      if (entry.canonicalReuse) {
+      if (entry.registeredMaster || expectedMaster) {
+        const master = expectedMaster;
+        if (!master || !isRepoPath(master.path) || !HASH.test(master.sha256) || !COMMIT.test(master.originCommit) || !COMMIT.test(master.originBlobSha1) || master.originRuntimePath !== entry.runtime || master.originalSourceSha256 !== entry.sourceSha256 || !master.reason) throw Error(`${key}: invalid master origin/source registration`);
+        const masterRaw = await readFile(master.path), masterImage = await decode(masterRaw), masterMetadata = await sharp(masterRaw).metadata(), masterRow = registered.get(master.path);
+        const blobSha1 = createHash('sha1').update(`blob ${masterRaw.length}\0`).update(masterRaw).digest('hex');
+        if (sha256(masterRaw) !== master.sha256 || blobSha1 !== master.originBlobSha1 || !masterRaw.equals(pngRaw)) error('REGISTERED_MASTER_BYTES', `${key}: runtime PNG must be the byte-identical checksummed production master`);
+        if (masterMetadata.format !== 'png' || !masterMetadata.hasAlpha || masterImage.info.width !== 384 || masterImage.info.height !== 384) error('REGISTERED_MASTER_DIMENSIONS', key);
+        if (!masterRow || masterRow.bytes !== masterRaw.length || masterRow.sha256 !== sha256(masterRaw) || masterRow.width !== 384 || masterRow.height !== 384) error('REGISTERED_MASTER_FILE', `${key}: master must be indexed with actual bytes, hash and dimensions`);
+        let hasTransparent = false, hasVisible = false;
+        for (let i = 3; i < masterImage.data.length; i += 4) {hasTransparent ||= masterImage.data[i] === 0; hasVisible ||= masterImage.data[i] > 8;}
+        if (!hasTransparent || !hasVisible) error('REGISTERED_MASTER_ALPHA', key);
+        if (!equal({width: source.info.width, height: source.info.height}, master.originalSourceDimensions) || sha256(sourceRaw) !== master.originalSourceSha256) error('REGISTERED_MASTER_ORIGINAL_SOURCE', key);
+        let left = source.info.width, top = source.info.height, right = 0, bottom = 0;
+        for (let y = 0; y < source.info.height; y++) for (let x = 0; x < source.info.width; x++) if (source.data[(y * source.info.width + x) * 4 + 3] > 8) {left = Math.min(left, x); top = Math.min(top, y); right = Math.max(right, x + 1); bottom = Math.max(bottom, y + 1);}
+        const actualCrop = {left, top, width: right - left, height: bottom - top};
+        if (!equal(crop, actualCrop) || !equal(crop, master.originalExport.sourceExteriorCrop) || !equal(size, master.originalExport.wholeImageSize) || !equal(placement, master.originalExport.wholeImagePlacement)) error('REGISTERED_MASTER_SOURCE_MAPPING', `${key}: original source crop, size and support placement must stay registered`);
+        const b = exportBounds?.[entry.curio];
+        if (!Array.isArray(b) || b.length !== 4 || !b.every(Number.isFinite)) throw Error(`${key}: missing identity support bounds`);
+        const scale = Math.min(Math.round((b[2] - b[0]) * 2) / actualCrop.width, Math.round((b[3] - b[1]) * 2) / actualCrop.height);
+        const analyticalSize = {width: Math.round(actualCrop.width * scale), height: Math.round(actualCrop.height * scale)}, analyticalPlacement = {left: Math.round(b[0] + b[2] - analyticalSize.width / 2), top: Math.round(b[3] * 2 - analyticalSize.height)};
+        if (!equal(size, analyticalSize) || !equal(placement, analyticalPlacement)) error('IDENTITY_SUPPORT_MAPPING', `${key}: master retains the original whole-image identity support geometry`);
+        const provenance = JSON.parse((await readFile(master.provenance)).toString()), trace = provenance.productionMasters?.[entry.state];
+        if (!trace || trace.file !== path.posix.basename(master.path) || trace.sha256 !== master.sha256 || trace.originCommit !== master.originCommit || trace.originRuntimePath !== master.originRuntimePath || trace.originBlobSha1 !== master.originBlobSha1 || trace.originalSource !== entry.source || trace.originalSourceSha256 !== master.originalSourceSha256 || trace.newDrawing !== false || trace.canonicalReuse !== false) error('REGISTERED_MASTER_PROVENANCE', `${key}: production master must link the preserved authoring original and recorded V0.4.3 runtime/blob, without claiming a new drawing or approved-C reuse`);
+      } else if (entry.canonicalReuse) {
         if (!sourceRaw.equals(pngRaw) || crop !== null || !equal(placement, {left: 0, top: 0}) || !equal(size, {width: 384, height: 384})) error('REUSE_NOT_BYTE_IDENTICAL', key);
       } else if (![crop?.left, crop?.top, crop?.width, crop?.height].every(Number.isInteger) || crop.left < 0 || crop.top < 0 || crop.width <= 0 || crop.height <= 0 || crop.left + crop.width > source.info.width || crop.top + crop.height > source.info.height) error('SOURCE_CROP', key);
       else {

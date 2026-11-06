@@ -599,7 +599,7 @@ async function cases(){
   // Read-only crops of the actual rendered room, not a fabricated phone page.
   // Wait for the real robot to leave each cabinet's horizontal sightline.
   for(const [index,id]of ['receipt','tape','nested','stamp','cosmic-parcel','bell'].entries()){
-   const x=[160,384,608][index%3],y=index<3?500:825;
+   const x=[104,384,664][index%3],y=index<3?500:825;
    await session.page.waitForFunction(x=>Math.abs(Number(document.querySelector('#museum-canvas').dataset.robotX)-x)>172,x,{timeout:30000});
    const data=await session.page.locator('#museum-canvas').evaluate((room,{x,y})=>{const c=document.createElement('canvas');c.width=204;c.height=330;c.getContext('2d').drawImage(room,x-102,y-282,204,330,0,0,204,330);return c.toDataURL('image/png');},{x,y});
    const file=`screens/glass-cabinet-${id}-native.png`;await writeFile(`${output}/${file}`,Buffer.from(data.split(',')[1],'base64'));

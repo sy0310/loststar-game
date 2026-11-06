@@ -1,6 +1,7 @@
 {
   "schema": 1,
-  "version": "0.4.3",
+  "version": "0.4.4",
+  "schemaFamily": "complete-images-v043",
   "renderer": "src/fusion/curio-state-images.ts",
   "stateSource": "Saved found/clean/stabilized only; in-flight progress cannot select the next image",
   "exportCommand": "node scripts/export_whole_curio_states.mjs",
@@ -148,7 +149,37 @@
       "height": 384,
       "logicalSize": 192,
       "sha256": "78507b7d016f4fe79effcd08718a532ed6e75144b828da14c9b67f81978164a4",
-      "composition": "One entire authored image; exterior trim + uniform scale + placement only. No internal parts, masks, dirt overlays or pixel warp."
+      "registeredMaster": {
+        "path": "assets/source/visual-renewal/whole-states-v043/tape/tape-clean-master384.png",
+        "sha256": "78507b7d016f4fe79effcd08718a532ed6e75144b828da14c9b67f81978164a4",
+        "originCommit": "ff917872227b0f28a452dee1642d9cc8606251db",
+        "originRuntimePath": "assets/runtime/visual-renewal/whole-states-v043/tape-clean.png",
+        "originBlobSha1": "514e4da1a31184e641abf9736936015a4307d852",
+        "originalSourceSha256": "6dfe2ecf80888259f5b8b8f84afd5eda37359bda469f4f86855ae51dbfebea2b",
+        "originalSourceDimensions": {
+          "width": 1254,
+          "height": 1254
+        },
+        "originalExport": {
+          "sourceExteriorCrop": {
+            "left": 109,
+            "top": 86,
+            "width": 982,
+            "height": 992
+          },
+          "wholeImageSize": {
+            "width": 296,
+            "height": 299
+          },
+          "wholeImagePlacement": {
+            "left": 32,
+            "top": 27
+          }
+        },
+        "provenance": "assets/source/visual-renewal/whole-states-v043/tape/provenance.json",
+        "reason": "Byte-identical isolated V0.4.3 production master preserves the established B image across libvips platforms. The unchanged 1254px authoring original and its source/crop/support mapping remain registered. This is existing production output, not a new drawing, screenshot or user acceptance."
+      },
+      "composition": "One complete registered isolated production PNG, copied byte-identically. Original generated source and V0.4.3 crop/support mapping retained; no new drawing, screenshot, internal parts, masks, dirt overlays or pixel warp."
     },
     {
       "id": "tape-stabilized",

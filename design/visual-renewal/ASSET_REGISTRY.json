@@ -959,6 +959,19 @@
       ]
     },
     {
+      "path": "assets/source/visual-renewal/whole-states-v043/tape/tape-clean-master384.png",
+      "kind": "source",
+      "bytes": 185252,
+      "sha256": "78507b7d016f4fe79effcd08718a532ed6e75144b828da14c9b67f81978164a4",
+      "width": 384,
+      "height": 384,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    {
       "path": "assets/source/visual-renewal/whole-states-v043/tape/tape-clean.png",
       "kind": "source",
       "bytes": 1180903,
@@ -9961,7 +9974,8 @@
       "path": "assets/runtime/visual-renewal/whole-states-v043/registration.json",
       "data": {
         "schema": 1,
-        "version": "0.4.3",
+        "version": "0.4.4",
+        "schemaFamily": "complete-images-v043",
         "renderer": "src/fusion/curio-state-images.ts",
         "stateSource": "Saved found/clean/stabilized only; in-flight progress cannot select the next image",
         "exportCommand": "node scripts/export_whole_curio_states.mjs",
@@ -10109,7 +10123,37 @@
             "height": 384,
             "logicalSize": 192,
             "sha256": "78507b7d016f4fe79effcd08718a532ed6e75144b828da14c9b67f81978164a4",
-            "composition": "One entire authored image; exterior trim + uniform scale + placement only. No internal parts, masks, dirt overlays or pixel warp."
+            "registeredMaster": {
+              "path": "assets/source/visual-renewal/whole-states-v043/tape/tape-clean-master384.png",
+              "sha256": "78507b7d016f4fe79effcd08718a532ed6e75144b828da14c9b67f81978164a4",
+              "originCommit": "ff917872227b0f28a452dee1642d9cc8606251db",
+              "originRuntimePath": "assets/runtime/visual-renewal/whole-states-v043/tape-clean.png",
+              "originBlobSha1": "514e4da1a31184e641abf9736936015a4307d852",
+              "originalSourceSha256": "6dfe2ecf80888259f5b8b8f84afd5eda37359bda469f4f86855ae51dbfebea2b",
+              "originalSourceDimensions": {
+                "width": 1254,
+                "height": 1254
+              },
+              "originalExport": {
+                "sourceExteriorCrop": {
+                  "left": 109,
+                  "top": 86,
+                  "width": 982,
+                  "height": 992
+                },
+                "wholeImageSize": {
+                  "width": 296,
+                  "height": 299
+                },
+                "wholeImagePlacement": {
+                  "left": 32,
+                  "top": 27
+                }
+              },
+              "provenance": "assets/source/visual-renewal/whole-states-v043/tape/provenance.json",
+              "reason": "Byte-identical isolated V0.4.3 production master preserves the established B image across libvips platforms. The unchanged 1254px authoring original and its source/crop/support mapping remain registered. This is existing production output, not a new drawing, screenshot or user acceptance."
+            },
+            "composition": "One complete registered isolated production PNG, copied byte-identically. Original generated source and V0.4.3 crop/support mapping retained; no new drawing, screenshot, internal parts, masks, dirt overlays or pixel warp."
           },
           {
             "id": "tape-stabilized",
@@ -11923,7 +11967,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -11955,8 +11999,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "新V0.4.4固定包、实际目标尺寸媒体及独立复核尚未就绪；历史证据仅作承接依据。Current source preserves six free entries, but exact original gag choreography diverges; clips have no audio. Do not silently erase original subclauses or redesign accepted bell without rationale.",
-        "nextAction": "保留本组全部有效子要求；绑定本轮固定包和当前检查后逐项更新证据、内部视觉及真实未测项。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "V0.4.3已成立实现可承接；当前精修不得自动降低原要求。"
       },
       {
@@ -12326,7 +12370,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -12364,7 +12408,7 @@
         "proofs": [
           "artifacts/v043-whole-state-review/performance.json"
         ],
-        "gap": "新V0.4.4固定包、实际目标尺寸媒体及独立复核尚未就绪；历史证据仅作承接依据。Known ff WebKit receipt33ms/idle bell32ms/active tape32ms; no new same-method retest or physical device record.",
+        "gap": "同设备基线与原始时序已复现，FrameCadence已针对性修正；最终新包独占性能及手机/热量仍待测。",
         "nextAction": "保留本组全部有效子要求；绑定本轮固定包和当前检查后逐项更新证据、内部视觉及真实未测项。",
         "carry": "V0.4.3已成立实现可承接；当前精修不得自动降低原要求。"
       },
@@ -14595,7 +14639,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -14627,8 +14671,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Current source preserves six free entries, but exact original gag choreography diverges; clips have no audio. Do not silently erase original subclauses or redesign accepted bell without rationale.",
-        "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -14648,7 +14692,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -14680,8 +14724,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "ui.ts:1204–1205 shows response text immediately at input, before action reversal; response persists, no timed hide is apparent. 本次若未实际修订，不得仅以更换邮戳A/B或整图规则宣称该子句闭环。",
-        "nextAction": "Independent clip review against original action→line→restore sequence; correct only confirmed shortcomings within retained direction.",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -14701,7 +14745,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -14733,8 +14777,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Current source preserves six free entries, but exact original gag choreography diverges; clips have no audio. Do not silently erase original subclauses or redesign accepted bell without rationale.",
-        "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -14754,7 +14798,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -14786,8 +14830,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Current source preserves six free entries, but exact original gag choreography diverges; clips have no audio. Do not silently erase original subclauses or redesign accepted bell without rationale.",
-        "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -14807,7 +14851,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -14839,8 +14883,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "curio-rig-motion.ts nested draws one inner layer and opens lid; no clear recursive final-first-layer choreography in source. 本次若未实际修订，不得仅以更换邮戳A/B或整图规则宣称该子句闭环。",
-        "nextAction": "Review current clip at natural speed; retain explicit gap if first-layer reveal not perceptible.",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -14860,7 +14904,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -14892,8 +14936,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "curio-condition.ts paints static “昨天 ←” and stamp rig shifts handle; actual date decrement needs visible verification. 本次若未实际修订，不得仅以更换邮戳A/B或整图规则宣称该子句闭环。",
-        "nextAction": "Review current clip; do not count explanatory text as moving date evidence.",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -14913,7 +14957,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -14945,8 +14989,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Current source preserves six free entries, but exact original gag choreography diverges; clips have no audio. Do not silently erase original subclauses or redesign accepted bell without rationale.",
-        "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -15013,8 +15057,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "最新具体反馈允许保留现有按压互动，不能据此把全版本美术或真机性能标成已验收；V044实际连续片与音效因果仍待复核。",
-        "nextAction": "按本轮实际片核验接触/触底/回弹和声音时序；引用V043第3/11行的439499反馈，不推导整项USER_ACCEPTED。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "显式替代范围仅为铃的旧“转身后响”触发安排；免费、机械因果、短句、无奖励/事实副作用仍有效。"
       },
       {
@@ -15034,7 +15078,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -15066,8 +15110,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Current source preserves six free entries, but exact original gag choreography diverges; clips have no audio. Do not silently erase original subclauses or redesign accepted bell without rationale.",
-        "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -15082,7 +15126,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -15114,8 +15158,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Current source preserves six free entries, but exact original gag choreography diverges; clips have no audio. Do not silently erase original subclauses or redesign accepted bell without rationale.",
-        "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -15135,7 +15179,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -15167,8 +15211,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Current source preserves six free entries, but exact original gag choreography diverges; clips have no audio. Do not silently erase original subclauses or redesign accepted bell without rationale.",
-        "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -15193,7 +15237,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -15225,8 +15269,8 @@
         "proofs": [
           "artifacts/v043-whole-state-review/process-whole-state-evidence.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Current source preserves six free entries, but exact original gag choreography diverges; clips have no audio. Do not silently erase original subclauses or redesign accepted bell without rationale.",
-        "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
+        "gap": "本次已补实际分段演出与原认可互动；固定新包自然录像、账本与独立复核仍待采集。",
+        "nextAction": "核对固定包实际过程、结算与原要求；不把内部实现视为用户或真机签收。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
       {
@@ -19742,7 +19786,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -19780,7 +19824,7 @@
         "proofs": [
           "artifacts/v043-whole-state-review/performance.json"
         ],
-        "gap": "ff91787历史WebKit收据33ms/静置铃32ms/活跃胶带32ms；V044同方法复测和定位结论尚未写入。",
+        "gap": "同设备基线与原始时序已复现，FrameCadence已针对性修正；最终新包独占性能及手机/热量仍待测。",
         "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -19801,7 +19845,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -19839,7 +19883,7 @@
         "proofs": [
           "artifacts/v043-whole-state-review/performance.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Known ff WebKit receipt33ms/idle bell32ms/active tape32ms; no new same-method retest or physical device record.",
+        "gap": "同设备基线与原始时序已复现，FrameCadence已针对性修正；最终新包独占性能及手机/热量仍待测。",
         "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -19860,7 +19904,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -19898,7 +19942,7 @@
         "proofs": [
           "artifacts/v043-whole-state-review/performance.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Known ff WebKit receipt33ms/idle bell32ms/active tape32ms; no new same-method retest or physical device record.",
+        "gap": "同设备基线与原始时序已复现，FrameCadence已针对性修正；最终新包独占性能及手机/热量仍待测。",
         "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -19919,7 +19963,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -19957,7 +20001,7 @@
         "proofs": [
           "artifacts/v043-whole-state-review/performance.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Known ff WebKit receipt33ms/idle bell32ms/active tape32ms; no new same-method retest or physical device record.",
+        "gap": "同设备基线与原始时序已复现，FrameCadence已针对性修正；最终新包独占性能及手机/热量仍待测。",
         "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -19978,7 +20022,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -20016,7 +20060,7 @@
         "proofs": [
           "artifacts/v043-whole-state-review/performance.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Known ff WebKit receipt33ms/idle bell32ms/active tape32ms; no new same-method retest or physical device record.",
+        "gap": "同设备基线与原始时序已复现，FrameCadence已针对性修正；最终新包独占性能及手机/热量仍待测。",
         "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -20032,7 +20076,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -20070,7 +20114,7 @@
         "proofs": [
           "artifacts/v043-whole-state-review/performance.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Known ff WebKit receipt33ms/idle bell32ms/active tape32ms; no new same-method retest or physical device record.",
+        "gap": "同设备基线与原始时序已复现，FrameCadence已针对性修正；最终新包独占性能及手机/热量仍待测。",
         "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -20096,7 +20140,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -20134,7 +20178,7 @@
         "proofs": [
           "artifacts/v043-whole-state-review/performance.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Known ff WebKit receipt33ms/idle bell32ms/active tape32ms; no new same-method retest or physical device record.",
+        "gap": "同设备基线与原始时序已复现，FrameCadence已针对性修正；最终新包独占性能及手机/热量仍待测。",
         "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -20155,7 +20199,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "STALE",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -20193,7 +20237,7 @@
         "proofs": [
           "artifacts/v043-whole-state-review/performance.json"
         ],
-        "gap": "V0.4.4本次固定包媒体/工程结论尚待采集与核验。Known ff WebKit receipt33ms/idle bell32ms/active tape32ms; no new same-method retest or physical device record.",
+        "gap": "同设备基线与原始时序已复现，FrameCadence已针对性修正；最终新包独占性能及手机/热量仍待测。",
         "nextAction": "用本轮固定包对应入口/原始报告核实；更新前不得把历史证据改标CURRENT_VERIFIED。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -20624,7 +20668,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "MISSING",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -20659,7 +20703,7 @@
           "artifacts/v043-whole-state-review/verification.json",
           "artifacts/v043-whole-state-review/taptap-self-test.json"
         ],
-        "gap": "防漏门禁正在实现；源码文件存在不等于当前CI已运行或当前固定包证据已验证。",
+        "gap": "可执行门禁与CI已接入；跨平台生产母版修正后需重新核对Linux及本地严格交付真实结果。",
         "nextAction": "接入现有CI并用真实当前报告/哈希断言核验，记录失败缺口。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -20675,7 +20719,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "MISSING",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -20710,7 +20754,7 @@
           "artifacts/v043-whole-state-review/verification.json",
           "artifacts/v043-whole-state-review/taptap-self-test.json"
         ],
-        "gap": "防漏门禁正在实现；源码文件存在不等于当前CI已运行或当前固定包证据已验证。",
+        "gap": "可执行门禁与CI已接入；跨平台生产母版修正后需重新核对Linux及本地严格交付真实结果。",
         "nextAction": "接入现有CI并用真实当前报告/哈希断言核验，记录失败缺口。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -20726,7 +20770,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "MISSING",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -20761,7 +20805,7 @@
           "artifacts/v043-whole-state-review/verification.json",
           "artifacts/v043-whole-state-review/taptap-self-test.json"
         ],
-        "gap": "防漏门禁正在实现；源码文件存在不等于当前CI已运行或当前固定包证据已验证。",
+        "gap": "可执行门禁与CI已接入；跨平台生产母版修正后需重新核对Linux及本地严格交付真实结果。",
         "nextAction": "接入现有CI并用真实当前报告/哈希断言核验，记录失败缺口。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
@@ -20777,7 +20821,7 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
+        "implementation": "IMPLEMENTED",
         "evidence": "MISSING",
         "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
@@ -20812,7 +20856,7 @@
           "artifacts/v043-whole-state-review/verification.json",
           "artifacts/v043-whole-state-review/taptap-self-test.json"
         ],
-        "gap": "防漏门禁正在实现；源码文件存在不等于当前CI已运行或当前固定包证据已验证。",
+        "gap": "可执行门禁与CI已接入；跨平台生产母版修正后需重新核对Linux及本地严格交付真实结果。",
         "nextAction": "接入现有CI并用真实当前报告/哈希断言核验，记录失败缺口。",
         "carry": "Retain and verify against current fixed runtime; no scope removal implied"
       },
