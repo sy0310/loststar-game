@@ -11,7 +11,8 @@ if(!['museum','mechanisms'].includes(mode))throw Error('Expected museum or mecha
 const output=process.env.RENEWAL_OUTPUT??'artifacts/v042-physical-review',base=process.env.RENEWAL_URL;
 if(!base)throw Error('RENEWAL_URL must point to the immutable extracted package');
 const metadata=JSON.parse(await readFile('releases/taptap/package-info-fusion.json','utf8'));
-if(metadata.version!=='0.4.2')throw Error('Build the V0.4.2 source/package first');
+const expectedVersion=process.env.RENEWAL_VERSION??'0.4.2';
+if(metadata.version!==expectedVersion)throw Error(`Build the ${expectedVersion} source/package first`);
 const checkout=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),paths=['src','assets/runtime','package.json','package-lock.json','vite.config.ts','vite.fusion.config.ts'];
 if(execFileSync('git',['status','--porcelain','--',...paths],{encoding:'utf8'}).trim()||execFileSync('git',['diff','--name-only',metadata.sourceCommit,checkout,'--',...paths],{encoding:'utf8'}).trim())throw Error('Dirty or different runtime');
 execFileSync('git',['merge-base','--is-ancestor',metadata.sourceCommit,checkout]);
@@ -30,7 +31,7 @@ async function open(name,fixture){
  const createdBefore=Date.now(),page=await context.newPage(),createdAfter=Date.now(),errors=[];
  page.on('pageerror',e=>errors.push(e.stack??e.message));page.on('response',r=>{if(r.status()>=400)errors.push(`${r.status()} ${r.url()}`);});
  await page.goto(base);await page.locator('#fusion-world canvas[data-ready="true"]').waitFor();await page.waitForLoadState('networkidle');
- const build=await page.locator('.fu-build').innerText();if(!build.includes('0.4.2')||!build.includes(metadata.sourceCommit.slice(0,7))||build.includes('dirty'))throw Error(`Build mismatch ${build}`);
+ const build=await page.locator('.fu-build').innerText();if(!build.includes(expectedVersion)||!build.includes(metadata.sourceCommit.slice(0,7))||build.includes('dirty'))throw Error(`Build mismatch ${build}`);
  return{name,context,page,createdBefore,createdAfter,build,errors,fixtureAudit:fixture.audit,initial:await archive(page)};
 }
 async function shot(s,name,kind='actual-page'){
@@ -51,7 +52,8 @@ async function museum(){
   report.cases.push(...good);report.videos.push(...good.map(c=>c.video));report.screenshots.push(...prior.screenshots.filter(s=>good.some(c=>s.name.startsWith(c.name+'-'))));
   report.resumedFrom={file:'museum-capture-attempt1.json',sha256:createHash('sha256').update(raw).digest('hex'),retainedCases:good.map(c=>c.name),previousCollectorErrors:prior.errors,note:'Only complete source/ZIP-bound recordings are reused. The first collector used an impossible X-only clear test for the centre cabinet; remaining groups and full native crops are recaptured using real 2D bounds.'};
  }
- for(const kind of ['all-0','all-3','mixed']){
+ for(const kind of (process.env.RENEWAL_MUSEUM_CASES??'all-0,all-3,mixed').split(',')){
+  if(!['all-0','all-3','mixed'].includes(kind))throw Error('Unknown physical museum fixture');
   if(report.cases.some(c=>c.name===`museum-${kind}`))continue;
   const fixture=kind==='mixed'?physicalMuseumFixture(Date.now()):firstPlanetFixture(Date.now(),kind==='all-3'?3:0,'stabilized');
   const s=await open(`museum-${kind}`,fixture);await s.page.locator('[data-tab="base"]').tap();await s.page.locator('#museum-canvas[data-ready="true"]').waitFor();
