@@ -1,6 +1,6 @@
 {
   "name": "loststar-game",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,7 @@
     "test:e2e": "playwright test",
     "capture": "node scripts/capture.mjs",
     "check:assets": "python3 scripts/validate_design_assets.py",
-    "check": "npm run check:assets && npm run check:execution && npm run test:coverage && npm run build && npm run build:d1 && npm run build:v034 && npm run build:fusion && npm run build:v036 && npm run test:e2e",
+    "check": "npm run check:assets && npm run check:references && npm run check:execution && npm run test:coverage && npm run build && npm run build:d1 && npm run build:v034 && npm run build:fusion && npm run build:v036 && npm run test:e2e",
     "assets:export": "node scripts/export_assets.mjs",
     "report": "node scripts/report.mjs",
     "capture:review": "node scripts/capture_review.mjs",
@@ -53,7 +53,8 @@
     "assets:export:whole-states": "node scripts/export_whole_curio_states.mjs",
     "check:execution": "node scripts/check_execution_assets.mjs",
     "check:delivery": "node scripts/check_execution_assets.mjs --delivery",
-    "coverage:render": "node scripts/render_execution_coverage.mjs --write"
+    "coverage:render": "node scripts/render_execution_coverage.mjs --write",
+    "check:references": "python3 design/v045_a_simplified_exploration/validate_reference_pngs.py"
   },
   "devDependencies": {
     "@babel/parser": "7.29.12",

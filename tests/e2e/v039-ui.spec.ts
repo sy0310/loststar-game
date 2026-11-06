@@ -1,3 +1,4 @@
+import {openACurio, openACloseup} from './a-navigation';
 import sharp from 'sharp';
 import {expect, test, type Page} from '@playwright/test';
 import {feedbackFixture} from '../../scripts/feedback_fixtures';
@@ -82,7 +83,8 @@ async function terrainTap(page: Page) {
     const canvas = document.querySelector<HTMLCanvasElement>('#fusion-world canvas')!;
     const box = canvas.getBoundingClientRect();
     for (const [px, py] of [[416, 610], [460, 600], [380, 600]]) {
-      const x = box.x + box.width * px / 832, y = box.y + box.height * py / 740;
+      const scale=Math.min(box.width/canvas.width,box.height/canvas.height);
+      const x=box.x+(box.width-canvas.width*scale)/2+px*scale,y=box.y+(box.height-canvas.height*scale)/2+py*scale;
       if ((window as any).__FUSION__.pickAtClient(x, y).kind === 'planet') return {x, y};
     }
     throw new Error('No visible terrain pixel is available for a real touch');
@@ -91,6 +93,7 @@ async function terrainTap(page: Page) {
 }
 
 async function assertFieldPartition(page: Page) {
+  await openACloseup(page,'tap');
   const layout = await page.evaluate(() => {
     const box = (selector: string) => {
       const bounds = document.querySelector(selector)!.getBoundingClientRect();
@@ -101,8 +104,8 @@ async function assertFieldPartition(page: Page) {
   });
   expect(layout.world.height).toBeGreaterThan(100);
   expect(layout.field.height).toBeGreaterThan(44);
-  expect(layout.world.bottom).toBeLessThanOrEqual(layout.field.top + 1);
-  expect(layout.field.bottom).toBeLessThanOrEqual(layout.controls.top + 1);
+  expect(layout.world.bottom).toBeLessThanOrEqual(layout.controls.top + 1);
+  expect(layout.controls.bottom).toBeLessThanOrEqual(layout.field.top + 1);
   expect(layout.field.left).toBeGreaterThanOrEqual(0);
   expect(layout.field.right).toBeLessThanOrEqual(layout.viewport);
   expect(['absolute', 'fixed']).not.toContain(layout.position);
@@ -201,8 +204,8 @@ test('整理台缺图时禁止空白扣费，资源恢复后可重试原件', as
   const fixture=firstPlanetFixture(epoch+1000,0,'found',{receiptAbility:0,tapeAbility:0});
   await page.route('**/restoration-workbench.webp*',route=>route.request().resourceType()==='image'?route.abort():route.continue());
   await installArchive(page,fixture.state);await openApp(page);
-  await page.locator('[data-tab="collection"]').tap();
-  await page.locator('#fusion-collection-list [data-detail="tape"]').tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();
+  await openACurio(page, 'tape', 'tap');
   await page.waitForLoadState('networkidle');await page.clock.runFor(400);
   await expect(page.locator('#fusion-treatment-retry')).toBeVisible();
   await expect(page.locator('#fusion-curio-primary')).toBeDisabled();
@@ -222,8 +225,8 @@ test('整理台缺图时禁止空白扣费，资源恢复后可重试原件', as
 });
 
 async function openTreatment(page: Page, id: string) {
-  await page.locator('[data-tab="collection"]').tap();
-  await page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();
+  await openACurio(page, id, 'tap');
   await page.waitForLoadState('networkidle');
   await page.clock.runFor(180);
   const canvas = page.locator(id === 'receipt' ? '#fusion-paper-focus' : '#fusion-exhibit-focus');
@@ -294,7 +297,7 @@ for (const id of ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell']
         expect(Number(await canvas.getAttribute('data-restoration-repairing'))).toBe(condition === 'stabilized' ? 1 : 0);
       } else {
         await expect(canvas).toHaveAttribute('data-material-stage', condition);
-        await expect(page.locator('#fusion-curio-condition')).toHaveText(`${presentation.label} · ${presentation.detail}`);
+        await expect(page.locator('#fusion-curio-condition')).toHaveText(presentation.label);
         expect(Number(await canvas.getAttribute('data-clean-progress'))).toBe(condition === 'found' ? 0 : 1);
         expect(Number(await canvas.getAttribute('data-repair-progress'))).toBe(condition === 'stabilized' ? 1 : 0);
         const primary = page.locator('#fusion-curio-primary');
@@ -408,7 +411,7 @@ test('零件处理中的画面保持完整前态，完成才换整图且旧账�
   const image=await page.evaluate(()=>(window as any).__FUSION__.materialSnapshot('tape'));
   expect(image).not.toBe(snapshot);
   await expect(page.locator('#fusion-treatment-result')).toHaveAttribute('data-active','true');
-  await expect(page.locator('#fusion-treatment-result')).toHaveText(next==='clean'?'清理完成 · 结构待整理':'零件升级完成');
+  await expect(page.locator('#fusion-treatment-result')).toHaveText(next==='clean'?'清理好了':'升级完成 · 安顿好了');
  }
  const after=await readArchive(page);
  expect(before.game.resources+after.game.station.grossIncome-before.game.station.grossIncome-(after.game.station.repairSpent-before.game.station.repairSpent)-after.game.resources).toBe(curioPrices.tape.clean+curioPrices.tape.repair);

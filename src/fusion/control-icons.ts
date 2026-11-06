@@ -113,6 +113,13 @@ const art:Record<string,string>={
  p(violet,'M11 7h4v7h-4z M34 7h4v7h-4z M15 17h19v14h-5v7h-9v-7h-5z')+
  p(metal,'M18 30h12v4h-5v3h-3v-3h-4z')+
  r(ink,17,21,5,6)+r(ink,28,21,5,6)+r(light,18,21,2,3)+r(light,29,21,2,3)+r(shade,8,28,8,1)+r(shade,33,28,8,1)+r(light,13,17,2,5),
+ lantern:
+ p(ink,'M20 2h9v4h6v5h5v5h-3v20h4v6h-7v3H14v-3H7v-6h4V16H8v-5h5V6h7z')+
+ p(shade,'M21 4h7v4h5v5h5v2h-3v23h4v2h-7v3H16v-3H9v-2h4V15h-3v-2h5V8h6z')+
+ p(metal,'M21 3h6v5h6v4h4v3H11v-3h4V8h6z M12 16h24v20h-3V19h-4v17h-3V19h-9v17h-3V19h-2z M9 37h30v3h-7v3H16v-3H9z')+
+ p(panel,'M18 20h8v15h-8z M30 20h2v15h-2z')+
+ p(paper,'M19 21h6v12h-6z')+p(light,'M21 21h3v11h-3z M15 10h18v2H15z M13 38h22v1H13z')+
+ r(cyan,30,24,2,5)+r(light,22,4,3,3),
  signal:
  p(ink,'M20 2h9v6h4v7h4v7h5v7h4v16H2V29h4v-7h5v-7h4V8h5z')+
  p(shade,'M21 5h7v6h4v6h4v7h4v7h3v12H5V31h4v-7h4v-7h4v-6h4z')+

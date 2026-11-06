@@ -1,3 +1,4 @@
+import {openACurio, openABaseFacility, openAFlow, revealAControl} from './a-navigation';
 import {expect, test, type Page} from '@playwright/test';
 import {newGame} from '../../src/game/engine';
 import {discoveries} from '../../src/content/catalog';
@@ -43,16 +44,19 @@ async function open(page: Page, legacy = false, basicCases = false) {
 test('融合：首屏短文案、助力实际排队、升级真实生效且无未知星球泄露', async ({page}) => {
   await open(page);
   const text = await page.locator('#fusion-app').innerText();
-  expect((text.match(/[\u4e00-\u9fff]/g) ?? []).length).toBeLessThanOrEqual(80);
+  await expect(page.locator('.fu-objective h1')).toHaveCount(1);
+  await expect(page.locator('.fu-nav > button')).toHaveCount(3);
+  expect(text).toContain('不点也会继续探索');
   expect(await page.locator('body').ariaSnapshot()).not.toMatch(/回声菌星|倒置海星|钟摆荒原星|无人游乐星|未签收之星|六颗|6颗/);
   const tap = page.locator('#fusion-tap');
   await tap.click();
   await expect.poll(async () => (await saved(page)).game.assist?.actionSeq).toBe(1);
   await step(page, 1300);
   await expect.poll(async () => (await saved(page)).game.assist.appliedWorkMs).toBeGreaterThan(0);
-  await page.locator('#fusion-upgrades').click();
+  await openABaseFacility(page, 'upgrades', 'click');
   await expect(page.locator('[data-upgrade="scanner"]')).toContainText('45');
   const before = await saved(page);
+  await revealAControl(page.locator('[data-upgrade="scanner"]'));
   await page.locator('[data-upgrade="scanner"]').click();
   await expect.poll(async () => (await saved(page)).game.upgrades.scanner).toBe(1);
   expect((await saved(page)).game.resources).toBe(before.game.resources - 45);
@@ -68,10 +72,10 @@ test('融合：旧档副本统一钱包、工程实际可用、基础整理权�
   expect((await saved(page)).game.resources).toBe(27049);
   expect((await saved(page)).receipt.condition).toBe('stabilized');
   await step(page, 2700);
-  await page.locator('[data-tab="base"]').click();
+  await page.locator('#fusion-app > .fu-nav [data-tab="base"]').click();
   await expect(page.locator('#fusion-base-dock canvas')).toHaveAttribute('data-ready', 'true');
-  await page.locator('[data-drawer="build"]').click();
-  await page.locator('[data-project="evidence-bench"]').click();
+  await openABaseFacility(page, 'build', 'click');
+  await revealAControl(page.locator('[data-project="evidence-bench"]'), 'click');await page.locator('[data-project="evidence-bench"]').click();
   await expect.poll(async () => (await saved(page)).projects.includes('evidence-bench')).toBe(true);
   expect((await saved(page)).game.resources).toBe(25249);
   await expect(page.locator('#fusion-paper-focus')).toBeVisible();
@@ -86,14 +90,14 @@ test('融合：旧档副本统一钱包、工程实际可用、基础整理权�
 test('融合：收据收起继续整理、费用与物理条件持久保存', async ({page}) => {
   await open(page);
   await step(page, 12500);
-  await page.locator('[data-tab="collection"]').click();
-  await page.locator('#fusion-collection-list [data-detail="receipt"]').click();
+  await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').click();
+  await openACurio(page, 'receipt', 'click');
   await expect(page.locator('#fusion-paper-primary')).toBeEnabled();
   await page.locator('#fusion-paper-primary').click();
   await expect.poll(async () => (await saved(page)).receipt.activeAction?.kind).toBe('excavate');
   await page.locator('#fusion-close').click();
   await step(page, 6800);
-  await page.locator('#fusion-collection-list [data-detail="receipt"]').click();
+  await openACurio(page, 'receipt', 'click');
   await expect(page.locator('#fusion-paper-primary')).toHaveAttribute('data-kind', 'clean');
   await page.locator('#fusion-paper-primary').click();
   await expect.poll(async () => (await saved(page)).receipt.activeAction?.kind).toBe('clean');
@@ -125,15 +129,15 @@ test('融合：真实昼夜、损伤维修与离线成果一次领取', async ({
   await page.clock.setSystemTime(new Date(epoch + 86400000));
   await page.reload();
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
-  await expect(page.locator('#fusion-return-chip')).toBeVisible();
-  await page.locator('#fusion-return-chip').click();
+  await openAFlow(page);await expect(page.locator('#fusion-claim')).toBeVisible();
+  await openAFlow(page, 'click');
   await page.locator('#fusion-claim').click();
   await expect.poll(async () => (await saved(page)).game.pendingReturn).toBeNull();
   const after = (await saved(page)).game.resources;
   await page.reload();
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
   expect((await saved(page)).game.resources).toBe(after);
-  await expect(page.locator('#fusion-return-chip')).toBeHidden();
+  await expect(page.locator('#fusion-claim')).toBeHidden();
 });
 
 test('融合：两个标签同时建设只结算一次', async ({page, context}) => {
@@ -147,7 +151,8 @@ test('融合：两个标签同时建设只结算一次', async ({page, context})
   await expect(second.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
   for (const tab of [page, second]) {
     await tab.locator('[data-tab="base"]').click();
-    await tab.locator('[data-drawer="build"]').click();
+    await openABaseFacility(tab, 'build');
+    await revealAControl(tab.locator('[data-project="evidence-bench"]'));
   }
   const firstBuy = await page.locator('[data-project="evidence-bench"]').elementHandle();
   const secondBuy = await second.locator('[data-project="evidence-bench"]').elementHandle();
@@ -162,28 +167,30 @@ test('融合：两个标签同时建设只结算一次', async ({page, context})
 test('融合：实际夜班归档可回放，重播复用场景且不重复结算', async ({page}) => {
   await open(page, true);
   await step(page, 310000);
-  await page.locator('[data-tab="base"]').click();
-  await page.locator('[data-drawer="build"]').click();
-  await page.locator('[data-project="archive"]').click();
+  await page.locator('#fusion-app > .fu-nav [data-tab="base"]').click();
+  await openABaseFacility(page, 'build', 'click');
+  await revealAControl(page.locator('[data-project="archive"]'), 'click');await page.locator('[data-project="archive"]').click();
   await page.locator('#fusion-replay-night').click();
-  const replay = page.locator('#fusion-archive-replay canvas');
+  const replay = page.locator('#fusion-flow-replay canvas');
   await expect(replay).toHaveAttribute('data-ready', 'true');
   const before = await saved(page);
   await step(page, 10000);
-  await expect(page.locator('#fusion-replay-status')).toContainText('处置回放');
+  await expect(page.locator('#fusion-period')).toContainText('昨夜回看');
   const after = await saved(page);
   expect(after.game.resources - before.game.resources).toBe(after.game.station.grossIncome - before.game.station.grossIncome - after.game.station.repairSpent + before.game.station.repairSpent);
   expect(after.game.world.settledNights).toBe(before.game.world.settledNights);
   const node = await replay.elementHandle();
+  await page.locator('#fusion-observe').click();
+  await openAFlow(page);
   await page.locator('#fusion-replay-night').click();
-  expect(await node!.evaluate(canvas => canvas === document.querySelector('#fusion-archive-replay canvas'))).toBe(true);
+  expect(await node!.evaluate(canvas => canvas === document.querySelector('#fusion-flow-replay canvas'))).toBe(true);
 });
 
 
 test('融合：展柜付款后立即看真实前后近景，反复切换不重复扣费', async ({page}) => {
   await open(page, true, true);
-  await page.locator('[data-tab="base"]').click();
-  await page.locator('[data-drawer="build"]').click();
+  await page.locator('#fusion-app > .fu-nav [data-tab="base"]').click();
+  await openABaseFacility(page, 'build', 'click');
   await page.locator('summary', {hasText: '展柜'}).click();
   const before = await saved(page);
   await page.locator('[data-growth="case-0"]').click();
@@ -199,7 +206,7 @@ test('融合：展柜付款后立即看真实前后近景，反复切换不重�
   expect(await preview.screenshot()).not.toEqual(old);
   expect((await saved(page)).game.resources).toBe(before.game.resources - 160);
   await page.locator('#fusion-return-build').click();
-  await expect(page.locator('#fusion-drawer-title')).toHaveText('基地建设');
+  await expect(page.locator('#fusion-drawer-title')).toHaveText('展示与小设施');
 });
 
 test('融合：慢加载时显示接通状态，空场景点击不会提前排入助力', async ({page}) => {

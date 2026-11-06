@@ -34,6 +34,8 @@ export interface SceneExtension {
   residentPose?:typeof residentMotion;
   camera?:SceneCamera;
   hideLegacySorter?:boolean;
+  /** The A layout fits one transparent world over its continuous host starfield. */
+  hostBackdrop?:boolean;
   /** Explicit renderer contract: resident drawing owns all of its new textures. */
   independentResidents?:boolean;
   worldEntities?:(context:CanvasRenderingContext2D,frame:SceneFrame)=>SceneEntity[];
@@ -117,7 +119,7 @@ export class ExpeditionScene {
   }
   resetMetrics(){this.intervals=[];this.drawTimes=[];this.lastFrame=0;}
   pickAtClient(clientX:number,clientY:number):ScenePick {
-    const point=sceneClientPoint(clientX,clientY,this.canvas.getBoundingClientRect(),this.canvas.width,this.canvas.height);
+    const point=sceneClientPoint(clientX,clientY,this.canvas.getBoundingClientRect(),this.canvas.width,this.canvas.height,getComputedStyle(this.canvas).objectFit==='contain'?'contain':'stretch');
     if(!point)return {kind:'space',x:0,y:0};
     if(!this.ready||point.x<0||point.y<0||point.x>=this.canvas.width||point.y>=this.canvas.height)return {...point,kind:'space'};
     return pickSceneCommands(point,this.hitCommands,image=>this.imageMask(image));
@@ -250,6 +252,7 @@ export class ExpeditionScene {
     const frame={t,robot:p,robotAnimation,ship,globe:this.art.globe,environment,output:this.canvas};
     let robotRenderPasses=0,robotRenderSource='base';
     c.imageSmoothingEnabled=false;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,832,740);
+    if(!this.extension?.hostBackdrop){
     c.drawImage(this.art.space,0,0,832,740);
     // Blend only the independent space backdrop into the shell's matching
     // starfield. The globe/actors are painted afterwards and never enter this mask.
@@ -258,6 +261,7 @@ export class ExpeditionScene {
     spaceEdge.addColorStop(0,'#ffffff00');spaceEdge.addColorStop(40/740,'#ffffffff');
     spaceEdge.addColorStop(700/740,'#ffffffff');spaceEdge.addColorStop(1,'#ffffff00');
     c.fillStyle=spaceEdge;c.fillRect(0,0,832,740);c.restore();
+    }
     this.positionWorld(c);
     c.save();c.translate(384,365);c.rotate(-.18);c.lineWidth=1.5;c.strokeStyle='#b49bd350';c.setLineDash([3,12]);c.beginPath();c.ellipse(0,0,350,175,0,0,Math.PI*2);c.stroke();c.restore();
     if(ship.back)this.drawShip(t,ship);

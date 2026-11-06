@@ -62,7 +62,7 @@ for (const [engine, width, height] of [['chromium', 360, 800], ['chromium', 390,
         let before = await read(page);
         if (kind === 'new-player') {
           if (before.game.resources !== 120 || before.game.collection.length) throw new Error('New player baseline changed');
-          await page.locator('#fusion-dismiss-intro').tap();await page.locator('#fusion-upgrades').tap();
+          await page.locator('[data-tab="base"]').tap();await page.locator('#fusion-base [data-drawer="upgrades"]').tap();
           await page.locator('[data-upgrade="scanner"]').tap();
           for (let attempt = 0; attempt < 30; attempt++) {before = await read(page);if (before.game.upgrades.scanner === 1) break;await page.waitForTimeout(50);}
           if (before.game.resources !== 75 || before.game.upgrades.scanner !== 1) throw new Error('Real packaged purchase failed');

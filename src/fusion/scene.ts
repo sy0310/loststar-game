@@ -91,12 +91,14 @@ function drawTracking(context: CanvasRenderingContext2D, frame: SceneFrame, acto
   context.save();context.globalAlpha = actor.alpha * .6;context.strokeStyle = '#b9dcc6';context.lineWidth = 1;
   const radius = 28 + ((frame.environment.seconds * .6) % 1) * 12;
   context.beginPath();context.ellipse(point.x, point.groundY + 4, radius, radius * .24, 0, 0, Math.PI * 2);context.stroke();
-  context.fillStyle = '#483c53';context.fillRect(point.x - 23, point.y - 49, 46, 3);
-  context.fillStyle = '#c8e9c4';context.fillRect(point.x - 23, point.y - 49, 46 * actor.verification, 3);
-  if (actor.stunned) {
-    context.fillStyle = '#b6d8c6';context.fillRect(258, 372, 48, 2);
-    for (let index = 0; index < 6; index++) context.fillRect(258 + index * 8, 374, 3, 26);
-  }
+  // A visitor is being read by lamplight, never represented by a health bar.
+  const glint = .4 + Math.sin(frame.environment.seconds * 3) * .15;
+  context.globalAlpha *= glint;
+  context.fillStyle = '#f6dc9c';
+  context.fillRect(point.x - 23, point.y - 39, 5, 1);
+  context.fillRect(point.x - 23, point.y - 39, 1, 5);
+  context.fillRect(point.x + 18, point.y - 18, 5, 1);
+  context.fillRect(point.x + 22, point.y - 22, 1, 5);
   context.restore();
 }
 
@@ -193,6 +195,7 @@ export function createFusionScene(
     ...layer,
     ready: Promise.all([layer.ready, daily.ready, prepareFusionAnomalies(), engineering.ready, sorting.ready, surface.ready, mast?.ready]).then(() => {}),
     hideLegacySorter: journey,
+    hostBackdrop: true,
     independentResidents: true,
     robotAnimation: journey ? () => {
       if (snapshot().environment.period === 'night') return undefined;

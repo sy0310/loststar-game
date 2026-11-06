@@ -1,3 +1,4 @@
+import {openACurio} from './a-navigation';
 import {test,expect} from '@playwright/test';
 import {newGame,advance,tuning} from '../../src/game/engine';
 import {RESTORATION_DURATIONS} from '../../src/review/receipt-restoration';
@@ -190,13 +191,13 @@ test('融合原生触控：点星球有助力，六件奇物可反复互动且�
   const original = await page.evaluate(() => localStorage.getItem('loststar.save.v1'));
   await tap(page, page.locator('#fusion-tap'));
   await expect.poll(async () => (await read()).game.assist?.actionSeq).toBe(1);
-  await tap(page, page.locator('[data-tab="collection"]'));
+  await tap(page, page.locator('#fusion-app > .fu-nav [data-tab="collection"]'));
   const before = await read();
   for (const id of ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell']) {
-    await tap(page, page.locator(`#fusion-collection-list [data-detail="${id}"]`));
+    await openACurio(page, id, 'tap');
     const trial = page.locator('#fusion-try');
     await expect(trial).toBeEnabled();
-    await tap(page, trial);
+    await trial.tap();
     if (id === 'receipt') {
       await expect.poll(async () => (await read()).receipt.activeAction?.kind).toBe('try');
       const canvas = page.locator('#fusion-paper-focus');
@@ -205,7 +206,7 @@ test('融合原生触控：点星球有助力，六件奇物可反复互动且�
       expect(await canvas.screenshot()).not.toEqual(first);
       const action = (await read()).receipt.activeAction?.id;
       await expect(trial).toBeEnabled({timeout:5000});
-      await tap(page, trial);
+      await trial.tap();
       await expect.poll(async () => (await read()).receipt.activeAction?.id).not.toBe(action);
       await expect(canvas).toHaveAttribute('data-restoration-phase','trying');
     } else {
@@ -226,7 +227,7 @@ test('融合原生触控：点星球有助力，六件奇物可反复互动且�
         await expect(trial).toBeDisabled();
         await expect(trial).toBeEnabled({timeout:5000});
       }
-      await tap(page, trial);
+      await trial.tap();
       await expect(canvas).not.toHaveAttribute('data-replay', replay!);
       await expect(canvas).not.toHaveAttribute('data-experiment-started-at', started!);
       await expect(canvas).toHaveAttribute('data-experiment-playing', 'true');

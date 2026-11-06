@@ -1,3 +1,4 @@
+import {openACurio, openACollection, openAFlow} from './a-navigation';
 import {expect,test,type Page} from '@playwright/test';
 import {firstPlanetFixture} from '../../scripts/firstplanet_fixtures';
 import {createFusion,advanceFusion} from '../../src/fusion/domain';
@@ -25,6 +26,7 @@ for(const condition of ['found','clean','stabilized'] as const)test(`${condition
   await page.locator(`#fusion-app > .fu-nav [data-tab="${tab}"]`).tap();
   await expect.poll(()=>page.locator('#museum-canvas').evaluate(c=>JSON.parse((c as HTMLCanvasElement).dataset.curioStates??'{}'))).toEqual(Object.fromEntries(ids.map(id=>[id,`${id}-${condition}`])));
  }
+ await openACollection(page,'tap');
  for(const id of ids){
   const card=page.locator(`#fusion-collection-list [data-detail="${id}"]`);
   await expect(card.locator('img')).toHaveAttribute('src',new RegExp(`${id}-${condition}.*\\.webp`));
@@ -35,7 +37,7 @@ for(const condition of ['found','clean','stabilized'] as const)test(`${condition
   await page.locator('#fusion-close').tap();
  }
  const before=await read(page);await page.reload();await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready','true');
- await page.locator('[data-tab="base"]').tap();await page.clock.runFor(300);
+ await page.locator('#fusion-app > .fu-nav [data-tab="base"]').tap();await page.clock.runFor(300);
  const canvas=page.locator('#museum-canvas');await expect(canvas).toHaveAttribute('data-ready','true');
  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));});
  const frame=await canvas.getAttribute('data-frame');await page.clock.runFor(500);expect(await canvas.getAttribute('data-frame')).toBe(frame);
@@ -48,19 +50,20 @@ for(const condition of ['found','clean','stabilized'] as const)test(`${condition
 test('真实新发现与离线归航都读持久A图，领取及预览不补造B或C',async({page})=>{
  await clock(page);const fresh=createFusion(epoch+1000,null,{journey:true,seed:17441});await install(page,fresh);
  await page.clock.fastForward(12000);await page.clock.runFor(400);
- await expect(page.locator('#fusion-found')).toBeVisible();
- const id=await page.locator('#fusion-found').getAttribute('data-detail');expect(ids).toContain(id);
- await expect(page.locator('#fusion-found-art img')).toHaveAttribute('src',new RegExp(`${id}-found.*\\.webp`));
+ await openAFlow(page,'tap');
+ const found=page.locator('#fusion-flow-content .fu-flow-find img[data-curio-id]').first();
+ await expect(found).toBeVisible();const id=await found.getAttribute('data-curio-id');expect(ids).toContain(id);
+ await expect(found).toHaveAttribute('src',new RegExp(`${id}-found.*\\.webp`));
  const now=await page.evaluate(()=>Date.now()),offline=advanceFusion(createFusion(now-1200000,null,{journey:true,seed:17442}),now,true);
  expect(offline.game.pendingReturn!.discoveries.length).toBeGreaterThan(0);await install(page,offline);
- if(!await page.locator('#fusion-drawer[open]').count())await page.locator('#fusion-return-chip').tap();
- for(const id of offline.game.pendingReturn!.discoveries.filter(id=>ids.includes(id)))await expect(page.locator(`.fu-return-items img[data-curio-id="${id}"]`)).toHaveAttribute('src',new RegExp(`${id}-found.*\\.webp`));
+ await openAFlow(page,'tap');
+ for(const id of offline.game.pendingReturn!.discoveries.filter(id=>ids.includes(id)))await expect(page.locator(`#fusion-flow-content .fu-flow-cargo img[data-curio-id="${id}"]`)).toHaveAttribute('src',new RegExp(`${id}-found.*\\.webp`));
  await page.locator('#fusion-claim').tap();const after=await read(page);expect(after.receipt.condition).toBe('found');expect(Object.values(after.curios).every(x=>x.condition==='found')).toBe(true);
 });
 
 test('只读放大及后台隐藏停止近景绘制，返回恢复；已认可铃按动和延后短句保留',async({page})=>{
  await clock(page);await install(page,firstPlanetFixture(epoch+1000,0,'stabilized',{receiptAbility:0,tapeAbility:0}).state);
- await page.locator('[data-tab="collection"]').tap();await page.locator('#fusion-collection-list [data-detail="bell"]').tap();const canvas=page.locator('#fusion-exhibit-focus');await expect(canvas).toHaveAttribute('data-ready','true');
+ await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();await openACurio(page, 'bell', 'tap');const canvas=page.locator('#fusion-exhibit-focus');await expect(canvas).toHaveAttribute('data-ready','true');
  await page.locator('[data-image-preview-condition="found"]').tap();await page.clock.runFor(50);const f=await canvas.getAttribute('data-frame');await page.clock.runFor(500);expect(await canvas.getAttribute('data-frame')).toBe(f);
  await page.locator('#fusion-state-preview-close').tap();await page.clock.runFor(200);expect(Number(await canvas.getAttribute('data-frame'))).toBeGreaterThan(Number(f));
  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));});const hidden=await canvas.getAttribute('data-frame');await page.clock.runFor(500);expect(await canvas.getAttribute('data-frame')).toBe(hidden);
@@ -70,10 +73,10 @@ test('只读放大及后台隐藏停止近景绘制，返回恢复；已认可�
 
 test('邮戳试验实际把票面退一天，套娃延后揭示原箱；重播不扣费或增添记录',async({page})=>{
  await clock(page);await install(page,firstPlanetFixture(epoch+1000,0,'stabilized',{receiptAbility:0,tapeAbility:0}).state);
- await page.locator('[data-tab="collection"]').tap();
+ await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();
  const before=await read(page);
  for(const id of ['stamp','nested']){
-  await page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();const canvas=page.locator('#fusion-exhibit-focus');await expect(canvas).toHaveAttribute('data-ready','true');
+  await openACurio(page, id, 'tap');const canvas=page.locator('#fusion-exhibit-focus');await expect(canvas).toHaveAttribute('data-ready','true');
   for(let replay=0;replay<2;replay++){
    await page.locator('#fusion-try').tap();await page.clock.runFor(400);const today=await canvas.getAttribute('data-performance-date');await page.clock.runFor(1050);
    if(id==='stamp')expect(await canvas.getAttribute('data-performance-date')).not.toBe(today);
@@ -90,7 +93,7 @@ test('收据两种柜级的反转短句与动画同屏可读，不落到竖屏�
  await clock(page);
  for(const level of [0,3]){
   await install(page,firstPlanetFixture(epoch+1000,level,'stabilized',{receiptAbility:0,tapeAbility:0}).state);
-  await page.locator('[data-tab="collection"]').tap();await page.locator('#fusion-collection-list [data-detail="receipt"]').tap();await expect(page.locator('#fusion-paper-focus')).toHaveAttribute('data-ready','true');
+  await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();await openACurio(page, 'receipt', 'tap');await expect(page.locator('#fusion-paper-focus')).toHaveAttribute('data-ready','true');
   await page.locator('#fusion-try').tap();await page.clock.runFor(1500);
   const response=page.locator('#fusion-curio-response');await expect(response).toHaveText('订单没下，退货先到。');await expect(response).toBeInViewport({ratio:1});
   const box=await response.boundingBox(),view=await page.evaluate(()=>innerHeight);expect(box!.y).toBeGreaterThanOrEqual(0);expect(box!.y+box!.height).toBeLessThanOrEqual(view);

@@ -1,3 +1,4 @@
+import {openABaseFacility, openACloseup} from './a-navigation';
 import {expect, test, type Page} from '@playwright/test';
 import {newGame} from '../../src/game/engine';
 import {discoveries} from '../../src/content/catalog';
@@ -128,26 +129,33 @@ test('手势拒绝长按双指和滚动，有效原生轻点与键盘各接受�
   await expect.poll(async () => ((await saved(page)).game.assist?.actionSeq ?? 0)).toBe(2);
 });
 
-test('实际机器人与居民命中分别打开设备和详情，场景外点击保持零助力', async ({page}) => {
+test('实际机器人与居民命中按A方案协助探索，管理入口收拢且场景外点击零助力', async ({page}) => {
   await open(page, true);
   const robot = await pointFor(page, 'robot');
   await auditedTouch(page, robot, 'robot');
-  await expect(page.locator('#fusion-drawer')).toBeVisible();
-  await expect(page.locator('#fusion-drawer-title')).toHaveText('设备升级');
-  expect(((await saved(page)).game.assist?.actionSeq ?? 0)).toBe(0);
-  await page.locator('[data-upgrade="scanner"]').dispatchEvent('click', {clientX: robot.x, clientY: robot.y, detail: 1});
+  await expect(page.locator('#fusion-drawer')).toBeHidden();
+  await expect.poll(async () => ((await saved(page)).game.assist?.actionSeq ?? 0)).toBe(1);
+  // Retarget a compatibility click in the same frame as the actual scene
+  // touch. Real navigation taps would advance beyond its 700ms guard window.
+  await page.evaluate(robot => {
+    document.querySelector<HTMLButtonElement>('.fu-nav [data-tab="base"]')!.click();
+    document.querySelector<HTMLButtonElement>('.fu-base-grow')!.click();
+    document.querySelector('[data-upgrade="scanner"]')!.dispatchEvent(new MouseEvent('click',
+      {bubbles: true, clientX: robot.x, clientY: robot.y, detail: 1}));
+  }, robot);
+  await expect(page.locator('#fusion-drawer-title')).toHaveText('让探索轻松一点');
   expect((await saved(page)).game.upgrades.scanner).toBe(0);
   await page.locator('#fusion-close').tap();
-  await page.clock.runFor(100);
+  await page.locator('#fusion-app > .fu-nav [data-tab="explore"]').tap();
+  await page.clock.runFor(400);
   const resident = await pointFor(page, 'resident');
   await auditedTouch(page, resident, 'resident');
-  await expect(page.locator('#fusion-drawer-title')).toHaveText(discoveries.find(item => item.id === resident.id)!.name);
-  expect(((await saved(page)).game.assist?.actionSeq ?? 0)).toBe(0);
-  await page.locator('#fusion-close').tap();
+  await expect(page.locator('#fusion-drawer')).toBeHidden();
+  await expect.poll(async () => ((await saved(page)).game.assist?.actionSeq ?? 0)).toBe(2);
   await page.clock.runFor(100);
   const canvas = await page.locator('#fusion-world canvas').boundingBox();
   await page.touchscreen.tap(canvas!.x + 2, canvas!.y + 2);
-  expect(((await saved(page)).game.assist?.actionSeq ?? 0)).toBe(0);
+  expect(((await saved(page)).game.assist?.actionSeq ?? 0)).toBe(2);
 });
 
 test('调查面板打开安排刷新取消保持可操作，页面和控制台均无错误', async ({page}) => {
@@ -155,16 +163,16 @@ test('调查面板打开安排刷新取消保持可操作，页面和控制台�
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => {if (message.type() === 'error') errors.push(message.text());});
   await open(page, true);
-  await page.locator('[data-tab="base"]').tap();
-  await page.locator('[data-drawer="research"]').tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="base"]').tap();
+  await openABaseFacility(page,'research','tap');
   await page.locator('button[data-task="marker"]').tap();
   await expect.poll(async () => (await saved(page)).task?.target).toBe('marker');
   await page.clock.runFor(1500);
   await page.reload();
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
   await page.clock.runFor(300);
-  await page.locator('[data-tab="base"]').tap();
-  await page.locator('[data-drawer="research"]').tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="base"]').tap();
+  await openABaseFacility(page,'research','tap');
   await expect(page.locator('button[data-cancel-task]')).toBeVisible();
   await page.locator('button[data-cancel-task]').tap();
   await expect.poll(async () => (await saved(page)).task).toBeNull();
@@ -184,7 +192,7 @@ test('夜间点选星球和机器人只聚焦实景，守护助力账目保持�
   const terrain = await pointFor(page, 'planet');
   await page.touchscreen.tap(terrain.x, terrain.y);
   await expect(page.locator('#fusion-pick-reticle')).toBeVisible();
-  await expect(page.locator('#fusion-inspection-panel')).toBeVisible();
+  await openACloseup(page,'tap');await expect(page.locator('#fusion-inspection-panel')).toBeVisible();
   await expect(page.locator('#fusion-drawer')).toBeHidden();
   const robot = await pointFor(page, 'robot');
   await page.touchscreen.tap(robot.x, robot.y);

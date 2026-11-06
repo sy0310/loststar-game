@@ -13,8 +13,15 @@ export interface SceneImageCommand {
 export interface SceneAlphaMask {width: number; height: number; alpha: Uint8Array}
 
 export function sceneClientPoint(clientX: number, clientY: number,
-  rectangle: {left: number; top: number; width: number; height: number}, width: number, height: number): ScenePoint | null {
+  rectangle: {left: number; top: number; width: number; height: number}, width: number, height: number,
+  fit: 'stretch' | 'contain' = 'stretch'): ScenePoint | null {
   if (!Number.isFinite(clientX) || !Number.isFinite(clientY) || rectangle.width <= 0 || rectangle.height <= 0) return null;
+  if (fit === 'contain') {
+    const scale = Math.min(rectangle.width / width, rectangle.height / height);
+    const x = (clientX - rectangle.left - (rectangle.width - width * scale) / 2) / scale;
+    const y = (clientY - rectangle.top - (rectangle.height - height * scale) / 2) / scale;
+    return x < 0 || y < 0 || x >= width || y >= height ? null : {x, y};
+  }
   return {x: (clientX - rectangle.left) * width / rectangle.width, y: (clientY - rectangle.top) * height / rectangle.height};
 }
 

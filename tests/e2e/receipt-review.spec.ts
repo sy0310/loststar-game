@@ -1,3 +1,4 @@
+import {openACurio} from './a-navigation';
 import {expect, test, type Page} from '@playwright/test';
 import {firstPlanetFixture, type FirstPlanetFixtureStage} from '../../scripts/firstplanet_fixtures';
 import {advanceFusion} from '../../src/fusion/domain';
@@ -52,12 +53,12 @@ async function openArchive(page: Page, stage: FirstPlanetFixtureStage, held = fa
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
   await page.waitForLoadState('networkidle');
   await page.clock.runFor(300);
-  await page.locator('[data-tab="collection"]').tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();
   return fixture;
 }
 
 async function openReceipt(page: Page) {
-  await page.locator('#fusion-collection-list [data-detail="receipt"]').tap();
+  await openACurio(page, 'receipt', 'tap');
   await expect(page.locator(paper)).toHaveAttribute('data-ready', 'true');
   await page.clock.runFor(120);
 }
@@ -209,7 +210,7 @@ test('六件完成态使用具体展品动作，处理区没有通用试一试�
   ] as const;
   const before = await readArchive(page);
   for (const [id, label] of labels) {
-    await page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();
+    await openACurio(page, id, 'tap');
     const canvas = page.locator(id === 'receipt' ? paper : '#fusion-exhibit-focus');
     await expect(canvas).toHaveAttribute('data-ready', 'true');
     await expect(canvas).toHaveAttribute('data-condition', 'stabilized');

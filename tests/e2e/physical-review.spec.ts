@@ -1,3 +1,4 @@
+import {openACurio} from './a-navigation';
 import {expect,test,type Page} from '@playwright/test';
 import {firstPlanetFixture} from '../../scripts/firstplanet_fixtures';
 import {advanceFusion} from '../../src/fusion/domain';
@@ -10,9 +11,9 @@ async function seed(page:Page,ability:0|1|2=0){
  // ordinary settlement and make the no-charge check vacuous.
  const fixture=firstPlanetFixture(await page.evaluate(()=>Date.now()),2,'stabilized',{receiptAbility:0,tapeAbility:ability});
  await page.goto('/tests/fixtures/fusion-store.html');await page.evaluate(({name,state})=>new Promise<void>((resolve,reject)=>{localStorage.setItem('loststar.ui.firstplanet.v037.intro',String(state.journey!.seed));const r=indexedDB.open(name,1);r.onupgradeneeded=()=>r.result.createObjectStore('archive');r.onsuccess=()=>{const d=r.result,t=d.transaction('archive','readwrite');t.objectStore('archive').put(state,'current');t.oncomplete=()=>{d.close();resolve();};t.onerror=()=>reject(t.error);};}),{name:database,state:fixture.state});
- await page.goto('/?sample=first-planet');await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready','true');await page.waitForLoadState('networkidle');await page.clock.runFor(150);await page.locator('[data-tab="collection"]').tap();
+ await page.goto('/?sample=first-planet');await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready','true');await page.waitForLoadState('networkidle');await page.clock.runFor(150);await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();
 }
-async function detail(page:Page,id:string){await page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();await expect(page.locator(focus)).toHaveAttribute('data-ready','true');await expect(page.locator('#fusion-try')).toBeEnabled();}
+async function detail(page:Page,id:string){await openACurio(page, id, 'tap');await expect(page.locator(focus)).toHaveAttribute('data-ready','true');await expect(page.locator('#fusion-try')).toBeEnabled();}
 async function data(page:Page){return page.locator(focus).evaluate(c=>({...c.dataset}));}
 function noNewRightsOrCharges(before:FusionSave,after:FusionSave){
  const automatic=advanceFusion(before,after.game.lastAt);
@@ -60,6 +61,6 @@ test('后台跨过铃的触底窗口不会在返回时补响或重新播放压�
 
 for(const [id,asset]of [['tape','tape-frame-back'],['bell','bell-shell']] as const)test(`${id}关键独立部件首次失败后可显式重试，不显示旧碎片、不重买研究`,async({page})=>{
  await page.route(`**/${asset}.webp*`,route=>route.request().resourceType()==='image'?route.abort():route.continue());await seed(page,2);
- await expect(page.locator('#fusion-museum-retry')).toBeVisible();await page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();await page.clock.runFor(150);await expect(page.locator('#fusion-try')).toBeDisabled();await expect(page.locator('#fusion-exhibit-interaction')).toBeHidden();
+ await expect(page.locator('#fusion-museum-retry')).toBeVisible();await openACurio(page, id, 'tap');await page.clock.runFor(150);await expect(page.locator('#fusion-try')).toBeDisabled();await expect(page.locator('#fusion-exhibit-interaction')).toBeHidden();
  const before=await archive(page);await page.unroute(`**/${asset}.webp*`);await page.locator('#fusion-treatment-retry').tap();await expect(page.locator(focus)).toHaveAttribute('data-ready','true');await expect(page.locator('#fusion-try')).toBeEnabled();await page.locator('#fusion-try').tap();await page.clock.runFor(2800);noNewRightsOrCharges(before,await archive(page));
 });

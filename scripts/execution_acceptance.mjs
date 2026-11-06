@@ -81,7 +81,7 @@ async function decode(bytes) {
 }
 
 export async function validateAssets({registry, registration, readFile}) {
-  const errors = [], checks = [], digests = new Map();
+  const errors = [], checks = [], referenceChecks = [], digests = new Map();
   const error = (code, message) => errors.push(failure(code, message, 'ART-01'));
   let exportBounds, exportMasters = {};
   try {
@@ -95,6 +95,23 @@ export async function validateAssets({registry, registration, readFile}) {
   for (const row of registry.files ?? []) {
     if (registered.has(row.path)) error('DUPLICATE_ASSET_PATH', row.path);
     registered.set(row.path, row);
+  }
+  // Approved concepts remain independent originals, never runtime layers or crops.
+  // Optional registration preserves the validator's small injected asset fixtures.
+  for (const record of registry.approvedReferenceManifests ?? []) {
+    try {
+      const manifest = JSON.parse((await readFile(record.path)).toString());
+      if (!Number.isInteger(record.imageCount) || record.imageCount < 1 || record.conceptOnly !== true || manifest.images?.length !== record.imageCount) throw Error('Expected explicit concept-only original image count');
+      const paths = new Set();
+      for (const image of manifest.images) {
+        if (!isRepoPath(image.path) || paths.has(image.path) || !image.path.endsWith('.png')) throw Error(`Invalid/duplicate original PNG: ${image.path}`);
+        paths.add(image.path);
+        const raw = await readFile(image.path), metadata = await sharp(raw, {failOn: 'warning'}).metadata(), row = registered.get(image.path);
+        if (metadata.format !== 'png' || raw.length !== image.bytes || sha256(raw) !== image.sha256 || metadata.width !== image.width || metadata.height !== image.height) throw Error(`Original bytes/hash/dimensions differ: ${image.path}`);
+        if (!row || row.kind !== 'approved-reference' || row.bytes !== raw.length || row.sha256 !== image.sha256 || row.width !== image.width || row.height !== image.height) throw Error(`Canonical original registration missing/stale: ${image.path}`);
+        referenceChecks.push({id: `reference:${image.path}`, sha256: image.sha256, bytes: raw.length, width: metadata.width, height: metadata.height, conceptOnly: true});
+      }
+    } catch (cause) {error('APPROVED_REFERENCE_ORIGINAL', `${record.path}: ${cause.message}`);}
   }
   const expected = CURIOS.flatMap(id => STAGES.map(stage => `${id}-${stage}`));
   const entries = registration.assets ?? [];
@@ -208,7 +225,7 @@ export async function validateAssets({registry, registration, readFile}) {
     } catch (cause) {error('ASSET_READ_OR_DECODE', `${key}: ${cause.message}`);}
   }
   for (const id of expected) if (!seen.has(id) || !canonical.has(id)) error('MISSING_STATE', id);
-  return {errors, checks};
+  return {errors, checks, referenceChecks};
 }
 
 function parseFile(_name, source) {return parse(source, {sourceType: 'module', plugins: ['typescript']});}
@@ -238,7 +255,7 @@ function executeFunction(source, name, globals, expression) {
 }
 
 /** Probe actual selectors/draw functions and verify their reachable production import chain. */
-export async function validateRuntimeContracts({readFile}) {
+export async function validateRuntimeContracts({readFile, requireAExploration = false}) {
   const errors = [], checks = [], sources = new Map();
   const error = (code, message) => errors.push(failure(code, message, 'INT-01'));
   async function source(name) {if (!sources.has(name)) sources.set(name, (await readFile(name)).toString()); return sources.get(name);}
@@ -284,6 +301,17 @@ export async function validateRuntimeContracts({readFile}) {
       }
     }
     const ui = await source('src/fusion/ui.ts');
+    if (requireAExploration) {
+      const explore = ui.slice(ui.indexOf('<section id="fusion-explore"'), ui.indexOf('<section id="fusion-collection"'));
+      const base = ui.slice(ui.indexOf('<section id="fusion-base"'), ui.indexOf('<p id="fusion-save-warning"'));
+      if ((explore.match(/id="fusion-observe"/g) ?? []).length !== 1) error('A045_SINGLE_EVENT_ENTRY', 'Exploration must have exactly one authorized current-event entry');
+      for (const id of ['fusion-objective', 'fusion-objective-progress', 'fusion-observe', 'fusion-assist', 'fusion-field-drawer', 'fusion-flow-content', 'fusion-flow-replay']) if (!explore.includes(`id="${id}"`)) error('A045_EXPLORATION_ENTRY', `Missing single-flow exploration contract: ${id}`);
+      for (const id of ['fusion-found', 'fusion-return-chip', 'fusion-upgrades', 'fusion-damage', 'fusion-map', 'fusion-wallet', 'fusion-settings']) if (explore.includes(`id="${id}"`)) error('A045_OBSOLETE_HOME_ENTRY', `${id} must use the authorized unified flow/base location`);
+      for (const id of ['fusion-base-more', 'fusion-map', 'fusion-wallet', 'fusion-settings']) if (!base.includes(`id="${id}"`)) error('A045_RETAINED_BASE_ENTRY', `Necessary retained base facility missing: ${id}`);
+      if (!base.includes('data-drawer="upgrades"') || !ui.includes('id="fusion-collection-index"') || !ui.includes('fusion-back-to-collection') || !ui.includes('data-base-ability')) error('A045_RETAINED_RIGHTS_ENTRY', 'Base growth/research or collection return/index entry missing');
+      if (!ui.includes("button.id === 'fusion-replay-night'") || !ui.includes("query('#fusion-flow-replay')") || !ui.includes("controller.state.projects.includes('archive')")) error('A045_OWNED_REPLAY_ENTRY', 'Owned archive replay must retain its real right and main-world replay region');
+      checks.push({id: 'runtime:a045-entry-contract', requirements: 13, unifiedEventEntries: (explore.match(/id="fusion-observe"/g) ?? []).length, retainedBaseManagement: 3});
+    }
     const previewStart = ui.indexOf('if (button.dataset.imagePreviewCondition');
     const previewEnd = ui.indexOf("if (button.id==='fusion-state-preview-close')", previewStart);
     const preview = ui.slice(previewStart, previewEnd);
@@ -322,7 +350,7 @@ export function extractNormativeClauses(documentPath, text) {
   for (const [index, line] of text.split('\n').entries()) {
     if (/^\s*```/.test(line)) {fenced = !fenced; continue;}
     if (fenced || !line.trim() || /^\s*(?:#|>)/.test(line)) continue;
-    const table = /^\s*\|/.test(line) && !/^\s*\|[\s:|-]+\|\s*$/.test(line) && !/^\s*\|\s*(?:ID|id|对象|要求|项目|物件|奇物|状态|页面|交付项|模块|检查项|范围|尺寸|步骤|级别|属性|字段|文件|资源|编号|核对对象)\s*\|/i.test(line);
+    const table = /^\s*\|/.test(line) && !/^\s*\|[\s:|-]+\|\s*$/.test(line) && !/^\s*\|\s*(?:ID|id|对象|要求|项目|物件|奇物|状态|页面|交付项|模块|检查项|范围|尺寸|步骤|级别|属性|字段|文件|资源|编号|核对对象|原图|旧入口\/内容)\s*\|/i.test(line);
     if (/^\s*(?:[-*]|\d+\.)\s+/.test(line) || table || /必须|不得|不能|禁止|至少/.test(line)) clauses.push({path: documentPath, startLine: index + 1, endLine: index + 1, text: line.trim()});
   }
   return clauses;
@@ -332,6 +360,7 @@ export async function validateSourceCoverage({acceptance, readFile}) {
   const errors = [], gaps = [], coverage = acceptance?.sourceCoverage;
   if (!coverage?.documents?.length) return {errors, gaps: [failure('SOURCE_COVERAGE_MISSING', 'Original and current normative clauses need a sourceCoverage document inventory')]};
   const allRefs = (acceptance.requirements ?? []).flatMap(row => row.sourceRefs ?? []);
+  for (const contract of acceptance.requirementContracts ?? []) if (!coverage.documents.includes(contract)) errors.push(failure('CONTRACT_COVERAGE_MISSING', `${contract}: executable requirement contract must also inventory its normative source clauses`));
   for (const ref of coverage.informationalRefs ?? []) {
     try {
       const lines = (await readFile(ref.path)).toString().split('\n');
@@ -366,7 +395,9 @@ export async function validateRequirements({acceptance, readFile, expectedRequir
   if (!COMMIT.test(acceptance?.baselineRuntime ?? '')) error('BASELINE_RUNTIME', 'baselineRuntime must identify the original full runtime commit SHA');
   if (!Array.isArray(rows) || !rows.length) return {errors: [...errors, failure('REQUIREMENTS_MISSING', 'Canonical registry needs requirement rows')], gaps, ids: []};
   let contractIds = [];
-  try {contractIds = minimumIdsFromContract((await readFile('design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md')).toString());} catch (cause) {error('CONTRACT_READ', cause.message);}
+  for (const document of new Set(['design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md', ...(acceptance.requirementContracts ?? [])])) {
+    try {contractIds.push(...minimumIdsFromContract((await readFile(document)).toString()));} catch (cause) {error('CONTRACT_READ', `${document}: ${cause.message}`);}
+  }
   const required = new Set([...MINIMUM_REQUIREMENT_IDS, ...contractIds, ...expectedRequirementIds, ...(acceptance.requiredIds ?? [])]);
   const seen = new Set();
   for (const row of rows) {
@@ -549,7 +580,7 @@ export async function validateAcceptance(options) {
   const registration = options.registration ?? JSON.parse((await readFile(REGISTRATION_PATH)).toString());
   const acceptance = registry.acceptance;
   const assets = await validateAssets({registry, registration, readFile});
-  const runtime = await validateRuntimeContracts({readFile});
+  const runtime = await validateRuntimeContracts({readFile, requireAExploration: acceptance?.requiredIds?.includes('A045-01')});
   const requirements = await validateRequirements({acceptance, readFile, expectedRequirementIds: options.expectedRequirementIds});
   const sourceCoverage = await validateSourceCoverage({acceptance, readFile});
   if (acceptance?.rendering?.document) {
@@ -569,5 +600,5 @@ export async function validateAcceptance(options) {
   const onlyUnavailableArchive = mode === 'static' && !errors.length && gaps.some(item => item.code === 'FIXED_ARCHIVE_NOT_AVAILABLE') && gaps.every(item => item.pendingAcceptance || item.code === 'FIXED_ARCHIVE_NOT_AVAILABLE');
   if (declared === 'FINAL' && !overallFinal || declared === 'REVIEW_READY' && !reviewReady && !onlyUnavailableArchive) errors.push(failure('FALSE_DELIVERY_CLAIM', `Declared ${declared} exceeds verified readiness`));
   const ready = reviewReady && !errors.length, final = overallFinal && !errors.length;
-  return {schema: 1, mode, staticValid: errors.length === 0, reviewReady: ready, overallFinal: final, status: final ? 'FINAL' : ready ? 'REVIEW_READY_PENDING_USER_PHONE' : 'NOT_READY', errors, gaps, checks: [...assets.checks, ...runtime.checks, ...proof.checks], summary: {requirements: requirements.ids.length, states: assets.checks.length, errors: errors.length, gaps: gaps.length, pendingUserOrPhone: gaps.filter(item => item.pendingAcceptance).length}};
+  return {schema: 1, mode, staticValid: errors.length === 0, reviewReady: ready, overallFinal: final, status: final ? 'FINAL' : ready ? 'REVIEW_READY_PENDING_USER_PHONE' : 'NOT_READY', errors, gaps, checks: [...assets.checks, ...assets.referenceChecks, ...runtime.checks, ...proof.checks], summary: {requirements: requirements.ids.length, states: assets.checks.length, approvedReferenceOriginals: assets.referenceChecks.length, errors: errors.length, gaps: gaps.length, pendingUserOrPhone: gaps.filter(item => item.pendingAcceptance).length}};
 }

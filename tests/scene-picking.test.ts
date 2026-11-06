@@ -16,6 +16,15 @@ describe('actual scene picking', () => {
     expect(sceneClientPoint(NaN, 20, {left: 0, top: 0, width: 390, height: 370}, 832, 740)).toBeNull();
   });
 
+  it('accounts for the real contain letterbox when a journal shortens the world', () => {
+    const rectangle = {left: 10, top: 100, width: 390, height: 220};
+    expect(sceneClientPoint(205, 210, rectangle, 832, 740, 'contain')).toEqual({x: 416, y: 370});
+    expect(sceneClientPoint(11, 210, rectangle, 832, 740, 'contain')).toBeNull();
+    const scale = 220 / 740, offset = (390 - 832 * scale) / 2;
+    const hit = sceneClientPoint(10 + offset + 540 * scale, 100 + 460 * scale, rectangle, 832, 740, 'contain');
+    expect(hit?.x).toBeCloseTo(540);expect(hit?.y).toBeCloseTo(460);
+  });
+
   it('inverts the exact camera registration, atlas crop and sprite scaling', () => {
     const draw = command('planet');
     draw.source = {x: 8, y: 10, width: 16, height: 20};

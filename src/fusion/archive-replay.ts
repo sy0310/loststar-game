@@ -49,7 +49,7 @@ export class ArchiveNightReplay {
     const visual = getVisualSource ? () => ({...this.visualSource!, game: getState()}) : undefined;
     const extension = createFusionScene(getState, undefined, () => this.visualSource?.projects ?? [], visual);
     this.scene = new ExpeditionScene(parent, getState, extension);
-    this.scene.canvas.setAttribute('aria-label', '上一夜实际配置的球面处置回放');
+    this.scene.canvas.setAttribute('aria-label', '上一夜的发现记录，只读回看');
   }
 
   get seconds() {

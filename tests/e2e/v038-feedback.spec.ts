@@ -44,7 +44,7 @@ async function open(page: Page, kind: Parameters<typeof feedbackFixture>[0] = 'u
   await page.goto('/?sample=first-planet');
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
   await page.clock.runFor(300);
-  await page.locator('#fusion-dismiss-intro').tap();
+  await expect(page.locator('.fu-journey-intro')).toHaveCount(0);
   return fixture;
 }
 async function terrainTap(page: Page) {
@@ -52,7 +52,8 @@ async function terrainTap(page: Page) {
     const canvas = document.querySelector<HTMLCanvasElement>('#fusion-world canvas')!;
     const box = canvas.getBoundingClientRect();
     for (const [px, py] of [[416, 610], [460, 600], [380, 600]]) {
-      const x = box.x + box.width * px / 832, y = box.y + box.height * py / 740;
+      const scale=Math.min(box.width/canvas.width,box.height/canvas.height);
+      const x=box.x+(box.width-canvas.width*scale)/2+px*scale,y=box.y+(box.height-canvas.height*scale)/2+py*scale;
       if ((window as any).__FUSION__.pickAtClient(x, y).kind === 'planet') return {x, y};
     }
     throw new Error('No actual terrain hit');
@@ -152,9 +153,10 @@ test('返程手臂裁剪后的门口空地按真实alpha命中，单次触控可
   const camera = v034NightCamera;
   const logical = {x: 32 + camera.x + (world.x - camera.x) * camera.scale + (camera.offsetX ?? 0),
     y: camera.y + (world.y - camera.y) * camera.scale + (camera.offsetY ?? 0)};
-  const point = await canvas.evaluate((element, logical) => {
+  const point = await canvas.evaluate((element: HTMLCanvasElement, logical) => {
     const box = element.getBoundingClientRect();
-    const x = box.x + box.width * logical.x / 832, y = box.y + box.height * logical.y / 740;
+    const scale=Math.min(box.width/element.width,box.height/element.height);
+    const x=box.x+(box.width-element.width*scale)/2+logical.x*scale,y=box.y+(box.height-element.height*scale)/2+logical.y*scale;
     return {x, y, hit: (window as any).__FUSION__.pickAtClient(x, y)};
   }, logical);
   expect(point.hit.kind).toBe('planet');

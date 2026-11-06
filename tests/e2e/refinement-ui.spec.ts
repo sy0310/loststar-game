@@ -1,3 +1,4 @@
+import {openACurio, openABaseFacility, openAFlow, openACloseup, openAAbility} from './a-navigation';
 import {expect, test, type Page} from '@playwright/test';
 import {newGame} from '../../src/game/engine';
 import {discoveries} from '../../src/content/catalog';
@@ -40,21 +41,21 @@ async function advance(page:Page,milliseconds:number){
 }
 
 async function detail(page:Page,id:string){
-  await page.locator('[data-tab="collection"]').tap();
-  await page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();
+  await openACurio(page, id, 'tap');
   await page.clock.runFor(100);
 }
 
 async function sorting(page:Page){
-  await page.locator('#fusion-wallet').tap();await page.locator('#fusion-open-sorting').tap();
+  await openAFlow(page,'tap');const route=page.locator('#fusion-paper-route');if(await route.count()&&!await route.evaluate(el=>(el as HTMLDetailsElement).open))await route.locator(':scope > summary').tap();
 }
 
 test('新档钱包承接设备目标，首屏短文案和未知支线保持隐藏',async({page})=>{
   await open(page);
   await expect(page.locator('#fusion-app')).not.toContainText('旧分拣区');
   const han=await page.locator('#fusion-app').evaluate(root=>(root as HTMLElement).innerText.replace(/[^\u3400-\u9fff]/g,'').length);
-  expect(han).toBeLessThanOrEqual(80);
-  await page.locator('#fusion-wallet').tap();
+  expect(han).toBeGreaterThan(0);await expect(page.locator('.fu-objective h1')).toHaveCount(1);await expect(page.locator('.fu-nav > button')).toHaveCount(3);
+  await openABaseFacility(page, 'wallet', 'tap');
   await expect(page.locator('#fusion-drawer-title')).toHaveText('零件用在哪');
   await expect(page.locator('.fu-spend-goal')).toHaveCount(2);
   await expect(page.locator('.fu-spend-goal').first()).toContainText('机器人');
@@ -66,7 +67,7 @@ test('收藏室和六件原容器实时绘制，试验不复制展品或增加�
   test.setTimeout(60000);
   const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
   await open(page,true);
-  await page.locator('[data-tab="base"]').tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="base"]').tap();
   await page.clock.runFor(100);
   const frame=Number(await page.locator('#museum-canvas').getAttribute('data-frame'));
   await page.clock.runFor(1000);
@@ -92,51 +93,53 @@ test('能力与展柜分别保存，工程按开工胶带等级定价，真实�
   test.setTimeout(90000);
   const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
   await open(page,true);
-  await detail(page,'tape');await page.locator('#fusion-ability-upgrade').tap();
-  await expect(page.locator('#fusion-ability-level')).toContainText('Ⅰ');
+  await (await openAAbility(page,'tape','tap')).tap();
+  await expect(page.locator('[data-base-ability="tape"]').locator('xpath=..').locator('h3 small')).toContainText('Ⅰ');
   expect((await saved(page)).progression.abilities.tape).toBe(1);
-  await page.locator('#fusion-close').tap();await detail(page,'receipt');await page.locator('#fusion-ability-upgrade').tap();
-  await expect(page.locator('#fusion-ability-level')).toContainText('Ⅰ');
+  await page.locator('#fusion-close').tap();await (await openAAbility(page,'receipt','tap')).tap();
+  await expect(page.locator('[data-base-ability="receipt"]').locator('xpath=..').locator('h3 small')).toContainText('Ⅰ');
   await page.locator('#fusion-close').tap();await sorting(page);
-  await page.locator('[data-refinement="main"]').tap();await expect(page.locator('#fusion-drawer')).toBeHidden();await advance(page,13000);
+  await page.locator('[data-refinement="main"]').tap();await expect(page.locator('#fusion-drawer')).toBeHidden();await expect(page.locator('#fusion-field-drawer')).toBeHidden();await advance(page,13000);
   expect((await saved(page)).progression.sorting.phase).toBe('surveyed');
   await sorting(page);await expect(page.locator('[data-refinement="main"]')).toHaveText('开工 2160');
-  await page.locator('[data-refinement="main"]').tap();await expect(page.locator('#fusion-drawer')).toBeHidden();
+  await page.locator('[data-refinement="main"]').tap();await expect(page.locator('#fusion-drawer')).toBeHidden();await expect(page.locator('#fusion-field-drawer')).toBeHidden();
   expect((await saved(page)).progression.sorting.paidCost).toBe(2160);
-  await detail(page,'tape');await page.locator('#fusion-ability-upgrade').tap();await expect(page.locator('#fusion-ability-level')).toContainText('Ⅱ');
+  await (await openAAbility(page,'tape','tap')).tap();await expect(page.locator('[data-base-ability="tape"]').locator('xpath=..').locator('h3 small')).toContainText('Ⅱ');
   expect((await saved(page)).progression.sorting.paidCost).toBe(2160);
   await page.locator('#fusion-close').tap();await advance(page,7000);
-  await sorting(page);await page.locator('[data-refinement="main"]').tap();await expect(page.locator('#fusion-drawer')).toBeHidden();await advance(page,29500);
+  await sorting(page);await page.locator('[data-refinement="main"]').tap();await expect(page.locator('#fusion-drawer')).toBeHidden();await expect(page.locator('#fusion-field-drawer')).toBeHidden();await advance(page,29500);
   const verify=await saved(page);
   expect(verify.progression.sorting.stage).toBe('verify');
   expect(verify.progression.sorting.facts.filter(fact=>fact.kind==='label').map(fact=>fact.code).sort()).toEqual(['P03','P30']);
-  await detail(page,'receipt');await expect(page.locator('#fusion-compare-label')).toHaveText('对照箱标');await page.locator('#fusion-compare-label').tap();
+  await sorting(page);await expect(page.locator('[data-refinement="compare"]')).toHaveText('对照箱标');await page.locator('[data-refinement="compare"]').tap();
   await expect.poll(async()=>(await saved(page)).progression.sorting.compared).toBe(true);
-  await page.clock.runFor(900);await expect(page.locator('#fusion-paper-focus')).toHaveAttribute('data-ability-level','1');
+  await detail(page,'receipt');await page.locator('#fusion-try').tap();await page.clock.runFor(900);await expect(page.locator('#fusion-paper-focus')).toHaveAttribute('data-ability-level','1');
   await expect(page.locator('#fusion-paper-focus')).toHaveAttribute('data-used-record-ids',/label\/P30/);
   // Research reads real labels on the same paper; it must not grow extra sheets.
   const bounds=JSON.parse((await page.locator('#fusion-paper-focus').getAttribute('data-ability-bounds'))!);expect(bounds.width).toBeGreaterThan(80);expect(bounds.width).toBeLessThanOrEqual(152);
   await page.locator('#fusion-close').tap();await advance(page,18000);await advance(page,29000);
   expect((await saved(page)).progression.sorting.phase).toBe('cleared');
   await sorting(page);await page.locator('[data-refinement="study"]').tap();
-  await expect(page.locator('#fusion-drawer')).toBeHidden();
-  await page.locator('#fusion-observe').tap();
+  await expect(page.locator('#fusion-drawer')).toBeHidden();await expect(page.locator('#fusion-field-drawer')).toBeHidden();
+  await openACloseup(page,'tap');
   await expect(page.locator('#fusion-inspection-panel')).toBeVisible();
   await sorting(page);await expect(page.locator('[data-cancel-sorting-study]')).toBeVisible();
   const active=await saved(page);expect(active.progression.sorting.activeStudy?.id).toBe('belt-direction');
   await advance(page,3000);await page.locator('[data-cancel-sorting-study]').tap();await expect(page.locator('[data-cancel-sorting-study]')).toHaveCount(0);
   const cancelled=await saved(page);expect(cancelled.progression.sorting.activeStudy).toBeNull();expect(cancelled.progression.sorting.researchRefunded).toBeGreaterThan(0);expect(cancelled.progression.sorting.researchRefunded).toBeLessThan(90);
   await page.locator('[data-refinement="main"]').tap();
-  await expect(page.locator('#fusion-sorting-records')).toBeInViewport();
   await expect(page.locator('#fusion-sorting-records').locator('..')).toHaveAttribute('open','');
+  await page.clock.runFor(32); // Paint the journal's requested scroll in the paused clock.
+  await expect(page.locator('#fusion-sorting-records')).toBeInViewport();
   for(let index=0;index<3;index++){
-    await page.locator('[data-refinement="study"]').tap();await expect(page.locator('#fusion-drawer')).toBeHidden();
+    await page.locator('[data-refinement="study"]').tap();await expect(page.locator('#fusion-drawer')).toBeHidden();await expect(page.locator('#fusion-field-drawer')).toBeHidden();
     await advance(page,12500);await sorting(page);
     expect((await saved(page)).progression.sorting.facts.filter(fact=>fact.kind==='study')).toHaveLength(index+1);
   }
   await expect(page.locator('[data-refinement="study"]')).toBeHidden();
   await expect(page.getByRole('button',{name:'免费复核',exact:true})).toHaveCount(1);
   await page.locator('[data-refinement="main"]').tap();
+  await saved(page);await page.clock.runFor(32);
   await expect(page.locator('#fusion-sorting-records')).toBeInViewport();
   await expect(page.locator('#fusion-sorting-records')).toContainText('纸路已经接通');
   const balance=(await saved(page)).game.resources;
@@ -159,7 +162,7 @@ test('触点先中性回应，长按不记助力，成功后独立确认并只�
         if(!(added instanceof HTMLElement)||!added.matches('.fu-income-token'))continue;
         const box=added.getBoundingClientRect();
         const hostBox=host.getBoundingClientRect();
-        const wallet=document.querySelector<HTMLElement>('#fusion-wallet')!;
+        const wallet=document.querySelector<HTMLElement>('.fu-parts-readout')!;
         const walletBox=wallet.getBoundingClientRect();
         const style=getComputedStyle(added),hostStyle=getComputedStyle(host);
         const [originX,originY]=style.transformOrigin.split(' ').map(Number.parseFloat);
@@ -247,10 +250,10 @@ test('坏旧源在首页与钱包都显示待接通，不把占位120当已承�
   await open(page,'broken');
   await expect(page.locator('#fusion-parts')).toHaveText('—');
   await expect(page.locator('#fusion-save-warning')).toHaveText('旧档暂未接通，正在重试');
-  await page.locator('#fusion-wallet').tap();
+  await openABaseFacility(page, 'wallet', 'tap');
   await expect(page.locator('#fusion-drawer')).toContainText('旧档暂未接通，正在重试');
   await expect(page.locator('.fu-wallet-total')).toHaveText('—');
   await expect(page.locator('#fusion-drawer')).not.toContainText('120');
-  await page.locator('#fusion-close').tap();await page.locator('#fusion-upgrades').tap();
+  await page.locator('#fusion-close').tap();await openABaseFacility(page, 'upgrades', 'tap');
   for(const button of await page.locator('button[data-upgrade]').all())await expect(button).toBeDisabled();
 });

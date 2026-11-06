@@ -1,3 +1,4 @@
+import {openACurio, openAFlow} from './a-navigation';
 import {expect, test, type Page} from '@playwright/test';
 
 const epoch = 1800000000000;
@@ -27,11 +28,11 @@ async function open(page: Page) {
   await page.goto('/?sample=first-planet');
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
   await page.clock.runFor(300);
-  await page.locator('#fusion-dismiss-intro').tap();
+  await expect(page.locator('.fu-journey-intro')).toHaveCount(0);
 }
 async function receipt(page: Page) {
-  await page.locator('[data-tab="collection"]').tap();
-  await page.locator('#fusion-collection-list [data-detail="receipt"]').tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();
+  await openACurio(page, 'receipt', 'tap');
   await expect(page.locator('#fusion-paper-primary')).toBeVisible();
 }
 
@@ -125,17 +126,17 @@ test('首星十二项实得收藏、六件玻璃近景与试验，夜间同场�
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
   expect((await saved(page)).game.station.repairSpent).toBe(nightRepair);
   await step(page, 3600000);
-  await page.locator('#fusion-return-chip').tap();
+  await openAFlow(page, 'tap');
   await page.locator('#fusion-claim').tap();
   await expect.poll(async () => (await saved(page)).game.pendingReturn).toBeNull();
   expect((await saved(page)).game.collection).toHaveLength(12);
-  await page.locator('[data-tab="base"]').tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="base"]').tap();
   await expect(page.locator('#fusion-base-dock canvas')).toHaveAttribute('data-ready', 'true');
   await page.clock.runFor(1000);
   expect(await page.locator('#fusion-habitats [data-detail]').count()).toBe(3);
-  await page.locator('[data-tab="collection"]').tap();
+  await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').tap();
   for (const id of ['tape', 'nested', 'stamp', 'cosmic-parcel', 'bell']) {
-    await page.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();
+    await openACurio(page, id, 'tap');
     await expect(page.locator('#fusion-exhibit-focus')).toBeVisible();
     await page.clock.runFor(100);
     await page.locator('#fusion-curio-primary').tap();
@@ -159,6 +160,6 @@ test('首星十二项实得收藏、六件玻璃近景与试验，夜间同场�
   const claimed = (await saved(page)).game.resources;
   await page.reload();
   await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-ready', 'true');
-  await expect(page.locator('#fusion-return-chip')).toBeHidden();
+  await expect(page.locator('#fusion-claim')).toBeHidden();
   expect((await saved(page)).game.resources).toBe(claimed);
 });

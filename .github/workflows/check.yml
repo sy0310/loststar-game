@@ -21,6 +21,8 @@ jobs:
       - run: npm ci
       - run: python3 scripts/validate_design_assets.py
       - run: python3 design/visual-renewal/import_reference_pngs.py
+      - name: Verify four approved A045 original PNGs
+        run: python3 design/v045_a_simplified_exploration/validate_reference_pngs.py
       - name: Verify current asset and execution mappings
         run: npm run check:execution -- --report artifacts/execution-ci.json
       - run: npm run test:coverage
@@ -78,7 +80,7 @@ jobs:
             artifacts/execution-ci.json
           retention-days: 14
       - uses: actions/upload-artifact@v4
-        if: always() && (hashFiles('artifacts/v042-physical-review/museum-physical-evidence.json') != '' || hashFiles('artifacts/v041-receipt-review/screens-evidence.json') != '' || hashFiles('artifacts/visual-renewal/screens-evidence.json') != '')
+        if: always() && (hashFiles('artifacts/v045-a-exploration/screens-evidence.json') != '' || hashFiles('artifacts/v044-execution-art/proof.json') != '' || hashFiles('artifacts/v042-physical-review/museum-physical-evidence.json') != '' || hashFiles('artifacts/v041-receipt-review/screens-evidence.json') != '' || hashFiles('artifacts/visual-renewal/screens-evidence.json') != '')
         with:
           name: visual-renewal-review
           path: |
@@ -87,10 +89,13 @@ jobs:
             artifacts/v042-physical-review/
             artifacts/v043-whole-state-review/
             artifacts/v044-execution-art/
+            artifacts/v045-a-exploration/
             !artifacts/visual-renewal/raw/
             !artifacts/visual-renewal/internal/
             !artifacts/v041-receipt-review/raw/
             !artifacts/v042-physical-review/raw/
             !artifacts/v043-whole-state-review/raw/
             !artifacts/v044-execution-art/raw/
+            !artifacts/v045-a-exploration/raw/
+            !artifacts/v045-a-exploration/**/*.webm
           retention-days: 14

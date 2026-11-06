@@ -151,13 +151,13 @@ test('首星首次发现后直接进入基地和收藏，实际纸面使用认�
   await page.clock.fastForward(12200);
   await page.clock.runFor(300);
   await expect.poll(async () => (await readArchive(page)).game.collection.includes('receipt')).toBe(true);
-  await page.locator('[data-tab="base"]').click();
+  await page.locator('#fusion-app > .fu-nav [data-tab="base"]').click();
   const base = page.locator('#fusion-base-dock canvas');
   await expect(base).toHaveAttribute('data-receipt-material', 'renewal');
   await expect(base).toHaveAttribute('data-receipt-condition', 'found');
   await expect(base).toHaveAttribute('data-receipt-stage', 'buried');
   await expect(page.locator('#fusion-drawer')).not.toBeVisible();
-  await page.locator('[data-tab="collection"]').click();
+  await page.locator('#fusion-app > .fu-nav [data-tab="collection"]').click();
   const collection = page.locator('#fusion-collection-dock canvas');
   await expect(collection).toHaveAttribute('data-receipt-material', 'renewal');
   const metrics = await page.evaluate(() => (window as unknown as {__FUSION__: {uiMetrics(): {museum: {receiptMaterial: string; receiptCondition: string; receiptStage: string}}}}).__FUSION__.uiMetrics().museum);
@@ -181,7 +181,7 @@ test('首星收据材质加载失败时基地等待原材质，并从失败状�
   await page.clock.runFor(300);
   await expect.poll(async () => (await readArchive(page)).game.collection.includes('receipt')).toBe(true);
   await expect.poll(() => requests).toBeGreaterThan(0);
-  await page.locator('[data-tab="base"]').click();
+  await page.locator('#fusion-app > .fu-nav [data-tab="base"]').click();
   const canvas = page.locator('#fusion-base-dock canvas');
   await expect(canvas).toHaveAttribute('data-receipt-material', 'pending');
   await expect(page.locator('#fusion-drawer')).not.toBeVisible();
