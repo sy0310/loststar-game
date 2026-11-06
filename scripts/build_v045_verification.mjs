@@ -192,6 +192,8 @@ verification.entrypoints = await section('entrypoints', async () => {
     check(pages.some(item => item.engine === engine && item.width === width), 'Actual A viewport/engine context missing');
   for (const item of pages) check(item.homeContract?.dedicatedAssist === true && item.homeContract.singleFlowEntry === true
     && item.homeContract.objectiveVisible === true && item.homeContract.secondaryManagementHidden === true, 'A simplified home contract missing/false');
+  for(const item of pages)check(item.completedWorkbenches?.length===CURIOS.length&&equal(item.completedWorkbenches.map(row=>row.id).sort(),[...CURIOS].sort())
+    &&item.completedWorkbenches.every(row=>row.file&&row.observation.condition==='stabilized'&&row.observation.selected==='stabilized'&&row.observation.stateRenderer==='whole-image-v043'), 'Actual six complete workbenches in every viewport/engine tour missing');
   return {runtimeContractChecks: runtime.checks.length, selectorAssertions: runtime.checks.find(item => item.id === 'runtime:saved-state-selector')?.assertions,
     wholeDrawAssertions: runtime.checks.find(item => item.id === 'runtime:whole-image-draw')?.assertions,
     actualPageContexts: pages.length, actualHomeScreenshots: screens.screenshots.filter(item => item.kind === 'home').length,
@@ -212,6 +214,15 @@ verification.states = await section('states', async () => {
   for (const item of previews) naturalReadOnly(item.naturalAdvance, `${item.target} actual isolated preview`);
   const collection = capture('collection');check(collection.cases.length === 6 && collection.videos.length === 6, 'Six actual complete collection routes missing');
   const quotes = {receipt: [40,120], tape: [30,100], nested: [50,140], stamp: [45,180], 'cosmic-parcel': [60,220], bell: [35,120]};
+  const excavation=collection.cases.find(item=>item.id==='receipt')?.excavation;
+  check(excavation?.complete===true&&excavation.quoted===0&&excavation.before.stage==='buried'&&excavation.after.stage==='displayed'
+    &&excavation.before.condition==='found'&&excavation.after.condition==='found'&&excavation.actualAction.kind==='excavate'
+    &&excavation.completedObservedAt>=excavation.actualAction.endsAt&&excavation.actualAction.endsAt>excavation.actualAction.startedAt
+    &&excavation.ledger.charged===0&&charge(excavation.before,excavation.after)===0&&excavation.factsPreserved===true
+    &&equal(excavation.before.receiptFacts,excavation.after.receiptFacts)&&excavation.beforeFile&&excavation.processingFile&&excavation.completeFile,'Actual ordinary free receipt excavation/fact isolation missing');
+  naturalReadOnly(excavation.naturalAdvance,'Actual free receipt excavation');
+  check(excavation.observations.length>0&&new Set(excavation.observations.map(row=>row.material.rgbaSha256)).size===1
+    &&excavation.observations.every(row=>row.material.condition==='found'&&row.material.afterCondition==='found'&&row.material.differingBytes===0),'Free excavation changed its actual complete A image');
   for (const item of collection.cases) {
     check(quotes[item.id] && item.steps.length === 2 && equal(item.steps.map(step => step.kind), ['clean', 'repair'])
       && equal(item.steps.map(step => step.quoted), quotes[item.id]), 'Original real clean/repair quotes or sequence differ');
@@ -230,7 +241,7 @@ verification.states = await section('states', async () => {
   }
   return {completeStateCases: cases.length, completePngExports: screens.materials.length, distinctCompleteImages: 18,
     differingRgbaBytes: 0, isolatedPreviews: previews.length, paidRoutes: collection.cases.length,
-    actualPaidSteps: collection.cases.reduce((sum, item) => sum + item.steps.length, 0), oldQuoteTotals: Object.fromEntries(collection.cases.map(item => [item.id, item.quotedTotal]))};
+    actualPaidSteps: collection.cases.reduce((sum, item) => sum + item.steps.length, 0), actualFreeExcavations:1,oldQuoteTotals: Object.fromEntries(collection.cases.map(item => [item.id, item.quotedTotal]))};
 });
 verification.data = await section('data', async () => {
   const invariant = await json(outputPath('model-invariants.json'));check(invariant.sourceCommit === source && invariant.database === 'loststar.fusion.firstplanet.v037', 'Actual invariant source/database differs');
@@ -314,6 +325,7 @@ verification.ui = await section('ui', async () => {
     const expected=structuredClone(step.before.rights);expected.growth={...expected.growth,'case-0':step.expected+1};
     check((step.before.rights.growth['case-0']??0)===step.expected&&step.after.rights.growth['case-0']===step.expected+1
       &&step.otherRightsStable===true&&equal(step.after.rights,expected)&&charge(step.before,step.after)===step.quoted&&step.ledger.charged===step.quoted,'Actual case payment/other earned rights differ');
+    check(step.factsMatchNaturalAdvance===true&&equal(step.after.receiptFacts,step.naturalExpectedFacts),'Actual case installation facts differ from exact ordinary model advancement');
     check(step.trace.length>0&&step.trace.some(row=>row.installProgress>0&&row.installProgress<1)&&step.trace.some(row=>row.installProgress>=.999)
       &&step.trace.every(row=>row.before===step.expected&&row.after===step.expected+1&&row.level===step.expected+1),'Actual installation motion/before-after frames missing');
   }

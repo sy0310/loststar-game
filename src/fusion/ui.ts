@@ -974,6 +974,7 @@ export function mountFusion(controller: FusionController) {
     const branchActions:Record<string,string>={surveying:'沿纸路勘测',building:'接通传送带',working:sorting.stage==='hauling'?'搬开分拣箱堆':sorting.stage==='verify'?'核验错位箱标':'清理卡纸层'};
     query('#fusion-action').textContent = flowReplayActive ? `第${archiveReplay?.number ?? ''}夜 · 回看` : night ? ({appear: '箱堆传来动静', track: '咔哒正在追踪', identify: '核对访客标记', contain: '引导访客入站', result: '正在归档结果', return: '咔哒正在回站'}[phase ?? ''] ?? '咔哒在灯下等候') : projected.branch?(study?`观察${study.name}`:branchActions[sorting.phase]??'咔哒正在作业'):world.period === 'dawn' ? '清晨，继续探索' : '搜索箱堆';
     query('#fusion-auto').textContent = night ? '夜间也在发现' : pending > 0 ? '助力探索中' : sorting.researchActive?'实地观察中':projected.branch?'咔哒继续调查':'自动探索中';
+    query('#fusion-tap-hint').hidden = flowReplayActive;
     query('#fusion-tap-hint').textContent = blocked?'等待旧档接通':worldFailed ? '信号中断，请重新接通' : !worldReady ? '星球接通中…' : flowReplayActive ? '当前探索照常继续' : night ? '灯下有动静，看看探索手记' : pending > 0 ? '咔哒收到啦' : '点一下，帮咔哒探索';
     query('#fusion-base-integrity').textContent = game.station.integrity >= 100 ? '灯亮着，等你回来' : '小设施需要照料';
     const fresh = game.collection.find(id => !previousCollection.has(id));

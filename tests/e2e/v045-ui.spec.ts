@@ -228,6 +228,8 @@ test('A已购归档在同一主世界只读回看，当前探索继续且没有�
   await page.locator('#fusion-replay-night').tap();
   const replay = page.locator('#fusion-flow-replay canvas');
   await expect(replay).toHaveAttribute('data-ready', 'true');
+  await expect.poll(async () => ({hintHidden: !await page.locator('#fusion-tap-hint').isVisible(),
+    replayVisible: await page.locator('#fusion-flow-replay').isVisible()})).toEqual({hintHidden: true, replayVisible: true});
   await expect(page.locator('#fusion-world canvas')).toBeHidden();
   await expect(page.locator('#fusion-period')).toHaveText('昨夜回看');
   await page.clock.runFor(1500);
@@ -236,5 +238,6 @@ test('A已购归档在同一主世界只读回看，当前探索继续且没有�
   await page.locator('#fusion-assist').tap();
   await expect(page.locator('#fusion-flow-replay')).toBeHidden();
   await expect(page.locator('#fusion-world canvas')).toBeVisible();
+  await expect(page.locator('#fusion-tap-hint')).toBeVisible();
   expect((await read(page)).game.world.settledNights).toBe(after.game.world.settledNights);
 });

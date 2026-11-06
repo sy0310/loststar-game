@@ -178,11 +178,22 @@ route_rows = [
 ]
 route_table = '<table><thead><tr><th>旧呈现</th><th>V045 A实际核对入口</th><th>原始证据</th></tr></thead><tbody>' + "".join(f'<tr><td>{esc(old)}</td><td>{esc(new)}</td><td><a href="{esc(file)}">查看</a></td></tr>' for old, new, file in route_rows) + '</tbody></table>'
 extras = []
+review_raw = (OUT / "review-frames/index.json").read_bytes()
+review_frames = json.loads(review_raw)
+assert review_frames["sourceCommit"] == source and review_frames["zipSha256"] == zip_sha
+assert len(review_frames["frames"]) == 11
+video_hashes = {item["file"]: item["sha256"] for report in reports.values() for item in report["videos"]}
+for frame in review_frames["frames"]:
+    assert frame["sourceVideoSha256"] == video_hashes[frame["sourceVideo"]]
+    assert sha(evidence(frame["file"]).read_bytes()) == frame["sha256"]
+extras.append(fold("原片补充定位：四种绕轨遮挡、夜间中段与晨修", '<p>实际编码原帧，未裁切或重绘。背轨边缘微露与后轨中央完全遮挡分别呈现；灰纸影和晨修的小动作仍需手机确认。</p><div class="grid">' + ''.join(figure(item["file"], f'{item["label"]} · 原片{item["ptsSeconds"]:.2f}秒 / 帧{item["frameIndex"]}') for item in review_frames["frames"]) + '</div><p><a href="review-frames/index.json">帧索引、真实PTS与原片SHA</a></p>'))
 for mode, report in reports.items():
     content = '<div class="grid">' + "".join(film(item, item["file"]) for item in report["videos"]) + "</div>"
     content += '<div class="grid">' + "".join(figure(item["file"], item["name"]) for item in report["screenshots"]) + "</div>"
     content += f'<p><a href="{mode}-evidence.json">完整报告：真实夹具、来源、状态、权益、账本与时间</a></p>'
-    extras.append(fold(f'{mode} · {len(report["screenshots"])}张实际页面／{len(report["videos"])}段原生影片', content))
+    direct = sum(item.get('kind') != 'native-film-frame' for item in report['screenshots'])
+    extracted = len(report['screenshots']) - direct
+    extras.append(fold(f'{mode} · {direct}张页面＋{extracted}张实录抽帧／{len(report["videos"])}段连续影片', content))
 extras.append(fold("18张完整透明PNG逐一查看", '<div class="grid">' + "".join(figure(item["file"], f'{item["id"]} · {item["stage"]} · 实际完整384导出') for item in materials) + "</div>"))
 source_details = fold("完整来源、历史边界与保留规则", f'<p>当前运行源码 <code>{source}</code><br>ZIP <code>{zip_sha}</code></p>'
                       f'<p>历史比较源码 <code>{BASELINE_SOURCE}</code><br>历史ZIP <code>{BASELINE_ZIP}</code>。旧首页保持7074归属，不贴新SHA。</p>'
@@ -211,7 +222,7 @@ status = {"version": "0.4.5", "sourceCommit": source, "zipSha256": zip_sha, "sou
           "status": "pending_user_and_phone_acceptance", "visualApprovalInferred": False, "physicalPhone": False,
           "reportSha256": report_hashes, "approvedOriginals": manifest["images"], "completeStates": 18, "overview": overview_record,
           "baseline": {"sourceCommit": BASELINE_SOURCE, "zipSha256": BASELINE_ZIP, "file": relative(old_file), "sha256": old_home["sha256"], "historicalOnly": True},
-          "prioritySceneComparisons": comparisons,
+          "prioritySceneComparisons": comparisons, "reviewFramesIndexSha256": sha(review_raw), "extraNativeReviewFrames": len(review_frames["frames"]),
           "representativeVideos": [reports["night"]["videos"][0]["file"], first_collection["video"]["file"]],
           "entryMergeTable": [{"before": old, "current": new, "report": file} for old, new, file in route_rows],
           "counts": {"screenshots": sum(len(report["screenshots"]) for report in reports.values()), "completePngs": 18,

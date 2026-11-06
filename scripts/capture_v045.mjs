@@ -274,6 +274,14 @@ async function screens() {
       const before = await archive(s.page), entry = {name: s.name, kind: 'simplified-pages', engine, width, height, fixtureAudit: generated.audit, routes: []};report.cases.push(entry);
       entry.homeContract = await assertHome(s);entry.homeFile = (await shot(s, `${s.name}-home`, 'home')).file;entry.flow = await flow(s, s.name);
       await tab(s, 'collection');await s.page.locator('#museum-canvas[data-ready="true"]').waitFor();entry.collectionFile = (await shot(s, `${s.name}-collection`, 'collection')).file;
+      entry.completedWorkbenches=[];
+      for(const id of ids){
+        await treatmentPage(s,id);
+        const observation=await s.page.evaluate(selector=>{const d=document.querySelector(selector).dataset;return {condition:d.condition,selected:document.querySelector('.fu-treatment-stages [aria-current="step"]')?.getAttribute('data-condition'),stateRenderer:d.stateRenderer,stateImage:d.stateImage};},focus(id));
+        check(observation.condition==='stabilized'&&observation.selected==='stabilized'&&observation.stateRenderer==='whole-image-v043','Actual tour workbench is not its earned complete C state');
+        entry.completedWorkbenches.push({id,observation,file:(await shot(s,`${s.name}-${id}-completed-workbench`,'tour-completed-workbench')).file});
+        await click(s,ui.backToCollection);check(await s.page.locator('#fusion-collection').isVisible(),'Completed workbench did not return to collection');
+      }
       await tab(s, 'base');entry.baseFile = (await shot(s, `${s.name}-base`, 'base')).file;
       if (await s.page.locator(ui.baseMore).count() && await s.page.locator(ui.baseMore).getAttribute('open') === null) await click(s, `${ui.baseMore} > summary`);
       const management = [...ui.management, ui.devices];
@@ -439,6 +447,30 @@ async function free(session, id, replay, trialMs) {
   check(entry.noRewardOrSpend && equal(rights(before), rights(after)) && equal(facts(before), facts(after)), 'Free replay altered ordinary income, money, facts or rights');
   entry.complete = true;return entry;
 }
+async function excavateReceipt(session){
+  await session.page.waitForFunction(()=>{const button=document.querySelector('#fusion-paper-primary');return button&&!button.disabled&&button.dataset.kind==='excavate';});
+  const before=await archive(session.page),initial=await material(session,'receipt');
+  check(before.receipt.stage==='buried'&&before.receipt.condition==='found'&&!before.receipt.activeAction,'Receipt excavation requires an ordinary buried A specimen');
+  const entry={quoted:0,before:{...stateSummary(before,'receipt'),stage:before.receipt.stage},beforeFile:(await shot(session,`${session.name}-buried`,'actual-buried-workbench')).file,clickedAt:Date.now(),observations:[]};
+  await click(session,'#fusion-paper-primary');const deadline=Date.now()+15000;let actual,midpoint,changedAt,finished;
+  while(Date.now()<deadline){
+    const state=await archive(session.page),current=action(state,'receipt'),image=await material(session,'receipt');
+    const renderer=await session.page.locator(focus('receipt')).evaluate(canvas=>({frame:Number(canvas.dataset.frame),phase:canvas.dataset.restorationPhase,excavation:Number(canvas.dataset.restorationExcavation),stateImage:canvas.dataset.stateImage}));
+    const at=Date.now();entry.observations.push({at,savedAt:state.game.lastAt,stage:state.receipt.stage,action:current,material:image,renderer});
+    check(state.receipt.condition==='found'&&image.condition==='found'&&image.afterCondition==='found'&&image.rgbaSha256===initial.rgbaSha256&&image.differingBytes===0,'Free excavation changed its complete persistent A image');
+    if(current){actual??=current;check(current.kind==='excavate'&&current.key===actual.key&&state.receipt.stage==='buried','Receipt excavation action was replaced');
+      if(!midpoint&&at>=actual.startedAt+(actual.endsAt-actual.startedAt)*.5)midpoint=(await shot(session,`${session.name}-excavating`,'actual-free-excavation')).file;
+    }else if(state.receipt.stage==='displayed'){
+      changedAt??=at;check(at-changedAt<=500,'Excavation commit did not reach renderer within 500ms');
+      if(renderer.phase==='found'&&renderer.excavation===1){finished=state;break;}
+    }
+    await until(Date.now()+100);
+  }
+  check(actual&&midpoint&&finished&&Date.now()>=actual.endsAt,'Actual free excavation start/middle/completion missing');
+  entry.actualAction=actual;entry.processingFile=midpoint;entry.completedObservedAt=Date.now();entry.after={...stateSummary(finished,'receipt'),stage:finished.receipt.stage};entry.ledger=ledger(before,finished);
+  entry.naturalAdvance=naturalReadOnly(before,finished);check(equal(facts(before),facts(finished)),'Free excavation changed signed receipt facts or transactions');
+  entry.factsPreserved=true;entry.completeFile=(await shot(session,`${session.name}-excavated`,'actual-free-excavation-complete')).file;entry.complete=true;return entry;
+}
 async function collection() {
   const model = await readFile('src/fusion/curio-mechanism-model.ts', 'utf8'), match = model.match(/export\s+const\s+mechanismTrialMs\s*=\s*([\d_]+)\s*;/);
   const trialMs = match ? Number(match[1].replaceAll('_', '')) : NaN;check(Number.isFinite(trialMs), 'Actual frozen free-interaction duration is unavailable');
@@ -446,10 +478,10 @@ async function collection() {
   const browser = await chromium.launch();
   try {for (const id of ids) {
     let s, entry;try {
-      const generated = earned('found');s = await open(browser, {name: `collection-${id}-natural-route`, generated, video: true});
+      const generated = earned(id==='receipt'?'buried':'found');s = await open(browser, {name: `collection-${id}-natural-route`, generated, video: true});
       const before = await archive(s.page);entry = {name: s.name, kind: 'collection-real-route', id, fixtureAudit: generated.audit, before: stateSummary(before, id), steps: [], freeReplays: [], reviewStartedAt: Date.now(), complete: false};report.cases.push(entry);
       await tab(s, 'collection');entry.collectionBeforeFile = (await shot(s, `${s.name}-collection-before`, 'collection-before')).file;
-      await treatmentPage(s, id);entry.foundFile = (await shot(s, `${s.name}-found`, 'actual-found-workbench')).file;
+      await treatmentPage(s, id);if(id==='receipt')entry.excavation=await excavateReceipt(s);entry.foundFile = (await shot(s, `${s.name}-found`, 'actual-found-workbench')).file;
       entry.steps.push(await paid(s, id, 'clean'));entry.steps.push(await paid(s, id, 'repair'));
       check(await s.page.locator('#fusion-exhibit-interaction #fusion-try').count() === 1, 'One clear representative exhibit action is required');
       for (let replay = 0; replay < 2; replay++) entry.freeReplays.push(await free(s, id, replay, trialMs));
@@ -565,10 +597,10 @@ async function cases(){
       check(quoted===[160,480,1100][expected]&&Number(await button.getAttribute('data-expected'))===expected,'Original case quote/level changed');
       await button.tap();await s.page.locator('#fusion-case-preview[data-ready="true"]').waitFor();const start=Date.now(),trace=[];
       for(let tick=0;tick<=25;tick++){await until(start+tick*100);trace.push(await s.page.locator('#fusion-case-preview').evaluate(canvas=>({at:Date.now(),frame:Number(canvas.dataset.frame),before:Number(canvas.dataset.before),after:Number(canvas.dataset.after),level:Number(canvas.dataset.level),installProgress:Number(canvas.dataset.installProgress)})));}
-      const after=await archive(s.page),payment=ledger(before,after),natural=rights(advanceFusion(before,after.game.lastAt));natural.growth={...natural.growth,'case-0':expected+1};
-      check(payment.charged===quoted&&after.game.growth['case-0']===expected+1&&equal(rights(after),natural)&&equal(facts(before),facts(after)),'Case purchase altered original price/other rights/facts');
+      const after=await archive(s.page),payment=ledger(before,after),automatic=advanceFusion(before,after.game.lastAt),natural=rights(automatic);natural.growth={...natural.growth,'case-0':expected+1};
+      check(payment.charged===quoted&&after.game.growth['case-0']===expected+1&&equal(rights(after),natural)&&equal(facts(automatic),facts(after)),'Case purchase altered original price/other rights or naturally sourced facts');
       check(trace.some(row=>row.installProgress>0&&row.installProgress<1)&&trace.some(row=>row.installProgress>=.999)&&trace.every(row=>row.before===expected&&row.after===expected+1&&row.level===expected+1),'Actual installation phases/before-after mapping missing');
-      const screenshot=await shot(s,`${s.name}-level-${expected+1}`,'actual-case-installation');entry.upgrades.push({expected,level:expected+1,label,quoted,before:stateSummary(before),after:stateSummary(after),ledger:payment,otherRightsStable:true,trace,file:screenshot.file});await click(s,'#fusion-return-build');
+      const screenshot=await shot(s,`${s.name}-level-${expected+1}`,'actual-case-installation');entry.upgrades.push({expected,level:expected+1,label,quoted,before:stateSummary(before),after:stateSummary(after),ledger:payment,otherRightsStable:true,naturalExpectedFacts:facts(automatic),factsMatchNaturalAdvance:true,trace,file:screenshot.file});await click(s,'#fusion-return-build');
     }
     entry.after=stateSummary(await archive(s.page));entry.totalQuoted=entry.upgrades.reduce((sum,row)=>sum+row.quoted,0);entry.ledger=ledger(initial,await archive(s.page));
     check(entry.ledger.charged===entry.totalQuoted,'Full 0→3 ledger differs from three actual payments');entry.complete=true;entry.errors=s.errors;
