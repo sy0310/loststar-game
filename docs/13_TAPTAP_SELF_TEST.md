@@ -2,7 +2,15 @@
 
 2026-11-02，用户明确要求“先传到 TapTap 上，然后实际游玩”。本次授权仅推进首星开发测试上传；GitHub PR #2 保持 Draft，不合并，不提交公开发行审核，不发布正式版。
 
-## 最新：收据与控件返修（v0.4.1）
+## 最新：展柜空间与胶带／铃机构返修（v0.4.2）
+
+- 开发自测 **439499 / v0.4.2 / ecdeecc81e3d4435d6ae82d87980f6ca562d2c6a**。继续v037当前档和全部已购权益，不重开或重复收费。
+- ZIP `loststar-0.4.2-ecdeecc-fusion-h5.zip`，11,488,029B，199文件，解压11,842,699B；SHA256 `3878080b8ceb2b7335623b6d98a3ed1e02eaaf67a129fa89fa4206a74a19ee89`。
+- 远端实际回读439499、原文件名/体积/竖屏一致，发布中false、主包绑定false；前后主包模块完全相同。只上传开发自测，无提审或正式发布。
+- 本地372单测/五构建/502浏览器/6组实际包通过，源码Push及PR CI均success。13段同源码/ZIP自然影片、301图像记录及140原生复查帧。**手机与真实锁屏尚未实测，用户视觉审核仍待本码复审**，旧439336反馈不算新包通过。
+- [公开回执](../artifacts/v042-physical-review/taptap-self-test.json) · [实际影片与旧版对照](../artifacts/v042-physical-review/index.html) · [完整测试来源](../artifacts/v042-physical-review/verification.json)。二维码本机`releases/taptap/test-qr-439499-v042.png`只经会话交付，不提交公开自测凭证。
+
+## 历史：收据与控件返修（v0.4.1，用户要求继续返修）
 
 - 开发自测 **439336 / v0.4.1 / 240e067fd43fcec201de0ec889e739dd7e8ab684**，原v037当前存档继续，不重开或重复收费。
 - ZIP `loststar-0.4.1-240e067-fusion-h5.zip`，9,896,448B，180文件，解压10,232,866B；SHA256 `7e9a5da1c7649045291685c4b0fa6aace06c95ad17b0ad60d1276ee0ec1ef5c1`。

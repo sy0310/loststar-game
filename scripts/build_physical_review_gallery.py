@@ -43,10 +43,13 @@ for name, title in [('museum-physical', '收藏室真实通道与连续取放'),
         assert item['speed'] == 1
         videos.append({'file': item['file'], 'bytes': len(raw), 'sha256': sha, 'durationSeconds': item['durationSeconds']})
         media.append(f'<figure><video controls playsinline preload="metadata" src="{esc(item["file"])}"></video><figcaption>{esc(item["file"])} · {item["durationSeconds"]:.2f}s · 自然连续1倍</figcaption></figure>')
-    shots = ''.join(figure(s['file'], s.get('caption', s['name'])) for s in report['screenshots'])
+    shots = ''.join(figure(s['file'], s.get('caption', s['name']) + (' · 原生Canvas局部，非手机整页' if s.get('kind') == 'native-canvas-crop' else '')) for s in report['screenshots'])
     sections.append(f'<h2>{title}</h2><div class="grid">{"".join(media)}</div><details><summary>实际截图（{len(report["screenshots"])}）</summary><div class="grid">{shots}</div></details><p><a href="{name}-evidence.json">夹具来源、逐帧时间与账本</a></p>')
 status = json.loads((OUT / 'review-status.json').read_text())
 assert status['sourceCommit'] == source
+frame_index = json.loads((OUT / 'review-frames/index.json').read_text())
+assert frame_index['sourceCommit'] == source and frame_index['zipSha256'] == package['sha256']
+frame_sheets = ''.join(figure(s['file'], s['name'] + ' · 实际影片连续抽帧联系表，非手机截图') for s in frame_index['contactSheets'])
 status_line = '内部逐帧审核完成，等待用户新包视觉复审。' if status['status'] == 'internal_reviewed_user_pending' else '内部审核进行中，尚未形成用户验收结论。'
 page = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>展柜与机构返修 V0.4.2</title>
 <style>body{{margin:0;background:#211232;color:#f3dfbe;font:16px/1.7 system-ui,sans-serif}}main{{max-width:1200px;margin:auto;padding:20px}}a{{color:#8ad9e0}}h1{{font-size:25px}}h2{{font-size:21px;border-top:1px solid #9b745b;padding-top:18px}}.notice{{padding:16px;border:2px solid #c99960;background:#3c254b}}.grid{{display:flex;flex-wrap:wrap;gap:15px}}figure{{margin:0 0 16px;width:min(100%,360px)}}figure img,figure video{{display:block;width:100%;height:auto;background:#170f25}}figure img{{image-rendering:pixelated}}video{{max-height:680px}}figcaption,code{{font-size:13px;overflow-wrap:anywhere}}summary{{padding:12px;cursor:pointer}}@media(max-width:500px){{main{{padding:12px}}}}</style>
@@ -56,7 +59,9 @@ page = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="v
 <h2>旧版与新版实际房间</h2><div class="grid">{comparison}</div>
 <p>柜体实体、通道、完整机器人轮廓、托盘、握点和前后层共用登记。门在自己的顶罩内收拢，机器人在侧前服务；物件先离开柜沿再取出。胶带只有一条有真实出口的带；铃只有独立帽杆运动，壳体和孔圈固定，触底后才发出声波。</p>
 {''.join(sections)}
+<h2>连续接触窗口复查</h2><p>以下均从上面原生1倍影片提取。联系表只用于核对抓握、压杆、回弹与收工具，不替代完整影片或用户实机复审。</p><details><summary>展开{len(frame_index['contactSheets'])}张联系表</summary><div class="grid">{frame_sheets}</div></details><p><a href="review-frames/index.json">每张原帧的影片、取帧时间与SHA</a></p>
 <h2>验证与限制</h2><p><a href="verification.json">构建／测试／固定包</a> · <a href="performance.json">两引擎实际绘制测量</a> · <a href="model-invariants.json">业务字节不变证明</a> · <a href="review-status.json">人工逐帧审核记录</a> · <a href="taptap-self-test.json">新TapTap自测版本</a></p>
+<p>内部未通过的中间候选原样保留：<a href="attempt-a51.json">a51材质对比失败</a>、<a href="attempt-ca.json">ca工程通过但节拍复查要求修改</a>。没有把这些候选的影片和结果换成当前SHA。</p>
 <p>桌面性能不代表真实手机。TapTap视觉、实际锁屏恢复、发热和低端WebView仍须用户实机复审。旧版<a href="../v041-receipt-review/">V0.4.1证据</a>保留原SHA与用户返修状态，不拿旧影片充当新证明。PR #2保持Draft，不合并、不提审、不正式发布。</p></main></html>'''
 (OUT / 'index.html').write_text(page)
 (OUT / 'gallery-status.json').write_text(json.dumps({'sourceCommit': source, 'version': package['version'], 'zipSha256': package['sha256'], 'status': status['status'], 'physicalPhone': False, 'screenshots': sum(len(r['screenshots']) for r in reports.values()), 'materials': len(reports['screens']['materials']), 'videos': videos, 'reports': names}, ensure_ascii=False, indent=2) + '\n')
