@@ -1,3 +1,4 @@
+import sharp from 'sharp';
 import {expect, test, type Page} from '@playwright/test';
 import {feedbackFixture} from '../../scripts/feedback_fixtures';
 import {firstPlanetFixture, type FirstPlanetFixtureStage} from '../../scripts/firstplanet_fixtures';
@@ -256,8 +257,8 @@ async function specimenPixels(page: Page, selector: string, id: string) {
   }, id);
 }
 
-for (const id of ['receipt', 'tape', 'bell'] as const) {
-  test(`${id}真实发现、整理、展示三态各有独立物理像素和阶段状态`, async ({page}) => {
+for (const id of ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell'] as const) {
+  test(`${id}刚获得、清理后、零件升级三张完整图片与原存档一致`, async ({page}) => {
     test.setTimeout(60000);
     await page.emulateMedia({reducedMotion: 'reduce'});
     await page.clock.install({time: new Date(epoch)});
@@ -308,7 +309,28 @@ for (const id of ['receipt', 'tape', 'bell'] as const) {
           expect(Number(await canvas.getAttribute('data-structure-pressed'))).toBe(condition === 'stabilized' ? 1 : 0);
         }
       }
+      const png=await page.evaluate(id=>(window as any).__FUSION__.materialSnapshot(id),id);
+      expect(png).toBeTruthy();
+      const actual=await sharp(Buffer.from(png.split(',')[1],'base64')).ensureAlpha().raw().toBuffer();
+      const reference=await page.evaluate(async condition=>{
+        const image=document.querySelector<HTMLImageElement>(`.fu-treatment-stages [data-condition="${condition}"] img`)!;await image.decode();
+        const canvas=document.createElement('canvas');canvas.width=canvas.height=384;canvas.getContext('2d')!.drawImage(image,0,0,384,384);
+        return{png:canvas.toDataURL('image/png'),url:image.src};
+      },condition);
+      expect(reference.url).toContain(`${id}-${condition}`);
+      const expected=await sharp(Buffer.from(reference.png.split(',')[1],'base64')).ensureAlpha().raw().toBuffer();
+      expect(Buffer.compare(actual,expected),`${id}/${condition}: exactly the browser-decoded complete file, not reconstructed parts`).toBe(0);
+      await expect(page.locator('.fu-treatment-stages img')).toHaveCount(3);
+      await expect.poll(()=>page.locator('.fu-treatment-stages img').evaluateAll(images=>images.every(image=>(image as HTMLImageElement).complete&&(image as HTMLImageElement).naturalWidth===384))).toBe(true);
       samples.push(await specimenPixels(page, id === 'receipt' ? '#fusion-paper-focus' : '#fusion-exhibit-focus', id));
+      if(condition==='stabilized'){
+        await page.locator('[data-image-preview-condition="found"]').tap();
+        await expect(page.locator('#fusion-state-preview')).toBeVisible();
+        await expect(page.locator('#fusion-state-preview-image')).toHaveAttribute('src',new RegExp(`${id}-found`));
+        expect(await page.evaluate(id=>(window as any).__FUSION__.materialSnapshot(id),id)).toBe(png);
+        expect(id==='receipt'?(await readArchive(page)).receipt.condition:(await readArchive(page)).curios[id].condition).toBe('stabilized');
+        await page.locator('#fusion-state-preview-close').tap();await expect(canvas).toBeVisible();
+      }
       const after = await readArchive(page);
       expect(after.progression.payments).toEqual(before.progression.payments);
       expect(after.receipt.condition).toBe(before.receipt.condition);
@@ -361,4 +383,32 @@ test('已付费旧周目刷新保持收藏、设备、能力和整理权益，�
   expect(await page.evaluate(() => localStorage.getItem('loststar.save.v1'))).toBe(sourceRaw);
   await expect(page.locator('#fusion-field-drawer')).toBeHidden();
   await expect(page.locator('#fusion-drawer')).not.toBeVisible();
+});
+
+
+test('零件处理中的画面保持完整前态，完成才换整图且旧账本只收费一次',async({page})=>{
+ await page.clock.install({time:new Date(epoch)});await page.clock.pauseAt(new Date(epoch+1000));
+ const fixture=firstPlanetFixture(epoch+1000,0,'found',{receiptAbility:0,tapeAbility:0});await installArchive(page,fixture.state);await openApp(page);
+ await openTreatment(page,'tape');const before=await readArchive(page);
+ await page.locator('[data-image-preview-condition="stabilized"]').tap();
+ await expect(page.locator('#fusion-state-preview')).toBeVisible();
+ await expect(page.locator('#fusion-curio-primary')).toBeHidden();
+ await page.locator('#fusion-curio-primary').evaluate((button:HTMLButtonElement)=>button.click());
+ expect((await readArchive(page)).curios.tape).toEqual(before.curios.tape);
+ await page.locator('#fusion-state-preview-close').tap();
+ for(const [kind,current,next]of [['clean','found','clean'],['repair','clean','stabilized']]as const){
+  const snapshot=await page.evaluate(()=>(window as any).__FUSION__.materialSnapshot('tape'));
+  await page.locator('#fusion-curio-primary').tap();
+  await expect.poll(async()=>(await readArchive(page)).curios.tape.action?.kind).toBe(kind);
+  const action=(await readArchive(page)).curios.tape.action!;await page.clock.runFor(Math.floor((action.endsAt-action.startedAt)/2));
+  expect((await readArchive(page)).curios.tape.condition).toBe(current);
+  expect(await page.evaluate(()=>(window as any).__FUSION__.materialSnapshot('tape'))).toBe(snapshot);
+  await page.clock.runFor(action.endsAt-action.startedAt+300);
+  await expect.poll(async()=>(await readArchive(page)).curios.tape.condition).toBe(next);
+  const image=await page.evaluate(()=>(window as any).__FUSION__.materialSnapshot('tape'));
+  expect(image).not.toBe(snapshot);
+ }
+ const after=await readArchive(page);
+ expect(before.game.resources+after.game.station.grossIncome-before.game.station.grossIncome-(after.game.station.repairSpent-before.game.station.repairSpent)-after.game.resources).toBe(curioPrices.tape.clean+curioPrices.tape.repair);
+ expect(after.progression.payments).toEqual(before.progression.payments);
 });

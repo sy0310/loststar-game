@@ -9,9 +9,9 @@ test('三种材料沿同一存档状态展示各自缺损与操作词',()=>{
   const signatures=new Set<string>();
   for(const id of ['receipt','tape','bell']){
     signatures.add(JSON.stringify(curioTreatmentLabels(id)));
-    expect(curioConditionPresentation(id,'found').label).toBe('发现态');
-    expect(curioConditionPresentation(id,'clean').label).toBe('整理态');
-    expect(curioConditionPresentation(id,'stabilized').label).toBe('展示完成');
+    expect(curioConditionPresentation(id,'found').label).toBe('刚获得');
+    expect(curioConditionPresentation(id,'clean').label).toBe('清理后');
+    expect(curioConditionPresentation(id,'stabilized').label).toBe('升级完成');
   }
   expect(signatures.size).toBe(3);
   expect(curioConditionPresentation('receipt','stabilized').detail).toContain('签收仍空白');

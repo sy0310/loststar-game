@@ -28,8 +28,8 @@ states=['found','clean','stabilized']
 full=[]
 for item in items:
  for stage in states:
-  rel=f'assets/runtime/visual-renewal/curios/{item}-{stage}.png'
+  rel=f'assets/runtime/visual-renewal/whole-states-v043/{item}-{stage}.png'
   if (ROOT/rel).is_file():full.append({'id':item,'state':stage,'path':rel})
-result={'schema':1,'approvedReferenceCommit':'48efa5212385273bf4a4f618c9ed88702f1303f1','policy':'Approved boards are references only. All runtime production layers are independent original generation or original code-native UI. Source images, deterministic exports and module registrations are retained. Runtime integration and visual acceptance are recorded separately.','files':files,'moduleRegistrations':registrations,'curioStates':full,'completeCurioStateCount':len(full),'runtimeBytes':sum(f['bytes'] for f in files if f['kind']=='runtime')}
+result={'schema':1,'approvedReferenceCommit':'48efa5212385273bf4a4f618c9ed88702f1303f1','policy':'Approved boards are references only. All runtime production layers are independent original generation or original code-native UI. Source images, deterministic exports and module registrations are retained. Runtime integration and visual acceptance are recorded separately.','files':files,'moduleRegistrations':registrations,'curioStateRenderer':'src/fusion/curio-state-images.ts: one complete saved-state image; no procedural reconstruction','curioStates':full,'completeCurioStateCount':len(full),'runtimeBytes':sum(f['bytes'] for f in files if f['kind']=='runtime')}
 (DEST/'ASSET_REGISTRY.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps({'files':len(files),'curioStates':len(full),'runtimeBytes':result['runtimeBytes'],'registrations':len(registrations)}))

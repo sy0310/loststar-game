@@ -42,11 +42,11 @@ const fallback = {
 };
 
 export function curioConditionPresentation(id: string, condition: CurioCondition) {
-  return {label: ({found: '发现态', clean: '整理态', stabilized: '展示完成'} as const)[condition], detail: (profiles[id] ?? fallback).details[condition]};
+  return {label: ({found: '刚获得', clean: '清理后', stabilized: '升级完成'} as const)[condition], detail: (profiles[id] ?? fallback).details[condition]};
 }
 export function curioTreatmentLabels(id: string) {
   const {clean, repair, cleaning, repairing} = profiles[id] ?? fallback;
-  return {clean, repair, cleaning, repairing};
+  return {clean, repair: '零件升级', cleaning: '清理中', repairing: '升级中'};
 }
 export function isMaterialCurio(id: string): id is MaterialCurioId {return id === 'tape' || id === 'bell';}
 

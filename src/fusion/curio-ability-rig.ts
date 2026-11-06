@@ -1,3 +1,4 @@
+import {wholeCurioMaterial} from './curio-state-images';
 import {modernReceiptBounds} from './receipt-paper-model';
 import {receiptReadingRecords,receiptReadingLabel} from './receipt-reading-model';
 import {prepareCurioMechanisms,drawMechanismForMaterial} from './curio-mechanism-renderer';
@@ -80,6 +81,12 @@ function receipt(context:CanvasRenderingContext2D,options:CurioAbilityRigOptions
 
 /** Tape uses exactly the same physical rig as the room and workbench at every level. */
 function tape(context:CanvasRenderingContext2D,options:CurioAbilityRigOptions,_extension:number):CurioAbilityRigResult{
+ const whole=wholeCurioMaterial(options.image),trial=options.experimentProgress??0;
+ if(whole&&(whole.condition!=='stabilized'||trial<=0||trial>=1)){
+  if(!options.baseAlreadyDrawn)context.drawImage(options.image,0,0,192,192);
+  const b=renewalCurioMuseumHandling.tape.bounds;
+  return{bounds:{x:b.left,y:b.top,width:b.right-b.left,height:b.bottom-b.top},extension:0,usedRecordIds:[]};
+ }
  const result=drawMechanismForMaterial(context,'tape',options.image,{seconds:options.seconds,trial:options.experimentProgress,abilityLevel:options.abilityLevel,reducedMotion:options.reducedMotion,serviceEnvelope:options.serviceEnvelope});
  const b=renewalCurioMuseumHandling.tape.bounds;
  return{bounds:{x:b.left,y:b.top,width:b.right-b.left,height:b.bottom-b.top},extension:result.frame.tape?.length??0,usedRecordIds:[]};
