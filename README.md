@@ -8,11 +8,13 @@
 
 工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不发布正式版。2026-11-02 用户授权的 TapTap 开发自测上传见 [实机试玩记录](docs/13_TAPTAP_SELF_TEST.md)。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
 
-## V0.4.5 A方案：简单探索、新奇发现、温柔回归（开发自测准备中）
+## V0.4.5 A方案：简单探索、新奇发现、温柔回归（待用户/真机验收）
 
-本轮依据用户确认的[四张完整原图](design/v045_a_simplified_exploration/README.md)，设计提交`8514cf9612109333cdb7b2a388bb0c4ad9e4e387`；远端原字节回读4/4。只重排首星体验：一个当前调查、一个事件手记、明确助力与探索/收藏/基地三导航。白天到清晨在同一颗完整星球发生，观察/巡逻/夜间发现/归航/已购回看收为同一条流。六物18张整图与原模型费用、v037全部权益保留。
+四张批准原图已真实推送于`8514cf9`并远端原字节回读4/4。首页收敛为一个调查、一条探索手记和明确助力；观察、夜间特别发现、清晨成果、归航及已购回看合为同一探索流。收藏突出六柜和三态，基地保留一个成长主入口及可选设施；原18整图、v037全部权益和费用不变。
 
-[13项A要求与入口取舍](design/v045_a_simplified_exploration/IMPLEMENTATION.md) · [全部174项原/新有效要求](design/visual-renewal/VISUAL_COVERAGE.md)。当前运行源码、实际固定包、连续影片、CI和TapTap新版本由后续同包验证登记；**以下V044及更早结果为历史，不是V045通过证据**。不以按钮/文件存在代替真实读图与处理流程，不以浏览器触控仿真代替物理手机审核。
+TapTap开发自测 **444057 / v0.4.5 / 06cb11f**，11,996,580B/189文件已上传回读，主包前后相同、未绑定/提审/发布。同包本机预览`http://127.0.0.1:4248/loststar-fusion/`。20/20原件+4/4新PNG、407单测、五构建、578端到端、6组实包检查通过；48在线/12离线模拟0异常，12场桌面性能P95 Chromium16.7–17.5ms、WebKit17–18ms。**不代表手机或用户美术验收。**
+
+[当前交付与真实未测项](design/v045_a_simplified_exploration/DELIVERY.md) · [审核页：三屏前后/18态/连续影片](artifacts/v045-a-exploration/index.html) · [保留/合并/移除入口](design/v045_a_simplified_exploration/IMPLEMENTATION.md) · [174条四维要求](design/visual-renewal/VISUAL_COVERAGE.md)。夜间灰纸影和晨修细节手机可辨性、真实锁屏/发热/可听音效待测。以下V044及更早结果为历史，不是V045通过证据。
 
 ## V0.4.4 执行补齐与美术精修（历史，用户/真机未签收）
 

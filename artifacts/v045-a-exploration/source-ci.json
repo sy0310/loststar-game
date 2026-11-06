@@ -1,0 +1,1385 @@
+{
+  "schema": 1,
+  "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+  "version": "0.4.5",
+  "observedAt": "2026-11-06 18:55:06 UTC",
+  "complete": true,
+  "allRequiredSuccessful": true,
+  "method": "Read-only GitHub connector job metadata plus gh read API run metadata because the connector commit list returns pull_request events only. No rerun, cancellation, source changes or browser measurement.",
+  "localFrozenPackage": {
+    "game": "失物星球",
+    "version": "0.4.5",
+    "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+    "archive": "releases/taptap/loststar-0.4.5-06cb11f-fusion-h5.zip",
+    "bytes": 11996580,
+    "sha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+    "files": 189,
+    "uncompressedBytes": 12364124,
+    "entry": "loststar-fusion/index.html",
+    "role": "Local frozen upload candidate; CI packages are independently generated, not a TapTap upload receipt."
+  },
+  "runs": [
+    {
+      "runId": 42271626748,
+      "event": "pull_request",
+      "headSha": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+      "runAttempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/42271626748",
+      "createdAt": "2026-11-06T18:32:27Z",
+      "updatedAt": "2026-11-06T18:53:48Z",
+      "checkoutSha": "33dddb5c758c8fd312f8ae541bc0182a6627e94d",
+      "tests": {
+        "unitFiles": 64,
+        "unitTests": 407,
+        "builds": 5,
+        "e2ePassed": 578,
+        "e2eDuration": "18.9m",
+        "compressedPackageCases": 6
+      },
+      "ciPackage": {
+        "game": "失物星球",
+        "version": "0.4.5",
+        "sourceCommit": "33dddb5c758c8fd312f8ae541bc0182a6627e94d",
+        "archive": "releases/taptap/loststar-0.4.5-33dddb5-fusion-h5.zip",
+        "bytes": 11996575,
+        "sha256": "5484a79c9bc71aac695f4bb30dccc497b3049904f3bd364a415321de573ff03b",
+        "files": 189,
+        "uncompressedBytes": 12364124,
+        "entry": "loststar-fusion/index.html",
+        "orientation": "portrait",
+        "purpose": "First-planet playable journey with persistent surface fog, artifact restoration, collection, base and day/night; continues the existing v037 campaign and preserves prior source backups",
+        "role": "Independently generated CI build; byte equality does not establish a TapTap upload receipt.",
+        "uploadedToTapTap": false,
+        "matchesLocalFrozenZip": false,
+        "metadataEvidence": "Actual metadata in this successful job log; smoke independently read from that run's browser-evidence ZIP."
+      },
+      "jobs": [
+        {
+          "id": 128077361888,
+          "name": "verify",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 42271626748,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python3 scripts/validate_design_assets.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run python3 design/visual-renewal/import_reference_pngs.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Verify four approved A045 original PNGs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Verify current asset and execution mappings",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Run npm run test:coverage",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Run npm run build:d1",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "Run npm run build:v034",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Run npm run build:fusion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Run npm run build:v036",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Use Ubuntu archive for browser dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            },
+            {
+              "name": "Run npx playwright install --with-deps chromium webkit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16
+            },
+            {
+              "name": "Run npm run test:e2e",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17
+            },
+            {
+              "name": "Verify the compressed H5 package",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 39
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 40
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 41
+            }
+          ]
+        }
+      ],
+      "apt": {
+        "officialDownloadLines": 201,
+        "azureDownloadLines": 0,
+        "mirrorFileReplacementLog": "2026-11-06T18:33:34.4808193Z Using Ubuntu archive in apt-mirrors.txt"
+      },
+      "artifacts": [
+        {
+          "id": 13531358967,
+          "name": "browser-evidence",
+          "bytes": 24994712,
+          "url": "https://api.github.com/repos/sy0310/loststar-game/actions/artifacts/13531358967",
+          "digest": "sha256:1fc969d2f78b10fc13e43109b72e6339bd850715179ae20a957aa4fe017df77c"
+        },
+        {
+          "id": 13531299124,
+          "name": "visual-renewal-review",
+          "bytes": 701202846,
+          "url": "https://api.github.com/repos/sy0310/loststar-game/actions/artifacts/13531299124",
+          "digest": "sha256:cd5693b3d6de8e451728d0a4e2716106794c6590f4d279e56820b652af9ee8e2"
+        }
+      ],
+      "packageSmoke": {
+        "artifactId": 13531358967,
+        "artifactDownloadSha256": "1fc969d2f78b10fc13e43109b72e6339bd850715179ae20a957aa4fe017df77c",
+        "member": "artifacts/ci-package/package-smoke.json",
+        "sourceCommit": "33dddb5c758c8fd312f8ae541bc0182a6627e94d",
+        "physicalPhone": false,
+        "caseCount": 6,
+        "cases": [
+          {
+            "engine": "chromium",
+            "viewport": {
+              "width": 360,
+              "height": 800
+            },
+            "kind": "new-player",
+            "build": "0.4.5 · 33dddb5",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "chromium",
+            "viewport": {
+              "width": 360,
+              "height": 800
+            },
+            "kind": "existing-paid-archive",
+            "build": "0.4.5 · 33dddb5",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "fullArchive": true,
+              "sourceBackup": true,
+              "originalLocalStorage": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "chromium",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "kind": "new-player",
+            "build": "0.4.5 · 33dddb5",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "chromium",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "kind": "existing-paid-archive",
+            "build": "0.4.5 · 33dddb5",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "fullArchive": true,
+              "sourceBackup": true,
+              "originalLocalStorage": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "webkit",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "kind": "new-player",
+            "build": "0.4.5 · 33dddb5",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "webkit",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "kind": "existing-paid-archive",
+            "build": "0.4.5 · 33dddb5",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "fullArchive": true,
+              "sourceBackup": true,
+              "originalLocalStorage": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          }
+        ]
+      },
+      "logSummary": [
+        "2026-11-06T18:33:28.6675458Z  Test Files  64 passed (64)",
+        "2026-11-06T18:33:28.6677344Z       Tests  407 passed (407)",
+        "2026-11-06T18:33:34.4808193Z Using Ubuntu archive in apt-mirrors.txt",
+        "2026-11-06T18:53:13.1550104Z   578 passed (18.9m)",
+        "2026-11-06T18:53:23.6123943Z 6 packaged new/existing-archive cases passed"
+      ],
+      "mergeParents": [
+        "bfe6ea184df51b46d82ce4abdb38df0a9e4cd44e",
+        "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a"
+      ],
+      "mergeMessage": "Merge 06cb11f6a2eeb688e8014b7993267cd14d1f0e0a into bfe6ea184df51b46d82ce4abdb38df0a9e4cd44e"
+    },
+    {
+      "runId": 42271608956,
+      "event": "push",
+      "headSha": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+      "runAttempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/42271608956",
+      "createdAt": "2026-11-06T18:32:20Z",
+      "updatedAt": "2026-11-06T18:53:24Z",
+      "checkoutSha": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+      "tests": {
+        "unitFiles": 64,
+        "unitTests": 407,
+        "builds": 5,
+        "e2ePassed": 578,
+        "e2eDuration": "18.0m",
+        "compressedPackageCases": 6
+      },
+      "ciPackage": {
+        "game": "失物星球",
+        "version": "0.4.5",
+        "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+        "archive": "releases/taptap/loststar-0.4.5-06cb11f-fusion-h5.zip",
+        "bytes": 11996580,
+        "sha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+        "files": 189,
+        "uncompressedBytes": 12364124,
+        "entry": "loststar-fusion/index.html",
+        "orientation": "portrait",
+        "purpose": "First-planet playable journey with persistent surface fog, artifact restoration, collection, base and day/night; continues the existing v037 campaign and preserves prior source backups",
+        "role": "Independently generated CI build; byte equality does not establish a TapTap upload receipt.",
+        "uploadedToTapTap": false,
+        "matchesLocalFrozenZip": true,
+        "metadataEvidence": "Actual metadata in this successful job log; smoke independently read from that run's browser-evidence ZIP."
+      },
+      "jobs": [
+        {
+          "id": 128077300351,
+          "name": "verify",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 42271608956,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python3 scripts/validate_design_assets.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run python3 design/visual-renewal/import_reference_pngs.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Verify four approved A045 original PNGs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Verify current asset and execution mappings",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Run npm run test:coverage",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Run npm run build:d1",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "Run npm run build:v034",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Run npm run build:fusion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Run npm run build:v036",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Use Ubuntu archive for browser dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            },
+            {
+              "name": "Run npx playwright install --with-deps chromium webkit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16
+            },
+            {
+              "name": "Run npm run test:e2e",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17
+            },
+            {
+              "name": "Verify the compressed H5 package",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 39
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 40
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 41
+            }
+          ]
+        }
+      ],
+      "apt": {
+        "officialDownloadLines": 201,
+        "azureDownloadLines": 0,
+        "mirrorFileReplacementLog": "2026-11-06T18:33:36.8080219Z Using Ubuntu archive in apt-mirrors.txt"
+      },
+      "artifacts": [
+        {
+          "id": 13532621920,
+          "name": "visual-renewal-review",
+          "bytes": 701202846,
+          "url": "https://api.github.com/repos/sy0310/loststar-game/actions/artifacts/13532621920",
+          "digest": "sha256:c5b7c339fb625cb93e46bcf5f00ab02ed3f4528430926cfc46c2578a39d46024"
+        },
+        {
+          "id": 13532521863,
+          "name": "browser-evidence",
+          "bytes": 24365587,
+          "url": "https://api.github.com/repos/sy0310/loststar-game/actions/artifacts/13532521863",
+          "digest": "sha256:70cbc9800fad2a58b857fbca3d9c341c2113bf9247d88725abf3b1164676a581"
+        }
+      ],
+      "packageSmoke": {
+        "artifactId": 13532521863,
+        "artifactDownloadSha256": "70cbc9800fad2a58b857fbca3d9c341c2113bf9247d88725abf3b1164676a581",
+        "member": "artifacts/ci-package/package-smoke.json",
+        "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+        "physicalPhone": false,
+        "caseCount": 6,
+        "cases": [
+          {
+            "engine": "chromium",
+            "viewport": {
+              "width": 360,
+              "height": 800
+            },
+            "kind": "new-player",
+            "build": "0.4.5 · 06cb11f",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "chromium",
+            "viewport": {
+              "width": 360,
+              "height": 800
+            },
+            "kind": "existing-paid-archive",
+            "build": "0.4.5 · 06cb11f",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "fullArchive": true,
+              "sourceBackup": true,
+              "originalLocalStorage": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "chromium",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "kind": "new-player",
+            "build": "0.4.5 · 06cb11f",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "chromium",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "kind": "existing-paid-archive",
+            "build": "0.4.5 · 06cb11f",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "fullArchive": true,
+              "sourceBackup": true,
+              "originalLocalStorage": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "webkit",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "kind": "new-player",
+            "build": "0.4.5 · 06cb11f",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "engine": "webkit",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "kind": "existing-paid-archive",
+            "build": "0.4.5 · 06cb11f",
+            "checks": {
+              "seed": true,
+              "siteConfiguration": true,
+              "collection": true,
+              "upgrades": true,
+              "paidSorting": true,
+              "noOverflow": true,
+              "noUnknownWorlds": true,
+              "oneRobot": true,
+              "noLegacySorter": true,
+              "singleSorter": true,
+              "fullArchive": true,
+              "sourceBackup": true,
+              "originalLocalStorage": true,
+              "noPaintedHitFrames": true
+            },
+            "hitLayerStyles": [
+              {
+                "target": "location",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "receipt",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "tape",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "nested",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "stamp",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "cosmic-parcel",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              },
+              {
+                "target": "bell",
+                "borderImageSource": "none",
+                "borderImageWidth": "0",
+                "background": "rgba(0, 0, 0, 0)",
+                "shadow": "none"
+              }
+            ],
+            "errors": []
+          }
+        ]
+      },
+      "logSummary": [
+        "2026-11-06T18:33:31.9884927Z  Test Files  64 passed (64)",
+        "2026-11-06T18:33:31.9886482Z       Tests  407 passed (407)",
+        "2026-11-06T18:33:36.8080219Z Using Ubuntu archive in apt-mirrors.txt",
+        "2026-11-06T18:52:47.5174158Z   578 passed (18.0m)",
+        "2026-11-06T18:52:58.6441347Z 6 packaged new/existing-archive cases passed"
+      ]
+    }
+  ],
+  "previousCandidateArchive": "releases/v045/source-ci-d6e80c9.json"
+}

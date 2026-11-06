@@ -41,3 +41,7 @@
 ![首星首页](approved/02_first_planet_home_simplified.png)
 ![夜间发现与回归](approved/03_night_discovery_flow.png)
 ![整理与收藏](approved/04_curio_restore_collection.png)
+
+## 本轮实际开发自测记录
+
+原图提交8514cf9已推送、4/4远端回读。A版固定运行06cb11f，TapTap444057/v0.4.5；全部交付物、当前测试与待用户/真机项目见[DELIVERY.md](DELIVERY.md)。首段描述的是原图设计提交的范围，不是当前开发未开始。用户视觉和真实手机仍待审，不称整体最终完成。
