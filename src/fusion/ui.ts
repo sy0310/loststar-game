@@ -7,8 +7,8 @@ import {discoveries, discoveryById, planetById} from '../content/catalog';
 import {curioPrices, projectAvailable, latestNightHistory} from './domain';
 import {drawCurioSpecimen, prepareCurioMaterial, prepareCurioTools, prepareCurioWorkbench, curioConditionPresentation, curioTreatmentLabels, renderCurioTreatment, exportCurioMaterial, renderRenewalReceipt, exportRenewalReceiptMaterial, renewalReceiptCurioState} from './curio-condition';
 import {drawCurioAbilityRig,curioAbilityReady,type CurioAbilityRigResult,type AbilityRigRecord} from './curio-ability-rig';
-import {curioImageStages,curioStateImageUrl} from './curio-state-images';
-import type {RenewalCurioId} from './curio-renewal-model';
+import {curioImageStages,curioStateImageUrl,savedCurioCondition} from './curio-state-images';
+import {isRenewalCurio,type RenewalCurioId} from './curio-renewal-model';
 import {mechanismTrialMs} from './curio-mechanism-model';
 import {cost, MAX_LEVEL, publicRadar, tuning, type UpgradeId, type SaveData} from '../game/engine';
 import {growthCatalog, growthChange, growthLevel} from '../game/growth';
@@ -56,7 +56,7 @@ const minutes = (milliseconds: number) => `${Math.max(1, Math.ceil(milliseconds 
 const conditionLabels = {found: '刚获得', clean: '清理后', stabilized: '升级完成'};
 const recordOrigins: Record<string, string> = {marker: '管道箱标', residents: '生态观察窗', night: '收件站夜班'};
 const upgradeNames: Record<UpgradeId, string> = {scanner: '机器人', recycler: '飞船', radar: '雷达', cargo: '货舱'};
-const trialLines:Record<string,string>={receipt:'订单没下，退货先到。',tape:'对不起，又粘人了。',nested:'拆到最后，还是第一层。',stamp:'今天的事，昨天再办。','cosmic-parcel':'远处回敲了两下。',bell:'你一转身，它就上班。'};
+const trialLines:Record<string,string>={receipt:'订单没下，退货先到。',tape:'对不起，又粘人了。',nested:'拆到最后，还是第一层。',stamp:'今天的事，昨天再办。','cosmic-parcel':'远处回敲了两下。',bell:'响了。还是没人签收。'};
 const exhibitActionLabels:Record<string,string>={receipt:'读出票面',tape:'拉出一截',nested:'打开一层',stamp:'盖个邮戳','cosmic-parcel':'敲敲箱盖',bell:'轻按铃铛'};
 
 export function mountFusion(controller: FusionController) {
@@ -64,7 +64,14 @@ export function mountFusion(controller: FusionController) {
   const preferences = readPreferences();
   document.documentElement.dataset.textSize = preferences.textSize;
   const sounds = new SoundDesk(preferences.muted);
-  function itemArt(id:string){const condition=id==='receipt'?controller.state.receipt.condition:controller.state.curios[id]?.condition??'found';return `<img class="pixel-art" src="${renewalArtUrl(id,condition)}" alt="" decoding="async">`;}
+  function itemArt(id:string){const condition=isRenewalCurio(id)?savedCurioCondition(controller.state,id):'found';return `<img class="pixel-art" ${isRenewalCurio(id)?`data-curio-id="${id}" data-curio-condition="${condition}"`:''} src="${renewalArtUrl(id,condition)}" alt="" decoding="async">`;}
+  function refreshCurioImages(){
+    for(const image of app.querySelectorAll<HTMLImageElement>('img[data-curio-id]')){
+      const id=image.dataset.curioId;if(!id||!isRenewalCurio(id))continue;
+      const condition=savedCurioCondition(controller.state,id);
+      if(image.dataset.curioCondition!==condition){image.src=curioStateImageUrl(id,condition);image.dataset.curioCondition=condition;}
+    }
+  }
 
   app.innerHTML = `
     <div id="fusion-app">
@@ -189,6 +196,10 @@ export function mountFusion(controller: FusionController) {
   let feedbackToken = 0;
   let curioTrialAt = -Infinity;
   let curioTrialReplay=0;
+  let responseReveal:{id:string;at:number}|undefined;
+  let responseClearAt=0;
+  let detailDisplayedCondition:string|undefined;
+  let treatmentResult:{condition:string;at:number}|undefined;
   let bellSoundReplay=0;
   let previousGross = controller.state.game.station.grossIncome;
   let previousIncomeAt = controller.state.game.lastAt;
@@ -279,6 +290,8 @@ export function mountFusion(controller: FusionController) {
 
   function showDrawer(kind: Drawer, title: string, content: string) {
     delete body.dataset.imagePreview;
+    responseReveal=undefined;
+    responseClearAt=0;
     setFieldOpen(false);
     interactions.hide();
     clearProjectHabitats();
@@ -613,11 +626,14 @@ export function mountFusion(controller: FusionController) {
     const exhibit = Boolean(exhibitActionLabels[id]);
     curioTrialAt=-Infinity;
     detailId = id;
+    detailDisplayedCondition=isRenewalCurio(id)?savedCurioCondition(state,id):undefined;
+    treatmentResult=undefined;
     showDrawer('detail', discovery.name, `
       ${id === 'receipt' || curioPrices[id] ? '<div id="fusion-treatment-loading" class="fu-treatment-loading" role="status"><span>整理台准备中…</span><button id="fusion-treatment-retry" hidden>重新接通</button></div>' : ''}
       ${id === 'receipt' || curioPrices[id] ? `<ol class="fu-treatment-stages" aria-label="物品三态外观，图片仅供对照">${curioImageStages.map((condition,index)=>`<li data-condition="${condition}"><button type="button" class="fu-state-thumb" data-image-preview-condition="${condition}" aria-label="放大${['刚获得','清理后','零件升级后'][index]}外观对照"><img src="${curioStateImageUrl(id as RenewalCurioId,condition)}" alt="${escape(discovery.name)} · ${['刚获得','清理后','零件升级后'][index]}" width="56" height="56"><span>${['刚获得','清理后','零件升级'][index]}</span></button></li>`).join('')}</ol>` : ''}
       ${id === 'receipt' || curioPrices[id] ? '<section id="fusion-state-preview" class="fu-state-preview" aria-label="只读外观对照" hidden><img id="fusion-state-preview-image" width="384" height="384" alt=""><p id="fusion-state-preview-caption"></p><button id="fusion-state-preview-close">返回当前物品</button></section>' : ''}
       ${id === 'receipt' ? '<canvas id="fusion-paper-focus" width="640" height="700" role="img" aria-label="收据物理状态与修补近景"></canvas><div class="fu-paper-status"><span id="fusion-paper-condition"></span><span id="fusion-paper-missing"></span></div><div class="fu-progress"><i id="fusion-paper-progress"></i></div>' : `<canvas id="fusion-exhibit-focus" width="${curioPrices[id] ? 640 : 400}" height="${curioPrices[id] ? 700 : 370}" role="img" aria-label="${escape(discovery.name)}${curioPrices[id] ? '独立整理台' : '玻璃容器近景'}"></canvas>`}
+      ${id === 'receipt' || curioPrices[id] ? '<p id="fusion-treatment-result" class="fu-treatment-result" role="status" aria-live="polite"></p>' : ''}
       <div id="fusion-treatment-actions" class="fu-detail-actions">${id === 'receipt' ? '<button id="fusion-paper-primary" class="fu-primary"></button><button id="fusion-compare-label" hidden>对照箱标</button>' : ''}${curioPrices[id] ? '<button id="fusion-curio-primary" class="fu-primary"></button>' : ''}${exhibit ? '' : '<button id="fusion-try">试一试</button>'}</div>
       ${exhibit ? `<section id="fusion-exhibit-interaction" class="fu-exhibit-interaction" aria-labelledby="fusion-exhibit-title" hidden><header><strong id="fusion-exhibit-title">展品互动</strong><small id="fusion-exhibit-note">不耗零件</small></header><button id="fusion-try" aria-describedby="fusion-exhibit-note" disabled hidden>${exhibitActionLabels[id]}</button></section>` : ''}
       <div id="interaction-feedback" class="fu-interaction" hidden><canvas width="320" height="180" aria-label="奇物互动演出"></canvas><p id="interaction"></p><button id="fusion-hide-interaction">收起</button></div>
@@ -758,6 +774,13 @@ export function mountFusion(controller: FusionController) {
     }
     if (drawer === 'detail') {
       const condition = detailId === 'receipt' ? state.receipt.condition : state.curios[detailId]?.condition;
+      if(condition&&detailDisplayedCondition&&condition!==detailDisplayedCondition)treatmentResult={condition,at:performance.now()};
+      detailDisplayedCondition=condition;
+      const result=body.querySelector<HTMLElement>('#fusion-treatment-result');
+      if(result){
+        const active=!!treatmentResult&&performance.now()-treatmentResult.at<2200;
+        result.dataset.active=String(active);result.textContent=active?(treatmentResult!.condition==='clean'?'清理完成 · 结构待整理':'零件升级完成'):'';
+      }
       for (const step of body.querySelectorAll<HTMLElement>('.fu-treatment-stages [data-condition]')) {
         step.setAttribute('aria-current', step.dataset.condition === condition ? 'step' : 'false');
       }
@@ -906,6 +929,7 @@ export function mountFusion(controller: FusionController) {
       clearTimeout(foundTimer);
       foundTimer = setTimeout(() => {query('#fusion-found').hidden = true;}, 5000);
     }
+    refreshCurioImages();
     const signature = `${game.collection.join(',')}/${filter}/${state.receipt.condition}/${state.receipt.stage}/${Object.entries(state.curios).map(([id, curio]) => `${id}:${curio.condition}:${curio.action?.kind ?? ''}`).join(',')}`;
     if (signature !== collectionSignature) {collectionSignature = signature;renderCollection();museum.refresh();}
     const baseKey = `${game.collection.join(',')}/${JSON.stringify(game.growth)}/${state.projects.join(',')}`;
@@ -1202,7 +1226,11 @@ export function mountFusion(controller: FusionController) {
         // The bell rings from its painted bottom-of-stroke frame, not from input.
         if(interactionId!=='bell')soundCue('interaction',interactionId);
         const response=body.querySelector<HTMLElement>('#fusion-curio-response');
-        if(response&&trialLines[interactionId]){response.hidden=false;response.textContent=trialLines[interactionId];}
+        if(response&&trialLines[interactionId]){
+          response.hidden=false;response.textContent='咔哒正在试验…';
+          responseReveal={id:interactionId,at:performance.now()+(interactionId==='bell'?650:1400)};
+          responseClearAt=performance.now()+mechanismTrialMs+500;
+        }
         exhibit.canvas?.scrollIntoView({block:'nearest'});
         updateExhibitInteraction();
         return;
@@ -1266,13 +1294,19 @@ export function mountFusion(controller: FusionController) {
     if(result){canvas.dataset.abilityBounds=JSON.stringify(result.bounds);canvas.dataset.abilityExtension=String(result.extension);canvas.dataset.usedRecordIds=result.usedRecordIds.join(',');}
   }
   function paintFocus(now: number) {
+    if(document.hidden){requestAnimationFrame(paintFocus);return;}
+    if(responseReveal&&dialog.open&&drawer==='detail'&&detailId===responseReveal.id&&now>=responseReveal.at){
+      const response=body.querySelector<HTMLElement>('#fusion-curio-response');
+      if(response)response.textContent=trialLines[responseReveal.id];responseReveal=undefined;
+    }
+    if(responseClearAt&&now>=responseClearAt){const response=body.querySelector<HTMLElement>('#fusion-curio-response');if(response)response.hidden=true;responseClearAt=0;}
     if(tab==='explore'&&!dialog.open&&worldView(controller.state.game).phase!=='night'){
       const projected=explorationProgress();
       query('#fusion-progress').style.width=`${projected.progress}%`;
       query('#fusion-assist-progress').style.width=`${projected.queued}%`;
       query('#fusion-percent').textContent=`${Math.floor(projected.progress)}%`;
     }
-    if (dialog.open && focusCadence.draw(now, reducedMotion.matches ? 1000/30 : 1000/60)) {
+    if (dialog.open && body.dataset.imagePreview!=='true' && focusCadence.draw(now, reducedMotion.matches ? 1000/30 : 1000/60)) {
       const began=performance.now();
       let painted=false;
       lastFocusPaint = now;

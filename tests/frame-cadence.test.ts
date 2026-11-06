@@ -1,6 +1,16 @@
 import {expect, it} from 'vitest';
 import {FrameCadence} from '../src/render/frame-cadence';
 import {baseRobotPose} from '../src/render/base-motion';
+import webkitTrace from './fixtures/webkit-raf-v043.json';
+
+it('真实WebKit显示时序不因任意绘制起相重复丢弃本可绘制的一帧',()=>{
+ for(const trace of webkitTrace.cases)for(let offset=0;offset<17;offset++){
+  const cadence=new FrameCadence();let at=0,count=0;cadence.draw(at);
+  cadence.draw(offset);
+  for(const delta of trace.intervals){at+=delta;if(cadence.draw(offset+at))count++;}
+  expect(count,`${trace.view} phase${offset}`).toBeGreaterThanOrEqual(trace.intervals.length-3);
+ }
+});
 
 it('30Hz绘制累计显示时间，在60Hz屏上保留小数余量', () => {
   const clock = new FrameCadence();

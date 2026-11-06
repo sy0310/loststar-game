@@ -1,4 +1,4 @@
-/** V0.4.3 complete-image evidence, from an immutable extracted production ZIP. */
+/** Complete-image evidence, from an immutable extracted production ZIP. */
 import {chromium, webkit} from '@playwright/test';
 import {mkdir, readFile, writeFile, unlink, access} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -8,9 +8,10 @@ import {isDeepStrictEqual} from 'node:util';
 import {firstPlanetFixture} from '../releases/firstplanet-fixtures/firstplanet_fixtures.js';
 
 const mode = process.argv[2] ?? 'screens';
-if (!['screens', 'process'].includes(mode)) throw Error('Expected screens or process');
+if (!['screens', 'process', 'interactions'].includes(mode)) throw Error('Expected screens, process or interactions');
+const expectedVersion = process.env.RENEWAL_VERSION ?? '0.4.3';
 const base = process.env.RENEWAL_URL;
-if (!base) throw Error('RENEWAL_URL must point to the immutable extracted V0.4.3 package');
+if (!base) throw Error(`RENEWAL_URL must point to the immutable extracted V${expectedVersion} package`);
 const target = new URL(base);
 if (!['http:', 'https:'].includes(target.protocol) || target.username || target.password || target.search || target.hash)
   throw Error('Use the fixed package entry URL without credentials, query or fragment');
@@ -23,7 +24,7 @@ const prices = {receipt: {clean: 40, repair: 120}, tape: {clean: 30, repair: 100
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const git = args => execFileSync('git', args, {encoding: 'utf8'}).trim();
 const metadata = JSON.parse(await readFile('releases/taptap/package-info-fusion.json', 'utf8'));
-if (metadata.version !== '0.4.3') throw Error(`Freeze and package V0.4.3 first; metadata is ${metadata.version}`);
+if (metadata.version !== expectedVersion) throw Error(`Freeze and package V${expectedVersion} first; metadata is ${metadata.version}`);
 const checkout = git(['rev-parse', 'HEAD']);
 const runtimePaths = ['src', 'assets/runtime', ':(top,glob)package*.json', ':(top,glob)vite*.config.ts'];
 async function frozenGuard() {
@@ -40,7 +41,7 @@ const evidenceFile = `${output}/${mode}-whole-state-evidence.json`;
 try {await access(evidenceFile);throw Error(`Evidence already exists; use a fresh RENEWAL_OUTPUT: ${evidenceFile}`);}
 catch (error) {if (error.code !== 'ENOENT') throw error;}
 for (const dir of ['screens', 'materials', 'raw', 'videos']) await mkdir(`${output}/${dir}`, {recursive: true});
-const report = {mode, version: '0.4.3', sourceCommit: metadata.sourceCommit, evidenceCheckoutCommit: checkout,
+const report = {mode, version: expectedVersion, sourceCommit: metadata.sourceCommit, evidenceCheckoutCommit: checkout,
   sourceClean: true, package: metadata, zipSha256: metadata.sha256, base, database, initialGuard,
   startedAt: Date.now(), collectorSha256: sha256(await readFile(new URL(import.meta.url))),
   fixtureModuleSha256: sha256(await readFile('releases/firstplanet-fixtures/firstplanet_fixtures.js')),
@@ -123,7 +124,7 @@ async function open(browser, {name, engine = 'chromium', width = 390, height = 8
     await page.locator('#fusion-world canvas[data-ready="true"]').waitFor({timeout: 30000});
     await page.waitForFunction(() => !!window.__FUSION__?.materialSnapshot);
     const build = await page.locator('.fu-build').innerText();
-    assert(build.includes('0.4.3') && build.includes(metadata.sourceCommit.slice(0, 7)) && !build.includes('dirty'), `Served build mismatch: ${build}`);
+    assert(build.includes(expectedVersion) && build.includes(metadata.sourceCommit.slice(0, 7)) && !build.includes('dirty'), `Served build mismatch: ${build}`);
     assert(await page.evaluate(() => window.__FUSION__.databaseName) === database, 'Wrong live archive');
     return {name, context, page, engine, width, height, build, createdBefore, createdAfter, errors, closed: false};
   } catch (error) {await context.close();throw error;}
@@ -418,7 +419,7 @@ async function saveVideo(session, entry) {
     '-an', '-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', `${output}/${file}`], {stdio: 'ignore'});
   const bytes = await readFile(`${output}/${file}`), raw = await readFile(session.raw);
   const probe = JSON.parse(execFileSync('ffprobe', ['-v', 'quiet', '-show_format', '-show_streams', '-of', 'json', `${output}/${file}`], {encoding: 'utf8'}));
-  const video = {file, id: entry.id, kind: 'natural-clean-then-repair', durationSeconds, speed: 1, width: 390, height: 844,
+  const video = {file, id: entry.id, kind: entry.videoKind ?? 'natural-clean-then-repair', durationSeconds, speed: 1, width: 390, height: 844,
     bytes: bytes.length, sha256: sha256(bytes), sourceCommit: metadata.sourceCommit, zipSha256: metadata.sha256, probe,
     raw: {file: `raw/${session.raw.split('/').at(-1)}`, bytes: raw.length, sha256: sha256(raw)},
     source: 'Native Playwright WebM at the original viewport, transcoded once to MP4; only loading lead-in/end trimmed. No assembled frames, speed changes, or simulated time.',
@@ -466,15 +467,193 @@ async function processCases() {
   } finally {await browser.close();}
 }
 
+function receiptFacts(state) {
+  const receipt = state.receipt;
+  return {specimenId: receipt.specimenId, stage: receipt.stage, condition: receipt.condition, caseTier: receipt.caseTier,
+    evidenceIds: receipt.evidenceIds, verifiedEvidenceIds: receipt.verifiedEvidenceIds,
+    observations: receipt.observations, transactions: receipt.transactions};
+}
+async function installInteractionObserver(page) {
+  await page.evaluate(() => {
+    const events = [];
+    window.__WHOLE_INTERACTION_EVIDENCE__ = {events};
+    window.addEventListener('loststar:sound-cue', event => {
+      const canvas = document.querySelector(event.detail?.id === 'receipt' ? '#fusion-paper-focus' : '#fusion-exhibit-focus');
+      const d = canvas?.dataset ?? {};
+      events.push({sequence: events.length, at: Date.now(), performanceAt: performance.now(),
+        cue: String(event.detail?.cue ?? ''), id: String(event.detail?.id ?? ''),
+        canvas: {frame: d.frame ?? null, condition: d.condition ?? null, experimentPlaying: d.experimentPlaying ?? null,
+          replay: d.replay ?? null, experimentStartedAt: d.experimentStartedAt ?? null,
+          mechanismPhase: d.mechanismPhase ?? null, mechanismTime: d.mechanismTime ?? null,
+          bellStroke: d.bellStroke ?? null, bellTriggered: d.bellTriggered ?? null, toolContact: d.toolContact ?? null}});
+    });
+  });
+}
+async function interactionObservation(session, id, trialMs) {
+  return session.page.evaluate(async ({name, id, trialMs}) => {
+    const save = await new Promise((resolve, reject) => {
+      const request = indexedDB.open(name, 1);request.onerror = () => reject(request.error);
+      request.onsuccess = () => {const db = request.result, get = db.transaction('archive', 'readonly').objectStore('archive').get('current');
+        get.onsuccess = () => {db.close();resolve(get.result);};get.onerror = () => {db.close();reject(get.error);};};
+    });
+    const canvas = document.querySelector(id === 'receipt' ? '#fusion-paper-focus' : '#fusion-exhibit-focus'), d = canvas?.dataset ?? {};
+    const at = Date.now(), performanceAt = performance.now(), active = id === 'receipt' ? save.receipt.activeAction : null;
+    const action = active ? {key: active.id, kind: active.kind, startedAt: active.startedAtSeconds * 1000,
+      endsAt: (active.startedAtSeconds + active.durationSeconds) * 1000, durationMs: active.durationSeconds * 1000} : null;
+    const startedAt = id === 'receipt' ? action?.startedAt ?? null : Number(d.experimentStartedAt);
+    const progress = id === 'receipt' ? action ? (at - action.startedAt) / action.durationMs : null
+      : Number.isFinite(startedAt) ? (performanceAt - startedAt) / trialMs : null;
+    const calendar = delta => {const date = new Date(at);date.setDate(date.getDate() + delta);
+      return `${String(date.getMonth()+1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;};
+    const button = document.querySelector('#fusion-try'), response = document.querySelector('#fusion-curio-response');
+    return {at, performanceAt, timeOrigin: performance.timeOrigin, savedAt: save.game.lastAt,
+      condition: id === 'receipt' ? save.receipt.condition : save.curios[id]?.condition,
+      action, completedReceiptActionIds: id === 'receipt' ? save.receipt.completedActionIds.slice(-4) : undefined,
+      progress, buttonEnabled: Boolean(button && !button.disabled),
+      response: response && !response.hidden ? response.textContent : null,
+      canvas: {ready: d.ready ?? null, frame: d.frame ?? null, stateRenderer: d.stateRenderer ?? null,
+        stateImage: d.stateImage ?? null, materialStage: d.materialStage ?? null, condition: d.condition ?? null,
+        sourceMap: d.curioStates ? JSON.parse(d.curioStates) : null,
+        restorationPhase: d.restorationPhase ?? null, restorationOriginalCode: d.restorationOriginalCode ?? null,
+        restorationMissing: d.restorationMissing ?? null, experimentPlaying: d.experimentPlaying ?? null,
+        replay: d.replay ?? null, experimentStartedAt: d.experimentStartedAt ?? null,
+        mechanism: d.mechanism ?? null, mechanismPhase: d.mechanismPhase ?? null, mechanismTime: d.mechanismTime ?? null,
+        tapeLength: d.tapeLength ?? null, rollAngle: d.rollAngle ?? null, bellStroke: d.bellStroke ?? null,
+        bellTriggered: d.bellTriggered ?? null, toolContact: d.toolContact ?? null,
+        performanceDate: d.performanceDate ?? d.experimentDate ?? null},
+      expectedPerformanceDate: id === 'stamp' && progress !== null ? calendar(progress >= .48 ? -1 : 0) : null};
+  }, {name: database, id, trialMs});
+}
+async function freeReplay(session, id, index, trialMs) {
+  await session.page.locator('#fusion-try:not([disabled]):not([hidden])').waitFor();
+  const before = await archive(session.page), idle = await interactionObservation(session, id, trialMs);
+  const firstCue = await session.page.evaluate(() => window.__WHOLE_INTERACTION_EVIDENCE__.events.length);
+  const label = await session.page.locator('#fusion-try').innerText();
+  const entry = {index, id, label, before: checkpoint(before, id), clickedAt: Date.now(), observations: [],
+    phaseScreenshots: [], soundCues: [], complete: false, audibleProof: false};
+  await session.page.locator('#fusion-try').tap();
+  let started, actualDurationMs, sourceAction;
+  const waitStart = Date.now();
+  while (Date.now() - waitStart < 4000) {
+    const value = await interactionObservation(session, id, trialMs);entry.observations.push(value);
+    if (id === 'receipt' ? value.action?.kind === 'try' : value.canvas.experimentPlaying === 'true' && value.canvas.replay !== idle.canvas.replay) {
+      started = value;
+      actualDurationMs = id === 'receipt' ? value.action.durationMs : trialMs;
+      sourceAction = id === 'receipt' ? value.action : {key: `visual/${id}/${value.canvas.replay}`,
+        startedAt: value.timeOrigin + Number(value.canvas.experimentStartedAt), endsAt: value.timeOrigin + Number(value.canvas.experimentStartedAt) + trialMs,
+        performanceStartedAt: Number(value.canvas.experimentStartedAt), replay: value.canvas.replay};
+      break;
+    }
+    await until(Date.now() + 50);
+  }
+  assert(started && actualDurationMs > 0, `${id}/${index}: actual native interaction did not start`);
+  entry.sourceAction = sourceAction;entry.actualDurationMs = actualDurationMs;
+  entry.durationSource = id === 'receipt' ? 'Actual persisted receipt try action.durationSeconds' : 'mechanismTrialMs read from the frozen runtime source';
+  const requested = [.2, .5, .8], taken = new Set();let settled;
+  const deadline = sourceAction.endsAt + 4000;let nextPoll = Date.now();
+  while (Date.now() < deadline) {
+    await until(nextPoll);nextPoll = Date.now() + 100;
+    const value = await interactionObservation(session, id, trialMs);entry.observations.push(value);
+    assert(value.condition === 'stabilized', `${id}/${index}: free interaction changed the saved physical condition`);
+    const active = id === 'receipt' ? value.action?.key === sourceAction.key : value.canvas.experimentPlaying === 'true' && value.canvas.replay === sourceAction.replay;
+    if (active) {
+      for (const target of requested) if (!taken.has(target) && value.progress >= target) {
+        assert(value.progress < Math.min(1, target + .18), `${id}/${index}: missed the actual ${target} interaction window`);
+        const beforeShot = value, screenshot = await shot(session, `${session.name}-replay-${index}-phase-${Math.round(target * 100)}`, {kind: 'native-free-interaction-phase'});
+        const afterShot = await interactionObservation(session, id, trialMs);
+        assert(afterShot.condition === 'stabilized', `${id}/${index}: phase screenshot changed the physical state`);
+        if (id === 'stamp') assert(beforeShot.canvas.performanceDate === beforeShot.expectedPerformanceDate,
+          `${id}/${index}: painted date does not follow the real local calendar and .48 trial change`);
+        entry.phaseScreenshots.push({targetProgress: target, actualProgressBefore: beforeShot.progress, actualProgressAfter: afterShot.progress,
+          file: screenshot.file, beforeShot, afterShot});taken.add(target);
+      }
+    } else if (id === 'receipt' ? !value.action && value.completedReceiptActionIds.includes(sourceAction.key)
+      : value.canvas.experimentPlaying === 'false' && Date.now() >= sourceAction.endsAt) {settled = value;break;}
+  }
+  assert(settled && taken.size === 3, `${id}/${index}: missing actual end or 20/50/80% native phase screenshots`);
+  entry.completedObservedAt = settled.at;
+  await session.page.locator('#fusion-try:not([disabled]):not([hidden])').waitFor();
+  const after = await archive(session.page);entry.after = checkpoint(after, id);entry.ledger = ledger(before, after);
+  entry.soundCues = await session.page.evaluate(start => window.__WHOLE_INTERACTION_EVIDENCE__.events.slice(start), firstCue);
+  const ownCues = entry.soundCues.filter(event => event.id === id && event.cue === (id === 'bell' ? 'curio-bell' : 'interaction'));
+  assert(ownCues.length === 1, `${id}/${index}: expected one actual interaction sound-cue event`);
+  if (id === 'bell') assert(ownCues[0].canvas.bellTriggered === 'true' && ownCues[0].canvas.toolContact === 'true'
+    && Number(ownCues[0].canvas.bellStroke) > 0, `${id}/${index}: bell cue is not coupled to its actual bottom-of-stroke painted frame`);
+  entry.free = entry.ledger.charged === 0 && isDeepStrictEqual(ownership(before), ownership(after))
+    && isDeepStrictEqual(receiptFacts(before), receiptFacts(after)) && isDeepStrictEqual(before.curios, after.curios);
+  assert(entry.free, `${id}/${index}: free replay altered money, signed facts or rights`);
+  entry.response = settled.response;entry.complete = true;
+  await until(Date.now() + 250);return entry;
+}
+async function interactions() {
+  const modelFile = 'src/fusion/curio-mechanism-model.ts', modelBytes = await readFile(modelFile);
+  const duration = modelBytes.toString().match(/export\s+const\s+mechanismTrialMs\s*=\s*([\d_]+)\s*;/);
+  const trialMs = duration ? Number(duration[1].replaceAll('_', '')) : NaN;
+  assert(Number.isFinite(trialMs) && trialMs > 0, 'Cannot read the actual frozen mechanismTrialMs');
+  const automaticModule = '../releases/physical-fixtures/physical_review_fixtures.js';
+  const {advanceFusion} = await import(automaticModule);
+  report.interactionMethod = {mechanismTrialMs: trialMs, durationSource: modelFile, modelSha256: sha256(modelBytes),
+    automaticModelModule: automaticModule, automaticModelSha256: sha256(await readFile('releases/physical-fixtures/physical_review_fixtures.js')),
+    screenshotsAt: [.2, .5, .8], replayCount: 2, sourceMaps: 'Actual canvas curioStates map and whitelisted frame/mechanism/date fields where present',
+    soundProof: 'Observed loststar:sound-cue DOM event times and the bell canvas fields at that event; no audible/recorded audio claim',
+    audioRecorded: false, clockOverrides: false};
+  const browser = await chromium.launch();
+  try {
+    for (const id of ids) {
+      let session;
+      const name = `chromium-390-${id}-free-interactions`, entry = {name, kind: 'free-interactions', videoKind: 'two-free-active-interactions',
+        id, engine: 'chromium', width: 390, height: 844, naturalTime: true, audioRecorded: false, audibleProof: false,
+        replays: [], errors: [], complete: false};report.cases.push(entry);
+      try {
+        const generated = fixture('stabilized');entry.fixtureAudit = generated.audit;
+        entry.fixtureOptions = {at: generated.state.game.lastAt, condition: 'stabilized', caseLevel: 0, receiptAbility: 0, tapeAbility: 0};
+        session = await open(browser, {name, generated, video: true});await openTreatment(session, id);
+        await installInteractionObserver(session.page);
+        const before = await archive(session.page);entry.before = checkpoint(before, id);entry.beforeReceiptFacts = receiptFacts(before);
+        const initialMaterial = await sample(session, id);validSample(initialMaterial, `${id}/interaction-before`);
+        entry.initialMaterialRgbaSha256 = initialMaterial.rgbaSha256;entry.reviewStartedAt = Date.now();
+        entry.initialFile = (await shot(session, `${name}-before`)).file;await until(Date.now() + 250);
+        for (let index = 0; index < 2; index++) entry.replays.push(await freeReplay(session, id, index, trialMs));
+        entry.completeFile = (await shot(session, `${name}-complete`)).file;
+        const after = await archive(session.page), automatic = advanceFusion(before, after.game.lastAt);
+        const finalMaterial = await sample(session, id);validSample(finalMaterial, `${id}/interaction-after`);
+        entry.after = checkpoint(after, id);entry.afterReceiptFacts = receiptFacts(after);entry.ledger = ledger(before, after);
+        entry.finalMaterialRgbaSha256 = finalMaterial.rgbaSha256;
+        entry.gameMatchesOrdinaryAutomaticAdvance = isDeepStrictEqual(after.game, automatic.game);
+        entry.ownershipUnchanged = isDeepStrictEqual(ownership(before), ownership(after));
+        entry.receiptFactsUnchanged = isDeepStrictEqual(receiptFacts(before), receiptFacts(after));
+        entry.curioStatesUnchanged = isDeepStrictEqual(before.curios, after.curios);
+        const priorIds = new Set(before.receipt.completedActionIds);
+        entry.newReceiptCompletionIds = after.receipt.completedActionIds.filter(key => !priorIds.has(key));
+        entry.receiptTryAudit = id === 'receipt' ? entry.newReceiptCompletionIds.length === 2
+          && entry.replays.every(replay => entry.newReceiptCompletionIds.includes(replay.sourceAction.key)) : entry.newReceiptCompletionIds.length === 0;
+        entry.noFreeRewardOrSpend = entry.ledger.charged === 0 && entry.gameMatchesOrdinaryAutomaticAdvance;
+        assert(entry.noFreeRewardOrSpend && entry.ownershipUnchanged && entry.receiptFactsUnchanged && entry.curioStatesUnchanged
+          && entry.receiptTryAudit && finalMaterial.rgbaSha256 === initialMaterial.rgbaSha256,
+        `${id}: free interactions differ from ordinary automatic income/maintenance, changed facts/rights or material`);
+        assert(entry.replays.length === 2 && entry.replays.every(replay => replay.complete && replay.free), `${id}: incomplete sequential free replays`);
+        entry.complete = true;await until(Date.now() + 250);
+      } catch (error) {entry.errors.push(error.stack ?? String(error));report.errors.push(`${name}: ${error.message}`);}
+      finally {
+        entry.reviewEndedAt = Date.now();if (session) entry.browserErrors = session.errors;await close(session);
+        if (session?.raw && entry.reviewStartedAt) {
+          try {await saveVideo(session, entry);} catch (error) {entry.errors.push(error.stack ?? String(error));report.errors.push(`${name} video: ${error.message}`);}
+        }
+      }
+      console.log(`free interactions ${id}: ${entry.complete ? 'ok' : 'FAILED'}`);
+    }
+  } finally {await browser.close();}
+}
+
 try {
-  if (mode === 'screens') await screens();else await processCases();
-  const stateCases = report.cases.filter(c => c.kind === (mode === 'screens' ? 'complete-state' : 'natural-process'));
+  if (mode === 'screens') await screens();else if (mode === 'process') await processCases();else await interactions();
+  const stateCases = report.cases.filter(c => c.kind === (mode === 'screens' ? 'complete-state' : mode === 'process' ? 'natural-process' : 'free-interactions'));
   assert(stateCases.length === (mode === 'screens' ? 54 : 6) && stateCases.every(c => c.complete), 'Incomplete required case matrix');
   if (mode === 'screens') {
     assert(report.cases.filter(c => c.kind === 'shared-room' && c.complete).length === 3, 'Missing engine/viewport room pages');
     assert(stateCases.reduce((sum, c) => sum + (c.readOnlyPreviews?.length ?? 0), 0) === 18, 'Missing read-only enlarged A/B/C previews for the six already-upgraded objects');
   }
-  else assert(report.videos.length === 6, 'Missing a native continuous process recording');
+  else assert(report.videos.length === 6, 'Missing a native continuous recording');
 } catch (error) {report.errors.push(error.stack ?? String(error));}
 finally {
   try {report.finalGuard = await frozenGuard();} catch (error) {report.sourceClean = false;report.errors.push(error.stack ?? String(error));}

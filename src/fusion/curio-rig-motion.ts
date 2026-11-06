@@ -6,6 +6,7 @@ export type RigMatrix=readonly[number,number,number,number,number,number];
 export interface RigCommand {key:string;matrix:RigMatrix;clip?:readonly[number,number,number,number];polygon?:readonly RigPoint[]}
 export type RigPoint={x:number;y:number};
 const I:RigMatrix=[1,0,0,1,0,0];
+const compose=(a:RigMatrix,b:RigMatrix):RigMatrix=>[a[0]*b[0]+a[2]*b[1],a[1]*b[0]+a[3]*b[1],a[0]*b[2]+a[2]*b[3],a[1]*b[2]+a[3]*b[3],a[0]*b[4]+a[2]*b[5]+a[4],a[1]*b[4]+a[3]*b[5]+a[5]];
 const clamp=(p:number)=>Number.isFinite(p)?Math.max(0,Math.min(1,p)):0;
 const rotate=(pivot:RigPoint,angle:number,dx=0,dy=0):RigMatrix=>{const a=Math.cos(angle),b=Math.sin(angle);return[a,b,-b,a,pivot.x+dx-a*pivot.x+b*pivot.y,pivot.y+dy-b*pivot.x-a*pivot.y];};
 export const rigTransform=(m:RigMatrix,p:RigPoint)=>({x:m[0]*p.x+m[2]*p.y+m[4],y:m[1]*p.x+m[3]*p.y+m[5]});
@@ -55,8 +56,17 @@ export function curioRigCommands(id:RigId,corrections:readonly number[],seconds=
  if(id==='tape')return[fixed,{key:'tape-rig-joint0',matrix:rotate({x:125,y:76},-.14*b0+(reduced?0:idle*.007),-4*b0,3*b0)},...stripCommands('tape-rig-joint1','y',p=>tapeTailPoint(p,b1,active+(reduced?0:(idle+1)*.25)),undefined,[90,146]),{key:'tape-rig-front',matrix:I}];
  if(id==='nested'){
   const inner=rotate({x:97,y:111},.12*b1,-7*b1,3*b1);
-  const scaled:RigMatrix=[inner[0]*.32,inner[1]*.32,inner[2]*.32,inner[3]*.32,inner[4]+65.2,inner[5]+82.8];
-  return[fixed,...(c0<.999||c1<.999||active>.01?[{key:'nested-rig-inner',matrix:scaled}]:[]),{key:'nested-rig-front',matrix:I},...stripCommands('nested-rig-corner','y',p=>cornerPoint(p,b1),undefined,[126,178]),{key:'nested-rig-joint0',matrix:lidMatrix(c0,c1,active,reduced?0:(idle+1)*.009)}];
+  const scaled:RigMatrix=[inner[0]*.32,inner[1]*.32,inner[2]*.32,inner[3]*.32,inner[4]+65.2,inner[5]+82.8-24*active];
+  const reveal=clamp((trial-.20)/.60),innerOpening=trial>.20&&trial<.80?Math.sin(reveal*Math.PI):0;
+  // The inner box has its own hinge/front wall. The final closed copy repeats
+  // the original infinity-marked first layer; nothing is added to the archive.
+  const innerCommands:RigCommand[]=active>.01&&c0===1&&c1===1?[
+   {key:'nested-rig-fixed',matrix:scaled},
+   ...(innerOpening>.4?[{key:'nested-rig-inner',matrix:compose(scaled,[.36,0,0,.36,61.44,71.04])}]:[]),
+   {key:'nested-rig-front',matrix:scaled},
+   {key:'nested-rig-joint0',matrix:compose(scaled,lidMatrix(1,1,innerOpening,0))},
+  ]:c0<.999||c1<.999?[{key:'nested-rig-inner',matrix:scaled}]:[];
+  return[fixed,...innerCommands,{key:'nested-rig-front',matrix:I},...stripCommands('nested-rig-corner','y',p=>cornerPoint(p,b1),undefined,[126,178]),{key:'nested-rig-joint0',matrix:lidMatrix(c0,c1,active,reduced?0:(idle+1)*.009)}];
  }
  if(id==='stamp')return[fixed,{key:'stamp-rig-joint0',matrix:rotate({x:98,y:103},-.30*b0,-3*b0,3*b0+active*5+(reduced?0:(idle+1)*1.6))},{key:'stamp-rig-joint1',matrix:rotate({x:98,y:108},-.22*b1,-4*b1,-5*b1)}];
  if(id==='cosmic-parcel'){
@@ -78,3 +88,9 @@ export function curioRigContact(id:RigId,step:number,corrections:readonly number
  return mechanismRepairContact('bell',step,corrections);
 }
 export const curioRigHinge=(corrections:readonly number[],p:RigPoint,trial=0)=>rigTransform(lidMatrix(clamp(corrections[0]??0),clamp(corrections[1]??0),trial),p);
+
+/** Ephemeral print date only; never writes a collection, receipt fact or reward. */
+export function stampPerformanceDate(now:number,trial:number){
+ const date=new Date(now);if(trial>=.48&&trial<1)date.setDate(date.getDate()-1);
+ return `${String(date.getMonth()+1).padStart(2,'0')}.${String(date.getDate()).padStart(2,'0')}`;
+}

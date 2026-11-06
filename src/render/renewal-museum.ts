@@ -50,10 +50,10 @@ export class RenewalMuseum {
    // 36px+ hood. A full-height rigid pane cannot fit inside that hood.
    c.beginPath();c.rect(x-64,g.ceiling,128,inside);c.clip();
    for(const {bounds,sourceOffset,height} of museumDoorPanels(g,opening)){
-    c.globalAlpha=.30;c.drawImage(this.pane,0,sourceOffset,128,height,bounds.left,bounds.top,128,height);
+    c.globalAlpha=.17;c.drawImage(this.pane,0,sourceOffset,128,height,bounds.left,bounds.top,128,height);
     // An actual fine lower edge on each moving glass leaf makes the telescoping
     // mechanism readable; the side rails and outer structural posts stay fixed.
-    c.globalAlpha=.50;c.strokeStyle='#c5deed';c.lineWidth=1;c.beginPath();c.moveTo(bounds.left+2,bounds.bottom-.5);c.lineTo(bounds.right-2,bounds.bottom-.5);c.stroke();
+    c.globalAlpha=.23;c.strokeStyle='#c5deed';c.lineWidth=1;c.beginPath();c.moveTo(bounds.left+2,bounds.bottom-.5);c.lineTo(bounds.right-2,bounds.bottom-.5);c.stroke();
    }
    c.restore();return {left:g.bounds.left,top:g.ceiling,width:g.width,height:inside,floor:g.floor,head:g.ceiling-cap,scale:g.width/320};
   }

@@ -163,10 +163,11 @@ function physicalState(state, id) {
 }
 
 async function screens() {
+  const includeMaterials=process.env.RENEWAL_SCREEN_SECTIONS!=='world';
   for (const [engine, width, height] of [['chromium', 360, 800], ['chromium', 390, 844], ['webkit', 390, 844]]) {
     const browser = await ({chromium, webkit}[engine]).launch();
     try {
-      for (const id of ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell']) for (const stage of ['found', 'clean', 'stabilized']) {
+      if(includeMaterials)for (const id of ['receipt', 'tape', 'nested', 'stamp', 'cosmic-parcel', 'bell']) for (const stage of ['found', 'clean', 'stabilized']) {
         let session;
         try {
           const fixture = firstPlanetFixture(Date.now() + 20000, 0, stage, {receiptAbility: 0, tapeAbility: 0});

@@ -1,5 +1,6 @@
 import type {CurioCondition, CurioState} from './curio-material';
 import {renewalCurioIds, type RenewalCurioId} from './curio-renewal-model';
+import type {FusionSave} from './contracts';
 
 export const curioImageStages = ['found', 'clean', 'stabilized'] as const;
 const urls = import.meta.glob('../../assets/runtime/visual-renewal/whole-states-v043/*.webp', {eager: true, query: '?url', import: 'default'}) as Record<string, string>;
@@ -13,6 +14,20 @@ export function curioStateImageKey(id: RenewalCurioId, state: Pick<CurioState, '
 
 export function curioStateImageUrl(id: RenewalCurioId, condition: CurioCondition) {
   return urls[`../../assets/runtime/visual-renewal/whole-states-v043/${id}-${condition}.webp`];
+}
+
+/** Cards, discovery and return manifests read the same durable condition. */
+export function savedCurioCondition(save: Pick<FusionSave,'receipt'|'curios'>, id: RenewalCurioId): CurioCondition {
+  return id==='receipt'?save.receipt.condition:save.curios[id]?.condition??'found';
+}
+
+/** Trace only an actual rendered material, separately from read-only previews. */
+export function recordCurioStateUse(context: CanvasRenderingContext2D, material: CanvasImageSource) {
+  const actual=wholeCurioMaterial(material),canvas=context.canvas;
+  if(!actual||!canvas?.dataset)return;
+  const states=JSON.parse(canvas.dataset.curioStates??'{}') as Record<string,string>;
+  const key=curioStateImageKey(actual.id,actual);
+  if(states[actual.id]!==key){states[actual.id]=key;canvas.dataset.curioStates=JSON.stringify(states);}
 }
 
 /** Decode authored complete images. A failed instance is discarded for explicit retry. */

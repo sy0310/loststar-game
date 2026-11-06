@@ -5,6 +5,7 @@ import json,hashlib,xml.etree.ElementTree as ET
 from PIL import Image
 ROOT=Path(__file__).resolve().parents[1]
 DEST=ROOT/'design/visual-renewal'
+previous=json.loads((DEST/'ASSET_REGISTRY.json').read_text()) if (DEST/'ASSET_REGISTRY.json').exists() else {}
 registrations=[]
 for base in ['assets/source/visual-renewal','assets/runtime/visual-renewal']:
  for path in sorted((ROOT/base).rglob('*.json')):
@@ -31,5 +32,6 @@ for item in items:
   rel=f'assets/runtime/visual-renewal/whole-states-v043/{item}-{stage}.png'
   if (ROOT/rel).is_file():full.append({'id':item,'state':stage,'path':rel})
 result={'schema':1,'approvedReferenceCommit':'48efa5212385273bf4a4f618c9ed88702f1303f1','policy':'Approved boards are references only. All runtime production layers are independent original generation or original code-native UI. Source images, deterministic exports and module registrations are retained. Runtime integration and visual acceptance are recorded separately.','files':files,'moduleRegistrations':registrations,'curioStateRenderer':'src/fusion/curio-state-images.ts: one complete saved-state image; no procedural reconstruction','curioStates':full,'completeCurioStateCount':len(full),'runtimeBytes':sum(f['bytes'] for f in files if f['kind']=='runtime')}
+if 'acceptance' in previous:result['acceptance']=previous['acceptance']
 (DEST/'ASSET_REGISTRY.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps({'files':len(files),'curioStates':len(full),'runtimeBytes':result['runtimeBytes'],'registrations':len(registrations)}))

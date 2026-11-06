@@ -16,8 +16,11 @@ const summarize=values=>{const a=[...values].sort((x,y)=>x-y);return{samples:a.l
 const report={sourceCommit:metadata.sourceCommit,base,zipSha256:metadata.sha256,physicalPhone:false,textureMemory:'Not measured. Decoded image, GPU and total-process residency are not inferred from the JavaScript heap.',host:{cpu:os.cpus()[0].model,platform:os.platform(),architecture:os.arch()},
  method:{viewport:{width:390,height:844},dpr:2,concurrency:1,recording:false,warmupMs:1500,sampleMs:10000,heap:'Chromium coarse JS heap only; excludes texture, GPU and process memory.'},cases:[]};
 const views=(process.env.RENEWAL_PERF_VIEWS??'explore,field,collection,receipt,tape,bell').split(',');
+const engines=process.env.RENEWAL_PERF_ENGINES?.split(',')??['chromium','webkit'];
+if(engines.some(engine=>!['chromium','webkit'].includes(engine)))throw Error('Unsupported performance engine');
 if(views.some(view=>!['explore','field','collection','base','receipt','tape','bell','tape-ii','bell-active'].includes(view)))throw Error('Unsupported performance view');
 for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]){
+ if(!engines.includes(engine))continue;
  const browser=await type.launch();
  try{for(const view of views){
   const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,hasTouch:true,isMobile:true});
@@ -49,6 +52,7 @@ for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]){
    if(activeView&&(activeFrames.length<10||replays.length<2))errors.push('Active performance view failed to observe two real rendered mechanism replays');
    report.cases.push({engine,view,build,automaticTrialInputs:activeView,activity:{activeFrames:activeFrames.length,replays,phases:[...new Set(activeFrames.map(a=>a.phase))],samples:sample.activities},raf:summarize(sample.raf),actualPaint:field?{samples:sample.world.frames,medianMs:sample.world.medianFrameMs,p95Ms:sample.world.p95FrameMs}:summarize(actualIntervals),
     meanDrawMs:field?sample.world.meanDrawMs:(museum?sample.ui.museum.costsMs:sample.ui.focus.costsMs).reduce((a,b)=>a+b,0)/Math.max(1,(museum?sample.ui.museum.costsMs:sample.ui.focus.costsMs).length),
+    timing:process.env.RENEWAL_PERF_TRACE==='1'?{rafIntervalsMs:sample.raf,paintIntervalsMs:actualIntervals}:undefined,
     heap:{samples:sample.heap.length,maximumBytes:sample.heap.length?Math.max(...sample.heap):null},errors});
    if(errors.length)throw Error(JSON.stringify(errors));
   }finally{await context.close();}

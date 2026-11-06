@@ -17,6 +17,8 @@ jobs:
       - run: npm ci
       - run: python3 scripts/validate_design_assets.py
       - run: python3 design/visual-renewal/import_reference_pngs.py
+      - name: Verify current asset and execution mappings
+        run: npm run check:execution -- --report artifacts/execution-ci.json
       - run: npm run test:coverage
       - run: npm run build
       - run: npm run build:d1
@@ -51,12 +53,12 @@ jobs:
         run: |
           npm run package:fusion
           npx vite build --ssr scripts/feedback_fixtures.ts --outDir releases/feedback-fixtures
-          mkdir -p artifacts/v042-physical-review
+          mkdir -p artifacts/ci-package
           python3 -m http.server 8765 --bind 127.0.0.1 --directory releases/taptap > /tmp/loststar-ci-package-server.log 2>&1 &
           task_pkg_pid=$!
           trap 'kill "$task_pkg_pid"' EXIT
           curl --fail --retry 10 --retry-delay 1 --retry-connrefused --silent http://127.0.0.1:8765/loststar-fusion/ > /dev/null
-          RENEWAL_URL=http://127.0.0.1:8765/loststar-fusion/ RENEWAL_OUTPUT=artifacts/v042-physical-review node scripts/smoke_visual_renewal_package.mjs
+          RENEWAL_URL=http://127.0.0.1:8765/loststar-fusion/ RENEWAL_OUTPUT=artifacts/ci-package node scripts/smoke_visual_renewal_package.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -68,7 +70,8 @@ jobs:
             artifacts/webkit-*.png
             test-results/
             coverage/
-            artifacts/v042-physical-review/package-smoke.json
+            artifacts/ci-package/package-smoke.json
+            artifacts/execution-ci.json
           retention-days: 14
       - uses: actions/upload-artifact@v4
         if: always() && (hashFiles('artifacts/v042-physical-review/museum-physical-evidence.json') != '' || hashFiles('artifacts/v041-receipt-review/screens-evidence.json') != '' || hashFiles('artifacts/visual-renewal/screens-evidence.json') != '')
@@ -78,8 +81,12 @@ jobs:
             artifacts/visual-renewal/
             artifacts/v041-receipt-review/
             artifacts/v042-physical-review/
+            artifacts/v043-whole-state-review/
+            artifacts/v044-execution-art/
             !artifacts/visual-renewal/raw/
             !artifacts/visual-renewal/internal/
             !artifacts/v041-receipt-review/raw/
             !artifacts/v042-physical-review/raw/
+            !artifacts/v043-whole-state-review/raw/
+            !artifacts/v044-execution-art/raw/
           retention-days: 14

@@ -407,6 +407,8 @@ test('零件处理中的画面保持完整前态，完成才换整图且旧账�
   await expect.poll(async()=>(await readArchive(page)).curios.tape.condition).toBe(next);
   const image=await page.evaluate(()=>(window as any).__FUSION__.materialSnapshot('tape'));
   expect(image).not.toBe(snapshot);
+  await expect(page.locator('#fusion-treatment-result')).toHaveAttribute('data-active','true');
+  await expect(page.locator('#fusion-treatment-result')).toHaveText(next==='clean'?'清理完成 · 结构待整理':'零件升级完成');
  }
  const after=await readArchive(page);
  expect(before.game.resources+after.game.station.grossIncome-before.game.station.grossIncome-(after.game.station.repairSpent-before.game.station.repairSpent)-after.game.resources).toBe(curioPrices.tape.clean+curioPrices.tape.repair);

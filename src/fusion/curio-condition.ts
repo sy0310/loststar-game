@@ -1,13 +1,13 @@
 import {prepareCurioMechanisms,drawCurioMechanism,registerMechanismMaterial,mechanismMaterialMeta,mechanismActuatorGrip,drawMechanismActuator} from './curio-mechanism-renderer';
 import {mechanismFrame} from './curio-mechanism-model';
 import {drawCurioAbilityRig} from './curio-ability-rig';
-import {prepareCurioStateImages, drawWholeCurioState, registerWholeCurioMaterial} from './curio-state-images';
+import {prepareCurioStateImages, drawWholeCurioState, registerWholeCurioMaterial,recordCurioStateUse} from './curio-state-images';
 import {drawModernReceiptHolder} from './receipt-paper-renderer';
 import {itemCenter,type Exhibit} from '../render/museum-layout';
 import {curioActionProgress,type CurioState} from './curio-material';
 import {receiptRestorationFrame,type ReceiptRestorationState} from '../review/receipt-restoration';
 import {isRenewalCurio,renewalCurioIds,renewalCurioRegistration,renewalReceiptCurioState,renewalTreatmentFrame,renewalBuriedReceiptPose,type RenewalCurioId,type RenewalPoint,type RenewalTool} from './curio-renewal-model';
-import {curioRigCommands,type RigId} from './curio-rig-motion';
+import {curioRigCommands,stampPerformanceDate,type RigId} from './curio-rig-motion';
 import registration from '../../assets/runtime/visual-renewal/curios/registration.json';
 export {curioConditionPresentation,curioTreatmentLabels,curioPhysicalFrame,curioMaterialRegistration} from './curio-material';
 export {renewalReceiptCurioState,renewalTreatmentFrame,renewalCurioRegistration} from './curio-renewal-model';
@@ -77,7 +77,7 @@ export function prepareCurioMaterial(_image:HTMLImageElement|undefined,state:Cur
 }
 
 /** Idle/processing uses the complete state picture. Only explicit free interactions animate. */
-export function drawRenewalCurioRig(c:CanvasRenderingContext2D,id:RenewalCurioId,material:Material,seconds:number,trial=0,reduced=false,envelope=1){
+export function drawRenewalCurioRig(c:CanvasRenderingContext2D,id:RenewalCurioId,material:Material,seconds:number,trial=0,reduced=false,envelope=1,wallNow=Date.now()){
  const active=trial>0&&trial<1?Math.sin(trial*Math.PI):0;
  if(material.condition!=='stabilized'||!active){drawImage(c,material.image);return;}
  if(id==='tape'||id==='bell'){drawCurioMechanism(c,id,{...mechanismMaterialMeta(material.image),seconds,trial,reducedMotion:reduced,serviceEnvelope:envelope});return;}
@@ -95,7 +95,7 @@ export function drawRenewalCurioRig(c:CanvasRenderingContext2D,id:RenewalCurioId
   }
  }
  if(active>.15&&id==='stamp'){
-  c.save();c.translate(76,179);c.fillStyle='#e8c88f';c.fillRect(0,0,44,12);c.fillStyle='#7f5176';c.font='bold 6px monospace';c.fillText('昨天 ←',3,8);c.restore();
+  c.save();c.translate(68,177);c.fillStyle='#e8c88f';c.fillRect(0,0,62,14);c.fillStyle='#7f5176';c.font='bold 8px monospace';c.fillText(`${stampPerformanceDate(wallNow,trial)}${trial>=.48?' ←':''}`,3,10);c.restore();
  }
 
 }
@@ -157,7 +157,7 @@ export function drawCurioSpecimen(c:CanvasRenderingContext2D,exhibit:Exhibit,ima
  if(exhibit.id==='receipt'&&options.buried)drawBuriedReceipt(c,material,options.excavation??0,false);
  else if(exhibit.id==='receipt')drawReceiptComposition(c,material,options,true);
  else if(state.action)drawImage(c,material.image);else if(!(material.condition==='stabilized'&&options.drawAbility?.(c,material.image)))drawRenewalCurioRig(c,exhibit.id,material,options.seconds??now/1000,(options.trial??0)*(options.serviceEnvelope??1),options.reducedMotion,options.serviceEnvelope??1);
- c.restore();return true;
+ c.restore();recordCurioStateUse(c,material.image);return true;
 }
 
 function paintWorkbench(canvas:HTMLCanvasElement,id:RenewalCurioId,state:CurioState,now:number,options:CurioPoseOptions={},buried=false){
@@ -172,10 +172,11 @@ function paintWorkbench(canvas:HTMLCanvasElement,id:RenewalCurioId,state:CurioSt
   drawBuriedReceipt(c,material,options.excavation??options.trial??0,true);
  }else if(id==='receipt')drawReceiptComposition(c,material,options,state.condition==='stabilized');
  else if(state.action)drawImage(c,material.image);
- else if(!(material.condition==='stabilized'&&options.drawAbility?.(c,material.image)))drawRenewalCurioRig(c,id,material,options.seconds??now/1000,options.trial??0,options.reducedMotion,options.serviceEnvelope??1);
+ else if(!(material.condition==='stabilized'&&options.drawAbility?.(c,material.image)))drawRenewalCurioRig(c,id,material,options.seconds??now/1000,options.trial??0,options.reducedMotion,options.serviceEnvelope??1,now);
  if((id==='tape'||id==='bell')&&state.condition==='stabilized'&&!state.action&&(options.trial??0)>0&&(options.trial??0)<1){const mechanical=mechanismFrame(id,{...mechanismMaterialMeta(material.image),seconds:options.seconds,trial:options.trial,reducedMotion:options.reducedMotion,serviceEnvelope:options.serviceEnvelope});const grip=mechanismActuatorGrip(id,mechanical);if(grip){arm(c,grip,mechanical.tool.dock);drawMechanismActuator(c,id,mechanical);}}
- c.restore();c.restore();
+ c.restore();c.restore();recordCurioStateUse(c,material.image);
  canvas.dataset.ready='true';canvas.dataset.stateRenderer='whole-image-v043';canvas.dataset.stateImage=`${id}-${state.condition}.webp`;canvas.dataset.processingProgress=String(frame.progress);canvas.dataset.materialStage=state.condition;canvas.dataset.condition=state.condition;canvas.dataset.type=renewalCurioRegistration[id].material;
+ if(id==='stamp')canvas.dataset.performanceDate=(options.trial??0)>0&&(options.trial??0)<1?stampPerformanceDate(now,options.trial!):'';
  canvas.dataset.cleanProgress=String(frame.cleaning);canvas.dataset.repairProgress=String(frame.repairing);canvas.dataset.toolContact='';canvas.dataset.contact='';canvas.dataset.contactX='';canvas.dataset.contactY='';
  if(id==='tape'||id==='bell'){
   const mechanical=mechanismFrame(id,{...mechanismMaterialMeta(material.image),seconds:options.seconds,trial:options.trial,reducedMotion:options.reducedMotion,serviceEnvelope:options.serviceEnvelope});

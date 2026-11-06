@@ -81,3 +81,6 @@ button.fu-wallet{display:grid;grid-template-columns:17px auto;gap:1px 6px;align-
 .fu-state-thumb:focus-visible{outline:2px solid #f1cf8c;outline-offset:1px}
 .fu-state-preview{background:#29183c;border:1px solid #b18578;padding:12px;text-align:center}.fu-state-preview>img{display:block;width:min(100%,320px);height:auto;aspect-ratio:1;object-fit:contain;margin:auto;image-rendering:pixelated}.fu-state-preview p{font-size:12px;color:#dcc4dc}.fu-state-preview button{width:100%}
 #fusion-drawer-body[data-image-preview="true"] #fusion-paper-focus,#fusion-drawer-body[data-image-preview="true"] #fusion-exhibit-focus,#fusion-drawer-body[data-image-preview="true"] .fu-paper-status,#fusion-drawer-body[data-image-preview="true"] .fu-detail-actions,#fusion-drawer-body[data-image-preview="true"] #fusion-exhibit-interaction,#fusion-drawer-body[data-image-preview="true"] .fu-ability-panel{display:none!important}
+
+/* State completion confirms the saved image switch without a screen flash. */
+.fu-treatment-result{min-height:18px;margin:0;color:var(--fu-mint);font-size:12px;line-height:18px;visibility:hidden}.fu-treatment-result[data-active="true"]{visibility:visible;border-left:2px solid var(--fu-mint);padding-left:9px}.fu-treatment-stages li[aria-current="step"]{outline-color:var(--fu-mint)}
