@@ -45,8 +45,9 @@ test('all reachable facility, collection, setting and return controls share the 
  async function audit(){const result=await page.evaluate(()=>{
   const tokens=['--ui-bg','--ui-surface','--ui-surface-raised','--ui-border','--ui-text','--ui-muted','--ui-accent','--ui-on-accent'].map(t=>getComputedStyle(document.body).getPropertyValue(t).trim().toUpperCase());
   const bad=[...document.querySelectorAll<HTMLElement>('#app button')].filter(e=>e.getClientRects().length>0).flatMap(e=>{const s=getComputedStyle(e);return s.backgroundImage!=='none'||s.borderImageSource!=='none'||s.boxShadow!=='none'?[e.outerHTML.slice(0,160)]:[];});
-  const d=document.querySelector('dialog[open]');return{tokens,bad,dialog:d?{color:getComputedStyle(d).backgroundColor,top:d.getBoundingClientRect().top}:null,overflow:document.documentElement.scrollWidth>innerWidth};});
-  expect(result.tokens).toEqual(['#1C1730','#30283E','#3B324A','#6A5A76','#F3EBDE','#BEAFCA','#E8C57D','#302337']);expect(result.bad).toEqual([]);expect(result.overflow).toBe(false);if(result.dialog){expect(result.dialog.color).toBe('rgb(48, 40, 62)');expect(result.dialog.top).toBeGreaterThanOrEqual(0);}
+  const opaqueHits=[...document.querySelectorAll<HTMLElement>('.exhibit-hits button')].filter(e=>getComputedStyle(e).backgroundColor!=='rgba(0, 0, 0, 0)'||getComputedStyle(e).borderTopWidth!=='0px');
+  const d=document.querySelector('dialog[open]');return{tokens,bad,opaqueHits:opaqueHits.length,dialog:d?{color:getComputedStyle(d).backgroundColor,top:d.getBoundingClientRect().top}:null,overflow:document.documentElement.scrollWidth>innerWidth};});
+  expect(result.tokens).toEqual(['#1C1730','#30283E','#3B324A','#6A5A76','#F3EBDE','#BEAFCA','#E8C57D','#302337']);expect(result.bad).toEqual([]);expect(result.opaqueHits).toBe(0);expect(result.overflow).toBe(false);if(result.dialog){expect(result.dialog.color).toBe('rgb(48, 40, 62)');expect(result.dialog.top).toBeGreaterThanOrEqual(0);}
  }
  await audit();await page.locator('#refui-objective').tap();await audit();await page.locator('[data-ref-close]').tap();
  await page.locator('.fu-nav [data-tab=collection]').tap();await page.locator('#fusion-collection-index summary').tap();

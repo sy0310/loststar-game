@@ -72,4 +72,6 @@ body[data-reference-ui=candidate] #app{color:var(--ui-text);font:14px/1.6 "PingF
 html[data-text-size=large] #app :where(p,.ref-goal strong,.ref-event strong,button,summary){font-size:16px}
 @media(max-height:700px){#app .ref-goal{min-height:38px}#app .ref-event{min-height:52px;margin-bottom:6px}#app .fu-world-shell{min-height:130px}#app .ref-card{max-height:85dvh}.lt-picture,.lt-picture>img,.lt-picture>canvas{max-height:260px}}
 #app [hidden]{display:none}
+#app .exhibit-hits button{background:transparent;border:0;padding:0;box-shadow:none}
+#app .exhibit-hits button:focus-visible{outline-offset:-2px}
 #app .lt-dialog{padding-top:max(36px,env(safe-area-inset-top,0px))}#app input:where([type=checkbox],[type=radio]){appearance:auto;width:24px;height:24px;accent-color:var(--ui-accent)}#app select{background:var(--ui-surface-raised);border:1px solid var(--ui-border);min-height:44px;padding:8px}
