@@ -23,3 +23,11 @@ test('memory controller commits paid cleaning synchronously once and emits the r
  vi.useFakeTimers();vi.setSystemTime(at);const fixture=firstPlanetFixture(at,0,'found',{receiptAbility:0,tapeAbility:0}).state,m=createMemoryController(fixture),events:string[]=[];m.controller.subscribe(()=>events.push(m.controller.state.receipt.condition+'/'+(m.controller.state.receipt.activeAction?.kind??'idle')));
  try{const result=await m.controller.act({type:'paper',kind:'clean'});expect(result.ok).toBe(true);expect(events).toEqual(['found/clean','clean/idle']);expect(m.controller.state.receipt.condition).toBe('clean');expect(m.controller.state.receipt.activeAction).toBeUndefined();expect(m.controller.state.game.lastAt).toBe(at);expect(m.instantCleaning).toHaveLength(1);expect(m.trace.map(t=>t.before-t.after)).toEqual([40]);await m.controller.act({type:'paper',kind:'clean'});expect(m.instantCleaning).toHaveLength(1);expect(m.trace[1].before).toBe(m.trace[1].after);}finally{m.stop();}
 });
+
+test('receipt cleaning completes at every millisecond phase without rounding below its seconds threshold',()=>{
+ const fixture=firstPlanetFixture(at,0,'found',{receiptAbility:0,tapeAbility:0}).state;
+ for(let ms=0;ms<1000;ms++){
+  const time=at+ms,paid=reduceFusion(fixture,{type:'paper',kind:'clean'},time).state,result=settleInstantCleaning(paid,time);
+  expect(result.state.receipt.condition,`millisecond ${ms}`).toBe('clean');expect(result.state.receipt.activeAction).toBeUndefined();expect(result.receipts).toHaveLength(1);expect(result.state.game).toEqual(paid.game);
+ }
+});

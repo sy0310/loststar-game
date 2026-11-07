@@ -11,9 +11,11 @@ export function settleInstantCleaning(input:FusionSave,at:number){
  let state=input;const receipts:InstantCleanReceipt[]=[];
  const paper=state.receipt.activeAction;
  if(state.game.collection.includes('receipt')&&paper?.kind==='clean'){
-  const end=(paper.startedAtSeconds+paper.durationSeconds)*1000;
-  state={...state,receipt:advanceReceiptRestoration(state.receipt,Math.max(at,end)/1000)};
-  receipts.push({item:'receipt',actionId:paper.id,waivedMs:Math.max(0,end-at),at});
+  const endSeconds=paper.startedAtSeconds+paper.durationSeconds;
+  // Keep the completion threshold in its original seconds domain. A round trip
+  // through milliseconds can round one ULP below the exact model threshold.
+  const completed=advanceReceiptRestoration(state.receipt,Math.max(at/1000,endSeconds));
+  if(completed.condition==='clean'&&!completed.activeAction){state={...state,receipt:completed};receipts.push({item:'receipt',actionId:paper.id,waivedMs:Math.max(0,endSeconds*1000-at),at});}
  }
  for(const [id,curio] of Object.entries(state.curios)){
   if(!curioPrices[id]||curio.action?.kind!=='clean'||!state.game.collection.includes(id))continue;
@@ -21,6 +23,7 @@ export function settleInstantCleaning(input:FusionSave,at:number){
   // The original model has one inline completion rule. Select its item result
   // and discard every other projected field; the model is pure, no I/O occurs.
   const completed=advanceFusion(state,Math.max(at,action.endsAt)).curios[id];
+  if(completed.condition!=='clean'||completed.action)continue;
   state={...state,curios:{...state.curios,[id]:completed}};
   receipts.push({item:id,actionId:`${id}/clean/${action.startedAt}`,waivedMs:Math.max(0,action.endsAt-at),at});
  }
