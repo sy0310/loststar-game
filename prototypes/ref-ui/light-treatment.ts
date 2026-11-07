@@ -11,6 +11,7 @@ import {icon} from '../../src/fusion/renewal-ui';
 import {mechanismFrame} from '../../src/fusion/curio-mechanism-model';
 import {mechanismMaterialMeta,drawMechanismActuator} from '../../src/fusion/curio-mechanism-renderer';
 import {soundCue} from '../../src/ui/discovery';
+import {existingAbilityRecords} from './ability-records';
 const labels={found:'刚获得',clean:'清理后',stabilized:'升级完成'};
 const actions:Record<string,string>={receipt:'读出票面',tape:'拉出一截',nested:'打开一层',stamp:'盖个邮戳','cosmic-parcel':'敲敲箱盖',bell:'轻按铃铛'};
 const lines:Record<string,[string,string,string]>={
@@ -107,7 +108,10 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
   const elapsed=performance.now()-trialAt,active=dialog.open&&!preview&&!document.hidden&&trialId===id&&elapsed<2600&&rigReady&&ready;
   canvas.hidden=!active;image.hidden=active;
   if(active){const c=canvas.getContext('2d')!;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,384,384);c.scale(2,2);c.imageSmoothingEnabled=false;const material=prepareCurioMaterial(undefined,{condition:'stabilized'},Date.now(),id),trial=Math.max(.0001,elapsed/2600);
-   if(id==='receipt')drawCurioAbilityRig(c,{id:'receipt',image:material.image,seconds:Date.now()/1000,abilityLevel:0,experimentProgress:trial,size:192,reducedMotion:reduced.matches,records:controller.state.progression.sorting.facts.map(f=>({id:f.id,at:f.at,detail:f.detail}))});
+   if(id==='receipt'||id==='tape'){
+    const level=controller.state.progression.abilities[id],result=drawCurioAbilityRig(c,{id,image:material.image,seconds:Date.now()/1000,abilityLevel:level,experimentProgress:trial,size:192,reducedMotion:reduced.matches,records:existingAbilityRecords(controller.state)});
+    canvas.dataset.abilityLevel=String(level);canvas.dataset.usedRecordIds=JSON.stringify(result.usedRecordIds);
+   }
    else drawRenewalCurioRig(c,id,material,Date.now()/1000,trial,reduced.matches);
    if(id==='bell'||id==='tape'){
     const mechanical=mechanismFrame(id,{...mechanismMaterialMeta(material.image),seconds:Date.now()/1000,trial,reducedMotion:reduced.matches});
