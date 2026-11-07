@@ -10,6 +10,7 @@ import {discoveryById} from '../../src/content/catalog';
 import {icon} from '../../src/fusion/renewal-ui';
 import {mechanismFrame} from '../../src/fusion/curio-mechanism-model';
 import {mechanismMaterialMeta,drawMechanismActuator} from '../../src/fusion/curio-mechanism-renderer';
+import {soundCue} from '../../src/ui/discovery';
 const labels={found:'刚获得',clean:'清理后',stabilized:'升级完成'};
 const actions:Record<string,string>={receipt:'读出票面',tape:'拉出一截',nested:'打开一层',stamp:'盖个邮戳','cosmic-parcel':'敲敲箱盖',bell:'轻按铃铛'};
 const lines:Record<string,[string,string,string]>={
@@ -27,7 +28,7 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
  const $=<T extends HTMLElement=HTMLElement>(id:string)=>document.querySelector<T>('#'+id)!;
  const dialog=$<HTMLDialogElement>('refui-treatment'),image=$<HTMLImageElement>('lt-image'),canvas=$<HTMLCanvasElement>('lt-trial');
  let id:RenewalCurioId='receipt',rendered='',loading='',ready=false,failed=false,rigReady=false,rigFailed=false,requesting=false,preview=false,token=0;
- let trialAt=-Infinity,trialId='',arrival:{id:string;key:string;text:string}|null=null;
+ let trialAt=-Infinity,trialId='',bellPlayed=false,arrival:{id:string;key:string;text:string}|null=null;
  const reduced=matchMedia('(prefers-reduced-motion:reduce)'),seen=new Set<string>(),arrivals:{id:string;key:string;at:number}[]=[],trials:{id:string;at:number}[]=[];
  const silent=new Map<string,number>();
  const actionView=(item:RenewalCurioId)=>{
@@ -93,7 +94,7 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
   if(button.id==='lt-ability'&&(id==='receipt'||id==='tape')){void paidAction(refinementView(controller.state).abilities[id].action);return;}
   if(button.id==='lt-identify'){void paidAction({type:'paper',kind:'identify'});return;}
   if(button.id==='lt-free'&&!button.disabled){
-   const item=id;requesting=true;render();void(async()=>{try{if(item==='receipt'){const r=await controller.act({type:'paper',kind:'try'});if(!r.ok)return;}if(!dialog.open||id!==item)return;trialAt=performance.now();trialId=item;trials.push({id:item,at:Date.now()});$('lt-trial-line').hidden=false;$('lt-trial-line').textContent='咔哒正在试验…';}finally{requesting=false;render();}})();
+   const item=id;requesting=true;render();void(async()=>{try{if(item==='receipt'){const r=await controller.act({type:'paper',kind:'try'});if(!r.ok)return;}if(!dialog.open||id!==item)return;trialAt=performance.now();trialId=item;bellPlayed=false;if(item!=='bell')soundCue('interaction',item);trials.push({id:item,at:Date.now()});$('lt-trial-line').hidden=false;$('lt-trial-line').textContent='咔哒正在试验…';}finally{requesting=false;render();}})();
   }
  });
  dialog.addEventListener('cancel',e=>{e.preventDefault();callbacks.close();});
@@ -114,6 +115,7 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
     canvas.dataset.mechanismPhase=mechanical.phase;canvas.dataset.toolContact=String(mechanical.tool.contact);
     canvas.dataset.bellTriggered=String(mechanical.bell?.triggered??false);canvas.dataset.bellStroke=String(mechanical.bell?.stroke??0);
     canvas.dataset.tapeLength=String(mechanical.tape?.length??0);
+    if(id==='bell'&&mechanical.bell?.triggered&&mechanical.tool.contact&&!bellPlayed){bellPlayed=true;soundCue('curio-bell','bell');}
    }
    if(elapsed>(id==='bell'?650:1400))$('lt-trial-line').textContent=lines[id][2];
   }

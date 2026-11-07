@@ -7,7 +7,7 @@ async function open(p:Page,profile='restoration'){await p.goto('/?profile='+prof
 async function detail(p:Page,id:string){await p.locator('.fu-nav [data-tab=collection]').tap();const details=p.locator('#fusion-collection-index');if(!await details.evaluate(e=>(e as HTMLDetailsElement).open))await details.locator('summary').tap();await p.locator(`#fusion-collection-list [data-detail="${id}"]`).tap();await expect(p.locator('#refui-treatment')).toHaveAttribute('data-material-ready','true');}
 
 test('six curios keep the original whole image throughout paid work and commit one result, original price and free interaction',async({page})=>{
- test.setTimeout(100000);await open(page);const initial=await state(page);
+ test.setTimeout(100000);await page.addInitScript(()=>{(window as any).__TEST_CUES__=[];window.addEventListener('loststar:sound-cue',e=>(window as any).__TEST_CUES__.push((e as CustomEvent).detail));});await open(page);const initial=await state(page);
  for(let index=0;index<ids.length;index++){
   const id=ids[index];await detail(page,id);await expect(page.locator('#lt-image')).toHaveAttribute('data-state-image',id+'-found.webp');
   for(const [kind,before,after,price] of [['clean','found','clean',prices[index][0]],['repair','clean','stabilized',prices[index][1]]] as const){
@@ -19,6 +19,7 @@ test('six curios keep the original whole image throughout paid work and commit o
   await expect(page.locator('#lt-free')).toBeEnabled();await page.locator('#lt-free').tap();if(id==='bell')await expect(page.locator('#lt-trial')).toHaveAttribute('data-bell-triggered','true',{timeout:1500});await page.waitForTimeout(2900);await expect(page.locator('#lt-trial-line')).not.toHaveText('咔哒正在试验…');
   const count=await page.locator('#refui-treatment').getAttribute('data-arrival-count');await page.locator('#lt-close').tap();await detail(page,id);await expect(page.locator('#lt-result')).toHaveText('');expect(await page.locator('#refui-treatment').getAttribute('data-arrival-count')).toBe(count);await page.locator('#lt-close').tap();
  }
+ const cues=await page.evaluate(()=>(window as any).__TEST_CUES__);expect(cues.filter((c:any)=>c.cue==='curio-bell'&&c.id==='bell')).toHaveLength(1);for(const id of ids.filter(id=>id!=='bell'))expect(cues.filter((c:any)=>c.cue==='interaction'&&c.id===id)).toHaveLength(1);
  const final=await state(page);expect(final.receipt.verifiedEvidenceIds).toEqual(initial.receipt.verifiedEvidenceIds);expect(final.game.collection).toEqual(initial.game.collection);expect(final.projects).toEqual(initial.projects);expect(final.game.growth).toEqual(initial.game.growth);
 });
 
