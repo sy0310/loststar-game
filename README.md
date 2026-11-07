@@ -8,9 +8,9 @@
 
 工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不发布正式版。2026-11-02 用户授权的 TapTap 开发自测上传见 [实机试玩记录](docs/13_TAPTAP_SELF_TEST.md)。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
 
-## UI参考适配：先审三屏样板（当前开发）
+## UI参考适配：三屏样板待审
 
-按最新[参考适配任务](design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md)，先交首页、事件短卡、物品详情实际样板及30–45秒自然交互，视觉确认后才正式整合。[隔离样板源码与运行](prototypes/ref-ui/README.md)。只调整信息组织与控件材质，原星球/居民/房间/六物18态继续使用；结论只陈述实际纸路事实，夜班原因仍待查。未确认的REFUI-01～07保持正式IN_PROGRESS，不冒称已集成。
+按最新[参考适配任务](design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md)，先交首页、事件短卡、物品详情实际样板及30–45秒自然交互，视觉确认后才正式整合。[隔离样板源码与运行](prototypes/ref-ui/README.md) · [实际三屏对照与自然影片](artifacts/ref-ui-sample/index.html) · [交付边界](design/v045_a_simplified_exploration/UI_SAMPLE_DELIVERY.md)。只调整信息组织与控件材质，原星球/居民/房间/六物18态继续使用；开发自测 **448028 / UI sample.3 / 72374bc** 仅内存，不写正式档。结论只陈述实际纸路事实，夜班原因仍待查。未确认的REFUI-01～07保持正式IN_PROGRESS，不冒称已集成。
 
 正式玩家基线仍是下方444057/06cb11f；样板使用独立入口和内存副本，不打开正式IDB，不清档、不改价格或付费权益。当前四维权威表共181项，原174项保留，7项参考适配待确认/正式接入。
 
