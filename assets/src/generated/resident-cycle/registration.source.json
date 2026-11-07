@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "canvas": {
+    "width": 256,
+    "height": 256
+  },
+  "contact": {
+    "x": 128,
+    "y": 244
+  },
+  "residents": {
+    "mouse": {
+      "source": "mouse-rest-v1.png",
+      "daySource": "assets/runtime/mouse.webp",
+      "dayWidth": 83,
+      "dayContact": {
+        "x": 120,
+        "y": 276
+      },
+      "sourceContact": {
+        "x": 410,
+        "y": 740
+      },
+      "logicalSquareSize": 89,
+      "maximumVisibleSize": {
+        "width": 80,
+        "height": 70
+      },
+      "contactDefinition": "Day contact is the low forward paw baseline. Rest contact is the midpoint of the curled body support baseline, including the resting tail."
+    },
+    "hermit": {
+      "source": "hermit-rest-v1.png",
+      "daySource": "assets/runtime/hermit.webp",
+      "dayWidth": 66,
+      "dayContact": {
+        "x": 116,
+        "y": 257
+      },
+      "sourceContact": {
+        "x": 442,
+        "y": 730
+      },
+      "logicalSquareSize": 66.515625,
+      "maximumVisibleSize": {
+        "width": 62,
+        "height": 60
+      },
+      "contactDefinition": "Day contact uses the support midpoint between the low front claws. Rest contact uses the low shell/toe support baseline at the shell centre."
+    },
+    "tagbird": {
+      "source": "tagbird-rest-v1.png",
+      "daySource": "assets/runtime/tagbird.webp",
+      "dayWidth": 47,
+      "dayContact": {
+        "x": 116,
+        "y": 238
+      },
+      "sourceContact": {
+        "x": 414,
+        "y": 803
+      },
+      "logicalSquareSize": 50,
+      "maximumVisibleSize": {
+        "width": 44,
+        "height": 46
+      },
+      "contactDefinition": "Day and rest contact use the low forward toe/perch contact baseline. The claw extends down to that baseline while the body remains above it.",
+      "flight": {
+        "source": "tagbird-flight-v1.png",
+        "sourceContact": {
+          "x": 442,
+          "y": 720
+        },
+        "logicalSquareSize": 72,
+        "maximumVisibleSize": {
+          "width": 70,
+          "height": 70
+        },
+        "contactDefinition": "A shared virtual toe/perch baseline under the tucked feet. Torso and head remain registered while wings travel above and slightly below this virtual support plane."
+      }
+    }
+  }
+}

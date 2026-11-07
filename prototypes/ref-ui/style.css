@@ -1,0 +1,89 @@
+/* Isolated candidate only. Original world, glass, curio images and sprite layers are unchanged. */
+body[data-reference-ui=candidate]{--ref-paper:#eeeaf1;--ref-ink:#292638;--ref-muted:#696278;--ref-rule:#c7bfce;--ref-dark:#272239;--ref-gold:#e8c57d;background:#171323}
+body[data-reference-ui=candidate] #fusion-app{background-color:#1d1730}
+body[data-reference-ui=candidate] :is(button,.fu-primary){border-radius:3px;box-shadow:none;text-shadow:none}
+body[data-reference-ui=candidate] button:focus-visible{outline:2px solid #e8c57d;outline-offset:3px}
+body[data-reference-ui=candidate] .fu-header{background:#252034;border-bottom:1px solid #55495e;box-shadow:none;gap:10px;padding:7px 15px;min-height:53px}
+body[data-reference-ui=candidate] .fu-location{flex:1;grid-template-columns:1fr;min-width:0;gap:1px}
+body[data-reference-ui=candidate] .fu-location-emblem{display:none}
+body[data-reference-ui=candidate] .fu-location>span:not(.fu-location-emblem){font-size:16px;letter-spacing:.5px;color:#f0eaf3}
+body[data-reference-ui=candidate] .fu-location small{font-size:12px;color:#c7bbd1}
+body[data-reference-ui=candidate] .fu-parts-readout{gap:5px}.fu-parts-readout b{font-size:16px}
+.ref-icon-button{width:44px;min-width:44px;min-height:44px;padding:11px;border:1px solid #655c73;background:transparent;color:inherit;display:grid;place-items:center}
+.ref-icon-button .icon{width:21px;height:21px}
+body[data-reference-ui=candidate] .fu-header .ref-icon-button{border:0;color:#d5ccdf;margin-right:-10px}
+body[data-reference-ui=candidate] :is(.fu-objective,#fusion-observe,#fusion-tap-hint){display:none}
+.ref-goal{flex:0 0 auto;margin:0 14px 3px;min-height:44px;display:flex;align-items:center;gap:11px;padding:7px 0;background:transparent;border:0;color:#f0e8f4;text-align:left;box-shadow:none}
+.ref-goal>span{font-size:12px;color:#baaccb}.ref-goal strong{flex:1;font-size:14px;font-weight:500}.ref-goal>.icon{width:15px;height:15px;color:#b6a3c2}
+body[data-reference-ui=candidate] #fusion-explore{padding-top:5px;padding-bottom:9px}
+body[data-reference-ui=candidate] .fu-world-shell{flex:1;min-height:180px;margin:0;overflow:hidden}
+body[data-reference-ui=candidate] .fu-period{top:8px;right:15px;border:0;background:#241b32aa;font-size:12px;padding:5px 7px;color:#d6c5df;box-shadow:none}
+.ref-marker{position:absolute;z-index:3;display:flex;align-items:center;gap:7px;min-height:44px;max-width:151px;padding:7px 10px;background:#f1eaf0;color:#393044;border:1px solid #6a5a75;box-shadow:0 2px #181124;white-space:nowrap;touch-action:manipulation}
+.ref-marker:after{content:'';position:absolute;left:50%;bottom:-7px;width:1px;height:7px;background:#d6c7d7}
+.ref-marker .icon{width:18px;height:18px;display:block}.ref-marker strong{font-size:12px;font-weight:600}.ref-marker[hidden]{display:none}
+.ref-source{position:absolute;width:18px;height:8px;border:1px solid #edcf9a;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:2}.ref-source[hidden]{display:none}
+.ref-event{flex:0 0 auto;width:calc(100% - 28px);min-height:60px;margin:4px 14px 8px;display:flex;align-items:center;gap:11px;padding:9px 12px;background:var(--ref-paper);border:0;color:var(--ref-ink);text-align:left;box-shadow:none;touch-action:manipulation}
+.ref-event-icon{width:29px;height:29px;display:grid;place-items:center;color:#756181}.ref-event-icon .icon{width:24px;height:24px}.ref-event>span:nth-child(2){flex:1;min-width:0}.ref-event small{display:block;color:var(--ref-muted);font-size:12px;margin-bottom:3px}.ref-event strong{font-size:14px;font-weight:600}.ref-event>.icon{width:15px;height:15px;color:#85728d}
+body[data-reference-ui=candidate] .fu-explore-controls{margin:0 15px;padding-top:0}
+body[data-reference-ui=candidate] .fu-action-line{font-size:12px;color:#c8b9d1}
+body[data-reference-ui=candidate] .fu-progress{height:4px;border:0;background:#44374f;box-shadow:none;margin-top:5px;overflow:hidden}
+body[data-reference-ui=candidate] .fu-progress i{background:#d6bb8b;border:0;box-shadow:none}
+body[data-reference-ui=candidate] .fu-action-bottom{padding-top:9px;gap:12px}
+body[data-reference-ui=candidate] #fusion-auto{font-size:13px;color:#dfd5e5}body[data-reference-ui=candidate] #fusion-assist-note{font-size:12px;color:#b6a8c3;margin-top:3px}
+body[data-reference-ui=candidate] #fusion-assist{min-width:126px;min-height:49px;padding:9px 15px;font-size:15px;border:1px solid #e2c58d;background:#e8c57d;color:#342a32;box-shadow:none;letter-spacing:0;gap:7px}
+body[data-reference-ui=candidate] #fusion-assist .icon{width:21px;height:21px}body[data-reference-ui=candidate] #fusion-assist[data-response=accepted]{background:#f3d89a;transform:translateY(1px)}
+body[data-reference-ui=candidate] .fu-nav{padding:4px 12px max(5px,env(safe-area-inset-bottom));gap:6px;background:#252034;border-top:1px solid #51465f;box-shadow:none}
+body[data-reference-ui=candidate] .fu-nav button{min-height:52px;background:transparent;border:0;color:#b8adc5;box-shadow:none;font-size:12px;gap:3px}
+body[data-reference-ui=candidate] .fu-nav button[aria-current=page]{color:#e8c57d;background:#3d3149;border:0;box-shadow:inset 0 -2px #e8c57d}.fu-nav .icon{width:20px;height:20px}
+.ref-card{position:fixed;inset:auto 0 0;margin:0 auto;width:min(100%,440px);max-width:440px;max-height:70dvh;box-sizing:border-box;border:0;border-radius:12px 12px 0 0;padding:0 18px max(19px,env(safe-area-inset-bottom));background:var(--ref-paper);color:var(--ref-ink);box-shadow:0 -8px 35px #0e091a55;font-family:inherit;overflow:auto;overscroll-behavior:contain}
+.ref-card::backdrop{background:#110d1e55}
+.ref-card>header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0 10px;border-bottom:1px solid var(--ref-rule);background:var(--ref-paper);position:sticky;top:0;z-index:1}
+.ref-card>header small{font-size:12px;color:var(--ref-muted);display:block;margin-bottom:5px}.ref-card h2{font-size:19px;margin:0;font-weight:600;line-height:1.35}.ref-card .ref-icon-button{border:0;color:#71677a;margin-right:-8px}
+.ref-card p{font-size:14px;line-height:1.75;margin:13px 0}.ref-card p small{display:block;font-size:12px;color:var(--ref-muted)}.ref-muted{color:var(--ref-muted)}
+.ref-subject{display:flex;align-items:center;gap:15px;margin:15px 0}.ref-subject img{width:81px;height:81px;object-fit:contain;image-rendering:pixelated}.ref-subject strong{font-size:16px;font-weight:600}.ref-subject p{font-size:13px;color:var(--ref-muted);margin:5px 0}.ref-curio img{width:112px;height:112px}.ref-unknown{width:68px;height:68px;display:grid;place-items:center;background:#ded5e7;border-radius:5px}.ref-unknown>.icon{width:35px;height:35px}
+.ref-primary{min-height:48px;background:var(--ref-gold);border:1px solid #c6a668;color:#342a32;font:600 14px inherit;padding:11px 15px}.ref-primary>.icon{width:15px;height:15px;vertical-align:middle;margin-left:7px}.ref-wide{width:100%}
+.ref-records{border-top:1px solid var(--ref-rule);margin-top:15px}.ref-records summary{font-size:13px;min-height:44px;padding:13px 0;box-sizing:border-box;cursor:pointer}.ref-records p{font-size:13px;color:var(--ref-muted);padding-left:10px;border-left:2px solid #c7bace;margin:9px 0}
+.ref-result{font-weight:500}.ref-evidence{padding:11px 13px;background:#e1dce7;border-radius:3px}.ref-morning{padding-top:12px;border-top:1px solid var(--ref-rule);margin-top:15px}.ref-morning small{font-size:12px;color:var(--ref-muted)}.ref-morning p{margin:7px 0}
+.ref-setting-row{display:flex;gap:8px;align-items:center;font-size:14px}.ref-setting-row>span{flex:1}.ref-setting-row button{min-height:44px;border:1px solid var(--ref-rule);padding:8px 13px;background:#f9f5fa;color:var(--ref-ink)}
+body[data-reference-ui=candidate] #fusion-drawer{background:var(--ref-paper);color:var(--ref-ink);border:0;box-shadow:0 -8px 35px #0e091a55;border-radius:10px 10px 0 0}
+body[data-reference-ui=candidate] #fusion-drawer::backdrop{background:#110d1e66}
+body[data-reference-ui=candidate] .fu-drawer-heading{background:var(--ref-paper);color:var(--ref-ink);border-bottom:1px solid var(--ref-rule);box-shadow:none}
+body[data-reference-ui=candidate] .fu-drawer-heading h2{font-size:18px;color:var(--ref-ink);font-weight:600}
+body[data-reference-ui=candidate] #fusion-close{background:transparent;border:0;color:#64596f;box-shadow:none}
+body[data-reference-ui=candidate] #fusion-drawer-body{color:var(--ref-ink)}
+body[data-reference-ui=candidate] #fusion-drawer :is(p,h3,strong,small,label){color:inherit}
+body[data-reference-ui=candidate] #fusion-drawer :is(.fu-muted,.fu-paper-status,.fu-curio-message small){color:var(--ref-muted)}
+body[data-reference-ui=candidate] #fusion-drawer button{background:#e3dde9;border:1px solid #c7bbcf;color:#393044;box-shadow:none;font-size:14px;min-height:44px}
+body[data-reference-ui=candidate] #fusion-drawer :is(.fu-primary,#fusion-paper-primary,#fusion-curio-primary){background:#e8c57d;border-color:#c6a668;color:#342a32}
+body[data-reference-ui=candidate] .fu-treatment-stages{gap:8px;margin-bottom:11px}
+body[data-reference-ui=candidate] .fu-treatment-stages li{background:#e2dce8;border:1px solid #c7bbcf;box-shadow:none;border-radius:4px;padding:6px 4px 8px}
+body[data-reference-ui=candidate] .fu-treatment-stages li[aria-current=step]{border-color:#ac873f;box-shadow:inset 0 -2px #cfac64;background:#ebe1d0}
+body[data-reference-ui=candidate] .fu-treatment-stages span{font-size:12px;color:#50465a}
+body[data-reference-ui=candidate] .fu-treatment-stages img{width:43px;height:43px}
+body[data-reference-ui=candidate] #fusion-drawer :is(.fu-exhibit-interaction,.fu-detail-actions,.fu-curio-message,.fu-records){background:transparent;box-shadow:none;border-color:#c7bbcf}
+body[data-reference-ui=candidate] #fusion-drawer :is(.fu-curio-response,.fu-treatment-result){color:#50405e;background:#ddd3e4;border:0}
+body[data-reference-ui=candidate] .fu-upgrade{background:#e5dfeb;border:0;border-bottom:1px solid #c7bbcf;box-shadow:none;padding:14px 4px;gap:12px}
+body[data-reference-ui=candidate] .fu-upgrade strong{font-size:14px}
+body[data-reference-ui=candidate] .fu-back-collection{background:transparent!important}
+body[data-reference-ui=candidate] .fu-base-grow{background:#e8c57d;border:0;color:#342a32;font-size:15px}
+body[data-reference-ui=candidate] .fu-build{font-size:10px;opacity:.65}
+@media(max-height:700px){.ref-goal{min-height:38px}.ref-event{min-height:52px;margin-bottom:6px}.ref-card{max-height:80dvh}body[data-reference-ui=candidate] #fusion-assist{min-height:48px}body[data-reference-ui=candidate] .fu-world-shell{min-height:130px}}
+@media(prefers-reduced-motion:no-preference){.ref-card[open]{animation:ref-card-in .16s ease-out}@keyframes ref-card-in{from{transform:translateY(12px);opacity:.6}to{transform:translateY(0);opacity:1}}}
+html[data-text-size=large] body[data-reference-ui=candidate] :is(.ref-card p,.ref-event strong,.ref-goal strong){font-size:16px}
+/* Override inherited nine-slice frame artwork, not just its CSS border color. */
+body[data-reference-ui=candidate] :is(#fusion-app,#fusion-drawer,#refui-card) button{border-image:none!important;background-image:none!important;box-shadow:none!important;text-shadow:none!important}
+body[data-reference-ui=candidate] .fu-location{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}
+body[data-reference-ui=candidate] .fu-location small{grid-area:auto;margin:0}
+body[data-reference-ui=candidate] #refui-objective{background:transparent;border:0;padding-inline:0}
+body[data-reference-ui=candidate] #refui-event{background:#eeeaf1;border:0}
+body[data-reference-ui=candidate] #refui-marker{background:#eeeaf1;border:1px solid #76677e}
+body[data-reference-ui=candidate] #refui-settings{background:transparent;border:0}
+body[data-reference-ui=candidate] #refui-card{background:#eeeaf1;opacity:1}
+body[data-reference-ui=candidate] .fu-nav button{border:0;background:transparent}
+body[data-reference-ui=candidate] .fu-nav button[aria-current=page]{background:#3d3149;border-bottom:2px solid #e8c57d}
+@media(prefers-reduced-motion:no-preference){@keyframes ref-card-in{from{transform:translateY(12px)}to{transform:translateY(0)}}}
+body[data-reference-ui=candidate] #fusion-drawer :is(summary,.fu-paper-disclosure,.fu-details){color:#5a4d68;border-color:#c7bbcf}
+body[data-reference-ui=candidate] #fusion-try:enabled{background:#e8c57d;border-color:#c6a668;color:#342a32}
+.ref-profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.ref-profile-grid button{min-height:44px;padding:8px;border:1px solid #c7bbcf;color:#393044;background:#e3dde9;font-size:13px}
+body[data-reference-ui=candidate] [hidden]{display:none!important}
+body[data-reference-ui=candidate] .fu-equipment-glyph{background:#ddd4e4;border:0;box-shadow:none;color:#6d587a}

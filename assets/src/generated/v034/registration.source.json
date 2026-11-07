@@ -1,0 +1,181 @@
+{
+  "schema": 1,
+  "reference": {
+    "file": "assets/src/generated/d1-refinement/receipt-inner-blank-v1.png",
+    "width": 1254,
+    "height": 1254,
+    "crop": {
+      "x": 159,
+      "y": 35,
+      "width": 941,
+      "height": 1203
+    },
+    "target": {
+      "x": 35,
+      "y": 9,
+      "height": 239
+    }
+  },
+  "receipt": {
+    "paper": "receipt-paper-damaged-v1.png",
+    "mud": "receipt-mud-layer-v2.png",
+    "patch": "receipt-tissue-layer-v3.png",
+    "patchOpacity": 0.75,
+    "patchPieces": [
+      {
+        "id": "upper",
+        "sourceRegion": {
+          "left": 300,
+          "top": 250,
+          "width": 300,
+          "height": 400
+        },
+        "targetCenter": {
+          "x": 85,
+          "y": 75
+        },
+        "targetLength": 35
+      },
+      {
+        "id": "lower",
+        "sourceRegion": {
+          "left": 100,
+          "top": 850,
+          "width": 200,
+          "height": 130
+        },
+        "targetCenter": {
+          "x": 47,
+          "y": 184
+        },
+        "targetLength": 26
+      }
+    ]
+  },
+  "soil": {
+    "source": "receipt-excavation-soil-v1.png",
+    "outputWidth": 512,
+    "paperRelative": {
+      "x": 18,
+      "y": 214,
+      "width": 220
+    }
+  },
+  "tools": {
+    "source": "restoration-tools-v1.png",
+    "trayRegion": {
+      "left": 0,
+      "top": 320,
+      "width": 887,
+      "height": 350
+    },
+    "brushRegion": {
+      "left": 887,
+      "top": 190,
+      "width": 887,
+      "height": 560
+    },
+    "trayReceiverSource": {
+      "x": 460,
+      "y": 473
+    },
+    "trayFrontLipSourceY": 523,
+    "brushContactSource": {
+      "x": 1170,
+      "y": 652
+    },
+    "brushPivotSource": {
+      "x": 1570,
+      "y": 290
+    }
+  },
+  "residents": {
+    "mouse": {
+      "source": "resident-mouse-day-v1.png",
+      "sourceContacts": [
+        {
+          "x": 430,
+          "y": 782
+        },
+        {
+          "x": 430,
+          "y": 790
+        }
+      ],
+      "daySource": "assets/runtime/mouse.webp",
+      "dayContact": {
+        "x": 120,
+        "y": 276
+      },
+      "dayWidth": 83,
+      "logicalSquareSize": 89,
+      "maximumVisibleSize": {
+        "width": 83,
+        "height": 89
+      },
+      "actions": [
+        "crouch-sniff",
+        "sit-nibble"
+      ],
+      "contactDefinition": "Supporting paw baseline. The loose floor scrap extends slightly below the paw contact."
+    },
+    "hermit": {
+      "source": "resident-hermit-day-v1.png",
+      "sourceContacts": [
+        {
+          "x": 440,
+          "y": 806
+        },
+        {
+          "x": 440,
+          "y": 802
+        }
+      ],
+      "daySource": "assets/runtime/hermit.webp",
+      "dayContact": {
+        "x": 116,
+        "y": 257
+      },
+      "dayWidth": 66,
+      "logicalSquareSize": 66.515625,
+      "maximumVisibleSize": {
+        "width": 66,
+        "height": 68
+      },
+      "actions": [
+        "peek-and-shake",
+        "pull-paper"
+      ],
+      "contactDefinition": "Supporting near claw and leg tips. Box shell, eyes and paper retain the source pose proportions."
+    },
+    "tagbird": {
+      "source": "resident-tagbird-day-v1.png",
+      "sourceContacts": [
+        {
+          "x": 414,
+          "y": 854
+        },
+        {
+          "x": 414,
+          "y": 854
+        }
+      ],
+      "daySource": "assets/runtime/tagbird.webp",
+      "dayContact": {
+        "x": 116,
+        "y": 238
+      },
+      "dayWidth": 47,
+      "logicalSquareSize": 54.8,
+      "maximumVisibleSize": {
+        "width": 47,
+        "height": 50
+      },
+      "actions": [
+        "look-at-label",
+        "peck-label"
+      ],
+      "contactDefinition": "Forward claw tip gripping the implied perch. The real scene supplies the lamp perch."
+    }
+  }
+}

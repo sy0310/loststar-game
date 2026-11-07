@@ -1,4 +1,5 @@
-# 素材导入仍待执行
-原始设计文件不在此目录中，请将 ChatGPT 交付的“失物星球_V01_完整美术设计稿.zip”交给 Codex 工作环境。
-运行 python3 scripts/import_design_zip.py /path/to/失物星球_V01_完整美术设计稿.zip
-再运行 python3 scripts/validate_design_assets.py；确认 20/20 才表示完整上传。
+# 原件导入记录
+
+2026-11-02 已从工作目录的真实 loststar_design_v01.zip 导入。
+20/20 PNG/MP4 大小和 SHA256 校验通过，原始 README 与 index.html 保留。
+ZIP 不重复提交。重跑：`python3 scripts/validate_design_assets.py`。

@@ -1,0 +1,75 @@
+{
+  "sourceCommit": "51d682c289dc786c43fbb51697bdf285b9044f66",
+  "localCheck": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "assetFiles": 20,
+    "unitFiles": 48,
+    "unitTests": 309,
+    "browserTests": 426,
+    "browserFailures": 0,
+    "browserSkipped": 0,
+    "browserFlaky": 0,
+    "builds": [
+      "normal",
+      "D1",
+      "V034",
+      "Fusion",
+      "V036"
+    ],
+    "coverage": {
+      "scope": "Declared engine/model/geometry coverage; not whole UI/render coverage",
+      "statementsPercent": 97.05,
+      "branchesPercent": 95.81,
+      "functionsPercent": 99.11,
+      "linesPercent": 99.42
+    }
+  },
+  "packageSmokeCases": 6,
+  "physicalPhone": false,
+  "clockOverridesInVideos": false,
+  "reviewFixturesDisclosed": true,
+  "screenshots": 67,
+  "transparentMaterials": 27,
+  "comparisonSheets": 1,
+  "videos": 4,
+  "saveDatabase": "loststar.fusion.firstplanet.v037",
+  "campaignReset": false,
+  "runtimeTrees": {
+    "src": "ab53f11d194a062dfc0d1b647b2a3882c4f28999",
+    "assets/runtime": "75431a9505e418ce2b4cdda085421b5e741c7577",
+    "package.json": "98c941a97c840ccc4f3d96c5e5e2f10e204e859e",
+    "package-lock.json": "8d5e446da0fc304f168e3308bc6ba5b3f5484211",
+    "vite.config.ts": "7091028d1478f6d68136b9038746c8ab4ceb4878",
+    "vite.fusion.config.ts": "834d1a55da9e904a3fce2b71c6f6bf7b7ce26d37"
+  },
+  "checkLogNotes": "Terminal trailing whitespace trimmed; test outcomes unchanged.",
+  "sourceCI": [
+    {
+      "id": 42002824029,
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/42002824029"
+    },
+    {
+      "id": 42002812309,
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/42002812309"
+    }
+  ],
+  "harnessRegression": {
+    "command": "npx playwright test tests/e2e/exhibition.spec.ts --grep 已有航路 --repeat-each=3",
+    "cases": 12,
+    "failures": 0,
+    "flaky": 0,
+    "reason": "Use a same-origin static import writer; a second live app would autosave stale in-memory state over the raw test import.",
+    "runtimeChanged": false
+  },
+  "workPrecisionRegression": {
+    "cases": 12,
+    "failures": 0,
+    "flaky": 0,
+    "workMillisecondsDecimalPlaces": 8,
+    "integerRewardComparisons": "exact",
+    "runtimeChanged": false
+  }
+}
