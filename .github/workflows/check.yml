@@ -102,7 +102,9 @@ jobs:
   reference-ui-sample:
     name: Isolated reference UI sample
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    # 72 natural-time flows take about six minutes; retain every assertion and
+    # zero retries while allowing checkout/browser-install and media-upload time.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
