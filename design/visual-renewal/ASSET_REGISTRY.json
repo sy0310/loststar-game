@@ -11665,7 +11665,7 @@
         "design/v045_a_simplified_exploration/REVIEW_20261107.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "Retain all original 12 parents and 149 semantic child IDs (161); append 13 latest-authorized A045 requirements (174).",
+      "independentAudit": "保留原161条与13条A045，再保留7条REFUI共181条；最新Review逐条替代整理旧口径，不删旧ID。",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -11727,6 +11727,18 @@
           "startLine": 1,
           "endLine": 7,
           "reason": "Review原文留档说明及历史基线/既往CI事实，不是本轮执行证明。"
+        },
+        {
+          "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+          "startLine": 19,
+          "endLine": 29,
+          "reason": "最新Review对旧样板原文件/截图的核查与历史参考方法，不作为新实现已完成证明。"
+        },
+        {
+          "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+          "startLine": 118,
+          "endLine": 123,
+          "reason": "第三方参考来源历史清单，不是复制美术或本轮浅色皮肤要求。"
         }
       ]
     },
@@ -16810,7 +16822,7 @@
       {
         "id": "INT-02.TOOLS",
         "parent": "INT-02",
-        "requirement": "主动工具/夹具手、刷尖/镊尖/螺丝刀刃与真实物体接触，施力后机构归位；不悬空/整纸漂移/把纸补成金属夹。",
+        "requirement": "已认可主动互动保留真实工具/机构接触；整理阶段无需工具模拟，按真实完成切整图，不凭修纸补造事实。",
         "sourceRefs": [
           {
             "path": "design/visual-renewal/CODEX_FULL_RENEWAL.md",
@@ -16821,6 +16833,11 @@
             "path": "design/visual-renewal/ART_SPEC.md",
             "startLine": 5,
             "endLine": 5
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 68,
+            "endLine": 78
           }
         ],
         "scope": "IN_SCOPE",
@@ -16885,7 +16902,9 @@
           "artifacts/v045-a-exploration/independent-final-review.json",
           "artifacts/v045-a-exploration/playback-review.json"
         ],
-        "reviewBasis": "sampled-action-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval"
+        "reviewBasis": "sampled-action-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
+        "acceptanceCriteria": "已认可主动互动保留真实工具/机构接触；整理阶段无需工具模拟，按真实完成切整图，不凭修纸补造事实。",
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
       },
       {
         "id": "INT-02.NOREWARD",
@@ -18616,7 +18635,7 @@
       {
         "id": "ART-05.SPACE",
         "parent": "ART-05",
-        "requirement": "真实小修复空间，统一暖台灯、承托垫、工具架、机器人手或机械夹具；物件是视觉中心。",
+        "requirement": "整理用安静统一整图展示面，不再强制土盘/台灯/机械夹持；收藏室继续真实柜体与房间，认可免费主动互动保留。",
         "sourceRefs": [
           {
             "path": "design/visual-renewal/CODEX_FULL_RENEWAL.md",
@@ -18627,6 +18646,11 @@
             "path": "design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md",
             "startLine": 62,
             "endLine": 62
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 68,
+            "endLine": 78
           }
         ],
         "scope": "IN_SCOPE",
@@ -18692,12 +18716,14 @@
           "artifacts/v045-a-exploration/independent-final-review.json",
           "artifacts/v045-a-exploration/playback-review.json"
         ],
-        "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval"
+        "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
+        "acceptanceCriteria": "整理用安静统一整图展示面，不再强制土盘/台灯/机械夹持；收藏室继续真实柜体与房间，认可免费主动互动保留。",
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
       },
       {
         "id": "ART-05.SIZE",
         "parent": "ART-05",
-        "requirement": "同H5全屏工作台，不跳新页/新世界；640×700画布，近景约260逻辑宽主体，三态无工具遮挡PNG可审核。",
+        "requirement": "同H5独立处理层保留安全区和清晰完整物件，不再强制旧640×700繁复工作台；实际360/390及三态可审核。",
         "sourceRefs": [
           {
             "path": "design/visual-renewal/ART_SPEC.md",
@@ -18708,6 +18734,11 @@
             "path": "design/visual-renewal/CODEX_FULL_RENEWAL.md",
             "startLine": 111,
             "endLine": 111
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 68,
+            "endLine": 78
           }
         ],
         "scope": "IN_SCOPE",
@@ -18773,12 +18804,14 @@
           "artifacts/v045-a-exploration/independent-final-review.json",
           "artifacts/v045-a-exploration/playback-review.json"
         ],
-        "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval"
+        "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
+        "acceptanceCriteria": "同H5独立处理层保留安全区和清晰完整物件，不再强制旧640×700繁复工作台；实际360/390及三态可审核。",
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
       },
       {
         "id": "ART-05.EXCAVATION",
         "parent": "ART-05",
-        "requirement": "原真实收获/收据取出动作继续，前后土层/承托与工具接触可信；不简单整图平移替代。",
+        "requirement": "真实探索拾取/卸货保留；已真实发现即见A整图，无强制再次取出。旧免费buried/excavating单次原流程收束、显式记账，不取消已付费任务。",
         "sourceRefs": [
           {
             "path": "design/visual-renewal/CODEX_FULL_RENEWAL.md",
@@ -18794,6 +18827,11 @@
             "path": "design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md",
             "startLine": 62,
             "endLine": 62
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 68,
+            "endLine": 78
           }
         ],
         "scope": "IN_SCOPE",
@@ -18859,7 +18897,9 @@
           "artifacts/v045-a-exploration/independent-final-review.json",
           "artifacts/v045-a-exploration/playback-review.json"
         ],
-        "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval"
+        "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
+        "acceptanceCriteria": "真实探索拾取/卸货保留；已真实发现即见A整图，无强制再次取出。旧免费buried/excavating单次原流程收束、显式记账，不取消已付费任务。",
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
       },
       {
         "id": "ART-05.PROCESS",
@@ -19021,7 +19061,7 @@
       {
         "id": "ART-05.CONTACT",
         "parent": "ART-05",
-        "requirement": "保留的取出/主动试验工具接触可信；污渍沿轨迹消失和结构连续生成B/C的旧要求已仅对持久态明确失效，不可扩展成所有工具都可悬空。",
+        "requirement": "保留认可免费主动互动和世界动作的接触因果；整理不再要求挖取/刷洗/拆解/形变，原图到真实提交后再整图切换。",
         "sourceRefs": [
           {
             "path": "design/visual-renewal/CODEX_FULL_RENEWAL.md",
@@ -19042,6 +19082,11 @@
             "path": "design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md",
             "startLine": 20,
             "endLine": 22
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 68,
+            "endLine": 78
           }
         ],
         "scope": "IN_SCOPE",
@@ -19107,7 +19152,9 @@
           "artifacts/v045-a-exploration/independent-final-review.json",
           "artifacts/v045-a-exploration/playback-review.json"
         ],
-        "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval"
+        "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
+        "acceptanceCriteria": "保留认可免费主动互动和世界动作的接触因果；整理不再要求挖取/刷洗/拆解/形变，原图到真实提交后再整图切换。",
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
       },
       {
         "id": "UI-01.NAV",
@@ -27979,19 +28026,9 @@
       {
         "id": "REFUI-01",
         "parent": "UI-01",
-        "requirement": "首页三导航、短目标、一个事件摘要、紧凑助力和小设置；调查结论仅引用已有事实。",
-        "acceptanceCriteria": "首页三导航、短目标、一个事件摘要、紧凑助力和小设置；调查结论仅引用已有事实。",
+        "requirement": "三导航、单目标、一个事件摘要；自动探索和自愿助力保持，不新增系统。",
+        "acceptanceCriteria": "三导航、单目标、一个事件摘要；自动探索和自愿助力保持，不新增系统。",
         "sourceRefs": [
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 34,
-            "endLine": 56
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 98,
-            "endLine": 98
-          },
           {
             "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
             "startLine": 12,
@@ -28006,372 +28043,462 @@
             "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
             "startLine": 25,
             "endLine": 26
-          }
-        ],
-        "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
-        "phone": "NOT_TESTED",
-        "code": [
-          "prototypes/ref-ui/ui.ts",
-          "prototypes/ref-ui/model.ts",
-          "prototypes/ref-ui/entry.ts",
-          "prototypes/ref-ui/style.css",
-          "prototypes/ref-ui/reference.spec.ts",
-          "tests/ref-ui-projection.test.ts"
-        ],
-        "assets": [
-          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
-          "assets/runtime/visual-renewal/world/registration.json",
-          "assets/source/visual-renewal/museum/REGISTRATION.json"
-        ],
-        "entrypoints": [
-          {
-            "route": "prototypes/ref-ui/entry.ts",
-            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
-          }
-        ],
-        "checks": [
-          "ref-ui-projection",
-          "ref-ui-browser-matrix",
-          "ref-ui-fixed-package"
-        ],
-        "proofs": [],
-        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
-        "nextAction": "请用户审三屏/43秒样板；确认后接默认入口，再收正式固定包/手机证据。",
-        "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
-          "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-sample",
-          "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
-          "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
-          "evidence": [
-            "artifacts/ref-ui-sample/evidence.json",
-            "artifacts/ref-ui-sample/verification.json",
-            "artifacts/ref-ui-sample/checks/browser-results.json",
-            "artifacts/ref-ui-sample/independent-review.md",
-            "artifacts/ref-ui-sample/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
-          "phone": "NOT_TESTED",
-          "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
-          "taptapVersion": 448028,
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED"
-        }
-      },
-      {
-        "id": "REFUI-02",
-        "parent": "UI-01",
-        "requirement": "深色世界＋浅纸灰/淡紫信息；保留原资产，减少金框/渐变/外发光，金色只标主操作与选中。",
-        "acceptanceCriteria": "深色世界＋浅纸灰/淡紫信息；保留原资产，减少金框/渐变/外发光，金色只标主操作与选中。",
-        "sourceRefs": [
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 17,
-            "endLine": 17
           },
           {
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 21,
-            "endLine": 29
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 60,
-            "endLine": 65
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 99,
-            "endLine": 99
-          }
-        ],
-        "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
-        "phone": "NOT_TESTED",
-        "code": [
-          "prototypes/ref-ui/ui.ts",
-          "prototypes/ref-ui/model.ts",
-          "prototypes/ref-ui/entry.ts",
-          "prototypes/ref-ui/style.css",
-          "prototypes/ref-ui/reference.spec.ts",
-          "tests/ref-ui-projection.test.ts"
-        ],
-        "assets": [
-          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
-          "assets/runtime/visual-renewal/world/registration.json",
-          "assets/source/visual-renewal/museum/REGISTRATION.json"
-        ],
-        "entrypoints": [
-          {
-            "route": "prototypes/ref-ui/entry.ts",
-            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
-          }
-        ],
-        "checks": [
-          "ref-ui-projection",
-          "ref-ui-browser-matrix",
-          "ref-ui-fixed-package"
-        ],
-        "proofs": [],
-        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
-        "nextAction": "请用户审三屏/43秒样板；确认后接默认入口，再收正式固定包/手机证据。",
-        "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
-          "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-sample",
-          "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
-          "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
-          "evidence": [
-            "artifacts/ref-ui-sample/evidence.json",
-            "artifacts/ref-ui-sample/verification.json",
-            "artifacts/ref-ui-sample/checks/browser-results.json",
-            "artifacts/ref-ui-sample/independent-review.md",
-            "artifacts/ref-ui-sample/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
-          "phone": "NOT_TESTED",
-          "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
-          "taptapVersion": 448028,
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED"
-        }
-      },
-      {
-        "id": "REFUI-03",
-        "parent": "WORLD-01",
-        "requirement": "事件标记和摘要同ID/真实位置，单次开短卡、单次返回；识别前不露名，重复访客记日常。",
-        "acceptanceCriteria": "事件标记和摘要同ID/真实位置，单次开短卡、单次返回；识别前不露名，重复访客记日常。",
-        "sourceRefs": [
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 69,
-            "endLine": 73
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 100,
-            "endLine": 100
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
-            "startLine": 27,
-            "endLine": 28
-          }
-        ],
-        "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
-        "phone": "NOT_TESTED",
-        "code": [
-          "prototypes/ref-ui/ui.ts",
-          "prototypes/ref-ui/model.ts",
-          "prototypes/ref-ui/entry.ts",
-          "prototypes/ref-ui/style.css",
-          "prototypes/ref-ui/reference.spec.ts",
-          "tests/ref-ui-projection.test.ts"
-        ],
-        "assets": [
-          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
-          "assets/runtime/visual-renewal/world/registration.json",
-          "assets/source/visual-renewal/museum/REGISTRATION.json"
-        ],
-        "entrypoints": [
-          {
-            "route": "prototypes/ref-ui/entry.ts",
-            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
-          }
-        ],
-        "checks": [
-          "ref-ui-projection",
-          "ref-ui-browser-matrix",
-          "ref-ui-fixed-package"
-        ],
-        "proofs": [],
-        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
-        "nextAction": "请用户审三屏/43秒样板；确认后接默认入口，再收正式固定包/手机证据。",
-        "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
-          "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-sample",
-          "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
-          "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
-          "evidence": [
-            "artifacts/ref-ui-sample/evidence.json",
-            "artifacts/ref-ui-sample/verification.json",
-            "artifacts/ref-ui-sample/checks/browser-results.json",
-            "artifacts/ref-ui-sample/independent-review.md",
-            "artifacts/ref-ui-sample/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
-          "phone": "NOT_TESTED",
-          "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
-          "taptapVersion": 448028,
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED"
-        }
-      },
-      {
-        "id": "REFUI-04",
-        "parent": "DATA-01",
-        "requirement": "六物18整图、原价提交、本体与柜级各自权益保留；真实柜体/工作台和直白设备效果。",
-        "acceptanceCriteria": "六物18整图、原价提交、本体与柜级各自权益保留；真实柜体/工作台和直白设备效果。",
-        "sourceRefs": [
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 77,
-            "endLine": 82
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 101,
-            "endLine": 101
-          }
-        ],
-        "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
-        "phone": "NOT_TESTED",
-        "code": [
-          "prototypes/ref-ui/ui.ts",
-          "prototypes/ref-ui/model.ts",
-          "prototypes/ref-ui/entry.ts",
-          "prototypes/ref-ui/style.css",
-          "prototypes/ref-ui/reference.spec.ts",
-          "tests/ref-ui-projection.test.ts"
-        ],
-        "assets": [
-          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
-          "assets/runtime/visual-renewal/world/registration.json",
-          "assets/source/visual-renewal/museum/REGISTRATION.json"
-        ],
-        "entrypoints": [
-          {
-            "route": "prototypes/ref-ui/entry.ts",
-            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
-          }
-        ],
-        "checks": [
-          "ref-ui-projection",
-          "ref-ui-browser-matrix",
-          "ref-ui-fixed-package"
-        ],
-        "proofs": [],
-        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
-        "nextAction": "请用户审三屏/43秒样板；确认后接默认入口，再收正式固定包/手机证据。",
-        "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
-          "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-sample",
-          "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
-          "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
-          "evidence": [
-            "artifacts/ref-ui-sample/evidence.json",
-            "artifacts/ref-ui-sample/verification.json",
-            "artifacts/ref-ui-sample/checks/browser-results.json",
-            "artifacts/ref-ui-sample/independent-review.md",
-            "artifacts/ref-ui-sample/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
-          "phone": "NOT_TESTED",
-          "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
-          "taptapVersion": 448028,
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED"
-        }
-      },
-      {
-        "id": "REFUI-05",
-        "parent": "WORLD-01",
-        "requirement": "普通挂机/有效连点/限流/事件开关之间无误触助力、重复收费或领奖，现有声音和动态偏好保留。",
-        "acceptanceCriteria": "普通挂机/有效连点/限流/事件开关之间无误触助力、重复收费或领奖，现有声音和动态偏好保留。",
-        "sourceRefs": [
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 90,
-            "endLine": 90
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 102,
-            "endLine": 102
-          }
-        ],
-        "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
-        "phone": "NOT_TESTED",
-        "code": [
-          "prototypes/ref-ui/ui.ts",
-          "prototypes/ref-ui/model.ts",
-          "prototypes/ref-ui/entry.ts",
-          "prototypes/ref-ui/style.css",
-          "prototypes/ref-ui/reference.spec.ts",
-          "tests/ref-ui-projection.test.ts"
-        ],
-        "assets": [
-          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
-          "assets/runtime/visual-renewal/world/registration.json",
-          "assets/source/visual-renewal/museum/REGISTRATION.json"
-        ],
-        "entrypoints": [
-          {
-            "route": "prototypes/ref-ui/entry.ts",
-            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
-          }
-        ],
-        "checks": [
-          "ref-ui-projection",
-          "ref-ui-browser-matrix",
-          "ref-ui-fixed-package"
-        ],
-        "proofs": [],
-        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
-        "nextAction": "请用户审三屏/43秒样板；确认后接默认入口，再收正式固定包/手机证据。",
-        "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
-          "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-sample",
-          "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
-          "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
-          "evidence": [
-            "artifacts/ref-ui-sample/evidence.json",
-            "artifacts/ref-ui-sample/verification.json",
-            "artifacts/ref-ui-sample/checks/browser-results.json",
-            "artifacts/ref-ui-sample/independent-review.md",
-            "artifacts/ref-ui-sample/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
-          "phone": "NOT_TESTED",
-          "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
-          "taptapVersion": 448028,
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED"
-        }
-      },
-      {
-        "id": "REFUI-06",
-        "parent": "UI-01",
-        "requirement": "360×800/390×844及真实宿主安全区；大字、低高度、恢复、触区/单层与全球不被挤坏。",
-        "acceptanceCriteria": "360×800/390×844及真实宿主安全区；大字、低高度、恢复、触区/单层与全球不被挤坏。",
-        "sourceRefs": [
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 87,
-            "endLine": 89
+            "startLine": 15,
+            "endLine": 15
           },
           {
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 103,
             "endLine": 103
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts",
+          "prototypes/ref-ui/theme.css",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/light-treatment.spec.ts",
+          "tests/ref-ui-compat.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
+        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-sample",
+            "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
+            "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
+            "evidence": [
+              "artifacts/ref-ui-sample/evidence.json",
+              "artifacts/ref-ui-sample/verification.json",
+              "artifacts/ref-ui-sample/checks/browser-results.json",
+              "artifacts/ref-ui-sample/independent-review.md",
+              "artifacts/ref-ui-sample/taptap-receipt.json"
+            ],
+            "visual": "REJECTED_REQUIRES_REVISION",
+            "phone": "NOT_TESTED",
+            "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
+            "taptapVersion": 448028,
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          }
+        ],
+        "prototype": {
+          "phase": "REVISING_LATEST_REVIEW",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
+          "phone": "NOT_TESTED",
+          "evidenceRoot": "artifacts/ref-ui-unified"
+        }
+      },
+      {
+        "id": "REFUI-02",
+        "parent": "UI-01",
+        "requirement": "全可达UI一套紫灰主题token与共享控件；昼夜只改变世界，不混浅色详情/旧金框，移除旧皮肤而非叠!important。",
+        "acceptanceCriteria": "全可达UI一套紫灰主题token与共享控件；昼夜只改变世界，不混浅色详情/旧金框，移除旧皮肤而非叠!important。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 33,
+            "endLine": 60
           },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 104,
+            "endLine": 104
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts",
+          "prototypes/ref-ui/theme.css",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/light-treatment.spec.ts",
+          "tests/ref-ui-compat.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
+        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-sample",
+            "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
+            "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
+            "evidence": [
+              "artifacts/ref-ui-sample/evidence.json",
+              "artifacts/ref-ui-sample/verification.json",
+              "artifacts/ref-ui-sample/checks/browser-results.json",
+              "artifacts/ref-ui-sample/independent-review.md",
+              "artifacts/ref-ui-sample/taptap-receipt.json"
+            ],
+            "visual": "REJECTED_REQUIRES_REVISION",
+            "phone": "NOT_TESTED",
+            "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
+            "taptapVersion": 448028,
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          }
+        ],
+        "prototype": {
+          "phase": "REVISING_LATEST_REVIEW",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
+          "phone": "NOT_TESTED",
+          "evidenceRoot": "artifacts/ref-ui-unified"
+        }
+      },
+      {
+        "id": "REFUI-03",
+        "parent": "WORLD-01",
+        "requirement": "同事件ID的世界标记与摘要直达同一短卡；关闭回原现场，回看不重发奖励。",
+        "acceptanceCriteria": "同事件ID的世界标记与摘要直达同一短卡；关闭回原现场，回看不重发奖励。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 27,
+            "endLine": 28
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 105,
+            "endLine": 105
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts",
+          "prototypes/ref-ui/theme.css",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/light-treatment.spec.ts",
+          "tests/ref-ui-compat.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
+        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-sample",
+            "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
+            "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
+            "evidence": [
+              "artifacts/ref-ui-sample/evidence.json",
+              "artifacts/ref-ui-sample/verification.json",
+              "artifacts/ref-ui-sample/checks/browser-results.json",
+              "artifacts/ref-ui-sample/independent-review.md",
+              "artifacts/ref-ui-sample/taptap-receipt.json"
+            ],
+            "visual": "REJECTED_REQUIRES_REVISION",
+            "phone": "NOT_TESTED",
+            "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
+            "taptapVersion": 448028,
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          }
+        ],
+        "prototype": {
+          "phase": "REVISING_LATEST_REVIEW",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
+          "phone": "NOT_TESTED",
+          "evidenceRoot": "artifacts/ref-ui-unified"
+        }
+      },
+      {
+        "id": "REFUI-04",
+        "parent": "DATA-01",
+        "requirement": "六件18完整图；取消强制取出与实时清理模拟，真实提交后结果短句/整图切换/短反馈；保留认可主动互动和原权益。",
+        "acceptanceCriteria": "六件18完整图；取消强制取出与实时清理模拟，真实提交后结果短句/整图切换/短反馈；保留认可主动互动和原权益。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 66,
+            "endLine": 70
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 74,
+            "endLine": 77
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 80,
+            "endLine": 82
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 106,
+            "endLine": 106
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts",
+          "prototypes/ref-ui/theme.css",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/light-treatment.spec.ts",
+          "tests/ref-ui-compat.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
+        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-sample",
+            "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
+            "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
+            "evidence": [
+              "artifacts/ref-ui-sample/evidence.json",
+              "artifacts/ref-ui-sample/verification.json",
+              "artifacts/ref-ui-sample/checks/browser-results.json",
+              "artifacts/ref-ui-sample/independent-review.md",
+              "artifacts/ref-ui-sample/taptap-receipt.json"
+            ],
+            "visual": "REJECTED_REQUIRES_REVISION",
+            "phone": "NOT_TESTED",
+            "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
+            "taptapVersion": 448028,
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          }
+        ],
+        "prototype": {
+          "phase": "REVISING_LATEST_REVIEW",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
+          "phone": "NOT_TESTED",
+          "evidenceRoot": "artifacts/ref-ui-unified"
+        }
+      },
+      {
+        "id": "REFUI-05",
+        "parent": "WORLD-01",
+        "requirement": "原价原时长，预览隔离，退出继续；付费/归航/结果去重，免费旧取出单次合法收束记账；失败不假成功。",
+        "acceptanceCriteria": "原价原时长，预览隔离，退出继续；付费/归航/结果去重，免费旧取出单次合法收束记账；失败不假成功。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 71,
+            "endLine": 73
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 78,
+            "endLine": 78
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 94,
+            "endLine": 94
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 107,
+            "endLine": 107
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts",
+          "prototypes/ref-ui/theme.css",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/light-treatment.spec.ts",
+          "tests/ref-ui-compat.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
+        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-sample",
+            "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
+            "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
+            "evidence": [
+              "artifacts/ref-ui-sample/evidence.json",
+              "artifacts/ref-ui-sample/verification.json",
+              "artifacts/ref-ui-sample/checks/browser-results.json",
+              "artifacts/ref-ui-sample/independent-review.md",
+              "artifacts/ref-ui-sample/taptap-receipt.json"
+            ],
+            "visual": "REJECTED_REQUIRES_REVISION",
+            "phone": "NOT_TESTED",
+            "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
+            "taptapVersion": 448028,
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          }
+        ],
+        "prototype": {
+          "phase": "REVISING_LATEST_REVIEW",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
+          "phone": "NOT_TESTED",
+          "evidenceRoot": "artifacts/ref-ui-unified"
+        }
+      },
+      {
+        "id": "REFUI-06",
+        "parent": "UI-01",
+        "requirement": "360×800/390×844、低屏/大字与Chromium/WebKit；安全区、逐层Back/Esc、无穿透；手机未测单列。",
+        "acceptanceCriteria": "360×800/390×844、低屏/大字与Chromium/WebKit；安全区、逐层Back/Esc、无穿透；手机未测单列。",
+        "sourceRefs": [
           {
             "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
             "startLine": 14,
@@ -28386,6 +28513,21 @@
             "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
             "startLine": 29,
             "endLine": 29
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 59,
+            "endLine": 60
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 95,
+            "endLine": 95
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 108,
+            "endLine": 108
           }
         ],
         "scope": "IN_SCOPE",
@@ -28399,7 +28541,13 @@
           "prototypes/ref-ui/entry.ts",
           "prototypes/ref-ui/style.css",
           "prototypes/ref-ui/reference.spec.ts",
-          "tests/ref-ui-projection.test.ts"
+          "tests/ref-ui-projection.test.ts",
+          "prototypes/ref-ui/theme.css",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/light-treatment.spec.ts",
+          "tests/ref-ui-compat.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28418,55 +28566,46 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
-        "nextAction": "请用户审三屏/43秒样板；确认后接默认入口，再收正式固定包/手机证据。",
+        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
+        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-sample",
+            "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
+            "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
+            "evidence": [
+              "artifacts/ref-ui-sample/evidence.json",
+              "artifacts/ref-ui-sample/verification.json",
+              "artifacts/ref-ui-sample/checks/browser-results.json",
+              "artifacts/ref-ui-sample/independent-review.md",
+              "artifacts/ref-ui-sample/taptap-receipt.json"
+            ],
+            "visual": "REJECTED_REQUIRES_REVISION",
+            "phone": "NOT_TESTED",
+            "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
+            "taptapVersion": 448028,
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          }
+        ],
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "REVISING_LATEST_REVIEW",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-sample",
-          "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
-          "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
-          "evidence": [
-            "artifacts/ref-ui-sample/evidence.json",
-            "artifacts/ref-ui-sample/verification.json",
-            "artifacts/ref-ui-sample/checks/browser-results.json",
-            "artifacts/ref-ui-sample/independent-review.md",
-            "artifacts/ref-ui-sample/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
-          "taptapVersion": 448028,
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED"
+          "evidenceRoot": "artifacts/ref-ui-unified"
         }
       },
       {
         "id": "REFUI-07",
         "parent": "DEL-01",
-        "requirement": "先同档三屏实际样板＋30–45秒自然演示，确认后整合；固定源码包、参考历史与真机/工程/美术分开。",
-        "acceptanceCriteria": "先同档三屏实际样板＋30–45秒自然演示，确认后整合；固定源码包、参考历史与真机/工程/美术分开。",
+        "requirement": "固定新源码/ZIP与实际媒体同源；全可达截图墙、六件自然处理/互动片和跨页片；工程/内部图审/用户/真机分开，未确认不正式集成。",
+        "acceptanceCriteria": "固定新源码/ZIP与实际媒体同源；全可达截图墙、六件自然处理/互动片和跨页片；工程/内部图审/用户/真机分开，未确认不正式集成。",
         "sourceRefs": [
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 10,
-            "endLine": 16
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 94,
-            "endLine": 94
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 96,
-            "endLine": 96
-          },
-          {
-            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-            "startLine": 104,
-            "endLine": 110
-          },
           {
             "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
             "startLine": 9,
@@ -28476,6 +28615,36 @@
             "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
             "startLine": 32,
             "endLine": 32
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 3,
+            "endLine": 5
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 8,
+            "endLine": 15
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 86,
+            "endLine": 88
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 92,
+            "endLine": 99
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 109,
+            "endLine": 116
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 125,
+            "endLine": 125
           }
         ],
         "scope": "IN_SCOPE",
@@ -28489,7 +28658,13 @@
           "prototypes/ref-ui/entry.ts",
           "prototypes/ref-ui/style.css",
           "prototypes/ref-ui/reference.spec.ts",
-          "tests/ref-ui-projection.test.ts"
+          "tests/ref-ui-projection.test.ts",
+          "prototypes/ref-ui/theme.css",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/light-treatment.spec.ts",
+          "tests/ref-ui-compat.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28508,27 +28683,38 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
-        "nextAction": "请用户审三屏/43秒样板；确认后接默认入口，再收正式固定包/手机证据。",
+        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
+        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-sample",
+            "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
+            "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
+            "evidence": [
+              "artifacts/ref-ui-sample/evidence.json",
+              "artifacts/ref-ui-sample/verification.json",
+              "artifacts/ref-ui-sample/checks/browser-results.json",
+              "artifacts/ref-ui-sample/independent-review.md",
+              "artifacts/ref-ui-sample/taptap-receipt.json"
+            ],
+            "visual": "REJECTED_REQUIRES_REVISION",
+            "phone": "NOT_TESTED",
+            "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
+            "taptapVersion": 448028,
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          }
+        ],
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "REVISING_LATEST_REVIEW",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-sample",
-          "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
-          "zipSha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
-          "evidence": [
-            "artifacts/ref-ui-sample/evidence.json",
-            "artifacts/ref-ui-sample/verification.json",
-            "artifacts/ref-ui-sample/checks/browser-results.json",
-            "artifacts/ref-ui-sample/independent-review.md",
-            "artifacts/ref-ui-sample/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "notes": "31实际页面、12对同初始快照、3段1倍影片；416单测/40样板流程验证。包含夜间球面/按钮、Back/预览、关闭后处理中任务、纸路展开/滚动、旧档归档与退出。正式实现/正式包证据仍IN_PROGRESS，须等用户视觉确认再接入；原174项证据仅对06基线有效。",
-          "taptapVersion": 448028,
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED"
+          "evidenceRoot": "artifacts/ref-ui-unified"
         }
       }
     ],
@@ -28581,10 +28767,20 @@
             "path": "design/visual-renewal/ART_SPEC.md",
             "startLine": 5,
             "endLine": 5
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 8,
+            "endLine": 15
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 66,
+            "endLine": 82
           }
         ],
         "scope": "仅处理过程连续生成持久下一态",
-        "rule": "工作原费用/时长继续，过程保持完整前图，真实提交切图；取出/主动互动仍需真实工具接触。"
+        "rule": "工作原费用/时长继续，过程保持完整前图，真实提交切图；取出/主动互动仍需真实工具接触。 最新Review进一步取消整理取出/工具模拟，已认可免费主动互动继续；仅对新隔离样板生效，正式接入仍待审。"
       },
       {
         "id": "SUP-FOUR-TAB",
@@ -28790,10 +28986,59 @@
             "path": "design/v045_a_simplified_exploration/IMPLEMENTATION.md",
             "startLine": 36,
             "endLine": 37
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 8,
+            "endLine": 15
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 66,
+            "endLine": 82
           }
         ],
         "scope": "工作台多操作与研究/展柜入口呈现",
-        "rule": "用户新A方向授权工作台仅突出真实三态和完成后的一个代表免费互动；本体研究/展柜设置移基地收拢区。原完整图、工具接触、动作因果、收据事实及收费权益不取消。"
+        "rule": "用户新A方向授权工作台仅突出真实三态和完成后的一个代表免费互动；本体研究/展柜设置移基地收拢区。原完整图、工具接触、动作因果、收据事实及收费权益不取消。 最新Review进一步取消整理取出/工具模拟，已认可免费主动互动继续；仅对新隔离样板生效，正式接入仍待审。"
+      },
+      {
+        "id": "SUP-REFUI-UNIFIED-LIGHT-TREATMENT",
+        "originalRefs": [
+          {
+            "path": "design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md",
+            "startLine": 62,
+            "endLine": 62
+          },
+          {
+            "path": "design/visual-renewal/CODEX_FULL_RENEWAL.md",
+            "startLine": 93,
+            "endLine": 104
+          },
+          {
+            "path": "design/visual-renewal/ART_SPEC.md",
+            "startLine": 14,
+            "endLine": 14
+          }
+        ],
+        "replacementRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 8,
+            "endLine": 15
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 33,
+            "endLine": 60
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 66,
+            "endLine": 88
+          }
+        ],
+        "scope": "全可达样板UI皮肤与整理演出，不变更原经济/已购权益/持久存档",
+        "rule": "替代72374bc历史版REFUI-02浅详情/深世界及REFUI-04强制取出要求。共用低饱和紫灰UI；已发现直接A，按原价格时长完成后短句/整图/550ms落稳，保留免费机械互动；正式融合待用户视觉确认。原要求ID全部保留。"
       }
     ],
     "statusPolicy": {

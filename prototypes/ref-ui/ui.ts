@@ -1,3 +1,4 @@
+import {mountLightTreatment} from './light-treatment';
 import type {FusionController} from '../../src/fusion/contracts';
 import type {ExpeditionScene} from '../../src/render/scene';
 import {latestNightHistory} from '../../src/fusion/domain';
@@ -29,9 +30,13 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   app.insertAdjacentHTML('beforeend',`<dialog id="refui-card" class="ref-card" aria-labelledby="refui-card-title"><header><div><small id="refui-card-label"></small><h2 id="refui-card-title"></h2></div><button data-ref-close class="ref-icon-button" aria-label="关闭，返回现场">${icon('close')}</button></header><div id="refui-card-body"></div></dialog>`);
   const card=document.querySelector<HTMLDialogElement>('#refui-card')!,cardBody=document.querySelector<HTMLElement>('#refui-card-body')!;
   const summary=document.querySelector<HTMLElement>('#refui-event')!,marker=document.querySelector<HTMLButtonElement>('#refui-marker')!,source=document.querySelector<HTMLElement>('#refui-source')!;
-  let layer:'none'|'card'|'drawer'|'preview'='none';
+  let layer:'none'|'card'|'drawer'|'preview'|'curio'|'curio-preview'='none';
   let historyTravel=false;
   const travel=(steps:number)=>{if(!historyTravel){historyTravel=true;history.go(steps);}};
+  let curioClosing:Promise<void>|null=null,resolveCurio:(()=>void)|null=null;
+  const treatment=mountLightTreatment(controller,{close:()=>travel(-1),preview:()=>pushLayer('curio-preview'),collection:()=>{void closeCurio().then(()=>document.querySelector<HTMLButtonElement>('.fu-nav [data-tab="collection"]')!.click());}});
+  function closeCurio(){if(!treatment.isOpen())return Promise.resolve();if(curioClosing)return curioClosing;curioClosing=new Promise<void>(resolve=>{resolveCurio=resolve;});travel(layer==='curio-preview'?-2:-1);return curioClosing;}
+  async function showCurio(id:import('../../src/fusion/curio-renewal-model').RenewalCurioId){await close();await closeNative();if(treatment.show(id)){scene.setActive(false);pushLayer('curio');}}
   let nativeClosing:Promise<void>|null=null,resolveNative:(()=>void)|null=null;
   let fieldContext:{scroll:number;panelScroll:number;details:{id:string;open:boolean}[]}|null=null;
   const native=document.querySelector<HTMLDialogElement>('#fusion-drawer')!;
@@ -57,6 +62,8 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   function closeNative():Promise<void>{if(!native.open)return Promise.resolve();if(layer==='none'){$('#fusion-close').click();return Promise.resolve();}if(nativeClosing)return nativeClosing;nativeClosing=new Promise<void>(resolve=>{resolveNative=resolve;});$('#fusion-close').click();return nativeClosing;}
   window.addEventListener('popstate',event=>{
     historyTravel=false;
+    if(layer==='curio-preview'&&event.state?.refUiLayer==='curio'){layer='curio';treatment.closePreview();return;}
+    if(layer==='curio'||layer==='curio-preview'){layer='none';treatment.hide();scene.setActive(!$('#fusion-explore').hidden&&!native.open);const resolve=resolveCurio;resolveCurio=null;curioClosing=null;resolve?.();return;}
     if(layer==='card'){finishClose();return;}
     if(layer==='preview'&&event.state?.refUiLayer==='drawer'&&native.open){layer='drawer';$('#fusion-state-preview-close').click();return;}
     if(layer==='drawer'||layer==='preview'){layer='none';if(native.open)$('#fusion-close').click();}
@@ -81,23 +88,24 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     $('#refui-card-label').textContent=mode==='goal'?'旧分拣站 · 当前调查':mode==='settings'?'UI隔离样板 · 只影响本次查看':v.flow.kind==='night'?(v.knownNight?'日常来访':'现场观察'):'退件平原 · 现场';
     $('#refui-card-title').textContent=mode==='goal'?(v.conclusion?.title??v.objectiveFull):mode==='settings'?'设置':v.title;
     if(mode==='settings'){
-      cardBody.innerHTML='<p>正式存档和设置不会被这份样板修改。</p><div class="ref-setting-row"><span>文字大小</span><button data-ref-size="normal">标准</button><button data-ref-size="large">大字</button></div><p class="ref-muted">动态遵循系统“减少动态”；声音沿用当前静音偏好，本样板不保存设置。</p><details class="ref-records"><summary>切换隔离样板场景</summary><p class="ref-muted">仅切换内存示例，重开样板不影响正式存档。</p><div class="ref-profile-grid"><button data-ref-profile="fresh">初来探索</button><button data-ref-profile="owned">已购展柜</button><button data-ref-profile="night">首次夜访</button><button data-ref-profile="repeat-night">日常来访</button><button data-ref-profile="morning">清晨回看</button><button data-ref-profile="conclusion">纸路结论</button></div></details>';return;
+      cardBody.innerHTML='<p>正式存档和设置不会被这份样板修改。</p><div class="ref-setting-row"><span>文字大小</span><button data-ref-size="normal">标准</button><button data-ref-size="large">大字</button></div><p class="ref-muted">动态遵循系统“减少动态”；声音沿用当前静音偏好，本样板不保存设置。</p><details class="ref-records"><summary>切换隔离样板场景</summary><p class="ref-muted">仅切换内存示例，重开样板不影响正式存档。</p><div class="ref-profile-grid"><button data-ref-profile="fresh">初来探索</button><button data-ref-profile="owned">已购展柜</button><button data-ref-profile="restoration">六物整理</button><button data-ref-profile="return">离线归航</button><button data-ref-profile="night">首次夜访</button><button data-ref-profile="repeat-night">日常来访</button><button data-ref-profile="morning">清晨回看</button><button data-ref-profile="conclusion">纸路结论</button></div></details>';return;
     }
     if(mode==='goal'){
       const c=v.conclusion;
       cardBody.innerHTML=c?`<p class="ref-result">${escape(c.detail)}</p>${c.evidence?`<p class="ref-evidence"><small>已有事实</small>${escape(c.evidence.text)}</p>`:''}<p><small>接下来</small>${escape(c.next)}</p>${factsHtml()}`:`<p>沿着真实纸路，听清回声、核对箱标，把卡住的地方接通。</p><p class="ref-muted">${escape(v.flow.objectiveNote)}</p>${factsHtml()}`;return;
     }
     let html='';
-    if(v.flow.kind==='night'){
+    if(state.game.pendingReturn){html=`<p>飞船带回${state.game.pendingReturn.resources}零件，探索还会继续。</p><button class="ref-primary ref-wide" data-ref-claim>收下发现</button>`;
+    }else if(v.flow.kind==='night'){
       html=v.identified&&v.guestId!==null?`<div class="ref-subject"><img src="${guestArt[v.guestId]}" alt="${guestNames[v.guestId]}"><div><strong>${guestNames[v.guestId]}</strong><p>${v.knownNight?'熟悉的访客又来了。':'咔哒刚辨认了这位访客。'}</p></div></div>`:`<div class="ref-subject"><span class="ref-unknown">${icon('lantern')}</span><p>光束正在辨认来处，先不猜它是谁。</p></div>`;
       html+=`<p>${v.knownNight?'这是日常来访，照料仍会自动进行。':'咔哒、飞船和灯架会继续照看这里。'}</p><p class="ref-muted">${live.eventId===openedId?'关上卡片，继续看现场。':'现场已继续推进，结果会留在探索记录里。'}</p>`;
     }else if(v.flow.waitingCurio){
       const id=v.flow.waitingCurio,condition=isRenewalCurio(id)?savedCurioCondition(state,id):'found';
-      html=`<div class="ref-subject ref-curio"><img src="${renewalArtUrl(id,condition)}" alt=""><div><strong>${escape(discoveryById(id)!.name)}</strong><p>刚获得 · 等你安顿</p></div></div><p>从这里取出，清理好，再放进收藏室。</p><button class="ref-primary ref-wide" data-ref-curio="${id}">进入整理 ${icon('arrow')}</button>`;
+      html=`<div class="ref-subject ref-curio"><img src="${renewalArtUrl(id,condition)}" alt=""><div><strong>${escape(discoveryById(id)!.name)}</strong><p>${({found:'刚获得',clean:'清理后',stabilized:'升级完成'} as const)[condition]}</p></div></div><p>看一眼原件，清理好，再放进收藏室。</p><button class="ref-primary ref-wide" data-ref-curio="${id}">进入整理 ${icon('arrow')}</button>`;
     }else html=`<p>${escape(v.summary)}</p>${v.conclusion?`<p class="ref-result">${escape(v.conclusion.detail)}</p>`:''}`;
     const morning=v.flow.previousNight;
     if(morning&&v.flow.kind!=='night')html+=`<section class="ref-morning"><small>第${morning.number}夜 · ${morning.number>1?'日常记录':'昨夜记录'}</small><p>${morning.visitors===null?'昨夜记录已收好。':`照看了${morning.visitors}位访客。`}</p><p>收件站照料实付 <b>${morning.maintenance}</b> 零件</p></section>`;
-    if(state.game.pendingReturn)html+=`<p>离线带回${state.game.pendingReturn.resources}零件</p><button class="ref-primary ref-wide" data-ref-claim>收下发现</button>`;
+
     if(state.projects.includes('archive'))html+=latestNightHistory(state)?.world.lastReport?.result?'<button class="ref-primary ref-wide" data-ref-replay>看上一夜</button>':'<p class="ref-muted">还没有可回看的夜晚。</p>';
     cardBody.innerHTML=html+factsHtml();
   }
@@ -110,7 +118,7 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     marker.hidden=replaying()||!v.markerVisible;
     document.querySelectorAll<HTMLElement>('.fu-base-grow').forEach(b=>{for(const node of b.childNodes)if(node.nodeType===Node.TEXT_NODE)node.textContent=node.textContent?.replace('让探索轻松一点','升级设备')??'';});
     const title=$('#fusion-drawer-title');if(title.textContent==='让探索轻松一点')title.textContent='升级设备';
-    if(card.open)source.hidden=mode!=='event'||v.eventId!==openedId;
+    if(card.open)source.hidden=mode!=='event'||v.eventId!==openedId||!v.markerVisible;
     if(card.open||signature==='')renderCard();
   }
   // Intercept at window capture: the legacy scene gesture is registered on document capture.
@@ -143,8 +151,8 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     if(target.hasAttribute('data-ref-replay')){event.preventDefault();event.stopImmediatePropagation();void close().then(()=>{$('#fusion-replay-night').click();render();});return;}
     if(target.dataset.refOpen){event.preventDefault();event.stopImmediatePropagation();if(event.detail===0||gestures.get(target)?.valid)open(target.dataset.refOpen as typeof mode,target);return;}
     if(target.hasAttribute('data-ref-close')){event.preventDefault();event.stopImmediatePropagation();close();return;}
-    if(target.dataset.refCurio){event.preventDefault();event.stopImmediatePropagation();const id=target.dataset.refCurio;void close().then(()=>document.querySelector<HTMLButtonElement>(`#fusion-collection-list [data-detail="${id}"]`)?.click());return;}
-    if(target.hasAttribute('data-ref-claim')){event.preventDefault();event.stopImmediatePropagation();void controller.act({type:'claim'}).then(()=>{signature='';renderCard();});return;}
+    const item=target.dataset.refCurio??target.dataset.detail??target.dataset.exhibit;if(item&&isRenewalCurio(item)){event.preventDefault();event.stopImmediatePropagation();void showCurio(item);return;}
+    if(target.hasAttribute('data-ref-claim')){event.preventDefault();event.stopImmediatePropagation();void controller.act({type:'claim'}).then(result=>{if(result.ok){openedId=referenceView(controller.state).eventId;openedState=structuredClone(controller.state);}signature='';renderCard();});return;}
     if(target.dataset.refProfile){event.preventDefault();event.stopImmediatePropagation();const url=new URL(location.href);url.searchParams.set('profile',target.dataset.refProfile);location.assign(url);return;}
     if(target.dataset.refSize){event.preventDefault();event.stopImmediatePropagation();document.documentElement.dataset.textSize=target.dataset.refSize;return;}
     // Existing settings entry routes to the same transient card; preferences never save from this sample.
@@ -165,5 +173,5 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     source.style.left=`${x}px`;source.style.top=`${y}px`;
     requestAnimationFrame(position);
   }
-  requestAnimationFrame(position);
+  requestAnimationFrame(position);return{treatment:()=>treatment.diagnostics()};
 }

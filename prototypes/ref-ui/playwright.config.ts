@@ -1,7 +1,7 @@
 import {defineConfig} from '@playwright/test';
 import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../../',import.meta.url));
-export default defineConfig({testDir:'.',testMatch:'reference.spec.ts',workers:2,retries:0,timeout:45000,
+export default defineConfig({testDir:'.',testMatch:['reference.spec.ts','light-treatment.spec.ts'],workers:2,retries:0,timeout:45000,
  reporter:[['list'],['json',{outputFile:root+'releases/ref-ui-e2e-results.json'}]],
  use:{baseURL:'http://127.0.0.1:4256',hasTouch:true,deviceScaleFactor:2,screenshot:'only-on-failure'},
  outputDir:root+'releases/ref-ui-test-results',

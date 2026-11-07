@@ -17,18 +17,18 @@ test('repeated visitors are daily records, fees are shown and the goal has an ev
 
 test('real fresh discovery enters shared treatment, completes cleaning and returns with original price',async({page})=>{
  await open(page,'fresh');await page.waitForFunction(()=>(window as any).__REFUI__.state().game.collection.includes('receipt'));
- await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();await expect(page.locator('#fusion-drawer')).toBeVisible();await expect(page.locator('#refui-card')).toBeHidden();
- await page.locator('#fusion-paper-primary').tap();await expect(page.locator('#fusion-paper-primary')).toContainText('清理',{timeout:10000});
- await page.locator('#fusion-paper-primary').tap();await page.waitForFunction(()=>(window as any).__REFUI__.state().receipt.condition==='clean');
+ await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();await expect(page.locator('#refui-treatment')).toBeVisible();await expect(page.locator('#refui-card')).toBeHidden();
+ await expect(page.locator('#lt-main')).toContainText('清理');
+ await page.locator('#lt-main').tap();await page.waitForFunction(()=>(window as any).__REFUI__.state().receipt.condition==='clean');
  const final=await api(page);expect(final.trace.filter((r:any)=>r.action.type==='paper'&&r.action.kind==='clean').map((r:any)=>r.before-r.after)).toEqual([40]);
- await page.locator('#fusion-back-to-collection').tap();await page.locator('.fu-nav [data-tab="explore"]').tap();await expect(page.locator('#refui-objective')).toBeVisible();
+ await page.locator('#lt-collection').tap();await page.locator('.fu-nav [data-tab="explore"]').tap();await expect(page.locator('#refui-objective')).toBeVisible();
 });
 
 test('earned archive completes both paid states and free trials without inventing resources or signature',async({page})=>{
  await open(page,'treatment');await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();
- await expect(page.locator('#fusion-paper-primary')).toContainText('清理');await page.locator('#fusion-paper-primary').tap();await page.waitForFunction(()=>(window as any).__REFUI__.state().receipt.condition==='clean');await expect(page.locator('#fusion-paper-primary')).toBeEnabled();await page.locator('#fusion-paper-primary').tap();await page.waitForFunction(()=>(window as any).__REFUI__.state().receipt.condition==='stabilized');
+ await expect(page.locator('#lt-main')).toContainText('清理');await page.locator('#lt-main').tap();await page.waitForFunction(()=>(window as any).__REFUI__.state().receipt.condition==='clean');await expect(page.locator('#lt-main')).toBeEnabled();await page.locator('#lt-main').tap();await page.waitForFunction(()=>(window as any).__REFUI__.state().receipt.condition==='stabilized');
  const final=await api(page);expect(final.trace.filter((r:any)=>r.action.type==='paper'&&r.action.kind==='clean').map((r:any)=>r.before-r.after)).toEqual([40]);expect(final.trace.filter((r:any)=>r.action.type==='paper'&&r.action.kind==='repair').map((r:any)=>r.before-r.after)).toEqual([120]);
- const raw=JSON.stringify(final.state.receipt.verifiedEvidenceIds);await expect(page.locator('#fusion-try')).toBeEnabled();await page.locator('#fusion-try').tap();await page.waitForTimeout(3200);await expect(page.locator('#fusion-try')).toBeEnabled();await page.locator('#fusion-try').tap();await page.waitForTimeout(3200);expect(JSON.stringify((await api(page)).state.receipt.verifiedEvidenceIds)).toBe(raw);expect((await api(page)).trace.filter((r:any)=>r.action.type==='paper'&&r.action.kind==='try').every((r:any)=>r.before===r.after)).toBe(true);
+ const raw=JSON.stringify(final.state.receipt.verifiedEvidenceIds);await expect(page.locator('#lt-free')).toBeEnabled();await page.locator('#lt-free').tap();await page.waitForTimeout(3200);await expect(page.locator('#lt-free')).toBeEnabled();await page.locator('#lt-free').tap();await page.waitForTimeout(3200);expect(JSON.stringify((await api(page)).state.receipt.verifiedEvidenceIds)).toBe(raw);expect((await api(page)).trace.filter((r:any)=>r.action.type==='paper'&&r.action.kind==='try').every((r:any)=>r.before===r.after)).toBe(true);
 });
 
 test('large text, reduced motion, low height, resize and background recovery preserve one readable layer',async({page})=>{
@@ -53,10 +53,10 @@ test('night assist, planet touch and keyboard inspect the same short card withou
  await page.locator('#fusion-tap').focus();await page.keyboard.press('Enter');await expect(page.locator('#refui-card')).toBeVisible();await page.keyboard.press('Escape');await expect(page.locator('#refui-card')).toBeHidden();expect((await api(page)).state.game.assist).toEqual(before);expect((await api(page)).trace.filter((r:any)=>r.action.type==='tap')).toHaveLength(0);
 });
 
-test('browser Back closes read-only state preview and shared workbench while paid cleaning continues once',async({page})=>{
- await open(page,'treatment');await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();await page.locator('#fusion-paper-primary').tap();await page.goBack();await expect(page.locator('#fusion-drawer')).toBeHidden();expect((await api(page)).state.receipt.activeAction).not.toBeNull();
+test('browser Back closes read-only preview and light detail while paid cleaning continues once',async({page})=>{
+ await open(page,'treatment');await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();await page.locator('#lt-main').tap();await page.goBack();await expect(page.locator('#refui-treatment')).toBeHidden();expect((await api(page)).state.receipt.activeAction).not.toBeNull();
  await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();await page.waitForFunction(()=>(window as any).__REFUI__.state().receipt.condition==='clean');expect((await api(page)).trace.filter((t:any)=>t.action.type==='paper'&&t.action.kind==='clean')).toHaveLength(1);
- await page.locator('[data-image-preview-condition="found"]').tap();await expect(page.locator('#fusion-state-preview')).toBeVisible();await page.goBack();await expect(page.locator('#fusion-state-preview')).toBeHidden();await expect(page.locator('#fusion-drawer')).toBeVisible();await page.goBack();await expect(page.locator('#fusion-drawer')).toBeHidden();await expect(page.locator('#refui-objective')).toBeVisible();
+ await page.locator('[data-lt-preview="found"]').tap();await expect(page.locator('#lt-preview')).toBeVisible();await page.goBack();await expect(page.locator('#lt-preview')).toBeHidden();await expect(page.locator('#refui-treatment')).toBeVisible();await page.goBack();await expect(page.locator('#refui-treatment')).toBeHidden();await expect(page.locator('#refui-objective')).toBeVisible();
  await page.locator('.fu-nav [data-tab="base"]').tap();await page.locator('.fu-base-grow').tap();await page.goBack();await expect(page.locator('#fusion-drawer')).toBeHidden();await expect(page.locator('#fusion-base')).toBeVisible();
 });
 

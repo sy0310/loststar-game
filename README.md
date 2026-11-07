@@ -8,11 +8,13 @@
 
 工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不发布正式版。2026-11-02 用户授权的 TapTap 开发自测上传见 [实机试玩记录](docs/13_TAPTAP_SELF_TEST.md)。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
 
-## UI参考适配：三屏样板待审
+## 最新Review：全可达同主题与整图轻整理（待审核）
 
-按最新[参考适配任务](design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md)，先交首页、事件短卡、物品详情实际样板及30–45秒自然交互，视觉确认后才正式整合。[隔离样板源码与运行](prototypes/ref-ui/README.md) · [实际三屏对照与自然影片](artifacts/ref-ui-sample/index.html) · [交付边界](design/v045_a_simplified_exploration/UI_SAMPLE_DELIVERY.md)。只调整信息组织与控件材质，原星球/居民/房间/六物18态继续使用；开发自测 **448028 / UI sample.3 / 72374bc** 仅内存，不写正式档。结论只陈述实际纸路事实，夜班原因仍待查。未确认的REFUI-01～07保持正式IN_PROGRESS，不冒称已集成。
+按[最新返修任务](design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md)统一隔离样板所有可达页面的低饱和紫灰主题；整理取消强制取出/工具模拟，原图保持到原业务真实完成，再换B/C、短句和550ms落稳。保留六件18完整图与认可免费互动、世界/居民/房间动作。原价、时长、权益不变。
 
-正式玩家基线仍是下方444057/06cb11f；样板使用独立入口和内存副本，不打开正式IDB，不清档、不改价格或付费权益。当前四维权威表共181项，原174项保留，7项参考适配待确认/正式接入。
+[运行与隔离边界](prototypes/ref-ui/README.md) · [新版固定包审核页](artifacts/ref-ui-unified/index.html)。正在补收本轮固定证据，不能沿用448028/sample.3的成绩；该版已被Review退修，历史媒体仍保留。共181项权威要求不删ID，REFUI正式集成保持IN_PROGRESS。
+
+正式玩家基线仍为444057/06cb11f。新样板只用内存副本，不读写正式IDB/偏好，不清档；刷新仅重建样例。用户视觉/真实手机确认后才接正式持久入口，不合并、不正式发布。
 
 ## V0.4.5 A方案：简单探索、新奇发现、温柔回归（待用户/真机验收）
 
