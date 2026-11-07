@@ -95,7 +95,7 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
   if(button.id==='lt-ability'&&(id==='receipt'||id==='tape')){void paidAction(refinementView(controller.state).abilities[id].action);return;}
   if(button.id==='lt-identify'){void paidAction({type:'paper',kind:'identify'});return;}
   if(button.id==='lt-free'&&!button.disabled){
-   const item=id;requesting=true;render();void(async()=>{try{if(item==='receipt'){const r=await controller.act({type:'paper',kind:'try'});if(!r.ok)return;}if(!dialog.open||id!==item)return;trialAt=performance.now();trialId=item;bellPlayed=false;if(item!=='bell')soundCue('interaction',item);trials.push({id:item,at:Date.now()});$('lt-trial-line').hidden=false;$('lt-trial-line').textContent='咔哒正在试验…';}finally{requesting=false;render();}})();
+   const item=id;requesting=true;render();void(async()=>{try{if(item==='receipt'){const r=await controller.act({type:'paper',kind:'try'});if(!r.ok)return;}if(!dialog.open||id!==item)return;trialAt=performance.now();trialId=item;bellPlayed=false;if(item!=='bell')soundCue('interaction',item);trials.push({id:item,at:Date.now()});$('lt-trial-line').hidden=false;$('lt-trial-line').textContent='咔哒正在试验…';$('lt-current').querySelector('.lt-picture')?.scrollIntoView({block:'nearest'});}finally{requesting=false;render();}})();
   }
  });
  dialog.addEventListener('cancel',e=>{e.preventDefault();callbacks.close();});

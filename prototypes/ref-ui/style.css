@@ -74,4 +74,7 @@ html[data-text-size=large] #app :where(p,.ref-goal strong,.ref-event strong,butt
 #app [hidden]{display:none}
 #app .exhibit-hits button{background:transparent;border:0;padding:0;box-shadow:none}
 #app .exhibit-hits button:focus-visible{outline-offset:-2px}
+#app .lt-dialog[open]{display:flex;flex-direction:column;overflow:hidden}
+#app .lt-dialog .ui-dialog-heading{position:static;flex:0 0 auto}
+#app .lt-dialog .lt-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
 #app .lt-dialog{padding-top:max(36px,env(safe-area-inset-top,0px))}#app input:where([type=checkbox],[type=radio]){appearance:auto;width:24px;height:24px;accent-color:var(--ui-accent)}#app select{background:var(--ui-surface-raised);border:1px solid var(--ui-border);min-height:44px;padding:8px}
