@@ -1,5 +1,6 @@
 import type {FusionController} from '../../src/fusion/contracts';
 import type {ExpeditionScene} from '../../src/render/scene';
+import {latestNightHistory} from '../../src/fusion/domain';
 import {PlanetTapGesture,type TapPointer} from '../../src/fusion/tap-gesture';
 import {worldView} from '../../src/game/world';
 import {renewalArtUrl,icon} from '../../src/fusion/renewal-ui';
@@ -28,19 +29,48 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   app.insertAdjacentHTML('beforeend',`<dialog id="refui-card" class="ref-card" aria-labelledby="refui-card-title"><header><div><small id="refui-card-label"></small><h2 id="refui-card-title"></h2></div><button data-ref-close class="ref-icon-button" aria-label="关闭，返回现场">${icon('close')}</button></header><div id="refui-card-body"></div></dialog>`);
   const card=document.querySelector<HTMLDialogElement>('#refui-card')!,cardBody=document.querySelector<HTMLElement>('#refui-card-body')!;
   const summary=document.querySelector<HTMLElement>('#refui-event')!,marker=document.querySelector<HTMLButtonElement>('#refui-marker')!,source=document.querySelector<HTMLElement>('#refui-source')!;
+  let layer:'none'|'card'|'drawer'|'preview'='none';
+  let historyTravel=false;
+  const travel=(steps:number)=>{if(!historyTravel){historyTravel=true;history.go(steps);}};
+  let nativeClosing:Promise<void>|null=null,resolveNative:(()=>void)|null=null;
+  let fieldContext:{scroll:number;panelScroll:number;details:{id:string;open:boolean}[]}|null=null;
+  const native=document.querySelector<HTMLDialogElement>('#fusion-drawer')!;
+  const replaying=()=>!document.querySelector<HTMLElement>('#fusion-flow-replay')!.hidden;
   let historyOwned=false,pendingClose:Promise<void>|null=null,resolveClose:(()=>void)|null=null;
   let mode:'event'|'goal'|'settings'='event',origin:HTMLElement|null=null,openedId='',openedState=structuredClone(controller.state),signature='',hold:{id:number;x:number;y:number;at:number}|null=null;
   const $=<T extends HTMLElement=HTMLElement>(selector:string)=>document.querySelector<T>(selector)!;
   function open(next:typeof mode,target:HTMLElement){
     if(pendingClose)return;
     // One object, one modal. Keep the original world clock and full globe dimensions.
-    $('#fusion-field-drawer').hidden=true;$('#fusion-explore').dataset.fieldOpen='false';
+    fieldContext=!$('#fusion-field-drawer').hidden?{scroll:$('#fusion-scroll').scrollTop,panelScroll:$('#fusion-field-drawer').scrollTop,details:[...$('#fusion-field-drawer').querySelectorAll('details')].map(d=>({id:d.id,open:d.open}))}:null;
+    if(fieldContext)$('#fusion-field-close').click();
     mode=next;origin=target;openedId=referenceView(controller.state).eventId;openedState=structuredClone(controller.state);signature='';
-    render();if(!card.open){history.pushState({...history.state,refUiCard:true},'');historyOwned=true;card.showModal();}source.hidden=next!=='event';
+    render();if(!card.open){history.pushState({...history.state,refUiCard:true},'');historyOwned=true;layer='card';card.showModal();}source.hidden=next!=='event';
   }
-  function finishClose(){card.close();source.hidden=true;historyOwned=false;(origin?.isConnected&&!origin.hidden?origin:summary).focus();const resolve=resolveClose;resolveClose=null;pendingClose=null;resolve?.();}
-  function close():Promise<void>{if(!card.open)return Promise.resolve();if(pendingClose)return pendingClose;if(!historyOwned){finishClose();return Promise.resolve();}pendingClose=new Promise<void>(resolve=>{resolveClose=resolve;});history.back();return pendingClose;}
-  window.addEventListener('popstate',()=>{if(card.open||pendingClose)finishClose();});
+  function pushLayer(next:typeof layer){layer=next;history.pushState({...history.state,refUiLayer:next},'');}
+  function finishClose(){
+    card.close();source.hidden=true;historyOwned=false;layer='none';
+    if(fieldContext&&!$('#fusion-explore').hidden){const context=fieldContext;fieldContext=null;$('#fusion-observe').click();for(const d of context.details){const el=document.getElementById(d.id) as HTMLDetailsElement|null;if(el)el.open=d.open;}$('#fusion-scroll').scrollTop=context.scroll;$('#fusion-field-drawer').scrollTop=context.panelScroll;}
+    fieldContext=null;(origin?.isConnected&&!origin.hidden?origin:summary).focus({preventScroll:true});const resolve=resolveClose;resolveClose=null;pendingClose=null;resolve?.();
+  }
+  function close():Promise<void>{if(!card.open)return Promise.resolve();if(pendingClose)return pendingClose;if(!historyOwned){finishClose();return Promise.resolve();}pendingClose=new Promise<void>(resolve=>{resolveClose=resolve;});travel(-1);return pendingClose;}
+  function closeNative():Promise<void>{if(!native.open)return Promise.resolve();if(layer==='none'){$('#fusion-close').click();return Promise.resolve();}if(nativeClosing)return nativeClosing;nativeClosing=new Promise<void>(resolve=>{resolveNative=resolve;});$('#fusion-close').click();return nativeClosing;}
+  window.addEventListener('popstate',event=>{
+    historyTravel=false;
+    if(layer==='card'){finishClose();return;}
+    if(layer==='preview'&&event.state?.refUiLayer==='drawer'&&native.open){layer='drawer';$('#fusion-state-preview-close').click();return;}
+    if(layer==='drawer'||layer==='preview'){layer='none';if(native.open)$('#fusion-close').click();}
+    const resolve=resolveNative;resolveNative=null;nativeClosing=null;resolve?.();
+  });
+  const nativeObserver=new MutationObserver(()=>{
+    const preview=native.open&&$('#fusion-drawer-body').dataset.imagePreview==='true';
+    if(native.open&&layer==='none'&&!nativeClosing)pushLayer('drawer');
+    if(preview&&layer==='drawer')pushLayer('preview');
+    if(!native.open&&(layer==='drawer'||layer==='preview'))travel(layer==='preview'?-2:-1);
+    else if(native.open&&!preview&&layer==='preview')travel(-1);
+  });
+  nativeObserver.observe(native,{attributes:true,attributeFilter:['open']});nativeObserver.observe($('#fusion-drawer-body'),{attributes:true,attributeFilter:['data-image-preview']});
+  window.addEventListener('keydown',event=>{if(event.key==='Escape'&&layer==='preview'){event.preventDefault();event.stopImmediatePropagation();travel(-1);}},true);
   function factsHtml(){const v=referenceView(controller.state);return v.flow.clues.length?`<details class="ref-records"><summary>已有的现场线索</summary>${v.flow.clues.map(c=>`<p>${escape(c.text)}</p>`).join('')}</details>`:'';}
   function renderCard(){
     const live=referenceView(controller.state);
@@ -68,15 +98,16 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     const morning=v.flow.previousNight;
     if(morning&&v.flow.kind!=='night')html+=`<section class="ref-morning"><small>第${morning.number}夜 · ${morning.number>1?'日常记录':'昨夜记录'}</small><p>${morning.visitors===null?'昨夜记录已收好。':`照看了${morning.visitors}位访客。`}</p><p>收件站照料实付 <b>${morning.maintenance}</b> 零件</p></section>`;
     if(state.game.pendingReturn)html+=`<p>离线带回${state.game.pendingReturn.resources}零件</p><button class="ref-primary ref-wide" data-ref-claim>收下发现</button>`;
+    if(state.projects.includes('archive'))html+=latestNightHistory(state)?.world.lastReport?.result?'<button class="ref-primary ref-wide" data-ref-replay>看上一夜</button>':'<p class="ref-muted">还没有可回看的夜晚。</p>';
     cardBody.innerHTML=html+factsHtml();
   }
   function render(){
     const v=referenceView(controller.state);
     $('#refui-objective strong').textContent=v.objective;
-    summary.querySelector('small')!.textContent=v.flow.kind==='night'?(v.knownNight?'日常来访':'现场动静'):v.flow.kind==='dawn'?'清晨回看':'正在发生';
-    summary.querySelector('strong')!.textContent=v.title;summary.dataset.eventId=v.eventId;marker.dataset.eventId=v.eventId;
+    summary.querySelector('small')!.textContent=replaying()?'只读回看':v.flow.kind==='night'?(v.knownNight?'日常来访':'现场动静'):v.flow.kind==='dawn'?'清晨回看':'正在发生';
+    summary.querySelector('strong')!.textContent=replaying()?'昨夜回看 · 回到此刻':v.title;summary.dataset.eventId=v.eventId;marker.dataset.eventId=v.eventId;
     marker.querySelector('strong')!.textContent=v.flow.kind==='night'?'灯下有动静':v.flow.waitingCurio?'看看失物':'箱堆有回声';
-    marker.hidden=!v.markerVisible;
+    marker.hidden=replaying()||!v.markerVisible;
     document.querySelectorAll<HTMLElement>('.fu-base-grow').forEach(b=>{for(const node of b.childNodes)if(node.nodeType===Node.TEXT_NODE)node.textContent=node.textContent?.replace('让探索轻松一点','升级设备')??'';});
     const title=$('#fusion-drawer-title');if(title.textContent==='让探索轻松一点')title.textContent='升级设备';
     if(card.open)source.hidden=mode!=='event'||v.eventId!==openedId;
@@ -88,7 +119,7 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   let nightClick:{x:number;y:number;at:number}|null=null;
   const sample=(event:PointerEvent):TapPointer=>({id:event.pointerId,primary:event.isPrimary,button:event.button,x:event.clientX,y:event.clientY,at:performance.now(),scroll:[$('#fusion-scroll').scrollTop,scrollX,scrollY,visualViewport?.offsetLeft??0,visualViewport?.offsetTop??0].join('/')});
   window.addEventListener('pointerdown',event=>{
-    if(card.open||!scene.ready||worldView(controller.state.game).phase!=='night'||!hero.contains(event.target as Node))return;
+    if(card.open||replaying()||!scene.ready||worldView(controller.state.game).phase!=='night'||!hero.contains(event.target as Node))return;
     const hit=scene.pickAtClient(event.clientX,event.clientY);if(hit.id==='sorting')return;
     nightPointers.add(event.pointerId);nightGesture.down(sample(event),hit.kind!=='space');event.stopImmediatePropagation();
   },true);
@@ -96,7 +127,7 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   window.addEventListener('pointerup',event=>{if(!nightPointers.delete(event.pointerId))return;const accepted=nightGesture.up(sample(event));event.stopImmediatePropagation();nightClick={x:event.clientX,y:event.clientY,at:performance.now()};if(accepted)open('event',hero);},true);
   window.addEventListener('pointercancel',event=>{if(nightPointers.delete(event.pointerId)){nightGesture.pointerCancel(event.pointerId);event.stopImmediatePropagation();}},true);
   window.addEventListener('click',event=>{if(nightClick&&event.detail>0&&performance.now()-nightClick.at<600&&Math.hypot(event.clientX-nightClick.x,event.clientY-nightClick.y)<12){nightClick=null;event.preventDefault();event.stopImmediatePropagation();}},true);
-  window.addEventListener('keydown',event=>{if(event.target===hero&&worldView(controller.state.game).phase==='night'&&['Enter',' '].includes(event.key)){event.preventDefault();event.stopImmediatePropagation();if(!event.repeat)open('event',hero);}},true);
+  window.addEventListener('keydown',event=>{if(event.target===hero&&!replaying()&&worldView(controller.state.game).phase==='night'&&['Enter',' '].includes(event.key)){event.preventDefault();event.stopImmediatePropagation();if(!event.repeat)open('event',hero);}},true);
   const resetNight=()=>{nightGesture.reset();nightPointers.clear();nightClick=null;};
   window.addEventListener('blur',resetNight);document.addEventListener('visibilitychange',()=>{if(document.hidden)resetNight();});
   window.addEventListener('scroll',()=>nightGesture.cancel(),true);visualViewport?.addEventListener('scroll',()=>nightGesture.cancel());
@@ -105,7 +136,11 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   app.addEventListener('pointerup',e=>{const target=(e.target as Element).closest<HTMLElement>('[data-ref-open]');if(!target)return;e.stopPropagation();gestures.set(target,{valid:!!hold&&hold.id===e.pointerId&&performance.now()-hold.at<450&&Math.hypot(e.clientX-hold.x,e.clientY-hold.y)<8});hold=null;},true);
   app.addEventListener('click',event=>{
     const target=(event.target as Element).closest<HTMLButtonElement>('button');if(!target)return;
-    if(target.id==='fusion-assist'&&worldView(controller.state.game).phase==='night'){event.preventDefault();event.stopImmediatePropagation();open('event',target);return;}
+    if(target.id==='fusion-assist'&&!replaying()&&worldView(controller.state.game).phase==='night'){event.preventDefault();event.stopImmediatePropagation();open('event',target);return;}
+    if(target.dataset.refOpen==='event'&&replaying()){event.preventDefault();event.stopImmediatePropagation();if(event.detail===0||gestures.get(target)?.valid){$('#fusion-assist').click();render();}return;}
+    if(target.dataset.project==='archive'){event.preventDefault();event.stopImmediatePropagation();void controller.act({type:'project',id:'archive'}).then(async result=>{if(!result.ok)return;await closeNative();document.querySelector<HTMLButtonElement>('.fu-nav [data-tab="explore"]')!.click();open('event',summary);});return;}
+    if(target.dataset.openProject==='archive'||target.dataset.detail==='night-shift'||target.dataset.exhibit==='night-shift'){event.preventDefault();event.stopImmediatePropagation();void closeNative().then(()=>{document.querySelector<HTMLButtonElement>('.fu-nav [data-tab="explore"]')!.click();open('event',summary);});return;}
+    if(target.hasAttribute('data-ref-replay')){event.preventDefault();event.stopImmediatePropagation();void close().then(()=>{$('#fusion-replay-night').click();render();});return;}
     if(target.dataset.refOpen){event.preventDefault();event.stopImmediatePropagation();if(event.detail===0||gestures.get(target)?.valid)open(target.dataset.refOpen as typeof mode,target);return;}
     if(target.hasAttribute('data-ref-close')){event.preventDefault();event.stopImmediatePropagation();close();return;}
     if(target.dataset.refCurio){event.preventDefault();event.stopImmediatePropagation();const id=target.dataset.refCurio;void close().then(()=>document.querySelector<HTMLButtonElement>(`#fusion-collection-list [data-detail="${id}"]`)?.click());return;}

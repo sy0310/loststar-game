@@ -8,7 +8,7 @@
 npx vite --config prototypes/ref-ui/vite.config.ts --port 4255
 npx tsc --noEmit -p prototypes/ref-ui/tsconfig.json
 npx playwright test --config prototypes/ref-ui/playwright.config.ts
-npx vite build --config prototypes/ref-ui/vite.config.ts
+python3 scripts/package_ref_ui.py
 ```
 
 默认候选 `http://127.0.0.1:4255/?profile=fresh`；同源旧UI `?profile=fresh&look=baseline`。`owned`为普通模型逐项赚取/购买的已购档副本；`night`、`repeat-night`、`morning`为普通模型按原规则预走283/583/302秒，播放后全是自然时钟。`treatment`有正常赚得的零件可核对40/120费用；`conclusion`真实执行纸路到cleared及三个原有研究。界面设置内可切换候选示例；这些是审核用场景，不是新玩法入口。
@@ -21,7 +21,7 @@ npx vite build --config prototypes/ref-ui/vite.config.ts
 
 ## 本轮界面
 
-深色世界保留；浅纸灰信息卡配深色正文；金色只标主操作/选中。一次点标记或摘要打开同一短卡，关闭一次回完整现场；不打开原手记再嵌近景，不缩小原星球。标记读取实际场景focus或原地表anchor，未识别只泛称动静；消失的访客不留假现场标记。拖动/长按/关闭不会落到球面助力。
+深色世界保留；浅纸灰信息卡配深色正文；金色只标主操作/选中。一次点标记或摘要打开同一短卡，关闭一次回完整现场；不打开原手记再嵌近景，不缩小原星球。标记读取实际场景focus或原地表anchor，未识别只泛称动静；消失的访客不留假现场标记。拖动/长按/关闭不会落到球面助力。夜间球面、查看按钮、已购回看与夜班记录统一到同卡；回放不拦“回到此刻”。工作台/三态预览逐层Back，关闭不取消处理，临时卡恢复纸路展开和滚动。
 
 首页问题改为现有内容可回答的“调查旧分拣站/接通纸路”；结案只说纸路接通、夜班原因仍待查，引用真正留存的研究事实，不补签收或新编谜底。重复访客标日常；晨间卡展示对应夜晚实际照料费。可选收费研究/施工的逻辑与价格仍全在原模块，不新增调查系统。
 
