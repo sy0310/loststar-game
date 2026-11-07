@@ -12,7 +12,7 @@
 
 按[最新返修任务](design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md)统一隔离样板所有可达页面的低饱和紫灰主题；整理取消强制取出/工具模拟，原图保持到原业务真实完成，再换B/C、短句和550ms落稳。保留六件18完整图与认可免费互动、世界/居民/房间动作。原价、时长、权益不变。
 
-[运行与隔离边界](prototypes/ref-ui/README.md) · [新版固定包审核页](artifacts/ref-ui-unified/index.html)。正在补收本轮固定证据，不能沿用448028/sample.3的成绩；该版已被Review退修，历史媒体仍保留。共181项权威要求不删ID，REFUI正式集成保持IN_PROGRESS。
+[运行与隔离边界](prototypes/ref-ui/README.md) · [新版固定包审核页](artifacts/ref-ui-unified/index.html)。当前开发自测448481 / sample.5 / 35b3e46；163张实际截图、六物处理/跨页/夜访共8片，422单测与72样板流程通过。[本轮短交付](design/v045_a_simplified_exploration/UI_UNIFIED_DELIVERY.md)。不能沿用退修448028成绩；181项原ID与历史证据保留，最新5条旧工作台替代口径及REFUI正式集成均IN_PROGRESS。
 
 正式玩家基线仍为444057/06cb11f。新样板只用内存副本，不读写正式IDB/偏好，不清档；刷新仅重建样例。用户视觉/真实手机确认后才接正式持久入口，不合并、不正式发布。
 

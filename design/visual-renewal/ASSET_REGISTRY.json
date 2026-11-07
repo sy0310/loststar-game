@@ -16841,9 +16841,9 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IMPLEMENTED",
-        "evidence": "CURRENT_VERIFIED",
-        "visual": "INTERNAL_PASS",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
         "code": [
           "src/fusion/ui.ts",
@@ -16851,7 +16851,10 @@
           "src/fusion/curio-rig-motion.ts",
           "src/fusion/curio-mechanism-model.ts",
           "src/fusion/curio-ability-rig.ts",
-          "src/ui/audio.ts"
+          "src/ui/audio.ts",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/mechanisms-v042/registration.json",
@@ -16872,8 +16875,8 @@
           "data",
           "media"
         ],
-        "gap": "本条开发与内部样本/工程复核齐备；用户具体视觉与TapTap444057物理手机尚未验收。",
-        "nextAction": "用户扫码444057，记录机型/系统/TapTap版本及本对象反馈；真实锁屏/系统减少动态/弱网/长时发热和可听音效另验。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -16887,24 +16890,55 @@
           "reviewBasis": "actual-target-visual-plus-qualified-report",
           "use": "Historical only; no A045 verification or visual/phone acceptance."
         },
-        "proofs": [
-          "artifacts/v045-a-exploration/verification.json",
-          "artifacts/v045-a-exploration/review-status.json",
-          "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-free-0-80.png",
-          "artifacts/v045-a-exploration/screens/collection-tape-natural-route-free-0-50.png",
-          "artifacts/v045-a-exploration/screens/collection-nested-natural-route-free-0-50.png",
-          "artifacts/v045-a-exploration/screens/collection-stamp-natural-route-free-0-50.png",
-          "artifacts/v045-a-exploration/screens/collection-cosmic-parcel-natural-route-free-0-50.png",
-          "artifacts/v045-a-exploration/screens/collection-bell-natural-route-free-0-20.png",
-          "artifacts/v045-a-exploration/screens/collection-bell-natural-route-free-0-80.png",
-          "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
-          "artifacts/v045-a-exploration/collection-evidence.json",
-          "artifacts/v045-a-exploration/independent-final-review.json",
-          "artifacts/v045-a-exploration/playback-review.json"
-        ],
+        "proofs": [],
         "reviewBasis": "sampled-action-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
         "acceptanceCriteria": "已认可主动互动保留真实工具/机构接触；整理阶段无需工具模拟，按真实完成切整图，不凭修纸补造事实。",
-        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。",
+        "previousContract": {
+          "registryCommit": "ffc3b344a9ccf251b6c0405cf7c537ec342a53d0",
+          "runtime": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+          "requirement": "主动工具/夹具手、刷尖/镊尖/螺丝刀刃与真实物体接触，施力后机构归位；不悬空/整纸漂移/把纸补成金属夹。",
+          "implementation": "IMPLEMENTED",
+          "evidence": "CURRENT_VERIFIED",
+          "proofs": [
+            "artifacts/v045-a-exploration/verification.json",
+            "artifacts/v045-a-exploration/review-status.json",
+            "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-free-0-80.png",
+            "artifacts/v045-a-exploration/screens/collection-tape-natural-route-free-0-50.png",
+            "artifacts/v045-a-exploration/screens/collection-nested-natural-route-free-0-50.png",
+            "artifacts/v045-a-exploration/screens/collection-stamp-natural-route-free-0-50.png",
+            "artifacts/v045-a-exploration/screens/collection-cosmic-parcel-natural-route-free-0-50.png",
+            "artifacts/v045-a-exploration/screens/collection-bell-natural-route-free-0-20.png",
+            "artifacts/v045-a-exploration/screens/collection-bell-natural-route-free-0-80.png",
+            "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
+            "artifacts/v045-a-exploration/collection-evidence.json",
+            "artifacts/v045-a-exploration/independent-final-review.json",
+            "artifacts/v045-a-exploration/playback-review.json"
+          ],
+          "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
+        },
+        "prototype": {
+          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
+          "phone": "NOT_TESTED",
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+        }
       },
       {
         "id": "INT-02.NOREWARD",
@@ -18654,14 +18688,17 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IMPLEMENTED",
-        "evidence": "CURRENT_VERIFIED",
-        "visual": "INTERNAL_PASS",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
         "code": [
           "src/fusion/curio-condition.ts",
           "src/fusion/ui.ts",
-          "src/fusion/curio-renewal-model.ts"
+          "src/fusion/curio-renewal-model.ts",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/curios/restoration-workbench.webp",
@@ -18686,8 +18723,8 @@
           "ui",
           "data"
         ],
-        "gap": "本条开发与内部样本/工程复核齐备；用户具体视觉与TapTap444057物理手机尚未验收。",
-        "nextAction": "用户扫码444057，记录机型/系统/TapTap版本及本对象反馈；真实锁屏/系统减少动态/弱网/长时发热和可听音效另验。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -18701,24 +18738,55 @@
           "reviewBasis": "actual-target-visual-plus-qualified-report",
           "use": "Historical only; no A045 verification or visual/phone acceptance."
         },
-        "proofs": [
-          "artifacts/v045-a-exploration/verification.json",
-          "artifacts/v045-a-exploration/review-status.json",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-receipt-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-tape-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-nested-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-stamp-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-cosmic-parcel-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-bell-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-360-pages-receipt-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-360-pages-tape-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
-          "artifacts/v045-a-exploration/independent-final-review.json",
-          "artifacts/v045-a-exploration/playback-review.json"
-        ],
+        "proofs": [],
         "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
         "acceptanceCriteria": "整理用安静统一整图展示面，不再强制土盘/台灯/机械夹持；收藏室继续真实柜体与房间，认可免费主动互动保留。",
-        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。",
+        "previousContract": {
+          "registryCommit": "ffc3b344a9ccf251b6c0405cf7c537ec342a53d0",
+          "runtime": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+          "requirement": "真实小修复空间，统一暖台灯、承托垫、工具架、机器人手或机械夹具；物件是视觉中心。",
+          "implementation": "IMPLEMENTED",
+          "evidence": "CURRENT_VERIFIED",
+          "proofs": [
+            "artifacts/v045-a-exploration/verification.json",
+            "artifacts/v045-a-exploration/review-status.json",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-receipt-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-tape-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-nested-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-stamp-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-cosmic-parcel-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-bell-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-360-pages-receipt-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-360-pages-tape-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
+            "artifacts/v045-a-exploration/independent-final-review.json",
+            "artifacts/v045-a-exploration/playback-review.json"
+          ],
+          "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
+        },
+        "prototype": {
+          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
+          "phone": "NOT_TESTED",
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+        }
       },
       {
         "id": "ART-05.SIZE",
@@ -18742,14 +18810,17 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IMPLEMENTED",
-        "evidence": "CURRENT_VERIFIED",
-        "visual": "INTERNAL_PASS",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
         "code": [
           "src/fusion/curio-condition.ts",
           "src/fusion/ui.ts",
-          "src/fusion/curio-renewal-model.ts"
+          "src/fusion/curio-renewal-model.ts",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/curios/restoration-workbench.webp",
@@ -18774,8 +18845,8 @@
           "ui",
           "data"
         ],
-        "gap": "本条开发与内部样本/工程复核齐备；用户具体视觉与TapTap444057物理手机尚未验收。",
-        "nextAction": "用户扫码444057，记录机型/系统/TapTap版本及本对象反馈；真实锁屏/系统减少动态/弱网/长时发热和可听音效另验。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -18789,24 +18860,55 @@
           "reviewBasis": "actual-target-visual-plus-qualified-report",
           "use": "Historical only; no A045 verification or visual/phone acceptance."
         },
-        "proofs": [
-          "artifacts/v045-a-exploration/verification.json",
-          "artifacts/v045-a-exploration/review-status.json",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-receipt-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-tape-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-nested-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-stamp-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-cosmic-parcel-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-bell-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-360-pages-receipt-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-360-pages-tape-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
-          "artifacts/v045-a-exploration/independent-final-review.json",
-          "artifacts/v045-a-exploration/playback-review.json"
-        ],
+        "proofs": [],
         "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
         "acceptanceCriteria": "同H5独立处理层保留安全区和清晰完整物件，不再强制旧640×700繁复工作台；实际360/390及三态可审核。",
-        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。",
+        "previousContract": {
+          "registryCommit": "ffc3b344a9ccf251b6c0405cf7c537ec342a53d0",
+          "runtime": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+          "requirement": "同H5全屏工作台，不跳新页/新世界；640×700画布，近景约260逻辑宽主体，三态无工具遮挡PNG可审核。",
+          "implementation": "IMPLEMENTED",
+          "evidence": "CURRENT_VERIFIED",
+          "proofs": [
+            "artifacts/v045-a-exploration/verification.json",
+            "artifacts/v045-a-exploration/review-status.json",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-receipt-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-tape-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-nested-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-stamp-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-cosmic-parcel-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-bell-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-360-pages-receipt-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-360-pages-tape-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
+            "artifacts/v045-a-exploration/independent-final-review.json",
+            "artifacts/v045-a-exploration/playback-review.json"
+          ],
+          "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
+        },
+        "prototype": {
+          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
+          "phone": "NOT_TESTED",
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+        }
       },
       {
         "id": "ART-05.EXCAVATION",
@@ -18835,14 +18937,17 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IMPLEMENTED",
-        "evidence": "CURRENT_VERIFIED",
-        "visual": "INTERNAL_PASS",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
         "code": [
           "src/fusion/curio-condition.ts",
           "src/fusion/ui.ts",
-          "src/fusion/curio-renewal-model.ts"
+          "src/fusion/curio-renewal-model.ts",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/curios/restoration-workbench.webp",
@@ -18867,8 +18972,8 @@
           "ui",
           "data"
         ],
-        "gap": "本条开发与内部样本/工程复核齐备；用户具体视觉与TapTap444057物理手机尚未验收。",
-        "nextAction": "用户扫码444057，记录机型/系统/TapTap版本及本对象反馈；真实锁屏/系统减少动态/弱网/长时发热和可听音效另验。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -18882,24 +18987,55 @@
           "reviewBasis": "actual-target-visual-plus-qualified-report",
           "use": "Historical only; no A045 verification or visual/phone acceptance."
         },
-        "proofs": [
-          "artifacts/v045-a-exploration/verification.json",
-          "artifacts/v045-a-exploration/review-status.json",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-receipt-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-tape-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-nested-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-stamp-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-cosmic-parcel-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-bell-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-360-pages-receipt-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-360-pages-tape-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
-          "artifacts/v045-a-exploration/independent-final-review.json",
-          "artifacts/v045-a-exploration/playback-review.json"
-        ],
+        "proofs": [],
         "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
         "acceptanceCriteria": "真实探索拾取/卸货保留；已真实发现即见A整图，无强制再次取出。旧免费buried/excavating单次原流程收束、显式记账，不取消已付费任务。",
-        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。",
+        "previousContract": {
+          "registryCommit": "ffc3b344a9ccf251b6c0405cf7c537ec342a53d0",
+          "runtime": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+          "requirement": "原真实收获/收据取出动作继续，前后土层/承托与工具接触可信；不简单整图平移替代。",
+          "implementation": "IMPLEMENTED",
+          "evidence": "CURRENT_VERIFIED",
+          "proofs": [
+            "artifacts/v045-a-exploration/verification.json",
+            "artifacts/v045-a-exploration/review-status.json",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-receipt-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-tape-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-nested-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-stamp-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-cosmic-parcel-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-bell-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-360-pages-receipt-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-360-pages-tape-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
+            "artifacts/v045-a-exploration/independent-final-review.json",
+            "artifacts/v045-a-exploration/playback-review.json"
+          ],
+          "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
+        },
+        "prototype": {
+          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
+          "phone": "NOT_TESTED",
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+        }
       },
       {
         "id": "ART-05.PROCESS",
@@ -19090,14 +19226,17 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IMPLEMENTED",
-        "evidence": "CURRENT_VERIFIED",
-        "visual": "INTERNAL_PASS",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
         "phone": "NOT_TESTED",
         "code": [
           "src/fusion/curio-condition.ts",
           "src/fusion/ui.ts",
-          "src/fusion/curio-renewal-model.ts"
+          "src/fusion/curio-renewal-model.ts",
+          "prototypes/ref-ui/light-treatment.ts",
+          "prototypes/ref-ui/receipt-compat.ts",
+          "prototypes/ref-ui/simple-material.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/curios/restoration-workbench.webp",
@@ -19122,8 +19261,8 @@
           "ui",
           "data"
         ],
-        "gap": "本条开发与内部样本/工程复核齐备；用户具体视觉与TapTap444057物理手机尚未验收。",
-        "nextAction": "用户扫码444057，记录机型/系统/TapTap版本及本对象反馈；真实锁屏/系统减少动态/弱网/长时发热和可听音效另验。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -19137,24 +19276,55 @@
           "reviewBasis": "actual-target-visual-plus-qualified-report",
           "use": "Historical only; no A045 verification or visual/phone acceptance."
         },
-        "proofs": [
-          "artifacts/v045-a-exploration/verification.json",
-          "artifacts/v045-a-exploration/review-status.json",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-receipt-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-tape-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-nested-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-stamp-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-cosmic-parcel-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-390-pages-bell-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-360-pages-receipt-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/chromium-360-pages-tape-completed-workbench.png",
-          "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
-          "artifacts/v045-a-exploration/independent-final-review.json",
-          "artifacts/v045-a-exploration/playback-review.json"
-        ],
+        "proofs": [],
         "reviewBasis": "workbench-visual; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval",
         "acceptanceCriteria": "保留认可免费主动互动和世界动作的接触因果；整理不再要求挖取/刷洗/拆解/形变，原图到真实提交后再整图切换。",
-        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。"
+        "effectiveScopeNote": "按最新Review替代整理演出要求；本条历史06正式证据不构成本轮隔离样板通过，正式集成仍待审。",
+        "previousContract": {
+          "registryCommit": "ffc3b344a9ccf251b6c0405cf7c537ec342a53d0",
+          "runtime": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+          "requirement": "保留的取出/主动试验工具接触可信；污渍沿轨迹消失和结构连续生成B/C的旧要求已仅对持久态明确失效，不可扩展成所有工具都可悬空。",
+          "implementation": "IMPLEMENTED",
+          "evidence": "CURRENT_VERIFIED",
+          "proofs": [
+            "artifacts/v045-a-exploration/verification.json",
+            "artifacts/v045-a-exploration/review-status.json",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-receipt-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-tape-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-nested-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-stamp-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-cosmic-parcel-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-390-pages-bell-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-360-pages-receipt-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/chromium-360-pages-tape-completed-workbench.png",
+            "artifacts/v045-a-exploration/screens/collection-receipt-natural-route-excavating.png",
+            "artifacts/v045-a-exploration/independent-final-review.json",
+            "artifacts/v045-a-exploration/playback-review.json"
+          ],
+          "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
+        },
+        "prototype": {
+          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
+          "phone": "NOT_TESTED",
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+        }
       },
       {
         "id": "UI-01.NAV",
@@ -28072,7 +28242,8 @@
           "prototypes/ref-ui/receipt-compat.ts",
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
-          "tests/ref-ui-compat.test.ts"
+          "tests/ref-ui-compat.test.ts",
+          "prototypes/ref-ui/ability-records.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28091,8 +28262,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
-        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28117,12 +28288,26 @@
           }
         ],
         "prototype": {
-          "phase": "REVISING_LATEST_REVIEW",
+          "phase": "FIXED_RUNNABLE_SAMPLE",
           "formalStorageOpened": false,
-          "implementation": "IN_PROGRESS",
-          "visual": "NOT_REVIEWED",
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
           "phone": "NOT_TESTED",
-          "evidenceRoot": "artifacts/ref-ui-unified"
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
         }
       },
       {
@@ -28159,7 +28344,8 @@
           "prototypes/ref-ui/receipt-compat.ts",
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
-          "tests/ref-ui-compat.test.ts"
+          "tests/ref-ui-compat.test.ts",
+          "prototypes/ref-ui/ability-records.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28178,8 +28364,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
-        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28204,12 +28390,26 @@
           }
         ],
         "prototype": {
-          "phase": "REVISING_LATEST_REVIEW",
+          "phase": "FIXED_RUNNABLE_SAMPLE",
           "formalStorageOpened": false,
-          "implementation": "IN_PROGRESS",
-          "visual": "NOT_REVIEWED",
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
           "phone": "NOT_TESTED",
-          "evidenceRoot": "artifacts/ref-ui-unified"
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
         }
       },
       {
@@ -28246,7 +28446,8 @@
           "prototypes/ref-ui/receipt-compat.ts",
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
-          "tests/ref-ui-compat.test.ts"
+          "tests/ref-ui-compat.test.ts",
+          "prototypes/ref-ui/ability-records.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28265,8 +28466,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
-        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28291,12 +28492,26 @@
           }
         ],
         "prototype": {
-          "phase": "REVISING_LATEST_REVIEW",
+          "phase": "FIXED_RUNNABLE_SAMPLE",
           "formalStorageOpened": false,
-          "implementation": "IN_PROGRESS",
-          "visual": "NOT_REVIEWED",
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
           "phone": "NOT_TESTED",
-          "evidenceRoot": "artifacts/ref-ui-unified"
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
         }
       },
       {
@@ -28343,7 +28558,8 @@
           "prototypes/ref-ui/receipt-compat.ts",
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
-          "tests/ref-ui-compat.test.ts"
+          "tests/ref-ui-compat.test.ts",
+          "prototypes/ref-ui/ability-records.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28362,8 +28578,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
-        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28388,12 +28604,26 @@
           }
         ],
         "prototype": {
-          "phase": "REVISING_LATEST_REVIEW",
+          "phase": "FIXED_RUNNABLE_SAMPLE",
           "formalStorageOpened": false,
-          "implementation": "IN_PROGRESS",
-          "visual": "NOT_REVIEWED",
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
           "phone": "NOT_TESTED",
-          "evidenceRoot": "artifacts/ref-ui-unified"
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
         }
       },
       {
@@ -28440,7 +28670,8 @@
           "prototypes/ref-ui/receipt-compat.ts",
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
-          "tests/ref-ui-compat.test.ts"
+          "tests/ref-ui-compat.test.ts",
+          "prototypes/ref-ui/ability-records.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28459,8 +28690,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
-        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28485,12 +28716,26 @@
           }
         ],
         "prototype": {
-          "phase": "REVISING_LATEST_REVIEW",
+          "phase": "FIXED_RUNNABLE_SAMPLE",
           "formalStorageOpened": false,
-          "implementation": "IN_PROGRESS",
-          "visual": "NOT_REVIEWED",
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
           "phone": "NOT_TESTED",
-          "evidenceRoot": "artifacts/ref-ui-unified"
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
         }
       },
       {
@@ -28547,7 +28792,8 @@
           "prototypes/ref-ui/receipt-compat.ts",
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
-          "tests/ref-ui-compat.test.ts"
+          "tests/ref-ui-compat.test.ts",
+          "prototypes/ref-ui/ability-records.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28566,8 +28812,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
-        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28592,12 +28838,26 @@
           }
         ],
         "prototype": {
-          "phase": "REVISING_LATEST_REVIEW",
+          "phase": "FIXED_RUNNABLE_SAMPLE",
           "formalStorageOpened": false,
-          "implementation": "IN_PROGRESS",
-          "visual": "NOT_REVIEWED",
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
           "phone": "NOT_TESTED",
-          "evidenceRoot": "artifacts/ref-ui-unified"
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
         }
       },
       {
@@ -28664,7 +28924,8 @@
           "prototypes/ref-ui/receipt-compat.ts",
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
-          "tests/ref-ui-compat.test.ts"
+          "tests/ref-ui-compat.test.ts",
+          "prototypes/ref-ui/ability-records.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28683,8 +28944,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "最新Review要求全可达同主题与整图轻整理；本轮隔离样板待新证据和用户视觉审核。正式入口尚未集成，真实手机未测。",
-        "nextAction": "审新版截图墙和六件自然影片；视觉确认后再接正式持久化入口，不用样板刷新重建替代存档。",
+        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
+        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28709,12 +28970,26 @@
           }
         ],
         "prototype": {
-          "phase": "REVISING_LATEST_REVIEW",
+          "phase": "FIXED_RUNNABLE_SAMPLE",
           "formalStorageOpened": false,
-          "implementation": "IN_PROGRESS",
-          "visual": "NOT_REVIEWED",
+          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+          "evidenceRoot": "artifacts/ref-ui-unified",
+          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+          "evidence": [
+            "artifacts/ref-ui-unified/evidence.json",
+            "artifacts/ref-ui-unified/verification.json",
+            "artifacts/ref-ui-unified/checks/browser-results.json",
+            "artifacts/ref-ui-unified/edge-states.json",
+            "artifacts/ref-ui-unified/native-media-review.json",
+            "artifacts/ref-ui-unified/independent-review.md",
+            "artifacts/ref-ui-unified/taptap-receipt.json"
+          ],
+          "visual": "PENDING_USER",
           "phone": "NOT_TESTED",
-          "evidenceRoot": "artifacts/ref-ui-unified"
+          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+          "taptapVersion": 448481,
+          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
         }
       }
     ],
