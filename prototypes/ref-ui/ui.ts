@@ -1,5 +1,7 @@
 import type {FusionController} from '../../src/fusion/contracts';
 import type {ExpeditionScene} from '../../src/render/scene';
+import {PlanetTapGesture,type TapPointer} from '../../src/fusion/tap-gesture';
+import {worldView} from '../../src/game/world';
 import {renewalArtUrl,icon} from '../../src/fusion/renewal-ui';
 import {discoveryById} from '../../src/content/catalog';
 import {referenceView} from './model';
@@ -80,11 +82,30 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     if(card.open)source.hidden=mode!=='event'||v.eventId!==openedId;
     if(card.open||signature==='')renderCard();
   }
+  // Intercept at window capture: the legacy scene gesture is registered on document capture.
+  // Preserve sorting's actual paid work route; route other nighttime inspection through this same card.
+  const nightGesture=new PlanetTapGesture(),nightPointers=new Set<number>(),hero=$('#fusion-tap');
+  let nightClick:{x:number;y:number;at:number}|null=null;
+  const sample=(event:PointerEvent):TapPointer=>({id:event.pointerId,primary:event.isPrimary,button:event.button,x:event.clientX,y:event.clientY,at:performance.now(),scroll:[$('#fusion-scroll').scrollTop,scrollX,scrollY,visualViewport?.offsetLeft??0,visualViewport?.offsetTop??0].join('/')});
+  window.addEventListener('pointerdown',event=>{
+    if(card.open||!scene.ready||worldView(controller.state.game).phase!=='night'||!hero.contains(event.target as Node))return;
+    const hit=scene.pickAtClient(event.clientX,event.clientY);if(hit.id==='sorting')return;
+    nightPointers.add(event.pointerId);nightGesture.down(sample(event),hit.kind!=='space');event.stopImmediatePropagation();
+  },true);
+  window.addEventListener('pointermove',event=>{if(nightPointers.has(event.pointerId)){nightGesture.move(sample(event));event.stopImmediatePropagation();}},true);
+  window.addEventListener('pointerup',event=>{if(!nightPointers.delete(event.pointerId))return;const accepted=nightGesture.up(sample(event));event.stopImmediatePropagation();nightClick={x:event.clientX,y:event.clientY,at:performance.now()};if(accepted)open('event',hero);},true);
+  window.addEventListener('pointercancel',event=>{if(nightPointers.delete(event.pointerId)){nightGesture.pointerCancel(event.pointerId);event.stopImmediatePropagation();}},true);
+  window.addEventListener('click',event=>{if(nightClick&&event.detail>0&&performance.now()-nightClick.at<600&&Math.hypot(event.clientX-nightClick.x,event.clientY-nightClick.y)<12){nightClick=null;event.preventDefault();event.stopImmediatePropagation();}},true);
+  window.addEventListener('keydown',event=>{if(event.target===hero&&worldView(controller.state.game).phase==='night'&&['Enter',' '].includes(event.key)){event.preventDefault();event.stopImmediatePropagation();if(!event.repeat)open('event',hero);}},true);
+  const resetNight=()=>{nightGesture.reset();nightPointers.clear();nightClick=null;};
+  window.addEventListener('blur',resetNight);document.addEventListener('visibilitychange',()=>{if(document.hidden)resetNight();});
+  window.addEventListener('scroll',()=>nightGesture.cancel(),true);visualViewport?.addEventListener('scroll',()=>nightGesture.cancel());
   const gestures=new WeakMap<HTMLElement,{valid:boolean}>();
   app.addEventListener('pointerdown',e=>{const target=(e.target as Element).closest<HTMLElement>('[data-ref-open]');if(!target)return;e.stopPropagation();hold=e.isPrimary?{id:e.pointerId,x:e.clientX,y:e.clientY,at:performance.now()}:null;gestures.set(target,{valid:e.isPrimary});},true);
   app.addEventListener('pointerup',e=>{const target=(e.target as Element).closest<HTMLElement>('[data-ref-open]');if(!target)return;e.stopPropagation();gestures.set(target,{valid:!!hold&&hold.id===e.pointerId&&performance.now()-hold.at<450&&Math.hypot(e.clientX-hold.x,e.clientY-hold.y)<8});hold=null;},true);
   app.addEventListener('click',event=>{
     const target=(event.target as Element).closest<HTMLButtonElement>('button');if(!target)return;
+    if(target.id==='fusion-assist'&&worldView(controller.state.game).phase==='night'){event.preventDefault();event.stopImmediatePropagation();open('event',target);return;}
     if(target.dataset.refOpen){event.preventDefault();event.stopImmediatePropagation();if(event.detail===0||gestures.get(target)?.valid)open(target.dataset.refOpen as typeof mode,target);return;}
     if(target.hasAttribute('data-ref-close')){event.preventDefault();event.stopImmediatePropagation();close();return;}
     if(target.dataset.refCurio){event.preventDefault();event.stopImmediatePropagation();const id=target.dataset.refCurio;void close().then(()=>document.querySelector<HTMLButtonElement>(`#fusion-collection-list [data-detail="${id}"]`)?.click());return;}

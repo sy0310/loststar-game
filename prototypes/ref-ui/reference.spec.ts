@@ -42,3 +42,11 @@ test('daytime event gestures never become assist; real assist keeps its original
  for(let i=0;i<6;i++){await page.locator('#fusion-assist').tap();await page.waitForTimeout(310);}
  const state=(await api(page)).state;expect(state.game.assist.actionSeq).toBe(5);expect(state.game.assist.enqueuedWorkMs).toBe(3000);expect(Math.abs(state.game.assist.pendingWorkMs+state.game.assist.appliedWorkMs-3000)).toBeLessThan(.01);
 });
+
+
+test('night assist, planet touch and keyboard inspect the same short card without opening legacy observation',async({page})=>{
+ await open(page,'night');const before=(await api(page)).state.game.assist,box=await page.locator('.fu-world-shell').boundingBox();
+ await page.locator('#fusion-assist').tap();await expect(page.locator('#refui-card')).toBeVisible();await expect(page.locator('#fusion-field-drawer')).toBeHidden();await page.locator('[data-ref-close]').tap();
+ const globe=(await page.locator('#fusion-tap').boundingBox())!;await page.touchscreen.tap(globe.x+globe.width*.55,globe.y+globe.height*.75);await expect(page.locator('#refui-card')).toBeVisible();await expect(page.locator('#fusion-field-drawer')).toBeHidden();expect(await page.locator('.fu-world-shell').boundingBox()).toEqual(box);await page.locator('[data-ref-close]').tap();
+ await page.locator('#fusion-tap').focus();await page.keyboard.press('Enter');await expect(page.locator('#refui-card')).toBeVisible();await page.keyboard.press('Escape');await expect(page.locator('#refui-card')).toBeHidden();expect((await api(page)).state.game.assist).toEqual(before);expect((await api(page)).trace.filter((r:any)=>r.action.type==='tap')).toHaveLength(0);
+});

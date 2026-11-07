@@ -46,8 +46,9 @@ export function referenceView(state:FusionSave) {
   const flow=explorationFlowView(state),sort=refinementView(state).sorting,night=fusionNightSnapshot(state.game);
   const cleared=sort.phase==='cleared';
   const facts=sort.sourceFacts.map(fact=>({id:fact.id,text:fact.detail}));
-  const conclusion=cleared?{title:'纸路接通了',detail:'箱子能沿纸路回到收件站。夜班原因仍待查。',
-    evidence:facts.find(fact=>fact.id.includes('belt-direction'))??facts[0]??null,next:'继续自动探索，留意今晚灯下的来访。'}:null;
+  const direction=facts.find(fact=>fact.id==='study/belt-direction');
+  const conclusion=cleared?{title:'纸路接通了',detail:direction?'箱子能沿纸路回到收件站。夜班原因仍待查。':'旧分拣站的纸路已接通。夜班原因仍待查。',
+    evidence:direction??null,next:'继续自动探索，留意今晚灯下的来访。'}:null;
   const knownNight=state.game.world.settledNights>0;
   const site=surfaceView(state).find(site=>site.id==='receipt'&&site.progress>0);
   const guestId=flow.nightGuest;
