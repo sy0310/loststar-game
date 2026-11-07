@@ -24,7 +24,9 @@ for(const condition of ['found','clean','stabilized'] as const)test(`${condition
  const fixture=firstPlanetFixture(epoch+1000,2,condition,{receiptAbility:0,tapeAbility:0});await install(page,fixture.state);
  for(const tab of ['base','collection']){
   await page.locator(`#fusion-app > .fu-nav [data-tab="${tab}"]`).tap();
-  await expect.poll(()=>page.locator('#museum-canvas').evaluate(c=>JSON.parse((c as HTMLCanvasElement).dataset.curioStates??'{}'))).toEqual(Object.fromEntries(ids.map(id=>[id,`${id}-${condition}`])));
+  // The simulation clock is paused: allow real rAF paints after tab layout and late image decode.
+  // A wall-clock-only poll can otherwise inspect the same pre-decode first frame forever.
+  await expect.poll(async()=>{await page.clock.runFor(50);return page.locator('#museum-canvas').evaluate(c=>JSON.parse((c as HTMLCanvasElement).dataset.curioStates??'{}'));}).toEqual(Object.fromEntries(ids.map(id=>[id,`${id}-${condition}`])));
  }
  await openACollection(page,'tap');
  for(const id of ids){

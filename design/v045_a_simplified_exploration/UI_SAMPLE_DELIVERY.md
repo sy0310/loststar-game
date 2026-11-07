@@ -28,7 +28,7 @@
 - 本机冻结源码：65文件416单测，覆盖率97.05%语句/95.81%分支/99.43%行；40样板端到端，0失败/跳过/flaky/重试。
 - 覆盖Chromium360×800、390×844、桌面1440×1000和WebKit390×844；包含事件一次开合、长按/拖动误触隔离、真实助力限流/工作量守恒、原价整理/免费互动、返回/Esc、处理中退出后继续且只付一次、三态预览逐层Back、旧纸路展开/滚动恢复、原价6000归档购买及已购回看/退出、夜班记录同卡、低屏/大字/减少动态/后台恢复。
 - [固定包明细](../../artifacts/ref-ui-sample/evidence.json)、[验证摘要](../../artifacts/ref-ui-sample/verification.json)、[40项原始结果](../../artifacts/ref-ui-sample/checks/browser-results.json)、[416单测原始日志](../../artifacts/ref-ui-sample/checks/unit-coverage.log)。全部读图来自固定ZIP解包运行，源码和媒体哈希单独登记。
-- 原游戏完整CI与TapTap自测回读结果另随当前提交记录；不借06历史成绩代称本轮重跑。
+- 原游戏源码Push CI实际416/五构建/578/6通过；源码PR attempt1有一例冻结时钟首帧断言失败（577/1），保留原失败，已补测试时钟推进。[诊断与未放宽的断言](../../artifacts/ref-ui-sample/CI_FOLLOWUP.md)。仅测试改动，当前完整CI终态见PR Checks；不借旧成绩替代或重打包洗版本。
 
 ## 开发自测与交付边界
 
