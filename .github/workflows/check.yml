@@ -99,3 +99,41 @@ jobs:
             !artifacts/v045-a-exploration/raw/
             !artifacts/v045-a-exploration/**/*.webm
           retention-days: 14
+  reference-ui-sample:
+    name: Isolated reference UI sample
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck isolated sample
+        run: npx tsc --noEmit -p prototypes/ref-ui/tsconfig.json
+      - name: Build isolated sample (formal entry unchanged)
+        run: npx vite build --config prototypes/ref-ui/vite.config.ts
+      - name: Use Ubuntu archive for browser dependencies
+        run: |
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          paths = [Path('/etc/apt/sources.list'), Path('/etc/apt/apt-mirrors.txt'), *Path('/etc/apt/sources.list.d').glob('*')]
+          for path in paths:
+              if path.is_file() and (path.name == 'apt-mirrors.txt' or path.suffix in ('.list', '.sources')):
+                  text = path.read_text().replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+                  path.write_text(text)
+          PY
+      - run: npx playwright install --with-deps chromium webkit
+        timeout-minutes: 5
+      - name: Validate sample input, original costs, storage isolation and responsive layout
+        run: npx playwright test --config prototypes/ref-ui/playwright.config.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: isolated-reference-ui
+          path: |
+            releases/ref-ui-e2e-results.json
+            releases/ref-ui-test-results/
+            artifacts/ref-ui-sample/
+          retention-days: 14

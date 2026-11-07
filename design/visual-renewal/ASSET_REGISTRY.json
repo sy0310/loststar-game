@@ -11647,9 +11647,9 @@
     "schema": 1,
     "baselineRuntime": "ff917872227b0f28a452dee1642d9cc8606251db",
     "delivery": {
-      "title": "V0.4.5 A方案 待用户/真机验收",
+      "title": "V045正式基线保留；UI参考样板待视觉确认与正式集成",
       "proof": "artifacts/v045-a-exploration/proof.json",
-      "status": "REVIEW_READY"
+      "status": "PENDING"
     },
     "sourceCoverage": {
       "documents": [
@@ -11660,7 +11660,9 @@
         "AGENTS.md",
         "docs/05_ANIMATION.md",
         "design/v045_a_simplified_exploration/README.md",
-        "design/v045_a_simplified_exploration/IMPLEMENTATION.md"
+        "design/v045_a_simplified_exploration/IMPLEMENTATION.md",
+        "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+        "design/v045_a_simplified_exploration/REVIEW_20261107.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
       "independentAudit": "Retain all original 12 parents and 149 semantic child IDs (161); append 13 latest-authorized A045 requirements (174).",
@@ -11719,6 +11721,12 @@
           "startLine": 56,
           "endLine": 57,
           "reason": "V0.4.3既往检查/账本/资产保留/桌面性能/CI与TapTap结果；数值不是V045当前结果或新的数量指标。"
+        },
+        {
+          "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+          "startLine": 1,
+          "endLine": 7,
+          "reason": "Review原文留档说明及历史基线/既往CI事实，不是本轮执行证明。"
         }
       ]
     },
@@ -11896,7 +11904,14 @@
       "A045-10",
       "A045-11",
       "A045-12",
-      "A045-13"
+      "A045-13",
+      "REFUI-01",
+      "REFUI-02",
+      "REFUI-03",
+      "REFUI-04",
+      "REFUI-05",
+      "REFUI-06",
+      "REFUI-07"
     ],
     "requirements": [
       {
@@ -27960,6 +27975,470 @@
         "nextAction": "用户扫码444057，记录机型/系统/TapTap版本及本对象反馈；真实锁屏/系统减少动态/弱网/长时发热和可听音效另验。",
         "carry": "遵循最新A方案用户授权；原161项未失效的资产、模型与已购权益继续保留。",
         "reviewBasis": "current-approved-A-requirement; actual native-film selected playback where cited; qualified engineering facts are not aesthetic or phone approval"
+      },
+      {
+        "id": "REFUI-01",
+        "parent": "UI-01",
+        "requirement": "首页三导航、短目标、一个事件摘要、紧凑助力和小设置；调查结论仅引用已有事实。",
+        "acceptanceCriteria": "首页三导航、短目标、一个事件摘要、紧凑助力和小设置；调查结论仅引用已有事实。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 34,
+            "endLine": 56
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 98,
+            "endLine": 98
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 12,
+            "endLine": 15
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 18,
+            "endLine": 22
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 25,
+            "endLine": 26
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
+        "nextAction": "完成同档三屏与自然影片并请用户视觉审核；确认后接默认入口，再收正式固定包/真机证据。",
+        "prototype": {
+          "phase": "WORKING_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "evidenceRoot": "artifacts/ref-ui-sample",
+          "notes": "不将样板提交当正式产品已实现；原174项证据只对06冻结玩家基线有效。"
+        }
+      },
+      {
+        "id": "REFUI-02",
+        "parent": "UI-01",
+        "requirement": "深色世界＋浅纸灰/淡紫信息；保留原资产，减少金框/渐变/外发光，金色只标主操作与选中。",
+        "acceptanceCriteria": "深色世界＋浅纸灰/淡紫信息；保留原资产，减少金框/渐变/外发光，金色只标主操作与选中。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 17,
+            "endLine": 17
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 21,
+            "endLine": 29
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 60,
+            "endLine": 65
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 99,
+            "endLine": 99
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
+        "nextAction": "完成同档三屏与自然影片并请用户视觉审核；确认后接默认入口，再收正式固定包/真机证据。",
+        "prototype": {
+          "phase": "WORKING_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "evidenceRoot": "artifacts/ref-ui-sample",
+          "notes": "不将样板提交当正式产品已实现；原174项证据只对06冻结玩家基线有效。"
+        }
+      },
+      {
+        "id": "REFUI-03",
+        "parent": "WORLD-01",
+        "requirement": "事件标记和摘要同ID/真实位置，单次开短卡、单次返回；识别前不露名，重复访客记日常。",
+        "acceptanceCriteria": "事件标记和摘要同ID/真实位置，单次开短卡、单次返回；识别前不露名，重复访客记日常。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 69,
+            "endLine": 73
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 100,
+            "endLine": 100
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 27,
+            "endLine": 28
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
+        "nextAction": "完成同档三屏与自然影片并请用户视觉审核；确认后接默认入口，再收正式固定包/真机证据。",
+        "prototype": {
+          "phase": "WORKING_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "evidenceRoot": "artifacts/ref-ui-sample",
+          "notes": "不将样板提交当正式产品已实现；原174项证据只对06冻结玩家基线有效。"
+        }
+      },
+      {
+        "id": "REFUI-04",
+        "parent": "DATA-01",
+        "requirement": "六物18整图、原价提交、本体与柜级各自权益保留；真实柜体/工作台和直白设备效果。",
+        "acceptanceCriteria": "六物18整图、原价提交、本体与柜级各自权益保留；真实柜体/工作台和直白设备效果。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 77,
+            "endLine": 82
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 101,
+            "endLine": 101
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
+        "nextAction": "完成同档三屏与自然影片并请用户视觉审核；确认后接默认入口，再收正式固定包/真机证据。",
+        "prototype": {
+          "phase": "WORKING_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "evidenceRoot": "artifacts/ref-ui-sample",
+          "notes": "不将样板提交当正式产品已实现；原174项证据只对06冻结玩家基线有效。"
+        }
+      },
+      {
+        "id": "REFUI-05",
+        "parent": "WORLD-01",
+        "requirement": "普通挂机/有效连点/限流/事件开关之间无误触助力、重复收费或领奖，现有声音和动态偏好保留。",
+        "acceptanceCriteria": "普通挂机/有效连点/限流/事件开关之间无误触助力、重复收费或领奖，现有声音和动态偏好保留。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 90,
+            "endLine": 90
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 102,
+            "endLine": 102
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
+        "nextAction": "完成同档三屏与自然影片并请用户视觉审核；确认后接默认入口，再收正式固定包/真机证据。",
+        "prototype": {
+          "phase": "WORKING_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "evidenceRoot": "artifacts/ref-ui-sample",
+          "notes": "不将样板提交当正式产品已实现；原174项证据只对06冻结玩家基线有效。"
+        }
+      },
+      {
+        "id": "REFUI-06",
+        "parent": "UI-01",
+        "requirement": "360×800/390×844及真实宿主安全区；大字、低高度、恢复、触区/单层与全球不被挤坏。",
+        "acceptanceCriteria": "360×800/390×844及真实宿主安全区；大字、低高度、恢复、触区/单层与全球不被挤坏。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 87,
+            "endLine": 89
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 103,
+            "endLine": 103
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 14,
+            "endLine": 14
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 25,
+            "endLine": 25
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 29,
+            "endLine": 29
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
+        "nextAction": "完成同档三屏与自然影片并请用户视觉审核；确认后接默认入口，再收正式固定包/真机证据。",
+        "prototype": {
+          "phase": "WORKING_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "evidenceRoot": "artifacts/ref-ui-sample",
+          "notes": "不将样板提交当正式产品已实现；原174项证据只对06冻结玩家基线有效。"
+        }
+      },
+      {
+        "id": "REFUI-07",
+        "parent": "DEL-01",
+        "requirement": "先同档三屏实际样板＋30–45秒自然演示，确认后整合；固定源码包、参考历史与真机/工程/美术分开。",
+        "acceptanceCriteria": "先同档三屏实际样板＋30–45秒自然演示，确认后整合；固定源码包、参考历史与真机/工程/美术分开。",
+        "sourceRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 10,
+            "endLine": 16
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 94,
+            "endLine": 94
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 96,
+            "endLine": 96
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 104,
+            "endLine": 110
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 9,
+            "endLine": 9
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+            "startLine": 32,
+            "endLine": 32
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/model.ts",
+          "prototypes/ref-ui/entry.ts",
+          "prototypes/ref-ui/style.css",
+          "prototypes/ref-ui/reference.spec.ts",
+          "tests/ref-ui-projection.test.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json",
+          "assets/runtime/visual-renewal/world/registration.json",
+          "assets/source/visual-renewal/museum/REGISTRATION.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/ref-ui/entry.ts",
+            "label": "隔离样板，非默认正式入口；profile参数仅审核内存场景"
+          }
+        ],
+        "checks": [
+          "ref-ui-projection",
+          "ref-ui-browser-matrix",
+          "ref-ui-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "当前为按第108行要求制作的独立运行样板。正式集成须待用户视觉确认；本条正式集成/手机证据尚缺，不承接V045旧包通过。",
+        "nextAction": "完成同档三屏与自然影片并请用户视觉审核；确认后接默认入口，再收正式固定包/真机证据。",
+        "prototype": {
+          "phase": "WORKING_SAMPLE",
+          "formalStorageOpened": false,
+          "implementation": "IN_PROGRESS",
+          "evidenceRoot": "artifacts/ref-ui-sample",
+          "notes": "不将样板提交当正式产品已实现；原174项证据只对06冻结玩家基线有效。"
+        }
       }
     ],
     "supersededRules": [
@@ -28240,7 +28719,8 @@
     "historyMarkdown": "## 历史范围与证据：V0.4.0–V0.4.1\n\n**以下内容保留作范围清单和历史对照，不是V0.4.3本轮媒体或当前三态生成规则。** 表内“fixed body/joint、独立污层、轨迹擦除、连续结构归位”属于旧实现描述；当前物理三态已被完整图片方案替代。未修改的世界片段可在明确来源及适用范围后作为历史参考，不得重新标记为本次新实录。\n\n**V0.4.1历史更新：** 收据、展示动作和控件以240e067为准，见[返修说明](V041_RECEIPT_REVIEW.md)与[当时固定包全部页面/三态/11段影片](../../artifacts/v041-receipt-review/index.html)。收据改为现代单纸/紫夹/归档架，六物完成态用具体互动按钮；20个入口×四配置及归航已用该版重录。世界/昼夜美术和计算未改，相关312秒/36秒实录仍属于f1397e2历史基线，不计作V0.4.3影片。\n\n历史运行源码 **f1397e268b4dec43a241833da077b08104451c8e**。原图48efa52；当时旧版运行基线51d682c。仅首星，继续v037当前档。\n\n[历史运行画面及多尺寸覆盖矩阵](../../artifacts/visual-renewal/index.html) · [历史六物18态](../../artifacts/visual-renewal/materials-overview.html) · [历史完整检查记录](../../artifacts/visual-renewal/verification.json)\n\n| 可达入口/组件 | 历史新资产及实现 | 历史实际证据 | 当时状态（不自动承接为当前通过） |\n|---|---|---|---|\n| 探索HUD/导航/设置 | 紫铜面板、原生文字、原创像素图标；大字与静音 | pages报告的explore/settings，四配置 | 已实现、浏览器通过 |\n| 完整球体/地貌/收件站 | 新透明闭合球体与设施；同一相机和接触锚点 | screens报告的day/night-world | 已实现、静态内部复审 |\n| 唯一分拣机/灯架/工程 | 独立后壳、前沿、滚轴、帘与灯架；旧购模块直接映射 | sorting/security页面、facility元数据及实际昼夜 | 已实现、无重复任务机 |\n| 机器人/飞船/三档助力 | 独立头身肢体、同源腕点与喷口、原真实工作积分 | assist-three-tiers-36s.mp4 | 三档/回落/拾取/卸货内部复审可交付 |\n| 三层区域星雾 | 紫粉体积层、原锚点/种子/已揭晓权益 | 未解/半解/全解截图；同一36秒助力实录覆盖揭晓 | 已实现；不另计重复视频 |\n| 同屏昼夜/安保/晨修 | 原模型、同球连续处置，新灯光/闸门/收容材质 | complete-daynight-312s.mp4；完整度94→100，实修6点/18零件 | 自然整周期已录并内部复审；手机待审 |\n| 观察/巡逻抽屉 | 独立文档流，主世界/抽屉/操作条不重叠 | screens报告12组同屏对照与关闭验证 | 已实现、布局检查通过 |\n| 六物18态 | 当时采用fixed body+joint、独立污层、完整384PNG/WebP；本生成方式现已被V0.4.3替代 | 当时18正式PNG、54只读导出、54实际工作台 | 历史实现，不作为当前显示规范 |\n| 工具与免费试验 | 当时采用轨迹擦除/连续结构归位；主动试验与三态生成须按最新要求分开 | 六条treatment自然录像与逐笔账本 | 历史费用/动作证据；不能替代整图新规则 |\n| 出土/整理工作台 | 新真实工作空间、土样前后岸、固定纸边转出与承托 | receipt-excavation-natural.mp4，7.129秒/零费用 | 当时已实现，非直线平移 |\n| 收藏室与基地共用陈列 | 新房间、六柜、后玻璃→物件→前反射→框/铭牌 | collection/base四配置及六张原生画布柜体裁片 | 已实现；裁片非手机截图 |\n| 跨柜机器人取放 | 真实走道、行列前方和短接近；托稳/拿起/放回/松手 | museum-two-cabinets-70s.mp4，轨迹访问全部六柜 | 内部复审可交付 |\n| 展柜0～3/安装 | 基础玻璃→灯座铭牌→专属装置→典藏舱，原权益原价 | case-0-to-3-installation.mp4及三次160/480/1100实付 | 已实现，旧购不再收费 |\n| 三居民及生态窗 | 共用新居民资产、觅食/搬壳/飞行/归巢与昼夜姿态 | 三详情、habitat-window、同屏日夜 | 已实现；手机小动作可读性待审 |\n| 收藏/图鉴/奇物/事件详情 | 同一新材质、分类与像素面板 | pages报告collection/三居民/night-shift，六物工作台 | 已实现 |\n| 设备/建设/科研/安保/维修 | 同一抽屉系统；实际效用/原费用不改 | equipment/build/research/security/station/wallet四配置 | 已实现、功能与存档回归通过 |\n| 已购取证台/生态窗/档案廊 | 付费权益保留，独立新材质与真实记录；回放也用新设施 | 三project与night-replay四配置，回放隔离防重测 | 已实现，不回退旧分拣机 |\n| 星图/雷达/历史航路 | 同风格Canvas/新球图，仅显示实际已确认项 | map四配置与无剧透回归 | 已实现；无虚假第二星入口 |\n| 离线归航 | 原一次性领取与费用清单、新面板 | chromium-390-return及离线/多标签测试 | 已实现 |\n| 大字/静音/减少动态/后台 | 设置持久化，减少动态仍工作，隐藏停绘/返回续钟 | 当时454流程中的对应触控与模拟后台用例 | 浏览器通过；手机锁屏未测 |\n\n当时四配置为Chromium 360×800、390×844、1440×1000及WebKit 390×844。81张页面包含20个入口×4配置和1张归航；另有18态/世界/抽屉与连续片证据。历史223项图像记录中，211张是页面截图、6张是视频原帧、6张是原生画布裁片；54项透明导出另计。**这些数字是历史统计，不与V0.4.3媒体混计。**\n\n## 历史待审核事项（需执行方核实当前是否仍存在）\n\n- 物理手机触控、TapTap WebView、锁屏、系统减少动态、低端GPU、弱网与长期发热。\n- 用户最终美术验收；内部复审不等于用户签收。\n- 大包裹检查时短暂遮住咔哒脸部；细缝星光、小顶杆与高档助力被仓库遮挡时的体感。\n- GPU/实际解码驻留内存；资源RGBA估算不是实测内存。\n\n历史审核页可保留旧美术；当前玩家包的正式入口须按最新合同逐项核对。未开放第二星球、未新建货币或战斗系统。\n",
     "requirementContracts": [
       "design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md",
-      "design/v045_a_simplified_exploration/IMPLEMENTATION.md"
+      "design/v045_a_simplified_exploration/IMPLEMENTATION.md",
+      "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md"
     ]
   },
   "approvedReferenceManifests": [
