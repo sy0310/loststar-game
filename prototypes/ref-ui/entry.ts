@@ -16,7 +16,7 @@ async function start(){
   document.title='失物星球 · UI隔离样板';document.documentElement.dataset.reviewOnly='true';
   const build=document.querySelector('.fu-build');if(build)build.textContent=`UI隔离样板 · ${__REFUI_BUILD__.commit.slice(0,7)}${__REFUI_BUILD__.dirty?' (本地修改)':''} · 不写正式档`;
   Object.assign(window,{__REFUI__:{build:__REFUI_BUILD__,profile,look:'candidate',initial:before,provenance:fixture.provenance,
-    state:()=>structuredClone(controller.state),trace:()=>structuredClone(memory.trace),compatibility:()=>structuredClone(memory.compatibility),treatment:()=>reference.treatment(),metrics:()=>({scene:scene.metrics(),ui:ui.diagnostics()}),
+    state:()=>structuredClone(controller.state),trace:()=>structuredClone(memory.trace),compatibility:()=>structuredClone(memory.compatibility),instantCleaning:()=>structuredClone(memory.instantCleaning),treatment:()=>reference.treatment(),metrics:()=>({scene:scene.metrics(),ui:ui.diagnostics()}),
     materialSnapshot:ui.materialSnapshot,storagePolicy:'memory-only; formal store module is not imported'}});
   window.addEventListener('pagehide',()=>scene.setActive(false));
   window.addEventListener('pageshow',()=>scene.setActive(ui.diagnostics().view==='explore'&&!ui.diagnostics().drawer));

@@ -16838,6 +16838,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 68,
             "endLine": 78
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -16854,7 +16859,9 @@
           "src/ui/audio.ts",
           "prototypes/ref-ui/light-treatment.ts",
           "prototypes/ref-ui/receipt-compat.ts",
-          "prototypes/ref-ui/simple-material.ts"
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/mechanisms-v042/registration.json",
@@ -16875,8 +16882,8 @@
           "data",
           "media"
         ],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -16918,27 +16925,43 @@
           "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
         },
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
-        }
+          "evidenceRoot": "artifacts/ref-ui-followup"
+        },
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
+          }
+        ]
       },
       {
         "id": "INT-02.NOREWARD",
@@ -18685,6 +18708,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 68,
             "endLine": 78
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -18698,7 +18726,9 @@
           "src/fusion/curio-renewal-model.ts",
           "prototypes/ref-ui/light-treatment.ts",
           "prototypes/ref-ui/receipt-compat.ts",
-          "prototypes/ref-ui/simple-material.ts"
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/curios/restoration-workbench.webp",
@@ -18723,8 +18753,8 @@
           "ui",
           "data"
         ],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -18766,27 +18796,43 @@
           "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
         },
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
-        }
+          "evidenceRoot": "artifacts/ref-ui-followup"
+        },
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
+          }
+        ]
       },
       {
         "id": "ART-05.SIZE",
@@ -18807,6 +18853,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 68,
             "endLine": 78
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -18820,7 +18871,9 @@
           "src/fusion/curio-renewal-model.ts",
           "prototypes/ref-ui/light-treatment.ts",
           "prototypes/ref-ui/receipt-compat.ts",
-          "prototypes/ref-ui/simple-material.ts"
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/curios/restoration-workbench.webp",
@@ -18845,8 +18898,8 @@
           "ui",
           "data"
         ],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -18888,27 +18941,43 @@
           "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
         },
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
-        }
+          "evidenceRoot": "artifacts/ref-ui-followup"
+        },
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
+          }
+        ]
       },
       {
         "id": "ART-05.EXCAVATION",
@@ -18934,6 +19003,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 68,
             "endLine": 78
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -18947,7 +19021,9 @@
           "src/fusion/curio-renewal-model.ts",
           "prototypes/ref-ui/light-treatment.ts",
           "prototypes/ref-ui/receipt-compat.ts",
-          "prototypes/ref-ui/simple-material.ts"
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/curios/restoration-workbench.webp",
@@ -18972,8 +19048,8 @@
           "ui",
           "data"
         ],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -19015,27 +19091,43 @@
           "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
         },
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
-        }
+          "evidenceRoot": "artifacts/ref-ui-followup"
+        },
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
+          }
+        ]
       },
       {
         "id": "ART-05.PROCESS",
@@ -19223,6 +19315,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 68,
             "endLine": 78
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -19236,7 +19333,9 @@
           "src/fusion/curio-renewal-model.ts",
           "prototypes/ref-ui/light-treatment.ts",
           "prototypes/ref-ui/receipt-compat.ts",
-          "prototypes/ref-ui/simple-material.ts"
+          "prototypes/ref-ui/simple-material.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/curios/restoration-workbench.webp",
@@ -19261,8 +19360,8 @@
           "ui",
           "data"
         ],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "carry": "原有效图层、完整18态、后台模型与已购权益保留；涉及多入口的呈现遵循A045最新授权，历史通过不等于当前通过。",
         "historicalEvidence": {
           "version": "0.4.4",
@@ -19304,27 +19403,43 @@
           "note": "仅历史旧整理口径，不能承接为新整图轻整理正式通过。"
         },
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
-        }
+          "evidenceRoot": "artifacts/ref-ui-followup"
+        },
+        "prototypeHistory": [
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
+          }
+        ]
       },
       {
         "id": "UI-01.NAV",
@@ -28196,8 +28311,8 @@
       {
         "id": "REFUI-01",
         "parent": "UI-01",
-        "requirement": "三导航、单目标、一个事件摘要；自动探索和自愿助力保持，不新增系统。",
-        "acceptanceCriteria": "三导航、单目标、一个事件摘要；自动探索和自愿助力保持，不新增系统。",
+        "requirement": "三导航、单目标和单事件摘要保持；收藏页可查看真实已发现居民的动态窗口，基础查看免费，不绕过付费设施。",
+        "acceptanceCriteria": "三导航、单目标和单事件摘要保持；收藏页可查看真实已发现居民的动态窗口，基础查看免费，不绕过付费设施。",
         "sourceRefs": [
           {
             "path": "design/v045_a_simplified_exploration/REVIEW_20261107.md",
@@ -28223,6 +28338,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 103,
             "endLine": 103
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -28243,7 +28363,9 @@
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
           "tests/ref-ui-compat.test.ts",
-          "prototypes/ref-ui/ability-records.ts"
+          "prototypes/ref-ui/ability-records.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28262,8 +28384,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28285,29 +28407,43 @@
             "taptapVersion": 448028,
             "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
             "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          },
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
           }
         ],
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+          "evidenceRoot": "artifacts/ref-ui-followup"
         }
       },
       {
@@ -28325,6 +28461,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 104,
             "endLine": 104
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -28345,7 +28486,9 @@
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
           "tests/ref-ui-compat.test.ts",
-          "prototypes/ref-ui/ability-records.ts"
+          "prototypes/ref-ui/ability-records.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28364,8 +28507,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28387,29 +28530,43 @@
             "taptapVersion": 448028,
             "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
             "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          },
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
           }
         ],
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+          "evidenceRoot": "artifacts/ref-ui-followup"
         }
       },
       {
@@ -28427,6 +28584,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 105,
             "endLine": 105
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -28447,7 +28609,9 @@
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
           "tests/ref-ui-compat.test.ts",
-          "prototypes/ref-ui/ability-records.ts"
+          "prototypes/ref-ui/ability-records.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28466,8 +28630,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28489,36 +28653,50 @@
             "taptapVersion": 448028,
             "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
             "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          },
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
           }
         ],
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+          "evidenceRoot": "artifacts/ref-ui-followup"
         }
       },
       {
         "id": "REFUI-04",
         "parent": "DATA-01",
-        "requirement": "六件18完整图；取消强制取出与实时清理模拟，真实提交后结果短句/整图切换/短反馈；保留认可主动互动和原权益。",
-        "acceptanceCriteria": "六件18完整图；取消强制取出与实时清理模拟，真实提交后结果短句/整图切换/短反馈；保留认可主动互动和原权益。",
+        "requirement": "六物18完整图保留；默认只显示当前主框，真实原价清理立即完成换B，升级仍原时长完成才换C；对照仅审核只读工具。",
+        "acceptanceCriteria": "六物18完整图保留；默认只显示当前主框，真实原价清理立即完成换B，升级仍原时长完成才换C；对照仅审核只读工具。",
         "sourceRefs": [
           {
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
@@ -28539,6 +28717,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 106,
             "endLine": 106
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -28559,7 +28742,9 @@
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
           "tests/ref-ui-compat.test.ts",
-          "prototypes/ref-ui/ability-records.ts"
+          "prototypes/ref-ui/ability-records.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28578,8 +28763,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28601,36 +28786,50 @@
             "taptapVersion": 448028,
             "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
             "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          },
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
           }
         ],
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+          "evidenceRoot": "artifacts/ref-ui-followup"
         }
       },
       {
         "id": "REFUI-05",
         "parent": "WORLD-01",
-        "requirement": "原价原时长，预览隔离，退出继续；付费/归航/结果去重，免费旧取出单次合法收束记账；失败不假成功。",
-        "acceptanceCriteria": "原价原时长，预览隔离，退出继续；付费/归航/结果去重，免费旧取出单次合法收束记账；失败不假成功。",
+        "requirement": "清理免等候、价格不变，原升级时长与权益保留；不推进世界/收入/证据，防连点误升/重复扣领反馈，旧已付清理单次收束。",
+        "acceptanceCriteria": "清理免等候、价格不变，原升级时长与权益保留；不推进世界/收入/证据，防连点误升/重复扣领反馈，旧已付清理单次收束。",
         "sourceRefs": [
           {
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
@@ -28651,6 +28850,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 107,
             "endLine": 107
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -28671,7 +28875,9 @@
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
           "tests/ref-ui-compat.test.ts",
-          "prototypes/ref-ui/ability-records.ts"
+          "prototypes/ref-ui/ability-records.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28690,8 +28896,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28713,29 +28919,43 @@
             "taptapVersion": 448028,
             "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
             "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          },
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
           }
         ],
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+          "evidenceRoot": "artifacts/ref-ui-followup"
         }
       },
       {
@@ -28773,6 +28993,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 108,
             "endLine": 108
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -28793,7 +29018,9 @@
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
           "tests/ref-ui-compat.test.ts",
-          "prototypes/ref-ui/ability-records.ts"
+          "prototypes/ref-ui/ability-records.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28812,8 +29039,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28835,29 +29062,43 @@
             "taptapVersion": 448028,
             "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
             "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          },
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
           }
         ],
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+          "evidenceRoot": "artifacts/ref-ui-followup"
         }
       },
       {
@@ -28905,6 +29146,11 @@
             "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
             "startLine": 125,
             "endLine": 125
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
           }
         ],
         "scope": "IN_SCOPE",
@@ -28925,7 +29171,9 @@
           "prototypes/ref-ui/simple-material.ts",
           "prototypes/ref-ui/light-treatment.spec.ts",
           "tests/ref-ui-compat.test.ts",
-          "prototypes/ref-ui/ability-records.ts"
+          "prototypes/ref-ui/ability-records.ts",
+          "prototypes/ref-ui/instant-clean.ts",
+          "tests/ref-ui-instant-clean.test.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json",
@@ -28944,8 +29192,8 @@
           "ref-ui-fixed-package"
         ],
         "proofs": [],
-        "gap": "本轮隔离样板已实现并附新固定包媒体；正式持久化入口尚未集成，用户视觉与真实手机未验收。",
-        "nextAction": "按最新Review先审448481/35b3e46的全主题与整图流程；确认后统一归回正式UI与持久入口，再收正式包/手机证据。",
+        "gap": "448481用户方向认可后提出三项限定修正，当前新包证据待收；正式持久化接入/首星最终验收未授权。",
+        "nextAction": "先审居民动态窗口、清理即完成及仅主框默认界面；通过后再讨论首星矩阵内容扩展。",
         "prototypeHistory": [
           {
             "phase": "FIXED_RUNNABLE_SAMPLE",
@@ -28967,29 +29215,43 @@
             "taptapVersion": 448028,
             "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
             "rejectionReview": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5814180207"
+          },
+          {
+            "phase": "FIXED_RUNNABLE_SAMPLE",
+            "formalStorageOpened": false,
+            "implementation": "IMPLEMENTED_SAMPLE_ONLY",
+            "evidenceRoot": "artifacts/ref-ui-unified",
+            "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
+            "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
+            "evidence": [
+              "artifacts/ref-ui-unified/evidence.json",
+              "artifacts/ref-ui-unified/verification.json",
+              "artifacts/ref-ui-unified/checks/browser-results.json",
+              "artifacts/ref-ui-unified/edge-states.json",
+              "artifacts/ref-ui-unified/native-media-review.json",
+              "artifacts/ref-ui-unified/independent-review.md",
+              "artifacts/ref-ui-unified/taptap-receipt.json"
+            ],
+            "visual": "PENDING_USER",
+            "phone": "NOT_TESTED",
+            "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
+            "taptapVersion": 448481,
+            "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。",
+            "userFeedback": {
+              "version": 448481,
+              "scope": "方向基本认可，需居民窗口/清理即完成/默认去顶部三态栏",
+              "overallAcceptance": false,
+              "modelAndOSProvided": false
+            }
           }
         ],
         "prototype": {
-          "phase": "FIXED_RUNNABLE_SAMPLE",
+          "phase": "PHONE_FOLLOWUP_IN_PROGRESS",
           "formalStorageOpened": false,
-          "implementation": "IMPLEMENTED_SAMPLE_ONLY",
-          "evidenceRoot": "artifacts/ref-ui-unified",
-          "sourceCommit": "35b3e467d41000c76b64cb95ba9a70bb83533dcc",
-          "zipSha256": "7439e454efaa874ae3ea2c6c732a8129c924436a7ce57cb773bcc063f32bc8b8",
-          "evidence": [
-            "artifacts/ref-ui-unified/evidence.json",
-            "artifacts/ref-ui-unified/verification.json",
-            "artifacts/ref-ui-unified/checks/browser-results.json",
-            "artifacts/ref-ui-unified/edge-states.json",
-            "artifacts/ref-ui-unified/native-media-review.json",
-            "artifacts/ref-ui-unified/independent-review.md",
-            "artifacts/ref-ui-unified/taptap-receipt.json"
-          ],
-          "visual": "PENDING_USER",
+          "implementation": "IN_PROGRESS",
+          "visual": "NOT_REVIEWED",
           "phone": "NOT_TESTED",
-          "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
-          "taptapVersion": 448481,
-          "notes": "新固定包148直接页面+15边界截图，六物原价自然处理/互动6片、跨页与夜访清晨共8片；72样板浏览器/422单测。17拼页66图独立过目，8片原生1倍自动播完；不代用户或真机。正式集成继续IN_PROGRESS，旧06证据不承接最新替代口径。"
+          "evidenceRoot": "artifacts/ref-ui-followup"
         }
       }
     ],
@@ -29314,6 +29576,30 @@
         ],
         "scope": "全可达样板UI皮肤与整理演出，不变更原经济/已购权益/持久存档",
         "rule": "替代72374bc历史版REFUI-02浅详情/深世界及REFUI-04强制取出要求。共用低饱和紫灰UI；已发现直接A，按原价格时长完成后短句/整图/550ms落稳，保留免费机械互动；正式融合待用户视觉确认。原要求ID全部保留。"
+      },
+      {
+        "id": "SUP-REFUI-INSTANT-CLEAN-DEFAULT-VIEW",
+        "originalRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 72,
+            "endLine": 74
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 107,
+            "endLine": 107
+          }
+        ],
+        "replacementRefs": [
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 127,
+            "endLine": 135
+          }
+        ],
+        "scope": "仅清理等候与默认顶部对照栏；新增居民基础查看入口",
+        "rule": "448481扫码后用户明确授权：A→B原价点击立即完成、不推进世界；B→C仍原价原时长。默认当前主框，无顶部三态标记；18图和只读审核对照保留，居民基础动态查看不代付费设施。正式接入仍待确认。"
       }
     ],
     "statusPolicy": {

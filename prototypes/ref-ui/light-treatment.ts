@@ -29,7 +29,7 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
  const $=<T extends HTMLElement=HTMLElement>(id:string)=>document.querySelector<T>('#'+id)!;
  const dialog=$<HTMLDialogElement>('refui-treatment'),image=$<HTMLImageElement>('lt-image'),canvas=$<HTMLCanvasElement>('lt-trial');
  let id:RenewalCurioId='receipt',rendered='',loading='',ready=false,failed=false,rigReady=false,rigFailed=false,requesting=false,preview=false,token=0;
- let trialAt=-Infinity,trialId='',bellPlayed=false,arrival:{id:string;key:string;text:string}|null=null;
+ let trialAt=-Infinity,trialId='',bellPlayed=false,inputCooldownUntil=0,arrival:{id:string;key:string;text:string}|null=null;
  const reduced=matchMedia('(prefers-reduced-motion:reduce)'),seen=new Set<string>(),arrivals:{id:string;key:string;at:number}[]=[],trials:{id:string;at:number}[]=[];
  const silent=new Map<string,number>();
  const actionView=(item:RenewalCurioId)=>{
@@ -59,10 +59,10 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
   // The receipt quote comes from the existing rule, never from a new currency or fee.
   const quote=id==='receipt'&&paid?receiptRestorationMainAction({...state.receipt,parts:state.game.resources}).cost:price;
   const main=$<HTMLButtonElement>('lt-main');main.hidden=!paid;main.textContent=busy?'咔哒正在处理…':`${condition==='found'?'清理':'零件升级'} · ${quote}零件`;
-  main.disabled=preview||requesting||busy||!ready||state.game.resources<quote;
+  main.disabled=preview||requesting||busy||!ready||state.game.resources<quote||performance.now()<inputCooldownUntil;
   $('lt-progress').hidden=!busy||a?.kind==='try';const progress=a?Math.max(0,Math.min(1,(Date.now()-a.start)/(a.end-a.start))):0;
   $('lt-progress').querySelector<HTMLElement>('i')!.style.width=`${progress*100}%`;$('lt-progress').setAttribute('aria-valuenow',String(Math.round(progress*100)));
-  $('lt-status').textContent=failed?'图片暂未接通，进度已保留。':!ready?'正在接通原图…':busy&&a.kind!=='try'?'咔哒正在处理，离开也会继续。':paid&&state.game.resources<quote?'零件不足，自动探索还在继续。':paid?'原图保留到处理完成。':'可以展示，也可以逗它一下。';
+  $('lt-status').textContent=failed?'图片暂未接通，进度已保留。':!ready?'正在接通图片…':busy&&a.kind!=='try'?'咔哒正在升级，离开也会继续。':paid&&state.game.resources<quote?'零件不足，自动探索还在继续。':paid?(condition==='found'?'清理一下，让它露出原貌。':'升级后，可以和它玩一下。'):'可以展示，也可以逗它一下。';
   $('lt-retry').hidden=!failed&&!rigFailed;const free=$<HTMLButtonElement>('lt-free');free.hidden=paid;free.textContent=`${actions[id]} · 不耗零件`;free.disabled=preview||!ready||!rigReady||requesting||busy||performance.now()-trialAt<2600;
   const ability=id==='receipt'||id==='tape'?refinementView(state).abilities[id]:null;
   const records=state.progression.sorting.facts.map(f=>`<p>${esc(f.detail)}</p>`).join('');
@@ -73,14 +73,15 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
   dialog.dataset.savedCondition=condition;dialog.dataset.preview=String(preview);dialog.dataset.busy=String(busy);dialog.dataset.materialReady=String(ready);
  }
  async function paidAction(action:FusionAction){
-  if(requesting||preview||!ready||actionView(id))return;for(const animation of image.getAnimations())animation.cancel();arrival=null;requesting=true;$('lt-result').textContent='';render();
+  if(requesting||preview||!ready||actionView(id)||performance.now()<inputCooldownUntil)return;for(const animation of image.getAnimations())animation.cancel();arrival=null;requesting=true;$('lt-result').textContent='';render();
   try{const r=await controller.act(action);if(!r.ok)$('lt-result').textContent=r.message??'暂时不能处理，进度保留。';}finally{requesting=false;render();}
  }
  function show(item:RenewalCurioId){
   if(!controller.state.game.collection.includes(item))return false;
-  for(const animation of image.getAnimations())animation.cancel();id=item;rendered='';loading='';ready=false;failed=false;preview=false;arrival=null;trialAt=-Infinity;trialId='';++token;
+  for(const animation of image.getAnimations())animation.cancel();id=item;rendered='';loading='';ready=false;failed=false;preview=false;arrival=null;trialAt=-Infinity;trialId='';inputCooldownUntil=0;++token;
   $('lt-title').textContent=discoveryById(id)!.name;$('lt-origin').textContent=discoveryById(id)!.description;$('lt-result').textContent='';$('lt-trial-line').hidden=true;
   $('lt-stages').innerHTML=curioImageStages.map(c=>`<li><button data-lt-preview="${c}" data-lt-condition="${c}" aria-label="放大${labels[c]}外观对照"><img src="${curioStateImageUrl(id,c)}" alt=""><span>${labels[c]}</span></button></li>`).join('');
+  $('lt-stages').hidden=new URLSearchParams(location.search).get('compare')!=='1';dialog.dataset.comparison=String(!$('lt-stages').hidden);
   $('lt-preview').hidden=true;$('lt-current').hidden=false;dialog.showModal();render();void prepareRig();return true;
  }
  function hide(){for(const animation of image.getAnimations())animation.cancel();++token;dialog.close();arrival=null;trialAt=-Infinity;preview=false;}
@@ -101,7 +102,7 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
  dialog.addEventListener('cancel',e=>{e.preventDefault();callbacks.close();});
  controller.subscribe(()=>{
   const next=renewalCurioIds.map(item=>({id:item,condition:savedCurioCondition(controller.state,item),action:actionView(item)}));
-  for(const before of previous){const current=next.find(row=>row.id===before.id)!;if(before.action&&['clean','repair'].includes(before.action.kind)&&!current.action&&current.condition!==before.condition&&!seen.has(before.action.key)){seen.add(before.action.key);if(dialog.open&&id===current.id&&!preview&&!document.hidden&&!silent.has(before.action.key))arrival={id:current.id,key:before.action.key,text:lines[current.id][before.action.kind==='clean'?0:1]};}}
+  for(const before of previous){const current=next.find(row=>row.id===before.id)!;if(before.action&&['clean','repair'].includes(before.action.kind)&&!current.action&&current.condition!==before.condition&&!seen.has(before.action.key)){seen.add(before.action.key);if(dialog.open&&id===current.id&&!preview&&!document.hidden&&!silent.has(before.action.key)){arrival={id:current.id,key:before.action.key,text:lines[current.id][before.action.kind==='clean'?0:1]};if(before.action.kind==='clean')inputCooldownUntil=performance.now()+550;}}}
   previous=next;render();
  });
  function paint(){
@@ -123,6 +124,7 @@ export function mountLightTreatment(controller:FusionController,callbacks:Callba
    }
    if(elapsed>(id==='bell'?650:1400))$('lt-trial-line').textContent=lines[id][2];
   }
+  if(dialog.open&&inputCooldownUntil&&performance.now()>=inputCooldownUntil){inputCooldownUntil=0;render();}
   if(dialog.open&&elapsed>=2600&&elapsed<2900)render();requestAnimationFrame(paint);
  }
  requestAnimationFrame(paint);

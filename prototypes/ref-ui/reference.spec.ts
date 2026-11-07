@@ -2,7 +2,7 @@ import {makeReviewFixture} from './model';
 import {advanceFusion,reduceFusion} from '../../src/fusion/domain';
 import {test,expect,type Page} from '@playwright/test';
 const api=(page:Page)=>page.evaluate(()=>{const a=(window as any).__REFUI__;return {state:a.state(),trace:a.trace()};});
-async function open(page:Page,profile:string){await page.goto(`/?profile=${profile}`);await page.waitForFunction(()=>!!(window as any).__REFUI__);await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-fusion-phase',/.+/);}
+async function open(page:Page,profile:string){await page.goto(`/?profile=${profile}&compare=1`);await page.waitForFunction(()=>!!(window as any).__REFUI__);await expect(page.locator('#fusion-world canvas')).toHaveAttribute('data-fusion-phase',/.+/);}
 async function storageSentinel(page:Page){await page.addInitScript(()=>{localStorage.setItem('loststar.preferences.v1',JSON.stringify({muted:true,textSize:'normal',startPage:'base'}));localStorage.setItem('loststar.source-test','UNCHANGED');let count=0;const original=indexedDB.open.bind(indexedDB);indexedDB.open=((...args:Parameters<typeof indexedDB.open>)=>{count++;return original(...args);}) as typeof indexedDB.open;Object.assign(window,{__IDB_OPEN_COUNT__:()=>count});});}
 
 test('one tap opens the current event, one close returns to unchanged full globe; no assist or storage write',async({page})=>{
@@ -54,9 +54,9 @@ test('night assist, planet touch and keyboard inspect the same short card withou
  await page.locator('#fusion-tap').focus();await page.keyboard.press('Enter');await expect(page.locator('#refui-card')).toBeVisible();await page.keyboard.press('Escape');await expect(page.locator('#refui-card')).toBeHidden();expect((await api(page)).state.game.assist).toEqual(before);expect((await api(page)).trace.filter((r:any)=>r.action.type==='tap')).toHaveLength(0);
 });
 
-test('browser Back closes read-only preview and light detail while paid cleaning continues once',async({page})=>{
- await open(page,'treatment');await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();await page.locator('#lt-main').tap();await page.goBack();await expect(page.locator('#refui-treatment')).toBeHidden();expect((await api(page)).state.receipt.activeAction).not.toBeNull();
- await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();await page.waitForFunction(()=>(window as any).__REFUI__.state().receipt.condition==='clean');expect((await api(page)).trace.filter((t:any)=>t.action.type==='paper'&&t.action.kind==='clean')).toHaveLength(1);
+test('browser Back closes read-only preview and light detail while the paid upgrade continues once',async({page})=>{
+ await open(page,'treatment');await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();await page.locator('#lt-main').tap();await expect(page.locator('#lt-image')).toHaveAttribute('data-state-image','receipt-clean.webp');await page.locator('#lt-main').tap();await page.goBack();await expect(page.locator('#refui-treatment')).toBeHidden();expect((await api(page)).state.receipt.activeAction?.kind).toBe('repair');
+ await page.locator('#refui-event').tap();await page.locator('[data-ref-curio="receipt"]').tap();await page.waitForFunction(()=>(window as any).__REFUI__.state().receipt.condition==='stabilized');expect((await api(page)).trace.filter((t:any)=>t.action.type==='paper'&&t.action.kind==='clean')).toHaveLength(1);
  await page.locator('[data-lt-preview="found"]').tap();await expect(page.locator('#lt-preview')).toBeVisible();await page.goBack();await expect(page.locator('#lt-preview')).toBeHidden();await expect(page.locator('#refui-treatment')).toBeVisible();await page.goBack();await expect(page.locator('#refui-treatment')).toBeHidden();await expect(page.locator('#refui-objective')).toBeVisible();
  await page.locator('.fu-nav [data-tab="base"]').tap();await page.locator('.fu-base-grow').tap();await page.goBack();await expect(page.locator('#fusion-drawer')).toBeHidden();await expect(page.locator('#fusion-base')).toBeVisible();
 });

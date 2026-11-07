@@ -1,4 +1,5 @@
 import {settleRetiredFreeWait,type FreeReceiptReceipt} from './receipt-compat';
+import {settleInstantCleaning,type InstantCleanReceipt} from './instant-clean';
 import type {FusionSave, FusionAction, FusionController, FusionResult} from '../../src/fusion/contracts';
 import {createFusion, advanceFusion, reduceFusion} from '../../src/fusion/domain';
 import {firstPlanetFixture} from '../../scripts/firstplanet_fixtures';
@@ -74,14 +75,16 @@ export function referenceView(state:FusionSave) {
 
 /** Controller exists only in this tab's memory: no IDB, localStorage, import, migration or reset. */
 export function createMemoryController(initial:FusionSave) {
-  let state=structuredClone(initial);const compatibility:FreeReceiptReceipt[]=[];
-  const adapt=()=>{const result=settleRetiredFreeWait(state,state.game.lastAt);state=result.state;if(result.receipt)compatibility.push(result.receipt);};adapt();
+  let state=structuredClone(initial);const compatibility:FreeReceiptReceipt[]=[],instantCleaning:InstantCleanReceipt[]=[];
+  const adaptFree=()=>{const result=settleRetiredFreeWait(state,state.game.lastAt);state=result.state;if(result.receipt)compatibility.push(result.receipt);};
+  const adaptClean=()=>{const result=settleInstantCleaning(state,state.game.lastAt);state=result.state;instantCleaning.push(...result.receipts);};
+  const adapt=()=>{adaptFree();adaptClean();};adapt();
   const listeners=new Set<()=>void>();
   const trace:{action:FusionAction;at:number;before:number;after:number;ok:boolean}[]=[];
   const notify=()=>listeners.forEach(listener=>listener());
   const controller: FusionController={get state(){return state;},persisted:true,
-    async act(action):Promise<FusionResult>{const at=Date.now();state=advanceFusion(state,at,at-state.game.lastAt>=30000);adapt();const before=state.game.resources;const r=reduceFusion(state,action,at);state=r.state;adapt();trace.push({action,at,before,after:state.game.resources,ok:r.result.ok});notify();return r.result;},
+    async act(action):Promise<FusionResult>{const at=Date.now();state=advanceFusion(state,at,at-state.game.lastAt>=30000);adapt();const before=state.game.resources;const r=reduceFusion(state,action,at);state=r.state;adaptFree();trace.push({action,at,before,after:state.game.resources,ok:r.result.ok});notify();const pending=state;adaptClean();if(state!==pending)notify();return r.result;},
     subscribe(listener){listeners.add(listener);return()=>listeners.delete(listener);}};
   const timer=setInterval(()=>{if(document.visibilityState!=='visible')return;const at=Date.now();state=advanceFusion(state,at,at-state.game.lastAt>=30000);adapt();notify();},250);
-  return {controller,trace,compatibility,stop:()=>clearInterval(timer)};
+  return {controller,trace,compatibility,instantCleaning,stop:()=>clearInterval(timer)};
 }

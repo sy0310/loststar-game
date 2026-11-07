@@ -13,6 +13,8 @@ import paperUrl from '../../assets/runtime/visual-renewal/world/visitor-paper-aw
 import {savedCurioCondition} from '../../src/fusion/curio-state-images';
 import {isRenewalCurio} from '../../src/fusion/curio-renewal-model';
 import {v034NightCamera} from '../../src/review/v034-night-stage';
+import {residentIds} from '../../src/render/resident-motion';
+import {itemArt} from '../../src/ui/art';
 const escape=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const guestNames=['会走的纸箱','纸翅蛾','同号纸影'],guestArt=[boxUrl,mothUrl,paperUrl];
 
@@ -22,6 +24,7 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   const header=root.querySelector('.fu-header')!;
   header.insertAdjacentHTML('beforeend',`<button id="refui-settings" class="ref-icon-button" data-ref-open="settings" aria-label="设置">${icon('gear')}</button>`);
   const explore=root.querySelector('#fusion-explore')!;
+  root.querySelector('#fusion-collection .fu-page-heading')!.insertAdjacentHTML('beforeend',`<button id="refui-residents" data-ref-open="residents">${icon('book')}居民观察</button>`);
   explore.insertAdjacentHTML('afterbegin',`<button id="refui-objective" class="ref-goal" data-ref-open="goal"><span>当前调查</span><strong></strong>${icon('arrow')}</button>`);
   const shell=root.querySelector<HTMLElement>('.fu-world-shell')!;
   shell.insertAdjacentHTML('beforeend',`<button id="refui-marker" class="ref-marker" data-ref-open="event" hidden><span>${icon('radar')}</span><strong></strong></button><i id="refui-source" class="ref-source" aria-hidden="true" hidden></i>`);
@@ -42,7 +45,7 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   const native=document.querySelector<HTMLDialogElement>('#fusion-drawer')!;
   const replaying=()=>!document.querySelector<HTMLElement>('#fusion-flow-replay')!.hidden;
   let historyOwned=false,pendingClose:Promise<void>|null=null,resolveClose:(()=>void)|null=null;
-  let mode:'event'|'goal'|'settings'='event',origin:HTMLElement|null=null,openedId='',openedState=structuredClone(controller.state),signature='',hold:{id:number;x:number;y:number;at:number}|null=null;
+  let mode:'event'|'goal'|'settings'|'residents'='event',origin:HTMLElement|null=null,openedId='',openedState=structuredClone(controller.state),signature='',hold:{id:number;x:number;y:number;at:number}|null=null;
   const $=<T extends HTMLElement=HTMLElement>(selector:string)=>document.querySelector<T>(selector)!;
   function open(next:typeof mode,target:HTMLElement){
     if(pendingClose)return;
@@ -83,10 +86,14 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     const live=referenceView(controller.state);
     if(live.eventId===openedId)openedState=structuredClone(controller.state);
     const state=mode==='event'&&live.eventId!==openedId?openedState:controller.state,v=referenceView(state);
-    const key=JSON.stringify([mode,v.eventId,v.title,v.identified,v.knownNight,v.guestId,v.flow.waitingCurio,v.flow.previousNight,v.conclusion,state.receipt.condition,state.game.pendingReturn?.resources,live.eventId===openedId]);
+    const key=JSON.stringify([mode,v.eventId,v.title,v.identified,v.knownNight,v.guestId,v.flow.waitingCurio,v.flow.previousNight,v.conclusion,state.receipt.condition,state.game.pendingReturn?.resources,live.eventId===openedId,state.game.collection]);
     if(key===signature)return;signature=key;
-    $('#refui-card-label').textContent=mode==='goal'?'旧分拣站 · 当前调查':mode==='settings'?'UI隔离样板 · 只影响本次查看':v.flow.kind==='night'?(v.knownNight?'日常来访':'现场观察'):'退件平原 · 现场';
-    $('#refui-card-title').textContent=mode==='goal'?(v.conclusion?.title??v.objectiveFull):mode==='settings'?'设置':v.title;
+    $('#refui-card-label').textContent=mode==='residents'?'退货箱星 · 已遇见的朋友':mode==='goal'?'旧分拣站 · 当前调查':mode==='settings'?'UI隔离样板 · 只影响本次查看':v.flow.kind==='night'?(v.knownNight?'日常来访':'现场观察'):'退件平原 · 现场';
+    $('#refui-card-title').textContent=mode==='residents'?'星球居民':mode==='goal'?(v.conclusion?.title??v.objectiveFull):mode==='settings'?'设置':v.title;
+    if(mode==='residents'){
+      const known=residentIds.filter(id=>state.game.collection.includes(id));
+      cardBody.innerHTML=known.length?`<p class="ref-muted">点开看看，它在忙什么。</p><div class="ref-residents">${known.map(id=>`<button data-ref-resident="${id}" class="ref-resident-row">${itemArt(id)}<span><strong>${escape(discoveryById(id)!.name)}</strong><small>看看它 ${icon('arrow')}</small></span></button>`).join('')}</div>`:'<p>还没遇见新朋友。咔哒会继续找，遇见后就来这里看看。</p>';return;
+    }
     if(mode==='settings'){
       cardBody.innerHTML='<p>正式存档和设置不会被这份样板修改。</p><div class="ref-setting-row"><span>文字大小</span><button data-ref-size="normal">标准</button><button data-ref-size="large">大字</button></div><p class="ref-muted">动态遵循系统“减少动态”；声音沿用当前静音偏好，本样板不保存设置。</p><details class="ref-records"><summary>切换隔离样板场景</summary><p class="ref-muted">仅切换内存示例，重开样板不影响正式存档。</p><div class="ref-profile-grid"><button data-ref-profile="fresh">初来探索</button><button data-ref-profile="owned">已购展柜</button><button data-ref-profile="restoration">六物整理</button><button data-ref-profile="return">离线归航</button><button data-ref-profile="night">首次夜访</button><button data-ref-profile="repeat-night">日常来访</button><button data-ref-profile="morning">清晨回看</button><button data-ref-profile="conclusion">纸路结论</button></div></details>';return;
     }
@@ -151,6 +158,14 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     if(target.hasAttribute('data-ref-replay')){event.preventDefault();event.stopImmediatePropagation();void close().then(()=>{$('#fusion-replay-night').click();render();});return;}
     if(target.dataset.refOpen){event.preventDefault();event.stopImmediatePropagation();if(event.detail===0||gestures.get(target)?.valid)open(target.dataset.refOpen as typeof mode,target);return;}
     if(target.hasAttribute('data-ref-close')){event.preventDefault();event.stopImmediatePropagation();close();return;}
+    if(target.dataset.refResident){
+      const id=target.dataset.refResident;if(!residentIds.includes(id as typeof residentIds[number])||!controller.state.game.collection.includes(id))return;
+      event.preventDefault();event.stopImmediatePropagation();void close().then(()=>{
+        $('.fu-nav [data-tab="collection"]').click();$<HTMLDetailsElement>('#fusion-collection-index').open=true;$('[data-filter="creature"]').click();
+        $<HTMLButtonElement>(`#fusion-collection-list [data-detail="${id}"]`).click();
+        const hello=document.querySelector<HTMLButtonElement>('#fusion-try');if(hello){hello.textContent='打个招呼';hello.setAttribute('aria-label',`和${discoveryById(id)!.name}打个招呼`);}
+      });return;
+    }
     const item=target.dataset.refCurio??target.dataset.detail??target.dataset.exhibit;if(item&&isRenewalCurio(item)){event.preventDefault();event.stopImmediatePropagation();void showCurio(item);return;}
     if(target.hasAttribute('data-ref-claim')){event.preventDefault();event.stopImmediatePropagation();void controller.act({type:'claim'}).then(result=>{if(result.ok){openedId=referenceView(controller.state).eventId;openedState=structuredClone(controller.state);}signature='';renderCard();});return;}
     if(target.dataset.refProfile){event.preventDefault();event.stopImmediatePropagation();const url=new URL(location.href);url.searchParams.set('profile',target.dataset.refProfile);location.assign(url);return;}

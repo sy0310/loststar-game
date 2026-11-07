@@ -77,4 +77,10 @@ html[data-text-size=large] #app :where(p,.ref-goal strong,.ref-event strong,butt
 #app .lt-dialog[open]{display:flex;flex-direction:column;overflow:hidden}
 #app .lt-dialog .ui-dialog-heading{position:static;flex:0 0 auto}
 #app .lt-dialog .lt-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
+#app #fusion-collection .fu-page-heading{flex-wrap:wrap}
+#app #refui-residents{display:flex;align-items:center;gap:6px;font-size:13px}
+.ref-residents{display:grid;gap:10px;margin:12px 0}
+#app .ref-resident-row{display:flex;align-items:center;text-align:left;gap:14px;width:100%}
+.ref-resident-row>img{width:58px;height:58px;object-fit:contain;image-rendering:pixelated}
+.ref-resident-row>span{flex:1}.ref-resident-row strong{display:block;font-size:15px}.ref-resident-row small{display:flex;align-items:center;gap:8px;margin-top:4px}
 #app .lt-dialog{padding-top:max(36px,env(safe-area-inset-top,0px))}#app input:where([type=checkbox],[type=radio]){appearance:auto;width:24px;height:24px;accent-color:var(--ui-accent)}#app select{background:var(--ui-surface-raised);border:1px solid var(--ui-border);min-height:44px;padding:8px}
