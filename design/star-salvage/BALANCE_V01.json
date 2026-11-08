@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "status": "prototype_baseline_not_balance_accepted",
+  "updated": "2026-11-08",
+  "game": "失物号：星海拾荒",
+  "initial": {"debt":12000,"money":120,"fuel":60,"fuelMax":100,"hull":100,"hullMax":100,"cargoCapacity":4,"cargoBeforeDepart":0},
+  "voyage": {
+    "maxExplorationNodes":8,
+    "initialChoicesPerStep":2,
+    "baseForwardFuel":[6,7,8,10,12,14,16,18],
+    "branchSurcharge":[0,1,2,3],
+    "forwardFormula":"max(baseForwardFuel[depth], lastActualLeg + 1) + branchSurcharge",
+    "distanceDefinition":"sum of committed forward leg fuel costs in this voyage; not on-site fuel consumption",
+    "returnFormula":"distance === 0 ? 0 : 3 + ceil(distance / 2)",
+    "baseReturnVerification":[6,10,14,19,25,32,40,49],
+    "travelAllowed":"fuel >= nextLeg + returnCost(distance + nextLeg) and hull > 0",
+    "eventFuelAllowed":"eventFuelSpend <= max(0, fuel - returnCost(distance))",
+    "refuelReducesDistance":false,
+    "forcedTimer":false,
+    "offlineResourceLoss":false,
+    "routeSeedPersists":true
+  },
+  "contract":{"cargoSlots":1,"minimumNodes":3,"reward":180,"requiresSafeReturnAndRecordBox":true},
+  "port":{"fuelUnitPrice":2,"repairUnitPrice":2,"maximumServiceIncrement":20,"chargeActualService":true,"minimumMoneyAfterRepayment":50,"automaticSellRepairRepay":false},
+  "tools":{"scanner":240,"winch":280},
+  "rescue":{"mandatoryAd":false,"maximumCashCharge":50,"minimumFuelAfter":18,"minimumHullAfter":35,"addsDebt":false,"permanentDiscoveriesLost":false,"cargoLossMustBeExplicitAndRunScoped":true},
+  "save":{"namespace":"lostcargo.route-demo.v1","preserveOldFormalAndChapterSaves":true,"newRunKeepsFuelHullMoneyTools":true},
+  "delivery":{"fileHtmlIsSoleEntry":false,"realHttpRequired":true,"developmentSelfTestRequiredWhenAuthorized":true,"productionRelease":false,"liveAds":false,"blindTest":true},
+  "notes":["费用和后果都从同一规则模型读取，不照抄概念图示意值。","本配置是首测基线，不保证12,000船款已有足够的长线内容支撑。","源码快照中的本地Storage/并发/救援资产归属仍须Codex审查，不因历史测试通过视为已解决。"]
+}
