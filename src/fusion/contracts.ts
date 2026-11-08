@@ -22,6 +22,7 @@ export interface FusionTask {
 }
 export interface FusionSave {
   version: 1;
+  chapter?: import('../chapter/model').ChapterState;
   game: SaveData;
   receipt: ReceiptRestorationState;
   projects: string[];
@@ -34,6 +35,7 @@ export interface FusionSave {
   curios: Record<string, {condition: 'found' | 'clean' | 'stabilized'; action?: {kind: 'clean' | 'repair'; startedAt: number; endsAt: number}}>;
 }
 export type FusionAction =
+  | import('../chapter/model').ChapterAction
   | {type: 'tap'}
   | {type: 'upgrade'; id: UpgradeId; expected: number}
   | {type: 'growth'; id: string; expected: number}

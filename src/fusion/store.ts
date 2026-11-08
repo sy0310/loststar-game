@@ -157,15 +157,24 @@ function paidAction(action: FusionAction) {
     !(action.type === 'paper' && ['excavate', 'identify', 'try'].includes(action.kind));
 }
 
+export interface IsolatedFusionAdapter {
+ databaseName:string;
+ create:(now:number)=>FusionSave;
+ restore:(raw:string,now:number)=>FusionSave;
+ advance:(state:FusionSave,now:number,offline:boolean)=>FusionSave;
+ reduce:(state:FusionSave,action:FusionAction,now:number)=>{state:FusionSave;result:FusionResult};
+}
 /** One IndexedDB read/write transaction serializes changes across tabs and WebViews. */
-export async function openFusionStore(options: {review?: boolean; journey?: boolean} = {}): Promise<FusionController> {
-  const databaseName = options.journey ? FUSION_JOURNEY_DATABASE : options.review ? FUSION_REVIEW_DATABASE : FUSION_DATABASE;
+export async function openFusionStore(options: {review?: boolean; journey?: boolean; isolated?:IsolatedFusionAdapter} = {}): Promise<FusionController> {
+  const isolated=options.isolated;
+  const advance=isolated?.advance??advanceFusion, reduce=isolated?.reduce??reduceFusion;
+  const databaseName = isolated?.databaseName??(options.journey ? FUSION_JOURNEY_DATABASE : options.review ? FUSION_REVIEW_DATABASE : FUSION_DATABASE);
   let database: IDBDatabase | undefined;
   let legacy: string | null = null;
-  try {legacy = localStorage.getItem(SAVE_KEY);} catch { /* An existing fusion archive remains readable through IDB. */ }
+  try {if(!isolated)legacy = localStorage.getItem(SAVE_KEY);} catch { /* An existing fusion archive remains readable through IDB. */ }
   const listeners = new Set<() => void>();
-  let current = createFusion(Date.now(), legacy, {journey: options.journey});
-  const journeyBackups = options.journey ? await captureJourneyBackups() : undefined;
+  let current = isolated?isolated.create(Date.now()):createFusion(Date.now(), legacy, {journey: options.journey});
+  const journeyBackups = !isolated&&options.journey ? await captureJourneyBackups() : undefined;
   let backupStatus = journeyBackups?.status;
   let migrationBlocked = false;
   let canInitialize = true;
@@ -206,6 +215,7 @@ export async function openFusionStore(options: {review?: boolean; journey?: bool
   };
 
   function decodeStored(saved: StoredSave) {
+    if(isolated){try{return isolated.restore(JSON.stringify(saved),saved.game.lastAt);}catch(error){migrationBlocked=true;throw error;}}
     if (!options.review && !options.journey) return restoreFusion(JSON.stringify(saved), saved.game.lastAt);
     try {
       const restored = restoreReviewArchive(saved);
@@ -217,12 +227,13 @@ export async function openFusionStore(options: {review?: boolean; journey?: bool
 
   function transact(action?: FusionAction): Promise<FusionResult> {
     if (!database) {
+      if(isolated)return Promise.resolve({ok:false,message:'剧情档案未保存，请稍后重试。'});
       if (migrationBlocked) return Promise.resolve({ok: false,
         message: options.journey ? '首星档案无法读取，原档已保留' : '旧档迁移未完成，原档已保留'});
       if (action && paidAction(action)) return Promise.resolve({ok: false, message: '档案未保存，暂缓付费操作'});
       const now = Date.now();
-      const next = action ? reduceFusion(current, action, now)
-        : {state: advanceFusion(current, now, now - current.game.lastAt >= 30000), result: {ok: true}};
+      const next = action ? reduce(current, action, now)
+        : {state: advance(current, now, now - current.game.lastAt >= 30000), result: {ok: true}};
       current = next.state;
       persisted = false;
       notify();
@@ -253,8 +264,8 @@ export async function openFusionStore(options: {review?: boolean; journey?: bool
             recovered = latest; recoveredRevision = revisionOf(saved);
             migrationBlocked = false;
           }
-          const mutation = action ? reduceFusion(latest, action, now)
-            : {state: advanceFusion(latest, now, now - latest.game.lastAt >= 30000), result: {ok: true}};
+          const mutation = action ? reduce(latest, action, now)
+            : {state: advance(latest, now, now - latest.game.lastAt >= 30000), result: {ok: true}};
           next = mutation.state;
           result = mutation.result;
           nextRevision = Math.max(currentRevision, saved ? revisionOf(saved) : 0) + 1;

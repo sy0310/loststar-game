@@ -140,3 +140,38 @@ jobs:
             artifacts/ref-ui-sample/
             artifacts/ref-ui-unified/
           retention-days: 14
+  chapter-one:
+    name: Persistent first-planet chapter
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npx vite build --config vite.chapter.config.ts --base ./
+      - name: Use Ubuntu archive for browser dependencies
+        run: |
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          for path in [Path('/etc/apt/sources.list'), Path('/etc/apt/apt-mirrors.txt'), *Path('/etc/apt/sources.list.d').glob('*')]:
+              if path.is_file() and (path.name == 'apt-mirrors.txt' or path.suffix in ('.list', '.sources')):
+                  path.write_text(path.read_text().replace('http://azure.archive.ubuntu.com/ubuntu','https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu','https://archive.ubuntu.com/ubuntu'))
+          PY
+      - run: npx playwright install --with-deps chromium webkit
+        timeout-minutes: 5
+      - name: Persistent chapter, offline, original fees, legacy copy and repeat protection
+        run: npx playwright test --config src/chapter/playwright.config.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chapter-one-evidence
+          path: |
+            releases/chapter-e2e-results.json
+            releases/chapter-test-results/
+          retention-days: 14

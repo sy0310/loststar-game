@@ -11647,9 +11647,9 @@
     "schema": 1,
     "baselineRuntime": "ff917872227b0f28a452dee1642d9cc8606251db",
     "delivery": {
-      "title": "V045正式基线保留；UI参考样板待视觉确认与正式集成",
-      "proof": "artifacts/v045-a-exploration/proof.json",
-      "status": "PENDING"
+      "status": "PENDING",
+      "title": "Chapter01 persistent development self-test; formal package remains unchanged",
+      "proof": null
     },
     "sourceCoverage": {
       "documents": [
@@ -11662,7 +11662,8 @@
         "design/v045_a_simplified_exploration/README.md",
         "design/v045_a_simplified_exploration/IMPLEMENTATION.md",
         "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-        "design/v045_a_simplified_exploration/REVIEW_20261107.md"
+        "design/v045_a_simplified_exploration/REVIEW_20261107.md",
+        "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
       "independentAudit": "保留原161条与13条A045，再保留7条REFUI共181条；最新Review逐条替代整理旧口径，不删旧ID。",
@@ -11923,7 +11924,19 @@
       "REFUI-04",
       "REFUI-05",
       "REFUI-06",
-      "REFUI-07"
+      "REFUI-07",
+      "CH01-BASELINE",
+      "CH01-SIX",
+      "CH01-LINKS",
+      "CH01-NIGHT",
+      "CH01-COMBO",
+      "CH01-ENDING",
+      "CH01-RETURN",
+      "CH01-SAVE",
+      "CH01-LEGACY",
+      "CH01-LOGS",
+      "CH01-VERIFY",
+      "CH01-DELIVER"
     ],
     "requirements": [
       {
@@ -29409,6 +29422,534 @@
           "internalVisualReview": "REVIEWED_SAMPLE_ONLY_NOT_USER_ACCEPTED",
           "notes": "用户448481方向基本认可后限定三修：真实已知居民动态入口、六件原价即时清理、默认单图。bb4b221固定41截图/8自然录像、432单测/80样板流程；正式接入与新包视觉/真机待审。"
         }
+      },
+      {
+        "id": "CH01-BASELINE",
+        "requirement": "Preserve sample6 theme, safe sky, three tabs, whole images, instant clean and 550ms guard.",
+        "acceptanceCriteria": "Preserve sample6 theme, safe sky, three tabs, whole images, instant clean and 550ms guard.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 11,
+            "endLine": 14
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-SIX",
+        "requirement": "All six approved18 material-state lines and representative free interactions use actual saved conditions.",
+        "acceptanceCriteria": "All six approved18 material-state lines and representative free interactions use actual saved conditions.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 24,
+            "endLine": 41
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-LINKS",
+        "requirement": "Three ownership-gated relations handle shuffled order and unclaimed cargo without spoilers.",
+        "acceptanceCriteria": "Three ownership-gated relations handle shuffled order and unclaimed cargo without spoilers.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 43,
+            "endLine": 57
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-NIGHT",
+        "requirement": "Eligibility is not occurrence; real night event uses same globe/sorter/robot, stores conclusion, free read-only replay.",
+        "acceptanceCriteria": "Eligibility is not occurrence; real night event uses same globe/sorter/robot, stores conclusion, free read-only replay.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 59,
+            "endLine": 73
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-COMBO",
+        "requirement": "One optional free receipt/tape joke, no rewards or chapter gate; disclose bubble fallback.",
+        "acceptanceCriteria": "One optional free receipt/tape joke, no rewards or chapter gate; disclose bubble fallback.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 75,
+            "endLine": 79
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-ENDING",
+        "requirement": "Reuse last-recipient among original12, letter front/back, room/robot/resident/light, honest first-round completion.",
+        "acceptanceCriteria": "Reuse last-recipient among original12, letter front/back, room/robot/resident/light, honest first-round completion.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 81,
+            "endLine": 94
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-RETURN",
+        "requirement": "Single actual return card prioritizes new finds, then chapter, then parts/maintenance; viewing differs from claim.",
+        "acceptanceCriteria": "Single actual return card prioritizes new finds, then chapter, then parts/maintenance; viewing differs from claim.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 96,
+            "endLine": 104
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-SAVE",
+        "requirement": "Independent persistent atomic IDB chapter save;120 only first creation, no automatic v037/backups reads or writes.",
+        "acceptanceCriteria": "Independent persistent atomic IDB chapter save;120 only first creation, no automatic v037/backups reads or writes.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 106,
+            "endLine": 116
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-LEGACY",
+        "requirement": "Explicit QA JSON copy preserves27049 and purchased rights, grants eligibility but no historical new ending.",
+        "acceptanceCriteria": "Explicit QA JSON copy preserves27049 and purchased rights, grants eligibility but no historical new ending.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 112,
+            "endLine": 117
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-LOGS",
+        "requirement": "Local minimal behavior records, off switch and JSON/CSV, actual visibility/manual/automatic/replay/QA distinguished.",
+        "acceptanceCriteria": "Local minimal behavior records, off switch and JSON/CSV, actual visibility/manual/automatic/replay/QA distinguished.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 121,
+            "endLine": 127
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-VERIFY",
+        "requirement": "Natural, shuffled, offline, concurrent, payment/replay/refresh, two browser engines and safe-area validation.",
+        "acceptanceCriteria": "Natural, shuffled, offline, concurrent, payment/replay/refresh, two browser engines and safe-area validation.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 129,
+            "endLine": 144
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
+      },
+      {
+        "id": "CH01-DELIVER",
+        "requirement": "Persistent playable self-test, fixed source/ZIP/Tap/media/performance and honest phone limitations; Draft only.",
+        "acceptanceCriteria": "Persistent playable self-test, fixed source/ZIP/Tap/media/performance and honest phone limitations; Draft only.",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 146,
+            "endLine": 160
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/model.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/scene.ts",
+          "src/chapter/entry.ts",
+          "src/fusion/store.ts",
+          "tests/chapter-model.test.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter sandbox; QA has a separate database."
+          }
+        ],
+        "checks": [
+          "chapter-model",
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
+        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
+        "parent": null
       }
     ],
     "supersededRules": [
@@ -29774,6 +30315,13 @@
       "design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md",
       "design/v045_a_simplified_exploration/IMPLEMENTATION.md",
       "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md"
+    ],
+    "deliveryHistory": [
+      {
+        "title": "V045正式基线保留；UI参考样板待视觉确认与正式集成",
+        "proof": "artifacts/v045-a-exploration/proof.json",
+        "status": "PENDING"
+      }
     ]
   },
   "approvedReferenceManifests": [

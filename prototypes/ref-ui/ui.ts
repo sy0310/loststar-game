@@ -18,7 +18,15 @@ import {itemArt} from '../../src/ui/art';
 const escape=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const guestNames=['会走的纸箱','纸翅蛾','同号纸影'],guestArt=[boxUrl,mothUrl,paperUrl];
 
-export function mountReferenceUi(controller:FusionController,scene:ExpeditionScene,focus:()=>{x:number;y:number}) {
+export interface ReferenceUiOptions {
+ view?:typeof referenceView;
+ card?:(mode:string,state:import('../../src/fusion/contracts').FusionSave)=>{title:string;label:string;html:string}|null;
+ treatment?:Parameters<typeof mountLightTreatment>[1]['content'];
+ onOpen?:(mode:string,id:string)=>void;
+ onCurio?:(id:string)=>void;
+}
+export function mountReferenceUi(controller:FusionController,scene:ExpeditionScene,focus:()=>{x:number;y:number},options:ReferenceUiOptions={}) {
+ const view=options.view??referenceView;
   document.body.dataset.referenceUi='candidate';
   const app=document.querySelector<HTMLElement>('#app')!,root=app.querySelector<HTMLElement>('#fusion-app')!;
   const header=root.querySelector('.fu-header')!;
@@ -37,9 +45,9 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   let historyTravel=false;
   const travel=(steps:number)=>{if(!historyTravel){historyTravel=true;history.go(steps);}};
   let curioClosing:Promise<void>|null=null,resolveCurio:(()=>void)|null=null;
-  const treatment=mountLightTreatment(controller,{close:()=>travel(-1),preview:()=>pushLayer('curio-preview'),collection:()=>{void closeCurio().then(()=>document.querySelector<HTMLButtonElement>('.fu-nav [data-tab="collection"]')!.click());}});
+  const treatment=mountLightTreatment(controller,{content:options.treatment,close:()=>travel(-1),preview:()=>pushLayer('curio-preview'),collection:()=>{void closeCurio().then(()=>document.querySelector<HTMLButtonElement>('.fu-nav [data-tab="collection"]')!.click());}});
   function closeCurio(){if(!treatment.isOpen())return Promise.resolve();if(curioClosing)return curioClosing;curioClosing=new Promise<void>(resolve=>{resolveCurio=resolve;});travel(layer==='curio-preview'?-2:-1);return curioClosing;}
-  async function showCurio(id:import('../../src/fusion/curio-renewal-model').RenewalCurioId){await close();await closeNative();if(treatment.show(id)){scene.setActive(false);pushLayer('curio');}}
+  async function showCurio(id:import('../../src/fusion/curio-renewal-model').RenewalCurioId){await close();await closeNative();if(treatment.show(id)){scene.setActive(false);pushLayer('curio');options.onCurio?.(id);}}
   let nativeClosing:Promise<void>|null=null,resolveNative:(()=>void)|null=null;
   let fieldContext:{scroll:number;panelScroll:number;details:{id:string;open:boolean}[]}|null=null;
   const native=document.querySelector<HTMLDialogElement>('#fusion-drawer')!;
@@ -52,7 +60,7 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     // One object, one modal. Keep the original world clock and full globe dimensions.
     fieldContext=!$('#fusion-field-drawer').hidden?{scroll:$('#fusion-scroll').scrollTop,panelScroll:$('#fusion-field-drawer').scrollTop,details:[...$('#fusion-field-drawer').querySelectorAll('details')].map(d=>({id:d.id,open:d.open}))}:null;
     if(fieldContext)$('#fusion-field-close').click();
-    mode=next;origin=target;openedId=referenceView(controller.state).eventId;openedState=structuredClone(controller.state);signature='';
+    mode=next;origin=target;options.onOpen?.(next,view(controller.state).eventId);openedId=view(controller.state).eventId;openedState=structuredClone(controller.state);signature='';
     render();if(!card.open){history.pushState({...history.state,refUiCard:true},'');historyOwned=true;layer='card';card.showModal();}source.hidden=next!=='event';
   }
   function pushLayer(next:typeof layer){layer=next;history.pushState({...history.state,refUiLayer:next},'');}
@@ -81,15 +89,16 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   });
   nativeObserver.observe(native,{attributes:true,attributeFilter:['open']});nativeObserver.observe($('#fusion-drawer-body'),{attributes:true,attributeFilter:['data-image-preview']});
   window.addEventListener('keydown',event=>{if(event.key==='Escape'&&layer==='preview'){event.preventDefault();event.stopImmediatePropagation();travel(-1);}},true);
-  function factsHtml(){const v=referenceView(controller.state);return v.flow.clues.length?`<details class="ref-records"><summary>已有的现场线索</summary>${v.flow.clues.map(c=>`<p>${escape(c.text)}</p>`).join('')}</details>`:'';}
+  function factsHtml(){const v=view(controller.state);return v.flow.clues.length?`<details class="ref-records"><summary>已有的现场线索</summary>${v.flow.clues.map(c=>`<p>${escape(c.text)}</p>`).join('')}</details>`:'';}
   function renderCard(){
-    const live=referenceView(controller.state);
+    const live=view(controller.state);
     if(live.eventId===openedId)openedState=structuredClone(controller.state);
-    const state=mode==='event'&&live.eventId!==openedId?openedState:controller.state,v=referenceView(state);
-    const key=JSON.stringify([mode,v.eventId,v.title,v.identified,v.knownNight,v.guestId,v.flow.waitingCurio,v.flow.previousNight,v.conclusion,state.receipt.condition,state.game.pendingReturn?.resources,live.eventId===openedId,state.game.collection]);
+    const state=mode==='event'&&live.eventId!==openedId?openedState:controller.state,v=view(state);
+    const key=JSON.stringify([state.chapter,mode,v.eventId,v.title,v.identified,v.knownNight,v.guestId,v.flow.waitingCurio,v.flow.previousNight,v.conclusion,state.receipt.condition,state.game.pendingReturn?.resources,live.eventId===openedId,state.game.collection]);
     if(key===signature)return;signature=key;
     $('#refui-card-label').textContent=mode==='residents'?'退货箱星 · 已遇见的朋友':mode==='goal'?'旧分拣站 · 当前调查':mode==='settings'?'UI隔离样板 · 只影响本次查看':v.flow.kind==='night'?(v.knownNight?'日常来访':'现场观察'):'退件平原 · 现场';
     $('#refui-card-title').textContent=mode==='residents'?'星球居民':mode==='goal'?(v.conclusion?.title??v.objectiveFull):mode==='settings'?'设置':v.title;
+    const custom=options.card?.(mode,state);if(custom){$('#refui-card-title').textContent=custom.title;$('#refui-card-label').textContent=custom.label;cardBody.innerHTML=custom.html;return;}
     if(mode==='residents'){
       const known=residentIds.filter(id=>state.game.collection.includes(id));
       cardBody.innerHTML=known.length?`<p class="ref-muted">点开看看，它在忙什么。</p><div class="ref-residents">${known.map(id=>`<button data-ref-resident="${id}" class="ref-resident-row">${itemArt(id)}<span><strong>${escape(discoveryById(id)!.name)}</strong><small>看看它 ${icon('arrow')}</small></span></button>`).join('')}</div>`:'<p>还没遇见新朋友。咔哒会继续找，遇见后就来这里看看。</p>';return;
@@ -117,7 +126,7 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
     cardBody.innerHTML=html+factsHtml();
   }
   function render(){
-    const v=referenceView(controller.state);
+    const v=view(controller.state);
     $('#refui-objective strong').textContent=v.objective;
     summary.querySelector('small')!.textContent=replaying()?'只读回看':v.flow.kind==='night'?(v.knownNight?'日常来访':'现场动静'):v.flow.kind==='dawn'?'清晨回看':'正在发生';
     summary.querySelector('strong')!.textContent=replaying()?'昨夜回看 · 回到此刻':v.title;summary.dataset.eventId=v.eventId;marker.dataset.eventId=v.eventId;
@@ -167,7 +176,7 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
       });return;
     }
     const item=target.dataset.refCurio??target.dataset.detail??target.dataset.exhibit;if(item&&isRenewalCurio(item)){event.preventDefault();event.stopImmediatePropagation();void showCurio(item);return;}
-    if(target.hasAttribute('data-ref-claim')){event.preventDefault();event.stopImmediatePropagation();void controller.act({type:'claim'}).then(result=>{if(result.ok){openedId=referenceView(controller.state).eventId;openedState=structuredClone(controller.state);}signature='';renderCard();});return;}
+    if(target.hasAttribute('data-ref-claim')){event.preventDefault();event.stopImmediatePropagation();void controller.act({type:'claim'}).then(result=>{if(result.ok){openedId=view(controller.state).eventId;openedState=structuredClone(controller.state);}signature='';renderCard();});return;}
     if(target.dataset.refProfile){event.preventDefault();event.stopImmediatePropagation();const url=new URL(location.href);url.searchParams.set('profile',target.dataset.refProfile);location.assign(url);return;}
     if(target.dataset.refSize){event.preventDefault();event.stopImmediatePropagation();document.documentElement.dataset.textSize=target.dataset.refSize;return;}
     // Existing settings entry routes to the same transient card; preferences never save from this sample.
@@ -179,7 +188,7 @@ export function mountReferenceUi(controller:FusionController,scene:ExpeditionSce
   const observer=new MutationObserver(()=>{const t=$('#fusion-drawer-title');if(t.textContent==='让探索轻松一点')t.textContent='升级设备';});observer.observe($('#fusion-drawer-title'),{childList:true});
   controller.subscribe(render);render();
   function position(){
-    const v=referenceView(controller.state),point=v.flow.kind==='night'?focus():v.site?{
+    const v=view(controller.state),point=v.flow.kind==='night'?focus():v.site?{
       x:32+v034NightCamera.x+(v.site.anchor.x-v034NightCamera.x)*v034NightCamera.scale+v034NightCamera.offsetX,
       y:v034NightCamera.y+(v.site.anchor.y-v034NightCamera.y)*v034NightCamera.scale+v034NightCamera.offsetY}:focus();
     const b=scene.canvas.getBoundingClientRect(),s=shell.getBoundingClientRect(),scale=Math.min(b.width/scene.canvas.width,b.height/scene.canvas.height);
