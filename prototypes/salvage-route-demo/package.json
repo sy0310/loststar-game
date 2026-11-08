@@ -1,12 +1,14 @@
 {
   "name": "loststar-salvage-route-demo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "test": "node tests/engine.test.js",
+    "test": "node tests/engine.test.js && node tests/regression.test.js",
     "build": "python3 build.py",
     "dev": "python3 -m http.server 4280 --bind 127.0.0.1",
-    "preview": "python3 -m http.server 4281 --bind 127.0.0.1 --directory dist"
+    "preview": "python3 -m http.server 4281 --bind 127.0.0.1 --directory dist",
+    "simulate": "node tests/simulate.cjs",
+    "test:browser": "playwright test --config playwright.config.cjs"
   }
 }

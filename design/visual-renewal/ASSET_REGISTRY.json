@@ -6282,7 +6282,7 @@
             "sourceCell": 0,
             "alpha": "below128 removed to eliminate generation haze; no opaque background",
             "pivot": [
-              100.0,
+              100,
               0
             ],
             "pivotHint": "top bracket"
@@ -6303,7 +6303,7 @@
             "sourceCell": 1,
             "alpha": "below128 removed to eliminate generation haze; no opaque background",
             "pivot": [
-              72.0,
+              72,
               56.5
             ],
             "pivotHint": "floor or wall centre"
@@ -6324,8 +6324,8 @@
             "sourceCell": 2,
             "alpha": "below128 removed to eliminate generation haze; no opaque background",
             "pivot": [
-              83.0,
-              36.0
+              83,
+              36
             ],
             "pivotHint": "floor or wall centre"
           },
@@ -6345,7 +6345,7 @@
             "sourceCell": 3,
             "alpha": "below128 removed to eliminate generation haze; no opaque background",
             "pivot": [
-              62.0,
+              62,
               79.5
             ],
             "pivotHint": "floor or wall centre"
@@ -11664,10 +11664,11 @@
         "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
         "design/v045_a_simplified_exploration/REVIEW_20261107.md",
         "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
-        "design/first-planet-story/PHONE_VISUAL_FEEDBACK.md"
+        "design/first-planet-story/PHONE_VISUAL_FEEDBACK.md",
+        "design/star-salvage/DEMO_CODEX_HANDOFF.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "保留原181项，追加本章14项，共195项；880ffbc原文、冻结包画面、普通/QA来源及原档隔离二次核对，真机/用户待审。",
+      "independentAudit": "保留原181项，追加本章14项，共195项；880ffbc原文、冻结包画面、普通/QA来源及原档隔离二次核对，真机/用户待审。 Added 13 isolated SALVAGE requirements without removing historical first-planet/chapter facts.",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -11939,7 +11940,20 @@
       "CH01-VERIFY",
       "CH01-DELIVER",
       "CH01-IMAGEWORDS",
-      "CH01-HELLO"
+      "CH01-HELLO",
+      "SALVAGE-BASELINE",
+      "SALVAGE-INITIAL",
+      "SALVAGE-FUEL",
+      "SALVAGE-DECISIONS",
+      "SALVAGE-ACCOUNTS",
+      "SALVAGE-RECOVERY",
+      "SALVAGE-UI",
+      "SALVAGE-ART",
+      "SALVAGE-ENGINE",
+      "SALVAGE-SAVE",
+      "SALVAGE-BLIND",
+      "SALVAGE-VERIFY",
+      "SALVAGE-DELIVERY"
     ],
     "requirements": [
       {
@@ -30194,6 +30208,497 @@
           "taptapVersion": 452765,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "SALVAGE-BASELINE",
+        "parent": null,
+        "requirement": "Isolated route prototype, existing history and Draft retained; no main package changes.",
+        "acceptanceCriteria": "Isolated route prototype, existing history and Draft retained; no main package changes.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 6,
+            "endLine": 17
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/build.py"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-INITIAL",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "One ship/area, debt12000, fuel60, hull100, cash120, cargo4 empty before departure.",
+        "acceptanceCriteria": "One ship/area, debt12000, fuel60, hull100, cash120, cargo4 empty before departure.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 19,
+            "endLine": 27
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-FUEL",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Strict actual progressive fuel, committed distance, proportional return, protected reserve, eight-node cap.",
+        "acceptanceCriteria": "Strict actual progressive fuel, committed distance, proportional return, protected reserve, eight-node cap.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 29,
+            "endLine": 43
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/balance.js",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-DECISIONS",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Visible costs, meaningful cargo/tool choices, actual carried box and once-only legal commission.",
+        "acceptanceCriteria": "Visible costs, meaningful cargo/tool choices, actual carried box and once-only legal commission.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 45,
+            "endLine": 53
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-ACCOUNTS",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Actual service cost, manual port decisions and separate cash/old stock/unsold/debt accounts.",
+        "acceptanceCriteria": "Actual service cost, manual port decisions and separate cash/old stock/unsold/debt accounts.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 54,
+            "endLine": 58
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/tests/simulate.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-RECOVERY",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Run-scoped rescue cargo loss, carried old stock and tools retained; low-resource recovery without a cash faucet.",
+        "acceptanceCriteria": "Run-scoped rescue cargo loss, carried old stock and tools retained; low-resource recovery without a cash faucet.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 59,
+            "endLine": 60
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/regression.test.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-UI",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Purple-gray UI, safe top space, four stable resources, readable budgets and nonpenetrating modals.",
+        "acceptanceCriteria": "Purple-gray UI, safe top space, four stable resources, readable budgets and nonpenetrating modals.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 62,
+            "endLine": 68
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/index.html",
+          "prototypes/salvage-route-demo/src/style.css",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [
+          "prototypes/salvage-route-demo/assets/ship.webp"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-ART",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Verify real sources; use original fallback when unavailable, never claim absent concept PNGs imported.",
+        "acceptanceCriteria": "Verify real sources; use original fallback when unavailable, never claim absent concept PNGs imported.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 69,
+            "endLine": 71
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/build.py",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [
+          "prototypes/salvage-route-demo/assets/ship.webp"
+        ],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-ENGINE",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Real relative HTTP entry, transactional concurrency, strict imports, no commit on storage failure.",
+        "acceptanceCriteria": "Real relative HTTP entry, transactional concurrency, strict imports, no commit on storage failure.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 73,
+            "endLine": 86
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/store.js",
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/browser/demo.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-SAVE",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Stable independent IDB; no access to old game/backups; saved route/result and no offline resource loss.",
+        "acceptanceCriteria": "Stable independent IDB; no access to old game/backups; saved route/result and no offline resource loss.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 88,
+            "endLine": 94
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/store.js",
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/browser/demo.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-BLIND",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Spoiler-free player delivery, local occurred-only logs and neutral feedback; no ads/payments/analytics SDK.",
+        "acceptanceCriteria": "Spoiler-free player delivery, local occurred-only logs and neutral feedback; no ads/payments/analytics SDK.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 96,
+            "endLine": 96
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/build.py"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-VERIFY",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Current rules, natural two voyages, actual paid policies, real two-engine/two-size HTTP and final ZIP.",
+        "acceptanceCriteria": "Current rules, natural two voyages, actual paid policies, real two-engine/two-size HTTP and final ZIP.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 98,
+            "endLine": 107
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/tests/regression.test.js",
+          "prototypes/salvage-route-demo/tests/browser/demo.spec.cjs",
+          "prototypes/salvage-route-demo/tests/simulate.cjs",
+          "prototypes/salvage-route-demo/verify_package.py"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
+      },
+      {
+        "id": "SALVAGE-DELIVERY",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "Actual local HTTP and separate TapTap self-test readback, concise blind handoff, no main bind or publish.",
+        "acceptanceCriteria": "Actual local HTTP and separate TapTap self-test readback, concise blind handoff, no main bind or publish.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 109,
+            "endLine": 125
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/build.py",
+          "prototypes/salvage-route-demo/verify_package.py"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent persistent route prototype"
+          }
+        ],
+        "checks": [
+          "salvage-rules",
+          "salvage-http",
+          "salvage-fixed-zip"
+        ],
+        "proofs": [],
+        "gap": "Final frozen ZIP and platform readback pending this execution; original concept art absent; physical phone and enjoyment not accepted.",
+        "nextAction": "Freeze committed source, test exact extracted ZIP, record two real voyages, upload self-test and retain explicit user/phone boundaries."
       }
     ],
     "supersededRules": [
@@ -30541,6 +31046,25 @@
         ],
         "scope": "仅清理等候与默认顶部对照栏；新增居民基础查看入口",
         "rule": "448481扫码后用户明确授权：A→B原价点击立即完成、不推进世界；B→C仍原价原时长。默认当前主框，无顶部三态标记；18图和只读审核对照保留，居民基础动态查看不代付费设施。正式接入仍待确认。"
+      },
+      {
+        "id": "SUP-SALVAGE-ISOLATED-PRODUCT",
+        "originalRefs": [
+          {
+            "path": "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+            "startLine": 17,
+            "endLine": 25
+          }
+        ],
+        "replacementRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 6,
+            "endLine": 27
+          }
+        ],
+        "scope": "Only prototypes/salvage-route-demo; no changes to existing formal/chapter entries or saves.",
+        "rule": "Latest authorized independent prototype uses explicit route choices, progressive fuel and manual return. Historical automatic exploration remains at its own preserved entry and is not applied to this new prototype."
       }
     ],
     "statusPolicy": {
@@ -30558,7 +31082,8 @@
     "requirementContracts": [
       "design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md",
       "design/v045_a_simplified_exploration/IMPLEMENTATION.md",
-      "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md"
+      "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+      "design/star-salvage/DEMO_CODEX_HANDOFF.md"
     ],
     "deliveryHistory": [
       {
