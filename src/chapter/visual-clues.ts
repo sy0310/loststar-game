@@ -47,5 +47,10 @@ export function mountChapterClues(get:()=>ChapterSave){
   canvas.dataset.clue=clue;canvas.dataset.item=id;canvas.dataset.condition=condition;
   canvas.setAttribute('aria-label','物件阅读标注：'+clue+'；不是签收凭证');
  }
- return{refresh};
+ // State art and its reading ink must change together, including instant cleaning.
+ const observer=new MutationObserver(refresh);
+ observer.observe(image,{attributes:true,attributeFilter:['src','hidden','data-state-image','data-ready']});
+ observer.observe(document.querySelector('#refui-treatment')!,{attributes:true,attributeFilter:['open','data-material-ready','data-preview']});
+ refresh();
+ return{refresh,stop:()=>observer.disconnect()};
 }

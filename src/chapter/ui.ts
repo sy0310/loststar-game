@@ -72,5 +72,5 @@ export function mountChapterUi(controller:FusionController,scene:ExpeditionScene
  const clues=mountChapterClues(get);
  const timer=setInterval(()=>{visible();clues.refresh();star.hidden=!document.querySelector<HTMLImageElement>('#lt-image')?.dataset.stateImage?.startsWith('cosmic-parcel-')||!document.querySelector('#refui-treatment[open]');replaying=isReplaying();const s=get();if(s.chapter.endingWorldMs!==null){for(const el of document.querySelectorAll<HTMLElement>('#fusion-collection-next p'))el.textContent='首轮发现已完成，日常探索继续。';}},250);
  void record('return-session','session','automatic');window.addEventListener('pageshow',e=>{if(e.persisted)void record('return-session','session','automatic');});
- return{...ref,stop:()=>clearInterval(timer)};
+ return{...ref,stop:()=>{clearInterval(timer);clues.stop();}};
 }
