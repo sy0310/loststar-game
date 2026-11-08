@@ -1,15 +1,17 @@
 import type {ChapterSave} from './model';
 import {chapterSchedule} from './model';
+import {fusionRenderElapsed} from '../fusion/render-clock';
 import type {SceneExtension} from '../render/scene';
 import {sortingMachinePoint} from '../fusion/facilities';
 const smooth=(v:number)=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v)};
 /** No game mutation: the recorded event and optional read-only replay drive these small stage parts. */
-export function chapterSequence(s:ChapterSave){const schedule=chapterSchedule(s);if(!schedule)return null;const sec=(s.game.world.elapsedMs-schedule.start)/1000;return sec>=0&&sec<8?sec:null;}
+export function chapterSequence(s:ChapterSave,renderElapsedMs=s.game.world.elapsedMs){const schedule=chapterSchedule(s);if(!schedule)return null;const sec=(renderElapsedMs-schedule.start)/1000;return sec>=0&&sec<8?sec:null;}
 export function withChapterScene<T extends SceneExtension>(base:T,get:()=>ChapterSave):T{
  const robot=base.robotPose,drawRobot=base.drawRobot,after=base.afterWorld;
- return {...base,robotPose(p,t){const sec=chapterSequence(get());if(sec===null)return robot?.(p,t);const original=robot?.(p,t)??p,a=smooth(sec/2)*(1-smooth((sec-6)/2)),x=original.x+(378-original.x)*a,y=original.y+(355-original.y)*a;return{...p,x,y,action:sec<2?'walk':'scan',facing:'right',carrying:false,parcel:{...p.parcel,visible:false,held:false}};},
- drawRobot(c,f,a){if(chapterSequence(get())!==null)return false;return drawRobot?.(c,f,a);},
- afterWorld(c,f){after(c,f);const sec=chapterSequence(get());f.output.dataset.chapterPhase=sec===null?'idle':sec<1?'lamp':sec<3?'belt':sec<4.5?'parcel':sec<6?'slip':'read';if(sec===null)return;
+ const sequence=()=>{const s=get();return chapterSequence(s,fusionRenderElapsed(s.game,Date.now()));};
+ return {...base,robotPose(p,t){const sec=sequence();if(sec===null)return robot?.(p,t);const original=robot?.(p,t)??p,a=smooth(sec/2)*(1-smooth((sec-6)/2)),x=original.x+(378-original.x)*a,y=original.y+(355-original.y)*a;return{...p,x,y,action:sec<2?'walk':'scan',facing:'right',carrying:false,parcel:{...p.parcel,visible:false,held:false}};},
+ drawRobot(c,f,a){if(sequence()!==null)return false;return drawRobot?.(c,f,a);},
+ afterWorld(c,f){after(c,f);const sec=sequence();f.output.dataset.chapterPhase=sec===null?'idle':sec<1?'lamp':sec<3?'belt':sec<4.5?'parcel':sec<6?'slip':'read';if(sec===null)return;
   const point=sortingMachinePoint(90,205),move=smooth((sec-1)/3),px=point.x-18*move,py=point.y+10*move;
   c.save();c.imageSmoothingEnabled=false;
   // Grounded roller-plane paper strip emerging from the actual machine mouth.
