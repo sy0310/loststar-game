@@ -11666,7 +11666,7 @@
         "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "保留原161条与13条A045，再保留7条REFUI共181条；最新Review逐条替代整理旧口径，不删旧ID。",
+      "independentAudit": "保留原181项，追加本章12项，共193项；880ffbc原文、冻结包画面、普通/QA来源及原档隔离二次核对，真机/用户待审。",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -29435,18 +29435,14 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
-          "src/chapter/model.ts",
-          "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "prototypes/ref-ui/ui.ts",
+          "prototypes/ref-ui/light-treatment.ts",
+          "src/chapter/entry.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29462,10 +29458,24 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/screens/qa-chromium-360-home.png",
+          "artifacts/chapter-one/screens/qa-webkit-390-home.png"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-SIX",
@@ -29479,18 +29489,14 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
-          "src/chapter/model.ts",
+          "src/chapter/content.ts",
           "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "prototypes/ref-ui/light-treatment.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29506,10 +29512,24 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/content-mapping.json",
+          "artifacts/chapter-one/qa-evidence.json"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-LINKS",
@@ -29523,18 +29543,13 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
           "src/chapter/model.ts",
-          "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "src/chapter/ui.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29550,10 +29565,26 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/screens/natural-receipt-association.png",
+          "artifacts/chapter-one/screens/natural-stamp-association.png",
+          "artifacts/chapter-one/screens/natural-cosmic-parcel-association.png",
+          "artifacts/chapter-one/natural-segments.json"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-NIGHT",
@@ -29567,18 +29598,14 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
           "src/chapter/model.ts",
-          "src/chapter/ui.ts",
           "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "src/chapter/entry.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29594,10 +29621,26 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/screens/natural-night-slip.png",
+          "artifacts/chapter-one/videos/natural-night-reveal.mp4",
+          "artifacts/chapter-one/videos/qa-legal-night.mp4",
+          "artifacts/chapter-one/walls/8dfdd06-night-contact.png"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-COMBO",
@@ -29611,18 +29654,13 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
-          "src/chapter/model.ts",
           "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "src/chapter/style.css"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29638,10 +29676,24 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/screens/qa-optional-combo.png",
+          "artifacts/chapter-one/videos/qa-curio-tape.mp4"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-ENDING",
@@ -29655,18 +29707,14 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
-          "src/chapter/model.ts",
           "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "src/chapter/model.ts",
+          "src/chapter/style.css"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29682,10 +29730,25 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/screens/natural-ending-letter.png",
+          "artifacts/chapter-one/screens/natural-ending-room.png",
+          "artifacts/chapter-one/videos/natural-ending-and-real-return.mp4"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-RETURN",
@@ -29699,18 +29762,13 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
           "src/chapter/model.ts",
-          "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "src/chapter/ui.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29726,10 +29784,27 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/screens/natural-real-return.png",
+          "artifacts/chapter-one/screens/natural-return-claimed.png",
+          "artifacts/chapter-one/videos/qa-resident-return.mp4",
+          "artifacts/chapter-one/videos/qa-chapter-return.mp4",
+          "artifacts/chapter-one/videos/qa-multi-return.mp4"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-SAVE",
@@ -29743,18 +29818,14 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
-          "src/chapter/model.ts",
-          "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
           "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "src/chapter/model.ts",
+          "src/fusion/store.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29770,10 +29841,24 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/natural-evidence.json",
+          "artifacts/chapter-one/checks/save-isolation.json"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-LEGACY",
@@ -29787,18 +29872,14 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
           "src/chapter/model.ts",
-          "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
           "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "scripts/verify_chapter_saves.mjs"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29814,10 +29895,24 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/checks/save-isolation.json",
+          "artifacts/chapter-one/checks/long-offline.json"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-LOGS",
@@ -29831,18 +29926,13 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
           "src/chapter/model.ts",
-          "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "src/chapter/ui.ts"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29858,10 +29948,24 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/natural-evidence.json",
+          "artifacts/chapter-one/qa-evidence.json"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-VERIFY",
@@ -29875,18 +29979,15 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
-          "src/chapter/model.ts",
-          "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
           "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "src/chapter/chapter.spec.ts",
+          "scripts/verify_chapter_delivery.py",
+          "scripts/verify_chapter_long_offline.mjs"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29902,10 +30003,27 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/checks/chapter-browser-ci.json",
+          "artifacts/chapter-one/checks/reference-browser.json",
+          "artifacts/chapter-one/checks/unit-442.log",
+          "artifacts/chapter-one/checks/long-offline.json",
+          "artifacts/chapter-one/performance.json"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       },
       {
         "id": "CH01-DELIVER",
@@ -29919,18 +30037,14 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
-          "src/chapter/model.ts",
-          "src/chapter/ui.ts",
-          "src/chapter/scene.ts",
-          "src/chapter/entry.ts",
-          "src/fusion/store.ts",
-          "tests/chapter-model.test.ts",
-          "src/chapter/chapter.spec.ts"
+          "scripts/package_chapter.py",
+          "vite.chapter.config.ts",
+          "design/first-planet-story/DELIVERY.md"
         ],
         "assets": [
           "assets/runtime/visual-renewal/whole-states-v043/registration.json"
@@ -29946,10 +30060,27 @@
           "chapter-browser",
           "chapter-fixed-package"
         ],
-        "proofs": [],
-        "gap": "Fixed-package evidence in progress; user visual and physical-phone review pending.",
-        "nextAction": "Verify ordinary route and real return, then deliver frozen chapter self-test.",
-        "parent": null
+        "proofs": [
+          "artifacts/chapter-one/verification.json",
+          "artifacts/chapter-one/independent-review.md",
+          "artifacts/chapter-one/checks/chapter-browser.json",
+          "artifacts/chapter-one/index.html",
+          "artifacts/chapter-one/package.json",
+          "artifacts/chapter-one/taptap-receipt.json",
+          "artifacts/chapter-one/natural-segments.json",
+          "artifacts/chapter-one/performance.json"
+        ],
+        "gap": "可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。",
+        "nextAction": "用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。",
+        "parent": null,
+        "reviewBasis": "Second task-vs-actual-frame internal audit; scoped playable chapter sandbox. Not user visual or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+          "zipSha256": "0b93590b3fce47d4ab32feaa12c7c758598a8730e699e64b6ba4758a122227b0",
+          "database": "loststar.review.parcel-story.v1",
+          "taptapVersion": 452593,
+          "formalIntegration": false
+        }
       }
     ],
     "supersededRules": [
@@ -30322,7 +30453,15 @@
         "proof": "artifacts/v045-a-exploration/proof.json",
         "status": "PENDING"
       }
-    ]
+    ],
+    "chapterDelivery": {
+      "status": "PLAYABLE_DEVELOPMENT_SELF_TEST_PENDING_USER_AND_PHONE",
+      "proof": "artifacts/chapter-one/verification.json",
+      "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+      "taptapVersion": 452593,
+      "formalStorageOpened": false,
+      "scope": "Explicitly authorized persistent chapter entry; not an automatic formal-v037 migration."
+    }
   },
   "approvedReferenceManifests": [
     {
