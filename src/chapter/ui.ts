@@ -9,7 +9,7 @@ import {renewalArtUrl} from '../fusion/renewal-ui';
 import {savedCurioCondition} from '../fusion/curio-state-images';
 import {itemArt} from '../ui/art';
 import mouseUrl from '../../assets/runtime/mouse.webp';
-import {mountChapterClues,drawChapterPostmark} from './visual-clues';
+import {mountChapterClues,drawChapterPostmark,parcelStoryStar} from './visual-clues';
 const esc=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 export function mountChapterUi(controller:FusionController,scene:ExpeditionScene,focus:()=>{x:number;y:number},replay:(kind:'reveal'|'stop')=>void,qa:boolean,isReplaying:()=>boolean){
  const get=()=>controller.state as ChapterSave,session=crypto.randomUUID(),sent=new Set<string>();
@@ -49,7 +49,7 @@ export function mountChapterUi(controller:FusionController,scene:ExpeditionScene
   treatment:{line:chapterLine,reply:id=>chapterContent[id].reply,notes(id){const s=get();return chapterLinks(s,id).map(t=>`<p ${id==='stamp'?'data-chapter-visible="link/stamp"':''}>${esc(t)}</p>`).join('')+(id==='receipt'?'<p class="ref-muted">原件 RET-031 / P03 · 签收仍待证</p>':'')+(id==='tape'&&chapterKnown(s,'combo')?'<button data-chapter-combo>让胶带试着遮住“明天” · 免费</button>'+(combo?comboHtml:''):'');},trial(id){void record('try',id);},draw(c,id,trial){
    if(id==='stamp'&&trial>.3){c.save();c.fillStyle='#e7d5b5';c.fillRect(124,142,60,37);c.fillStyle='#9f4d66';c.font='bold 15px sans-serif';c.fillText('昨天',128,166);drawChapterPostmark(c,173,153,9);c.restore();}
    if(id==='receipt'&&trial>.45){c.save();c.fillStyle='#ead8b5';c.fillRect(24,151,145,25);c.fillStyle='#624461';c.font='12px sans-serif';c.fillText('请提前后悔。',35,168);c.restore();}
-   if(id==='cosmic-parcel'){c.save();c.globalAlpha=.6+.4*Math.sin(trial*18);c.fillStyle='#f0ce7d';c.fillRect(126,48,3,9);c.fillRect(123,51,9,3);c.restore();}
+   if(id==='cosmic-parcel'){c.save();c.globalAlpha=.6+.4*Math.sin(trial*18);c.fillStyle='#f0ce7d';c.fillRect(parcelStoryStar.x/2,parcelStoryStar.y/2-4,3,9);c.fillRect(parcelStoryStar.x/2-3,parcelStoryStar.y/2-1,9,3);c.restore();}
   }}
  });
  function letterHtml(summary=false,room=false){return`<div class="chapter-letter" data-chapter-visible="ending">${!room?`<p class="ref-muted">${chapterReveal.result} ${chapterReveal.conclusion}</p>`:''}<article><p>${chapterLetter.front}</p><p>${chapterLetter.back}</p><p><b>${chapterLetter.end}</b></p></article><img class="chapter-friend" src="${mouseUrl}" alt="拆封鼠也来留一盏灯"></div><p class="ref-muted">留给管理员的空白地址 · 原记录</p>${room?'':'<button data-chapter-letter-scene>在收藏室读信</button>'}`;}
@@ -68,9 +68,8 @@ export function mountChapterUi(controller:FusionController,scene:ExpeditionScene
   if(b.hasAttribute('data-chapter-combo')){combo=true;const host=document.querySelector('#lt-story-notes')!;if(!host.querySelector('.chapter-combo'))host.insertAdjacentHTML('beforeend',comboHtml);void record('try','combo');return;}
  },true);
  const visible=()=>{if(document.hidden)return;const roots=[...document.querySelectorAll<HTMLElement>('[data-chapter-visible]')];const img=document.querySelector<HTMLImageElement>('#refui-treatment[open] #lt-image[data-ready=true]');if(img){const id=img.dataset.stateImage?.replace(/-(found|clean|stabilized)\.webp$/,'');if(id)roots.push(Object.assign(img,{chapterVisibleId:'curio/'+id}));}for(const el of roots){const id=el.dataset.chapterVisible??(el as HTMLElement&{chapterVisibleId:string}).chapterVisibleId;if(!id||sent.has(id)||!el.getClientRects().length)continue;const r=el.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)continue;sent.add(id);void record('shown',id).then(result=>{if(!result.ok){sent.delete(id);return;}void record('read',id);if(id==='reveal')void record('conclusion','reveal');});}};
- const star=document.createElement('i');star.id='chapter-box-star';star.setAttribute('aria-hidden','true');document.querySelector('.lt-picture')!.append(star);
  const clues=mountChapterClues(get);
- const timer=setInterval(()=>{visible();clues.refresh();star.hidden=!document.querySelector<HTMLImageElement>('#lt-image')?.dataset.stateImage?.startsWith('cosmic-parcel-')||!document.querySelector('#refui-treatment[open]');replaying=isReplaying();const s=get();if(s.chapter.endingWorldMs!==null){for(const el of document.querySelectorAll<HTMLElement>('#fusion-collection-next p'))el.textContent='首轮发现已完成，日常探索继续。';}},250);
+ const timer=setInterval(()=>{visible();clues.refresh();replaying=isReplaying();const s=get();if(s.chapter.endingWorldMs!==null){for(const el of document.querySelectorAll<HTMLElement>('#fusion-collection-next p'))el.textContent='首轮发现已完成，日常探索继续。';}},250);
  void record('return-session','session','automatic');window.addEventListener('pageshow',e=>{if(e.persisted)void record('return-session','session','automatic');});
  return{...ref,stop:()=>{clearInterval(timer);clues.stop();}};
 }

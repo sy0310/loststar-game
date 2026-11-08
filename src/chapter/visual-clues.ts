@@ -1,4 +1,5 @@
 import type {ChapterSave} from './model';
+export const parcelStoryStar={x:240,y:187} as const;
 
 /** The same fictional return impression appears on the receipt and the stamp's trial paper. */
 export function drawChapterPostmark(c:CanvasRenderingContext2D,x:number,y:number,r=18){
@@ -41,7 +42,9 @@ export function mountChapterClues(get:()=>ChapterSave){
    label('印模：昨天',255,177,{x:199,y:307});clue='印模：昨天';
    if(get().game.collection.includes('receipt')){c.strokeStyle='#deb977';c.lineWidth=2;c.strokeRect(119,274,117,58);}
   }else{
-   if(condition==='found'){label('箱缝里的星',217,342,{x:244,y:181});clue='箱缝里的星';}
+   // One shared image-space point for the light, its reading leader and the free interaction.
+   const {x,y}=parcelStoryStar;c.fillStyle='#f0ce7d';c.fillRect(x-2,y-7,5,15);c.fillRect(x-7,y-2,15,5);
+   if(condition==='found'){label('箱缝里的星',217,342,parcelStoryStar);clue='箱缝里的星';}
    else{label('封签：明日寄出',6,337,{x:162,y:215});clue='封签：明日寄出';}
   }
   canvas.dataset.clue=clue;canvas.dataset.item=id;canvas.dataset.condition=condition;
