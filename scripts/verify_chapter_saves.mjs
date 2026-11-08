@@ -1,6 +1,6 @@
 /** Controlled browser contexts: seed known old archives/backups, then prove the app leaves every byte intact. */
 import fs from'node:fs/promises';import{createHash}from'node:crypto';import{chromium,webkit}from'@playwright/test';import{makeReviewFixture}from'../releases/ref-ui-fixtures/model.js';
-const root='artifacts/chapter-one',meta=JSON.parse(await fs.readFile('releases/chapter-package.json')),base='http://127.0.0.1:4272/loststar-parcel-story/',hash=s=>createHash('sha256').update(s).digest('hex'),rows=[];
+const root='artifacts/chapter-one-followup',meta=JSON.parse(await fs.readFile('releases/chapter-package.json')),base='http://127.0.0.1:4272/loststar-parcel-story/',hash=s=>createHash('sha256').update(s).digest('hex'),rows=[];
 for(const[name,driver]of[['chromium',chromium],['webkit',webkit]]){
  const b=await driver.launch(),c=await b.newContext({viewport:{width:390,height:844},hasTouch:true}),p=await c.newPage();await p.goto(base);await p.waitForFunction(()=>window.__CHAPTER__);
  const fixture=makeReviewFixture('facilities',Date.now()).state;fixture.game.resources=27049;const raw=JSON.stringify(fixture),backups={current:fixture,'backup/0':{raw,source:'known-old-save'},'meta/backup':{status:'saved',retained:true}},names=['loststar.fusion.firstplanet.v037','loststar.fusion.v1','loststar.fusion.review.v035'];

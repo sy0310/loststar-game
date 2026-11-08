@@ -11663,7 +11663,8 @@
         "design/v045_a_simplified_exploration/IMPLEMENTATION.md",
         "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
         "design/v045_a_simplified_exploration/REVIEW_20261107.md",
-        "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md"
+        "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
+        "design/first-planet-story/PHONE_VISUAL_FEEDBACK.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
       "independentAudit": "保留原181项，追加本章12项，共193项；880ffbc原文、冻结包画面、普通/QA来源及原档隔离二次核对，真机/用户待审。",
@@ -11936,7 +11937,9 @@
       "CH01-LEGACY",
       "CH01-LOGS",
       "CH01-VERIFY",
-      "CH01-DELIVER"
+      "CH01-DELIVER",
+      "CH01-IMAGEWORDS",
+      "CH01-HELLO"
     ],
     "requirements": [
       {
@@ -30081,6 +30084,83 @@
           "taptapVersion": 452593,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "CH01-IMAGEWORDS",
+        "parent": "CH01-SIX",
+        "requirement": "物件内可读日期和指向印模/封签的标注，把图像和当前短句连起来；原18整图、状态门槛和签收事实不变。",
+        "acceptanceCriteria": "物件内可读日期和指向印模/封签的标注，把图像和当前短句连起来；原18整图、状态门槛和签收事实不变。",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/PHONE_VISUAL_FEEDBACK.md",
+            "startLine": 5,
+            "endLine": 8
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/chapter/visual-clues.ts",
+          "src/chapter/ui.ts",
+          "src/chapter/style.css"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter self-test, same story save namespace"
+          }
+        ],
+        "checks": [
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "452593文字获认可；图文连接和居民爱心返修，待新版固定包与手机审核。",
+        "nextAction": "验证新包实际画面/触控/减少动态及原剧情档续玩，上传开发自测。"
+      },
+      {
+        "id": "CH01-HELLO",
+        "parent": "CH01-BASELINE",
+        "requirement": "已发现三居民打招呼立即冒像素爱心；减少动态可见静态反馈，反复不收费不奖励。",
+        "acceptanceCriteria": "已发现三居民打招呼立即冒像素爱心；减少动态可见静态反馈，反复不收费不奖励。",
+        "sourceRefs": [
+          {
+            "path": "design/first-planet-story/PHONE_VISUAL_FEEDBACK.md",
+            "startLine": 6,
+            "endLine": 8
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "src/fusion/habitat.ts",
+          "src/chapter/chapter.spec.ts"
+        ],
+        "assets": [
+          "assets/runtime/visual-renewal/whole-states-v043/registration.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "src/chapter/entry.ts",
+            "label": "Persistent chapter self-test, same story save namespace"
+          }
+        ],
+        "checks": [
+          "chapter-browser",
+          "chapter-fixed-package"
+        ],
+        "proofs": [],
+        "gap": "452593文字获认可；图文连接和居民爱心返修，待新版固定包与手机审核。",
+        "nextAction": "验证新包实际画面/触控/减少动态及原剧情档续玩，上传开发自测。"
       }
     ],
     "supersededRules": [
@@ -30461,7 +30541,20 @@
       "taptapVersion": 452593,
       "formalStorageOpened": false,
       "scope": "Explicitly authorized persistent chapter entry; not an automatic formal-v037 migration."
-    }
+    },
+    "chapterFeedbackHistory": [
+      {
+        "taptapVersion": 452593,
+        "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+        "userAccepted": "当前文字",
+        "requestedChanges": [
+          "图像与文字需直连",
+          "三居民简单明显爱心"
+        ],
+        "overallAcceptance": false,
+        "deviceRecordProvided": false
+      }
+    ]
   },
   "approvedReferenceManifests": [
     {

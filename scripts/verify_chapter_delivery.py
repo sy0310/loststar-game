@@ -1,7 +1,7 @@
 """Verify actual fixed chapter media, money identities, persistence and unchanged approved art."""
 from pathlib import Path
 import json,hashlib,zipfile,subprocess
-root=Path('artifacts/chapter-one');m=json.loads(Path('releases/chapter-package.json').read_text());n=json.loads((root/'natural-evidence.json').read_text());q=json.loads((root/'qa-evidence.json').read_text());checks=[]
+root=Path('artifacts/chapter-one-followup');m=json.loads(Path('releases/chapter-package.json').read_text());n=json.loads((root/'natural-evidence.json').read_text());q=json.loads((root/'qa-evidence.json').read_text());checks=[]
 def check(name,valid,detail=None):
  if not valid:raise AssertionError((name,detail))
  checks.append(dict(name=name,passed=True,detail=detail))
@@ -48,7 +48,7 @@ isolation=json.loads((root/'checks/save-isolation.json').read_text());check('old
 long=json.loads((root/'checks/long-offline.json').read_text());check('long-offline-new-and27049',long['sourceCommit']==m['sourceCommit'] and len(long['rows'])==8 and all(r['threeIdenticalReloads'] and r['repeatClaimRejected'] and r['rightsAndEvidenceRetained'] for r in long['rows']))
 for path in ['assets/runtime','assets/source']:
  changed=subprocess.check_output(['git','diff','--name-only','bb4b221',m['sourceCommit'],'--',path],text=True);check('approved-art-unchanged/'+path,not changed)
-for name,count in [('chapter-browser',40),('reference-browser',80)]:
+for name,count in [('chapter-browser',52),('reference-browser',80)]:
  stats=json.loads((root/('checks/'+name+'.json')).read_text())['stats'];check(name,stats['expected']==count and stats['unexpected']==stats['skipped']==stats['flaky']==0,stats)
 segments=json.loads((root/'natural-segments.json').read_text());check('ordinary-excerpts-bound-source',segments['sourceCommit']==m['sourceCommit'] and len(segments['segments'])==5)
 for v in segments['segments']:check('ordinary-excerpt/'+v['file'],sha(root/v['file'])==v['sha256'] and v['sourceSha256']==n['video']['sha256'] and not v['qa'] and v['speed']==1 and v['continuousSource'])

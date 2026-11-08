@@ -1,7 +1,7 @@
 """Unaccelerated excerpts from the one ordinary recording; retain the full original and explicit provenance."""
 from pathlib import Path
 import json,subprocess,hashlib
-root=Path('artifacts/chapter-one');n=json.loads((root/'natural-evidence.json').read_text());shots={Path(s['file']).stem:s for s in n['screens']};segments=[]
+root=Path('artifacts/chapter-one-followup');n=json.loads((root/'natural-evidence.json').read_text());shots={Path(s['file']).stem:s for s in n['screens']};segments=[]
 def clip(name,label,start,duration):
  file='videos/'+name+'.mp4';start=max(0,start);duration=min(duration,n['video']['duration']-start)
  subprocess.run(['ffmpeg','-y','-loglevel','error','-ss',str(start),'-i',str(root/n['video']['file']),'-t',str(duration),'-c:v','libx264','-preset','fast','-crf','22','-pix_fmt','yuv420p','-an','-movflags','+faststart',str(root/file)],check=True)

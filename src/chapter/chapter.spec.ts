@@ -46,3 +46,27 @@ test('unread actual night discovery precedes routine cash and stays readable aft
 test('paid full archive and free chapter replay switch exclusively on the same expedition page',async({page})=>{
  await page.goto('/?qa=1');await ready(page);const now=Date.now(),s=advanceChapter(attachChapter(makeReviewFixture('facilities',now-300000).state,true),now);await Promise.all([page.waitForEvent('load'),page.evaluate(raw=>(window as any).__CHAPTER__.qaImport(raw),JSON.stringify(s)).catch(()=>{})]);await ready(page);await page.locator('.fu-nav [data-tab=base]').tap();await page.locator('#fusion-base-more summary').tap();await page.locator('#fusion-project-shortcuts [data-open-project=archive]').tap();await expect(page.locator('#fusion-flow-replay')).toBeVisible();await page.locator('#refui-objective').tap();await page.locator('[data-chapter-replay]').tap();await expect(page.locator('#fusion-flow-replay')).toBeHidden();await expect(page.locator('#fusion-world canvas')).toBeVisible();await expect(page.locator('.chapter-caption')).toContainText('只读回顾');
 });
+
+test('reading clues visibly connect the current whole image and line without exposing the next paid state',async({page})=>{
+ await qa(page,'restoration');await detail(page,'receipt');const image=await page.locator('#lt-image').getAttribute('src');
+ await expect(page.locator('#chapter-object-clues')).toHaveAttribute('data-clue','票角的旧印记');await expect(page.locator('#chapter-object-clues')).toBeVisible();
+ expect(await page.locator('#chapter-object-clues').getAttribute('aria-label')).not.toContain('明天');await page.locator('#lt-main').tap();
+ await expect(page.locator('#chapter-object-clues')).toHaveAttribute('data-clue','购买日期：明天');expect(await page.locator('#lt-image').getAttribute('src')).not.toBe(image);
+ const painted=await page.locator('#chapter-object-clues').evaluate((el:HTMLCanvasElement)=>[...el.getContext('2d')!.getImageData(181,190,75,47).data].filter((v,i)=>i%4===3&&v>0).length);expect(painted).toBeGreaterThan(150);
+ await page.locator('#lt-close').tap();for(const[id,clue]of[['stamp','印模：昨天'],['cosmic-parcel','箱缝里的星']]){await detail(page,id);await expect(page.locator('#chapter-object-clues')).toHaveAttribute('data-clue',clue);await page.locator('#lt-close').tap();}
+});
+
+test('each known resident gives an immediate painted pixel heart, including reduced motion, with no reward',async({page})=>{
+ for(const id of ['mouse','hermit','tagbird']){
+  await qa(page,'ending');if(id==='hermit')await page.emulateMedia({reducedMotion:'reduce'});else await page.emulateMedia({reducedMotion:'no-preference'});
+  await page.locator('.fu-nav [data-tab=collection]').tap();await page.locator('#refui-residents').tap();await page.locator(`[data-ref-resident="${id}"]`).tap();const canvas=page.locator('#fusion-detail-habitat canvas');await expect(canvas).toHaveAttribute('data-ready','true');const before=await state(page);await page.locator('#fusion-try').tap();await expect(canvas).toHaveAttribute('data-greeting','heart');
+  const pink=await canvas.evaluate((el:HTMLCanvasElement)=>{const x=Number(el.dataset.greetingX),y=Number(el.dataset.greetingY),a=el.getContext('2d')!.getImageData(x-20,y-16,40,32).data;let n=0;for(let i=0;i<a.length;i+=4)if(a[i]>230&&a[i]<250&&a[i+1]>135&&a[i+1]<170&&a[i+2]>175&&a[i+2]<202)n++;return n;});expect(pink).toBeGreaterThan(80);
+  await expect(canvas).toHaveAttribute('data-greeting','none',{timeout:5000});await page.locator('#fusion-try').tap();await expect(canvas).toHaveAttribute('data-greeting','heart');const after=await state(page);expect(after.game.collection).toEqual(before.game.collection);expect(after.game.resources).toBe(before.game.resources+after.game.station.grossIncome-before.game.station.grossIncome-after.game.station.repairSpent+before.game.station.repairSpent);
+ }
+});
+
+test('previous persisted chapter build continues its facts, rights and ledger with the same namespace',async({page})=>{
+ const prior=chapterQaFixture('ending',Date.now());prior.chapter.qa=false;prior.game.resources=27049;prior.chapter.read=['reveal','ending','curio/receipt'];
+ await page.goto('/');await ready(page);await page.evaluate(async raw=>{const r=indexedDB.open('loststar.review.parcel-story.v1',1);await new Promise<void>((resolve,reject)=>{r.onsuccess=()=>{const db=r.result,t=db.transaction('archive','readwrite');t.objectStore('archive').put(JSON.parse(raw),'current');t.oncomplete=()=>{db.close();resolve();};t.onerror=()=>reject(t.error);};r.onerror=()=>reject(r.error);});},JSON.stringify(prior));await page.reload();await ready(page);const after=await state(page);
+ expect(after.game.resources).toBeGreaterThanOrEqual(27049);expect(after.chapter.read).toEqual(prior.chapter.read);expect(after.chapter.revealWorldMs).toBe(prior.chapter.revealWorldMs);expect(after.chapter.endingWorldMs).toBe(prior.chapter.endingWorldMs);expect(after.game.collection).toEqual(prior.game.collection);expect(after.receipt.verifiedEvidenceIds).toEqual(prior.receipt.verifiedEvidenceIds);
+});

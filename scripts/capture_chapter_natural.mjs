@@ -1,6 +1,6 @@
 /** Ordinary persistent new game: no seeded save, QA, upgrades, clock override or speedup. */
 import fs from 'node:fs/promises';import{execFileSync}from'node:child_process';import{createHash}from'node:crypto';import{chromium}from'@playwright/test';
-const root='artifacts/chapter-one',meta=JSON.parse(await fs.readFile('releases/chapter-package.json')),base=process.env.CHAPTER_URL??'http://127.0.0.1:4272/loststar-parcel-story/',hash=b=>createHash('sha256').update(b).digest('hex');
+const root='artifacts/chapter-one-followup',meta=JSON.parse(await fs.readFile('releases/chapter-package.json')),base=process.env.CHAPTER_URL??'http://127.0.0.1:4272/loststar-parcel-story/',hash=b=>createHash('sha256').update(b).digest('hex');
 if(execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim()!==meta.sourceCommit)throw Error('Freeze source before capture');
 for(const x of ['screens','videos','checks'])await fs.mkdir(root+'/'+x,{recursive:true});await fs.mkdir('releases/chapter-natural-raw',{recursive:true});
 const b=await chromium.launch(),c=await b.newContext({viewport:{width:390,height:844},hasTouch:true,recordVideo:{dir:'releases/chapter-natural-raw',size:{width:390,height:844}}}),p=await c.newPage(),v=p.video(),errors=[],opened=new Set(),timeline=[],screens=[];

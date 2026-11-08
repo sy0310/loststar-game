@@ -48,6 +48,7 @@ export class FusionHabitatScene {
   private frame = 0;
   private interactionAt = -Infinity;
   private cadence = new FrameCadence();
+  private reducedMotion = matchMedia('(prefers-reduced-motion:reduce)');
 
   constructor(
     root: HTMLElement,
@@ -115,6 +116,7 @@ export class FusionHabitatScene {
     const trial=trialAge>=0&&trialAge<2.6;
     const observationEnvironment=trial?{...environment,period:'day' as const,rest:0,seconds:({mouse:5.1,hermit:4.3,tagbird:.1}[this.id])+trialAge*.7}:environment;
     const known = state.collection.includes(this.id);
+    let greeting: {x: number; y: number} | undefined;
     const level = Math.max(0, Math.min(3, this.level()));
     const context = this.context;
     context.imageSmoothingEnabled = false;
@@ -139,6 +141,10 @@ export class FusionHabitatScene {
       this.canvas.dataset.source = pose.source;
       this.canvas.dataset.poseX = String(pose.x);
       this.canvas.dataset.poseY = String(pose.y);
+      if (trial) greeting = {
+        x: registration.target.x + (pose.x - registration.support.x) * registration.scale,
+        y: registration.target.y + (pose.y - registration.support.y - pose.width * 1.04) * registration.scale,
+      };
     } else {
       this.canvas.dataset.action = 'unseen';
       this.canvas.dataset.source = 'hidden';
@@ -155,6 +161,8 @@ export class FusionHabitatScene {
       context.fillStyle = '#f9dba6';context.fillRect(lamp.x - 3, lamp.y - 2, 6, 3);context.restore();
     }
     context.restore();
+    this.canvas.dataset.greeting = greeting ? 'heart' : 'none';
+    if (greeting) this.drawGreeting(greeting, trialAge);
     this.drawGlass(level);
     this.canvas.dataset.period = environment.period;
     this.canvas.dataset.trial=String(trial);
@@ -162,6 +170,23 @@ export class FusionHabitatScene {
     this.canvas.dataset.frame = String(Math.floor(elapsed / 65));
     this.canvas.dataset.level = String(level);
     this.canvas.dataset.known = String(known);
+  }
+
+  /** One obvious, free hello. It follows the resident, not the window frame. */
+  private drawGreeting(head: {x: number; y: number}, age: number) {
+    const c = this.context, reduced = this.reducedMotion.matches;
+    const x = Math.round(Math.max(30, Math.min(568, head.x)));
+    const y = Math.round(Math.max(32, Math.min(165, head.y - 22 - (reduced ? 0 : Math.min(age, 1.8) * 9))));
+    const cells = ['01100110', '11111111', '11111111', '01111110', '00111100', '00011000'];
+    c.save(); c.globalAlpha = reduced ? 1 : Math.min(1, (2.6 - age) / .6);
+    for (const [row, line] of cells.entries()) for (let col=0;col<line.length;col++) if (line[col]==='1') {
+      c.fillStyle='#49324f';c.fillRect(x-16+col*4-2,y-12+row*4-2,8,8);
+    }
+    for (const [row, line] of cells.entries()) for (let col=0;col<line.length;col++) if (line[col]==='1') {
+      c.fillStyle='#f396b9';c.fillRect(x-16+col*4,y-12+row*4,4,4);
+    }
+    c.fillStyle='#ffe2df';c.fillRect(x-12,y-8,4,4);c.fillRect(x-8,y-8,4,4);c.restore();
+    this.canvas.dataset.greetingX=String(x);this.canvas.dataset.greetingY=String(y);
   }
 
   private drawEquipment(level: number) {

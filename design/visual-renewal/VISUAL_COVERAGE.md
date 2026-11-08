@@ -4,14 +4,14 @@
 
 基线运行源码：`ff917872227b0f28a452dee1642d9cc8606251db`。当前交付声明：`PENDING`；Chapter01 persistent development self-test; formal package remains unchanged。
 
-共 193 项（24 个父项 / 169 个子项）；用户视觉和真实手机独立登记。
+共 195 项（24 个父项 / 171 个子项）；用户视觉和真实手机独立登记。
 
 | 维度 | 当前登记 |
 |---|---|
-| `implementation` | IMPLEMENTED 181 / IN_PROGRESS 12 |
-| `evidence` | CURRENT_VERIFIED 181 / MISSING 12 |
-| `visual` | INTERNAL_PASS 181 / NOT_REVIEWED 12 |
-| `phone` | NOT_TESTED 193 |
+| `implementation` | IMPLEMENTED 181 / IN_PROGRESS 14 |
+| `evidence` | CURRENT_VERIFIED 181 / MISSING 14 |
+| `visual` | INTERNAL_PASS 181 / NOT_REVIEWED 14 |
+| `phone` | NOT_TESTED 195 |
 
 工程全绿与图片数量不构成艺术签收；门禁的 `NOT_READY`、具体缺口与固定包证明单独读取。
 
@@ -265,12 +265,14 @@
 | ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
 |---|---|---|---|---|
 | `CH01-BASELINE` Preserve sample6 theme, safe sky, three tabs, whole images, instant clean and 550ms guard.<br>[design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md:11–14](../../design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md#L11-L14)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/ref-ui/ui.ts](../../prototypes/ref-ui/ui.ts)<br>[prototypes/ref-ui/light-treatment.ts](../../prototypes/ref-ui/light-treatment.ts)<br>[src/chapter/entry.ts](../../src/chapter/entry.ts)<br>入口：`src/chapter/entry.ts`<br>素材：[assets/runtime/visual-renewal/whole-states-v043/registration.json](../../assets/runtime/visual-renewal/whole-states-v043/registration.json) | `chapter-model`<br>`chapter-browser`<br>`chapter-fixed-package`<br>[artifacts/chapter-one/verification.json](../../artifacts/chapter-one/verification.json)<br>[artifacts/chapter-one/independent-review.md](../../artifacts/chapter-one/independent-review.md)<br>[artifacts/chapter-one/checks/chapter-browser.json](../../artifacts/chapter-one/checks/chapter-browser.json)<br>[artifacts/chapter-one/screens/qa-chromium-360-home.png](../../artifacts/chapter-one/screens/qa-chromium-360-home.png)<br>[artifacts/chapter-one/screens/qa-webkit-390-home.png](../../artifacts/chapter-one/screens/qa-webkit-390-home.png) | 缺口：可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。<br>下一动作：用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。 |
+| `CH01-HELLO` 已发现三居民打招呼立即冒像素爱心；减少动态可见静态反馈，反复不收费不奖励。<br>[design/first-planet-story/PHONE_VISUAL_FEEDBACK.md:6–8](../../design/first-planet-story/PHONE_VISUAL_FEEDBACK.md#L6-L8)<br>`IN_SCOPE` | implementation: `IN_PROGRESS`<br>evidence: `MISSING`<br>visual: `NOT_REVIEWED`<br>phone: `NOT_TESTED` | [src/fusion/habitat.ts](../../src/fusion/habitat.ts)<br>[src/chapter/chapter.spec.ts](../../src/chapter/chapter.spec.ts)<br>入口：`src/chapter/entry.ts`<br>素材：[assets/runtime/visual-renewal/whole-states-v043/registration.json](../../assets/runtime/visual-renewal/whole-states-v043/registration.json) | `chapter-browser`<br>`chapter-fixed-package`<br>— | 缺口：452593文字获认可；图文连接和居民爱心返修，待新版固定包与手机审核。<br>下一动作：验证新包实际画面/触控/减少动态及原剧情档续玩，上传开发自测。 |
 
 ### CH01-SIX · All six approved18 material-state lines and representative free interactions use actual saved conditions.
 
 | ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
 |---|---|---|---|---|
 | `CH01-SIX` All six approved18 material-state lines and representative free interactions use actual saved conditions.<br>[design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md:24–41](../../design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md#L24-L41)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [src/chapter/content.ts](../../src/chapter/content.ts)<br>[src/chapter/ui.ts](../../src/chapter/ui.ts)<br>[prototypes/ref-ui/light-treatment.ts](../../prototypes/ref-ui/light-treatment.ts)<br>入口：`src/chapter/entry.ts`<br>素材：[assets/runtime/visual-renewal/whole-states-v043/registration.json](../../assets/runtime/visual-renewal/whole-states-v043/registration.json) | `chapter-model`<br>`chapter-browser`<br>`chapter-fixed-package`<br>[artifacts/chapter-one/verification.json](../../artifacts/chapter-one/verification.json)<br>[artifacts/chapter-one/independent-review.md](../../artifacts/chapter-one/independent-review.md)<br>[artifacts/chapter-one/checks/chapter-browser.json](../../artifacts/chapter-one/checks/chapter-browser.json)<br>[artifacts/chapter-one/content-mapping.json](../../artifacts/chapter-one/content-mapping.json)<br>[artifacts/chapter-one/qa-evidence.json](../../artifacts/chapter-one/qa-evidence.json) | 缺口：可保存首章初版已接入；物理手机与用户视觉待审。组合为气泡/胶带条，信为既有动态房间内的轻量纸签；正式v037未自动迁移。<br>下一动作：用户扫码TapTap452593，审核新章关联/同球纸条/信与真实锁屏，记录机型/系统；不自动扩星或发布。 |
+| `CH01-IMAGEWORDS` 物件内可读日期和指向印模/封签的标注，把图像和当前短句连起来；原18整图、状态门槛和签收事实不变。<br>[design/first-planet-story/PHONE_VISUAL_FEEDBACK.md:5–8](../../design/first-planet-story/PHONE_VISUAL_FEEDBACK.md#L5-L8)<br>`IN_SCOPE` | implementation: `IN_PROGRESS`<br>evidence: `MISSING`<br>visual: `NOT_REVIEWED`<br>phone: `NOT_TESTED` | [src/chapter/visual-clues.ts](../../src/chapter/visual-clues.ts)<br>[src/chapter/ui.ts](../../src/chapter/ui.ts)<br>[src/chapter/style.css](../../src/chapter/style.css)<br>入口：`src/chapter/entry.ts`<br>素材：[assets/runtime/visual-renewal/whole-states-v043/registration.json](../../assets/runtime/visual-renewal/whole-states-v043/registration.json) | `chapter-browser`<br>`chapter-fixed-package`<br>— | 缺口：452593文字获认可；图文连接和居民爱心返修，待新版固定包与手机审核。<br>下一动作：验证新包实际画面/触控/减少动态及原剧情档续玩，上传开发自测。 |
 
 ### CH01-LINKS · Three ownership-gated relations handle shuffled order and unclaimed cargo without spoilers.
 
@@ -360,6 +362,7 @@
 - [design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md](../../design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md)
 - [design/v045_a_simplified_exploration/REVIEW_20261107.md](../../design/v045_a_simplified_exploration/REVIEW_20261107.md)
 - [design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md](../../design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md)
+- [design/first-planet-story/PHONE_VISUAL_FEEDBACK.md](../../design/first-planet-story/PHONE_VISUAL_FEEDBACK.md)
 
 Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.
 
