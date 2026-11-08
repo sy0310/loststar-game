@@ -188,6 +188,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Verify committed fixed-package evidence when present
+        if: hashFiles('artifacts/salvage-route/verification.json') != ''
+        run: node prototypes/salvage-route-demo/tests/verify-evidence.cjs
       - name: Current salvage rules and actual paid policy simulation
         run: |
           npm --prefix prototypes/salvage-route-demo test

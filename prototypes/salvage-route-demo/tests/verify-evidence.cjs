@@ -1,0 +1,13 @@
+/* Frozen package evidence is separate from current test execution and phone acceptance. */
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),cp=require('node:child_process'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../../..'),folder=path.join(root,'artifacts/salvage-route'),p=JSON.parse(fs.readFileSync(path.join(folder,'verification.json'))),hash=b=>crypto.createHash('sha256').update(b).digest('hex');
+assert(/^[a-f0-9]{40}$/.test(p.runtimeSourceSha));cp.execFileSync('git',['merge-base','--is-ancestor',p.runtimeSourceSha,'HEAD'],{cwd:root});
+for(const file of['src/engine.js','src/app.js','src/store.js','src/balance.js','src/style.css','index.html','build.py','assets/ship.webp','../../../design/star-salvage/BALANCE_V01.json']){
+ const name=file.startsWith('../../../')?file.slice(9):'prototypes/salvage-route-demo/'+file;
+ const original=cp.execFileSync('git',['show',p.runtimeSourceSha+':'+name],{cwd:root});assert.equal(hash(fs.readFileSync(path.join(root,name))),hash(original),'runtime changed; refresh frozen package proof: '+name);
+}
+for(const item of p.evidenceFiles){const raw=fs.readFileSync(path.join(root,item.path));assert.equal(raw.length,item.bytes,item.path);assert.equal(hash(raw),item.sha256,item.path);}
+const build=JSON.parse(fs.readFileSync(path.join(folder,'build-info.json'))),tap=JSON.parse(fs.readFileSync(path.join(folder,'taptap-receipt.json'))),http=JSON.parse(fs.readFileSync(path.join(folder,'package-http.json')));
+assert.equal(build.sourceCommit,p.runtimeSourceSha);assert.equal(build.sha256,p.zip.sha256);assert.equal(build.bytes,p.zip.bytes);assert.equal(build.dirtySource,false);assert.equal(tap.zipSha256,build.sha256);assert.equal(tap.taptap.package_id,p.taptap.version);assert.equal(tap.taptap.file_size,build.bytes);assert.equal(tap.taptap.original_file_name,build.archive);assert.equal(tap.mainModuleUnchanged,true);assert.equal(tap.boundMainPackage,false);assert.equal(tap.taptap.is_releasing,false);assert.equal(http.allHttpBytesMatchZip,true);assert.equal(http.files.length,build.files);
+for(const name of['fixed-http-browser.json','ci-http-browser.json']){const r=JSON.parse(fs.readFileSync(path.join(folder,'checks',name)));assert.equal(r.stats.expected,p.fixedPackageBrowser.expected);assert.equal(r.stats.unexpected,0);assert.equal(r.stats.skipped,0);}
+assert.equal(p.ci.sameZipSha256,p.zip.sha256);assert.equal(p.physicalPhone,'NOT_TESTED');console.log('PASS frozen salvage runtime, ZIP metadata, all evidence bytes, independent HTTP/CI results and unbound TapTap receipt; phone remains NOT_TESTED');
