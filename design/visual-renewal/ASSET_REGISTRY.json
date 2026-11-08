@@ -31828,9 +31828,9 @@
           }
         ],
         "scope": "IN_SCOPE",
-        "implementation": "IN_PROGRESS",
-        "evidence": "MISSING",
-        "visual": "NOT_REVIEWED",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
         "phone": "NOT_TESTED",
         "code": [
           "prototypes/salvage-route-demo/build.py",
@@ -31856,20 +31856,26 @@
           "artifacts/salvage-route-upgrade/developer/capture/manifest.json",
           "artifacts/salvage-route-upgrade/build-info.json",
           "artifacts/salvage-route-upgrade/loststar-salvage-b26455a.zip",
-          "codex/SALVAGE_V02_DELIVERY_TASK.md"
+          "codex/SALVAGE_V02_DELIVERY_TASK.md",
+          "artifacts/salvage-route-upgrade/delivery/taptap-receipt.json",
+          "artifacts/salvage-route-upgrade/delivery/local-browser-check.json",
+          "artifacts/salvage-route-upgrade/delivery/deployed-package-http.json",
+          "artifacts/salvage-route-upgrade/delivery/gesture-smoke.json",
+          "artifacts/salvage-route-upgrade/delivery/user-browser-after.jpg",
+          "artifacts/salvage-route-upgrade/delivery/taptap-version-row.jpg"
         ],
         "pendingProofs": [],
-        "gap": "源码、固定ZIP、最终96项HTTP与两趟自然实录已完成并绑定；新TapTap号和用户Mac4283新包尚缺。浏览器文件下载权限未获授权后，用户明确改为Repo→本机Codex继续交付；旧453037/本机b317c8a未更新。未合并、未绑定正式主包、未提审、未发布。",
-        "nextAction": "本机Codex执行codex/SALVAGE_V02_DELIVERY_TASK.md：原样上传已验证ZIP、回读新开发自测号，保持来源替换4283并核对旧档延续；随后更新同一登记与真实回执。",
-        "reviewBasis": "Partial delivery evidence: source/ZIP/browser/capture are verified, while new TapTap receipt and actual user-Mac preview readback remain absent. MISSING retains the existing evidence enum; evidenceCompleteness=PARTIAL documents the completed portion.",
+        "gap": "Development delivery complete. Physical phone/TapTap WebView, lock screen, system file panels, final art and enjoyment remain unaccepted. Same-origin version routing is explicit; original ambient tab was not exposed, so the existing browser profile was reopened and actual played progress verified.",
+        "nextAction": "Blind-test TapTap453106 /0.2.0 b26455a; record device/OS and actual cargo touch, return, save/reopen and enjoyment feedback. Keep Draft, no formal main bind/review/release.",
+        "reviewBasis": "Observed platform version row and self-test modal; before/after UI exports from the existing played Mac browser profile match frozen migration exactly. New targeted deployment checks use separate QA contexts; not substitutes for user archive or physical phone.",
         "sandboxBinding": {
           "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
           "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
           "database": "lostcargo.route-demo.v1",
-          "taptapVersion": null,
+          "taptapVersion": 453106,
           "formalIntegration": false
         },
-        "evidenceCompleteness": "PARTIAL"
+        "evidenceCompleteness": "COMPLETE"
       }
     ],
     "supersededRules": [
@@ -32326,18 +32332,18 @@
       "status": "DEVELOPMENT_SELF_TEST_PENDING_PHONE_ART_AND_ENJOYMENT"
     },
     "salvageUpgradeDelivery": {
-      "status": "IN_PROGRESS",
+      "status": "DEVELOPMENT_SELF_TEST_DELIVERED_PENDING_PHONE_USER_ART",
       "proof": "artifacts/salvage-route-upgrade/verification.json",
       "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
       "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
-      "taptapVersion": null,
-      "localMacUpdated": false,
+      "taptapVersion": 453106,
+      "localMacUpdated": true,
       "formalIntegration": false,
-      "notes": "Final runtime b26455a and actual 79,992-byte ZIP (13 files) verified; 96 same-package browser checks and natural two-voyage / separate QA captures passed. TapTap login and old 453037 were read back, but browser file download permission was not granted. User explicitly requested Repo handoff to local Codex for new development upload and replacing the Mac 4283 service. Existing TapTap 453037 and Mac b317c8a are unchanged; no new number claimed. Physical phone, continuous visual review, final art and user enjoyment remain pending.",
-      "evidenceCompleteness": "PARTIAL",
+      "notes": "Exact frozen b26455a ZIP uploaded as developer self-test453106 and read back. Existing Mac browser profile refreshed on same origin and actual played schema2 archive exported before/after: exact expected schema3 migration, no gameplay action or spend, stable after repeat refresh. Original4283 URL redirects within the same origin to a versioned directory to avoid cached old scripts. Original ZIP and 13 served payloads byte-identical, old code directory/standby and private exports retained. Physical phone, final art and enjoyment remain pending.",
+      "evidenceCompleteness": "COMPLETE",
       "packageEvidence": "CURRENT_VERIFIED",
-      "platformStatus": "PENDING_LOCAL_CODEX_DELIVERY",
-      "localStatus": "PENDING_LOCAL_CODEX_DELIVERY",
+      "platformStatus": "UPLOADED_DEVELOPMENT_SELF_TEST",
+      "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
       "task": "codex/SALVAGE_V02_DELIVERY_TASK.md"
     }
   },

@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "status": "CODE_AND_FIXED_PACKAGE_VERIFIED_LOCAL_CODEX_DELIVERY_PENDING",
+  "status": "DELIVERED_DEVELOPMENT_SELF_TEST_PENDING_PHONE_AND_USER_ACCEPTANCE",
   "runtimeSourceSha": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
   "zip": {
     "path": "artifacts/salvage-route-upgrade/loststar-salvage-b26455a.zip",
@@ -148,29 +148,46 @@
   "art": "Original concept PNGs and three crops still missing; repository ship sprite, geometry background and original semantic SVG icons only. Not final art acceptance.",
   "enjoyment": "NOT_ACCEPTED; player assessment required",
   "platform": {
-    "status": "PENDING_LOCAL_CODEX_DELIVERY",
+    "status": "UPLOADED_DEVELOPMENT_SELF_TEST",
     "previousPackageId": 453037,
-    "currentPackageId": null,
+    "currentPackageId": 453106,
     "formalBound": false,
     "releasing": false,
     "consoleUrl": "https://developer.taptap.cn/v3/512759/app/1022667/store/packages",
-    "handoffReason": "Browser file download permission was not granted. User then explicitly requested repository delivery and local Codex continuation for TapTap upload and local preview replacement. No workaround or new upload was performed in this turn.",
-    "task": "codex/SALVAGE_V02_DELIVERY_TASK.md"
+    "task": "codex/SALVAGE_V02_DELIVERY_TASK.md",
+    "receipt": "artifacts/salvage-route-upgrade/delivery/taptap-receipt.json",
+    "selfTestQr": "artifacts/salvage-route-upgrade/delivery/taptap-453106-qr.png",
+    "previousHandoffReason": "Browser file download permission was not granted. User then explicitly requested repository delivery and local Codex continuation for TapTap upload and local preview replacement. No workaround or new upload was performed in this turn.",
+    "physicalPhoneTested": false
   },
   "localDelivery": {
-    "status": "PENDING_LOCAL_CODEX_DELIVERY",
+    "status": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
     "url": "http://127.0.0.1:4283/loststar-salvage/",
-    "observedCommit": "b317c8a",
-    "newPackageObserved": false,
-    "userMacModified": false
+    "resolvedUrl": "http://127.0.0.1:4283/loststar-salvage/b26455a/",
+    "observedCommit": "b26455a",
+    "observedVersion": "0.2.0",
+    "newPackageObserved": true,
+    "userMacModified": true,
+    "sameOrigin": true,
+    "sameExistingBrowserProfile": true,
+    "originalAmbientTabExposed": false,
+    "readback": "artifacts/salvage-route-upgrade/delivery/local-browser-check.json",
+    "service": "artifacts/salvage-route-upgrade/delivery/local-service.json",
+    "http": "artifacts/salvage-route-upgrade/delivery/deployed-package-http.json",
+    "privateOldSaveExportPreserved": true,
+    "oldCodeStandbyPort": 4284,
+    "oldDirectoryPreserved": true,
+    "cacheResolution": "Original entry redirects to a same-origin version directory. Frozen ZIP bytes untouched; no clearing browser storage. Verified actual played archive rather than a fresh profile."
   },
   "ci": {
     "runtimeSourceRun": 42530502900,
     "runtimeSourceRunUrl": "https://github.com/sy0310/loststar-game/actions/runs/42530502900",
     "sourceRunSalvageJob": "FAILED_OLD_EVIDENCE_GATE",
     "reason": "Historical proof verifier required current runtime to remain byte-identical to b317c8a. New proof verifier preserves historical evidence verification and validates current runtime against upgrade source/package. Corrected evidence-commit CI must be observed separately.",
-    "correctedEvidenceCommitStatusAtRecording": "NOT_YET_RUN; inspect latest Draft PR #2 Checks",
-    "currentChecksUrl": "https://github.com/sy0310/loststar-game/pull/2/checks"
+    "correctedEvidenceCommitStatusAtRecording": "9c30cc8 salvage CI job passed; full repository verify job still running when delivery was recorded",
+    "currentChecksUrl": "https://github.com/sy0310/loststar-game/pull/2/checks",
+    "correctedEvidenceRun": 42531525958,
+    "correctedEvidenceRunUrl": "https://github.com/sy0310/loststar-game/actions/runs/42531525958"
   },
   "evidenceFiles": [
     {
@@ -315,13 +332,98 @@
     },
     {
       "path": "artifacts/salvage-route-upgrade/index.html",
-      "bytes": 2655,
-      "sha256": "30c99fd9cb9f0239a1695fd85e022cd51b39e66181607668d487a39d8e29e67f"
+      "bytes": 2865,
+      "sha256": "aac9a97150eea10fea7c0915c6fa28ba7a3f29d58346a2d6f501dbccc8deb324"
     },
     {
       "path": "artifacts/salvage-route-upgrade/loststar-salvage-b26455a.zip",
       "bytes": 79992,
       "sha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/check-preview.cjs",
+      "bytes": 3838,
+      "sha256": "17012ac8d4cc7130da3edef93a82c6f0db5c23f9015f659a498ce9cc6e26a45d"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/deployed-browser-results.json",
+      "bytes": 29420,
+      "sha256": "2f0ef3f597d6991a510fd94ad4199b8aa842f1d74b572ebc3bc94dddc6209acf"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/deployed-browser-run.log",
+      "bytes": 4660,
+      "sha256": "9ee900e8d4aa9e86cd90c4173e3d26126ea3a8a2727fc33d227a78e0465d7e1d"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/deployed-package-http.json",
+      "bytes": 4217,
+      "sha256": "59b29a1ab50e3c7834b5c6b5e41280f9901de1c8e6851e3cd01b49168a499e53"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/gesture-smoke.json",
+      "bytes": 449,
+      "sha256": "e502374d0f8588f6e1a5d4a329b101dd8a21105dd0f9fa91a59f1527c44f4b23"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/isolated-qa-cargo.png",
+      "bytes": 87477,
+      "sha256": "d422007117a1dcd85ca278b04f435b80ad53bd2117810ef43ddc0fd7b8817fde"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/isolated-qa-port-map.png",
+      "bytes": 80973,
+      "sha256": "808a879f20cf7bb7c4af729d720c23bb33c5ff9f2cdc42b1495524f8b9c47582"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/local-browser-check.json",
+      "bytes": 2027,
+      "sha256": "aae1f684f708de57fca9628571e5cfb07e79f022edb2327aca402da21ed7f1ef"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/local-service.json",
+      "bytes": 1780,
+      "sha256": "6f42413e8518ecdbafdf3176dbe0ed3fb9b798310ef15919353cb0ce8b35681d"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/serve-preview.py",
+      "bytes": 1103,
+      "sha256": "dcef44a0214da1a3441638cc68ba78b13f40bdb0b4299c4b443bf7ab2b326dff"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/taptap-453106-qr.png",
+      "bytes": 2782,
+      "sha256": "654c7c4c8749db8e46989d8aa630c270b6dabc31b6dc03a53457925d638c417b"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/taptap-receipt.json",
+      "bytes": 1117,
+      "sha256": "6df013a9d5298808724cde2acc2ea817e704efcebf8cb558b02bf4000a3a8b3c"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/taptap-version-row.jpg",
+      "bytes": 14132,
+      "sha256": "03f68fa541258b6439f1515c8c765639c45ff8f1bc9039fdb72f09d5d6679929"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/user-browser-after.jpg",
+      "bytes": 73024,
+      "sha256": "40dea86d8a168d3fd4c8f808a40fa53c1e4b3897c2d3c410f72360aa679b3c2b"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/user-browser-before.jpg",
+      "bytes": 67305,
+      "sha256": "5b45935a7a893d728e19ac85434758356a552e5a25c9943af70ee4a64744a758"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/user-browser-cargo.jpg",
+      "bytes": 49884,
+      "sha256": "c220f313bdf248c14f7d6f49fd27c88e1412c1916ecce016b3620f0b23a6542b"
+    },
+    {
+      "path": "artifacts/salvage-route-upgrade/delivery/user-browser-map.jpg",
+      "bytes": 49005,
+      "sha256": "e2929edf96503e91b25a26e202b4ca2630ec61510195c39af5016f50c0634941"
     }
   ],
   "handoff": {
@@ -329,5 +431,16 @@
     "userRequestedFlow": "Repo -> local Codex -> TapTap development self-test -> same-origin Mac port4283 replacement",
     "codexTaskDispatched": false,
     "reason": "Execution instructions are committed for the user to pass to local Codex; this session has no local Codex dispatch tool."
+  },
+  "deploymentSmoke": {
+    "report": "artifacts/salvage-route-upgrade/delivery/deployed-browser-results.json",
+    "scenarios": 5,
+    "expected": 20,
+    "unexpected": 0,
+    "skipped": 0,
+    "retries": 0,
+    "scope": "Targeted checks after replacing actual Mac4283 service; separate browser contexts, not player archive.",
+    "gestureCheck": "artifacts/salvage-route-upgrade/delivery/gesture-smoke.json",
+    "afterVersionedRouting": true
   }
 }

@@ -12,11 +12,11 @@
 | 包 SHA256 | `7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7` |
 | 最终同包浏览器验证 | **96/96通过**：24场景×2引擎×2尺寸，零失败、跳过或重试；150.409秒 |
 | 最终同包连续两趟与操作录像 | **已完成**：自然两趟13检查点，单独QA旋转/拖动/重开4检查点，页面异常为0 |
-| TapTap新开发自测 | **待本机Codex接续上传与回读**，新号码尚无。453037仍指旧版0.1.1 |
-| 用户Mac的4283入口 | 最新回读仍为旧 `b317c8a`，不作为本轮新包入口 |
+| TapTap新开发自测 | **453106**：79,992字节、竖屏、支持库2.4.0；旧453037保留 |
+| 用户Mac的4283入口 | **已更新**：实际显示`0.2.0 · b26455a · 已保存`；原档完整对照通过 |
 | 真实手机与用户验收 | 未验证；浏览器检查不等同真机手感、锁屏或趣味通过 |
 
-用户已指定接续方式：Repo交付后，由本机Codex上传TapTap开发自测并替换本机试玩。完整步骤与固定包校验值见[Codex交付任务](../../codex/SALVAGE_V02_DELIVERY_TASK.md)。本次浏览器下载到Mac的权限步骤未获授权，因此未上传新平台包、未修改用户Mac；代码、固定ZIP和证据均已准备好，不能把本机旧页面当作新版。
+用户已指定接续方式：Repo交付后，由本机Codex上传TapTap开发自测并替换本机试玩。完整步骤与固定包校验值见[Codex交付任务](../../codex/SALVAGE_V02_DELIVERY_TASK.md)。此前浏览器下载到Mac的权限步骤未获授权，交接时未上传平台包或修改用户Mac；该历史状态由下方本机Codex实际交付记录接续，未把旧号码当新证据。
 
 ## 四项反馈的实际改动
 
@@ -61,3 +61,26 @@
 两张概念原PNG及相应三张裁片仍未补齐，详见[素材状态](SOURCE_STATUS.json)。本轮采用仓库原创飞船、原有空间后备画面和原创SVG图标，不将这些替代画面称为概念图完整还原或最终美术验收。趣味、整理难度与实际手机手感继续等待试玩反馈。
 
 [最新实施约束](CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md) · [源码与运行说明](../../prototypes/salvage-route-demo/README.md) · [开发证据目录（可能含剧透）](../../artifacts/salvage-route-upgrade/developer/)
+
+
+## 本机实际交付记录（2026-11-08）
+
+本机Codex已原样上传仓库冻结ZIP为 **TapTap开发自测453106**。API回读精确79,992字节、文件名`loststar-salvage-b26455a.zip`、竖屏、最低支持库2.4.0、未发布；后台实际列表同时显示453106及舍入大小0.076MB，并已打开该行自测二维码。上传前后主包模块完整内容与revision不变，未绑定正式主包、未提审、未正式发布，旧453037仍保留。平台未给远端ZIP摘要，不声称平台重算哈希。
+
+[本机试玩原入口](http://127.0.0.1:4283/loststar-salvage/)保持可用。应用内浏览器复用了旧脚本缓存，首次普通刷新出现`0.1.1 · b26455a`混合版本；没有把它算通过。随后仅调整HTTP服务：原入口302到同源`/loststar-salvage/b26455a/`，静态响应加禁止缓存头，13项资源仍逐字节等于冻结包。**没有改包、清浏览器数据或换存档来源。** 这是开发预览路由，未部署公网。
+
+用户Mac实际目录为`/Users/shuhuayu/loststar-game/releases/salvage-v02-b26455a`。原目录`releases/salvage-fixed`及旧代码保持不动，4284另有旧代码备用服务。回退应先核实PID/启动命令，再恢复旧目录到4283；旧版代码不支持schema3时，需明确恢复已保留的schema2导出或迁移备份。不能把4284的另一来源新档误当原档。详见[服务与回退记录](../../artifacts/salvage-route-upgrade/delivery/local-service.json)。
+
+原ambient标签未在工具列表暴露，因此在**相同应用内浏览器profile、相同来源**重开了原地址，切换前实际读到用户已玩过的724零件、40燃料、62耐久、12,000船款和已完成一趟（4航点）进度；非新浏览器、新档或导入替身。先通过游戏UI导出旧档，再在切换前的同一受控标签刷新，真实看到`0.2.0 · b26455a · 已保存`，16格货舱和4个资源SVG图标。
+
+新版UI导出与冻结引擎对旧档的预期迁移**全对象相等**，原资金、燃料、耐久、船款、货物、设备、航路、RNG、账本等保持；再次刷新并查看货舱/地图后的导出也完全相同。未替用户出航、消费、卖货或重开。原始用户导出只留在Mac下载目录与权限受限的本地备份，**没有提交私人存档**。未直接读取用户profile隐藏IDB封装；schema2原始封装备份与中止保护另由真实IDB隔离用例验证，和用户前后导出核验分开记录。
+
+部署后定向复测5场景×2引擎×2尺寸，共**20项通过**：地图选择不扣资源、旋转/摆放持久化、schema2迁移备份、迁移中止原档保护、大字短屏图标布局。另在独立QA上下文用普通方形/长条件实际执行点选旋转、指针拖动、保存和刷新恢复，通过，资源/RNG不变。未重复扩大运行无关旧游戏测试；原96项同包报告和70项模型检查保持原证据口径，不与本次20项相加冒称新验收数。
+
+- [平台API回执](../../artifacts/salvage-route-upgrade/delivery/taptap-receipt.json)
+- [同一浏览器原档续玩对照（仅摘要与哈希，无原档）](../../artifacts/salvage-route-upgrade/delivery/local-browser-check.json)
+- [13项HTTP资源与冻结包字节核验](../../artifacts/salvage-route-upgrade/delivery/deployed-package-http.json)
+- [部署后定向检查](../../artifacts/salvage-route-upgrade/delivery/deployed-browser-results.json) · [独立QA操作](../../artifacts/salvage-route-upgrade/delivery/gesture-smoke.json)
+- [新版用户画面](../../artifacts/salvage-route-upgrade/delivery/user-browser-after.jpg) · [平台新版记录](../../artifacts/salvage-route-upgrade/delivery/taptap-version-row.jpg) · [453106自测二维码](../../artifacts/salvage-route-upgrade/delivery/taptap-453106-qr.png)
+
+9c30cc8的[航线CI作业](https://github.com/sy0310/loststar-game/actions/runs/42531525958)已通过旧证据门禁修正；全仓verify在交付记录时仍运行，最新交付提交状态以PR Checks为准。本次实际交付完成不代表真实手机、锁屏、系统文件面板、发热、最终美术或趣味验收。
