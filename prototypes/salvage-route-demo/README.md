@@ -4,6 +4,16 @@
 
 基础操作：**选航点，处理现场，把收获带回港口；卖货、补给和还款由你决定。** 无强制等待、广告、真实支付或离线罚款。
 
+## 0.2.0：货舱、航路与图标
+
+- 货舱为可旋转、拖放和点选摆放的 4×4 拼装网格。原 1 格货物对应 4 小格，容量没有额外扩张；面积够也可能因形状无法放下。辅助整理只生成可检查的排布，仍需自己确认。
+- 拾取货物先进入装载草稿；确认时才一次结算代价、风险和货物。取消、刷新或未放好的货物不会额外扣费；需要替换旧货时会明确显示放弃清单。
+- 底栏仍为四项：航行、航路、货舱、航记。航路页显示实际经过的位置、当前船位、下一站候选及直接返港线；选择候选先看费用，再确认启航。
+- 燃料、耐久、零件、货物、事件类型、行动代价和结果使用统一 SVG 图标，并保留文字和数值。
+- 旧 schema 2 存档会先原样备份，再在同一事务内迁移到 schema 3；继续使用原 IndexedDB 库名，不换入口或清空档案。
+
+当前包和测试绑定见 [本轮交付记录](../../design/star-salvage/UPGRADE_DELIVERY.md)。历史 TapTap 开发版本号不代表已上传本轮更新，以该记录的实际平台回读为准。
+
 ## 本机运行
 
 ```sh
@@ -24,6 +34,7 @@ npm --prefix prototypes/salvage-route-demo run preview
 
 ```sh
 npm --prefix prototypes/salvage-route-demo run simulate
+node prototypes/salvage-route-demo/tests/compare-cargo.cjs
 npx playwright test --config prototypes/salvage-route-demo/playwright.config.cjs
 # 先提交运行源码，再冻结将上传的同一个 ZIP：
 python3 prototypes/salvage-route-demo/build.py --freeze

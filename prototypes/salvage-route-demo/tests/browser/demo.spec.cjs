@@ -1,16 +1,25 @@
 const{test,expect,chromium,webkit}=require('@playwright/test');const E=require('../../src/engine.js');const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const state=p=>p.evaluate(()=>window.__SALVAGE__.state());
 async function boot(p){await p.goto('');await p.waitForFunction(()=>window.__SALVAGE__);const close=p.locator('#modal-buttons [data-act=close]');if(await close.isVisible()){await close.tap();await expect(p.locator('#overlay')).toBeHidden();}}
-async function tap(p,selector){await p.waitForFunction(()=>window.__SALVAGE__.ready());await p.locator(selector).tap();await p.waitForFunction(()=>window.__SALVAGE__.ready());}
+async function tap(p,selector){await p.waitForFunction(()=>window.__SALVAGE__.ready());await p.locator(selector).tap();await p.waitForFunction(()=>window.__SALVAGE__.ready());if(selector==='[data-act=depart]')await finishLoad(p);}
+// New cargo acquisitions are a visible, cancellable layout draft. Use only the
+// player's arrange/confirm controls here; do not bypass the browser controller.
+async function finishLoad(p,{allowLeave=false}={}){
+ const save=p.locator('[data-cargo-save]');if(!await save.isVisible())return;
+ if(await save.isDisabled())await tap(p,'[data-cargo-arrange]');
+ if(await save.isEnabled()){await tap(p,'[data-cargo-save]');return;}
+ if(!allowLeave)throw Error('Expected this known cargo to fit after complete arrangement');
+ await tap(p,'[data-cargo-cancel]');await tap(p,'[data-choice=leave]');
+}
 async function confirm(p,selector){await tap(p,selector);await tap(p,'[data-act=confirm]');}
 async function importSave(p,s){await tap(p,'[data-act=settings]');await p.locator('[data-act=import]').tap();await p.locator('#import-file').setInputFiles({name:'known-test-copy.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(s))});await p.locator('[data-act=confirm]').tap();await expect(p.locator('#overlay')).toBeHidden();}
 async function twoVoyages(p){
  for(let run=1;run<=2;run++){
-  await tap(p,'[data-act=depart]');await expect.poll(async()=>(await state(p)).phase).toBe('route');
+  await tap(p,'[data-act=depart]');await finishLoad(p);await expect.poll(async()=>(await state(p)).phase).toBe('route');
   for(let step=0;step<3;step++){
    const cards=p.locator('[data-travel]:not(:disabled)');await tap(p,'[data-travel]:not(:disabled) >> nth=0');await expect.poll(async()=>(await state(p)).phase).toBe('event');
    // Use visible legal controls, not fixture money or engine dispatch.
-   await tap(p,step===0?'[data-choice=force]':'[data-choice]:not(:disabled) >> nth=0');await expect.poll(async()=>(await state(p)).phase).toBe('result');await tap(p,'[data-act=continue]');
+   await tap(p,step===0?'[data-choice=force]':'[data-choice]:not(:disabled) >> nth=0');await finishLoad(p,{allowLeave:true});await expect.poll(async()=>(await state(p)).phase).toBe('result');await tap(p,'[data-act=continue]');
   }
   await confirm(p,'[data-act=home]');await expect.poll(async()=>(await state(p)).phase).toBe('summary');
   if(await p.locator('[data-act=sellAll]').isVisible())await tap(p,'[data-act=sellAll]');await tap(p,'[data-act=port]');
@@ -24,7 +33,7 @@ test('real URL, real art decode, persistent choices, refresh and close/reopen',a
 test('ordinary fresh game completes two voyages with actual sales, services, repayments and continued state',async({page})=>{await boot(page);await twoVoyages(page);const s=await state(page);expect(s.runNo).toBe(2);expect(s.phase).toBe('port');expect(s.debt).toBeLessThan(12000);expect(s.ledger.some(x=>x.kind==='sale')).toBe(true);expect(s.ledger.some(x=>x.kind==='supplySpent')).toBe(true);E.assertState(s);});
 test('route budgets match committed fuel and cannot be replaced by fixed return fuel',async({page})=>{await boot(page);await tap(page,'[data-act=depart]');const s=await state(page);const cards=await page.locator('[data-travel]').allTextContents();for(let i=0;i<s.route.length;i++){const q=E.quote(s,s.route[i]);expect(cards[i]).toContain(String(q.out));expect(cards[i]).toContain(String(q.returnCost));expect(cards[i]).toContain(String(q.free));}const q=E.quote(s,s.route[0]);await tap(page,'[data-travel] >> nth=0');const after=await state(page);expect(after.fuel).toBe(q.arrival);expect(E.homeCost(after)).toBe(q.returnCost);expect(E.spare(after)).toBe(q.free);});
 test('real IndexedDB serializes competing writers without Web Locks, including low-revision import',async({page,context})=>{
- await boot(page);const s=E.create(3);s.money=1000;s.cargo.push({uid:s.nextUid++,name:'测试旧货',size:1,value:100,acquiredRun:0});await importSave(page,s);const other=await context.newPage();await boot(other);
+ await boot(page);const s=E.create(3);s.money=1000;s.cargo.push({uid:s.nextUid++,name:'测试旧货',size:1,value:100,acquiredRun:0});s.schema=2;await importSave(page,s);const other=await context.newPage();await boot(other);
  for(const p of [page,other])await p.evaluate(async()=>{Object.defineProperty(navigator,'locks',{value:undefined});window.testWriter=await SalvageStore.open(1);});
  const versions=await Promise.all([page,other].map(p=>p.evaluate(()=>testWriter.revision)));expect(versions[0]).toBe(versions[1]);const r=await Promise.all([page,other].map(p=>p.evaluate(v=>testWriter.act({type:'sellAll'},v),versions[0])));expect(r.filter(x=>x.ok)).toHaveLength(1);
  const latest=await page.evaluate(()=>testWriter.state);expect(latest.money).toBe(1100);expect(latest.cargo).toEqual([]);expect(latest.ledger.filter(x=>x.kind==='sale')).toHaveLength(1);
@@ -44,7 +53,7 @@ test('large text/short screen, modal back and tapping outside cannot select a hi
  await boot(page);await page.setViewportSize({width:360,height:640});await page.evaluate(()=>document.documentElement.style.fontSize='18px');expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);const before=await state(page);await tap(page,'[data-act=settings]');await page.goBack();await expect(page.locator('#overlay')).toBeHidden();expect(await state(page)).toEqual(before);await tap(page,'[data-act=settings]');await page.locator('#overlay').tap({position:{x:3,y:3}});await expect(page.locator('#overlay')).toBeHidden();expect(await state(page)).toEqual(before);
 });
 test('real browser restart reopens the saved wallet and RNG from disk',async({browserName,baseURL})=>{
- const dir=fs.mkdtempSync(path.join(os.tmpdir(),'salvage-persist-'));const driver=browserName==='webkit'?webkit:chromium;let c;try{c=await driver.launchPersistentContext(dir,{viewport:{width:390,height:844},hasTouch:true});let p=await c.newPage();await boot(p);await tap(p,'[data-act=fuel]');await expect.poll(async()=>(await state(p)).money).toBe(80);const saved=await state(p);await c.close();c=await driver.launchPersistentContext(dir,{viewport:{width:390,height:844},hasTouch:true});p=await c.newPage();await p.goto(baseURL);await p.waitForFunction(()=>window.__SALVAGE__);expect(await state(p)).toEqual(saved);}finally{await c?.close();fs.rmSync(dir,{recursive:true,force:true});}
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'salvage-persist-'));const driver=browserName==='webkit'?webkit:chromium;let c;try{c=await driver.launchPersistentContext(dir,{baseURL,viewport:{width:390,height:844},hasTouch:true});let p=await c.newPage();await boot(p);await tap(p,'[data-act=fuel]');await expect.poll(async()=>(await state(p)).money).toBe(80);const saved=await state(p);await c.close();c=await driver.launchPersistentContext(dir,{baseURL,viewport:{width:390,height:844},hasTouch:true});p=await c.newPage();await p.goto(baseURL);await p.waitForFunction(()=>window.__SALVAGE__);expect(await state(p)).toEqual(saved);}finally{await c?.close();fs.rmSync(dir,{recursive:true,force:true});}
 });
 test('first own legacy save migrates atomically, unrelated game and backup bytes remain untouched',async({page})=>{
  const legacy=E.create(54);legacy.schema=1;legacy.money=27049;delete legacy.legs;delete legacy.ledger;
@@ -54,8 +63,8 @@ test('first own legacy save migrates atomically, unrelated game and backup bytes
  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('lostcargo.route-demo.v1')).money)).toBe(27049);
 });
 test('real saved rescue keeps carried old goods and equipment, and refresh cannot repeat rescue fee',async({page})=>{
- await boot(page);let s=E.create(4);s.money=500;s.tools=['scanner'];s.cargo=[{uid:s.nextUid++,name:'跨趟存货',size:1,value:90,acquiredRun:0}];s=E.dispatch(s,{type:'depart'}).state;s=E.dispatch(s,{type:'travel',id:s.route[0].uid}).state;s.hull=10;await importSave(page,s);
- await tap(page,'[data-choice=force]');const after=await state(page);expect(after.phase).toBe('summary');expect(after.money).toBe(450);expect(after.cargo.map(x=>x.name)).toEqual(['跨趟存货']);expect(after.tools).toEqual(['scanner']);expect(after.summary.reward).toBe(0);await page.reload();await page.waitForFunction(()=>window.__SALVAGE__);expect(await state(page)).toEqual(after);expect(after.ledger.filter(x=>x.kind==='rescueFee')).toHaveLength(1);
+ await boot(page);let s=E.create(4);s.money=500;s.tools=['scanner'];s.cargo=[{uid:s.nextUid++,name:'跨趟存货',size:1,value:90,acquiredRun:0}];s=E.restore({...s,schema:2});s=E.dispatch(s,{type:'depart'}).state;s=E.dispatch(s,{type:'travel',id:s.route[0].uid}).state;s.hull=10;await importSave(page,s);
+ await tap(page,'[data-choice=force]');await finishLoad(page);const after=await state(page);expect(after.phase).toBe('summary');expect(after.money).toBe(450);expect(after.cargo.map(x=>x.name)).toEqual(['跨趟存货']);expect(after.tools).toEqual(['scanner']);expect(after.summary.reward).toBe(0);await page.reload();await page.waitForFunction(()=>window.__SALVAGE__);expect(await state(page)).toEqual(after);expect(after.ledger.filter(x=>x.kind==='rescueFee')).toHaveLength(1);
 });
 test('denied database does not initialize a pretend saved game or expose fake exported progress',async({page})=>{
  await page.addInitScript(()=>{Object.defineProperty(indexedDB,'open',{value:()=>{throw new DOMException('Blocked test storage','SecurityError');}});});await page.goto('');await page.waitForFunction(()=>window.__SALVAGE__);await expect(page.locator('#storage-warning')).toBeVisible();await expect(page.locator('[data-act=depart]')).toHaveCount(0);expect(await page.evaluate(()=>__SALVAGE__.status().persisted)).toBe(false);expect(await page.evaluate(()=>__SALVAGE__.state().money)).toBe(120);await tap(page,'[data-act=settings]');const dl=page.waitForEvent('download');await page.locator('[data-act=export]').tap();const raw=JSON.parse(fs.readFileSync(await(await dl).path(),'utf8'));expect(raw.unavailable).toBe(true);expect(raw.game).toBeUndefined();

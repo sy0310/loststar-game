@@ -24,7 +24,7 @@ def main():
   if raw[:4]!=b'RIFF' or raw[8:12]!=b'WEBP':raise ValueError('Invalid WebP: '+str(path))
   if name!='ship' and digest!=next(x['sha256']for x in expected if x['name']==name+'.webp'):raise ValueError('Unverified concept crop '+name)
   art[name]='./assets/'+name+'.webp';sources.append({'path':str(path.relative_to(entry)),'bytes':len(raw),'sha256':digest})
- build={'version':'0.1.1','commit':sha,'dirty':dirty,'blindTest':True}
+ build={'version':'0.2.0','commit':sha,'dirty':dirty,'blindTest':True}
  html=(ROOT/'index.html').read_text().replace("const ART={ship:'./assets/ship.webp'};",'const ART='+json.dumps(art)+';window.LostCargoBuild='+json.dumps(build)+';')
  (entry/'index.html').write_text(html)
  archive=out/('loststar-salvage-'+sha[:7]+'.zip')

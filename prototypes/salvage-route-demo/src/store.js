@@ -10,8 +10,8 @@ async function open(seed){
  async function load(){
   if(!db)await connect();
   await new Promise((resolve,reject)=>{const t=db.transaction('archive','readwrite'),a=t.objectStore('archive'),r=a.get('current');let value,next;
-   r.onsuccess=()=>{value=r.result;try{if(value){next=decode(value);}else{let old=null;try{old=localStorage.getItem(NAME);}catch(e){throw Error('无法检查旧原型存档：'+e.message);}next=old?E.restore(old):E.create(seed);created=!old;value={format:1,revision:1,game:next};if(old)a.put(old,'migration/source');a.put(value,'current');}}catch(e){rawOriginal=value??null;if(!value){try{rawOriginal=localStorage.getItem(NAME);}catch{}}corrupt=true;error=e.message;t.abort();}};
-   t.oncomplete=()=>{state=next;readable=true;revision=value.revision;persisted=true;corrupt=false;error='';resolve();};t.onerror=t.onabort=()=>reject(t.error||Error(error||'存档事务未完成'));
+   r.onsuccess=()=>{value=r.result;rawOriginal=value??null;try{if(value){next=decode(value);if(value.game.schema!==E.SCHEMA){const original=value;a.put(original,'migration/schema-'+original.game.schema);value={format:1,revision:original.revision+1,game:next};a.put(value,'current');}}else{let old=null;try{old=localStorage.getItem(NAME);}catch(e){throw Error('无法检查旧原型存档：'+e.message);}rawOriginal=old;next=old?E.restore(old):E.create(seed);created=!old;value={format:1,revision:1,game:next};if(old)a.put(old,'migration/source');a.put(value,'current');}}catch(e){rawOriginal=r.result??rawOriginal;corrupt=true;error=e.message;t.abort();}};
+   t.oncomplete=()=>{state=next;readable=true;revision=value.revision;persisted=true;corrupt=false;rawOriginal=null;error='';resolve();};t.onerror=t.onabort=()=>reject(t.error||Error(error||'存档事务未完成'));
   });
  }
  async function refresh(){if(closed||!db)return;await new Promise(resolve=>{try{const t=db.transaction('archive','readonly'),r=t.objectStore('archive').get('current');r.onsuccess=()=>{try{if(r.result&&r.result.revision!==revision){const next=decode(r.result);state=next;readable=true;revision=r.result.revision;emit();}}catch(e){corrupt=true;rawOriginal=r.result;error=e.message;persisted=false;emit();}};t.oncomplete=t.onerror=()=>resolve();}catch{resolve();}});}
@@ -22,7 +22,7 @@ async function open(seed){
     try{if(actual!==expected){if(current){state=decode(current);revision=actual;}result={ok:false,message:'另一窗口已更新，已同步，请按当前画面重试'};return;}
      const before=current?decode(current):state;
      if(replacement){next=E.restore(replacement);a.put(current??rawOriginal,'backup/previous');result={ok:true};}
-     else{const applied=E.dispatch(before,{...action,expected:before.revision});result=applied;if(!applied.ok)return;next=applied.state;}
+     else{const applied=E.dispatch(before,{...action,expected:action.expected??before.revision});result=applied;if(!applied.ok)return;next=applied.state;}
      version=actual+1;a.put({format:1,revision:version,game:next},'current');
     }catch(e){if(replacement&&corrupt){try{next=E.restore(replacement);version=actual+1;a.put(current??rawOriginal,'backup/previous');a.put({format:1,revision:version,game:next},'current');result={ok:true};}catch(err){result={ok:false,message:err.message};}}else result={ok:false,message:e.message};}
    };
