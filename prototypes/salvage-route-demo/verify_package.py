@@ -7,7 +7,13 @@ archive=root/'dist'/info['archive']
 assert hashlib.sha256(archive.read_bytes()).hexdigest()==info['sha256']
 assert archive.stat().st_size==info['bytes']
 target=Path(sys.argv[1] if len(sys.argv)>1 else root/'verification/extracted').resolve()
-if target.exists():shutil.rmtree(target)
+repo=root.parents[1]
+allowed=target==(root/'verification/extracted').resolve() or (target.parent==(repo/'releases').resolve() and target.name.startswith('salvage-'))
+if not allowed:raise SystemExit('Extraction must use verification/extracted or releases/salvage-*; existing project files are preserved')
+if target.exists():
+    if not target.is_dir() or any(p.name!='loststar-salvage' for p in target.iterdir()):
+        raise SystemExit('Output contains unrecognized files; refusing to replace them')
+    shutil.rmtree(target)
 target.mkdir(parents=True)
 with zipfile.ZipFile(archive) as z:
     assert len(z.namelist())==info['files']
