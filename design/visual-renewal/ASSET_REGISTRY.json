@@ -11665,10 +11665,11 @@
         "design/v045_a_simplified_exploration/REVIEW_20261107.md",
         "design/first-planet-story/CHAPTER_01_CODEX_HANDOFF.md",
         "design/first-planet-story/PHONE_VISUAL_FEEDBACK.md",
-        "design/star-salvage/DEMO_CODEX_HANDOFF.md"
+        "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+        "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "保留原181项，追加本章14项，共195项；880ffbc原文、冻结包画面、普通/QA来源及原档隔离二次核对，真机/用户待审。 Added 13 isolated SALVAGE requirements without removing historical first-planet/chapter facts.",
+      "independentAudit": "保留原181项，追加本章14项，共195项；880ffbc原文、冻结包画面、普通/QA来源及原档隔离二次核对，真机/用户待审。 Added 13 isolated SALVAGE requirements without removing historical first-planet/chapter facts. Added 12 SALVAGE2 requirements (220 total), retaining all 208 prior rows and historical bindings. New fixed-package, user/phone and TapTap delivery remain separately pending.",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -11742,6 +11743,18 @@
           "startLine": 118,
           "endLine": 123,
           "reason": "第三方参考来源历史清单，不是复制美术或本轮浅色皮肤要求。"
+        },
+        {
+          "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+          "startLine": 9,
+          "endLine": 13,
+          "reason": "旧b317c8a运行基线已核实缺口的历史事实；新增实现由SALVAGE2各行承接，不把旧表现算作升级验收。"
+        },
+        {
+          "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+          "startLine": 141,
+          "endLine": 142,
+          "reason": "最小验收矩阵的表头和分隔线；具体12项要求已由143–154行逐项登记，不是独立验收条款。"
         }
       ]
     },
@@ -11953,7 +11966,19 @@
       "SALVAGE-SAVE",
       "SALVAGE-BLIND",
       "SALVAGE-VERIFY",
-      "SALVAGE-DELIVERY"
+      "SALVAGE-DELIVERY",
+      "SALVAGE2-GRID",
+      "SALVAGE2-TOUCH",
+      "SALVAGE2-PLACE",
+      "SALVAGE2-ATOMIC",
+      "SALVAGE2-MIGRATE",
+      "SALVAGE2-LIFECYCLE",
+      "SALVAGE2-MAP",
+      "SALVAGE2-NOSPOILER",
+      "SALVAGE2-QUOTE",
+      "SALVAGE2-ICONS",
+      "SALVAGE2-PERSIST",
+      "SALVAGE2-DELIVERY"
     ],
     "requirements": [
       {
@@ -30868,6 +30893,983 @@
           "taptapVersion": 453037,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "SALVAGE2-GRID",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "4×4真实货舱；原1/2体积单位对应4/8小格，矩形与L/T/长条轮廓由模型检查。",
+        "acceptanceCriteria": "4×4真实货舱；原1/2体积单位对应4/8小格，矩形与L/T/长条轮廓由模型检查。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 19,
+            "endLine": 22
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 29,
+            "endLine": 40
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 130,
+            "endLine": 135
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 143,
+            "endLine": 143
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/cargo-layout.js",
+            "startLine": 4,
+            "endLine": 39
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 162,
+            "endLine": 168
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-model",
+          "salvage2-http"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/model-results.json",
+          "artifacts/salvage-route-upgrade/developer/capture/manifest.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        },
+        "staticVisualReview": {
+          "status": "REVIEWED",
+          "reviewer": "audit_design cross-layer reviewer",
+          "targets": [
+            "artifacts/salvage-route-upgrade/developer/capture/natural-cargo-shapes.png",
+            "artifacts/salvage-route-upgrade/developer/capture/qa-cargo-reloaded.png"
+          ],
+          "limitation": "Static screenshot inspection only; visual remains NOT_REVIEWED until continuous footage is actually reviewed."
+        }
+      },
+      {
+        "id": "SALVAGE2-TOUCH",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "拖动吸附与单手点选、90度旋转、点目标格均可；取消和无效落点保留货物。",
+        "acceptanceCriteria": "拖动吸附与单手点选、90度旋转、点目标格均可；取消和无效落点保留货物。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 44,
+            "endLine": 52
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 144,
+            "endLine": 144
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/cargo-view.js",
+            "startLine": 142,
+            "endLine": 250
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/cargo-view.js",
+            "startLine": 252,
+            "endLine": 328
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/cargo-view.js",
+          "prototypes/salvage-route-demo/src/cargo-view.css",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-http",
+          "salvage2-capture"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/capture/manifest.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        },
+        "staticVisualReview": {
+          "status": "REVIEWED",
+          "reviewer": "audit_design cross-layer reviewer",
+          "targets": [
+            "artifacts/salvage-route-upgrade/developer/capture/qa-cargo-reloaded.png"
+          ],
+          "limitation": "Static screenshot inspection only; visual remains NOT_REVIEWED until continuous footage is actually reviewed."
+        }
+      },
+      {
+        "id": "SALVAGE2-PLACE",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "面积足够仍检查几何；辅助整理完整搜索可行排布，无解时明确取舍，不暗增货舱。",
+        "acceptanceCriteria": "面积足够仍检查几何；辅助整理完整搜索可行排布，无解时明确取舍，不暗增货舱。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 47,
+            "endLine": 47
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 145,
+            "endLine": 145
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 156,
+            "endLine": 156
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/cargo-layout.js",
+            "startLine": 41,
+            "endLine": 67
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js",
+          "prototypes/salvage-route-demo/tests/cargo-layout.test.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-model",
+          "salvage2-http",
+          "salvage2-policy-comparison"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/model-results.json",
+          "artifacts/salvage-route-upgrade/developer/cargo-policy-comparison.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE2-ATOMIC",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "带货草案确认后，在同一revision/nonce事务内提交几何、费用、风险、UID和显式弃货；取消不重抽。",
+        "acceptanceCriteria": "带货草案确认后，在同一revision/nonce事务内提交几何、费用、风险、UID和显式弃货；取消不重抽。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 56,
+            "endLine": 65
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 146,
+            "endLine": 146
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 68,
+            "endLine": 94
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 119,
+            "endLine": 140
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/store.js",
+            "startLine": 18,
+            "endLine": 31
+          },
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 44,
+            "endLine": 44
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/store.js",
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-model",
+          "salvage2-http"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/model-results.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE2-MIGRATE",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "schema2满载、12/16格货、委托箱、跨趟货和事件快照无损迁入原数据库；迁移前原封装备份。",
+        "acceptanceCriteria": "schema2满载、12/16格货、委托箱、跨趟货和事件快照无损迁入原数据库；迁移前原封装备份。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 69,
+            "endLine": 75
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 147,
+            "endLine": 147
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/cargo-layout.js",
+            "startLine": 68,
+            "endLine": 72
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 186,
+            "endLine": 197
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/store.js",
+            "startLine": 10,
+            "endLine": 16
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/store.js",
+          "prototypes/salvage-route-demo/tests/cargo-layout.test.js",
+          "prototypes/salvage-route-demo/tests/browser/upgrade.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-model",
+          "salvage2-http"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/model-results.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE2-LIFECYCLE",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "售出、使用、弃置、救援、交委托和取消出发释放对应UID位置；整理区不成为免费仓储。",
+        "acceptanceCriteria": "售出、使用、弃置、救援、交委托和取消出发释放对应UID位置；整理区不成为免费仓储。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 49,
+            "endLine": 51
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 65,
+            "endLine": 65
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 76,
+            "endLine": 76
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 148,
+            "endLine": 148
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 95,
+            "endLine": 105
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 141,
+            "endLine": 157
+          },
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 61,
+            "endLine": 61
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js",
+          "prototypes/salvage-route-demo/tests/cargo-layout.test.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-model",
+          "salvage2-http"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/model-results.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE2-MAP",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "四入口中的航路独立显示真实出发港、已走、当前位置、下一分叉、未扫描和返港关系。",
+        "acceptanceCriteria": "四入口中的航路独立显示真实出发港、已走、当前位置、下一分叉、未扫描和返港关系。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 80,
+            "endLine": 104
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 149,
+            "endLine": 149
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 67,
+            "endLine": 67
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/route-view.js",
+            "startLine": 16,
+            "endLine": 83
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/app.js",
+            "startLine": 329,
+            "endLine": 387
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/route-view.js",
+          "prototypes/salvage-route-demo/src/route-view.css",
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-model",
+          "salvage2-http",
+          "salvage2-capture"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/capture/manifest.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        },
+        "staticVisualReview": {
+          "status": "REVIEWED",
+          "reviewer": "audit_design cross-layer reviewer",
+          "targets": [
+            "artifacts/salvage-route-upgrade/developer/capture/natural-map-branch.png"
+          ],
+          "limitation": "Static screenshot inspection only; visual remains NOT_REVIEWED until continuous footage is actually reviewed."
+        }
+      },
+      {
+        "id": "SALVAGE2-NOSPOILER",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "只展示已走记录和已探测候选；刷新不重抽，不显示未到达事件结果，不造历史分叉或未来星球。",
+        "acceptanceCriteria": "只展示已走记录和已探测候选；刷新不重抽，不显示未到达事件结果，不造历史分叉或未来星球。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 23,
+            "endLine": 23
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 92,
+            "endLine": 98
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 150,
+            "endLine": 150
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 167,
+            "endLine": 167
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 41,
+            "endLine": 51
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 67,
+            "endLine": 67
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/route-view.js",
+            "startLine": 16,
+            "endLine": 76
+          },
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 28,
+            "endLine": 28
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/route-view.js",
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/tests/browser/upgrade.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-model",
+          "salvage2-http"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/model-results.json",
+          "artifacts/salvage-route-upgrade/developer/capture/manifest.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        },
+        "staticVisualReview": {
+          "status": "REVIEWED",
+          "reviewer": "audit_design cross-layer reviewer",
+          "targets": [
+            "artifacts/salvage-route-upgrade/developer/capture/natural-map-branch.png"
+          ],
+          "limitation": "Static screenshot inspection only; visual remains NOT_REVIEWED until continuous footage is actually reviewed."
+        }
+      },
+      {
+        "id": "SALVAGE2-QUOTE",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "地图、卡片和返航同源quote/homeCost；摆货、查看地图、补油不改变累计距离或既有经济规则。",
+        "acceptanceCriteria": "地图、卡片和返航同源quote/homeCost；摆货、查看地图、补油不改变累计距离或既有经济规则。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 21,
+            "endLine": 21
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 91,
+            "endLine": 94
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 151,
+            "endLine": 151
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 158,
+            "endLine": 158
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 16,
+            "endLine": 17
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/engine.js",
+            "startLine": 50,
+            "endLine": 50
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/route-view.js",
+            "startLine": 44,
+            "endLine": 60
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/route-view.js",
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/tests/compare-cargo.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-model",
+          "salvage2-http",
+          "salvage2-policy-comparison"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/model-results.json",
+          "artifacts/salvage-route-upgrade/developer/cargo-policy-comparison.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE2-ICONS",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "资源、事件、动作、实际结果、四导航和地图统一使用本地原创SVG与文字；不以字符图标或未知结果代替。",
+        "acceptanceCriteria": "资源、事件、动作、实际结果、四导航和地图统一使用本地原创SVG与文字；不以字符图标或未知结果代替。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 108,
+            "endLine": 125
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 152,
+            "endLine": 152
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/icons.js",
+            "startLine": 1,
+            "endLine": 90
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/app.js",
+            "startLine": 117,
+            "endLine": 169
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/app.js",
+            "startLine": 231,
+            "endLine": 259
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/app.js",
+            "startLine": 287,
+            "endLine": 327
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/icons.js",
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/src/route-view.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-http",
+          "salvage2-capture"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/capture/manifest.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        },
+        "staticVisualReview": {
+          "status": "REVIEWED",
+          "reviewer": "audit_design cross-layer reviewer",
+          "targets": [
+            "artifacts/salvage-route-upgrade/developer/capture/natural-event-icons.png",
+            "artifacts/salvage-route-upgrade/developer/capture/natural-map-branch.png"
+          ],
+          "limitation": "Static screenshot inspection only; visual remains NOT_REVIEWED until continuous footage is actually reviewed."
+        }
+      },
+      {
+        "id": "SALVAGE2-PERSIST",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "真实HTTP和固定ZIP保存同航点同布局；重开、跨标签和存储失败不覆盖原档、不复活已售货。",
+        "acceptanceCriteria": "真实HTTP和固定ZIP保存同航点同布局；重开、跨标签和存储失败不覆盖原档、不复活已售货。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 69,
+            "endLine": 75
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 135,
+            "endLine": 135
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 153,
+            "endLine": 153
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 156,
+            "endLine": 156
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/store.js",
+            "startLine": 4,
+            "endLine": 36
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/app.js",
+            "startLine": 388,
+            "endLine": 438
+          },
+          {
+            "path": "prototypes/salvage-route-demo/src/app.js",
+            "startLine": 691,
+            "endLine": 715
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/store.js",
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/tests/browser/demo.spec.cjs",
+          "prototypes/salvage-route-demo/tests/browser/upgrade.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-http",
+          "salvage2-fixed-zip"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/capture/manifest.json"
+        ],
+        "pendingProofs": [],
+        "gap": "最终源码/ZIP、70项模型与96项同包HTTP证据已绑定。已做指定静态画面目检，连续录像的内部视觉、用户体验与真实手机/TapTap宿主仍未验收。",
+        "nextAction": "按本机Codex交接任务完成TapTap和4283实际入口，再分别登记连续画面、用户体验与真机测试；保留现有经济配置。",
+        "reviewBasis": "Final b26455a runtime and actual 13-file ZIP binding; 70 model checks, 96 same-package HTTP checks and completed natural/QA recordings. Cross-layer source review and explicitly listed static screenshots; no complete-video, user or physical-phone acceptance.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        },
+        "staticVisualReview": {
+          "status": "REVIEWED",
+          "reviewer": "audit_design cross-layer reviewer",
+          "targets": [
+            "artifacts/salvage-route-upgrade/developer/capture/qa-cargo-reloaded.png"
+          ],
+          "limitation": "Static screenshot inspection only; visual remains NOT_REVIEWED until continuous footage is actually reviewed."
+        }
+      },
+      {
+        "id": "SALVAGE2-DELIVERY",
+        "parent": "SALVAGE-BASELINE",
+        "requirement": "绑定最终源码与同一ZIP证据、两趟自然记录、新TapTap自测及实际可用入口；未测真机如实保留。",
+        "acceptanceCriteria": "绑定最终源码与同一ZIP证据、两趟自然记录、新TapTap自测及实际可用入口；未测真机如实保留。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 137,
+            "endLine": 137
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 154,
+            "endLine": 154
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 160,
+            "endLine": 169
+          },
+          {
+            "path": "prototypes/salvage-route-demo/build.py",
+            "startLine": 1,
+            "endLine": 37
+          },
+          {
+            "path": "prototypes/salvage-route-demo/verify_package.py",
+            "startLine": 1,
+            "endLine": 35
+          },
+          {
+            "path": "prototypes/salvage-route-demo/tests/capture-upgrade.cjs",
+            "startLine": 1,
+            "endLine": 59
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/build.py",
+          "prototypes/salvage-route-demo/verify_package.py",
+          "prototypes/salvage-route-demo/tests/capture-upgrade.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "prototypes/salvage-route-demo/index.html",
+            "label": "Independent salvage 0.2.0 development entry; same route-demo database"
+          }
+        ],
+        "checks": [
+          "salvage2-fixed-zip",
+          "salvage2-http",
+          "salvage2-capture"
+        ],
+        "proofs": [
+          "artifacts/salvage-route-upgrade/verification.json",
+          "artifacts/salvage-route-upgrade/developer/browser-results.json",
+          "artifacts/salvage-route-upgrade/developer/independent-review.md",
+          "artifacts/salvage-route-upgrade/developer/capture/manifest.json",
+          "artifacts/salvage-route-upgrade/build-info.json",
+          "artifacts/salvage-route-upgrade/loststar-salvage-b26455a.zip",
+          "codex/SALVAGE_V02_DELIVERY_TASK.md"
+        ],
+        "pendingProofs": [],
+        "gap": "源码、固定ZIP、最终96项HTTP与两趟自然实录已完成并绑定；新TapTap号和用户Mac4283新包尚缺。浏览器文件下载权限未获授权后，用户明确改为Repo→本机Codex继续交付；旧453037/本机b317c8a未更新。未合并、未绑定正式主包、未提审、未发布。",
+        "nextAction": "本机Codex执行codex/SALVAGE_V02_DELIVERY_TASK.md：原样上传已验证ZIP、回读新开发自测号，保持来源替换4283并核对旧档延续；随后更新同一登记与真实回执。",
+        "reviewBasis": "Partial delivery evidence: source/ZIP/browser/capture are verified, while new TapTap receipt and actual user-Mac preview readback remain absent. MISSING retains the existing evidence enum; evidenceCompleteness=PARTIAL documents the completed portion.",
+        "sandboxBinding": {
+          "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+          "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": null,
+          "formalIntegration": false
+        },
+        "evidenceCompleteness": "PARTIAL"
       }
     ],
     "supersededRules": [
@@ -31234,6 +32236,40 @@
         ],
         "scope": "Only prototypes/salvage-route-demo; no changes to existing formal/chapter entries or saves.",
         "rule": "Latest authorized independent prototype uses explicit route choices, progressive fuel and manual return. Historical automatic exploration remains at its own preserved entry and is not applied to this new prototype."
+      },
+      {
+        "id": "SUP-SALVAGE2-CARGO-AND-ROUTE-PRESENTATION",
+        "scope": "仅独立salvage-route-demo的计数货舱与缺失地图/字符图标呈现",
+        "originalRefs": [
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 25,
+            "endLine": 26
+          },
+          {
+            "path": "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+            "startLine": 65,
+            "endLine": 67
+          }
+        ],
+        "replacementRefs": [
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 29,
+            "endLine": 40
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 82,
+            "endLine": 98
+          },
+          {
+            "path": "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
+            "startLine": 108,
+            "endLine": 125
+          }
+        ],
+        "rule": "原4体积单位预算不变，改为4×4占格、原size1/2对应4/8小格；航路为真实独立地图并统一SVG。原经济、油耗、8站、委托和旧入口保护继续。旧208项事实与453037历史绑定不覆盖。"
       }
     ],
     "statusPolicy": {
@@ -31252,7 +32288,8 @@
       "design/visual-renewal/EXECUTION_AND_ART_ACCEPTANCE.md",
       "design/v045_a_simplified_exploration/IMPLEMENTATION.md",
       "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
-      "design/star-salvage/DEMO_CODEX_HANDOFF.md"
+      "design/star-salvage/DEMO_CODEX_HANDOFF.md",
+      "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md"
     ],
     "deliveryHistory": [
       {
@@ -31287,6 +32324,21 @@
       "sourceCommit": "b317c8a5ca7fa6acfa7d7d9d91d9e93c349e1f87",
       "taptapVersion": 453037,
       "status": "DEVELOPMENT_SELF_TEST_PENDING_PHONE_ART_AND_ENJOYMENT"
+    },
+    "salvageUpgradeDelivery": {
+      "status": "IN_PROGRESS",
+      "proof": "artifacts/salvage-route-upgrade/verification.json",
+      "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+      "zipSha256": "7a612f63aae18beea7aa3e9e4a8edee68e1cee439e9868cb8cfad55f0c2375f7",
+      "taptapVersion": null,
+      "localMacUpdated": false,
+      "formalIntegration": false,
+      "notes": "Final runtime b26455a and actual 79,992-byte ZIP (13 files) verified; 96 same-package browser checks and natural two-voyage / separate QA captures passed. TapTap login and old 453037 were read back, but browser file download permission was not granted. User explicitly requested Repo handoff to local Codex for new development upload and replacing the Mac 4283 service. Existing TapTap 453037 and Mac b317c8a are unchanged; no new number claimed. Physical phone, continuous visual review, final art and user enjoyment remain pending.",
+      "evidenceCompleteness": "PARTIAL",
+      "packageEvidence": "CURRENT_VERIFIED",
+      "platformStatus": "PENDING_LOCAL_CODEX_DELIVERY",
+      "localStatus": "PENDING_LOCAL_CODEX_DELIVERY",
+      "task": "codex/SALVAGE_V02_DELIVERY_TASK.md"
     }
   },
   "approvedReferenceManifests": [
