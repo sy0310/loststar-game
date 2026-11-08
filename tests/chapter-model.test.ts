@@ -1,5 +1,5 @@
 import {test,expect} from 'vitest';
-import {createChapter,advanceChapter,reduceChapter,restoreChapter,attachChapter,chapterSchedule,chapterQaFixture,chapterSummary,chapterLinks} from '../src/chapter/model';
+import {createChapter,advanceChapter,reduceChapter,restoreChapter,attachChapter,chapterSchedule,chapterQaFixture,chapterSummary,chapterLinks,chapterReturnView} from '../src/chapter/model';
 import {chapterContent} from '../src/chapter/content';
 import {firstPlanetFixture} from '../scripts/firstplanet_fixtures';
 const at=1800000000000;
@@ -28,4 +28,17 @@ test('instant clean original charge once, upgrade original duration survives ref
 });
 test('clock rollback leaves timeline intact; telemetry can be disabled, does not log after',()=>{
  let s=chapterQaFixture('ending',at);expect(advanceChapter(s,at-1)).toBe(s);s=reduceChapter(s,{type:'chapter',kind:'telemetry',id:'logs',enabled:false},at).state;s=reduceChapter(s,{type:'chapter',kind:'open',id:'reveal'},at).state;expect(s.chapter.logs).toEqual([]);
+});
+
+test('return priorities distinguish real curios, occurred chapter, associations, residents, records and routine',()=>{
+ let s=chapterQaFixture('ending',at);s.game.collection=s.game.collection.filter(id=>!['mouse','bell','return-request'].includes(id));s.game.pendingReturn={id:'r',seconds:32,resources:20,discoveries:['mouse']};expect(chapterReturnView(s)?.kind).toBe('reveal');s=reduceChapter(s,{type:'chapter',kind:'read',id:'reveal'},at).state;expect(chapterReturnView(s)?.kind).toBe('ending');s=reduceChapter(s,{type:'chapter',kind:'read',id:'ending'},at).state;expect(chapterReturnView(s)?.kind).toBe('link');s=reduceChapter(s,{type:'chapter',kind:'read',id:'link/stamp'},at).state;expect(chapterReturnView(s)?.kind).toBe('resident');s.game.pendingReturn!.discoveries=['return-request'];expect(chapterReturnView(s)?.kind).toBe('record');s.game.pendingReturn!.discoveries=[];expect(chapterReturnView(s)?.kind).toBe('daily');s.game.pendingReturn!.discoveries=['bell','mouse'];expect(chapterReturnView(s)?.kind).toBe('curio');
+});
+test('many real return views never evict permanent first-discovery and ending reading marks on restore',()=>{
+ let s=chapterQaFixture('ending',at);const ids=['receipt','tape','nested','stamp','cosmic-parcel','bell'].map(id=>'curio/'+id).concat(['reveal','ending','link/stamp']);for(const id of ids)s=reduceChapter(s,{type:'chapter',kind:'read',id},at).state;
+ for(let i=0;i<100;i++){s.game.pendingReturn={id:'return-'+i,seconds:32,resources:0,discoveries:[]};s=reduceChapter(s,{type:'chapter',kind:'read',id:'return/'+s.game.pendingReturn.id},at).state;}
+ s=restoreChapter(JSON.stringify(s),at);for(const id of ids)expect(s.chapter.read).toContain(id);expect(s.chapter.read.filter(id=>id.startsWith('return/'))).toHaveLength(8);s.game.pendingReturn=null;expect(chapterSummary(s).kind).toBe('complete');
+});
+
+test('old owned baseline and duplicate manifest items are not advertised as newly acquired again',()=>{
+ let s=attachChapter(firstPlanetFixture(at,3,'stabilized').state);expect(chapterSummary(s).kind).toBe('daily');expect(s.chapter.baselineOwned).toEqual(s.game.collection);s.game.pendingReturn={id:'old-manifest',seconds:32,resources:0,discoveries:['receipt']};s=reduceChapter(s,{type:'chapter',kind:'read',id:'link/stamp'},s.game.lastAt).state;expect(chapterReturnView(s)?.kind).toBe('daily');const r=restoreChapter(JSON.stringify(s),s.game.lastAt);expect(r.chapter.baselineOwned).toEqual(s.chapter.baselineOwned);expect(r.receipt.condition).toBe('stabilized');
 });
