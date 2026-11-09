@@ -80,12 +80,16 @@ def main():
         crop_dir.mkdir(exist_ok=True)
         for name, area in CROPS.items():
             dest = crop_dir / name
+            expected = image.crop(area)
             if dest.exists():
-                raise SystemExit(f"TARGET_CONFLICT: {dest} exists; don't overwrite existing crop.")
-            image.crop(area).save(dest)
+                with Image.open(dest) as existing:
+                    if existing.size != expected.size or existing.convert("RGBA").tobytes() != expected.convert("RGBA").tobytes():
+                        raise SystemExit(f"TARGET_CONFLICT: {dest} differs; do not overwrite.")
+            else:
+                expected.save(dest)
             entry.setdefault("croppedReferences", {})[name] = {
                 "sha256": hashlib.sha256(dest.read_bytes()).hexdigest(),
-                "size": list(Image.open(dest).size)}
+                "size": list(expected.size)}
     manifest = TARGET_ROOT / "SOURCE_MANIFEST.json"
     if manifest.exists():
         old = json.loads(manifest.read_text(encoding="utf-8"))
