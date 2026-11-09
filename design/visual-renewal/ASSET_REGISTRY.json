@@ -11671,10 +11671,11 @@
         "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
         "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
         "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
-        "design/star-salvage/v04/ASSET_REQUIREMENTS.json"
+        "design/star-salvage/v04/ASSET_REQUIREMENTS.json",
+        "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes.",
+      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps.",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -12005,7 +12006,16 @@
       "PORT04-ROUTE",
       "PORT04-PERSIST",
       "PORT04-REVIEW",
-      "PORT04-DELIVERY"
+      "PORT04-DELIVERY",
+      "PORT041-PLAIN",
+      "PORT041-UPGRADE",
+      "PORT041-CAPS",
+      "PORT041-STOCK",
+      "PORT041-STORY",
+      "PORT041-SHAPE",
+      "PORT041-ICONS",
+      "PORT041-SAVE",
+      "PORT041-DELIVERY"
     ],
     "requirements": [
       {
@@ -33267,6 +33277,481 @@
           "taptapVersion": 457635,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "PORT041-PLAIN",
+        "parent": null,
+        "requirement": "删除“前进基值×百分比／实际损伤×百分比”展示，改为角色定位、明确容量和具体航行例子",
+        "acceptanceCriteria": "删除“前进基值×百分比／实际损伤×百分比”展示，改为角色定位、明确容量和具体航行例子",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 9,
+            "endLine": 9
+          },
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 20,
+            "endLine": 55
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.1 PORT / FLEET / CARGO / EVENT"
+          }
+        ],
+        "checks": [
+          "salvage041-fixed45",
+          "salvage041-browser108",
+          "salvage041-capacities17",
+          "salvage041-physical-rotations52"
+        ],
+        "proofs": [
+          "artifacts/salvage-ship-v041/verification.json",
+          "design/star-salvage/v041/DELIVERY.md",
+          "design/star-salvage/v041/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone, real safe area/lock screen, user art and enjoyment remain pending.",
+        "nextAction": "User self-test458136; engineering pass does not imply art or phone acceptance.",
+        "reviewBasis": "Chat feedback and confirmed puzzle silhouette re-read against frozen whole-object screenshots, actual continuous recordings and original Mac UI-exported archive.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+          "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458136,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT041-UPGRADE",
+        "parent": "PORT041-PLAIN",
+        "requirement": "基础船与其他已购船均有可见的油箱、耐久升级；明确价格、下一上限、最终上限；一次付款真实生效",
+        "acceptanceCriteria": "基础船与其他已购船均有可见的油箱、耐久升级；明确价格、下一上限、最终上限；一次付款真实生效",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 10,
+            "endLine": 10
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.1 PORT / FLEET / CARGO / EVENT"
+          }
+        ],
+        "checks": [
+          "salvage041-fixed45",
+          "salvage041-browser108",
+          "salvage041-capacities17",
+          "salvage041-physical-rotations52"
+        ],
+        "proofs": [
+          "artifacts/salvage-ship-v041/verification.json",
+          "design/star-salvage/v041/DELIVERY.md",
+          "design/star-salvage/v041/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone, real safe area/lock screen, user art and enjoyment remain pending.",
+        "nextAction": "User self-test458136; engineering pass does not imply art or phone acceptance.",
+        "reviewBasis": "Chat feedback and confirmed puzzle silhouette re-read against frozen whole-object screenshots, actual continuous recordings and original Mac UI-exported archive.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+          "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458136,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT041-CAPS",
+        "parent": "PORT041-PLAIN",
+        "requirement": "各船的基础容量、升级次数、最终上限不同；补给、事件、用品、资源条均使用同一实际容量",
+        "acceptanceCriteria": "各船的基础容量、升级次数、最终上限不同；补给、事件、用品、资源条均使用同一实际容量",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 11,
+            "endLine": 11
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.1 PORT / FLEET / CARGO / EVENT"
+          }
+        ],
+        "checks": [
+          "salvage041-fixed45",
+          "salvage041-browser108",
+          "salvage041-capacities17",
+          "salvage041-physical-rotations52"
+        ],
+        "proofs": [
+          "artifacts/salvage-ship-v041/verification.json",
+          "design/star-salvage/v041/DELIVERY.md",
+          "design/star-salvage/v041/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone, real safe area/lock screen, user art and enjoyment remain pending.",
+        "nextAction": "User self-test458136; engineering pass does not imply art or phone acceptance.",
+        "reviewBasis": "Chat feedback and confirmed puzzle silhouette re-read against frozen whole-object screenshots, actual continuous recordings and original Mac UI-exported archive.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+          "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458136,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT041-STOCK",
+        "parent": "PORT041-PLAIN",
+        "requirement": "换船不吞掉超出小船容量的资源、不重复补满；每船油量和船况保存，普通货物继续同批随船转移",
+        "acceptanceCriteria": "换船不吞掉超出小船容量的资源、不重复补满；每船油量和船况保存，普通货物继续同批随船转移",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 12,
+            "endLine": 12
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.1 PORT / FLEET / CARGO / EVENT"
+          }
+        ],
+        "checks": [
+          "salvage041-fixed45",
+          "salvage041-browser108",
+          "salvage041-capacities17",
+          "salvage041-physical-rotations52"
+        ],
+        "proofs": [
+          "artifacts/salvage-ship-v041/verification.json",
+          "design/star-salvage/v041/DELIVERY.md",
+          "design/star-salvage/v041/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone, real safe area/lock screen, user art and enjoyment remain pending.",
+        "nextAction": "User self-test458136; engineering pass does not imply art or phone acceptance.",
+        "reviewBasis": "Chat feedback and confirmed puzzle silhouette re-read against frozen whole-object screenshots, actual continuous recordings and original Mac UI-exported archive.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+          "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458136,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT041-STORY",
+        "parent": "PORT041-PLAIN",
+        "requirement": "现场记录直接显示完整正文，不再需要展开，不重复第一句",
+        "acceptanceCriteria": "现场记录直接显示完整正文，不再需要展开，不重复第一句",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 13,
+            "endLine": 13
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.1 PORT / FLEET / CARGO / EVENT"
+          }
+        ],
+        "checks": [
+          "salvage041-fixed45",
+          "salvage041-browser108",
+          "salvage041-capacities17",
+          "salvage041-physical-rotations52"
+        ],
+        "proofs": [
+          "artifacts/salvage-ship-v041/verification.json",
+          "design/star-salvage/v041/DELIVERY.md",
+          "design/star-salvage/v041/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone, real safe area/lock screen, user art and enjoyment remain pending.",
+        "nextAction": "User self-test458136; engineering pass does not imply art or phone acceptance.",
+        "reviewBasis": "Chat feedback and confirmed puzzle silhouette re-read against frozen whole-object screenshots, actual continuous recordings and original Mac UI-exported archive.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+          "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458136,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT041-SHAPE",
+        "parent": "PORT041-PLAIN",
+        "requirement": "一件整体物件的真实外形对应登记占格，长条／L／T保留；旋转图像与占格同步，几格仍是一件；旧货面积和排布不变",
+        "acceptanceCriteria": "一件整体物件的真实外形对应登记占格，长条／L／T保留；旋转图像与占格同步，几格仍是一件；旧货面积和排布不变",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 14,
+            "endLine": 14
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/cargo-art.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.1 PORT / FLEET / CARGO / EVENT"
+          }
+        ],
+        "checks": [
+          "salvage041-fixed45",
+          "salvage041-browser108",
+          "salvage041-capacities17",
+          "salvage041-physical-rotations52"
+        ],
+        "proofs": [
+          "artifacts/salvage-ship-v041/verification.json",
+          "design/star-salvage/v041/DELIVERY.md",
+          "design/star-salvage/v041/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone, real safe area/lock screen, user art and enjoyment remain pending.",
+        "nextAction": "User self-test458136; engineering pass does not imply art or phone acceptance.",
+        "reviewBasis": "Chat feedback and confirmed puzzle silhouette re-read against frozen whole-object screenshots, actual continuous recordings and original Mac UI-exported archive.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+          "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458136,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT041-ICONS",
+        "parent": "PORT041-PLAIN",
+        "requirement": "商店与任务使用与货舱／飞船一致的立体像素PNG，不再使用主入口平面SVG",
+        "acceptanceCriteria": "商店与任务使用与货舱／飞船一致的立体像素PNG，不再使用主入口平面SVG",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 15,
+            "endLine": 15
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/cargo-art.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.1 PORT / FLEET / CARGO / EVENT"
+          }
+        ],
+        "checks": [
+          "salvage041-fixed45",
+          "salvage041-browser108",
+          "salvage041-capacities17",
+          "salvage041-physical-rotations52"
+        ],
+        "proofs": [
+          "artifacts/salvage-ship-v041/verification.json",
+          "design/star-salvage/v041/DELIVERY.md",
+          "design/star-salvage/v041/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone, real safe area/lock screen, user art and enjoyment remain pending.",
+        "nextAction": "User self-test458136; engineering pass does not imply art or phone acceptance.",
+        "reviewBasis": "Chat feedback and confirmed puzzle silhouette re-read against frozen whole-object screenshots, actual continuous recordings and original Mac UI-exported archive.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+          "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458136,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT041-SAVE",
+        "parent": "PORT041-PLAIN",
+        "requirement": "同DB的旧schema2/3/4/5原子迁移，保存余额、债务、货物UID与位置、任务、历史和已购船／工具／扩容；失败不覆盖、跨标签不双扣",
+        "acceptanceCriteria": "同DB的旧schema2/3/4/5原子迁移，保存余额、债务、货物UID与位置、任务、历史和已购船／工具／扩容；失败不覆盖、跨标签不双扣",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 16,
+            "endLine": 16
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.1 PORT / FLEET / CARGO / EVENT"
+          }
+        ],
+        "checks": [
+          "salvage041-fixed45",
+          "salvage041-browser108",
+          "salvage041-capacities17",
+          "salvage041-physical-rotations52"
+        ],
+        "proofs": [
+          "artifacts/salvage-ship-v041/verification.json",
+          "design/star-salvage/v041/DELIVERY.md",
+          "design/star-salvage/v041/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone, real safe area/lock screen, user art and enjoyment remain pending.",
+        "nextAction": "User self-test458136; engineering pass does not imply art or phone acceptance.",
+        "reviewBasis": "Chat feedback and confirmed puzzle silhouette re-read against frozen whole-object screenshots, actual continuous recordings and original Mac UI-exported archive.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+          "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458136,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT041-DELIVERY",
+        "parent": "PORT041-PLAIN",
+        "requirement": "同一冻结ZIP的真实HTTP、双引擎／两竖屏及桌面回归、自然两趟和单独QA；新开发自测、同Mac入口、旧版回退、Draft待审",
+        "acceptanceCriteria": "同一冻结ZIP的真实HTTP、双引擎／两竖屏及桌面回归、自然两趟和单独QA；新开发自测、同Mac入口、旧版回退、Draft待审",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+            "startLine": 17,
+            "endLine": 17
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/build.py",
+          "prototypes/salvage-route-demo/tests/verify-evidence.cjs",
+          "prototypes/salvage-route-demo/tests/write-ship-proof.py"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.1 PORT / FLEET / CARGO / EVENT"
+          }
+        ],
+        "checks": [
+          "salvage041-fixed45",
+          "salvage041-browser108",
+          "salvage041-capacities17",
+          "salvage041-physical-rotations52"
+        ],
+        "proofs": [
+          "artifacts/salvage-ship-v041/verification.json",
+          "design/star-salvage/v041/DELIVERY.md",
+          "design/star-salvage/v041/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone, real safe area/lock screen, user art and enjoyment remain pending.",
+        "nextAction": "User self-test458136; engineering pass does not imply art or phone acceptance.",
+        "reviewBasis": "Chat feedback and confirmed puzzle silhouette re-read against frozen whole-object screenshots, actual continuous recordings and original Mac UI-exported archive.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+          "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458136,
+          "formalIntegration": false
+        }
       }
     ],
     "supersededRules": [
@@ -33791,6 +34276,21 @@
       "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
       "task": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
       "notes": "Final457635 supersedes provisional457449; desktop short-window occlusion fixed and pixel-checked. Exact29-file ZIP/HTTP,72 browser+8 compatibility,14 native assets,864 economy voyages,unchanged actual existing profile. Original0.3 rollback4289 retained;phone/art pending."
+    },
+    "salvageShipDelivery": {
+      "status": "DEVELOPMENT_SELF_TEST_DELIVERED_PENDING_PHONE_USER_ART",
+      "proof": "artifacts/salvage-ship-v041/verification.json",
+      "sourceCommit": "754113a197e52762a80de5e33a45192074f2a99b",
+      "zipSha256": "3321ddb5ae3f04ac0f84678842bc7999dffba12f948ae74d5d6ea5692abd4969",
+      "database": "lostcargo.route-demo.v1",
+      "taptapVersion": 458136,
+      "formalIntegration": false,
+      "localMacUpdated": true,
+      "evidenceCompleteness": "COMPLETE",
+      "platformStatus": "UPLOADED_DEVELOPMENT_SELF_TEST",
+      "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
+      "task": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+      "notes": "Actual original profile now454parts/run4: schema5→6 exact restore, refresh preserved, no spending.108 current+72 old04 browser checks;17 cap/stock checks,15 new assets and52rotations. Old proofs remain immutable;phone/art pending."
     }
   },
   "approvedReferenceManifests": [
