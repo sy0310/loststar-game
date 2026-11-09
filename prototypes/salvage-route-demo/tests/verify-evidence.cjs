@@ -180,7 +180,7 @@ function readZipFiles(name){
   ' print(json.dumps(result))\n',local(name)],{encoding:'utf8',maxBuffer:1024*1024});
  return JSON.parse(result);
 }
-function verifyCapture(p,manifest,evidence,packageFiles,stats,build){
+function verifyCapture(p,manifest,evidence,packageFiles,stats,build,folder=upgradeFolder){
  assert.equal(manifest.runtimeSourceSha,p.runtimeSourceSha);assert.equal(manifest.zipSha256,p.zip.sha256);
  assert.equal(manifest.completed,true);assert.deepEqual(manifest.build,build);
  assert.deepEqual(manifest.browserStats,stats);assert.equal(manifest.scope.physicalPhoneTested,false);
@@ -199,7 +199,7 @@ function verifyCapture(p,manifest,evidence,packageFiles,stats,build){
  assert.equal(report.completed,true);assert.deepEqual(report.errors,[]);assert.deepEqual(report.build,build);
  for(const name of ['imported','seedOverridden','clockOverridden'])assert.equal(report.natural[name],false);
  assert.equal(report.qa.imported,true);
- const E=require('../src/engine.js');
+ const E=require('./legacy-engine.cjs')(p.runtimeSourceSha);
  function checkpoints(list){
   const result=new Map();
   for(const point of list){assert(!result.has(point.name),'duplicate capture checkpoint');E.assertState(point.state);result.set(point.name,point.state);}
@@ -225,7 +225,7 @@ function verifyCapture(p,manifest,evidence,packageFiles,stats,build){
  assert.notDeepEqual(qa.get('tap-rotated-and-saved').cargoGrid,qa.get('dragged-and-saved').cargoGrid);
  assert.deepEqual(qa.get('dragged-and-saved'),qa.get('reload-preserved'));
  for(const name of ['natural-voyage-1.webm','natural-voyage-2.webm','qa-rotate-drag-persist.webm']){
-  const file=upgradeFolder+'developer/capture/'+name;assert(media.has(file),'missing completed recording: '+name);
+  const file=folder+'developer/capture/'+name;assert(media.has(file),'missing completed recording: '+name);
   assert.equal(fs.readFileSync(local(file)).subarray(0,4).toString('hex'),'1a45dfa3','recording is not WebM: '+name);
  }
 }
@@ -259,8 +259,8 @@ function verifyPlatform(platform,evidence,zip){
   assert.equal(receipt.taptap.is_releasing,false);
  }
 }
-function verifyUpgrade(p){
- assert.equal(p.schema,2);ancestor(p.runtimeSourceSha);assertCurrentRuntime(p.runtimeSourceSha);
+function verifyUpgrade(p,requireCurrent=true){
+ assert.equal(p.schema,2);ancestor(p.runtimeSourceSha);if(requireCurrent)assertCurrentRuntime(p.runtimeSourceSha);
  assert.equal(p.zip.files,13);assert.equal(p.zip.filename,'loststar-salvage-'+p.runtimeSourceSha.slice(0,7)+'.zip');
  const evidence=verifyEvidence(p.evidenceFiles,'upgrade evidence');
  const build=boundJSON(p.buildInfo,evidence);verifyBuild(p,build);
@@ -284,10 +284,28 @@ const historical=json(oldFolder+'verification.json');
 verifyHistorical(historical);
 const upgrade=upgradeFolder+'verification.json';
 if(fs.existsSync(local(upgrade))){
- verifyUpgrade(json(upgrade));
+ verifyUpgrade(json(upgrade),!fs.existsSync(local('artifacts/salvage-mobile-v03/verification.json')));
  console.log('PASS historical salvage evidence preserved: original source/HTTP hashes, all evidence bytes, 56+56 browser results and unbound TapTap receipt');
 }else{
  // Before the upgrade proof lands, keep the original fail-closed runtime gate.
  assertCurrentRuntime(historical.runtimeSourceSha);
  console.log('PASS frozen salvage runtime, original package/source hashes, all evidence bytes, independent HTTP/CI results and unbound TapTap receipt; phone remains NOT_TESTED');
+}
+
+const mobile='artifacts/salvage-mobile-v03/verification.json';
+if(fs.existsSync(local(mobile))){
+ const p=json(mobile),folder='artifacts/salvage-mobile-v03/';
+ assert.equal(p.schema,3);ancestor(p.runtimeSourceSha);assertCurrentRuntime(p.runtimeSourceSha);
+ const evidence=verifyEvidence(p.evidenceFiles,'mobile evidence'),build=boundJSON(p.buildInfo,evidence);verifyBuild(p,build);
+ const raw=fs.readFileSync(local(p.zip.path));assert(evidence.has(p.zip.path));assert.equal(raw.length,p.zip.bytes);assert.equal(hash(raw),p.zip.sha256);
+ const expected=expectedPackage(p.runtimeSourceSha),actual=comparePackageFiles(readZipFiles(p.zip.path),expected.files,'mobile actual ZIP/source');comparePackageFiles(p.packageFiles,actual,'mobile package manifest');
+ const b=p.fixedPackageBrowser;assert.equal(b.expected,128);assert.equal(b.runtimeSourceSha,p.runtimeSourceSha);assert.equal(b.zipSha256,p.zip.sha256);
+ const stats=verifyBrowser(boundJSON(b.report,evidence),128);verifyCapture(p,boundJSON(p.capture.manifest,evidence),evidence,actual,stats,expected.build,folder);
+ assert.equal(boundJSON(folder+'developer/mobile-model.json',evidence).passed,21);assert.equal(boundJSON(folder+'developer/engine-results.json',evidence).testsPassed,30);assert.equal(boundJSON(folder+'developer/regression-results.json',evidence).passed,18);
+ const economy=boundJSON(folder+'developer/mobile-policy-comparison.json',evidence);assert.equal(economy.baseline,'b26455ada31fe1ab780905cdb1c26f1387c082bb');assert.equal(economy.currentSchema,4);assert.equal(economy.seeds,32);assert.equal(economy.voyagesPerSeed,12);for(const name of ['engine.js','cargo-layout.js','balance.js'])assert.equal(economy.currentSources[name],hash(source(p.runtimeSourceSha,demo+'src/'+name)),'economy source binding: '+name);
+ for(const policy of Object.values(economy.policies))for(const version of ['baseline','current'])assert.equal(policy[version].voyages,384);
+ const http=boundJSON(folder+'package-http.json',evidence);assert.equal(http.sourceCommit,p.runtimeSourceSha);assert.equal(http.zipSha256,p.zip.sha256);assert.equal(http.allHttpBytesMatchZip,true);comparePackageFiles(http.files,actual,'mobile real HTTP payload');
+ assert.equal(p.physicalPhone,'NOT_TESTED');verifyPlatform(p.platform,evidence,p.zip);
+ const localCheck=boundJSON(folder+'delivery/local-browser-check.json',evidence);assert.equal(localCheck.runtimeSourceSha,p.runtimeSourceSha);assert.equal(localCheck.matchesFrozenMigration,true);assert.equal(localCheck.refreshPreserves,true);assert.equal(localCheck.gameplayActionsTaken,false);
+ console.log('PASS mobile frozen runtime, 13 ZIP/HTTP payloads, 128 real browser checks, schema4 tests, two natural voyages, economy comparison and preserved actual user save; phone remains NOT_TESTED');
 }

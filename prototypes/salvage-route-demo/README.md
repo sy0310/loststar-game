@@ -4,7 +4,17 @@
 
 基础操作：**选航点，处理现场，把收获带回港口；卖货、补给和还款由你决定。** 无强制等待、广告、真实支付或离线罚款。
 
-## 0.2.0：货舱、航路与图标
+## 0.3.0：手机轻交互与小件货舱
+
+- 常见新货物占1～3小格；普通货舱仍4×4，测绘记录箱改为独立任务槽。原旧货仍保留4/8/12/16格包装与所有权益。
+- 货舱的棋盘、横向托盘和固定确认按钮集中显示；短屏或大字只滚内部内容。点已摆货物直接选中，点空格放置，旋转/拖动仍需确认保存。
+- 可直接装下的收获先用紧凑确认，不强制翻完整编辑页；冲突时手动取舍。取消与失败不扣资源、不重抽。
+- 结果直接去真实航路，归航先看售货/下一趟，详细账本可展开。重复补给保留当前位置。
+- 同一存档原子升级至schema4；旧档、工具、余额和已完成结算保留，正式星球与首章存档不接触。
+
+当前 **TapTap开发自测454472 · 0.3.0 · 799a36e**。Mac同入口 [直接试玩](http://127.0.0.1:4283/loststar-salvage/)，该地址只在这台Mac可用；手机请扫[新自测二维码](../../artifacts/salvage-mobile-v03/delivery/taptap-454472.png)。[实际交付与待测](../../design/star-salvage/MOBILE_V03_DELIVERY.md)。
+
+## 历史0.2.0：货舱、航路与图标
 
 - 货舱为可旋转、拖放和点选摆放的 4×4 拼装网格。原 1 格货物对应 4 小格，容量没有额外扩张；面积够也可能因形状无法放下。辅助整理只生成可检查的排布，仍需自己确认。
 - 拾取货物先进入装载草稿；确认时才一次结算代价、风险和货物。取消、刷新或未放好的货物不会额外扣费；需要替换旧货时会明确显示放弃清单。
@@ -12,7 +22,7 @@
 - 燃料、耐久、零件、货物、事件类型、行动代价和结果使用统一 SVG 图标，并保留文字和数值。
 - 旧 schema 2 存档会先原样备份，再在同一事务内迁移到 schema 3；继续使用原 IndexedDB 库名，不换入口或清空档案。
 
-当前包和测试绑定见 [本轮交付记录](../../design/star-salvage/UPGRADE_DELIVERY.md)。历史 TapTap 开发版本号不代表已上传本轮更新，以该记录的实际平台回读为准。
+历史0.2包和测试绑定见 [0.2交付记录](../../design/star-salvage/UPGRADE_DELIVERY.md)。历史 TapTap 开发版本号不代表已上传本轮更新，以该记录的实际平台回读为准。
 
 ## 本机运行
 
@@ -34,7 +44,7 @@ npm --prefix prototypes/salvage-route-demo run preview
 
 ```sh
 npm --prefix prototypes/salvage-route-demo run simulate
-node prototypes/salvage-route-demo/tests/compare-cargo.cjs
+node prototypes/salvage-route-demo/tests/mobile-economy.cjs
 npx playwright test --config prototypes/salvage-route-demo/playwright.config.cjs
 # 先提交运行源码，再冻结将上传的同一个 ZIP：
 python3 prototypes/salvage-route-demo/build.py --freeze

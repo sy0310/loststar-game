@@ -195,6 +195,7 @@ jobs:
         run: |
           npm --prefix prototypes/salvage-route-demo test
           npm --prefix prototypes/salvage-route-demo run simulate
+          npm --prefix prototypes/salvage-route-demo run simulate:compare
       - name: Build and extract this exact isolated H5 ZIP
         run: |
           python3 prototypes/salvage-route-demo/build.py --freeze
