@@ -21,6 +21,8 @@
 
 平台回读458136、文件名、精确195637字节、竖屏、未发布；正式主包前后相同。平台未提供ZIP摘要，不能把本地SHA说成平台重算值。[平台回执](../../../artifacts/salvage-ship-v041/taptap-receipt.json)。
 
+206dfe5远端GitHub raw回读固定ZIP和15项新素材的1x／ORA／2x／4x，共61文件，大小与SHA256逐项相同。[远端核对](../../../artifacts/salvage-ship-v041/delivery/github-readback.json)。这份回读不冒充TapTap服务端摘要。
+
 实际原浏览器UI导出前／后／再刷新，完整等于冻结模型schema5→6迁移：454零件、11500船款、100燃料、100耐久、第四趟、已完成待领委托均保留；没有导入QA或执行交易。完整原档仅私有留本机；公开证明只有摘要与哈希。[本机核对](../../../artifacts/salvage-ship-v041/delivery/local-browser-check.json)。
 
 0.4原包与[4292回退](http://127.0.0.1:4292/loststar-salvage/)、0.3的4289、0.2的4287和0.1的4284保留。回退浏览器仍须显式使用相应版本私有备份，不能让旧引擎覆盖schema6；回退服务不等于反向迁移。
