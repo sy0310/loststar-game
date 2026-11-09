@@ -16,6 +16,8 @@
 
 先 `git status` / `git fetch` / 核实当前分支最新 HEAD，有本地未提交工作就新建 worktree，禁止 `reset --hard`、强推、覆盖用户文件。不碰正式《失物星球》与剧情首章资产、存档、入口，也不碰原有 0.2 / 0.3 冻结 ZIP 和证据。
 
+**原图入库工具：**优先执行 `python3 scripts/import_salvage_v04_concept.py --find-local`，或在拿到真实文件后执行 `python3 scripts/import_salvage_v04_concept.py --source '/真实路径/失物号_星海拾荒像素界面概念板.png'`。脚本会按大小/PNG头/尺寸/SHA256强校验，导入原图及可选的参考裁片，保留旧文件、不覆盖不同内容、不提交私人目录；只有脚本验证通过才在 PR 标记原图已入库。
+
 **先解决概念 PNG 的真实来源：** 用户确认的视觉原图是本次会话中的 `失物号_星海拾荒像素界面概念板.png`（1122×1402，2,142,727字节，SHA256：`16289e481145f9c781d5ecf353de0f00861fb17fbc3df2185d94e77b978cacb0`）。目标存入 `design/star-salvage/v04/concepts/salvage_v04_approved_full.png`。只有当你在本机/Repo实际拿到原始文件并校验字节与 SHA 后，才登记 **SOURCE_PRESENT**；若缺失，**不得从概念截图/README/旧设计稿拼一张假原图**。可以继续执行数据与交互框架，但标记“视觉参考原文件缺失、最终视觉复核阻塞”，让用户提供本地真实文件。之前聊天的 `/mnt/data` 不保证在 Codex Mac 可读。绝不要把占位 JPG 冒称用户认可 PNG。
 
 ## 1. 首页只有一版：港口主场景
