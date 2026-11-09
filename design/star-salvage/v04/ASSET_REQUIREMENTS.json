@@ -1,0 +1,256 @@
+{
+  "schema": 1,
+  "game": "失物号：星海拾荒",
+  "round": "v04_port_visual_2026-11-09",
+  "implementation": "PENDING_CODEX",
+  "baseline": {
+    "runtime": "0.3.0",
+    "source": "799a36e78cbd5397d671901fded19c10517429f9",
+    "taptapSelfTest": 454472,
+    "pr": 2
+  },
+  "approvedReference": {
+    "name": "失物号_星海拾荒像素界面概念板.png",
+    "source": "Current conversation generated original PNG",
+    "status": "AVAILABLE_IN_THIS_CONVERSATION_NOT_YET_COMMITTED_IN_REPO",
+    "expectedRepoPath": "design/star-salvage/v04/concepts/salvage_v04_approved_full.png",
+    "width": 1122,
+    "height": 1402,
+    "bytes": 2142727,
+    "sha256": "16289e481145f9c781d5ecf353de0f00861fb17fbc3df2185d94e77b978cacb0",
+    "disclaimer": "Flat concept board. Do not treat as production sprite/UI atlas."
+  },
+  "visualSystem": {
+    "logicalScene": {
+      "width": 192,
+      "height": 320
+    },
+    "exportScale": [
+      2,
+      4
+    ],
+    "shipSource": {
+      "width": 96,
+      "height": 48
+    },
+    "itemSource": {
+      "width": 24,
+      "height": 24
+    },
+    "uiIconSource": {
+      "width": 24,
+      "height": 24
+    },
+    "rendering": "nearest_neighbor_pixelated",
+    "pixelGrid": "common_1x_grid",
+    "paletteHint": [
+      "#171728",
+      "#242039",
+      "#38304D",
+      "#665778",
+      "#9B83AB",
+      "#F4C785",
+      "#FFE0A6",
+      "#8ECFCF",
+      "#F2EDF4"
+    ],
+    "targetViewport": [
+      {
+        "w": 360,
+        "h": 800
+      },
+      {
+        "w": 390,
+        "h": 844
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "id": "harbor_background",
+      "path": "prototypes/salvage-route-demo/assets/v04/harbor_bg@2x.png",
+      "source": "192x320",
+      "export": "384x640",
+      "alpha": false,
+      "layers": "background without UI or ship",
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "harbor_foreground",
+      "path": "prototypes/salvage-route-demo/assets/v04/harbor_front@2x.png",
+      "source": "192x320",
+      "export": "384x640",
+      "alpha": true,
+      "layers": "optional rail/crates occlusion",
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "ship_starter",
+      "name": "轻型拾荒船",
+      "role": "balanced",
+      "path": "prototypes/salvage-route-demo/assets/v04/ship_starter@2x.png",
+      "source": "96x48",
+      "export": "192x96",
+      "alpha": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "ship_cargo",
+      "name": "中型货船",
+      "role": "capacity",
+      "path": "prototypes/salvage-route-demo/assets/v04/ship_cargo@2x.png",
+      "source": "96x48",
+      "export": "192x96",
+      "alpha": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "ship_scout",
+      "name": "深航探测船",
+      "role": "fuel_efficient",
+      "path": "prototypes/salvage-route-demo/assets/v04/ship_scout@2x.png",
+      "source": "96x48",
+      "export": "192x96",
+      "alpha": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "ship_heavy",
+      "name": "重型工程船",
+      "role": "durability",
+      "path": "prototypes/salvage-route-demo/assets/v04/ship_heavy@2x.png",
+      "source": "96x48",
+      "export": "192x96",
+      "alpha": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "metal_crate",
+      "name": "金属箱",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_metal_crate@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "energy_battery",
+      "name": "能源电池",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_energy_battery@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "nav_chip",
+      "name": "导航芯片",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_nav_chip@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "broken_engine",
+      "name": "损坏引擎件",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_broken_engine@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "medkit",
+      "name": "医疗箱",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_medkit@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "fuel_can",
+      "name": "备用燃料罐",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_fuel_can@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "sample",
+      "name": "观测样本",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_sample@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "TO_DRAW"
+    },
+    {
+      "id": "toolbox",
+      "name": "维修工具箱",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_toolbox@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "TO_DRAW"
+    }
+  ],
+  "uiComponents": [
+    "hud_resources",
+    "floating_action_cargo",
+    "floating_action_shop",
+    "floating_action_fleet",
+    "floating_action_missions",
+    "launch_button",
+    "shop_supply_panel",
+    "ship_store_card",
+    "ship_upgrade_panel",
+    "mission_accept_card",
+    "cargo_board",
+    "cargo_quick_confirmation",
+    "route_signal_overlay",
+    "return_summary"
+  ],
+  "interactionRules": [
+    "one_main_home_screen",
+    "no_fixed_four_tab_nav",
+    "manual_mission_accept",
+    "multi_ship_purchase_and_equip",
+    "one_click_full_supply_quotes_actual_cost",
+    "cargo_area_and_upgrade_are_real",
+    "no_hidden_spoilers",
+    "single_source_quotes",
+    "atomic_purchases_and_rewards",
+    "migration_schema4_to_next"
+  ],
+  "evidenceRequired": [
+    "source_files_1x",
+    "exported_png_2x",
+    "asset_decoding",
+    "mobile_screenshots",
+    "screenshot_comparison_to_approved_reference",
+    "two_voyage_video",
+    "smoke_and_regression_logs",
+    "schema_migration_replay",
+    "actual_taptap_development_receipt_or_explicit_blocker"
+  ],
+  "note": "Prices, ship capacity, mission reward and progression displayed in concept art are non-authoritative design placeholders."
+}
