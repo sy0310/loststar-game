@@ -1,16 +1,18 @@
 # 星海拾荒 0.4｜港口视觉确认与实施交接
 
-**这一版是唯一认可的画风和主界面设计方向，但还不是运行版。**
+**这一版按唯一认可画风实现为可玩开发自测0.4.0，用户画风与真实手机仍待审核。**
+
+[实际试玩、开发二维码与交付](DELIVERY.md) · [模型/经济](IMPLEMENTATION.md) · [同包画面对照](VISUAL_REVIEW.md)
 
 ## 已写入 PR 分支
 
 | 文件 | 作用 | 当前状态 |
 |---|---|---|
 | [PORT_UI_VISUAL_AND_SYSTEM_SPEC.md](PORT_UI_VISUAL_AND_SYSTEM_SPEC.md) | 统一主界面、固定像素尺寸、港口/商店/飞船/任务/航路完整规则 | **已入库** |
-| [ASSET_REQUIREMENTS.json](ASSET_REQUIREMENTS.json) | 14项真实分层运行素材（背景2、飞船4、货物8）及设计源图的 SHA | **清单已入库，原画待制作** |
+| [ASSET_REQUIREMENTS.json](ASSET_REQUIREMENTS.json) | 14项真实分层运行素材（背景2、飞船4、货物8）及设计源图的 SHA | **14项分层原生/ORA/2x/4x已制作并接入** |
 | [home_layout_wireframe.svg](drafts/home_layout_wireframe.svg) | 390×844 可在 GitHub 浏览的按钮布局示意 | **已入库，但不是被认可的美术原画** |
 | [原图与全部参考裁片](concepts/) | 用户认可画风的完整PNG、上一版风格板及五个参考分区 | **7份真实PNG已入库并完成字节核验** |
-| [Codex 0.4 任务书](../../../codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md) | 数据迁移、真实购船、任务接取、补满与资产拆分、测试、交付的完整指令 | **已入库，待 Codex 执行** |
+| [Codex 0.4 任务书](../../../codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md) | 数据迁移、真实购船、任务接取、补满与资产拆分、测试、交付的完整指令 | **已执行，固定包与待测见交付记录** |
 
 ## 用户认可的参考原图
 

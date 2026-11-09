@@ -11667,10 +11667,14 @@
         "design/first-planet-story/PHONE_VISUAL_FEEDBACK.md",
         "design/star-salvage/DEMO_CODEX_HANDOFF.md",
         "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
-        "codex/SALVAGE_V03_MOBILE_UX_REWORK_TASK.md"
+        "codex/SALVAGE_V03_MOBILE_UX_REWORK_TASK.md",
+        "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+        "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
+        "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
+        "design/star-salvage/v04/ASSET_REQUIREMENTS.json"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "Preserve all prior220 requirements and frozen evidence. Append11 traceable salvage0.3 requirements; user phone/art/enjoyment are not inferred from engineering passes.",
+      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes.",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -11990,7 +11994,18 @@
       "SALVAGE3-UX-07",
       "SALVAGE3-SAVE",
       "SALVAGE3-ECONOMY",
-      "SALVAGE3-DELIVERY"
+      "SALVAGE3-DELIVERY",
+      "PORT04-STYLE",
+      "PORT04-HOME",
+      "PORT04-SHIPS",
+      "PORT04-UPGRADE",
+      "PORT04-SUPPLY",
+      "PORT04-TASK",
+      "PORT04-ITEM",
+      "PORT04-ROUTE",
+      "PORT04-PERSIST",
+      "PORT04-REVIEW",
+      "PORT04-DELIVERY"
     ],
     "requirements": [
       {
@@ -31755,13 +31770,13 @@
           },
           {
             "path": "prototypes/salvage-route-demo/src/app.js",
-            "startLine": 388,
-            "endLine": 438
+            "startLine": 351,
+            "endLine": 406
           },
           {
             "path": "prototypes/salvage-route-demo/src/app.js",
-            "startLine": 691,
-            "endLine": 715
+            "startLine": 650,
+            "endLine": 703
           }
         ],
         "scope": "IN_SCOPE",
@@ -31811,7 +31826,21 @@
           ],
           "limitation": "Static screenshot inspection only; visual remains NOT_REVIEWED until continuous footage is actually reviewed."
         },
-        "carry": "Historical0.2 frozen code/package and rights preserved; current0.3 behaviour is mapped by SALVAGE3, not inferred from these old passes."
+        "carry": "Historical0.2 frozen code/package and rights preserved; current0.3 behaviour is mapped by SALVAGE3, not inferred from these old passes.",
+        "sourceRefMigration": {
+          "reason": "v0.4 controller compacted; original normative docs and frozen0.2 proof unchanged, executable code spans follow current actual persistence/subscribe handlers",
+          "previousCommit": "799a36e78cbd5397d671901fded19c10517429f9",
+          "previousAppSpans": [
+            [
+              388,
+              438
+            ],
+            [
+              691,
+              715
+            ]
+          ]
+        }
       },
       {
         "id": "SALVAGE2-DELIVERY",
@@ -32505,6 +32534,739 @@
           "taptapVersion": 454472,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "PORT04-STYLE",
+        "parent": null,
+        "requirement": "统一像素尺寸/调色板，主界面静态像素港湾有中等细节；不粗糙/不整图写死 UI",
+        "acceptanceCriteria": "统一像素尺寸/调色板，主界面静态像素港湾有中等细节；不粗糙/不整图写死 UI",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 8,
+            "endLine": 24
+          },
+          {
+            "path": "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
+            "startLine": 1,
+            "endLine": 5
+          },
+          {
+            "path": "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
+            "startLine": 16,
+            "endLine": 33
+          },
+          {
+            "path": "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
+            "startLine": 34,
+            "endLine": 47
+          },
+          {
+            "path": "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
+            "startLine": 48,
+            "endLine": 76
+          },
+          {
+            "path": "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
+            "startLine": 77,
+            "endLine": 86
+          },
+          {
+            "path": "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
+            "startLine": 87,
+            "endLine": 95
+          },
+          {
+            "path": "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
+            "startLine": 1,
+            "endLine": 4
+          },
+          {
+            "path": "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
+            "startLine": 5,
+            "endLine": 10
+          },
+          {
+            "path": "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
+            "startLine": 19,
+            "endLine": 22
+          },
+          {
+            "path": "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
+            "startLine": 23,
+            "endLine": 33
+          },
+          {
+            "path": "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
+            "startLine": 49,
+            "endLine": 52
+          },
+          {
+            "path": "design/star-salvage/v04/ASSET_REQUIREMENTS.json",
+            "startLine": 1,
+            "endLine": 652
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/port-view.css",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [
+          "prototypes/salvage-route-demo/assets/v04/harbor_bg@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/harbor_front@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_starter@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_cargo@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_scout@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_heavy@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_metal_crate@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_energy_battery@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_nav_chip@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_broken_engine@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_medkit@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_fuel_can@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_sample@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_toolbox@2x.png"
+        ],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / STYLE"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-HOME",
+        "parent": "PORT04-STYLE",
+        "requirement": "**唯一 HOME**、四圆形入口/顶部HUD/一个出发 CTA；无固定四 Tab",
+        "acceptanceCriteria": "**唯一 HOME**、四圆形入口/顶部HUD/一个出发 CTA；无固定四 Tab",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 25,
+            "endLine": 36
+          },
+          {
+            "path": "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
+            "startLine": 6,
+            "endLine": 15
+          },
+          {
+            "path": "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
+            "startLine": 11,
+            "endLine": 18
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/port-view.js",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [
+          "prototypes/salvage-route-demo/assets/v04/harbor_bg@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/harbor_front@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_starter@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_cargo@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_scout@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_heavy@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_metal_crate@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_energy_battery@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_nav_chip@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_broken_engine@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_medkit@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_fuel_can@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_sample@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_toolbox@2x.png"
+        ],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / HOME"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-SHIPS",
+        "parent": "PORT04-STYLE",
+        "requirement": "≥3款不同可买可换真实飞船，资源/属性变化可验证，当前主场景船可切换",
+        "acceptanceCriteria": "≥3款不同可买可换真实飞船，资源/属性变化可验证，当前主场景船可切换",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 37,
+            "endLine": 45
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [
+          "prototypes/salvage-route-demo/assets/v04/harbor_bg@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/harbor_front@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_starter@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_cargo@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_scout@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_heavy@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_metal_crate@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_energy_battery@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_nav_chip@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_broken_engine@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_medkit@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_fuel_can@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_sample@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_toolbox@2x.png"
+        ],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / SHIPS"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-UPGRADE",
+        "parent": "PORT04-STYLE",
+        "requirement": "至少1项真实生效的货舱升级，外置托盘若显示可买必须实际可用",
+        "acceptanceCriteria": "至少1项真实生效的货舱升级，外置托盘若显示可买必须实际可用",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 37,
+            "endLine": 45
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / UPGRADE"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-SUPPLY",
+        "parent": "PORT04-STYLE",
+        "requirement": "燃料/维修一键补满实际价格与余额校验，原地刷新，无双扣",
+        "acceptanceCriteria": "燃料/维修一键补满实际价格与余额校验，原地刷新，无双扣",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 54,
+            "endLine": 60
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / SUPPLY"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-TASK",
+        "parent": "PORT04-STYLE",
+        "requirement": "手动接取、在途、完成、一次性领取/弃任务，未接无自动奖励",
+        "acceptanceCriteria": "手动接取、在途、完成、一次性领取/弃任务，未接无自动奖励",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 46,
+            "endLine": 53
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/port-view.js",
+          "prototypes/salvage-route-demo/src/store.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / TASK"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-ITEM",
+        "parent": "PORT04-STYLE",
+        "requirement": "≥8种独立像素物品图标与稳定ID，图像与真实格子几何分离",
+        "acceptanceCriteria": "≥8种独立像素物品图标与稳定ID，图像与真实格子几何分离",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 61,
+            "endLine": 67
+          },
+          {
+            "path": "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
+            "startLine": 34,
+            "endLine": 48
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js",
+          "prototypes/salvage-route-demo/src/port-view.js"
+        ],
+        "assets": [
+          "prototypes/salvage-route-demo/assets/v04/harbor_bg@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/harbor_front@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_starter@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_cargo@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_scout@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/ship_heavy@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_metal_crate@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_energy_battery@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_nav_chip@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_broken_engine@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_medkit@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_fuel_can@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_sample@2x.png",
+          "prototypes/salvage-route-demo/assets/v04/item_toolbox@2x.png"
+        ],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / ITEM"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-ROUTE",
+        "parent": "PORT04-STYLE",
+        "requirement": "不靠底部Tab切换；真实两候选/油耗/返港预算/不剧透",
+        "acceptanceCriteria": "不靠底部Tab切换；真实两候选/油耗/返港预算/不剧透",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 68,
+            "endLine": 74
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/port-view.js",
+          "prototypes/salvage-route-demo/src/route-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / ROUTE"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-PERSIST",
+        "parent": "PORT04-STYLE",
+        "requirement": "原schema2/3/4历史和已购权益迁移；取消/跨标签/写盘失败不会损失",
+        "acceptanceCriteria": "原schema2/3/4历史和已购权益迁移；取消/跨标签/写盘失败不会损失",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 8,
+            "endLine": 24
+          },
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 75,
+            "endLine": 92
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/store.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / PERSIST"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-REVIEW",
+        "parent": "PORT04-STYLE",
+        "requirement": "PR截图、录像、真实HTTP同包、素材 SHA 和接受/阻塞证据齐全",
+        "acceptanceCriteria": "PR截图、录像、真实HTTP同包、素材 SHA 和接受/阻塞证据齐全",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 75,
+            "endLine": 92
+          },
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 93,
+            "endLine": 110
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/tests/verify-evidence.cjs",
+          "prototypes/salvage-route-demo/tests/capture-port.cjs",
+          "prototypes/salvage-route-demo/tests/verify-port-art.py"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / REVIEW"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "PORT04-DELIVERY",
+        "parent": "PORT04-STYLE",
+        "requirement": "新自测+Mac同源入口实际回读；真机仍独立待用户审核",
+        "acceptanceCriteria": "新自测+Mac同源入口实际回读；真机仍独立待用户审核",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 75,
+            "endLine": 92
+          },
+          {
+            "path": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+            "startLine": 111,
+            "endLine": 125
+          },
+          {
+            "path": "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
+            "startLine": 53,
+            "endLine": 58
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/build.py",
+          "prototypes/salvage-route-demo/verify_package.py",
+          "prototypes/salvage-route-demo/tests/verify-evidence.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4 HOME / DELIVERY"
+          }
+        ],
+        "checks": [
+          "salvage-port04-fixed-evidence",
+          "salvage-port04-browser72",
+          "salvage-port04-model18",
+          "salvage-port04-art14"
+        ],
+        "proofs": [
+          "artifacts/salvage-port-v04/verification.json",
+          "design/star-salvage/v04/DELIVERY.md",
+          "design/star-salvage/v04/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical TapTap phone/WebView, lock-screen, user visual and enjoyment remain pending; no engineering scope omitted.",
+        "nextAction": "User development self-test457449; do not infer acceptance from automated tests.",
+        "reviewBasis": "Original task/specification re-read against frozen screenshots, actual continuous natural/QA recordings, independently reviewed art and exact existing-profile migration.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+          "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 457449,
+          "formalIntegration": false
+        }
       }
     ],
     "supersededRules": [
@@ -32949,7 +33711,8 @@
       "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
       "design/star-salvage/DEMO_CODEX_HANDOFF.md",
       "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
-      "codex/SALVAGE_V03_MOBILE_UX_REWORK_TASK.md"
+      "codex/SALVAGE_V03_MOBILE_UX_REWORK_TASK.md",
+      "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md"
     ],
     "deliveryHistory": [
       {
@@ -33013,6 +33776,21 @@
       "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
       "task": "codex/SALVAGE_V03_MOBILE_UX_REWORK_TASK.md",
       "notes": "All sevenUX components implemented. Current frozen13 files exactly match ZIP over HTTP. Actual existing Mac schema3 export equals frozen schema4 migration after refresh and original-tab reload; no gameplay spending. Historical0.2/0.1 servers/packages/private exports retained. Physical phone, user enjoyment and final art remain unaccepted."
+    },
+    "salvagePortDelivery": {
+      "status": "DEVELOPMENT_SELF_TEST_DELIVERED_PENDING_PHONE_USER_ART",
+      "proof": "artifacts/salvage-port-v04/verification.json",
+      "sourceCommit": "72365d41ec26cb95e4deaa73c540e70f3e5b36dc",
+      "zipSha256": "6052c18785c6a604e742a6b2f17989b678091533de5ca329af713f293c125346",
+      "database": "lostcargo.route-demo.v1",
+      "taptapVersion": 457449,
+      "formalIntegration": false,
+      "localMacUpdated": true,
+      "evidenceCompleteness": "COMPLETE",
+      "platformStatus": "UPLOADED_DEVELOPMENT_SELF_TEST",
+      "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
+      "task": "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+      "notes": "Exact29-file fixedZIP,14 native/editable/integer-export sprites,72 new/128 immutable0.3 browser checks,864 economic voyages. Actual existing profile migrated via UI exports; no gameplay spending. Original0.3 ZIP/directory and4289 rollback retained. Draft/unbound/no production release."
     }
   },
   "approvedReferenceManifests": [
