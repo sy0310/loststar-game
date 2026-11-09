@@ -61,3 +61,5 @@ python3 prototypes/salvage-route-demo/verify_package.py releases/salvage-fixed
 ```
 
 本轮复用仓库原创飞船像素图和空间后备画面。两张概念原 PNG 与三张概念裁片仍缺失；不表示美术最终验收。真机、TapTap WebView、锁屏、下载/导入文件宿主能力和趣味仍需用户实测。开发自测不绑定主包、不提审、不发布。
+
+素材完整性校验（仅开发依赖，不进入H5包）：`python3 -m pip install -r prototypes/salvage-route-demo/tests/requirements-port-art.txt` 后运行 `npm --prefix prototypes/salvage-route-demo run check:art`。
