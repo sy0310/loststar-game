@@ -71,7 +71,7 @@
       }
     },
     onAction: (name, item) => cargoAction(name, item),
-    onGrowth:()=>{switchTab("fleet");const d=$(".fleet-upgrades");if(d)d.open=true;},
+    onGrowth:()=>{switchTab("fleet");},
     onMission: record => {if(!record)return;const expected=controller.revision;modal('放弃测绘任务？','<p>记录箱会离船，本趟不再结算180零件委托报酬。普通货物保留。</p>','确认放弃',()=>act({type:'discardMission',id:record.uid},expected,'cargo'));},
   });
   function units(text){return String(text??'');}
@@ -129,7 +129,7 @@
     if (e.fuel < 0) chips.push(chip("fuel", e.fuel, "探索油", "negative"));
     const afterSpend = state.fuel + Math.min(0, e.fuel || 0);
     const gainFuel = Math.min(
-      100 - afterSpend,
+      E.resourceLimit(state,'fuel') - afterSpend,
       Math.max(0, e.fuel || 0) + (e.bonusFuel || 0),
     );
     if (gainFuel) chips.push(chip("fuel", "+" + gainFuel, "燃料", "positive"));
@@ -137,7 +137,7 @@
       chips.push(
         chip(
           "hull",
-          (e.hull > 0 ? "+" : "") + Math.min(e.hull, 100 - state.hull),
+          (e.hull > 0 ? "+" : "") + (e.hull>0?Math.min(e.hull,E.resourceLimit(state,'hull')-state.hull):Math.max(e.hull,-state.hull)),
           "耐久",
           e.hull > 0 ? "positive" : "negative",
         ),
@@ -211,8 +211,8 @@
   function port(){return window.SalvagePortView.home(state,button);}
   function route(){return window.SalvagePortView.route(state,routeSelected,!storageOK||blocked);}
   function event() {
-    const ev=E.encounter(state),intro=ev.text.split('。')[0]+'。';
-    return '<div class="section-head"><div><div class="eyebrow">ENCOUNTER / '+state.depth+'</div><h1>探索现场</h1></div><span class="tag">'+icon('fuel')+'返航 '+E.homeCost(state)+'</span></div>'+picture(ev.kind)+'<section class="panel event-intro"><h2>'+icon(I.routeIcon(ev))+esc(ev.title)+'</h2><p>'+esc(intro)+'</p><details class="event-story"><summary>现场记录</summary><p>'+esc(ev.text)+'</p></details></section><div class="event-options">'+ev.choices.map(c=>{const err=E.checkChoice(state,c,{ignoreCargo:true});return '<button class="choice" data-choice="'+esc(c.id)+'" data-nonce="'+esc(ev.nonce)+'" '+(err?'disabled':'')+'><strong>'+icon(I.choiceIcon(c))+esc(c.label)+icon('arrow','choice-arrow')+'</strong>'+((c.effect.remove||!Object.keys(c.effect).length)?'<small>'+esc(c.desc)+'</small>':'')+choiceChips(c)+((c.risk?.[1]||-(c.effect.hull||0))>=state.hull?'<small class="risk">可能触发拖航救援</small>':'')+(err?'<small>'+icon('warning')+esc(err)+'</small>':'')+'</button>';}).join('')+'</div>'+reserveBox()+'<div class="split">'+button(icon('cargo')+'货舱','cargo','ghost')+button(icon('return')+'返港','home','ghost')+'</div>';
+    const ev=E.encounter(state);
+    return '<div class="section-head"><div><div class="eyebrow">ENCOUNTER / '+state.depth+'</div><h1>探索现场</h1></div><span class="tag">'+icon('fuel')+'返航 '+E.homeCost(state)+'</span></div>'+picture(ev.kind)+'<section class="panel event-intro"><h2>'+icon(I.routeIcon(ev))+esc(ev.title)+'</h2><p class="event-record" aria-label="现场记录">'+esc(ev.text)+'</p></section><div class="event-options">'+ev.choices.map(c=>{const err=E.checkChoice(state,c,{ignoreCargo:true});return '<button class="choice" data-choice="'+esc(c.id)+'" data-nonce="'+esc(ev.nonce)+'" '+(err?'disabled':'')+'><strong>'+icon(I.choiceIcon(c))+esc(c.label)+icon('arrow','choice-arrow')+'</strong>'+((c.effect.remove||!Object.keys(c.effect).length)?'<small>'+esc(c.desc)+'</small>':'')+choiceChips(c)+((c.risk?.[1]||-(c.effect.hull||0))>=state.hull?'<small class="risk">可能触发拖航救援</small>':'')+(err?'<small>'+icon('warning')+esc(err)+'</small>':'')+'</button>';}).join('')+'</div>'+reserveBox()+'<div class="split">'+button(icon('cargo')+'货舱','cargo','ghost')+button(icon('return')+'返港','home','ghost')+'</div>';
   }
 
   function result() {
@@ -271,17 +271,17 @@
       [
         "燃料",
         "fuel",
-        state.fuel + "/100",
+        state.fuel + '/'+E.resourceLimit(state,'fuel'),
         state.fuel <= E.homeCost(state) + 8 && active(),
-        state.fuel,
+        state.fuel/E.resourceLimit(state,'fuel')*100,
         "油量偏低",
       ],
       [
         "耐久",
         "hull",
-        state.hull + "/100",
+        state.hull + '/'+E.resourceLimit(state,'hull'),
         state.hull < 30,
-        state.hull,
+        state.hull/E.resourceLimit(state,'hull')*100,
         "船体受损",
       ],
       ["零件", "money", state.money.toLocaleString(), false, null, ""],
@@ -354,7 +354,7 @@
     if (performance.now() - lastCommand < 450)
       return { ok: false, message: "请稍候，上一项操作正在落定" };
     lastCommand = performance.now();
-    const savedScroll=window.scrollY,retainScroll=nextTab===tab&&["buyFuel","repair","fillFuel","fillHull","buyShip","equipShip","upgradeCargo","acceptMission","claimMission","abandonMission","buyProduct","layout","sell","sellAll","use"].includes(command.type);
+    const savedScroll=window.scrollY,retainScroll=nextTab===tab&&["buyFuel","repair","fillFuel","fillHull","buyShip","equipShip","upgradeCargo","upgradeShip","acceptMission","claimMission","abandonMission","buyProduct","layout","sell","sellAll","use"].includes(command.type);
     busy = true;
     let r;
     try {
@@ -582,7 +582,8 @@
       switchTab(b.dataset.tab);
       return;
     }
-    if(b.dataset.buyship){const id=b.dataset.buyship,p=E.PORT.ships[id],expected=controller.revision;modal('购买'+p.name+'？','<p>实付'+p.price+'零件，余额'+state.money+' → '+(state.money-p.price)+'。'+p.width*p.height+'格；耗油基值×'+p.fuelPercent+'%，损伤×'+p.damagePercent+'%。购买后可免费换装。</p>','确认购买',()=>act({type:'buyShip',id},expected,'fleet'));return;}
+    if(b.dataset.buyship){const id=b.dataset.buyship,p=E.PORT.ships[id],expected=controller.revision;modal('购买'+p.name+'？','<p>实付'+p.price+'零件，余额'+state.money+' → '+(state.money-p.price)+'。'+p.width*p.height+'格；油箱容量'+p.fuelBase+'，耐久上限'+p.hullBase+'。新船含完好船体，油箱为空；购买后可免费换装，各船油量和船况独立保存。</p>','确认购买',()=>act({type:'buyShip',id},expected,'fleet'));return;}
+    if(b.dataset.shipupgrade){const kind=b.dataset.shipupgrade,q=E.shipUpgradeQuote(state,kind),expected=controller.revision;modal(kind==='fuel'?'扩建油箱？':'加固船体？','<p>上限'+q.from+' → '+q.to+'，实付'+q.cost+'零件。</p><p>'+(kind==='fuel'?'增加油箱容量，不会自动补油。':'新增'+(q.to-q.from)+'点结构耐久，已有损伤不会被清除。')+'</p>','确认升级',()=>act({type:'upgradeShip',kind},expected,'fleet'));return;}
     if(b.dataset.equip){void act({type:'equipShip',id:b.dataset.equip},inputRevision,'fleet');return;}
     if(b.dataset.accept){const id=b.dataset.accept,expected=controller.revision;modal('接取'+E.PORT.missions[id].name+'？','<p>'+esc(E.PORT.missions[id].goal)+'；奖励'+E.PORT.missions[id].reward+'零件，同时占1个任务槽，无期限。</p>','确认接取',()=>act({type:'acceptMission',id},expected,'missions'));return;}
     if(b.dataset.claim){void act({type:'claimMission',id:+b.dataset.claim},inputRevision,'missions');return;}

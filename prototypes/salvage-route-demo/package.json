@@ -1,17 +1,17 @@
 {
   "name": "loststar-salvage-route-demo",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "test": "node tests/engine.test.js && node tests/regression.test.js && node tests/cargo-layout.test.js && node tests/mobile-model.test.cjs && node tests/port-model.test.cjs",
+    "test": "node tests/engine.test.js && node tests/regression.test.js && node tests/cargo-layout.test.js && node tests/mobile-model.test.cjs && node tests/port-model.test.cjs && node tests/ship-capacities.test.cjs",
     "build": "python3 build.py",
     "dev": "python3 -m http.server 4280 --bind 127.0.0.1",
     "preview": "python3 -m http.server 4281 --bind 127.0.0.1 --directory dist",
     "simulate": "node tests/simulate.cjs",
     "test:browser": "playwright test --config playwright.config.cjs",
     "simulate:compare": "node tests/port-economy.cjs",
-    "check:art": "python3 tests/verify-port-art.py",
+    "check:art": "python3 tests/verify-port-art.py && python3 tests/verify-041-art.py",
     "capture:port": "node tests/capture-port.cjs"
   }
 }

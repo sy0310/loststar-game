@@ -21,7 +21,7 @@
     const remainingItems = () => session.items.filter(item => !session.discardUids.includes(item.uid));
     const activeItems = () => remainingItems().filter(item => session.placements.some(p => p.uid === item.uid));
     const dims=()=>E.cargoSpace(latestState);
-    const visual=item=>root.SalvageArt.item(item);
+    const visual=(item,rotation=0)=>root.SalvageCargoArt.render(item,rotation);
     const valid = () => G.validate(remainingItems(), session.placements,dims());
     const dirty = () => !!session && (session.discardUids.length > 0 || !same(normalizePlacements(session.placements), normalizePlacements(session.original)));
     const itemIcon = item => item.contract ? 'contract' : item.ability === 'patch' ? 'repair' : item.ability === 'fuel' ? 'fuel' : 'package';
@@ -92,36 +92,34 @@
       for (const p of session.placements) {
         const item = itemById(p.uid), index = session.items.findIndex(x => x.uid === p.uid), selected = p.uid === session.selected;
         const mask = cells(item, p.rotation), shape = shapePath(mask), color = COLORS[index % COLORS.length];
-        shapes += `<g class="cargo-object${selected ? ' is-selected' : ''}" transform="translate(${p.x * 100},${p.y * 100})" style="--cargo-color:${color}"><path class="cargo-object-fill" d="${shape.fill}"/><path class="cargo-object-outline" d="${shape.outline}"/></g>`;
-        const center = mask.reduce((n, c) => [n[0] + (c[0] + .5) / mask.length, n[1] + (c[1] + .5) / mask.length], [0,0]);
-        const occupied = new Set(mask.map(c => c.join(',')));
-        const inside = [-.24,.24].every(dx => [-.24,.24].every(dy => occupied.has(`${Math.floor(center[0] + dx)},${Math.floor(center[1] + dy)}`)));
-        const anchor = inside ? center : mask.map(([x,y]) => [x+.5,y+.5]).sort((a,b) => Math.hypot(a[0] - center[0], a[1] - center[1]) - Math.hypot(b[0] - center[0], b[1] - center[1]))[0];
-        marks += `<span class="cargo-object-mark${selected ? ' is-selected' : ''}" style="left:${(p.x + anchor[0]) * 100/dims().width}%;top:${(p.y + anchor[1]) * 100/dims().height}%;--cargo-color:${color}">${visual(item)}<span>${index + 1}</span></span>`;
+        if(selected)shapes += `<g class="cargo-object is-selected" transform="translate(${p.x * 100},${p.y * 100})" style="--cargo-color:${color}"><path class="cargo-object-outline" d="${shape.outline}"/></g>`;
+        const box=root.SalvageCargoArt.metadata(item,p.rotation),badge=mask[0];
+        marks += `<span class="cargo-physical-object${selected?' is-selected':''}" data-cargo-object="${item.uid}" style="left:${p.x*100/dims().width}%;top:${p.y*100/dims().height}%;width:${box.width*100/dims().width}%;height:${box.height*100/dims().height}%">${visual(item,p.rotation)}<small class="cargo-piece-number" style="left:${badge[0]/box.width*100}%;top:${badge[1]/box.height*100}%">#${index+1}</small></span>`;
+
       }
       if (session.preview && session.selected != null) {
         const item = itemById(session.selected), p = session.preview, shape = shapePath(cells(item, session.rotation));
         shapes += `<g class="cargo-preview ${p.ok ? 'can-place' : 'cannot-place'}" transform="translate(${p.x * 100},${p.y * 100})"><path d="${shape.fill}"/><path class="cargo-preview-outline" d="${shape.outline}"/></g>`;
       }
-      return `<div class="cargo-board" aria-label="${dims().height}行${dims().width}列拼图货舱" style="--cargo-cols:${dims().width};--cargo-rows:${dims().height}"><div class="cargo-cells">${grid}</div><svg class="cargo-shapes" viewBox="0 0 ${dims().width*100} ${dims().height*100}" aria-hidden="true">${shapes}</svg>${marks}</div>`;
+      return `<div class="cargo-board" aria-label="${dims().height}行${dims().width}列拼图货舱" style="--cargo-cols:${dims().width};--cargo-rows:${dims().height}"><div class="cargo-cells">${grid}</div><svg class="cargo-shapes" viewBox="0 0 ${dims().width*100} ${dims().height*100}" aria-hidden="true">${shapes}</svg><div class="cargo-physical-layer" aria-hidden="true">${marks}</div></div>`;
     }
 
     function itemButtons(items, tray = false) {
       return items.map(item => {
         const p = placement(item.uid), index = session.items.indexOf(item), selected = item.uid === session.selected;
-        return `<button type="button" class="cargo-item-pick${selected ? ' is-selected' : ''}${tray ? ' in-tray' : ''}" data-cargo-pick="${item.uid}" aria-pressed="${selected}"${disabled || busy ? ' disabled' : ''} style="--cargo-color:${COLORS[index % COLORS.length]}"><span class="cargo-pick-shape">${visual(item)}</span><span class="cargo-pick-label"><b>${index + 1}. ${esc(item.name)}</b><small>${area(item)}小格${session.newUids.includes(item.uid) ? ' · 待装载' : ''}${item.contract ? ' · 委托物' : ''}${!p ? ' · 未放入' : ''}</small></span></button>`;
+        return `<button type="button" class="cargo-item-pick${selected ? ' is-selected' : ''}${tray ? ' in-tray' : ''}" data-cargo-pick="${item.uid}" aria-pressed="${selected}"${disabled || busy ? ' disabled' : ''} style="--cargo-color:${COLORS[index % COLORS.length]}"><span class="cargo-pick-shape">${visual(item)}</span><span class="cargo-pick-label"><b>${index + 1}. ${esc(item.name)}</b><small>${area(item)}格 · 1件${session.newUids.includes(item.uid) ? ' · 待装载' : ''}${item.contract ? ' · 委托物' : ''}${!p ? ' · 未放入' : ''}</small></span></button>`;
       }).join('');
     }
 
     function mission() {
       const record=latestState.missionSlot,m=E.activeMission(latestState);
-      return '<div class="mission-slot">'+icon('contract')+'<span>任务槽 · '+(record?'测绘 '+(m?.status==='accepted'?0:Math.min(latestState.depth,3))+'/3 · 记录箱随船':session.action?.type==='depart'?'随船领取记录箱，不占货舱':m?'已接 '+E.PORT.missions[m.type].name:'没有接取委托')+'</span>'+(record&&!session.action?'<button type="button" data-cargo-mission '+(disabled||busy?'disabled':'')+'>放弃任务</button>':'')+'</div>';
+      return '<div class="mission-slot">'+icon('contract')+'<span>任务槽 · '+(record?'测绘 '+(m?.status==='accepted'?0:Math.min(latestState.depth,3))+'/3 · 记录箱随船':session.action?.type==='depart'?(m?'已接 '+E.PORT.missions[m.type].name:'未接委托，不领取记录箱'):m?'已接 '+E.PORT.missions[m.type].name:'没有接取委托')+'</span>'+(record&&!session.action?'<button type="button" data-cargo-mission '+(disabled||busy?'disabled':'')+'>放弃任务</button>':'')+'</div>';
     }
     function detail() {
       const item=itemById(session.selected);
-      if(!item||session.discardUids.includes(item.uid))return '<div class="cargo-detail empty-selection">点选一个物件，查看形状与售价。</div>';
+      if(!item||session.discardUids.includes(item.uid))return '<div class="cargo-detail empty-selection">点选物件查看；物件外形就是实际占格。</div>';
       const isNew=session.newUids.includes(item.uid);
-      const actions=!session.action&&!dirty() ? (['port','summary'].includes(latestState.phase)?'<button data-cargo-action="sell">'+icon('money')+'出售</button>':'')+(['patch','fuel'].includes(item.ability)?'<button data-cargo-action="use" '+(latestState.hull===100?'disabled':'')+'>'+icon('repair')+'使用用品</button>':'')+(['route','event','result'].includes(latestState.phase)?'<button data-cargo-action="discard">放弃货物</button>':'') : '';
+      const actions=!session.action&&!dirty() ? (['port','summary'].includes(latestState.phase)?'<button data-cargo-action="sell">'+icon('money')+'出售</button>':'')+(['patch','fuel'].includes(item.ability)?'<button data-cargo-action="use" '+(latestState[item.ability==='fuel'?'fuel':'hull']===E.resourceLimit(latestState,item.ability==='fuel'?'fuel':'hull')?'disabled':'')+'>'+icon('repair')+'使用用品</button>':'')+(['route','event','result'].includes(latestState.phase)?'<button data-cargo-action="discard">放弃货物</button>':'') : '';
       return '<section class="cargo-detail" aria-label="选中货物"><div class="cargo-detail-head"><span class="cargo-selected-shape">'+visual(item)+'</span><div><h3>'+esc(item.name)+'</h3><p>'+area(item)+'格 · 售价 '+item.value+' 零件'+(item.ability==='patch'?' · 用后修22耐久':item.ability==='fuel'?' · 用后补20燃料':' · 可出售')+(item.shapeId.startsWith('legacy')?' · 原包装':'')+'</p></div></div><details class="cargo-more"><summary>物品操作</summary><div class="cargo-item-actions"><button type="button" data-cargo-stage '+(!placement(item.uid)?'disabled':'')+'>移到托盘</button>'+actions+(session.action?.type==='choose'&&!isNew?'<button class="danger" data-cargo-discard>换下此旧货</button>':'')+'</div></details>'+(session.confirmDiscard?'<div class="cargo-discard-confirm" role="group" aria-label="确认弃货"><p>确认装载时放弃「'+esc(item.name)+'」，不获得零件。</p><div><button data-cargo-keep>保留</button><button class="danger" data-cargo-confirm-discard>确认放弃</button></div></div>':'')+'</section>';
     }
     function toolbar(){const noItem=session.selected==null;return '<div class="cargo-tools"><button type="button" data-cargo-rotate '+(disabled||busy||noItem?'disabled':'')+'>'+icon('rotate')+'<span>旋转</span></button><button type="button" data-cargo-arrange '+(disabled||busy||!remainingItems().length?'disabled':'')+'>'+icon('arrange')+'<span>整理</span></button></div>';}
