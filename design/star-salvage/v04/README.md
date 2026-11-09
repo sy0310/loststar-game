@@ -9,6 +9,7 @@
 | [PORT_UI_VISUAL_AND_SYSTEM_SPEC.md](PORT_UI_VISUAL_AND_SYSTEM_SPEC.md) | 统一主界面、固定像素尺寸、港口/商店/飞船/任务/航路完整规则 | **已入库** |
 | [ASSET_REQUIREMENTS.json](ASSET_REQUIREMENTS.json) | 14项真实分层运行素材（背景2、飞船4、货物8）及设计源图的 SHA | **清单已入库，原画待制作** |
 | [home_layout_wireframe.svg](drafts/home_layout_wireframe.svg) | 390×844 可在 GitHub 浏览的按钮布局示意 | **已入库，但不是被认可的美术原画** |
+| [原图与全部参考裁片](concepts/) | 用户认可画风的完整PNG、上一版风格板及五个参考分区 | **7份真实PNG已入库并完成字节核验** |
 | [Codex 0.4 任务书](../../../codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md) | 数据迁移、真实购船、任务接取、补满与资产拆分、测试、交付的完整指令 | **已入库，待 Codex 执行** |
 
 ## 用户认可的参考原图
@@ -18,8 +19,8 @@
 - SHA256：`16289e481145f9c781d5ecf353de0f00861fb17fbc3df2185d94e77b978cacb0`。
 - 之前一版风格参考：1055×1491 PNG，SHA256 `c731179efefbb6f95e92fb347fd4a451cc067c56883f4e4935581e446e7b3e66`。
 - 本次会话工作区已制作 `loststar_v04_visual_handoff.zip`，包含上述两张源图及HOME/船舶商店/委托板/四船/货物图标的局部**参考裁片**，以及逐文件 SHA 清单。
-- **注意：原图 PNG 及裁片目前尚未通过 GitHub 提交，不能把这个目录的文字登记视为源图已入库。** 所有裁片只是用于理解概念，不能作为运行时透明精灵图。
-- 由本机 Codex 获得真实文件后，请放到 `concepts/salvage_v04_approved_full.png`，核对精确 SHA，再提交。若拿不到，保持缺图阻塞标记，不能擅自换成近似概念画充数。
+- **已入库且校验成功：** [用户认可的完整原图](concepts/salvage_v04_approved_full.png) / [上一版风格参考](concepts/salvage_v04_style_predecessor.png) / [5张局部参考裁片](concepts/reference_crops/) 均是 GitHub 真正的 PNG 文件，不是线框或文字引用。原图 Git blob SHA `c101690bd726f303cb7244d81baf954637466cb8`，尺寸、字节和本地 SHA256 已核对。裁片仅供理解概念，不是透明生产精灵。
+- **本机 Codex 直接从 Repo 拉取** `concepts/salvage_v04_approved_full.png`，用 `shasum -a 256` 或 `python3 scripts/import_salvage_v04_concept.py --find-local` 复核 SHA。已入库意味着概念参考可用，**不意味着14项真正生产美术已完成**；依照 `ASSET_REQUIREMENTS.json` 逐项重新制作分层素材。
 
 ## 已确认方向（避免下一版跑偏）
 
