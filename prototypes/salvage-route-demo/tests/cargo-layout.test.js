@@ -4,9 +4,9 @@ let passed=0;
 const test=(name,fn)=>{try{fn();passed++;console.log('PASS',name);}catch(e){console.error('FAIL',name,e);process.exitCode=1;}};
 const act=(s,type,x={})=>{const r=E.dispatch(s,{type,...x});assert(r.ok,r.message);return r.state;};
 const go=s=>act(s,'travel',{id:s.route[0].uid});
-const item=(uid,shapeId='square4',size=1)=>({uid,name:'普通测试件 '+uid,size,value:25,ability:null,acquiredRun:0,shapeId,shapeVersion:1});
+const item=(uid,shapeId='square4',size=1)=>({uid,name:'普通测试件 '+uid,size,cells:size*4,value:25,ability:null,acquiredRun:0,shapeId,shapeVersion:1});
 const snapshot=s=>JSON.stringify(s);
-function fixture(s,items,placements){s=JSON.parse(JSON.stringify(s));s.cargo=items;s.nextUid=Math.max(s.nextUid,...items.map(x=>x.uid+1));s.cargoGrid.placements=placements??G.solve(items);if(s.run&&!items.some(x=>x.contract))s.run.contractActive=false;E.assertState(s);return s;}
+function fixture(s,items,placements){s=JSON.parse(JSON.stringify(s));s.cargo=items;s.nextUid=Math.max(s.nextUid,...items.map(x=>x.uid+1));s.cargoGrid.placements=placements??G.solve(items);E.assertState(s);return s;}
 
 test('every registered shape has a connected, unique, in-bounds mask and four rotations preserve area',()=>{
  for(const[id,mask]of Object.entries(G.SHAPES)){
@@ -46,20 +46,16 @@ test('partial placements support a temporary tray; illegal placement leaves the 
 test('all legacy full-capacity size combinations migrate without losing goods or financial data',()=>{
  for(const sizes of[[1,1,1,1],[2,2],[3,1],[1,3],[4],[1,2,1],[2,1,1]]){
   const old=E.create(778);old.schema=2;delete old.cargoGrid;old.cargo=sizes.map((size,i)=>({uid:i+1,name:'旧货 '+i,size,value:101+i,ability:null,acquiredRun:0}));old.nextUid=sizes.length+1;
-  const before=snapshot(old),next=E.restore(old);assert.equal(snapshot(old),before);assert.equal(next.schema,3);assert(G.validate(next.cargo,next.cargoGrid.placements).ok);
-  assert.equal(E.used(next),4);assert.equal(G.validate(next.cargo,next.cargoGrid.placements).cells,16);
+  const before=snapshot(old),next=E.restore(old);assert.equal(snapshot(old),before);assert.equal(next.schema,4);assert(G.validate(next.cargo,next.cargoGrid.placements).ok);
+  assert.equal(E.used(next),16);assert.equal(G.validate(next.cargo,next.cargoGrid.placements).cells,16);
   for(const key of['money','fuel','hull','debt','rng','distance','nextUid','revision','archive','ledger'])assert.deepEqual(next[key],old[key]);
-  assert.deepEqual(next.cargo.map(({shapeId,shapeVersion,...x})=>x),old.cargo);assert.deepEqual(E.restore(next),next);
+  assert.deepEqual(next.cargo.map(({shapeId,shapeVersion,cells,...x})=>x),old.cargo);assert.deepEqual(E.restore(next),next);
  }
 });
-test('schema2 ongoing event snapshots survive independently of current live cargo positions',()=>{
- let s=go(act(E.create(8),'depart'));s=act(s,'discard',{id:s.cargo[0].uid});const old=JSON.parse(snapshot(s));old.schema=2;delete old.cargoGrid;
- for(const x of old.event.context.cargo){delete x.shapeId;delete x.shapeVersion;}
- const next=E.restore(old);assert.equal(next.cargo.length,0);assert.equal(next.event.context.cargo.length,1);assert.equal(next.event.nonce,old.event.nonce);assert.equal(next.rng,old.rng);E.assertState(next);
-});
+test('legacy ongoing event snapshot keeps its abandoned record independently from the live slot',()=>{const O=require('./legacy-engine.cjs')();let s=O.dispatch(O.create(8),{type:'depart'}).state;s=O.dispatch(s,{type:'travel',id:s.route[0].uid}).state;s=O.dispatch(s,{type:'discard',id:s.cargo[0].uid}).state;const next=E.restore(JSON.parse(JSON.stringify(s)));assert.equal(next.cargo.length,0);assert.equal(next.missionSlot,null);assert(next.event.context.missionSlot);assert.equal(next.event.nonce,s.event.nonce);assert.equal(next.rng,s.rng);E.assertState(next);});
 test('invalid legacy saves are rejected in place; malformed current geometry is never auto repaired',()=>{
  const old=E.create(1);old.schema=2;delete old.cargoGrid;old.cargo=[{uid:1,name:'超大旧货',value:1,size:5,acquiredRun:0}];old.nextUid=2;const raw=snapshot(old);assert.throws(()=>E.restore(old));assert.equal(snapshot(old),raw);
- const s=act(E.create(1),'depart');s.cargoGrid.placements[0].x=8;assert.throws(()=>E.restore(s));
+ const s=act(fixture(E.create(1),[item(1)]),'depart');s.cargoGrid.placements[0].x=8;assert.throws(()=>E.restore(s));
 });
 test('a malformed live cargo layout cannot be laundered through a sale or another gameplay action',()=>{
  const s=fixture(E.create(4),[item(1)]);s.cargoGrid.placements=[];const before=snapshot(s);
@@ -81,7 +77,7 @@ test('loot action with an explicit complete layout commits exactly once and relo
  assert(!E.dispatch(r.state,{...d.action,layout}).ok);
 });
 test('geometry-only edits preserve economic, event and route state and stale drafts cannot overwrite them',()=>{
- let s=go(act(E.create(81),'depart'));const before=snapshot(s),d=E.cargoDraft(s,{type:'choose',id:'force',nonce:s.event.nonce});
+ let s=go(act(fixture(E.create(81),[item(1)]),'depart'));const before=snapshot(s),d=E.cargoDraft(s,{type:'choose',id:'force',nonce:s.event.nonce});
  s=act(s,'layout',{layout:[{uid:s.cargo[0].uid,x:2,y:2,rotation:0}]});
  const prior=JSON.parse(before);for(const key of['rng','money','fuel','hull','debt','distance','route','event','history','nextUid','ledger'])assert.deepEqual(s[key],prior[key]);
  assert(!E.dispatch(s,{...d.action,layout:G.solve(d.items)}).ok);
@@ -92,26 +88,12 @@ test('full cargo may open a draft and atomically replace explicitly discarded ol
  assert(!E.dispatch(s,a).ok);const d2=E.cargoDraft(s,{...a,discardUids:[2]}),layout=G.solve(d2.items);assert(layout);s=act(s,'choose',{...a,layout,discardUids:[2]});
  assert.equal(s.money,JSON.parse(before).money-35);assert.equal(s.cargo.length,4);assert(!s.cargo.some(x=>x.uid===2));assert.equal(s.cargo.filter(x=>x.ability==='patch').length,1);assert(G.validate(s.cargo,s.cargoGrid.placements).ok);
 });
-test('same-area zero-cost cargo exchange records exact added and discarded goods despite zero net resource delta',()=>{
- let s=go(act(E.create(9),'depart'));s=fixture(s,[item(2),item(3),item(4),item(5)]);s.event.id='cabin';s.tools=['scanner'];
- const a={type:'choose',id:'scan',nonce:s.event.nonce,discardUids:[2]},draft=E.cargoDraft(s,a),incoming=draft.items.find(x=>draft.newUids.includes(x.uid)),old=s.cargo.find(x=>x.uid===2),before=snapshot(s);
- const r=E.dispatch(s,{...draft.action,discardUids:[2],layout:G.solve(draft.items)});assert(r.ok,r.message);assert.equal(snapshot(s),before);
- assert.deepEqual(r.state.result.delta,{money:0,fuel:0,hull:0,cargoCount:0,cargoCells:0});
- assert.deepEqual(r.state.result.cargoChanges,{added:[{uid:incoming.uid,name:incoming.name,size:1}],removed:[{uid:old.uid,name:old.name,size:1,reason:'discard'}]});
- assert.deepEqual(E.restore(r.state).result.cargoChanges,r.state.result.cargoChanges);assert(!E.dispatch(r.state,{...draft.action,discardUids:[2],layout:G.solve(draft.items)}).ok);
-});
-test('discarded contract in acquisition loses only its original reward entitlement',()=>{
- let s=go(act(E.create(9),'depart'));const uid=s.cargo[0].uid,d=E.cargoDraft(s,{type:'choose',id:'force',nonce:s.event.nonce,discardUids:[uid]});
- s=act(s,'choose',{...d.action,layout:G.solve(d.items),discardUids:[uid]});assert.equal(s.run.contractActive,false);assert(!s.cargo.some(x=>x.contract));assert.equal(s.debt,12000);
-});
-test('depart checks geometric space for the 2x2 contract and explicit repacking can resolve fragmentation',()=>{
- let s=fixture(E.create(5),[item(1,'line4'),item(2,'line4')],[{uid:1,x:0,y:0,rotation:1},{uid:2,x:2,y:0,rotation:1}]);
- const before=snapshot(s),d=E.cargoDraft(s,{type:'depart'});assert(d.ok);assert(!d.complete);assert(!E.dispatch(s,{type:'depart'}).ok);assert.equal(snapshot(s),before);
- s=act(s,'depart',{layout:G.solve(d.items)});assert.equal(s.cargo.find(x=>x.contract).shapeId,'square4');assert.equal(E.used(s),3);assert.equal(s.fuel,60);
-});
+test('same-area zero-cost cargo exchange records both items despite zero net resource delta',()=>{let s=go(act(E.create(9),'depart'));s=fixture(s,[{uid:2,name:'旧小件',cells:3,shapeId:'ell3',shapeVersion:1,value:25,acquiredRun:0},item(3)]);s.event.id='cabin';s.tools=['scanner'];const a={type:'choose',id:'scan',nonce:s.event.nonce,discardUids:[2]},draft=E.cargoDraft(s,a),incoming=draft.items.find(x=>draft.newUids.includes(x.uid)),old=s.cargo.find(x=>x.uid===2),before=snapshot(s);const r=E.dispatch(s,{...draft.action,discardUids:[2],layout:G.solve(draft.items)});assert(r.ok,r.message);assert.equal(snapshot(s),before);assert.deepEqual(r.state.result.delta,{money:0,fuel:0,hull:0,cargoCount:0,cargoCells:0});assert.deepEqual(r.state.result.cargoChanges,{added:[{uid:incoming.uid,name:incoming.name,cells:3}],removed:[{uid:old.uid,name:old.name,cells:3,reason:'discard'}]});assert.deepEqual(E.restore(r.state).result.cargoChanges,r.state.result.cargoChanges);assert(!E.dispatch(r.state,{...draft.action,discardUids:[2],layout:G.solve(draft.items)}).ok);});
+test('cargo replacement cannot silently discard a task-slot entitlement',()=>{let s=go(act(E.create(9),'depart'));const uid=s.missionSlot.uid,before=snapshot(s);assert(!E.cargoDraft(s,{type:'choose',id:'force',nonce:s.event.nonce,discardUids:[uid]}).ok);assert.equal(snapshot(s),before);s=act(s,'discardMission',{id:uid});s=act(s,'choose',{id:'force',nonce:s.event.nonce});assert.equal(s.run.contractActive,false);assert.equal(s.missionSlot,null);assert.equal(s.debt,12000);});
+test('depart preserves fragmented ordinary cargo exactly while the task occupies its independent slot',()=>{let s=fixture(E.create(5),[item(1,'line4'),item(2,'line4')],[{uid:1,x:0,y:0,rotation:1},{uid:2,x:2,y:0,rotation:1}]);const before=JSON.parse(snapshot(s)),draft=E.cargoDraft(s,{type:'depart'});assert(draft.ok&&draft.complete);assert.equal(draft.newUids.length,0);s=act(s,'depart');assert(s.missionSlot);assert.equal(E.used(s),8);assert.deepEqual(s.cargo,before.cargo);assert.deepEqual(s.cargoGrid,before.cargoGrid);});
 test('use, sale, discard, contract delivery, abort and rescue release only the removed cells',()=>{
  let s=fixture(E.create(1),[{...item(1),ability:'patch'},item(2)]);s.hull=75;s=act(s,'use',{id:1});assert.deepEqual(s.cargoGrid.placements.map(p=>p.uid),[2]);s=act(s,'sellAll');assert.deepEqual(s.cargoGrid.placements,[]);
- s=act(s,'depart');const uid=s.cargo[0].uid;s=act(s,'abort');assert(!s.cargoGrid.placements.some(p=>p.uid===uid));s=go(act(s,'depart'));s=act(s,'return');assert.equal(s.cargoGrid.placements.length,0);
+ s=act(s,'depart');const uid=s.missionSlot.uid;s=act(s,'abort');assert.equal(s.missionSlot,null);assert(!s.cargoGrid.placements.some(p=>p.uid===uid));s=go(act(s,'depart'));s=act(s,'return');assert.equal(s.cargoGrid.placements.length,0);
  s=fixture(E.create(7),[item(1)]);s=go(act(s,'depart'));s.hull=1;s=act(s,'choose',{id:'force',nonce:s.event.nonce});assert(s.summary.rescue);assert.deepEqual(s.cargo.map(x=>x.uid),[1]);assert.deepEqual(s.cargoGrid.placements.map(x=>x.uid),[1]);
 });
 test('structured result deltas reflect actual capped changes, not advertised maxima',()=>{

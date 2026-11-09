@@ -58,7 +58,7 @@
       return act(
         command,
         payload.revision ?? controller.revision,
-        command.type === "layout" ? "cargo" : "play",
+        command.type === "layout" ? "cargo" : command.type === "depart" ? "route" : "play",
       );
     },
     onCancel: () => {
@@ -71,13 +71,10 @@
       }
     },
     onAction: (name, item) => cargoAction(name, item),
+    onMission: record => {if(!record)return;const expected=controller.revision;modal('放弃测绘任务？','<p>记录箱会离船，本趟不再结算180零件委托报酬。普通货物保留。</p>','确认放弃',()=>act({type:'discardMission',id:record.uid},expected,'cargo'));},
   });
-  function units(text) {
-    return String(text ?? "").replace(
-      /(\d+)格/g,
-      (_, n) => `${Number(n) * 4}小格`,
-    );
-  }
+  function units(text){return String(text??'');}
+
   function cargoAction(name, item) {
     if (!item) return;
     const expected = controller.revision;
@@ -152,7 +149,7 @@
       chips.push(
         chip(
           "cargo",
-          e.loot.reduce((n, x) => n + x.size * 4, 0),
+          e.loot.reduce((n, x) => n + x.cells, 0),
           "小格待装载",
         ),
       );
@@ -214,31 +211,15 @@
     const fuel = E.portQuote(state, "buyFuel"),
       repair = E.portQuote(state, "repair");
     let debt = 12000 - state.debt;
-    return `<div class="section-head"><div><div class="eyebrow">LOST CARGO / HOME PORT</div><h1>望潮港</h1></div><span class="tag">第${state.runNo + 1}趟准备</span></div><section class="panel"><div class="debt"><div><small>${icon("debt")}剩余船款</small><div class="badge">没有利息 · 没有离线罚款</div></div><b class="num">${state.debt.toLocaleString()}</b></div><div class="bar"><i style="width:${debt / 120}%"></i></div><p class="note" style="margin-bottom:0">已还 ${debt.toLocaleString()} / 12,000。第一步：平安带回一趟收获。</p></section>${picture("port", "失物号 · 二手民用接驳船<small>船不新了，远处还有新的东西。</small>")}${button(icon("ship") + "出发 · 废环回收线", "depart", "primary full")}<div class="spacer"></div><section class="panel"><h3>${icon("contract")}本趟委托 · 航区测绘</h3><p class="note">带着记录箱探索至少3处航点，再返回港口。记录箱占4小格（2×2），不要求走满8站。</p><div class="section-head" style="margin:0"><b style="color:var(--amber)">报酬 180 零件</b><small>安全返港后自动结算</small></div></section><div class="split">${button(`<strong>${icon("fuel")}补充燃料 +${fuel.amount}</strong><small>实付${fuel.cost}零件 · 每点2零件</small>`, "fuel", "", !fuel.amount)}${button(`<strong>${icon("hull")}维修船体 +${repair.amount}</strong><small>实付${repair.cost}零件 · 每点2零件</small>`, "repair", "", !repair.amount)}</div><p class="note">最多8站。返航由你决定；不要求在线等计时。剩余油量、船况与收入会延续到下一趟。</p><div class="split">${button("改装设备", "tools", "ghost")}${button("偿还船款", "repay", "ghost")}</div>${state.cargo.length ? `<div class="spacer"></div>${button("货舱已用 " + E.used(state) * 4 + " / 16 小格 · 查看／出售", "cargo", "full")}` : ""}${E.preparation(state).needsAid ? `<div class="spacer"></div>${button("码头短工 · 获取基本补给", "aid", "full")}<p class="note">保底救助，不加船债、不需要广告。</p>` : ""}`;
+    return `<div class="section-head"><div><div class="eyebrow">LOST CARGO / HOME PORT</div><h1>望潮港</h1></div><span class="tag">第${state.runNo + 1}趟准备</span></div><section class="panel"><div class="debt"><div><small>${icon("debt")}剩余船款</small><div class="badge">没有利息 · 没有离线罚款</div></div><b class="num">${state.debt.toLocaleString()}</b></div><div class="bar"><i style="width:${debt / 120}%"></i></div><p class="note" style="margin-bottom:0">已还 ${debt.toLocaleString()} / 12,000。第一步：平安带回一趟收获。</p></section>${picture("port", "失物号 · 二手民用接驳船<small>船不新了，远处还有新的东西。</small>")}${button(icon("ship") + "出发 · 废环回收线", "depart", "primary full")}<div class="spacer"></div><section class="panel"><h3>${icon("contract")}本趟委托 · 航区测绘</h3><p class="note">带着记录箱探索至少3处航点，再返回港口。记录箱使用独立任务槽，不占货舱。不要求走满8站。</p><div class="section-head" style="margin:0"><b style="color:var(--amber)">报酬 180 零件</b><small>安全返港后自动结算</small></div></section><div class="split">${button(`<strong>${icon("fuel")}补充燃料 +${fuel.amount}</strong><small>实付${fuel.cost}零件 · 每点2零件</small>`, "fuel", "", !fuel.amount)}${button(`<strong>${icon("hull")}维修船体 +${repair.amount}</strong><small>实付${repair.cost}零件 · 每点2零件</small>`, "repair", "", !repair.amount)}</div><p class="note">最多8站。返航由你决定；不要求在线等计时。剩余油量、船况与收入会延续到下一趟。</p><div class="split">${button("改装设备", "tools", "ghost")}${button("偿还船款", "repay", "ghost")}</div>${state.cargo.length ? `<div class="spacer"></div>${button("货舱已用 " + E.used(state) + " / 16 小格 · 查看／出售", "cargo", "full")}` : ""}${E.preparation(state).needsAid ? `<div class="spacer"></div>${button("码头短工 · 获取基本补给", "aid", "full")}<p class="note">保底救助，不加船债、不需要广告。</p>` : ""}`;
   }
-  function route() {
-    return `<div class="section-head"><div><div class="eyebrow">WRECK-RING RECOVERY</div><h1>选择下一站</h1></div><span class="tag">已走 ${state.depth} / 8</span></div>${button(`<strong>${icon("route")}打开本趟航路图</strong><small>当前位置 · 分叉 · 返航</small>`, "route", "route-map-link")}<div class="track">${Array.from({ length: 8 }, (_, i) => `<span class="${i < state.depth ? "done" : i === state.depth ? "now" : ""}"></span>`).join("")}</div>${reserveBox()}${state.depth < 3 ? `<p class="note">委托进度 ${state.depth}/3 · 记录箱${state.run.contractActive ? "仍在货舱" : "已放弃，本趟不再结算委托报酬"}</p>` : `<p class="note">${state.run.contractActive ? "委托记录已够，返港可领取180零件。" : "委托已放弃，其他货物仍可带回。"}</p>`}${
-      state.depth >= 8
-        ? '<div class="panel"><h2>本趟航区已到边缘</h2><p class="note">安全带回收获，本身就是一次成功。回港后可以开启新航次。</p></div>'
-        : state.route
-            .map((r) => {
-              const q = E.quote(state, r);
-              return `<button class="route-card" data-travel="${esc(r.uid)}" ${q.enabled ? "" : "disabled"}><div class="head"><strong>${icon(I.routeIcon(r))}${esc(r.name)}</strong><span class="tag">风险 ${esc(r.risk)}</span></div><span class="signal">${esc(r.signal)} · 第${r.depth}航点</span><div class="forecast"><span>前进耗油<b class="num">${q.out}</b></span><span>抵达后返航<b class="num">${q.returnCost}</b></span><span>预留后可用余油<b class="num">${q.free}</b></span></div><small class="arrival">抵达后剩余 ${q.arrival} 燃料</small>${q.enabled ? "" : `<p class="note">油量不足：需要至少${q.out + q.returnCost}，现有${state.fuel}</p>`}</button>`;
-            })
-            .join("")
-    }<div class="spacer"></div>${state.depth ? button(`现在返航 · 消耗${E.homeCost(state)}燃料 →`, "home", "primary full", state.fuel < E.homeCost(state)) : button("取消本次出发，回港准备", "abort", "full ghost")}<p class="note">路线和事件会保存，刷新不会重抽。返航只扣油，不自动卖货、修船或还债。</p>${state.depth && (state.hull === 0 || state.fuel < E.homeCost(state)) ? button("呼叫普通拖航救援", "rescue", "full ghost") : ""}`;
-  }
+  function route(){return window.SalvageRouteView.render(state,{selectedUid:routeSelected,disabled:!storageOK||blocked});}
+
   function event() {
-    const ev = E.encounter(state);
-    return `<div class="section-head"><div><div class="eyebrow">ENCOUNTER / ${String(state.depth).padStart(2, "0")}</div><h1>探索现场</h1></div><span class="tag">${icon("fuel")} 返航 ${E.homeCost(state)}</span></div>${picture(ev.kind)}<section class="panel"><div class="event-label">${icon(I.routeIcon(ev))} 第${state.depth}处发现</div><h2>${esc(ev.title)}</h2><p class="lead" style="margin-top:12px">${esc(ev.text)}</p></section><p class="note">带货选项先安排装载，确认后结算；其他选项点击后立即结算。</p>${ev.choices
-      .map((c) => {
-        const err = E.checkChoice(state, c, { ignoreCargo: true });
-        return `<button class="choice" data-choice="${esc(c.id)}" data-nonce="${esc(ev.nonce)}" ${err ? "disabled" : ""}><strong>${icon(I.choiceIcon(c))}${esc(c.label)}${icon("arrow", "choice-arrow")}</strong><small>${esc(units(c.desc))}</small>${choiceChips(c)}${(c.risk?.[1] || -(c.effect.hull || 0)) >= state.hull ? "<small>注意：可能需要拖航救援</small>" : ""}${err ? `<small>${icon("warning")} ${esc(err)}</small>` : ""}</button>`;
-      })
-      .join(
-        "",
-      )}${reserveBox()}<div class="split">${button(icon("cargo") + "整理货舱", "cargo", "ghost")}${button(icon("route") + "查看航路", "route", "ghost")}</div><div class="spacer"></div>${button(icon("return") + "放弃现场并返航", "home", "full ghost")}`;
+    const ev=E.encounter(state),intro=ev.text.split('。')[0]+'。';
+    return '<div class="section-head"><div><div class="eyebrow">ENCOUNTER / '+state.depth+'</div><h1>探索现场</h1></div><span class="tag">'+icon('fuel')+'返航 '+E.homeCost(state)+'</span></div>'+picture(ev.kind)+'<section class="panel event-intro"><h2>'+icon(I.routeIcon(ev))+esc(ev.title)+'</h2><p>'+esc(intro)+'</p><details class="event-story"><summary>现场记录</summary><p>'+esc(ev.text)+'</p></details></section><div class="event-options">'+ev.choices.map(c=>{const err=E.checkChoice(state,c,{ignoreCargo:true});return '<button class="choice" data-choice="'+esc(c.id)+'" data-nonce="'+esc(ev.nonce)+'" '+(err?'disabled':'')+'><strong>'+icon(I.choiceIcon(c))+esc(c.label)+icon('arrow','choice-arrow')+'</strong>'+((c.effect.remove||!Object.keys(c.effect).length)?'<small>'+esc(c.desc)+'</small>':'')+choiceChips(c)+((c.risk?.[1]||-(c.effect.hull||0))>=state.hull?'<small class="risk">可能触发拖航救援</small>':'')+(err?'<small>'+icon('warning')+esc(err)+'</small>':'')+'</button>';}).join('')+'</div>'+reserveBox()+'<div class="split">'+button(icon('cargo')+'货舱','cargo','ghost')+button(icon('return')+'返港','home','ghost')+'</div>';
   }
+
   function result() {
     const r = state.result;
     const delta = r.delta
@@ -258,18 +239,19 @@
     const goods = [...(r.cargoChanges?.added || []).map(x=>`<span class="change positive">${icon('cargo')}装入：${esc(x.name)}</span>`), ...(r.cargoChanges?.removed || []).map(x=>`<span class="change negative">${icon(x.reason==='sale'?'trade':'leave')}${x.reason==='sale'?'售出':'放弃'}：${esc(x.name)}</span>`)].join('');
     return `<div class="eyebrow">CHOICE RECORDED</div><section class="panel" style="margin-top:15px"><div class="result-mark">${icon("check")}</div><h2 style="text-align:center">${esc(r.title)}</h2><p class="lead" style="margin-top:18px">${esc(r.text)}</p><div class="changes">${delta || goods ? delta + goods : "<span>资源未变化</span>"}</div></section>${reserveBox()}${button(icon("route") + (state.depth >= 8 ? "查看返航路线" : "继续查看航路"), "continue", "primary full")}<div class="spacer"></div>${button(icon("return") + `见好就收 · 返航需${E.homeCost(state)}燃料`, "home", "full ghost")}`;
   }
-  function summary() {
-    const r = E.summaryView(state);
-    return `<div class="eyebrow">VOYAGE ${String(r.run).padStart(2, "0")} / RETURN</div><h1>${r.rescue ? "已被拖回港口" : "平安归航"}</h1>${picture("port")}<div class="stats-grid"><div><b>${r.depth}</b><small>探索航点</small></div><div><b>${r.returnFuel}</b><small>${icon("fuel")}实际返航耗油</small></div><div><b>${E.cargoValue(state)}</b><small>${icon("cargo")}尚未出售货值</small></div></div><section class="panel"><h3>${icon("journal")}本趟账目</h3><div class="spacer"></div><div class="ledger"><span>途中收入（非售货）</span><b class="positive">+${r.eventIncome}</b><span>委托结算</span><b class="positive">+${r.reward}</b><span>途中服务支出</span><b class="negative">−${r.spent}</b>${r.rescue ? `<span>拖航实付</span><b class="negative">−${r.rescueFee}</b>` : ""}<span>本趟新货已售</span><b class="positive">+${r.salesCurrent}</b><span>跨趟旧货已售</span><b class="positive">+${r.salesCarried}</b><span>港口油料／维修</span><b class="negative">−${r.supplySpent + r.repairSpent}</b><span>设备／还款</span><b class="negative">−${r.toolSpent + r.debtPaid}</b><span>新收获已实现收支</span><b>${r.operatingNet}</b><span class="total">现金实际变动</span><b class="total">${r.cashDelta >= 0 ? "+" : ""}${r.cashDelta}</b></div><p class="note">${r.legacy ? "旧版历史明细不能完整追溯，余额保留；以下仅计升级后的操作。" : ""}此项不含旧货、设备和还款，也不预扣未做的补给。油料和耐久尚未补满。未售货物不算现金；补给、维修、还债由你主动决定。</p></section>${r.rescue ? `<p class="note">${r.lost}件本趟货物抵扣了救援成本。已发现的见闻保留，不增加船债。</p>` : ""}${E.cargoValue(state) ? button("出售回收货 · 获得" + E.cargoValue(state) + "零件", "sellAll", "primary full") : ""}<div class="spacer"></div><div class="split">${button("先看看货舱", "cargo", "ghost")}${button("返回港口准备 →", "port", "primary")}</div><details class="feedback"><summary>本趟主要体验如何？（可不填）</summary><p class="note">只记在本机，不影响结果。</p><div class="split">${button("平稳", "feedback-steady")}${button("紧张", "feedback-tense")}${button("有些没看懂", "feedback-unclear")}${button("暂不回答", "feedback-skip")}</div></details>`;
+  function summary(){
+    const r=E.summaryView(state);
+    return '<div class="eyebrow">VOYAGE '+r.run+' / RETURN</div><h1>'+ (r.rescue?'已被拖回港口':'平安归航')+'</h1><div class="stats-grid"><div><b>'+r.depth+'</b><small>探索航点</small></div><div><b>'+E.cargoValue(state)+'</b><small>未售货值</small></div><div><b>'+(r.cashDelta>=0?'+':'')+r.cashDelta+'</b><small>现金实际变动</small></div></div>'+(E.cargoValue(state)?button(icon('trade')+'出售回收货 · +'+E.cargoValue(state)+'零件','sellAll','primary full'):'')+'<div class="spacer"></div>'+button(icon('port')+'港口补给 / 再出发','port','full')+'<div class="spacer"></div>'+button('查看保留的货物','cargo','ghost full')+(r.rescue?'<p class="note">本趟失去'+r.lost+'件新货；旧货和永久工具保留。拖航实付'+r.rescueFee+'零件。</p>':'<p class="note">返航实耗'+r.returnFuel+'燃料；货物、补给和还款仍由你决定。</p>')+
+      `<details class="voyage-ledger panel"><summary>本趟账目</summary><div class="ledger"><span>途中收入（非售货）</span><b class="positive">+${r.eventIncome}</b><span>委托结算</span><b class="positive">+${r.reward}</b><span>途中服务支出</span><b class="negative">−${r.spent}</b>${r.rescue ? `<span>拖航实付</span><b class="negative">−${r.rescueFee}</b>` : ""}<span>本趟新货已售</span><b class="positive">+${r.salesCurrent}</b><span>跨趟旧货已售</span><b class="positive">+${r.salesCarried}</b><span>港口油料／维修</span><b class="negative">−${r.supplySpent + r.repairSpent}</b><span>设备／还款</span><b class="negative">−${r.toolSpent + r.debtPaid}</b><span>新收获已实现收支</span><b>${r.operatingNet}</b><span class="total">现金实际变动</span><b class="total">${r.cashDelta >= 0 ? "+" : ""}${r.cashDelta}</b></div><p class="note">未售货不是现金；只计实际补给与维修。旧货、设备和还款分列，未做的补给不预扣。${r.legacy?'旧版历史明细无法完整追溯，余额保留。':''}</p></details>`+'<details class="feedback"><summary>记录本趟感受（可不填）</summary><div class="split">'+button('平稳','feedback-steady')+button('紧张','feedback-tense')+button('没看懂','feedback-unclear')+button('暂不回答','feedback-skip')+'</div></details>';
   }
-  function cargo() {
-    let summaryHTML = '';
-    if (cargoDraft?.action.type === 'choose' && state.phase === 'event') {
-      const choice = E.encounter(state).choices.find(c => c.id === cargoDraft.action.id);
-      if (choice) summaryHTML = `<section class="panel cargo-choice-summary"><h3>${icon(I.choiceIcon(choice))}${esc(choice.label)}</h3><p class="note">${esc(units(choice.desc))}</p>${choiceChips(choice)}<p class="note">以下费用与风险在确认装载时结算，取消不消耗资源。</p></section>`;
-    } else if (cargoDraft?.action.type === 'depart') summaryHTML = `<section class="panel cargo-choice-summary"><h3>${icon('contract')}领取本趟测绘记录箱</h3><p class="note">占4小格（2×2），不收取零件。确认后开始本趟航行。</p></section>`;
-    return summaryHTML + cargoUI.render(state, {draft:cargoDraft,revision:cargoDraftRevision ?? controller.revision,disabled:!storageOK || blocked || busy}) + `<div class="spacer"></div>${button(icon(active()?'ship':'port')+(active()?'返回当前航行':'回港看看'),'play','full ghost')}`;
+
+  function cargo(){
+    let summaryHTML='',costHTML='';
+    if(cargoDraft?.action.type==='choose'&&state.phase==='event'){const choice=E.encounter(state).choices.find(c=>c.id===cargoDraft.action.id);if(choice){summaryHTML='<h3>'+icon(I.choiceIcon(choice))+esc(choice.label)+'</h3>';costHTML=choiceChips(choice);}}
+    else if(cargoDraft?.action.type==='depart')summaryHTML='<h3>'+icon('contract')+'接受测绘委托</h3><p>完成3站并安全带回记录箱，按原规则结算180零件。</p>';
+    return cargoUI.render(state,{draft:cargoDraft,revision:cargoDraftRevision??controller.revision,disabled:!storageOK||blocked||busy,summaryHTML,costHTML});
   }
+
   function journal() {
     return `<div class="section-head"><div><div class="eyebrow">LOCAL FLIGHT LOG</div><h1>${icon("journal")}航行手记</h1></div><span class="tag">${state.archive.length}件见闻</span></div><p class="note">只记录已经发生的事情。卖掉货物，不会抹掉见闻。</p>${state.archive.length ? `<section class="panel"><h3>带上过船的物件</h3><div class="changes">${state.archive.map((x) => `<span>${esc(x.name)}</span>`).join("")}</div></section>` : ""}<section class="panel">${
       state.log.length
@@ -285,6 +267,8 @@
     }</section>`;
   }
   function render(resetScroll = false) {
+    document.body.classList.toggle('cargo-screen',tab==='cargo'&&!blocked);
+    document.body.dataset.phase=state.phase;document.body.dataset.screen=tab;
     if (tab !== "cargo") cargoUI.unmount();
     const health = $("#storage-warning");
     health.hidden = storageOK && !blocked;
@@ -313,8 +297,8 @@
       [
         "货舱",
         "cargo",
-        E.used(state) * 4 + "/" + state.capacity * 4,
-        E.used(state) === state.capacity,
+        E.used(state) + "/" + state.capacity * 4,
+        E.used(state) === 16,
         null,
         "已装满",
       ],
@@ -377,6 +361,7 @@
       $("#resources")
         .querySelectorAll("b")
         .forEach((b) => (b.textContent = "—"));
+    document.documentElement.style.setProperty("--dock-height",$("#nav").getBoundingClientRect().height+"px");
     if (tab === "cargo" && !blocked) cargoUI.mount($("#main"));
     if (tab === "route" && !blocked)
       window.SalvageRouteView.focusCurrent(
@@ -391,6 +376,7 @@
     if (performance.now() - lastCommand < 450)
       return { ok: false, message: "请稍候，上一项操作正在落定" };
     lastCommand = performance.now();
+    const savedScroll=window.scrollY,retainScroll=nextTab===tab&&["buyFuel","repair","layout","sell","sellAll","use"].includes(command.type);
     busy = true;
     let r;
     try {
@@ -413,7 +399,8 @@
       }
     } finally {
       busy = false;
-      render(!!r?.ok);
+      render(!!r?.ok&&!retainScroll);
+      if(retainScroll)window.scrollTo({top:savedScroll,behavior:"auto"});
     }
     return r;
   }
@@ -599,7 +586,7 @@
       aid: "aid",
       sellAll: "sellAll",
     };
-    if (map[name]) act({ type: map[name] });
+    if (map[name]) act({type:map[name]},inputRevision,map[name]==="continue"?"route":"play");
   }
   document.addEventListener("click", (e) => {
     const b = e.target.closest("button");

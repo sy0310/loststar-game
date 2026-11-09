@@ -17,7 +17,7 @@ function play(seed,p){
   while(['route','event','result'].includes(s.phase)&&actions++<80){
    if(s.phase==='route'){
     const valid=s.route.filter(r=>E.quote(s,r).enabled);
-    if(s.depth>=p.limit||!valid.length||s.depth>0&&s.hull<26||s.depth>=3&&E.used(s)===4){act('return');continue;}
+    if(s.depth>=p.limit||!valid.length||s.depth>0&&s.hull<26||s.depth>=3&&E.used(s)===16){act('return');continue;}
     // The policy only uses visible signal, cost and risk. No future encounters or RNG peeking.
     valid.sort((a,b)=>(a.risk==='低'?-5:0)+a.fuel-((b.risk==='低'?-5:0)+b.fuel));act('travel',{id:valid[0].uid});
    }else if(s.phase==='event'){

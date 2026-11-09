@@ -1,16 +1,16 @@
 'use strict';
 const {test,expect}=require('@playwright/test');
 const E=require('../../src/engine.js');
-const fs=require('node:fs');
+const fs=require('node:fs');const O=require('../legacy-engine.cjs')();
 const state=page=>page.evaluate(()=>window.__SALVAGE__.state());
 async function boot(page){await page.goto('');await page.waitForFunction(()=>window.__SALVAGE__);const close=page.locator('#modal-buttons [data-act=close]');if(await close.isVisible())await close.tap();}
-async function tap(page,selector){await page.waitForFunction(()=>window.__SALVAGE__.ready());await page.locator(selector).tap();await page.waitForFunction(()=>window.__SALVAGE__.ready());}
+async function tap(page,selector){await page.waitForFunction(()=>window.__SALVAGE__.ready());if(selector.startsWith('[data-travel]')&&!await page.locator('[data-travel]').count()){await page.locator('[data-route-select]').first().tap();}await page.locator(selector).tap();await page.waitForFunction(()=>window.__SALVAGE__.ready());}
 async function start(page){await tap(page,'[data-act=depart]');if(await page.locator('[data-cargo-save]').isVisible())await tap(page,'[data-cargo-save]');await expect.poll(async()=>(await state(page)).phase).toBe('route');}
 async function importSave(page,value){await tap(page,'[data-act=settings]');await page.locator('[data-act=import]').tap();await page.locator('#import-file').setInputFiles({name:'explicit-qa-copy.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(value))});await page.locator('[data-act=confirm]').tap();await expect(page.locator('#overlay')).toBeHidden();await expect.poll(()=>state(page)).toEqual(E.restore(value));}
 async function archiveRead(page,key){return page.evaluate(key=>new Promise((resolve,reject)=>{const open=indexedDB.open('lostcargo.route-demo.v1');open.onerror=()=>reject(open.error);open.onsuccess=()=>{const db=open.result,t=db.transaction('archive','readonly'),r=t.objectStore('archive').get(key);r.onsuccess=()=>resolve(r.result);t.oncomplete=()=>db.close();};}),key);}
 async function writeCurrent(page,value){await page.evaluate(value=>new Promise((resolve,reject)=>{const open=indexedDB.open('lostcargo.route-demo.v1');open.onerror=()=>reject(open.error);open.onsuccess=()=>{const db=open.result,t=db.transaction('archive','readwrite');t.objectStore('archive').put(value,'current');t.oncomplete=()=>{db.close();resolve();};t.onabort=()=>reject(t.error);};}),value);}
-function legacyGoods(sizes=[1,1,2]){const s=E.create(91);s.schema=2;s.money=643;s.runNo=2;s.cargo=sizes.map((size,i)=>({uid:i+1,name:`已持有测试货${i+1}`,size,value:70+i*13,acquiredRun:i%3,ability:i===0?'patch':null}));s.nextUid=s.cargo.length+1;delete s.cargoGrid;return s;}
-function liveWithOldGoods(){let s=E.restore(legacyGoods([1,1,1]));s=E.dispatch(s,{type:'depart'}).state;s=E.dispatch(s,{type:'travel',id:s.route[0].uid}).state;return s;}
+function legacyGoods(sizes=[1,1,2]){const s=O.create(91);s.schema=2;s.money=643;s.runNo=2;s.cargo=sizes.map((size,i)=>({uid:i+1,name:`已持有测试货${i+1}`,size,value:70+i*13,acquiredRun:i%3,ability:i===0?'patch':null}));s.nextUid=s.cargo.length+1;delete s.cargoGrid;return s;}
+function liveWithOldGoods(){let s=E.restore(legacyGoods([1,1,1,1]));s=E.dispatch(s,{type:'depart'}).state;s=E.dispatch(s,{type:'travel',id:s.route[0].uid}).state;return s;}
 
 test('independent route map projects the real branch and selection spends no fuel or RNG',async({page})=>{
  await boot(page);const port=await state(page);await tap(page,'[data-tab=route]');await expect(page.locator('.map-port.is-current')).toBeVisible();expect(await state(page)).toEqual(port);
@@ -28,7 +28,7 @@ test('independent route map projects the real branch and selection spends no fue
 });
 
 test('tap rotation and placement save to the real archive; invalid and interrupted gestures do not move cargo',async({page})=>{
- await boot(page);await start(page);await tap(page,'[data-tab=cargo]');const before=await state(page),uid=before.cargo[0].uid;
+ await boot(page);await importSave(page,E.restore(legacyGoods([1])));await start(page);await tap(page,'[data-tab=cargo]');const before=await state(page),uid=before.cargo[0].uid;
  await tap(page,`[data-cargo-pick="${uid}"]`);await tap(page,'[data-cargo-rotate]');await tap(page,'[data-cargo-cell="3,3"]');
  await expect(page.locator('[data-cargo-status]')).toContainText('边界');expect(await state(page)).toEqual(before);
  await tap(page,'[data-cargo-cell="2,2"]');expect(await state(page)).toEqual(before);await tap(page,'[data-cargo-save]');
@@ -52,9 +52,9 @@ test('tap rotation and placement save to the real archive; invalid and interrupt
 test('cargo choice draft cancels without charging or rerolling; commit resolves the risk exactly once',async({page})=>{
  await boot(page);let fixture=E.dispatch(E.create(58),{type:'depart'}).state;fixture=E.dispatch(fixture,{type:'travel',id:fixture.route[0].uid}).state;fixture.event.id='mirror';await importSave(page,fixture);
  const before=await state(page),choice={type:'choose',id:'risk',nonce:before.event.nonce};await tap(page,'[data-choice=risk]');
- await expect(page.locator('[data-cargo-view]')).toBeVisible();await tap(page,'[data-cargo-arrange]');expect(await state(page)).toEqual(before);await tap(page,'[data-cargo-cancel]');expect(await state(page)).toEqual(before);
+ await expect(page.locator('[data-cargo-view]')).toBeVisible();await tap(page,'[data-cargo-edit]');await tap(page,'[data-cargo-arrange]');expect(await state(page)).toEqual(before);await tap(page,'[data-cargo-cancel]');expect(await state(page)).toEqual(before);
  await tap(page,'[data-choice=risk]');await page.reload();await page.waitForFunction(()=>window.__SALVAGE__);expect(await state(page)).toEqual(before);await expect(page.locator('[data-choice=risk]')).toBeVisible();
- await tap(page,'[data-choice=risk]');await tap(page,'[data-cargo-arrange]');const draft=E.cargoDraft(before,choice),layout=E.Cargo.solve(draft.items,draft.placements),expected=E.dispatch(before,{...choice,layout});expect(expected.ok).toBe(true);
+ await tap(page,'[data-choice=risk]');await tap(page,'[data-cargo-edit]');await tap(page,'[data-cargo-arrange]');const draft=E.cargoDraft(before,choice),layout=E.Cargo.solve(draft.items,draft.placements),expected=E.dispatch(before,{...choice,layout});expect(expected.ok).toBe(true);
  await tap(page,'[data-cargo-save]');expect(await state(page)).toEqual(expected.state);const after=await state(page);
  const repeated=await page.evaluate(async action=>{const writer=await SalvageStore.open(1);try{return await writer.act(action,writer.revision);}finally{writer.close();}},choice);expect(repeated.ok).toBe(false);
  await page.reload();await page.waitForFunction(()=>window.__SALVAGE__);expect(await state(page)).toEqual(after);expect(after.cargo.length).toBe(before.cargo.length+1);expect(after.hull).toBeLessThan(before.hull);
@@ -63,8 +63,8 @@ test('cargo choice draft cancels without charging or rerolling; commit resolves 
 test('full schema2 IndexedDB inventory is backed up and migrated once without changing owned goods or balances',async({page})=>{
  await boot(page);const legacy=legacyGoods(),original={format:1,revision:41,game:legacy};await writeCurrent(page,original);
  await page.reload();await page.waitForFunction(()=>window.__SALVAGE__);const migrated=await state(page);
- expect(migrated.schema).toBe(E.SCHEMA);expect(migrated.money).toBe(legacy.money);expect(migrated.rng).toBe(legacy.rng);expect(migrated.cargo.map(({shapeId,shapeVersion,...item})=>item)).toEqual(legacy.cargo);
- expect(E.Cargo.validate(migrated.cargo,migrated.cargoGrid.placements).ok).toBe(true);expect(E.used(migrated)).toBe(4);
+ expect(migrated.schema).toBe(E.SCHEMA);expect(migrated.money).toBe(legacy.money);expect(migrated.rng).toBe(legacy.rng);expect(migrated.cargo.map(({shapeId,shapeVersion,cells,...item})=>item)).toEqual(legacy.cargo);
+ expect(E.Cargo.validate(migrated.cargo,migrated.cargoGrid.placements).ok).toBe(true);expect(E.used(migrated)).toBe(16);
  expect(await archiveRead(page,'migration/schema-2')).toEqual(original);const stored=await archiveRead(page,'current');expect(stored.revision).toBe(42);expect(stored.game.schema).toBe(E.SCHEMA);
  await page.reload();await page.waitForFunction(()=>window.__SALVAGE__);expect(await archiveRead(page,'current')).toEqual(stored);expect(await archiveRead(page,'migration/schema-2')).toEqual(original);
  await tap(page,'[data-tab=cargo]');await expect(page.locator('.cargo-cell')).toHaveCount(16);expect(await page.locator('.cargo-cell.occupied').count()).toBe(16);
@@ -76,7 +76,7 @@ test('an aborted schema2 migration preserves the exact current envelope and expo
    window.realArchivePut=IDBObjectStore.prototype.put;
    IDBObjectStore.prototype.put=function(value,key){
      const request=realArchivePut.call(this,value,key);
-     if(key==='current'&&value?.revision===42&&value?.game?.schema===3){const transaction=this.transaction;queueMicrotask(()=>{try{transaction.abort();}catch{}});}
+     if(key==='current'&&value?.revision===42&&value?.game?.schema===4){const transaction=this.transaction;queueMicrotask(()=>{try{transaction.abort();}catch{}});}
      return request;
    };
  });
@@ -105,7 +105,7 @@ test('an import with the same game revision invalidates another page acquisition
 });
 
 test('failed layout write preserves the old archive and an out-of-bounds import cannot replace it',async({page})=>{
- await boot(page);await start(page);await tap(page,'[data-tab=cargo]');const before=await state(page),storedBefore=await archiveRead(page,'current'),uid=before.cargo[0].uid;
+ await boot(page);await importSave(page,E.restore(legacyGoods([1])));await start(page);await tap(page,'[data-tab=cargo]');const before=await state(page),storedBefore=await archiveRead(page,'current'),uid=before.cargo[0].uid;
  await tap(page,`[data-cargo-pick="${uid}"]`);await tap(page,'[data-cargo-cell="2,2"]');
  await page.evaluate(()=>{window.originalTransaction=IDBDatabase.prototype.transaction;IDBDatabase.prototype.transaction=function(...args){const tx=originalTransaction.apply(this,args);if(args[1]==='readwrite')queueMicrotask(()=>{try{tx.abort();}catch{}});return tx;};});
  await tap(page,'[data-cargo-save]');await expect(page.locator('#storage-warning')).toBeVisible();expect(await state(page)).toEqual(before);
@@ -117,14 +117,14 @@ test('failed layout write preserves the old archive and an out-of-bounds import 
 test('full cargo replacement requires explicit old-good consent and has no free staging capacity',async({page})=>{
  await boot(page);await importSave(page,liveWithOldGoods());const before=await state(page),old=before.cargo.find(x=>!x.contract),second=before.cargo.filter(x=>!x.contract)[1];
  await tap(page,'[data-choice=force]');await expect(page.locator('[data-cargo-save]')).toBeDisabled();expect(await state(page)).toEqual(before);
- await tap(page,`[data-cargo-pick="${old.uid}"]`);await tap(page,'[data-cargo-discard]');await tap(page,'[data-cargo-confirm-discard]');await tap(page,'[data-cargo-arrange]');expect(await state(page)).toEqual(before);
+ await tap(page,`[data-cargo-pick="${old.uid}"]`);await page.locator('.cargo-more summary').tap();await tap(page,'[data-cargo-discard]');await tap(page,'[data-cargo-confirm-discard]');await tap(page,'[data-cargo-arrange]');expect(await state(page)).toEqual(before);
  await tap(page,'[data-cargo-cancel]');expect(await state(page)).toEqual(before);
- await tap(page,'[data-choice=force]');await tap(page,`[data-cargo-pick="${old.uid}"]`);await tap(page,'[data-cargo-discard]');await tap(page,'[data-cargo-confirm-discard]');await tap(page,'[data-cargo-arrange]');
+ await tap(page,'[data-choice=force]');await tap(page,`[data-cargo-pick="${old.uid}"]`);await page.locator('.cargo-more summary').tap();await tap(page,'[data-cargo-discard]');await tap(page,'[data-cargo-confirm-discard]');await tap(page,'[data-cargo-arrange]');
  // Three 2x2 parcels and one L cannot tile this hold even though their area is
  // exactly 16. The player must explicitly make a second sacrifice or cancel.
  await expect(page.locator('[data-cargo-save]')).toBeDisabled();
- await tap(page,`[data-cargo-pick="${second.uid}"]`);await tap(page,'[data-cargo-discard]');await tap(page,'[data-cargo-confirm-discard]');await tap(page,'[data-cargo-arrange]');await tap(page,'[data-cargo-save]');
- const after=await state(page);expect(after.phase).toBe('result');expect(after.cargo.some(x=>x.uid===old.uid||x.uid===second.uid)).toBe(false);expect(after.cargo).toHaveLength(3);expect(after.cargo.some(x=>x.uid===before.nextUid)).toBe(true);expect(after.hull).toBe(before.hull-16);expect(after.money).toBe(before.money);expect(after.cargo.some(x=>x.contract)).toBe(true);expect(after.ledger.filter(x=>x.kind==='sale')).toHaveLength(0);expect(E.Cargo.validate(after.cargo,after.cargoGrid.placements).ok).toBe(true);
+ await tap(page,`[data-cargo-pick="${second.uid}"]`);await page.locator('.cargo-more summary').tap();await tap(page,'[data-cargo-discard]');await tap(page,'[data-cargo-confirm-discard]');await tap(page,'[data-cargo-arrange]');await tap(page,'[data-cargo-save]');
+ const after=await state(page);expect(after.phase).toBe('result');expect(after.cargo.some(x=>x.uid===old.uid||x.uid===second.uid)).toBe(false);expect(after.cargo).toHaveLength(5);expect(after.cargo.some(x=>x.uid===before.nextUid)).toBe(true);expect(after.hull).toBe(before.hull-16);expect(after.money).toBe(before.money);expect(after.missionSlot?.contract).toBe(true);expect(after.ledger.filter(x=>x.kind==='sale')).toHaveLength(0);expect(E.Cargo.validate(after.cargo,after.cargoGrid.placements).ok).toBe(true);
  await page.reload();await page.waitForFunction(()=>window.__SALVAGE__);expect(await state(page)).toEqual(after);
 });
 

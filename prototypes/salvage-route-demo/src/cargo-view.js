@@ -44,12 +44,12 @@
       session = {
         serial: ++sessionSerial, key, revision, action: draft ? copy(draft.action) : null,
         items, placements:layout, original:copy(layout), newUids:[...(draft?.newUids || [])], discardUids:[],
-        selected:null, rotation:0, preview:null, confirmDiscard:false, settled:false, message:'', messageKind:'neutral',
+        selected:null, rotation:0, preview:null, confirmDiscard:false, settled:false, mode:draft?.complete?'quick':'edit', message:'', messageKind:'neutral',
       };
-      if (draft && session.newUids.length) session.selected = session.newUids[0];
-      if (draft) notice('先摆好全部货物，再确认装载。现在还没有扣费或回收。');
+      if(draft&&session.newUids.length){session.selected=session.newUids[0];session.rotation=placement(session.selected)?.rotation||0;}
+      if (draft) notice(draft.complete?'确认后才结算；可先手动调整。':'安排未放入的物件，或明确取舍。');
       else if (wasEditing) notice('存档已有更新，已读取最新货舱。请重新检查排布。', 'warning');
-      else notice('点选货物，再点目标格；也可以拖动。排布确认后保存。');
+      else notice('点物品选中，点空格放置。');
     }
 
     function shapePath(mask, unit = 100, inset = 5) {
@@ -111,21 +111,29 @@
       }).join('');
     }
 
-    function detail() {
-      const item = itemById(session.selected);
-      if (!item || session.discardUids.includes(item.uid)) return '<p class="cargo-instruction">选择货物，可以查看形状、旋转或调整位置。</p>';
-      const p = placement(item.uid), staged = !p, isNew = session.newUids.includes(item.uid);
-      const description = item.contract ? '委托记录箱；返港按原委托条件交付。' : item.ability === 'patch' ? '可在货舱使用，修补船体。' : item.ability === 'fuel' ? '可在货舱使用，补充燃料。' : '带回港口后可出售。';
-      return `<section class="cargo-detail" aria-label="选中货物"><div class="cargo-detail-head"><span class="cargo-selected-shape">${thumbnail(item, session.rotation)}</span><div><h3>${esc(item.name)}</h3><p>${area(item)}小格 · ${item.contract ? '不可出售' : `已知售价 ${esc(item.value)} 零件`}${item.shapeId?.startsWith('legacy') ? ' · 旧货包装' : ''}</p></div></div><p class="cargo-purpose">${description}</p><div class="cargo-tools"><button type="button" data-cargo-rotate${disabled || busy ? ' disabled' : ''}>${icon('rotate')}<span>旋转90°</span></button><button type="button" data-cargo-stage${disabled || busy || staged ? ' disabled' : ''}>${icon('cargo')}<span>暂移整理区</span></button></div><p class="cargo-instruction">${session.preview ? session.preview.ok ? '可以放置：点目标格或松开手指。' : '无法放置：调整位置，货物仍留在原处。' : '旋转后点击目标格放置；未放好的货不能带走。'}</p>${session.action?.type === 'choose' && !isNew ? `<button type="button" class="cargo-discard-button" data-cargo-discard${disabled || busy ? ' disabled' : ''}>${icon('warning')}<span>放弃这件旧货，腾出空间</span></button>` : ''}${!session.action && !dirty() ? `<div class="cargo-item-actions">${!item.contract && ['port','summary'].includes(latestState.phase) ? `<button type="button" data-cargo-action="sell"${disabled || busy ? ' disabled' : ''}>${icon('money')}<span>出售</span></button>` : ''}${item.ability === 'patch' ? `<button type="button" data-cargo-action="use"${disabled || busy || latestState.hull >= 100 ? ' disabled' : ''}>${icon(itemIcon(item))}<span>${latestState.hull >= 100 ? '船体完好' : '使用'}</span></button>` : ''}${['route','event','result'].includes(latestState.phase) ? `<button type="button" data-cargo-action="discard"${disabled || busy ? ' disabled' : ''}>${icon('warning')}<span>放弃货物</span></button>` : ''}</div>` : ''}${session.confirmDiscard ? `<div class="cargo-discard-confirm" role="group" aria-label="确认弃货"><p>确认装载时会放弃「${esc(item.name)}」，不会获得零件。${item.contract ? '放弃记录箱也会失去本趟委托报酬。' : ''}</p><div><button type="button" data-cargo-keep>继续保留</button><button type="button" class="danger" data-cargo-confirm-discard>确认放弃此货</button></div></div>` : ''}</section>`;
+    function mission() {
+      const record=latestState.missionSlot;
+      return '<div class="mission-slot">'+icon('contract')+'<span>任务槽 · '+(record?'测绘 '+Math.min(latestState.depth,3)+'/3 · 记录箱随船':session.action?.type==='depart'?'随船领取记录箱，不占货舱':'无随船记录箱')+'</span>'+(record&&!session.action?'<button type="button" data-cargo-mission '+(disabled||busy?'disabled':'')+'>放弃任务</button>':'')+'</div>';
     }
-
+    function detail() {
+      const item=itemById(session.selected);
+      if(!item||session.discardUids.includes(item.uid))return '<div class="cargo-detail empty-selection">点选一个物件，查看形状与售价。</div>';
+      const isNew=session.newUids.includes(item.uid);
+      const actions=!session.action&&!dirty() ? (['port','summary'].includes(latestState.phase)?'<button data-cargo-action="sell">'+icon('money')+'出售</button>':'')+(item.ability==='patch'?'<button data-cargo-action="use" '+(latestState.hull===100?'disabled':'')+'>'+icon('repair')+'使用修补卷</button>':'')+(['route','event','result'].includes(latestState.phase)?'<button data-cargo-action="discard">放弃货物</button>':'') : '';
+      return '<section class="cargo-detail" aria-label="选中货物"><div class="cargo-detail-head"><span class="cargo-selected-shape">'+thumbnail(item,session.rotation)+'</span><div><h3>'+esc(item.name)+'</h3><p>'+area(item)+'格 · 售价 '+item.value+' 零件'+(item.shapeId.startsWith('legacy')?' · 原包装':'')+'</p></div></div><details class="cargo-more"><summary>物品操作</summary><div class="cargo-item-actions"><button type="button" data-cargo-stage '+(!placement(item.uid)?'disabled':'')+'>移到托盘</button>'+actions+(session.action?.type==='choose'&&!isNew?'<button class="danger" data-cargo-discard>换下此旧货</button>':'')+'</div></details>'+(session.confirmDiscard?'<div class="cargo-discard-confirm" role="group" aria-label="确认弃货"><p>确认装载时放弃「'+esc(item.name)+'」，不获得零件。</p><div><button data-cargo-keep>保留</button><button class="danger" data-cargo-confirm-discard>确认放弃</button></div></div>':'')+'</section>';
+    }
+    function toolbar(){const noItem=session.selected==null;return '<div class="cargo-tools"><button type="button" data-cargo-rotate '+(disabled||busy||noItem?'disabled':'')+'>'+icon('rotate')+'<span>旋转</span></button><button type="button" data-cargo-arrange '+(disabled||busy||!remainingItems().length?'disabled':'')+'>'+icon('arrange')+'<span>整理</span></button></div>';}
     function markup() {
-      if (!session) return '';
-      const items = remainingItems(), placed = activeItems(), unplaced = items.filter(x => !placement(x.uid)), validation = valid();
-      const used = placed.reduce((n, item) => n + area(item), 0);
-      const discarded = session.items.filter(x => session.discardUids.includes(x.uid));
-      const saveDisabled = disabled || busy || !validation.ok || (!session.action && !dirty());
-      return `<section data-cargo-view class="cargo-view${session.action ? ' cargo-loading' : ''}"><div class="section-head"><div><div class="eyebrow">CARGO HOLD · 4 × 4</div><h1>${session.action ? '安排这次装载' : '船上货舱'}</h1></div><span class="tag">${used}/16 小格</span></div>${session.action ? '<p class="cargo-draft-notice">当前是装载草案。确认时才结算本次选择的费用和风险；取消回到原现场。</p>' : '<p class="cargo-draft-notice">货物有不同形状。旋转、挪位置，把想带走的东西装好。</p>'}<div class="cargo-editor">${board()}<p data-cargo-status role="status" aria-live="polite" class="cargo-status ${session.messageKind}">${icon(session.messageKind === 'warning' ? 'warning' : session.messageKind === 'success' ? 'check' : 'cargo')}<span>${esc(session.message)}</span></p>${detail()}<div class="cargo-arrange-row"><button type="button" data-cargo-arrange${disabled || busy || !items.length ? ' disabled' : ''}>${icon('arrange')}<span>辅助整理</span></button><span>只调整草案，确认后保存</span></div></div>${unplaced.length ? `<section class="cargo-tray" data-cargo-tray><h2>${icon('cargo')}整理区 <small>${unplaced.length}件未放好</small></h2><p>仅供本次摆放；未放入的货物不能随船带走。</p><div class="cargo-item-list">${itemButtons(unplaced, true)}</div></section>` : ''}${placed.length ? `<section class="cargo-manifest"><h2>已放货物 <small>${placed.length}件</small></h2><div class="cargo-item-list">${itemButtons(placed)}</div></section>` : !items.length ? '<p class="empty">货舱是空的。回收后在这里摆放货物。</p>' : ''}${discarded.length ? `<section class="cargo-discard-list"><h2>${icon('warning')}确认后将放弃</h2>${discarded.map(x => `<div><span>${esc(x.name)}${x.contract ? '（同时放弃委托报酬）' : ''}</span><button type="button" data-cargo-restore="${x.uid}"${disabled || busy ? ' disabled' : ''}>恢复保留</button></div>`).join('')}</section>` : ''}<div class="cargo-save-panel">${!validation.ok ? `<p class="cargo-save-reason">${icon('warning')}<span>${unplaced.length ? `还有${unplaced.length}件货物未放入。${session.action?.type === 'depart' ? '整理空出记录箱的位置，或取消回港先出售旧货。' : '请摆好或明确取舍。'}` : esc(validation.message)}</span></p>` : ''}<div class="cargo-save-actions"><button type="button" data-cargo-cancel${busy ? ' disabled' : ''}>${icon('close')}<span>${session.action ? '取消装载' : '取消调整'}</span></button><button type="button" class="primary" data-cargo-save${saveDisabled ? ' disabled' : ''}>${icon('check')}<span>${busy ? '正在保存…' : session.action ? '确认装载' : '保存排布'}</span></button></div></div></section>`;
+      if(!session)return '';
+      const items=remainingItems(),unplaced=items.filter(x=>!placement(x.uid)),validation=valid(),used=items.reduce((n,x)=>n+area(x),0),quick=session.mode==='quick'&&!!session.action;
+      const discarded=session.items.filter(x=>session.discardUids.includes(x.uid));
+      const saveDisabled=disabled||busy||!validation.ok||(!session.action&&!dirty());
+      const title=quick?(session.action.type==='depart'?'准备出发':'本次收获'):(session.action?'调整装载':'货舱');
+      const footer='<div class="cargo-save-panel">'+(latestOptions.costHTML||'')+(!validation.ok?'<p class="cargo-save-reason">'+icon('warning')+(unplaced.length?'还有'+unplaced.length+'件未放入':esc(validation.message))+'</p>':'')+'<div class="cargo-save-actions"><button type="button" data-cargo-cancel '+(busy?'disabled':'')+'>'+icon('close')+(session.action?'取消':'取消调整')+'</button><button type="button" class="primary" data-cargo-save '+(saveDisabled?'disabled':'')+'>'+icon('check')+(busy?'保存中…':session.action?.type==='depart'?'确认出发':session.action?'收下并装入':'保存排布')+'</button></div></div>';
+      let body='';
+      if(quick){const incoming=items.filter(x=>session.newUids.includes(x.uid));body='<div class="cargo-body cargo-quick"><div class="cargo-choice-summary">'+(latestOptions.summaryHTML||'')+'</div>'+mission()+'<div class="quick-loot" aria-label="待收下物品">'+incoming.map(x=>'<div class="quick-loot-item"><span>'+thumbnail(x)+'</span><div><b>'+esc(x.name)+'</b><small>'+area(x)+'格 · 售价 '+x.value+' 零件</small></div></div>').join('')+'</div><p class="cargo-quick-note">'+(session.action.type==='depart'?'记录箱在独立任务槽，普通货舱仍可用'+(16-used)+'格。':'已找到合法位置，现有货物保持原位。确认时才结算。')+'</p><button type="button" class="ghost full" data-cargo-edit>'+icon('cargo')+'手动调整</button></div>';}
+      else body='<div class="cargo-body">'+mission()+'<div class="cargo-editor"><div class="cargo-board-row">'+board()+toolbar()+'</div><p data-cargo-status role="status" aria-live="polite" class="cargo-status '+session.messageKind+'">'+icon(session.messageKind==='warning'?'warning':session.messageKind==='success'?'check':'cargo')+'<span>'+esc(session.message)+'</span></p></div>'+detail()+'<section class="cargo-tray"><h2>物件托盘 <small>'+items.length+'件'+(unplaced.length?' · '+unplaced.length+'件未放入':'')+'</small></h2><div class="cargo-item-list" data-cargo-strip>'+itemButtons(items)+'</div></section>'+(discarded.length?'<section class="cargo-discard-list"><h2>确认后将放弃</h2>'+discarded.map(x=>'<div><span>'+esc(x.name)+'</span><button data-cargo-restore="'+x.uid+'">恢复</button></div>').join('')+'</section>':'')+'</div>';
+      return '<section data-cargo-view class="cargo-view '+(session.action?'cargo-loading ':'')+(quick?'is-quick':'')+'"><div class="section-head"><h1>'+title+'</h1><span class="tag">'+used+'/16 格</span></div>'+body+footer+'</section>';
     }
 
     function repaint() {
@@ -134,7 +142,9 @@
       if (!current) return;
       const focused = document.activeElement;
       const focusAttr = focused && current.contains(focused) ? [...focused.attributes].find(a => a.name.startsWith('data-cargo-')) : null;
+      const scrollTop=current.querySelector('.cargo-body')?.scrollTop||0,scrollLeft=current.querySelector('[data-cargo-strip]')?.scrollLeft||0;
       current.outerHTML = markup();
+      const fresh=host.querySelector('[data-cargo-view]');if(fresh?.querySelector('.cargo-body'))fresh.querySelector('.cargo-body').scrollTop=scrollTop;if(fresh?.querySelector('[data-cargo-strip]'))fresh.querySelector('[data-cargo-strip]').scrollLeft=scrollLeft;
       if (focusAttr && !drag) {
         const candidate = [...host.querySelectorAll(`[${focusAttr.name}]`)].find(x => x.getAttribute(focusAttr.name) === focusAttr.value);
         if (candidate && !candidate.disabled) candidate.focus({preventScroll:true});
@@ -158,15 +168,7 @@
       else { session.placements = copy(result.placements); session.preview = null; notice('已放入草案。确认后保存排布。', 'success'); }
     }
 
-    function tapCell(x, y) {
-      const at = occupant(x, y);
-      if (session.selected == null) {
-        if (at) select(at.uid);
-        else notice('先选择一件货物，再点目标格。');
-      } else if (at?.uid === session.selected && !session.preview) {
-        notice('已选中。可拖动，或旋转后点击目标格。');
-      } else tryPlace(x, y);
-    }
+    function tapCell(x,y){const at=occupant(x,y);if(at){select(at.uid);return;}if(session.selected==null)notice('先点选一个物件。');else tryPlace(x,y);}
 
     async function commit() {
       if (busy || disabled || !valid().ok || (!session.action && !dirty())) return;
@@ -216,13 +218,15 @@
       if (b.hasAttribute('data-cargo-cancel')) { cancel(); return; }
       if (busy || disabled) return;
       if (b.hasAttribute('data-cargo-save')) { void commit(); return; }
+      if(b.hasAttribute('data-cargo-edit')){session.mode='edit';repaint();return;}
+      if(b.hasAttribute('data-cargo-mission')){options.onMission?.(latestState.missionSlot);return;}
       if (b.hasAttribute('data-cargo-pick')) select(Number(b.dataset.cargoPick));
       else if (b.hasAttribute('data-cargo-cell')) tapCell(...b.dataset.cargoCell.split(',').map(Number));
       else if (b.hasAttribute('data-cargo-rotate')) {
         if (session.selected == null) return;
         session.rotation = (session.rotation + 1) % 4;
         const p = placement(session.selected);
-        session.preview = p ? {...p, ok:G.place(remainingItems(), session.placements, p.uid, p.x, p.y, session.rotation).ok} : null;
+        if(p){const rotated=G.place(remainingItems(),session.placements,p.uid,p.x,p.y,session.rotation);session.preview={...p,ok:rotated.ok};if(rotated.ok){session.placements=copy(rotated.placements);session.preview=null;notice('已旋转，确认后保存。');}else notice('此处转不开，点空格重新放置。','warning');}else session.preview=null;
         notice(`轮廓已旋转${session.rotation * 90}°，点击目标格放置。`);
       } else if (b.hasAttribute('data-cargo-stage')) {
         session.placements = session.placements.filter(p => p.uid !== session.selected);

@@ -57,7 +57,7 @@
     let detail = "";
     if (selected) {
       const q = E.quote(state, selected);
-      detail = `<section class="panel route-detail" data-route-detail="${esc(selected.uid)}"><div class="section-head"><h2>${icon(I.routeIcon(selected))}${esc(selected.name)}</h2><span class="tag">风险 ${esc(selected.risk)}</span></div><p class="note">${esc(selected.signal)}</p><div class="forecast"><span>${icon("fuel")} 前进耗油<b>${q.out}</b></span><span>${icon("return")} 抵达后返航<b>${q.returnCost}</b></span><span>预留后余油<b>${q.free}</b></span></div><p class="note">抵达后剩余${q.arrival}燃料${q.enabled ? "，已为返港留油。" : `；安全前往还差${Math.max(0, q.out + q.returnCost - state.fuel)}燃料。`}</p><button class="primary full" data-travel="${esc(selected.uid)}" ${!q.enabled || options.disabled ? "disabled" : ""}>${icon("ship")} 前往${esc(selected.name)}</button></section>`;
+      detail = `<section class="panel route-detail" data-route-detail="${esc(selected.uid)}"><div class="section-head"><h2>${icon(I.routeIcon(selected))}${esc(selected.name)}</h2><span class="tag">风险 ${esc(selected.risk)}</span></div><details class="route-signal"><summary>信号详情</summary><p class="note">${esc(selected.signal)}</p></details><div class="forecast"><span>${icon("fuel")} 前进耗油<b>${q.out}</b></span><span>${icon("return")} 抵达后返航<b>${q.returnCost}</b></span><span>预留后余油<b>${q.free}</b></span></div><p class="note">抵达后剩余${q.arrival}燃料${q.enabled ? "，已为返港留油。" : `；安全前往还差${Math.max(0, q.out + q.returnCost - state.fuel)}燃料。`}</p><button class="primary full" data-travel="${esc(selected.uid)}" ${!q.enabled || options.disabled ? "disabled" : ""}>${icon("ship")} 前往${esc(selected.name)}</button></section>`;
     } else if (candidates.length)
       detail =
         '<p class="note map-instruction">点一个信号查看费用，再决定是否前往。</p>';
