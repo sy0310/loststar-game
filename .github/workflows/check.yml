@@ -191,6 +191,8 @@ jobs:
       - name: Verify committed fixed-package evidence when present
         if: hashFiles('artifacts/salvage-route/verification.json') != ''
         run: node prototypes/salvage-route-demo/tests/verify-evidence.cjs
+      - name: Install declared pixel-asset verification dependency
+        run: python3 -m pip install -r prototypes/salvage-route-demo/tests/requirements-port-art.txt
       - name: Current salvage rules and actual paid policy simulation
         run: |
           npm --prefix prototypes/salvage-route-demo test
