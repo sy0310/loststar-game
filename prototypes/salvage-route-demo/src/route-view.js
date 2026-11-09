@@ -24,7 +24,7 @@
     const selected = candidates.find((n) => n.uid === options.selectedUid);
     const nodeSpacing = 104;
     const currentY = 56 + view.nodes.length * nodeSpacing;
-    const branchY = currentY + 124;
+    const branchY = currentY + 102;
     const height = Math.max(210, currentY + (candidates.length ? 220 : 120));
     const mainX = 150;
     const nodeHtml = (node, index) => {
@@ -79,7 +79,7 @@
     const area = container.querySelector(".route-scroll");
     if (!area) return;
     if (Number.isFinite(scrollTop)) area.scrollTop = scrollTop;
-    else area.scrollTop = Math.max(0, area.scrollHeight - area.clientHeight);
+    else {const current=container.querySelector('.map-stop.is-current');area.scrollTop=Math.max(0,(current?.offsetTop||56)-34);}
   }
   root.SalvageRouteView = { render, focusCurrent };
 })(typeof window !== "undefined" ? window : globalThis);
