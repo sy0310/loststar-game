@@ -40,7 +40,7 @@ def verify(path: Path) -> bool:
 
 
 def locate():
-    roots = [Path.home() / "Downloads", Path.home() / "Desktop", REPO / "design" / "star-salvage" / "v04"]
+    roots = [TARGET_ROOT, Path.home() / "Downloads", Path.home() / "Desktop", REPO / "design" / "star-salvage" / "v04"]
     for root in roots:
         if root.is_dir():
             for path in root.glob("*.png"):
@@ -53,7 +53,7 @@ def main():
     ap = argparse.ArgumentParser()
     src = ap.add_mutually_exclusive_group(required=True)
     src.add_argument("--source", type=Path, help="Real local original PNG path")
-    src.add_argument("--find-local", action="store_true", help="Check only top-level Downloads/Desktop/v04 for exact SHA")
+    src.add_argument("--find-local", action="store_true", help="Check Repo concepts and top-level Downloads/Desktop/v04 for exact SHA")
     args = ap.parse_args()
     path = args.source.expanduser().resolve() if args.source else locate()
     if not path:
