@@ -310,7 +310,7 @@
       .join("");
     const routeKey = `${state.runNo}:${state.depth}:${state.phase}`;
     const previousMap = $(".route-scroll");
-    if (previousMap && tab === "route")
+    if (previousMap)
       routeScrollPositions.set(routeKey, previousMap.scrollTop);
     const body =
       tab === "cargo"
@@ -363,7 +363,7 @@
         .forEach((b) => (b.textContent = "—"));
     document.documentElement.style.setProperty("--dock-height",$("#nav").getBoundingClientRect().height+"px");
     if (tab === "cargo" && !blocked) cargoUI.mount($("#main"));
-    if (tab === "route" && !blocked)
+    if ($(".route-scroll") && !blocked)
       window.SalvageRouteView.focusCurrent(
         $("#main"),
         routeScrollPositions.get(routeKey),
