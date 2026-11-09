@@ -57,7 +57,7 @@ function packagedSourceNames(sha){
  return git(['ls-tree','-r','--name-only','-z',sha,'--',demo+'src',demo+'assets',demo+'index.html'])
   .toString().split('\0').filter(Boolean).sort();
 }
-function runtimeNames(sha){return [...packagedSourceNames(sha),demo+'build.py','design/star-salvage/BALANCE_V01.json'].sort();}
+function runtimeNames(sha){const extra=source(sha,demo+'src/engine.js').includes(Buffer.from("VERSION='0.4.0'"))?['design/star-salvage/v04/BALANCE_V04.json']:[];return [...packagedSourceNames(sha),demo+'build.py','design/star-salvage/BALANCE_V01.json',...extra].sort();}
 function diskFiles(folder){
  return fs.readdirSync(local(folder),{withFileTypes:true}).flatMap(entry=>{
   const name=folder+'/'+entry.name;
@@ -68,7 +68,7 @@ function diskFiles(folder){
 }
 function assertCurrentRuntime(sha){
  const expected=runtimeNames(sha);
- const actual=[...diskFiles(demo+'src'),...diskFiles(demo+'assets'),demo+'index.html',demo+'build.py','design/star-salvage/BALANCE_V01.json'].sort();
+ const actual=[...diskFiles(demo+'src'),...diskFiles(demo+'assets'),demo+'index.html',demo+'build.py','design/star-salvage/BALANCE_V01.json',...(expected.includes('design/star-salvage/v04/BALANCE_V04.json')?['design/star-salvage/v04/BALANCE_V04.json']:[])].sort();
  assert.deepEqual(actual,expected,'runtime file set changed; refresh frozen package proof');
  for(const name of expected){
   assert.equal(hash(fs.readFileSync(local(name))),hash(source(sha,name)),
@@ -78,16 +78,19 @@ function assertCurrentRuntime(sha){
 // build.py uses Python's JSON spacing for the two metadata objects in index.html.
 function spacedJSON(value){return JSON.stringify(value).replace(/("(?:\\.|[^"\\])*")|([,:])/g,(all,string,punctuation)=>string||punctuation+' ');}
 function expectedPackage(sha){
- const names=packagedSourceNames(sha),result=new Map();
+ let names=packagedSourceNames(sha);const result=new Map();
  const version=/\bVERSION='([^']+)'/.exec(source(sha,demo+'src/engine.js').toString())?.[1];
  assert(version,'frozen engine version missing');
- const art={ship:'./assets/ship.webp'};
+ if(version==='0.4.0')names=names.filter(n=>!n.startsWith(demo+'assets/')||/assets\/v04\/[^/]+@2x\.png$/.test(n));
+ const art={ship:version==='0.4.0'?'./assets/v04/ship_starter@2x.png':'./assets/ship.webp'};
  for(const name of ['ship','port','wreck','harbor'])if(names.includes(demo+'assets/'+name+'.webp'))art[name]='./assets/'+name+'.webp';
  const build={version,commit:sha,dirty:false,blindTest:true};
  for(const name of names){
   let raw=source(sha,name);
   if(name===demo+'src/balance.js'){
    raw=Buffer.from('globalThis.LostCargoBalance='+JSON.stringify(JSON.parse(source(sha,'design/star-salvage/BALANCE_V01.json')))+';\n');
+  }else if(name===demo+'src/port-balance.js'){
+   raw=Buffer.from('globalThis.LostCargoPortBalance='+JSON.stringify(JSON.parse(source(sha,'design/star-salvage/v04/BALANCE_V04.json')))+';\n');
   }else if(name===demo+'index.html'){
    const html=raw.toString(),marker="const ART={ship:'./assets/ship.webp'};";
    assert.equal(html.split(marker).length,2,'frozen build HTML injection marker');
@@ -164,20 +167,20 @@ function verifyHistorical(p){
  }
  assert.equal(p.ci.sameZipSha256,p.zip.sha256);assert.equal(p.physicalPhone,'NOT_TESTED');
 }
-function readZipFiles(name){
+function readZipFiles(name,count=13){
  // Inspect in memory; never extract untrusted paths or depend on an ignored dist/.
  const result=cp.execFileSync('python3',['-c',
   'import hashlib,json,stat,sys,zipfile\n'+
   'with zipfile.ZipFile(sys.argv[1]) as z:\n'+
   ' entries=z.infolist()\n'+
-  ' assert len(entries)==13, "expected all 13 package files"\n'+
+  ' assert len(entries)==int(sys.argv[2]), "unexpected package file count"\n'+
   ' assert sum(i.file_size for i in entries)<32*1024*1024, "unexpected package expansion"\n'+
   ' result=[]\n'+
   ' for i in entries:\n'+
   '  assert not i.is_dir() and not stat.S_ISLNK(i.external_attr>>16), "nonregular ZIP entry"\n'+
   '  raw=z.read(i)\n'+
   '  result.append({"path":i.filename,"bytes":len(raw),"sha256":hashlib.sha256(raw).hexdigest()})\n'+
-  ' print(json.dumps(result))\n',local(name)],{encoding:'utf8',maxBuffer:1024*1024});
+  ' print(json.dumps(result))\n',local(name),String(count)],{encoding:'utf8',maxBuffer:1024*1024});
  return JSON.parse(result);
 }
 function verifyCapture(p,manifest,evidence,packageFiles,stats,build,folder=upgradeFolder){
@@ -295,7 +298,7 @@ if(fs.existsSync(local(upgrade))){
 const mobile='artifacts/salvage-mobile-v03/verification.json';
 if(fs.existsSync(local(mobile))){
  const p=json(mobile),folder='artifacts/salvage-mobile-v03/';
- assert.equal(p.schema,3);ancestor(p.runtimeSourceSha);assertCurrentRuntime(p.runtimeSourceSha);
+ assert.equal(p.schema,3);ancestor(p.runtimeSourceSha);if(!fs.existsSync(local('artifacts/salvage-port-v04/verification.json')))assertCurrentRuntime(p.runtimeSourceSha);
  const evidence=verifyEvidence(p.evidenceFiles,'mobile evidence'),build=boundJSON(p.buildInfo,evidence);verifyBuild(p,build);
  git(['ls-files','--error-unmatch','--',p.zip.path]);const raw=fs.readFileSync(local(p.zip.path));assert(evidence.has(p.zip.path));assert.equal(raw.length,p.zip.bytes);assert.equal(hash(raw),p.zip.sha256);
  const expected=expectedPackage(p.runtimeSourceSha),actual=comparePackageFiles(readZipFiles(p.zip.path),expected.files,'mobile actual ZIP/source');comparePackageFiles(p.packageFiles,actual,'mobile package manifest');
@@ -309,4 +312,24 @@ if(fs.existsSync(local(mobile))){
  assert.equal(p.physicalPhone,'NOT_TESTED');verifyPlatform(p.platform,evidence,p.zip);
  const localCheck=boundJSON(folder+'delivery/local-browser-check.json',evidence);assert.equal(localCheck.runtimeSourceSha,p.runtimeSourceSha);assert.equal(localCheck.matchesFrozenMigration,true);assert.equal(localCheck.refreshPreserves,true);assert.equal(localCheck.gameplayActionsTaken,false);
  console.log('PASS mobile frozen runtime, 13 ZIP/HTTP payloads, 128 real browser checks, schema4 tests, two natural voyages, economy comparison and preserved actual user save; phone remains NOT_TESTED');
+}
+
+const portProof='artifacts/salvage-port-v04/verification.json';
+if(fs.existsSync(local(portProof))){
+ const p=json(portProof),folder='artifacts/salvage-port-v04/';assert.equal(p.schema,4);ancestor(p.runtimeSourceSha);assertCurrentRuntime(p.runtimeSourceSha);
+ const evidence=verifyEvidence(p.evidenceFiles,'port04 evidence'),build=boundJSON(p.buildInfo,evidence);verifyBuild(p,build);assert.equal(build.missingOptionalArt.length,0);assert.equal(build.assets.length,14);
+ git(['ls-files','--error-unmatch','--',p.zip.path]);const raw=fs.readFileSync(local(p.zip.path));assert(evidence.has(p.zip.path));assert.equal(raw.length,p.zip.bytes);assert.equal(hash(raw),p.zip.sha256);
+ const expected=expectedPackage(p.runtimeSourceSha),actual=comparePackageFiles(readZipFiles(p.zip.path,p.zip.files),expected.files,'port04 ZIP/source');comparePackageFiles(p.packageFiles,actual,'port04 complete manifest');assert.equal(actual.size,29);
+ const b=p.fixedPackageBrowser;assert.equal(b.runtimeSourceSha,p.runtimeSourceSha);assert.equal(b.zipSha256,p.zip.sha256);verifyBrowser(boundJSON(b.report,evidence),72);
+ verifyBrowser(boundJSON(folder+'developer/old03-browser-results.json',evidence),128);
+ const art=boundJSON(folder+'developer/port-art.json',evidence);assert.equal(art.passed,14);for(const row of art.assets){assert(row.exactNearest&&row.editableMergedMatches&&row.binaryAlpha&&row.paletteSubset);for(const f of row.files){assert.equal(hash(fs.readFileSync(local(f.path))),f.sha256);assert.equal(hash(source(p.runtimeSourceSha,f.path)),f.sha256);}}
+ for(const [file,count]of [['port-model.json',18],['regression-results.json',18],['mobile-model.json',21]])assert.equal(boundJSON(folder+'developer/'+file,evidence).passed,count);
+ const econ=boundJSON(folder+'developer/port-economy.json',evidence);assert.equal(econ.seeds,12);assert.equal(econ.voyagesPerSeed,12);assert.deepEqual(econ.config,JSON.parse(source(p.runtimeSourceSha,'design/star-salvage/v04/BALANCE_V04.json')));assert.equal(econ.oldWallet.remaining,11949);for(const v of Object.values(econ.policies)){assert.equal(v.runs.length,12);for(const r of v.runs)assert.equal(r.rows.length,12);}
+ const compat=boundJSON(folder+'developer/port-compatibility.json',evidence);assert.equal(compat.passed,8);assert.deepEqual(compat.errors,[]);for(const c of compat.cases){assert.equal(c.build.commit,p.runtimeSourceSha);assert(c.keyboardAndReload);}
+ const http=boundJSON(p.httpReport,evidence);assert.equal(http.sourceCommit,p.runtimeSourceSha);assert.equal(http.zipSha256,p.zip.sha256);assert(http.allHttpBytesMatchZip);comparePackageFiles(http.files,actual,'port04 HTTP payload');
+ const cap=boundJSON(p.capture.manifest,evidence);assert.equal(cap.runtimeSourceSha,p.runtimeSourceSha);assert.equal(cap.zipSha256,p.zip.sha256);const media=verifyEvidence(cap.files,'port04 capture');for(const [n,r]of media)assert.deepEqual(evidence.get(n),r);const report=boundJSON(cap.report,media);assert(report.completed);assert.equal(report.build.commit,p.runtimeSourceSha);assert.deepEqual(report.errors,[]);for(const k of ['imported','clockOverridden','seedOverridden'])assert.equal(report.natural[k],false);assert.equal(report.qa.imported,true);assert.equal(report.natural.checkpoints.length,13);assert.equal(report.qa.checkpoints.length,4);const E=require('./legacy-engine.cjs')(p.runtimeSourceSha);for(const group of ['natural','qa'])for(const c of report[group].checkpoints)E.assertState(c.state);
+ const points=new Map(report.natural.checkpoints.map(c=>[c.name,c.state]));for(const r of[1,2]){assert.equal(points.get('before-voyage-'+r).phase,'port');assert.equal(points.get('returned-voyage-'+r).phase,'summary');assert.equal(points.get('saved-after-voyage-'+r).phase,'port');}assert.deepEqual(points.get('saved-after-voyage-1'),points.get('reopened-before-second-voyage'));assert.equal(points.get('before-voyage-1').activeMissionId,null);assert.equal(points.get('before-voyage-2').missions[0].status,'accepted');
+ for(const name of ['natural-voyage-1','natural-voyage-2','qa-buy-equip-expand-supply']){const file=folder+'developer/capture/'+name+'.webm';assert(media.has(file));assert.equal(fs.readFileSync(local(file)).subarray(0,4).toString('hex'),'1a45dfa3');}
+ const localCheck=boundJSON(folder+'delivery/local-browser-check.json',evidence);assert.equal(localCheck.runtimeSourceSha,p.runtimeSourceSha);assert(localCheck.matchesFrozenMigration&&localCheck.refreshPreserves);assert.equal(localCheck.gameplayActionsTaken,false);assert.equal(p.physicalPhone,'NOT_TESTED');verifyPlatform(p.platform,evidence,p.zip);
+ console.log('PASS port04:29 frozen ZIP/HTTP payloads,14 native/editable/2x/4x assets,72 current+128 historical browser checks,13 natural/4 QA checkpoints,864 economy voyages,actual Mac migration and unbound TapTap. Phone/art/enjoyment remain pending.');
 }

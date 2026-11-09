@@ -196,6 +196,7 @@ jobs:
           npm --prefix prototypes/salvage-route-demo test
           npm --prefix prototypes/salvage-route-demo run simulate
           npm --prefix prototypes/salvage-route-demo run simulate:compare
+          npm --prefix prototypes/salvage-route-demo run check:art
       - name: Build and extract this exact isolated H5 ZIP
         run: |
           python3 prototypes/salvage-route-demo/build.py --freeze
@@ -217,7 +218,7 @@ jobs:
           trap 'kill "$task_salvage_pid"' EXIT
           curl --fail --retry 10 --retry-delay 1 --retry-connrefused --silent http://127.0.0.1:4283/loststar-salvage/ > /dev/null
           SALVAGE_URL=http://127.0.0.1:4283/loststar-salvage/ npx playwright test --config prototypes/salvage-route-demo/playwright.config.cjs
-          SALVAGE_URL=http://127.0.0.1:4283/loststar-salvage/ node prototypes/salvage-route-demo/tests/mobile-compatibility.cjs
+          SALVAGE_URL=http://127.0.0.1:4283/loststar-salvage/ node prototypes/salvage-route-demo/tests/port-compatibility.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,6 +1,6 @@
 'use strict';
 const {test,expect}=require('@playwright/test');
-const E=require('../../src/engine.js');
+const E=(process.env.SALVAGE_LEGACY==='1'?require('../legacy-engine.cjs')('799a36e78cbd5397d671901fded19c10517429f9'):require('../../src/engine.js'));
 const fs=require('node:fs');const O=require('../legacy-engine.cjs')();
 const state=page=>page.evaluate(()=>window.__SALVAGE__.state());
 async function boot(page){await page.goto('');await page.waitForFunction(()=>window.__SALVAGE__);const close=page.locator('#modal-buttons [data-act=close]');if(await close.isVisible())await close.tap();}

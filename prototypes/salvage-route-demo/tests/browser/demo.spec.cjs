@@ -1,4 +1,4 @@
-const{test,expect,chromium,webkit}=require('@playwright/test');const E=require('../../src/engine.js');const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const{test,expect,chromium,webkit}=require('@playwright/test');const E=(process.env.SALVAGE_LEGACY==='1'?require('../legacy-engine.cjs')('799a36e78cbd5397d671901fded19c10517429f9'):require('../../src/engine.js'));const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const state=p=>p.evaluate(()=>window.__SALVAGE__.state());
 async function boot(p){await p.goto('');await p.waitForFunction(()=>window.__SALVAGE__);const close=p.locator('#modal-buttons [data-act=close]');if(await close.isVisible()){await close.tap();await expect(p.locator('#overlay')).toBeHidden();}}
 async function tap(p,selector){await p.waitForFunction(()=>window.__SALVAGE__.ready());if(selector.startsWith('[data-travel]')&&!await p.locator('[data-travel]').count()){await p.locator('[data-route-select]').first().tap();}await p.locator(selector).tap();await p.waitForFunction(()=>window.__SALVAGE__.ready());if(selector==='[data-act=depart]')await finishLoad(p);}
