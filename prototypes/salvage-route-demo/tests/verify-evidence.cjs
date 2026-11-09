@@ -297,7 +297,7 @@ if(fs.existsSync(local(mobile))){
  const p=json(mobile),folder='artifacts/salvage-mobile-v03/';
  assert.equal(p.schema,3);ancestor(p.runtimeSourceSha);assertCurrentRuntime(p.runtimeSourceSha);
  const evidence=verifyEvidence(p.evidenceFiles,'mobile evidence'),build=boundJSON(p.buildInfo,evidence);verifyBuild(p,build);
- const raw=fs.readFileSync(local(p.zip.path));assert(evidence.has(p.zip.path));assert.equal(raw.length,p.zip.bytes);assert.equal(hash(raw),p.zip.sha256);
+ git(['ls-files','--error-unmatch','--',p.zip.path]);const raw=fs.readFileSync(local(p.zip.path));assert(evidence.has(p.zip.path));assert.equal(raw.length,p.zip.bytes);assert.equal(hash(raw),p.zip.sha256);
  const expected=expectedPackage(p.runtimeSourceSha),actual=comparePackageFiles(readZipFiles(p.zip.path),expected.files,'mobile actual ZIP/source');comparePackageFiles(p.packageFiles,actual,'mobile package manifest');
  const b=p.fixedPackageBrowser;assert.equal(b.expected,128);assert.equal(b.runtimeSourceSha,p.runtimeSourceSha);assert.equal(b.zipSha256,p.zip.sha256);
  const stats=verifyBrowser(boundJSON(b.report,evidence),128);verifyCapture(p,boundJSON(p.capture.manifest,evidence),evidence,actual,stats,expected.build,folder);

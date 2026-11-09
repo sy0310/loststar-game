@@ -46,6 +46,9 @@ npm --prefix prototypes/salvage-route-demo run preview
 npm --prefix prototypes/salvage-route-demo run simulate
 node prototypes/salvage-route-demo/tests/mobile-economy.cjs
 npx playwright test --config prototypes/salvage-route-demo/playwright.config.cjs
+# 已交付这台Mac上的隔离截图/性能对照（脚本会核对实际版本）：
+node prototypes/salvage-route-demo/tests/capture-mobile-layout.cjs
+SALVAGE_BASELINE_URL=http://127.0.0.1:4287/loststar-salvage/ SALVAGE_URL=http://127.0.0.1:4283/loststar-salvage/ node prototypes/salvage-route-demo/tests/mobile-performance.cjs
 # 先提交运行源码，再冻结将上传的同一个 ZIP：
 python3 prototypes/salvage-route-demo/build.py --freeze
 python3 prototypes/salvage-route-demo/verify_package.py releases/salvage-fixed
