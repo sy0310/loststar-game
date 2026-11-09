@@ -15,7 +15,7 @@ class Preview(SimpleHTTPRequestHandler):
     prefix = '/loststar-salvage/' + args.version + '/'
     def do_GET(self):
         route = self.path.split('?', 1)[0]
-        if route not in [self.prefix, self.prefix + 'index.html'] and route in ['/loststar-salvage/', '/loststar-salvage/index.html', '/loststar-salvage/b26455a/', '/loststar-salvage/b26455a/index.html', '/loststar-salvage/799a36e/', '/loststar-salvage/799a36e/index.html']:
+        if route not in [self.prefix, self.prefix + 'index.html'] and route in ['/loststar-salvage/', '/loststar-salvage/index.html', '/loststar-salvage/b26455a/', '/loststar-salvage/b26455a/index.html', '/loststar-salvage/799a36e/', '/loststar-salvage/799a36e/index.html', '/loststar-salvage/72365d4/', '/loststar-salvage/72365d4/index.html']:
             self.send_response(302)
             self.send_header('Location', self.prefix)
             self.end_headers()
