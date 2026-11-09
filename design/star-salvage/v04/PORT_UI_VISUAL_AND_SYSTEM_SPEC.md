@@ -88,7 +88,7 @@
 
 用户认可的是 **2026-11-09 06:55 这张统一概念板的画风与主屏结构**，不是所有文案、金额或舰船能力都已签收。原始参考 PNG 已在本次会话生成，文件名 `失物号_星海拾荒像素界面概念板.png`，**1122×1402，SHA256 `16289e481145f9c781d5ecf353de0f00861fb17fbc3df2185d94e77b978cacb0`**；上一版风格参考 1055×1491、SHA256 `c731179efefbb6f95e92fb347fd4a451cc067c56883f4e4935581e446e7b3e66`。
 
-导入到 Repo 后的**预期**位置：`design/star-salvage/v04/concepts/salvage_v04_approved_full.png`。当前是否存在必须以实际 Git 对象回读确认，**不能因本文件列了路径就宣称图已入库**。
+**GitHub 已实际入库并按 Git blob 与原始 SHA 双重核验：** [认可原图 1122×1402](concepts/salvage_v04_approved_full.png)（Git blob `c101690bd726f303cb7244d81baf954637466cb8`）、[上一版画风板](concepts/salvage_v04_style_predecessor.png)、[港口/购船/任务/船型/货物五张局部参考图](concepts/reference_crops/)。二进制图片提交见 `56cb81e`。**概念图已齐，14项可直接运行的透明分层图仍需 Codex 重新制作**。
 
 **设计参考 ≠ 原生逐像素 sprite ≠ 已实现 UI ≠ 已上传 TapTap ≠ 真机通过**。Codex 必须分别报告、分别证据核验。
 
