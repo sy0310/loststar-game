@@ -16,9 +16,11 @@
 
 先 `git status` / `git fetch` / 核实当前分支最新 HEAD，有本地未提交工作就新建 worktree，禁止 `reset --hard`、强推、覆盖用户文件。不碰正式《失物星球》与剧情首章资产、存档、入口，也不碰原有 0.2 / 0.3 冻结 ZIP 和证据。
 
-**原图入库工具：**优先执行 `python3 scripts/import_salvage_v04_concept.py --find-local`，或在拿到真实文件后执行 `python3 scripts/import_salvage_v04_concept.py --source '/真实路径/失物号_星海拾荒像素界面概念板.png'`。脚本会按大小/PNG头/尺寸/SHA256强校验，导入原图及可选的参考裁片，保留旧文件、不覆盖不同内容、不提交私人目录；只有脚本验证通过才在 PR 标记原图已入库。
-
-**先解决概念 PNG 的真实来源：** 用户确认的视觉原图是本次会话中的 `失物号_星海拾荒像素界面概念板.png`（1122×1402，2,142,727字节，SHA256：`16289e481145f9c781d5ecf353de0f00861fb17fbc3df2185d94e77b978cacb0`）。目标存入 `design/star-salvage/v04/concepts/salvage_v04_approved_full.png`。只有当你在本机/Repo实际拿到原始文件并校验字节与 SHA 后，才登记 **SOURCE_PRESENT**；若缺失，**不得从概念截图/README/旧设计稿拼一张假原图**。可以继续执行数据与交互框架，但标记“视觉参考原文件缺失、最终视觉复核阻塞”，让用户提供本地真实文件。之前聊天的 `/mnt/data` 不保证在 Codex Mac 可读。绝不要把占位 JPG 冒称用户认可 PNG。
+**原图与全部概念裁片现在已在 Repo，不需要从 ChatGPT 下载附件。**
+- [唯一获认可的完整主视觉 PNG](../design/star-salvage/v04/concepts/salvage_v04_approved_full.png)：1122×1402、2,142,727字节、SHA256 `16289e481145f9c781d5ecf353de0f00861fb17fbc3df2185d94e77b978cacb0`、Git blob SHA `c101690bd726f303cb7244d81baf954637466cb8`。
+- [上一版风格板](../design/star-salvage/v04/concepts/salvage_v04_style_predecessor.png)；[五张对照裁片](../design/star-salvage/v04/concepts/reference_crops/)：港口、购船、任务、船型、货物图标。二进制源图提交 `56cb81e`。
+- 先 `git fetch` 拉取最新 HEAD，使用 `python3 scripts/import_salvage_v04_concept.py --find-local` 或 `shasum -a 256 design/star-salvage/v04/concepts/salvage_v04_approved_full.png` 进行本机原字节复核；导入脚本是额外保护，不是让你重新造图。若本地 Git 没有这些文件，请先同步或报告实际阻塞，**不能用别的图冒充已认可风格**。
+- 概念 PNG 是**扁平风格参考**。按本任务继续制作14项独立生产素材、HTML真实按钮和数据模型；不要从概念板暴力抠掉背景当透明船只。
 
 ## 1. 首页只有一版：港口主场景
 
@@ -118,6 +120,6 @@ codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md。
 任务必须自己接；货物显示独立具象像素图；航迹从主导航移走；场景式航路。
 优先数据/旧档与已购权益安全，然后分层素材、交互、双引擎手机测试、
 固定包/TapTap新开发自测/Mac4283交付；所有证据回写同一个 Draft PR。
-若用户认可PNG不在本机，严格标记缺图阻塞，不用其他图冒充。
+仓库里已有用户认可的PNG及参考裁片，先核验原图SHA；若本机没有，请拉取最新Repo或如实报告，不用其他图冒充。
 保留用户原存档和旧0.3回退，不改正式游戏，不合并、不提审、不正式发布。
 ```
