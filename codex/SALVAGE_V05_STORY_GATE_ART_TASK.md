@@ -6,6 +6,7 @@
 1. `AGENTS.md` 及独立 salvage Demo 现有模型/UI/持久化/测试；
 2. `design/star-salvage/v05/STORY_GATE_ART_PLAN.md`（本轮权威开发交接）；
 3. `design/star-salvage/v05/RETURN_AND_STORY_CANDIDATES.json`（仅参数候选，需测试后冻结）；
+3a. `design/star-salvage/v05/developer/STORY_EPISODES_DRAFT.md`（**含未揭晓剧情，仅开发可用；严格按原创短对白与已见线索实现，不在玩家默认页面/汇报剧透**）；
 4. `design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md`（用户认可画风）；
 5. `design/star-salvage/v042/DELIVERY.md`（当前固定包、原档、回退）。
 
