@@ -11672,10 +11672,12 @@
         "design/star-salvage/v04/PORT_UI_VISUAL_AND_SYSTEM_SPEC.md",
         "design/star-salvage/v04/ART_PRODUCTION_PROMPTS.md",
         "design/star-salvage/v04/ASSET_REQUIREMENTS.json",
-        "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md"
+        "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
+        "design/star-salvage/v042/README.md",
+        "design/star-salvage/v042/REVIEW_SOURCE.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps.",
+      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps. Preserve251 rows and append7 POLISH042 review fixes; no old proof or phone status promoted.",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -12015,7 +12017,14 @@
       "PORT041-SHAPE",
       "PORT041-ICONS",
       "PORT041-SAVE",
-      "PORT041-DELIVERY"
+      "PORT041-DELIVERY",
+      "POLISH042-CTA",
+      "POLISH042-NAV",
+      "POLISH042-IDENTITY",
+      "POLISH042-GEOMETRY",
+      "POLISH042-SAVE",
+      "POLISH042-VERIFY",
+      "POLISH042-DELIVERY"
     ],
     "requirements": [
       {
@@ -33752,6 +33761,411 @@
           "taptapVersion": 458136,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "POLISH042-CTA",
+        "parent": null,
+        "requirement": "454零件时油箱300／耐久350明确可购金色，扩容600清晰灰色；真实disabled、原价、二次确认、取消不扣和跨页防重保留",
+        "acceptanceCriteria": "454零件时油箱300／耐久350明确可购金色，扩容600清晰灰色；真实disabled、原价、二次确认、取消不扣和跨页防重保留",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v042/README.md",
+            "startLine": 7,
+            "endLine": 7
+          },
+          {
+            "path": "design/star-salvage/v042/README.md",
+            "startLine": 15,
+            "endLine": 29
+          },
+          {
+            "path": "design/star-salvage/v042/REVIEW_SOURCE.md",
+            "startLine": 15,
+            "endLine": 15
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/port-view.js",
+          "prototypes/salvage-route-demo/src/port-view.css",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.2 current fleet / secondary shipyard / cargo"
+          }
+        ],
+        "checks": [
+          "polish042-fixed57",
+          "polish042-browser128",
+          "polish042-content14",
+          "polish042-art11"
+        ],
+        "proofs": [
+          "artifacts/salvage-polish-v042/verification.json",
+          "design/star-salvage/v042/DELIVERY.md",
+          "design/star-salvage/v042/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Actual TapTap touch/safe area/lock-screen/heat, new11 art and enjoyment remain user-pending. Arbitrary old imported packaging is retained; no104cross-product claim.",
+        "nextAction": "User development self-test458870; no merge or formal release.",
+        "reviewBasis": "Review5835133388 re-read against actual original-profile screenshots, identical454 QA before/after, source14 normal content combinations and continuous recorded interactions.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "94e606fc773d1dc37341d29923e39e7ec7c3863b",
+          "zipSha256": "a067f3cc5431792e42642ff881f0602910c21f282f81e6772a02ae22d772b652",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458870,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "POLISH042-NAV",
+        "parent": "POLISH042-CTA",
+        "requirement": "当前船与3种升级首屏，其他船型进入二级“其他飞船”；返回直接回当前船，买／换装仍按真实事务；四个HOME入口不增加",
+        "acceptanceCriteria": "当前船与3种升级首屏，其他船型进入二级“其他飞船”；返回直接回当前船，买／换装仍按真实事务；四个HOME入口不增加",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v042/README.md",
+            "startLine": 8,
+            "endLine": 8
+          },
+          {
+            "path": "design/star-salvage/v042/REVIEW_SOURCE.md",
+            "startLine": 16,
+            "endLine": 16
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/port-view.js",
+          "prototypes/salvage-route-demo/src/port-view.css",
+          "prototypes/salvage-route-demo/src/app.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.2 current fleet / secondary shipyard / cargo"
+          }
+        ],
+        "checks": [
+          "polish042-fixed57",
+          "polish042-browser128",
+          "polish042-content14",
+          "polish042-art11"
+        ],
+        "proofs": [
+          "artifacts/salvage-polish-v042/verification.json",
+          "design/star-salvage/v042/DELIVERY.md",
+          "design/star-salvage/v042/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Actual TapTap touch/safe area/lock-screen/heat, new11 art and enjoyment remain user-pending. Arbitrary old imported packaging is retained; no104cross-product claim.",
+        "nextAction": "User development self-test458870; no merge or formal release.",
+        "reviewBasis": "Review5835133388 re-read against actual original-profile screenshots, identical454 QA before/after, source14 normal content combinations and continuous recorded interactions.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "94e606fc773d1dc37341d29923e39e7ec7c3863b",
+          "zipSha256": "a067f3cc5431792e42642ff881f0602910c21f282f81e6772a02ae22d772b652",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458870,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "POLISH042-IDENTITY",
+        "parent": "POLISH042-CTA",
+        "requirement": "正常事件与商店现有14种多格itemId×shapeId全覆盖，11张新增具象整件图＋3张保留金属图；同形不同类别不再共用外观；8张单格图继续保留",
+        "acceptanceCriteria": "正常事件与商店现有14种多格itemId×shapeId全覆盖，11张新增具象整件图＋3张保留金属图；同形不同类别不再共用外观；8张单格图继续保留",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v042/README.md",
+            "startLine": 9,
+            "endLine": 9
+          },
+          {
+            "path": "design/star-salvage/v042/REVIEW_SOURCE.md",
+            "startLine": 17,
+            "endLine": 17
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/cargo-identity.js",
+          "prototypes/salvage-route-demo/src/cargo-art.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js",
+          "prototypes/salvage-route-demo/tests/cargo-identity.test.cjs",
+          "prototypes/salvage-route-demo/tests/verify-042-art.py"
+        ],
+        "assets": [
+          "design/star-salvage/v042/production/identity-a/manifest.json",
+          "design/star-salvage/v042/production/identity-b/identity-b-manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.2 current fleet / secondary shipyard / cargo"
+          }
+        ],
+        "checks": [
+          "polish042-fixed57",
+          "polish042-browser128",
+          "polish042-content14",
+          "polish042-art11"
+        ],
+        "proofs": [
+          "artifacts/salvage-polish-v042/verification.json",
+          "design/star-salvage/v042/DELIVERY.md",
+          "design/star-salvage/v042/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Actual TapTap touch/safe area/lock-screen/heat, new11 art and enjoyment remain user-pending. Arbitrary old imported packaging is retained; no104cross-product claim.",
+        "nextAction": "User development self-test458870; no merge or formal release.",
+        "reviewBasis": "Review5835133388 re-read against actual original-profile screenshots, identical454 QA before/after, source14 normal content combinations and continuous recorded interactions.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "94e606fc773d1dc37341d29923e39e7ec7c3863b",
+          "zipSha256": "a067f3cc5431792e42642ff881f0602910c21f282f81e6772a02ae22d772b652",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458870,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "POLISH042-GEOMETRY",
+        "parent": "POLISH042-CTA",
+        "requirement": "原mask／面积／旋转／UID／价值／来源不变，24原生像素每格，非占格透明，每占格实体至少70%，单连通体；1x／ORA／2x／4x、原始候选与提示词入库",
+        "acceptanceCriteria": "原mask／面积／旋转／UID／价值／来源不变，24原生像素每格，非占格透明，每占格实体至少70%，单连通体；1x／ORA／2x／4x、原始候选与提示词入库",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v042/README.md",
+            "startLine": 10,
+            "endLine": 10
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/cargo-identity.js",
+          "prototypes/salvage-route-demo/src/cargo-art.js",
+          "prototypes/salvage-route-demo/src/cargo-view.js",
+          "prototypes/salvage-route-demo/tests/cargo-identity.test.cjs",
+          "prototypes/salvage-route-demo/tests/verify-042-art.py"
+        ],
+        "assets": [
+          "design/star-salvage/v042/production/identity-a/manifest.json",
+          "design/star-salvage/v042/production/identity-b/identity-b-manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.2 current fleet / secondary shipyard / cargo"
+          }
+        ],
+        "checks": [
+          "polish042-fixed57",
+          "polish042-browser128",
+          "polish042-content14",
+          "polish042-art11"
+        ],
+        "proofs": [
+          "artifacts/salvage-polish-v042/verification.json",
+          "design/star-salvage/v042/DELIVERY.md",
+          "design/star-salvage/v042/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Actual TapTap touch/safe area/lock-screen/heat, new11 art and enjoyment remain user-pending. Arbitrary old imported packaging is retained; no104cross-product claim.",
+        "nextAction": "User development self-test458870; no merge or formal release.",
+        "reviewBasis": "Review5835133388 re-read against actual original-profile screenshots, identical454 QA before/after, source14 normal content combinations and continuous recorded interactions.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "94e606fc773d1dc37341d29923e39e7ec7c3863b",
+          "zipSha256": "a067f3cc5431792e42642ff881f0602910c21f282f81e6772a02ae22d772b652",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458870,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "POLISH042-SAVE",
+        "parent": "POLISH042-CTA",
+        "requirement": "schema6保持，0.4.1旧档无需字段迁移且全量相等；余额、资源、各船升级和停泊状态、任务、船款与所有其他游戏存档不动；不新增收费",
+        "acceptanceCriteria": "schema6保持，0.4.1旧档无需字段迁移且全量相等；余额、资源、各船升级和停泊状态、任务、船款与所有其他游戏存档不动；不新增收费",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v042/README.md",
+            "startLine": 11,
+            "endLine": 11
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/store.js",
+          "prototypes/salvage-route-demo/tests/cargo-identity.test.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.2 current fleet / secondary shipyard / cargo"
+          }
+        ],
+        "checks": [
+          "polish042-fixed57",
+          "polish042-browser128",
+          "polish042-content14",
+          "polish042-art11"
+        ],
+        "proofs": [
+          "artifacts/salvage-polish-v042/verification.json",
+          "design/star-salvage/v042/DELIVERY.md",
+          "design/star-salvage/v042/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Actual TapTap touch/safe area/lock-screen/heat, new11 art and enjoyment remain user-pending. Arbitrary old imported packaging is retained; no104cross-product claim.",
+        "nextAction": "User development self-test458870; no merge or formal release.",
+        "reviewBasis": "Review5835133388 re-read against actual original-profile screenshots, identical454 QA before/after, source14 normal content combinations and continuous recorded interactions.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "94e606fc773d1dc37341d29923e39e7ec7c3863b",
+          "zipSha256": "a067f3cc5431792e42642ff881f0602910c21f282f81e6772a02ae22d772b652",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458870,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "POLISH042-VERIFY",
+        "parent": "POLISH042-CTA",
+        "requirement": "当前固定包双引擎360×800／390×844、18px及合成安全区、自然两趟、单独QA；旧0.4.1固定包独立回归，防止把旧结果套在新包",
+        "acceptanceCriteria": "当前固定包双引擎360×800／390×844、18px及合成安全区、自然两趟、单独QA；旧0.4.1固定包独立回归，防止把旧结果套在新包",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v042/README.md",
+            "startLine": 12,
+            "endLine": 12
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/tests/verify-evidence.cjs",
+          "prototypes/salvage-route-demo/tests/write-polish-proof.py",
+          "prototypes/salvage-route-demo/tests/browser/port-v042.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.2 current fleet / secondary shipyard / cargo"
+          }
+        ],
+        "checks": [
+          "polish042-fixed57",
+          "polish042-browser128",
+          "polish042-content14",
+          "polish042-art11"
+        ],
+        "proofs": [
+          "artifacts/salvage-polish-v042/verification.json",
+          "design/star-salvage/v042/DELIVERY.md",
+          "design/star-salvage/v042/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Actual TapTap touch/safe area/lock-screen/heat, new11 art and enjoyment remain user-pending. Arbitrary old imported packaging is retained; no104cross-product claim.",
+        "nextAction": "User development self-test458870; no merge or formal release.",
+        "reviewBasis": "Review5835133388 re-read against actual original-profile screenshots, identical454 QA before/after, source14 normal content combinations and continuous recorded interactions.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "94e606fc773d1dc37341d29923e39e7ec7c3863b",
+          "zipSha256": "a067f3cc5431792e42642ff881f0602910c21f282f81e6772a02ae22d772b652",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458870,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "POLISH042-DELIVERY",
+        "parent": "POLISH042-CTA",
+        "requirement": "真实HTTP逐文件核对、新TapTap开发自测、Mac同4283原档续玩和0.4.1回退，源码／包／平台／截图录像绑定；Draft不合并、不绑定正式主包、不提审发布，用户及真机待审",
+        "acceptanceCriteria": "真实HTTP逐文件核对、新TapTap开发自测、Mac同4283原档续玩和0.4.1回退，源码／包／平台／截图录像绑定；Draft不合并、不绑定正式主包、不提审发布，用户及真机待审",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v042/README.md",
+            "startLine": 13,
+            "endLine": 13
+          },
+          {
+            "path": "design/star-salvage/v042/REVIEW_SOURCE.md",
+            "startLine": 19,
+            "endLine": 19
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/tests/verify-evidence.cjs",
+          "prototypes/salvage-route-demo/tests/write-polish-proof.py",
+          "prototypes/salvage-route-demo/tests/browser/port-v042.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.4.2 current fleet / secondary shipyard / cargo"
+          }
+        ],
+        "checks": [
+          "polish042-fixed57",
+          "polish042-browser128",
+          "polish042-content14",
+          "polish042-art11"
+        ],
+        "proofs": [
+          "artifacts/salvage-polish-v042/verification.json",
+          "design/star-salvage/v042/DELIVERY.md",
+          "design/star-salvage/v042/VISUAL_REVIEW.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Actual TapTap touch/safe area/lock-screen/heat, new11 art and enjoyment remain user-pending. Arbitrary old imported packaging is retained; no104cross-product claim.",
+        "nextAction": "User development self-test458870; no merge or formal release.",
+        "reviewBasis": "Review5835133388 re-read against actual original-profile screenshots, identical454 QA before/after, source14 normal content combinations and continuous recorded interactions.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "94e606fc773d1dc37341d29923e39e7ec7c3863b",
+          "zipSha256": "a067f3cc5431792e42642ff881f0602910c21f282f81e6772a02ae22d772b652",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 458870,
+          "formalIntegration": false
+        }
       }
     ],
     "supersededRules": [
@@ -34291,6 +34705,21 @@
       "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
       "task": "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
       "notes": "Actual original profile now454parts/run4: schema5→6 exact restore, refresh preserved, no spending.108 current+72 old04 browser checks;17 cap/stock checks,15 new assets and52rotations. Old proofs remain immutable;phone/art pending."
+    },
+    "salvagePolishDelivery": {
+      "status": "DEVELOPMENT_SELF_TEST_DELIVERED_PENDING_PHONE_USER_ART",
+      "proof": "artifacts/salvage-polish-v042/verification.json",
+      "sourceCommit": "94e606fc773d1dc37341d29923e39e7ec7c3863b",
+      "zipSha256": "a067f3cc5431792e42642ff881f0602910c21f282f81e6772a02ae22d772b652",
+      "database": "lostcargo.route-demo.v1",
+      "taptapVersion": 458870,
+      "formalIntegration": false,
+      "localMacUpdated": true,
+      "evidenceCompleteness": "COMPLETE",
+      "platformStatus": "UPLOADED_DEVELOPMENT_SELF_TEST",
+      "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
+      "task": "design/star-salvage/v042/README.md",
+      "notes": "Review5835133388: gold affordability, secondary fleet,14 normal multigrid identities11 new skins;128 current+108 historical browser,131 model,40 art. Actual schema6 original export unchanged before/after/refresh. Phone/art/enjoyment pending."
     }
   },
   "approvedReferenceManifests": [
