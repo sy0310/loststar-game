@@ -1,7 +1,7 @@
 'use strict';
 const{test,expect}=require('@playwright/test'),E=require('../../src/engine.js'),OLD=require('../legacy-engine.cjs')('ba90efbd01143533018f08a28f4221d9c36178c1');
 const state=p=>p.evaluate(()=>__SALVAGE__.state());
-async function tap(p,s){await p.waitForFunction(()=>__SALVAGE__.ready());await p.locator(s).tap();await p.waitForFunction(()=>__SALVAGE__.ready());}
+async function tap(p,q){await p.waitForFunction(()=>__SALVAGE__.ready());if(/data-(buyship|equip)/.test(q)&&await p.locator(q).count()===0)await p.locator('[data-act=shipyard]').tap();if(q==='[data-act=upgradeCargo]'&&await p.locator(q).count()===0)await p.locator('#back').tap();if(q==='#back'&&await p.locator('body').getAttribute('data-screen')==='shipyard')await p.locator('#back').tap();await p.locator(q).tap();await p.waitForFunction(()=>__SALVAGE__.ready());}
 async function boot(p){await p.goto('');await p.waitForFunction(()=>window.__SALVAGE__);if(await p.locator('#modal-buttons [data-act=close]').isVisible())await tap(p,'#modal-buttons [data-act=close]');}
 async function confirm(p,s){await tap(p,s);await tap(p,'[data-act=confirm]');await expect(p.locator('#overlay')).toBeHidden();}
 async function load(p,s){await tap(p,'[data-act=settings]');await tap(p,'[data-act=import]');await p.locator('#import-file').setInputFiles({name:'explicit041-QA-copy.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(s))});await tap(p,'[data-act=confirm]');await expect.poll(()=>state(p)).toEqual(E.restore(s));}
@@ -45,7 +45,7 @@ test('every registered current and legacy footprint is read through the actual c
  for(const shapeId of Object.keys(E.Cargo.SHAPES)){
   const s=goods([shapeId]);await load(page,s);await tap(page,'[data-tab=cargo]');
   const img=page.locator('[data-cargo-object="1"] img');await expect(img).toHaveAttribute('data-footprint',shapeId);await expect.poll(()=>img.evaluate(i=>i.complete&&i.naturalWidth>0)).toBe(true);
-  const expected=shapeId==='point1'?'item_broken_engine':shapeId==='legacy4'?'cargo_square4':shapeId==='legacy8'?'cargo_rect8':'cargo_'+shapeId;await expect(img).toHaveAttribute('src',new RegExp(expected+'@2x'));
+  await expect(img).toHaveAttribute('src',require('../../src/cargo-identity.js').resolve(s.cargo[0]).src);
   expect((await state(page)).cargo[0].cells).toBe(E.Cargo.area(shapeId));await tap(page,'#back');
  }
 });

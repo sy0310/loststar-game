@@ -1,7 +1,7 @@
 /* Lost Cargo • independent route prototype. No connection to previous Loststar saves. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.LostCargo=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
 'use strict';
-const VERSION='0.4.1',SCHEMA=6,KEY='lostcargo.route-demo.v1';
+const VERSION='0.4.2',SCHEMA=6,KEY='lostcargo.route-demo.v1';
 const Cargo=typeof module==='object'&&module.exports?require('./cargo-layout.js'):globalThis.LostCargoLayout;
 const BALANCE=typeof module==='object'&&module.exports?require('../../../design/star-salvage/BALANCE_V01.json'):globalThis.LostCargoBalance;
 const PORT=typeof module==='object'&&module.exports?require('../../../design/star-salvage/v041/BALANCE_V041.json'):globalThis.LostCargoPortBalance;

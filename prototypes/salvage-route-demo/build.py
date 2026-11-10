@@ -15,7 +15,7 @@ def main():
   if target.exists():shutil.rmtree(target)
   if folder=='src':shutil.copytree(ROOT/folder,target)
   else:
-   for version in ['v04','v041']:
+   for version in ['v04','v041','v042']:
     (target/version).mkdir(parents=True)
     for f in (ROOT/('assets/'+version)).glob('*@2x.png'):shutil.copyfile(f,target/version/f.name)
  for source,destination,name in [('design/star-salvage/BALANCE_V01.json','balance.js','LostCargoBalance'),('design/star-salvage/v041/BALANCE_V041.json','port-balance.js','LostCargoPortBalance')]:
@@ -26,6 +26,8 @@ def main():
  missing=[name for name in expected if not (entry/'assets/v04'/(name+'@2x.png')).is_file()]
  expected041=['ui_shop','ui_missions']+['cargo_'+x for x in ['line2','line3','square4','line4','ell3','ell4','tee4','ell5','rect6','ell7','rect8','legacy12','legacy16']]
  missing += [name for name in expected041 if not(entry/'assets/v041'/(name+'@2x.png')).is_file()]
+ expected042=json.loads(subprocess.check_output(['node','-e',"process.stdout.write(JSON.stringify(require('./src/cargo-identity.js').pairs))"],cwd=ROOT))
+ missing += [x['id'] for x in expected042 if not(entry/'assets/v042'/(x['id']+'@2x.png')).is_file()]
  if args.freeze and missing:raise SystemExit('Production art missing: '+','.join(missing))
  sources=[]
  for f in sorted((entry/'assets').rglob('*.png')):

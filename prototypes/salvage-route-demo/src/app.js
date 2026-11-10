@@ -259,7 +259,7 @@
   }
   function render(resetScroll = false) {
     document.body.classList.toggle('cargo-screen',tab==='cargo'&&!blocked);
-    document.body.dataset.phase=state.phase;document.body.dataset.screen=tab;document.body.classList.toggle('home-screen',tab==='play'&&['port','summary'].includes(state.phase)&&!blocked);$('#back').hidden=tab==='play';
+    document.body.dataset.phase=state.phase;document.body.dataset.screen=tab;document.body.classList.toggle('home-screen',tab==='play'&&['port','summary'].includes(state.phase)&&!blocked);$('#back').hidden=tab==='play';$('#back').setAttribute('aria-label',tab==='shipyard'?'返回当前飞船':'返回主场景');
     if (tab !== "cargo") cargoUI.unmount();
     const health = $("#storage-warning");
     health.hidden = storageOK && !blocked;
@@ -304,7 +304,7 @@
     if (previousMap)
       routeScrollPositions.set(routeKey, previousMap.scrollTop);
     const body =
-      tab === "shop"?window.SalvagePortView.shop(state,button):tab === "fleet"?window.SalvagePortView.fleet(state,button):tab === "missions"?window.SalvagePortView.missions(state,button):tab === "historymap"?window.SalvageRouteView.render(state,{selectedUid:routeSelected,disabled:!storageOK||blocked}):tab === "cargo"
+      tab === "shop"?window.SalvagePortView.shop(state,button):tab === "fleet"?window.SalvagePortView.fleet(state,button):tab === "shipyard"?window.SalvagePortView.shipyard(state,button):tab === "missions"?window.SalvagePortView.missions(state,button):tab === "historymap"?window.SalvageRouteView.render(state,{selectedUid:routeSelected,disabled:!storageOK||blocked}):tab === "cargo"
         ? cargo()
         : tab === "route"
           ? route()
@@ -451,8 +451,8 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
   function action(name) {
-    if(name==='backView'){switchTab('play');return;}
-    if(['shop','fleet','missions','historymap'].includes(name)){close();if(name==='shop'&&state.phase==='summary'){void act({type:'port'},inputRevision,'shop');}else switchTab(name);return;}
+    if(name==='backView'){switchTab(tab==='shipyard'?'fleet':'play');return;}
+    if(['shop','fleet','shipyard','missions','historymap'].includes(name)){close();if(name==='shop'&&state.phase==='summary'){void act({type:'port'},inputRevision,'shop');}else switchTab(name);return;}
     if(name==='upgradeCargo'){const q=E.cargoUpgradeQuote(state),expected=controller.revision;modal('增加一排货舱？','<p>'+q.width+'×'+q.height+' → '+q.width+'×'+q.nextHeight+'；实付'+q.cost+'零件，当前余额'+state.money+'。</p>','确认扩容',()=>act({type:'upgradeCargo'},expected,'fleet'));return;}
     if(['fillFuel','fillHull'].includes(name)){const type=name==='fillFuel'?'buyFuel':'repair',q=E.supplyQuote(state,type,true),expected=controller.revision;modal('确认一键补满','<p>'+q.from+' → '+q.target+'，增加'+q.amount+'，共'+q.cost+'零件；余额'+state.money+' → '+(state.money-q.cost)+'。</p>','确认补满',()=>act({type:name},expected,'shop'));return;}
 
@@ -582,9 +582,9 @@
       switchTab(b.dataset.tab);
       return;
     }
-    if(b.dataset.buyship){const id=b.dataset.buyship,p=E.PORT.ships[id],expected=controller.revision;modal('购买'+p.name+'？','<p>实付'+p.price+'零件，余额'+state.money+' → '+(state.money-p.price)+'。'+p.width*p.height+'格；油箱容量'+p.fuelBase+'，耐久上限'+p.hullBase+'。新船含完好船体，油箱为空；购买后可免费换装，各船油量和船况独立保存。</p>','确认购买',()=>act({type:'buyShip',id},expected,'fleet'));return;}
+    if(b.dataset.buyship){const id=b.dataset.buyship,p=E.PORT.ships[id],expected=controller.revision;modal('购买'+p.name+'？','<p>实付'+p.price+'零件，余额'+state.money+' → '+(state.money-p.price)+'。'+p.width*p.height+'格；油箱容量'+p.fuelBase+'，耐久上限'+p.hullBase+'。新船含完好船体，油箱为空；购买后可免费换装，各船油量和船况独立保存。</p>','确认购买',()=>act({type:'buyShip',id},expected,'shipyard'));return;}
     if(b.dataset.shipupgrade){const kind=b.dataset.shipupgrade,q=E.shipUpgradeQuote(state,kind),expected=controller.revision;modal(kind==='fuel'?'扩建油箱？':'加固船体？','<p>上限'+q.from+' → '+q.to+'，实付'+q.cost+'零件。</p><p>'+(kind==='fuel'?'增加油箱容量，不会自动补油。':'新增'+(q.to-q.from)+'点结构耐久，已有损伤不会被清除。')+'</p>','确认升级',()=>act({type:'upgradeShip',kind},expected,'fleet'));return;}
-    if(b.dataset.equip){void act({type:'equipShip',id:b.dataset.equip},inputRevision,'fleet');return;}
+    if(b.dataset.equip){void act({type:'equipShip',id:b.dataset.equip},inputRevision,'shipyard');return;}
     if(b.dataset.accept){const id=b.dataset.accept,expected=controller.revision;modal('接取'+E.PORT.missions[id].name+'？','<p>'+esc(E.PORT.missions[id].goal)+'；奖励'+E.PORT.missions[id].reward+'零件，同时占1个任务槽，无期限。</p>','确认接取',()=>act({type:'acceptMission',id},expected,'missions'));return;}
     if(b.dataset.claim){void act({type:'claimMission',id:+b.dataset.claim},inputRevision,'missions');return;}
     if(b.dataset.abandon){const id=+b.dataset.abandon,expected=controller.revision;modal('放弃委托？','<p>放弃后不领取本次报酬；普通货物与已购设备保留。</p>','确认放弃',()=>act({type:'abandonMission',id},expected,'missions'));return;}
@@ -689,7 +689,7 @@
       return;
     }
     if (tab === "cargo" && (cargoDraft || cargoUI.dirty())) cargoUI.cancel();
-    else if (tab !== "play") switchTab("play");
+    else if (tab !== "play") switchTab(tab === "shipyard" ? "fleet" : "play");
   });
   window.__SALVAGE__ = {
     state: () => E.restore(state),

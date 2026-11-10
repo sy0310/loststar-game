@@ -57,7 +57,7 @@ function packagedSourceNames(sha){
  return git(['ls-tree','-r','--name-only','-z',sha,'--',demo+'src',demo+'assets',demo+'index.html'])
   .toString().split('\0').filter(Boolean).sort();
 }
-function portConfig(sha){const engine=source(sha,demo+'src/engine.js').toString();return engine.includes("VERSION='0.4.1'")?'design/star-salvage/v041/BALANCE_V041.json':engine.includes("VERSION='0.4.0'")?'design/star-salvage/v04/BALANCE_V04.json':null;}
+function portConfig(sha){return /require\('\.\.\/\.\.\/\.\.\/(design\/star-salvage\/v[^']+\/BALANCE_[^']+\.json)'\)/.exec(source(sha,demo+'src/engine.js').toString())?.[1]??null;}
 function runtimeNames(sha){const config=portConfig(sha);return [...packagedSourceNames(sha),demo+'build.py','design/star-salvage/BALANCE_V01.json',...(config?[config]:[])].sort();}
 function diskFiles(folder){
  return fs.readdirSync(local(folder),{withFileTypes:true}).flatMap(entry=>{
@@ -82,7 +82,7 @@ function expectedPackage(sha){
  let names=packagedSourceNames(sha);const result=new Map();
  const version=/\bVERSION='([^']+)'/.exec(source(sha,demo+'src/engine.js').toString())?.[1];
  assert(version,'frozen engine version missing');
- if(version.startsWith('0.4.'))names=names.filter(n=>!n.startsWith(demo+'assets/')||/assets\/v04(?:1)?\/[^/]+@2x\.png$/.test(n));
+ if(version.startsWith('0.4.'))names=names.filter(n=>!n.startsWith(demo+'assets/')||/assets\/v04(?:1|2)?\/[^/]+@2x\.png$/.test(n));
  const art={ship:version.startsWith('0.4.')?'./assets/v04/ship_starter@2x.png':'./assets/ship.webp'};
  for(const name of ['ship','port','wreck','harbor'])if(names.includes(demo+'assets/'+name+'.webp'))art[name]='./assets/'+name+'.webp';
  const build={version,commit:sha,dirty:false,blindTest:true};
@@ -338,7 +338,7 @@ if(fs.existsSync(local(portProof))){
 const shipProof='artifacts/salvage-ship-v041/verification.json';
 if(fs.existsSync(local(shipProof))){
  const p=json(shipProof),folder='artifacts/salvage-ship-v041/';
- assert.equal(p.schema,5);ancestor(p.runtimeSourceSha);assertCurrentRuntime(p.runtimeSourceSha);
+ assert.equal(p.schema,5);ancestor(p.runtimeSourceSha);if(!fs.existsSync(local('artifacts/salvage-polish-v042/verification.json')))assertCurrentRuntime(p.runtimeSourceSha);
  const evidence=verifyEvidence(p.evidenceFiles,'ship041 evidence');
  const build=boundJSON(p.buildInfo,evidence);verifyBuild(p,build);
  assert.equal(build.assets.length,29);assert.deepEqual(build.missingOptionalArt,[]);
@@ -401,4 +401,30 @@ if(fs.existsSync(local(shipProof))){
  assert.equal(localCheck.runtimeSourceSha,p.runtimeSourceSha);assert(localCheck.matchesFrozenMigration&&localCheck.refreshPreserves);
  assert.equal(localCheck.gameplayActionsTaken,false);assert.equal(p.physicalPhone,'NOT_TESTED');verifyPlatform(p.platform,evidence,p.zip);
  console.log('PASS ship041:45 frozen ZIP/HTTP payloads,29 source assets,108 current+72 historical browser checks,17 capacity checks,1008 economy voyages,two natural voyages,paid upgrades/rotation/stocks and actual Mac migration. Phone/art/enjoyment pending.');
+}
+
+const polishProof='artifacts/salvage-polish-v042/verification.json';
+if(fs.existsSync(local(polishProof))){
+ const p=json(polishProof),folder='artifacts/salvage-polish-v042/';assert.equal(p.schema,6);ancestor(p.runtimeSourceSha);assertCurrentRuntime(p.runtimeSourceSha);
+ const evidence=verifyEvidence(p.evidenceFiles,'polish042 evidence'),build=boundJSON(p.buildInfo,evidence);verifyBuild(p,build);
+ assert.equal(build.assets.length,40);assert.deepEqual(build.missingOptionalArt,[]);assert.equal(p.zip.files,57);
+ git(['ls-files','--error-unmatch','--',p.zip.path]);const raw=fs.readFileSync(local(p.zip.path));assert(evidence.has(p.zip.path));assert.equal(raw.length,p.zip.bytes);assert.equal(hash(raw),p.zip.sha256);
+ const expected=expectedPackage(p.runtimeSourceSha),actual=comparePackageFiles(readZipFiles(p.zip.path,57),expected.files,'polish042 ZIP/source');comparePackageFiles(p.packageFiles,actual,'polish042 manifest');
+ const b=p.fixedPackageBrowser;assert.equal(b.runtimeSourceSha,p.runtimeSourceSha);assert.equal(b.zipSha256,p.zip.sha256);assert.equal(b.expected,128);for(const k of ['unexpected','skipped','flaky','retries'])assert.equal(b[k],0);verifyBrowser(boundJSON(b.report,evidence),128);
+ verifyBrowser(boundJSON(folder+'developer/old041-browser-results.json',evidence),108);
+ for(const [file,count]of [['port-model.json',18],['regression-results.json',18],['mobile-model.json',21],['ship-capacities.json',17],['cargo-identity.json',5]])assert.equal(boundJSON(folder+'developer/'+file,evidence).passed,count);
+ const identity=boundJSON(folder+'developer/cargo-identity.json',evidence);assert.equal(identity.naturalMultiPairs,14);assert.equal(identity.newImages,11);assert(identity.schema6Unchanged&&identity.economicConfigUnchanged);
+ for(const [name,count]of [['port-art.json',14],['art-v041.json',15],['art-v042.json',11]]){const art=boundJSON(folder+'developer/'+name,evidence);assert.equal(art.passed,count);if(name==='art-v042.json')assert.equal(art.physicalRotations,44);for(const row of art.assets){assert(row.exactNearest&&row.editableMergedMatches&&row.binaryAlpha&&row.paletteSubset);for(const f of row.files){assert.equal(hash(fs.readFileSync(local(f.path))),f.sha256);assert.equal(hash(source(p.runtimeSourceSha,f.path)),f.sha256);}}}
+ const econ=boundJSON(folder+'developer/port-economy.json',evidence);assert.deepEqual(econ.config,JSON.parse(source(p.runtimeSourceSha,portConfig(p.runtimeSourceSha))));assert.equal(econ.seeds,12);assert.equal(econ.voyagesPerSeed,12);assert.equal(econ.paidFleetOldWallet.remaining,13699);
+ const compat=boundJSON(folder+'developer/port-compatibility.json',evidence);assert.equal(compat.passed,8);assert.deepEqual(compat.errors,[]);for(const c of compat.cases){assert.equal(c.build.commit,p.runtimeSourceSha);assert(c.keyboardAndReload);}
+ const http=boundJSON(p.httpReport,evidence);assert.equal(http.sourceCommit,p.runtimeSourceSha);assert.equal(http.zipSha256,p.zip.sha256);assert(http.allHttpBytesMatchZip);comparePackageFiles(http.files,actual,'polish042 HTTP');
+ const cap=boundJSON(p.capture.manifest,evidence),media=verifyEvidence(cap.files,'polish042 capture');assert.equal(cap.runtimeSourceSha,p.runtimeSourceSha);assert.equal(cap.zipSha256,p.zip.sha256);for(const [n,r]of media)assert.deepEqual(evidence.get(n),r);
+ const report=boundJSON(cap.report,media);assert(report.completed);assert.deepEqual(report.errors,[]);assert.deepEqual(report.build,expected.build);for(const k of ['imported','clockOverridden','seedOverridden'])assert.equal(report.natural[k],false);
+ const E=require('./legacy-engine.cjs')(p.runtimeSourceSha);for(const [group,n]of [['natural',13],['qa',4],['refinement',5],['polish',4]]){assert.equal(report[group].checkpoints.length,n);for(const x of report[group].checkpoints)E.assertState(x.state);}
+ assert(report.polish.imported);assert.equal(report.polish.images.length,5);assert.equal(new Set(report.polish.images.map(x=>x.src)).size,5);for(const x of report.polish.images){assert(x.decoded);assert.equal(x.shape,'line2');}
+ const points=new Map(report.polish.checkpoints.map(x=>[x.name,x.state]));assert.deepEqual(points.get('454-wallet-before'),points.get('viewing-and-cancel-no-charge'));assert.equal(points.get('454-wallet-before').money,454);assert.deepEqual(points.get('identity-rotation-saved'),points.get('refresh-identities-and-rights'));assert.equal(points.get('identity-rotation-saved').cargoGrid.placements.find(x=>x.uid===5).rotation,1);
+ const natural=new Map(report.natural.checkpoints.map(x=>[x.name,x.state]));for(const n of[1,2]){assert.equal(natural.get('before-voyage-'+n).phase,'port');assert.equal(natural.get('returned-voyage-'+n).phase,'summary');assert.equal(natural.get('saved-after-voyage-'+n).phase,'port');}assert.deepEqual(natural.get('saved-after-voyage-1'),natural.get('reopened-before-second-voyage'));
+ for(const name of ['natural-voyage-1','natural-voyage-2','qa-buy-equip-expand-supply','qa-ship-upgrades-and-physical-cargo','qa-review-polish']){const f=folder+'developer/capture/'+name+'.webm';assert(media.has(f));assert.equal(fs.readFileSync(local(f)).subarray(0,4).toString('hex'),'1a45dfa3');}
+ const localCheck=boundJSON(folder+'delivery/local-browser-check.json',evidence);assert.equal(localCheck.runtimeSourceSha,p.runtimeSourceSha);assert(localCheck.matchesFrozenMigration&&localCheck.refreshPreserves);assert.equal(localCheck.gameplayActionsTaken,false);assert.equal(p.physicalPhone,'NOT_TESTED');verifyPlatform(p.platform,evidence,p.zip);
+ console.log('PASS polish042:57 exact ZIP/HTTP payloads,40 source assets,128 current+108 historical browser checks,14 actual multigrid identities,44 new rotations,unchanged prices/schema6,actual original Mac save. Phone/art pending.');
 }

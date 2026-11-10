@@ -2,7 +2,7 @@
 const{test,expect,chromium,webkit}=require('@playwright/test'),E=require('../../src/engine.js'),O=require('../legacy-engine.cjs')('799a36e78cbd5397d671901fded19c10517429f9'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const state=p=>p.evaluate(()=>__SALVAGE__.state());
 async function boot(p){await p.goto('');await p.waitForFunction(()=>window.__SALVAGE__);if(await p.locator('#modal-buttons [data-act=close]').isVisible())await p.locator('#modal-buttons [data-act=close]').tap();}
-async function tap(p,q){await p.waitForFunction(()=>__SALVAGE__.ready());await p.locator(q).tap();await p.waitForFunction(()=>__SALVAGE__.ready());}
+async function tap(p,q){await p.waitForFunction(()=>__SALVAGE__.ready());if(/data-(buyship|equip)/.test(q)&&await p.locator(q).count()===0)await p.locator('[data-act=shipyard]').tap();if(q==='[data-act=upgradeCargo]'&&await p.locator(q).count()===0)await p.locator('#back').tap();if(q==='#back'&&await p.locator('body').getAttribute('data-screen')==='shipyard')await p.locator('#back').tap();await p.locator(q).tap();await p.waitForFunction(()=>__SALVAGE__.ready());}
 async function press(p,q){await p.waitForFunction(()=>__SALVAGE__.ready());await p.locator(q).press('Enter');await p.waitForFunction(()=>__SALVAGE__.ready());}
 async function confirm(p,q){await tap(p,q);await tap(p,'[data-act=confirm]');await expect(p.locator('#overlay')).toBeHidden();}
 async function back(p){await tap(p,'#back');}
