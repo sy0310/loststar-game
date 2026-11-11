@@ -1,0 +1,39 @@
+{
+  "runtimeSourceCommit": "55610d6d1370dd0b63e08610bb2df8fb7fa56f9f",
+  "gamePayloadChanged": false,
+  "tapTapVersion": 469347,
+  "initialCI": [
+    {
+      "run": 43118155445,
+      "job": 130851404984
+    },
+    {
+      "run": 43118136014,
+      "job": 130851338928
+    }
+  ],
+  "observedCause": "Linux WebKit MediaRecorder produced0bytes although live music/SFX analyser RMS assertions passed. Actual gameplay never uses MediaRecorder. Test capture now records real AudioWorklet PCM, saves non-silent WAV with at least1second of live samples. No assertion counts or RMS limits removed.",
+  "additionalObservation": "One Mac full-suite attempt timed out waiting for WebKit first-track position5seconds. That run lacked failed-page diagnostics, so cause remains undetermined. Added detailed open-page audio diagnostics, then a full zero-retry32-case run passed. Retain the failed report and keep physical-phone startup/recovery review pending.",
+  "files": [
+    {
+      "path": "artifacts/survivor-v061/audio-portability/browser.json",
+      "bytes": 141228,
+      "sha256": "bd5220cc10430382fb4c980cf578d19c23eba636ce3987432568d630a7c9a12d"
+    },
+    {
+      "path": "artifacts/survivor-v061/audio-portability/chromium-actual-mixed-recording.wav",
+      "bytes": 168492,
+      "sha256": "30b43cb89d4af6f8964d1e6e7297f4c0baea8f9235c51249dd3f7ff058d5357a"
+    },
+    {
+      "path": "artifacts/survivor-v061/audio-portability/initial-mac-timeout.json",
+      "bytes": 77453,
+      "sha256": "7c6fa736a534bfd02691460e8a707f1e8ffb5f27feff3ed19c8ff97a5ead3d4b"
+    },
+    {
+      "path": "artifacts/survivor-v061/audio-portability/webkit-actual-mixed-recording.wav",
+      "bytes": 168492,
+      "sha256": "47629cd069ef05f7dec850f1ce8acecfc6323829f16cd5da6c53547a4c1955ef"
+    }
+  ]
+}

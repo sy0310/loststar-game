@@ -125,6 +125,38 @@ const sha = (bytes) => crypto.createHash("sha256").update(bytes).digest("hex");
       assert.equal(sha(bytes), file.sha256, file.path);
       http.push({ path: file.path, bytes: bytes.length, sha256: sha(bytes) });
     }
+  const portableFolder = path.join(
+    root,
+    "artifacts/survivor-v061/audio-portability",
+  );
+  if (fs.existsSync(portableFolder)) {
+    const portable = JSON.parse(
+      fs.readFileSync(path.join(portableFolder, "verification.json")),
+    );
+    assert.equal(portable.runtimeSourceCommit, info.sourceCommit);
+    assert.equal(portable.gamePayloadChanged, false);
+    const audioReport = JSON.parse(
+      fs.readFileSync(path.join(portableFolder, "browser.json")),
+    );
+    assert.equal(audioReport.passed, 32);
+    assert.equal(audioReport.sourceSha256, audio.sourceSha256);
+    assert.equal(
+      audioReport.testSourceSha256,
+      sha(
+        fs.readFileSync(
+          path.join(
+            root,
+            "design/star-salvage/v061/production/audio/verify_audio.cjs",
+          ),
+        ),
+      ),
+    );
+    for (const file of portable.files) {
+      const bytes = fs.readFileSync(path.join(root, file.path));
+      assert.equal(bytes.length, file.bytes, file.path);
+      assert.equal(sha(bytes), file.sha256, file.path);
+    }
+  }
   const proof = {
     schema: 1,
     sourceCommit: info.sourceCommit,
