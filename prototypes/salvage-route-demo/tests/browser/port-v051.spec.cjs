@@ -88,6 +88,24 @@ test('market quota is visible, consumes one shared chance and cannot be restored
  expect((await state(page)).market.quota.used).toBe(true);await tap(page,'[data-tab=shop]');await tap(page,'[data-act=market]');await expect(page.locator('.market-quota')).toContainText('已使用');await expect(page.locator('[data-market-style]')).toHaveCount(0);
 });
 
+test('auction reserve button, confirmation and frozen offer use the same integer percentage',async({page})=>{
+ await boot(page);
+ await load(page,marketFixture());
+ await tap(page,'[data-tab=shop]');
+ await tap(page,'[data-act=market]');
+ const reserve=page.locator('[data-market-style=auction][data-market-reserve="110"]');
+ await expect(reserve).toHaveText('底价 110');
+ await reserve.tap();
+ await expect(page.locator('#modal-body')).toContainText('底价 110');
+ await tap(page,'[data-act=confirm]');
+ const saved=await state(page);
+ expect(saved.market.offers[0].reserve).toBe(110);
+ expect(saved.market.quota.used).toBe(true);
+ await page.reload();
+ await page.waitForFunction(()=>window.__SALVAGE__);
+ expect(await state(page)).toEqual(saved);
+});
+
 test('failed gate or quote storage preserves current save and opportunity without fictional success',async({page})=>{
  await boot(page);const value=eventFixture('tank',5);await load(page,value);
  await page.evaluate(()=>{window.originalV051Put=IDBObjectStore.prototype.put;IDBObjectStore.prototype.put=function(value,key){const request=window.originalV051Put.call(this,value,key);if(key==='current'&&value.game.summary?.returnMethod==='gate'){const transaction=this.transaction;queueMicrotask(()=>{try{transaction.abort();}catch{}});}return request;};});

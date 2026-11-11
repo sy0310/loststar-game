@@ -25,7 +25,7 @@
         '<button data-market-style="bold" data-market-uid="'+selected.uid+'"'+block+'>大胆开价<br><small>争取 +'+boldMax+'%</small></button></div>' +
         '<div class="market-auction"><h2>NPC快拍</h2><p>挂牌费 '+fee+' 零件，确认开始时收取。</p><div class="split">' +
         '<button data-market-style="auction" data-market-reserve="100" data-market-uid="'+selected.uid+'"'+(block || (state.money < fee ? ' disabled' : ''))+'>底价 '+selected.value+'</button>' +
-        '<button data-market-style="auction" data-market-reserve="110" data-market-uid="'+selected.uid+'"'+(block || (state.money < fee ? ' disabled' : ''))+'>底价 '+Math.ceil(selected.value*1.1)+'</button></div></div>';
+        '<button data-market-style="auction" data-market-reserve="110" data-market-uid="'+selected.uid+'"'+(block || (state.money < fee ? ' disabled' : ''))+'>底价 '+Math.ceil(selected.value*110/100)+'</button></div></div>';
     } else {
       const auction = offer.style === 'auction';
       const bids = auction ? '<ol class="npc-bids">' + offer.bids.map(bid => '<li><span>'+esc(bid.name)+'</span><b>'+bid.amount+'</b></li>').join('') + '</ol>' : '';
