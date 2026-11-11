@@ -1,0 +1,33 @@
+window.SurvivorBalance = {
+  "version": "0.6.0",
+  "runSeconds": 180,
+  "eliteAt": 70,
+  "bossAt": 130,
+  "firstLevelXP": 112,
+  "activeSlots": 4,
+  "passiveSlots": 3,
+  "activeMaxLevel": 3,
+  "passiveMaxLevel": 2,
+  "hullUpgradeBase": 70,
+  "gunUpgradeBase": 90,
+  "permanentMaxLevel": 3,
+  "maxEnemies": 40,
+  "maxFriendlyShots": 60,
+  "maxEnemyShots": 48,
+  "maxPickups": 140,
+  "maxParticles": 128,
+  "maxDamageNumbers": 28,
+  "maxArcs": 20,
+  "maxRings": 20,
+  "maxBursts": 24,
+  "maxChainTargets": 4,
+  "checkpointSeconds": 2,
+  "profileKey": "loststar.survivor.prototype.v01",
+  "database": "loststar.survivor.demo.v06",
+  "levelXP": {
+    "base": 80,
+    "linear": 38,
+    "power": 1.4,
+    "powerScale": 8
+  }
+};
