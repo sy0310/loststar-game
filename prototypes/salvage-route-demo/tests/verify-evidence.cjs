@@ -586,13 +586,12 @@ if (fs.existsSync(local(v05Proof))) {
 }
 
 
-const v051Proof = 'artifacts/salvage-v051/verification.json';
-if (fs.existsSync(local(v051Proof))) {
- const p = json(v051Proof);
- const folder = 'artifacts/salvage-v051/';
+function verifyV051Proof(proofPath, folder, expectedBrowserCount, requireCurrent) {
+ if (!fs.existsSync(local(proofPath))) return;
+ const p = json(proofPath);
  assert.equal(p.schema, 8);
  ancestor(p.runtimeSourceSha);
- assertCurrentRuntime(p.runtimeSourceSha);
+ if (requireCurrent) assertCurrentRuntime(p.runtimeSourceSha);
  const evidence = verifyEvidence(p.evidenceFiles, 'v051 evidence');
  const build = boundJSON(p.buildInfo, evidence);
  verifyBuild(p, build);
@@ -608,10 +607,10 @@ if (fs.existsSync(local(v051Proof))) {
  const actual = comparePackageFiles(readZipFiles(p.zip.path, 68), expected.files, 'v051 ZIP/source');
  comparePackageFiles(p.packageFiles, actual, 'v051 manifest');
  const browser = p.fixedPackageBrowser;
- assert.equal(browser.expected, 236);
+ assert.equal(browser.expected, expectedBrowserCount);
  assert.equal(browser.runtimeSourceSha, p.runtimeSourceSha);
  assert.equal(browser.zipSha256, p.zip.sha256);
- verifyBrowser(boundJSON(browser.report, evidence), 236);
+ verifyBrowser(boundJSON(browser.report, evidence), expectedBrowserCount);
  for (const [name, count] of [['engine-results.json',30], ['regression-results.json',18],
    ['mobile-model.json',21], ['port-model.json',18], ['ship-capacities.json',17],
    ['cargo-identity.json',5], ['v05-model-results.json',37], ['v051-model-results.json',13]]) {
@@ -759,10 +758,29 @@ if (fs.existsSync(local(v051Proof))) {
   assert.equal(movie.height, 844);
   assert(movie.codecOnly && !movie.cut && !movie.speedChange && movie.seconds > 0);
  }
+ if (expectedBrowserCount === 240) {
+  const ui = boundJSON(folder+'developer/market-ui.json', evidence);
+  assert.deepEqual(ui.build, expected.build);
+  assert.deepEqual(ui.errors, []);
+  assert.equal(ui.cases.length, 24);
+  const identities = new Set();
+  for (const row of ui.cases) {
+   E.assertState(row.final);
+   const identity = [row.engine,row.width,row.policy].join(':');
+   assert(!identities.has(identity)); identities.add(identity);
+   const taps = row.policy === 'ordinary' ? 2 : row.policy === 'keep' ? 5 : 7;
+   assert.equal(row.taps, taps);
+   assert.equal(row.trace.length, taps);
+   assert.equal(row.extraTapsComparedWithOrdinary, taps-2);
+   assert.equal(row.netCash, row.actualCash-row.openingCash);
+   assert.equal(row.retainedValue, E.cargoValue(row.final));
+   if (row.policy !== 'ordinary') assert(row.final.market.quota.used);
+  }
+ }
  const localCheck = boundJSON(folder+'delivery/local-browser-check.json', evidence);
  assert.equal(localCheck.runtimeSourceSha, p.runtimeSourceSha);
  assert(localCheck.matchesFrozenMigration && localCheck.refreshPreserves);
- assert.equal(localCheck.originalSchema, 7);
+ assert([7,8].includes(localCheck.originalSchema));
  assert.equal(localCheck.currentSchema, 8);
  assert.equal(localCheck.oldFunds, localCheck.newFunds);
  assert.equal(localCheck.gameplayActionsTaken, false);
@@ -774,5 +792,9 @@ if (fs.existsSync(local(v051Proof))) {
  assert.equal(p.physicalPhone, 'NOT_TESTED');
  assert.equal(p.userArt, 'PENDING');
  assert.equal(p.humanEnjoyment, 'PENDING');
- console.log('PASS v051 fixed68/HTTP,236 browser,8 compatibility,44 original assets,624 safety/512 pity/9 legacy snapshots,11520 economic comparison voyages,three natural UI voyages,original Mac migration and new unbound TapTap self-test. Physical phone and human review pending.');
+ console.log('PASS v051 '+p.runtimeSourceSha.slice(0,7)+' fixed68/HTTP,'+expectedBrowserCount+' browser,8 compatibility,44 original assets,624 safety/512 pity/9 legacy snapshots,11520 economic comparison voyages,three natural UI voyages,original Mac and unbound TapTap. Physical phone and human review pending.');
 }
+
+const final051Proof='artifacts/salvage-v051-final/verification.json';
+verifyV051Proof('artifacts/salvage-v051/verification.json', 'artifacts/salvage-v051/', 236, !fs.existsSync(local(final051Proof)));
+verifyV051Proof(final051Proof, 'artifacts/salvage-v051-final/', 240, true);

@@ -1,11 +1,16 @@
 """Bind observed v0.5.1 source, frozen package, HTTP, captures and real delivery."""
 from pathlib import Path
+import argparse
 import gzip
 import hashlib
 import json
 
 ROOT=Path(__file__).resolve().parents[3]
-FOLDER=ROOT/'artifacts/salvage-v051'
+parser=argparse.ArgumentParser()
+parser.add_argument('--folder',default='artifacts/salvage-v051')
+parser.add_argument('--browser-count',type=int,choices=[236,240],default=236)
+args=parser.parse_args()
+FOLDER=ROOT/args.folder
 
 def read(file):
     return json.loads(file.read_text())
@@ -19,7 +24,7 @@ def write(file,value):
 
 build=read(FOLDER/'build-info.json')
 browser=read(FOLDER/'developer/browser-results.json')
-assert browser['stats']['expected']==236 and browser['stats']['unexpected']==0
+assert browser['stats']['expected']==args.browser_count and browser['stats']['unexpected']==0
 capture=FOLDER/'developer/capture'
 report=read(capture/'capture-report.json')
 assert report['completed'] and not report['reviewOnly']
@@ -42,7 +47,7 @@ write(FOLDER/'verification.json',dict(schema=8,runtimeSourceSha=build['sourceCom
              bytes=build['bytes'],sha256=build['sha256'],files=build['files'],dirty=False),
     packageFiles=http['files'],httpReport=str((FOLDER/'package-http.json').relative_to(ROOT)),
     fixedPackageBrowser=dict(runtimeSourceSha=build['sourceCommit'],zipSha256=build['sha256'],
-        expected=236,unexpected=0,skipped=0,flaky=0,retries=0,report=str((FOLDER/'developer/browser-results.json').relative_to(ROOT))),
+        expected=args.browser_count,unexpected=0,skipped=0,flaky=0,retries=0,report=str((FOLDER/'developer/browser-results.json').relative_to(ROOT))),
     capture=dict(manifest=str((capture/'manifest.json').relative_to(ROOT))),
     economyReport=str((FOLDER/'developer/economy.json.gz').relative_to(ROOT)),
     platform=dict(status='UPLOADED_DEVELOPMENT_SELF_TEST',currentPackageId=receipt['taptap']['package_id'],
