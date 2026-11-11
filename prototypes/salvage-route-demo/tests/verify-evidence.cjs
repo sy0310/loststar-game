@@ -4,6 +4,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const cp=require('node:child_process'),assert=require('node:assert/strict');
+const {gunzipSync}=require('node:zlib');
 const root=path.resolve(__dirname,'../../..');
 const demo='prototypes/salvage-route-demo/',oldFolder='artifacts/salvage-route/';
 const upgradeFolder='artifacts/salvage-route-upgrade/';
@@ -582,4 +583,196 @@ if (fs.existsSync(local(v05Proof))) {
  verifyPlatform(p.platform,evidence,p.zip);
  assert.equal(p.physicalPhone,'NOT_TESTED');
  console.log('PASS v05 frozen67/HTTP,176 browser,8 compatibility,44 native assets,11 B+C levels/1320 sets,37 new model groups,real economic replay,two natural voyages,original Mac migration and new unbound TapTap self-test. Phone/art/enjoyment pending.');
+}
+
+
+const v051Proof = 'artifacts/salvage-v051/verification.json';
+if (fs.existsSync(local(v051Proof))) {
+ const p = json(v051Proof);
+ const folder = 'artifacts/salvage-v051/';
+ assert.equal(p.schema, 8);
+ ancestor(p.runtimeSourceSha);
+ assertCurrentRuntime(p.runtimeSourceSha);
+ const evidence = verifyEvidence(p.evidenceFiles, 'v051 evidence');
+ const build = boundJSON(p.buildInfo, evidence);
+ verifyBuild(p, build);
+ assert.equal(build.assets.length, 44);
+ assert.deepEqual(build.missingOptionalArt, []);
+ assert.equal(p.zip.files, 68);
+ git(['ls-files', '--error-unmatch', '--', p.zip.path]);
+ const zip = fs.readFileSync(local(p.zip.path));
+ assert(evidence.has(p.zip.path));
+ assert.equal(zip.length, p.zip.bytes);
+ assert.equal(hash(zip), p.zip.sha256);
+ const expected = expectedPackage(p.runtimeSourceSha);
+ const actual = comparePackageFiles(readZipFiles(p.zip.path, 68), expected.files, 'v051 ZIP/source');
+ comparePackageFiles(p.packageFiles, actual, 'v051 manifest');
+ const browser = p.fixedPackageBrowser;
+ assert.equal(browser.expected, 236);
+ assert.equal(browser.runtimeSourceSha, p.runtimeSourceSha);
+ assert.equal(browser.zipSha256, p.zip.sha256);
+ verifyBrowser(boundJSON(browser.report, evidence), 236);
+ for (const [name, count] of [['engine-results.json',30], ['regression-results.json',18],
+   ['mobile-model.json',21], ['port-model.json',18], ['ship-capacities.json',17],
+   ['cargo-identity.json',5], ['v05-model-results.json',37], ['v051-model-results.json',13]]) {
+  const result = boundJSON(folder+'developer/'+name, evidence);
+  assert.equal(result.passed ?? result.testsPassed, count, name);
+ }
+ const model = boundJSON(folder+'developer/v051-model-results.json', evidence);
+ assert.equal(model.failed, false);
+ assert.equal(model.safetyVoyages, 624);
+ assert.equal(model.naturalPityVoyages, 512);
+ assert.equal(model.legacySnapshots, 9);
+ for (const [name, count] of [['port-art.json',14], ['art-v041.json',15], ['art-v042.json',11], ['art-v05.json',4]]) {
+  const art = boundJSON(folder+'developer/'+name, evidence);
+  assert.equal(art.passed, count);
+  for (const row of art.assets) {
+   assert(row.exactNearest && row.editableMergedMatches && row.binaryAlpha && row.paletteSubset);
+   for (const file of row.files) {
+    assert.equal(hash(fs.readFileSync(local(file.path))), file.sha256);
+    assert.equal(hash(source(p.runtimeSourceSha, file.path)), file.sha256);
+   }
+  }
+ }
+ assert(evidence.has(p.economyReport));
+ const economy = JSON.parse(gunzipSync(fs.readFileSync(local(p.economyReport)), {maxOutputLength:32*1024*1024}));
+ assert.equal(economy.seedCount, 24);
+ assert.equal(economy.voyagesPerSeed, 16);
+ assert.equal(economy.inputFiles.length, 12);
+ for (const file of economy.inputFiles) {
+  assert.equal(hash(source(p.runtimeSourceSha, file.path)), file.sha256, 'v051 economic input '+file.path);
+ }
+ assert.equal(Object.keys(economy.comparisons).length, 6);
+ for (const policy of Object.values(economy.comparisons)) {
+  assert.deepEqual(Object.keys(policy), ['v050','v051NoGate','gate8','gate10','gate12']);
+  for (const [variant, result] of Object.entries(policy)) {
+   assert.equal(result.voyages, 384);
+   assert.equal(result.rescues, 0);
+   assert.equal(result.returns.length, 384);
+   for (const receipt of result.returns) {
+    const fuel = receipt.method === 'gate' ? Number(variant.slice(4)) : receipt.ordinaryReturn;
+    assert.equal(receipt.returnFuel, fuel);
+    if (receipt.method === 'gate') assert([3,5].includes(receipt.depth));
+   }
+  }
+ }
+ for (const [name, result] of Object.entries(economy.marketLots)) {
+  assert.equal(result.seeds, 512);
+  if (['cautious','bold','auction'].some(style => name.endsWith('-'+style))) {
+   assert.equal(result.meanQuotes, name.startsWith('v051-') ? 1 : 5);
+  }
+ }
+ for (const result of Object.values(economy.marketVoyages)) assert.equal(result.voyages, 864);
+ assert.equal(economy.oldWallet.opening, 27049);
+ assert.equal(economy.oldWallet.afterMigration, 27049);
+ assert(economy.oldWallet.paidRightsPreserved && economy.oldWallet.ledgerPreserved);
+ const config = JSON.parse(source(p.runtimeSourceSha, 'design/star-salvage/v051/BALANCE_V051.json'));
+ assert.equal(config.gate.fuel, 8);
+ assert.deepEqual(config.gate.depths, [3,5]);
+ const compat = boundJSON(folder+'developer/port-compatibility.json', evidence);
+ assert.equal(compat.passed, 8);
+ assert.deepEqual(compat.errors, []);
+ for (const row of compat.cases) {
+  assert.deepEqual(row.build, expected.build);
+  assert(row.keyboardAndReload);
+ }
+ for (const name of [p.httpReport, folder+'delivery/local-http.json']) {
+  const http = boundJSON(name, evidence);
+  assert.equal(http.sourceCommit, p.runtimeSourceSha);
+  assert.equal(http.zipSha256, p.zip.sha256);
+  assert(http.allHttpBytesMatchZip);
+  comparePackageFiles(http.files, actual, 'v051 real HTTP '+name);
+ }
+ const cap = boundJSON(p.capture.manifest, evidence);
+ assert.equal(cap.runtimeSourceSha, p.runtimeSourceSha);
+ assert.equal(cap.zipSha256, p.zip.sha256);
+ const media = verifyEvidence(cap.files, 'v051 media');
+ for (const [name, row] of media) assert.deepEqual(evidence.get(name), row);
+ const report = boundJSON(cap.report, media);
+ assert(report.completed);
+ assert.equal(report.reviewOnly, false);
+ assert.equal(report.physicalPhoneTested, false);
+ assert.deepEqual(report.errors, []);
+ assert.deepEqual(report.build, expected.build);
+ assert.equal(report.baselineBuild.commit, '842dc6afcfc3da079c40dc996a4dd346769d62e0');
+ assert.equal(report.pictures.length, 16);
+ const identities = new Set();
+ for (const row of report.pictures) {
+  const identity = [row.label,row.engine,row.width,row.case].join(':');
+  assert(!identities.has(identity)); identities.add(identity);
+  if (row.label === 'v051') {
+   assert.deepEqual(row.build, expected.build);
+   assert(row.measurements.length > 0);
+   for (const image of row.measurements) {
+    assert(image.decoded && image.insideParent);
+    assert.equal(image.objectFit, 'contain');
+    assert.equal(image.zIndex, '2');
+   }
+  }
+ }
+ const E = require('./legacy-engine.cjs')(p.runtimeSourceSha);
+ for (const name of ['imported','seedOverridden','clockOverridden']) assert.equal(report.natural[name], false);
+ const points = new Map(report.natural.checkpoints.map(point => {
+  E.assertState(point.state);
+  return [point.name,point.state];
+ }));
+ for (const voyage of [1,2,3]) {
+  assert.equal(points.get('before-voyage-'+voyage).phase, 'port');
+  const returned = points.get('returned-voyage-'+voyage);
+  assert.equal(returned.phase, 'summary');
+  assert.equal(returned.runNo, voyage);
+  assert(returned.depth >= 2);
+  assert.equal(points.get('saved-voyage-'+voyage).phase, 'port');
+  if (voyage < 3) assert.deepEqual(points.get('saved-voyage-'+voyage), points.get('reopened-before-'+(voyage+1)));
+ }
+ assert(report.natural.visibleDiscoveries.some(row => row.run <= 2));
+ assert(report.natural.visibleAnomalies.some(row => row.run <= 2));
+ for (const section of ['gate','market']) {
+  assert.equal(report[section].imported, true);
+  for (const point of report[section].checkpoints) E.assertState(point.state);
+ }
+ const gates = new Map(report.gate.checkpoints.map(point => [point.name, point.state]));
+ for (const depth of [3,5]) {
+  const before = gates.get('gate-'+depth+'-before');
+  const after = gates.get('gate-'+depth+'-actual-receipt');
+  assert.equal(before.depth, depth);
+  assert.equal(after.summary.returnMethod, 'gate');
+  assert.equal(after.summary.returnFuel, 8);
+  assert.equal(before.fuel-after.fuel, 8);
+  assert.equal(after.phase, 'summary');
+ }
+ const market = new Map(report.market.checkpoints.map(point => [point.name,point.state]));
+ assert.equal(market.get('before-one-quote').market.quota.used, false);
+ assert.equal(market.get('quoted-once').market.quota.used, true);
+ const quoted = market.get('quoted-once');
+ const kept = market.get('other-item-no-free-quote');
+ assert.deepEqual(kept.market.quota, quoted.market.quota);
+ assert.equal(kept.market.rng, quoted.market.rng);
+ assert.equal(kept.market.offers.length, 1);
+ assert.equal(kept.market.offers[0].status, 'kept');
+ for (const field of ['money','cargo','ledger','rng']) assert.deepEqual(kept[field], quoted[field]);
+ const movies = boundJSON(folder+'developer/capture/media-info.json', media);
+ assert.equal(movies.length, 5);
+ for (const movie of movies) {
+  for (const name of [movie.source,movie.mp4]) assert(media.has(folder+'developer/capture/'+name));
+  assert.equal(movie.width, 390);
+  assert.equal(movie.height, 844);
+  assert(movie.codecOnly && !movie.cut && !movie.speedChange && movie.seconds > 0);
+ }
+ const localCheck = boundJSON(folder+'delivery/local-browser-check.json', evidence);
+ assert.equal(localCheck.runtimeSourceSha, p.runtimeSourceSha);
+ assert(localCheck.matchesFrozenMigration && localCheck.refreshPreserves);
+ assert.equal(localCheck.originalSchema, 7);
+ assert.equal(localCheck.currentSchema, 8);
+ assert.equal(localCheck.oldFunds, localCheck.newFunds);
+ assert.equal(localCheck.gameplayActionsTaken, false);
+ assert.equal(localCheck.qaImported, false);
+ assert(localCheck.ledgerPreserved && localCheck.fleetPreserved && localCheck.missionPreserved);
+ assert.equal(p.platform.previousPackageId, 465523);
+ assert.equal(p.platform.olderPackageId, 458870);
+ verifyPlatform(p.platform, evidence, p.zip);
+ assert.equal(p.physicalPhone, 'NOT_TESTED');
+ assert.equal(p.userArt, 'PENDING');
+ assert.equal(p.humanEnjoyment, 'PENDING');
+ console.log('PASS v051 fixed68/HTTP,236 browser,8 compatibility,44 original assets,624 safety/512 pity/9 legacy snapshots,11520 economic comparison voyages,three natural UI voyages,original Mac migration and new unbound TapTap self-test. Physical phone and human review pending.');
 }

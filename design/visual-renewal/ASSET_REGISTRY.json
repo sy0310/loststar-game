@@ -11678,10 +11678,12 @@
         "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
         "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
         "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
-        "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md"
+        "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+        "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+        "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps. Preserve251 rows and append7 POLISH042 review fixes; no old proof or phone status promoted. Preserve258 prior rows and append v05 exact normative clauses. Fixed842dc6a/465523 evidence is independently bound. Harbor sharpening is explicitly incomplete. Phone/user art remain pending.",
+      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps. Preserve251 rows and append7 POLISH042 review fixes; no old proof or phone status promoted. Preserve258 prior rows and append v05 exact normative clauses. Fixed842dc6a/465523 evidence is independently bound. Harbor sharpening is explicitly incomplete. Phone/user art remain pending. Preserve all298 earlier rows and historical hashes; append9 v051 repair capabilities. New68-file/236-case evidence is independent from old67-file/176-case proof. Original Mac schema7→8 verified; physical phone, user art and enjoyment pending.",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -12068,7 +12070,16 @@
       "EGG05-LOOP",
       "SAVE05-OLD",
       "SALVAGE05-BOUNDARY",
-      "SALVAGE05-HARBOR"
+      "SALVAGE05-HARBOR",
+      "SALVAGE051-IMAGE",
+      "SALVAGE051-GATE",
+      "SALVAGE051-ECONOMY",
+      "SALVAGE051-MARKET",
+      "SALVAGE051-DISCOVERY",
+      "SALVAGE051-SAVE",
+      "SALVAGE051-VALIDATION",
+      "SALVAGE051-DELIVERY",
+      "SALVAGE051-BOUNDARY"
     ],
     "requirements": [
       {
@@ -37022,6 +37033,716 @@
           "taptapVersion": 465523,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "SALVAGE051-IMAGE",
+        "parent": null,
+        "requirement": "航点普通货与四奇物完整显示，独立可能回收物栏，结果仅实际获得UID。",
+        "acceptanceCriteria": "航点普通货与四奇物完整显示，独立可能回收物栏，结果仅实际获得UID。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 16,
+            "endLine": 16
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 17,
+            "endLine": 17
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 19,
+            "endLine": 19
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 20,
+            "endLine": 20
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 21,
+            "endLine": 21
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 22,
+            "endLine": 22
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 23,
+            "endLine": 23
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 24,
+            "endLine": 24
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/src/port-view.css",
+          "prototypes/salvage-route-demo/tests/browser/port-v051.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5.1 actual event / route / market / saved original port"
+          }
+        ],
+        "checks": [
+          "v051-fixed68",
+          "v051-browser236",
+          "v051-compat8",
+          "v051-model181",
+          "v051-economy11520"
+        ],
+        "proofs": [
+          "artifacts/salvage-v051/verification.json",
+          "design/star-salvage/v051/DELIVERY.md",
+          "design/star-salvage/v051/IMPLEMENTATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "真实TapTap触控、锁屏、安全区、持续性能与用户趣味/视觉未验收。",
+        "nextAction": "用户扫468993审核实际手机体验，保留原档与两个回退。",
+        "reviewBasis": "Independent original-clause audit against frozen349cc33 package, actual16 before/after images,5 raw continuous recordings and original Mac UI exports. Engineering does not imply phone acceptance.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+          "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 468993,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE051-GATE",
+        "parent": null,
+        "requirement": "第3/5站真实可选普通与折返，统一报价预留与实际结算，不占奇遇候选。",
+        "acceptanceCriteria": "第3/5站真实可选普通与折返，统一报价预留与实际结算，不占奇遇候选。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 25,
+            "endLine": 25
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 27,
+            "endLine": 27
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 30,
+            "endLine": 30
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 31,
+            "endLine": 31
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 33,
+            "endLine": 33
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 34,
+            "endLine": 34
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 35,
+            "endLine": 35
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 36,
+            "endLine": 36
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 37,
+            "endLine": 37
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/src/route-view.js",
+          "prototypes/salvage-route-demo/tests/v051-model.test.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5.1 actual event / route / market / saved original port"
+          }
+        ],
+        "checks": [
+          "v051-fixed68",
+          "v051-browser236",
+          "v051-compat8",
+          "v051-model181",
+          "v051-economy11520"
+        ],
+        "proofs": [
+          "artifacts/salvage-v051/verification.json",
+          "design/star-salvage/v051/DELIVERY.md",
+          "design/star-salvage/v051/IMPLEMENTATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "真实TapTap触控、锁屏、安全区、持续性能与用户趣味/视觉未验收。",
+        "nextAction": "用户扫468993审核实际手机体验，保留原档与两个回退。",
+        "reviewBasis": "Independent original-clause audit against frozen349cc33 package, actual16 before/after images,5 raw continuous recordings and original Mac UI exports. Engineering does not imply phone acceptance.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+          "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 468993,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE051-ECONOMY",
+        "parent": null,
+        "requirement": "真实拆因对照8/10/12后冻结8，普通公式、全部原价及船款不变。",
+        "acceptanceCriteria": "真实拆因对照8/10/12后冻结8，普通公式、全部原价及船款不变。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 32,
+            "endLine": 32
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 40,
+            "endLine": 40
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/tests/v051-economy.cjs",
+          "prototypes/salvage-route-demo/src/engine.js"
+        ],
+        "assets": [
+          "design/star-salvage/v051/BALANCE_V051.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5.1 actual event / route / market / saved original port"
+          }
+        ],
+        "checks": [
+          "v051-fixed68",
+          "v051-browser236",
+          "v051-compat8",
+          "v051-model181",
+          "v051-economy11520"
+        ],
+        "proofs": [
+          "artifacts/salvage-v051/verification.json",
+          "design/star-salvage/v051/DELIVERY.md",
+          "design/star-salvage/v051/IMPLEMENTATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "真实TapTap触控、锁屏、安全区、持续性能与用户趣味/视觉未验收。",
+        "nextAction": "用户扫468993审核实际手机体验，保留原档与两个回退。",
+        "reviewBasis": "Independent original-clause audit against frozen349cc33 package, actual16 before/after images,5 raw continuous recordings and original Mac UI exports. Engineering does not imply phone acceptance.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+          "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 468993,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE051-MARKET",
+        "parent": null,
+        "requirement": "每次真实安全归航一次共享特殊交易，保留UID一次报价、旧承诺及原价售货。",
+        "acceptanceCriteria": "每次真实安全归航一次共享特殊交易，保留UID一次报价、旧承诺及原价售货。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 31,
+            "endLine": 31
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 32,
+            "endLine": 32
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 33,
+            "endLine": 33
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 34,
+            "endLine": 34
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 35,
+            "endLine": 35
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 44,
+            "endLine": 44
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 45,
+            "endLine": 45
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 46,
+            "endLine": 46
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 47,
+            "endLine": 47
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 48,
+            "endLine": 48
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/market-v05.js",
+          "prototypes/salvage-route-demo/src/store.js",
+          "prototypes/salvage-route-demo/tests/v051-model.test.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5.1 actual event / route / market / saved original port"
+          }
+        ],
+        "checks": [
+          "v051-fixed68",
+          "v051-browser236",
+          "v051-compat8",
+          "v051-model181",
+          "v051-economy11520"
+        ],
+        "proofs": [
+          "artifacts/salvage-v051/verification.json",
+          "design/star-salvage/v051/DELIVERY.md",
+          "design/star-salvage/v051/IMPLEMENTATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "真实TapTap触控、锁屏、安全区、持续性能与用户趣味/视觉未验收。",
+        "nextAction": "用户扫468993审核实际手机体验，保留原档与两个回退。",
+        "reviewBasis": "Independent original-clause audit against frozen349cc33 package, actual16 before/after images,5 raw continuous recordings and original Mac UI exports. Engineering does not imply phone acceptance.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+          "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 468993,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE051-DISCOVERY",
+        "parent": null,
+        "requirement": "真实新抵达才标新发现，航行异常独立可见，两个合格航次有限可选保底。",
+        "acceptanceCriteria": "真实新抵达才标新发现，航行异常独立可见，两个合格航次有限可选保底。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 39,
+            "endLine": 39
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 40,
+            "endLine": 40
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 52,
+            "endLine": 52
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 53,
+            "endLine": 53
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 54,
+            "endLine": 54
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 55,
+            "endLine": 55
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 56,
+            "endLine": 56
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/tests/v051-model.test.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5.1 actual event / route / market / saved original port"
+          }
+        ],
+        "checks": [
+          "v051-fixed68",
+          "v051-browser236",
+          "v051-compat8",
+          "v051-model181",
+          "v051-economy11520"
+        ],
+        "proofs": [
+          "artifacts/salvage-v051/verification.json",
+          "design/star-salvage/v051/DELIVERY.md",
+          "design/star-salvage/v051/IMPLEMENTATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "真实TapTap触控、锁屏、安全区、持续性能与用户趣味/视觉未验收。",
+        "nextAction": "用户扫468993审核实际手机体验，保留原档与两个回退。",
+        "reviewBasis": "Independent original-clause audit against frozen349cc33 package, actual16 before/after images,5 raw continuous recordings and original Mac UI exports. Engineering does not imply phone acceptance.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+          "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 468993,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE051-SAVE",
+        "parent": null,
+        "requirement": "schema2–7与旧在途原子迁移，旧RNG与进行中航路不重抽，原用户权益完整保留。",
+        "acceptanceCriteria": "schema2–7与旧在途原子迁移，旧RNG与进行中航路不重抽，原用户权益完整保留。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 7,
+            "endLine": 7
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 38,
+            "endLine": 38
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/src/store.js",
+          "prototypes/salvage-route-demo/tests/browser/port-v051.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5.1 actual event / route / market / saved original port"
+          }
+        ],
+        "checks": [
+          "v051-fixed68",
+          "v051-browser236",
+          "v051-compat8",
+          "v051-model181",
+          "v051-economy11520"
+        ],
+        "proofs": [
+          "artifacts/salvage-v051/verification.json",
+          "design/star-salvage/v051/DELIVERY.md",
+          "design/star-salvage/v051/IMPLEMENTATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "真实TapTap触控、锁屏、安全区、持续性能与用户趣味/视觉未验收。",
+        "nextAction": "用户扫468993审核实际手机体验，保留原档与两个回退。",
+        "reviewBasis": "Independent original-clause audit against frozen349cc33 package, actual16 before/after images,5 raw continuous recordings and original Mac UI exports. Engineering does not imply phone acceptance.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+          "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 468993,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE051-VALIDATION",
+        "parent": null,
+        "requirement": "新包真实HTTP双引擎两尺寸、模型/经济/旧档验证，三趟自然与显式QA分开。",
+        "acceptanceCriteria": "新包真实HTTP双引擎两尺寸、模型/经济/旧档验证，三趟自然与显式QA分开。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 8,
+            "endLine": 8
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 9,
+            "endLine": 9
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 10,
+            "endLine": 10
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 11,
+            "endLine": 11
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 41,
+            "endLine": 41
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 45,
+            "endLine": 45
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 57,
+            "endLine": 57
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/tests/capture-v051.cjs",
+          "prototypes/salvage-route-demo/tests/verify-evidence.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5.1 actual event / route / market / saved original port"
+          }
+        ],
+        "checks": [
+          "v051-fixed68",
+          "v051-browser236",
+          "v051-compat8",
+          "v051-model181",
+          "v051-economy11520"
+        ],
+        "proofs": [
+          "artifacts/salvage-v051/verification.json",
+          "design/star-salvage/v051/DELIVERY.md",
+          "design/star-salvage/v051/IMPLEMENTATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "真实TapTap触控、锁屏、安全区、持续性能与用户趣味/视觉未验收。",
+        "nextAction": "用户扫468993审核实际手机体验，保留原档与两个回退。",
+        "reviewBasis": "Independent original-clause audit against frozen349cc33 package, actual16 before/after images,5 raw continuous recordings and original Mac UI exports. Engineering does not imply phone acceptance.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+          "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 468993,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE051-DELIVERY",
+        "parent": null,
+        "requirement": "同包源码/HTTP/ZIP/平台绑定，原4283更新，保留465523和458870回退，Draft待手机。",
+        "acceptanceCriteria": "同包源码/HTTP/ZIP/平台绑定，原4283更新，保留465523和458870回退，Draft待手机。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 46,
+            "endLine": 46
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 48,
+            "endLine": 48
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 65,
+            "endLine": 65
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/tests/write-v051-proof.py",
+          "prototypes/salvage-route-demo/tests/verify-v05-http.py"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5.1 actual event / route / market / saved original port"
+          }
+        ],
+        "checks": [
+          "v051-fixed68",
+          "v051-browser236",
+          "v051-compat8",
+          "v051-model181",
+          "v051-economy11520"
+        ],
+        "proofs": [
+          "artifacts/salvage-v051/verification.json",
+          "design/star-salvage/v051/DELIVERY.md",
+          "design/star-salvage/v051/IMPLEMENTATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "真实TapTap触控、锁屏、安全区、持续性能与用户趣味/视觉未验收。",
+        "nextAction": "用户扫468993审核实际手机体验，保留原档与两个回退。",
+        "reviewBasis": "Independent original-clause audit against frozen349cc33 package, actual16 before/after images,5 raw continuous recordings and original Mac UI exports. Engineering does not imply phone acceptance.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+          "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 468993,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE051-BOUNDARY",
+        "parent": null,
+        "requirement": "仅四项专项修复，保留港口与B+C，隐藏内容只显示已遇，不恢复主线与新系统。",
+        "acceptanceCriteria": "仅四项专项修复，保留港口与B+C，隐藏内容只显示已遇，不恢复主线与新系统。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 47,
+            "endLine": 47
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 11,
+            "endLine": 11
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 13,
+            "endLine": 13
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 14,
+            "endLine": 14
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 15,
+            "endLine": 15
+          },
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 16,
+            "endLine": 16
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/app.js",
+          "prototypes/salvage-route-demo/src/engine.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5.1 actual event / route / market / saved original port"
+          }
+        ],
+        "checks": [
+          "v051-fixed68",
+          "v051-browser236",
+          "v051-compat8",
+          "v051-model181",
+          "v051-economy11520"
+        ],
+        "proofs": [
+          "artifacts/salvage-v051/verification.json",
+          "design/star-salvage/v051/DELIVERY.md",
+          "design/star-salvage/v051/IMPLEMENTATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "真实TapTap触控、锁屏、安全区、持续性能与用户趣味/视觉未验收。",
+        "nextAction": "用户扫468993审核实际手机体验，保留原档与两个回退。",
+        "reviewBasis": "Independent original-clause audit against frozen349cc33 package, actual16 before/after images,5 raw continuous recordings and original Mac UI exports. Engineering does not imply phone acceptance.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+          "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 468993,
+          "formalIntegration": false
+        }
       }
     ],
     "supersededRules": [
@@ -37464,6 +38185,30 @@
             "endLine": 49
           }
         ]
+      },
+      {
+        "id": "SALVAGE051-APPROVED-RETURN-GATE",
+        "scope": "New v051 salvage voyages only; historical v05 and current legacy voyages remain intact.",
+        "originalRefs": [
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 11,
+            "endLine": 19
+          }
+        ],
+        "replacementRefs": [
+          {
+            "path": "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+            "startLine": 30,
+            "endLine": 40
+          },
+          {
+            "path": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+            "startLine": 25,
+            "endLine": 31
+          }
+        ],
+        "rule": "Latest8fa8748 user-authorized repair adds actual3/5 fixed return gates after8/10/12 economic validation. v05 restriction on unimplemented8-oil shortcut no longer governs new v051 voyages. No new story chapters or ordinary return formula changes."
       }
     ],
     "statusPolicy": {
@@ -37489,7 +38234,9 @@
       "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
       "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
       "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
-      "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md"
+      "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+      "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+      "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md"
     ],
     "deliveryHistory": [
       {
@@ -37613,6 +38360,21 @@
       "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
       "task": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
       "notes": "B+C four ships11 levels,12 encounters/6 eggs,one-round market,4 original objects. Harbor refinement remains separate pending item."
+    },
+    "salvageV051Delivery": {
+      "status": "DEVELOPMENT_SELF_TEST_DELIVERED_PENDING_PHONE_USER_ART",
+      "proof": "artifacts/salvage-v051/verification.json",
+      "sourceCommit": "349cc3335534d601c4e24fda7c72de2472df4907",
+      "zipSha256": "9882e4fcf6458d9e232f04c8592b1a0adb534a39525b743506c912cc8e6d9b2d",
+      "database": "lostcargo.route-demo.v1",
+      "taptapVersion": 468993,
+      "formalIntegration": false,
+      "localMacUpdated": true,
+      "evidenceCompleteness": "COMPLETE",
+      "platformStatus": "UPLOADED_DEVELOPMENT_SELF_TEST",
+      "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
+      "task": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
+      "notes": "Four playtest repairs. Current old-schema7 voyage retains original rules until next departure; approved fixed8 gate applies new v051 voyages. Both rollbacks preserved."
     }
   },
   "approvedReferenceManifests": [

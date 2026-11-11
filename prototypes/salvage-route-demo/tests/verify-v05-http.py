@@ -9,9 +9,10 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[3]
 parser = argparse.ArgumentParser()
 parser.add_argument('--url', required=True)
-parser.add_argument('--out', default='artifacts/salvage-v05/package-http.json')
+parser.add_argument('--folder', default='artifacts/salvage-v05')
+parser.add_argument('--out')
 args = parser.parse_args()
-folder = ROOT / 'artifacts/salvage-v05'
+folder = ROOT / args.folder
 build = json.loads((folder / 'build-info.json').read_text())
 rows = []
 with zipfile.ZipFile(folder / build['archive']) as archive:
@@ -23,5 +24,5 @@ with zipfile.ZipFile(folder / build['archive']) as archive:
             rows.append(dict(path=name, bytes=len(data), sha256=hashlib.sha256(data).hexdigest(), status=response.status))
 report = dict(sourceCommit=build['sourceCommit'], zipSha256=build['sha256'],
               baseUrl=args.url, allHttpBytesMatchZip=True, files=rows)
-(ROOT / args.out).write_text(json.dumps(report, indent=2)+'\n')
+(ROOT / args.out if args.out else folder / 'package-http.json').write_text(json.dumps(report, indent=2)+'\n')
 print('Verified', len(rows), 'actual HTTP payloads against frozen ZIP')
