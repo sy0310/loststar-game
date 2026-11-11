@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "REFERENCE_RESEARCH_GATE_DO_NOT_IMPLEMENT_OLD_MASKS",
+  "status": "BC_MECHANISM_APPROVED_OLD_MASKS_AUDIT_ONLY",
   "baseline": "0.4.2/94e606f/TapTap458870",
   "shipHoldTopologies": {
     "description": "Historical unvalidated sample masks kept for audit only. NOT APPROVED, DO NOT COPY to runtime. See referenceResearch. Preserve legacy4x4 packing and mobile usability.",
@@ -183,6 +183,22 @@
       "Backpack Brawl modular containers and mobile snap/rotation",
       "RE4 easy rectangular starter packing"
     ],
-    "nextStep": "prepare A current rectangular vs B DREDGE-inspired contiguous core/edge modules vs C fixed attachable trays using same real items/mobile viewports, then request user review before freezing four final ship masks"
+    "nextStep": "Implement B+C per approved spec, compare against A only as measured baseline, iterate tested masks autonomously, no more product selection approval needed. Do not deploy until legacy+model+mobile checks pass.",
+    "approvedMechanism": "B_PLUS_C"
+  },
+  "approvedCargoDesign": {
+    "selection": "B_PLUS_C",
+    "approvedAt": "2026-11-11",
+    "status": "MECHANISM_APPROVED_EXACT_MASKS_TO_BE_TESTED",
+    "specPath": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+    "mechanics": [
+      "contiguous main hold",
+      "fixed edge or tail tray modules",
+      "monotone usable-cell unlocks on upgrade",
+      "same 0.4.2 paid capacity and UID"
+    ],
+    "noExtraFreeStorage": true,
+    "oldBaseRowsStatus": "HISTORICAL_REJECTED_DO_NOT_IMPLEMENT",
+    "doesNotAuthorize": "copying exact old baseRows"
   }
 }
