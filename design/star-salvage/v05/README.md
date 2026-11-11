@@ -8,7 +8,7 @@
 
 本轮新增并一起验收：
 1. 12个短奇遇+6个轻彩蛋，重点改变首两站总是重复的抽取模式。
-2. 四艘船货舱将来可以因船型不同而改变实际可用格，**但先参照成熟竞品比较A/B/C三种方案**，旧候选mask不直接实现；旧满舱/在途保存必须无损。
+2. **B＋C组合已批准**：四艘船使用连续主舱＋固定侧边/尾部扩舱，实际有效格与现有已购容量一致；Codex可以按权威规格实施与QA，不再等待选型。但旧随手绘制的mask禁止直接拷贝，旧满舱/在途必须无损。
 3. 返港可选黑市二级页：普通卖、一次谈价、快速**虚构NPC**拍卖；不做联网和等待时钟。
 4. 四件真正有辨识度的原创科幻奇物：回声孵囊、吸舱幼体、折时计量盒、引力折面器。借鉴太空惊悚母题，**不直接使用现有电影角色及其标志性形象**。
 5. 港口背景轻量锐度改善作为独立小项，保留当前画风；虫洞返港候选暂不直接改现行费率，留待下一次验证。
@@ -17,7 +17,8 @@
 
 - [当前Codex唯一执行任务](../../../codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md)
 - [12奇遇/6彩蛋与首站去重复](LIGHT_ENCOUNTERS_PLAN.md)
-- **[优先阅读：DREDGE/Backpack Brawl/RE4 已验证装箱机制调研与A/B/C方案](CARGO_REFERENCE_RESEARCH.md)**（**旧自拟四船mask禁止直接实装，须先经用户选择**）
+- **[已确认B＋C组合：货舱实现与旧档安全规范](CARGO_BC_APPROVED_SPEC.md)**（当前货舱唯一权威）
+- [竞品调研：DREDGE / Backpack Brawl / RE4 的机制](CARGO_REFERENCE_RESEARCH.md)（A/B/C旧选型记录，当前不再等待选择）
 - [船形货舱 + 黑市 + 原创电影感奇物（本轮最新补充）](SHIP_HOLDS_MARKET_CURIOS_PLAN.md)
 - [轻奇遇候选事件结构](LIGHT_ENCOUNTERS_CANDIDATES.json)
 - [四船舱体mask/黑市定价及奇物候选结构](SHIP_HOLDS_MARKET_CANDIDATES.json)
