@@ -7,7 +7,9 @@
     const goods = state.cargo.filter(item => !item.contract);
     const selected = goods.find(item => item.uid === selectedUid) || [...goods].sort((a, b) => b.value - a.value)[0];
     const back = '<button class="full" data-act="shop">返回商店</button>';
-    const heading = '<div class="section-head"><h1>港口黑市</h1><span class="tag">虚构NPC · 即时报价</span></div>';
+    const quota=state.market.quota;
+    const quotaText=quota.returnRun?'本趟特殊交易：'+(quota.used?'已使用':'剩余1次'):'安全归航后获得1次特殊交易';
+    const heading = '<div class="section-head"><h1>港口黑市</h1><span class="tag">虚构NPC · 即时报价</span></div><p class="market-quota" role="status">'+quotaText+'</p>';
     if (!selected) return heading + '<section class="panel"><p>货舱里没有待售物品。</p></section>' + back;
     const offer = E.Market.offerFor(state, selected.uid);
     const fee = E.Market.listingFee(selected);
@@ -15,8 +17,10 @@
     const boldMax = Math.max(...E.V05.market.boldPercent) - 100;
     const block = disabled || state.phase !== 'port' ? ' disabled' : '';
     let interaction;
-    if (!offer) {
-      interaction = '<p class="note">每件物品可尝试一次谈价或快拍，报价会保存。低报价可以留货。</p>' +
+    if(!offer&&!E.Market.available(state)) {
+      interaction='<p class="note">'+(quota.returnRun?'本趟机会已使用，下一次安全归航后恢复。':'先完成一趟航行并安全归港。')+'其他货物可按普通价出售。</p>';
+    } else if (!offer) {
+      interaction = '<p class="note">本趟只能选一件谈价或快拍，报价会保存。低价留货也消耗机会。</p>' +
         '<div class="split"><button data-market-style="cautious" data-market-uid="'+selected.uid+'"'+block+'>谨慎开价<br><small>争取 +'+cautiousMax+'%</small></button>' +
         '<button data-market-style="bold" data-market-uid="'+selected.uid+'"'+block+'>大胆开价<br><small>争取 +'+boldMax+'%</small></button></div>' +
         '<div class="market-auction"><h2>NPC快拍</h2><p>挂牌费 '+fee+' 零件，确认开始时收取。</p><div class="split">' +

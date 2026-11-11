@@ -173,7 +173,7 @@ test('rotated T and L cross real tray edges, invalid dragging returns to saved p
 });
 test('quote confirmation can cancel, one NPC listing fee and bids survive refresh', async ({ page }) => {
   await boot(page);
-  const value = goods(ship('starter'));
+  const value = goods(require('../v051-fixtures.cjs').safePort(271,27049));
   await load(page, value);
   await tap(page, '[data-tab=shop]');
   await tap(page, '[data-act=market]');
@@ -203,7 +203,7 @@ test('quote confirmation can cancel, one NPC listing fee and bids survive refres
 });
 test('two windows accept the same offer once, ordinary sale invalidates stale quotes', async ({ page, context }) => {
   await boot(page);
-  let value = goods(ship('starter'));
+  let value = goods(require('../v051-fixtures.cjs').safePort(271,27049));
   value = act(E, value, 'marketQuote', { uid: 1, style: 'bold' });
   const offer = value.market.offers[0];
   await load(page, value);
@@ -226,7 +226,7 @@ test('two windows accept the same offer once, ordinary sale invalidates stale qu
 });
 test('failed storage cannot retain a quote, consume RNG, charge fee or lose cargo', async ({ page }) => {
   await boot(page);
-  const value = goods(ship('starter'));
+  const value = goods(require('../v051-fixtures.cjs').safePort(271,27049));
   await load(page, value);
   await page.evaluate(() => {
     window.v05OriginalPut = IDBObjectStore.prototype.put;

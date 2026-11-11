@@ -152,7 +152,7 @@ test('all12 new factories have real choices, safe leaving and atomic costs/loot'
       const result = E.dispatch(state, action);
       assert(result.ok, id + '/' + choice.id + ':' + result.message);
       assert.deepEqual(state, before);
-      assert(result.state.fuel >= E.homeCost(result.state));
+      assert(result.state.fuel >= E.safeReturnReserve(result.state));
       assert.deepEqual(E.restore(result.state), result.state);
       assert(!E.dispatch(result.state, action).ok);
     }
@@ -209,9 +209,8 @@ test('six eggs trigger legally, cap once per voyage, and export contains only se
   }
 });
 
-function marketGoods(seed = 12) {
-  const state = E.create(seed);
-  state.money = 454;
+function marketGoods(seed = 12, money = 454) {
+  const state = require('./v051-fixtures.cjs').safePort(seed,money);
   return loaded(state, [good(1, 'line2', 'time_measure', 100), good(2, 'point1', 'fuel_can', 50)]);
 }
 test('negotiation freezes once, leaves route RNG and UID intact, accepts one sale only', () => {
@@ -259,8 +258,7 @@ test('auction fee and3 fictional bids persist, failed sale retains goods and nor
   assert(sawNoSale);
 });
 test('quote cancellation, insufficient fee, stale revision and invalid input change nothing', () => {
-  const state = marketGoods();
-  state.money = 0;
+  const state = marketGoods(12,0);
   const before = copy(state);
   for (const action of [{ type: 'marketQuote', uid: 1, style: 'auction', reservePercent: 100 }, { type: 'marketQuote', uid: 1, style: 'auction', reservePercent: 1 }, { type: 'marketQuote', uid: 99, style: 'bold' }, { type: 'marketQuote', uid: 1, style: 'bold', expected: 99 }]) {
     assert(!E.dispatch(state, action).ok);
@@ -283,6 +281,7 @@ test('rescue preserves quoted carried goods and loses only this voyage cargo', (
   const offer = copy(state.market.offers[0]);
   state = act(E, state, 'depart');
   state = act(E, state, 'travel', { id: state.route[0].uid });
+  state.event.id='tank'; // Explicit isolated QA retains the carried-goods rescue regression.
   state = act(E, state, 'choose', { id: 'force', nonce: state.event.nonce });
   assert.equal(state.cargo.length, 5);
   // Explicit QA damage. The ordinary rescue action still selects real acquiredRun ownership.
@@ -304,8 +303,7 @@ test('buying port stock and reselling through any market style cannot generate c
   for (const [id, product] of Object.entries(E.PORT.products)) {
     for (const style of ['cautious', 'bold', 'auction']) {
       for (let seed = 1; seed <= 128; seed++) {
-        let state = E.create(seed);
-        state.money = 1000;
+        let state = require('./v051-fixtures.cjs').safePort(seed,1000);
         state = act(E, state, 'buyProduct', { id });
         const uid = state.cargo[0].uid;
         state = act(E, state, 'marketQuote', { uid, style, reservePercent: 100 });

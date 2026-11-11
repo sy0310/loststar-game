@@ -36,3 +36,23 @@ body[data-screen=fleet] #main{min-height:0}.current-ship{margin-bottom:0}
 .hold-plan{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid #51465f}.hold-plan-grid{display:grid;gap:2px;flex-shrink:0}.hold-plan-grid i{width:12px;height:12px;border:1px solid #665778}.hold-plan-grid .main-now{background:#665778}.hold-plan-grid .tray-now{background:#a66b55;border-color:#f4c785}.hold-plan-grid .unlock-next{background:#f4c785;border-color:#ffe6b5}.hold-plan-grid .unlock-later{background:#30283f;border-style:dashed}.hold-plan-grid .hull-wall{border-color:transparent;background:#211e2d}.hold-plan p{font-size:.8rem;margin:4px 0}.hold-plan small{font-size:.7rem;color:#b6a1bd}
 .market-goods{display:flex;gap:8px;overflow-x:auto;padding:3px 0 10px;max-width:100%}.market-goods button{flex:0 0 98px;padding:7px;display:grid;gap:5px;font-size:.72rem;justify-items:center}.market-goods button[aria-pressed=true]{border-color:#f4c785;background:#4b3944}.market-goods img{width:60px;height:48px;object-fit:contain;image-rendering:pixelated}.market-item-heading{display:flex;gap:12px;align-items:center}.market-item-heading>img{width:92px;height:76px;object-fit:contain;image-rendering:pixelated}.market-item-heading p{font-size:.8rem}.market-auction{border-top:1px solid #665778;margin-top:14px;padding-top:12px}.market-auction h2{font-size:1rem}.market-auction p,.market-quote p{font-size:.85rem}.market-quote{padding-top:12px}.market-quote strong{color:#f4c785}.npc-bids{list-style:none;padding:0}.npc-bids li{display:flex;justify-content:space-between;font-size:.8rem;padding:7px 0;border-bottom:1px solid #51465f}.event-flavor{border-left:2px solid #f4c785;padding:8px 10px;color:#ecdbc1;font-size:.8rem}.event-featured-item{position:absolute;width:90px;height:90px;object-fit:contain;image-rendering:pixelated;right:18px;bottom:20px;filter:drop-shadow(3px 5px 0 #211e2d)}
 .npc-bids li{animation:npc-quote .18s ease-out both}.npc-bids li:nth-child(2){animation-delay:.06s}.npc-bids li:nth-child(3){animation-delay:.12s}@keyframes npc-quote{from{opacity:.3;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.npc-bids li{animation:none}}
+
+/* Compact, independent loot surface. These sprites never inherit hero cover sizing. */
+.event-loot-preview,.received-loot{border:1px solid #665778;border-radius:9px;background:#242039;padding:6px 8px;margin:10px 0}
+.event-loot-preview>small,.received-loot>small{display:block;color:#cdb9d6;font-size:.7rem;line-height:14px;margin-bottom:2px}
+.loot-strip{display:flex;gap:7px;overflow-x:auto;max-width:100%;padding-bottom:2px}
+.loot-card{flex:0 0 82px;margin:0;text-align:center;min-width:0}
+.loot-frame{display:block;position:relative;width:80px;height:60px;border:1px solid #51465f;background:#211e30;overflow:hidden}
+.loot-frame>img.loot-body{position:absolute;left:50%;top:50%;max-width:none;object-fit:contain;image-rendering:pixelated;transform-origin:center;z-index:2;pointer-events:none}
+.loot-card figcaption{font-size:.65rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:14px}
+.new-discovery{display:inline-block;font-size:.7rem;vertical-align:middle;margin-left:8px;padding:3px 7px;background:#514451;color:#f4c785;border:1px solid #aa8872;border-radius:4px}
+.anomaly-card{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid #b49bce;background:#353047;border-radius:8px;margin:12px 0}
+.anomaly-card b{font-size:.85rem;color:#f4c785}.anomaly-card p{font-size:.8rem;line-height:1.5;margin:5px 0 0}
+.anomaly-signal{display:grid;place-items:center;flex:0 0 30px;height:30px;border:2px dotted #f4c785;animation:anomaly-signal 1.2s steps(4) 3}
+@keyframes anomaly-signal{50%{border-color:#9b83ab;opacity:.6}}
+.return-options{display:grid;gap:8px;margin:10px 0}.return-options button{font-size:.85rem;min-height:46px}
+.gate-return{border:2px solid #b49bce;background:#514451;color:#f4d49e;box-shadow:inset 0 0 0 2px #30283f}
+.gate-forecast{font-size:.76rem;color:#e7c897}.market-quota{border:1px solid #aa8872;background:#353047;color:#f4d49e;padding:10px;font-size:.85rem;border-radius:6px}
+@media(prefers-reduced-motion:reduce){.anomaly-signal{animation:none}}
+.gate-ready{display:flex;align-items:center;justify-content:center;gap:12px;padding:6px;color:#d6c0e5;font-size:.78rem}
+.gate-ready i{display:block;width:30px;height:24px;border:3px double #b49bce;border-radius:50%;box-shadow:0 0 0 2px #665778,inset 0 0 0 2px #514451;background:#30283f}

@@ -1,7 +1,7 @@
 /* Lost Cargo • independent route prototype. No connection to previous Loststar saves. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.LostCargo=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
 'use strict';
-const VERSION='0.5.0',SCHEMA=7,KEY='lostcargo.route-demo.v1';
+const VERSION='0.5.1',SCHEMA=8,KEY='lostcargo.route-demo.v1';
 const Cargo=typeof module==='object'&&module.exports?require('./cargo-layout.js'):globalThis.LostCargoLayout;
 const BALANCE=typeof module==='object'&&module.exports?require('../../../design/star-salvage/BALANCE_V01.json'):globalThis.LostCargoBalance;
 const PORT=typeof module==='object'&&module.exports?require('../../../design/star-salvage/v041/BALANCE_V041.json'):globalThis.LostCargoPortBalance;
@@ -9,6 +9,7 @@ const Holds=typeof module==='object'&&module.exports?require('./ship-holds.js'):
 const NewEncounters=typeof module==='object'&&module.exports?require('./encounters-v05.js'):globalThis.SalvageEncounters;
 const Market=typeof module==='object'&&module.exports?require('./market-v05.js'):globalThis.SalvageMarket;
 const V05=typeof module==='object'&&module.exports?require('../../../design/star-salvage/v05/BALANCE_V05.json'):globalThis.LostCargoV05Balance;
+const V051=typeof module==='object'&&module.exports?require('../../../design/star-salvage/v051/BALANCE_V051.json'):globalThis.LostCargoV051Balance;
 const ITEM_IDS=['metal_crate','energy_battery','nav_chip','broken_engine','medkit','fuel_can','sample','toolbox',...Object.keys(NewEncounters.curios)];
 const LEGACY_ITEM_IDS={
 '熔边螺母':'toolbox','散落接头':'broken_engine','烧蚀回收板':'metal_crate','固定卡扣':'toolbox','薄片垫圈':'metal_crate','可用散热片':'metal_crate','整组热交换器':'broken_engine','旧式时差盒':'energy_battery','梦话行李箱':'metal_crate','自封修补胶':'toolbox','反光航标核心':'sample','稀金属导体束':'energy_battery','绝缘端帽':'toolbox','已找回的信标':'nav_chip','折叠辅助发动机':'broken_engine','辅助发动机':'broken_engine','发动机控制器':'nav_chip','备用导航仪':'nav_chip','船用修补卷':'toolbox','未寄出的航行日志':'sample'};
@@ -19,7 +20,9 @@ function random(s){let x=s.rng>>>0;x^=x<<13;x^=x>>>17;x^=x<<5;s.rng=(x>>>0)||1;r
 function roll(s,a,b){return a+Math.floor(random(s)*(b-a+1));}
 function log(s,text,type='info'){s.log.push({seq:s.seq,run:s.runNo,depth:s.depth,type,text});s.log=s.log.slice(-150);}
 function telemetry(s,kind,detail){s.telemetry.push({seq:s.seq,run:s.runNo,depth:s.depth,kind,...detail});s.telemetry=s.telemetry.slice(-400);}
-function create(seed){return {hold:{mode:'bc',topologyVersion:Holds.version},discoveries:{encounters:[],eggs:[],mementoClaimed:false},market:Market.create(seed),schema:SCHEMA,version:VERSION,revision:0,seq:0,rng:(seed>>>0)||315766,phase:'port',runNo:0,fuel:BALANCE.initial.fuel,hull:BALANCE.initial.hull,money:BALANCE.initial.money,debt:BALANCE.initial.debt,capacity:BALANCE.initial.cargoCapacity,cargo:[],missionSlot:null,fleet:{ownedShipIds:['starter'],equippedShipId:'starter',cargoLevels:{starter:0},fuelLevels:{starter:0},hullLevels:{starter:0},parked:{}},missions:[],activeMissionId:null,nextMissionUid:1,voyageShip:null,cargoGrid:{width:4,height:4,placements:[]},tools:[],archive:[],depth:0,distance:0,lastLeg:0,route:[],event:null,result:null,history:[],legs:[],log:[],telemetry:[],ledger:[],run:null,summary:null,helpUsed:false,flags:{},nextUid:1};}
+function freshProgress(){return{eligibleVoyages:0,newOptionShown:false,eggSeen:false,dryReturns:0};}
+function freshDiscovery(){return{eligible:false,newCandidateShown:false,arrivedNew:false,eligibleRolls:0};}
+function create(seed){return {progress:freshProgress(),hold:{mode:'bc',topologyVersion:Holds.version},discoveries:{encounters:[],eggs:[],mementoClaimed:false},market:Market.create(seed),schema:SCHEMA,version:VERSION,revision:0,seq:0,rng:(seed>>>0)||315766,phase:'port',runNo:0,fuel:BALANCE.initial.fuel,hull:BALANCE.initial.hull,money:BALANCE.initial.money,debt:BALANCE.initial.debt,capacity:BALANCE.initial.cargoCapacity,cargo:[],missionSlot:null,fleet:{ownedShipIds:['starter'],equippedShipId:'starter',cargoLevels:{starter:0},fuelLevels:{starter:0},hullLevels:{starter:0},parked:{}},missions:[],activeMissionId:null,nextMissionUid:1,voyageShip:null,cargoGrid:{width:4,height:4,placements:[]},tools:[],archive:[],depth:0,distance:0,lastLeg:0,route:[],event:null,result:null,history:[],legs:[],log:[],telemetry:[],ledger:[],run:null,summary:null,helpUsed:false,flags:{},nextUid:1};}
 function shipStats(s,shipId=s.fleet.equippedShipId){const spec=PORT.ships[shipId],f=s.fleet,cargoLevel=f.cargoLevels[shipId]||0,fuelLevel=f.fuelLevels[shipId]||0,hullLevel=f.hullLevels[shipId]||0;return{...spec,id:shipId,cargoLevel,fuelLevel,hullLevel,height:spec.height+cargoLevel,maxFuel:spec.fuelBase+fuelLevel*spec.fuelStep,maxHull:spec.hullBase+hullLevel*spec.hullStep};}
 function resourceCaps(s){const v=['route','event','result'].includes(s.phase)?s.voyageShip:null,st=shipStats(s);return{fuel:v?.maxFuel??st.maxFuel,hull:v?.maxHull??st.maxHull};}
 function resourceLimit(s,field){return resourceCaps(s)[field];}
@@ -49,7 +52,23 @@ function supplyQuote(s,type,full=false){const base=portQuote(s,type),amount=full
 function finishMission(s,rescue){const m=activeMission(s);if(!m||m.status!=='active')return;const spec=PORT.missions[m.type];const eligible=!rescue&&s.depth>=spec.minimumNodes&&s.cargo.filter(x=>x.acquiredRun===s.runNo).length>=spec.minimumItems&&(!spec.recordBox||!!s.missionSlot);if(eligible){m.status='complete';m.completedRun=s.runNo;if(m.legacyAutoSettlement){cash(s,spec.reward,'reward');s.ledger.at(-1).missionId=m.uid;m.status='claimed';m.claimedRun=s.runNo;s.activeMissionId=null;}}else if(rescue){m.status='abandoned';s.activeMissionId=null;}else{m.status='accepted';m.targetRun=s.runNo+1;}}
 function used(s){return s.cargo.reduce((n,x)=>n+x.cells,0);}
 function homeCost(s,dist=s.distance){return dist<=0?0:3+Math.ceil(dist/2);}
-function spare(s){return Math.max(0,s.fuel-homeCost(s));}
+function returnQuotes(s, depth=s.depth, distance=s.distance) {
+ const quotes=[{method:'normal',cost:homeCost(s,distance)}];
+ if(distance>0 && s.run?.returnRules?.version==='v051' && V051.gate.depths.includes(depth)) {
+  quotes.push({method:'gate',cost:s.run.returnRules.gateFuel});
+ }
+ return quotes;
+}
+function returnHint(s) {
+ if(s.run?.returnRules?.version!=='v051') return '本趟沿用旧航道，下趟启用折返信标。';
+ if(V051.gate.depths.includes(s.depth)) return '本站折返信标已就绪，可选择固定'+s.run.returnRules.gateFuel+'燃料返港。';
+ const next=V051.gate.depths.find(depth=>depth>s.depth);
+ return next?'第'+next+'站附近有折返信标，抵达后可用。当前仍按原航道预留。':'本段按已走距离预留返港油，加油不缩短距离。';
+}
+function safeReturnReserve(s, depth=s.depth, distance=s.distance) {
+ return Math.min(...returnQuotes(s,depth,distance).map(quote=>quote.cost));
+}
+function spare(s){return Math.max(0,s.fuel-safeReturnReserve(s));}
 function cargoValue(s){return s.cargo.filter(x=>!x.contract).reduce((n,x)=>n+x.value,0);}
 function item(name,value,cells=2,ability=null,shapeId={1:'point1',2:'line2',3:'ell3',4:'square4',5:'ell5',6:'rect6',7:'ell7',8:'rect8'}[cells]){return {name,value,cells,ability,shapeId,shapeVersion:1,itemId:LEGACY_ITEM_IDS[name]||'metal_crate'};}
 function option(id,label,desc,effect={},extra={}){return {id,label,desc,effect,...extra};}
@@ -104,31 +123,73 @@ function routeOptions(s) {
   const selected = available.find(id => (target -= weight(id)) <= 0);
   ids.push(selected);
  }
- return ids.map((id, index) => {
+ if(s.run.returnRules.version==='v051' && s.depth===1 && !s.progress.newOptionShown) {
+  const unseen=id=>NewEncounters.metadata[id] && !s.discoveries.encounters.some(seen=>seen.id===id);
+  if(!ids.some(unseen)) {
+   const safe=pool.filter(id=>unseen(id) && ['comet_label','ring_sampler','silent_fuel','drifting_cup','lost_probe','backwards_clock'].includes(id));
+   if(safe.length) ids[0]=safe[roll(s,0,safe.length-1)];
+  }
+ }
+ const routes=ids.map((id, index) => {
   const extra = index === 0 ? 0 : roll(s, 1, 3);
   return { id, uid: `${s.runNo}:${s.depth}:${index}`, name: TYPES[id], signal: SIGNALS[id], extra,
    fuel: forwardCost(s.depth, s.lastLeg, extra, s.voyageShip?.fuelPercent || 100), risk: riskFor(id), depth };
  });
+ if(s.run.returnRules.version==='v051' && routes.some(route=>NewEncounters.metadata[route.id] && !s.discoveries.encounters.some(seen=>seen.id===route.id) && quote(s,route).enabled)) {
+  s.progress.newOptionShown=true;
+  s.run.discovery.newCandidateShown=true;
+ }
+ return routes;
 }
 function discoverArrival(s) {
- if (s.run.contentPoolVersion !== 'v05') return;
- if (!s.discoveries.encounters.some(seen => seen.id === s.event.id)) {
-  s.discoveries.encounters.push({ id: s.event.id, title: TYPES[s.event.id] || '陌生的梦话', run: s.runNo, depth: s.depth });
+ if(s.run.contentPoolVersion!=='v05') return;
+ const current=s.run.returnRules.version==='v051';
+ const first=!s.discoveries.encounters.some(seen=>seen.id===s.event.id);
+ if(first) s.discoveries.encounters.push({id:s.event.id,title:TYPES[s.event.id]||'陌生的梦话',run:s.runNo,depth:s.depth});
+ if(current) {
+  if(NewEncounters.metadata[s.event.id]) s.run.discovery.arrivedNew=true;
+  if(s.depth>=2 && !s.run.discovery.eligible) {
+   s.run.discovery.eligible=true;
+   s.progress.eligibleVoyages++;
+  }
  }
- if (s.run.eggId) return;
- const candidates = NewEncounters.eggCandidates(s);
- if (!candidates.length || roll(s, 1, 100) > V05.encounters.eggChancePercent) return;
- const id = candidates[roll(s, 0, candidates.length - 1)];
- s.run.eggId = id;
- s.discoveries.eggs.push({ id, text: NewEncounters.eggs[id], run: s.runNo, depth: s.depth });
- log(s, NewEncounters.eggs[id], 'observation');
+ if(s.run.eggId) return;
+ let candidates=NewEncounters.eggCandidates(s);
+ const guarantee=current && s.depth>=2 &&
+  (!s.progress.eggSeen && s.progress.eligibleVoyages>=V051.discovery.initialEligibleVoyages || s.progress.dryReturns>=V051.discovery.drySafeReturns);
+ // A navigation acknowledgement is compatible with every real arrival at depth2+.
+ // A repeated acknowledgement is read-only and never reissues the memento.
+ if(guarantee && !candidates.length) candidates=['early_signal'];
+ if(!candidates.length) return;
+ if(current) s.run.discovery.eligibleRolls++;
+ if(!guarantee && roll(s,1,100)>V05.encounters.eggChancePercent) return;
+ const id=candidates[roll(s,0,candidates.length-1)];
+ s.run.eggId=id;
+ const seen=s.discoveries.eggs.some(record=>record.id===id);
+ if(!seen) s.discoveries.eggs.push({id,text:NewEncounters.eggs[id],run:s.runNo,depth:s.depth});
+ if(current) {
+  s.run.eggOccurrence={id,depth:s.depth,first:!seen};
+  s.progress.eggSeen=true;
+ }
+ log(s,NewEncounters.eggs[id],'observation');
 }
-function quote(s,r){const out=forwardCost(s.depth,s.lastLeg,r.extra,s.voyageShip?.fuelPercent||100),ret=homeCost(s,s.distance+out),arrival=s.fuel-out;return{out,returnCost:ret,arrival,free:arrival-ret,enabled:s.phase==='route'&&s.hull>0&&s.depth<8&&arrival>=ret};}
+function quote(s,r) {
+ const out=forwardCost(s.depth,s.lastLeg,r.extra,s.voyageShip?.fuelPercent||100);
+ const distance=s.distance+out;
+ const quotes=returnQuotes(s,s.depth+1,distance);
+ const ret=Math.min(...quotes.map(value=>value.cost));
+ const arrival=s.fuel-out;
+ return {out,returnCost:ret,arrival,free:arrival-ret,
+  normalReturnCost:homeCost(s,distance),gateReturnCost:quotes.find(value=>value.method==='gate')?.cost??null,
+  enabled:s.phase==='route'&&s.hull>0&&s.depth<8&&arrival>=ret};
+}
 function baseEncounter(s){if(!s.event)return null;if(s.event.id==='dream'&&!hasDream(s))return{id:'dream',nonce:s.event.nonce,title:'接收已关闭',kind:'anomaly',text:'触发物已不在货舱，这次调查没有继续。',choices:[option('leave','离开现场','没有额外损失',{})]};const ctx={...s,depth:s.depth,...s.event.context};const ev={...EVENTS[s.event.id](ctx),id:s.event.id,nonce:s.event.nonce},percent=s.voyageShip?.damagePercent||100;ev.choices=ev.choices.map(c=>({...c,effect:{...c.effect,...(c.effect.hull<0?{hull:-Math.ceil(-c.effect.hull*percent/100)}:{})},...(c.risk?{risk:c.risk.map(n=>Math.ceil(n*percent/100))}:{})}));return ev;}
 function encounter(s) {
  const event = baseEncounter(s);
  if (!event) return null;
- const egg = s.discoveries.eggs.find(seen => seen.run === s.runNo && seen.depth === s.depth);
+ const occurrence=s.run?.eggOccurrence;
+ const egg=occurrence?.depth===s.depth ? {...occurrence,text:NewEncounters.eggs[occurrence.id]} : s.discoveries.eggs.find(seen=>seen.run===s.runNo&&seen.depth===s.depth);
+ event.newDiscovery=!!NewEncounters.metadata[event.id] && s.discoveries.encounters.some(seen=>seen.id===event.id&&seen.run===s.runNo&&seen.depth===s.depth);
  if (egg) event.eggText = egg.text;
  if (egg?.id === 'shifting_coordinates' && event.id === 'foldback_marker' && !s.discoveries.mementoClaimed) {
   event.choices.unshift(option('memento', '收下漂移导航盘', '1格 · 只是一件纪念物', {
@@ -153,7 +214,7 @@ function checkChoice(s,c,options={}){
   if(!Cargo.extend(items,placements,cargoSpace(s)))return'货舱形状需要整理，请调整位置后装载';
  }return null;
 }
-function routeView(s){return{nodes:s.history.map((id,i)=>({uid:`visited:${s.runNo}:${i+1}`,id,name:TYPES[id],signal:SIGNALS[id],risk:riskFor(id),depth:i+1,legFuel:s.legs[i],current:i===s.depth-1&&!['port','summary'].includes(s.phase)})),candidates:clone(s.route),returnCost:homeCost(s),done:['port','summary'].includes(s.phase),currentDepth:s.depth};}
+function routeView(s){return{nodes:s.history.map((id,i)=>({uid:`visited:${s.runNo}:${i+1}`,id,name:TYPES[id],signal:SIGNALS[id],risk:riskFor(id),depth:i+1,legFuel:s.legs[i],current:i===s.depth-1&&!['port','summary'].includes(s.phase)})),candidates:clone(s.route),returnCost:safeReturnReserve(s),returnQuotes:returnQuotes(s),returnMethod:s.summary?.returnMethod??null,done:['port','summary'].includes(s.phase),currentDepth:s.depth};}
 function cargoDraft(s,action){
  const fail=message=>({ok:false,message,items:[],placements:[],newUids:[]});
  if(!action||action.expected!==undefined&&action.expected!==s.revision)return fail('这份装载方案已过期，请按当前货舱重开');
@@ -189,9 +250,14 @@ function apply(s,e){const changes=[];if(e.money){const sold=e.remove?s.cargo.fin
  if(e.remove){s.cargo=s.cargo.filter(x=>x.uid!==e.remove);changes.push('出售1件货物');}for(const x of e.loot||[]){addItem(s,{...x,...(e.flag==='dream'?{story:'dream'}:{})});changes.push(`装入：${x.name}`);}if(e.flag)s.flags[e.flag]=true;if(e.memento)s.discoveries.mementoClaimed=true;return changes;
 }
 function summaryView(s){const r=s.summary;if(!r)return null;const a=s.run.account;return{...r,...a,spent:a.eventSpent,earned:a.eventIncome+a.reward,sold:a.salesCurrent+a.salesCarried,cashDelta:s.money-a.opening,cargoValue:cargoValue(s),currentCargoValue:s.cargo.filter(x=>!x.contract&&x.acquiredRun===s.runNo).reduce((n,x)=>n+x.value,0),operatingNet:a.eventIncome+a.reward+a.salesCurrent-a.eventSpent-a.rescueFee-a.supplySpent-a.repairSpent};}
-function finish(s,rescue){const price=homeCost(s);let lost=[];if(rescue){lost=s.cargo.filter(x=>x.acquiredRun===s.runNo);s.cargo=s.cargo.filter(x=>x.acquiredRun!==s.runNo);cash(s,-Math.min(BALANCE.rescue.maximumCashCharge,s.money),'rescueFee');s.fuel=Math.max(BALANCE.rescue.minimumFuelAfter,s.fuel);s.hull=Math.max(BALANCE.rescue.minimumHullAfter,s.hull);}else{s.fuel-=price;}finishMission(s,rescue);
+function finish(s,rescue,method='normal'){const price=returnQuotes(s).find(quote=>quote.method===method)?.cost??homeCost(s);let lost=[];if(rescue){lost=s.cargo.filter(x=>x.acquiredRun===s.runNo);s.cargo=s.cargo.filter(x=>x.acquiredRun!==s.runNo);cash(s,-Math.min(BALANCE.rescue.maximumCashCharge,s.money),'rescueFee');s.fuel=Math.max(BALANCE.rescue.minimumFuelAfter,s.fuel);s.hull=Math.max(BALANCE.rescue.minimumHullAfter,s.hull);}else{s.fuel-=price;}finishMission(s,rescue);
  if(s.missionSlot&&rescue)lost.push(s.missionSlot);if(activeMission(s)?.status==='accepted'&&activeMission(s).type==='survey'&&!rescue){if(s.missionSlot)s.missionSlot.acquiredRun=s.runNo+1;}else s.missionSlot=null;
- s.summary={run:s.runNo,depth:s.depth,distance:s.distance,returnFuel:rescue?0:price,rescue,lost:lost.filter(x=>!x.contract).length,lostUids:lost.map(x=>x.uid),reward:s.run.account.reward,cashDelta:s.money-s.run.account.opening};s.phase='summary';s.event=null;s.result=null;s.route=[];log(s,rescue?'拖航完成。本趟新货用于抵扣救援成本，跨趟旧货与永久设备保留。':'平安返港。返航油已扣，货物与港口操作由你决定。');telemetry(s,'return',{rescue,fuel:s.fuel,hull:s.hull,money:s.money,cargoValue:cargoValue(s)});
+ s.summary={run:s.runNo,depth:s.depth,distance:s.distance,returnFuel:rescue?0:price,returnMethod:rescue?'rescue':method,rescue,lost:lost.filter(x=>!x.contract).length,lostUids:lost.map(x=>x.uid),reward:s.run.account.reward,cashDelta:s.money-s.run.account.opening};s.phase='summary';s.event=null;s.result=null;s.route=[];log(s,rescue?'拖航完成。本趟新货用于抵扣救援成本，跨趟旧货与永久设备保留。':'平安返港。返航油已扣，货物与港口操作由你决定。');telemetry(s,'return',{rng:s.rng,rescue,method:rescue?'rescue':method,fuelCost:rescue?0:price,fuel:s.fuel,hull:s.hull,money:s.money,cargoValue:cargoValue(s)});
+ if(!rescue) {
+  Market.safeReturn(s);
+  if(s.run.returnRules.version==='v051' && s.run.discovery.eligible) s.progress.dryReturns=s.run.eggId?0:s.progress.dryReturns+1;
+ }
+ if(!rescue && method==='gate') log(s,'折返信标已使用，实扣'+price+'燃料，返港结算已保存。');
 }
 function portQuote(s,type){const field=type==='buyFuel'?'fuel':'hull',unit=type==='buyFuel'?BALANCE.port.fuelUnitPrice:BALANCE.port.repairUnitPrice;const amount=Math.max(0,Math.min(BALANCE.port.maximumServiceIncrement,resourceLimit(s,field)-s[field],Math.floor(s.money/unit)));return{amount,cost:amount*unit,field};}
 function preparation(s){const cost=(Math.max(0,12-s.fuel)*BALANCE.port.fuelUnitPrice+Math.max(0,25-s.hull)*BALANCE.port.repairUnitPrice);return{minimumCost:cost,needsAid:s.phase==='port'&&cost>0&&s.money<cost};}
@@ -201,11 +267,11 @@ function dispatch(input,action){
  case'depart':{
   const plan=plannedCargo(s,action);if(!plan.ok)return fail(plan.message);
   s.runNo++;s.depth=0;s.distance=0;s.lastLeg=0;s.history=[];s.legs=[];s.flags={};s.event=null;s.result=null;s.summary=null;
-  s.voyageShip={shipId:s.fleet.equippedShipId,cargoLevel:shipStats(s).cargoLevel,fuelLevel:shipStats(s).fuelLevel,hullLevel:shipStats(s).hullLevel,maxFuel:shipStats(s).maxFuel,maxHull:shipStats(s).maxHull,fuelPercent:shipStats(s).fuelPercent,damagePercent:shipStats(s).damagePercent};s.run={contentPoolVersion:'v05',eggId:null,startMoney:s.money,startFuel:s.fuel,startHull:s.hull,spent:0,earned:0,contractActive:activeMission(s)?.type==='survey'&&activeMission(s)?.status==='accepted',account:freshAccount(s.money)};
+  s.voyageShip={shipId:s.fleet.equippedShipId,cargoLevel:shipStats(s).cargoLevel,fuelLevel:shipStats(s).fuelLevel,hullLevel:shipStats(s).hullLevel,maxFuel:shipStats(s).maxFuel,maxHull:shipStats(s).maxHull,fuelPercent:shipStats(s).fuelPercent,damagePercent:shipStats(s).damagePercent};s.run={returnRules:{version:'v051',gateFuel:V051.gate.fuel},discovery:freshDiscovery(),eggOccurrence:null,contentPoolVersion:'v05',eggId:null,startMoney:s.money,startFuel:s.fuel,startHull:s.hull,spent:0,earned:0,contractActive:activeMission(s)?.type==='survey'&&activeMission(s)?.status==='accepted',account:freshAccount(s.money)};
   const task=activeMission(s);if(task&&task.status==='accepted'){task.status='active';task.targetRun=s.runNo;if(s.missionSlot)s.missionSlot.acquiredRun=s.runNo;}s.cargoGrid.placements=plan.placements;
   s.phase='route';s.route=routeOptions(s);s.helpUsed=false;log(s,s.run.contractActive?'已出发，测绘记录箱随船。':'已出发，航行与返港由你决定。');telemetry(s,'depart',{fuel:s.fuel,hull:s.hull,cargo:s.cargo.map(x=>({uid:x.uid,sourceRun:x.acquiredRun}))});break;
  }
- case'travel':{if(s.phase!=='route')return fail('请先完成当前事件');const r=s.route.find(x=>x.uid===action.id);if(!r)return fail('航点已变化');const q=quote(s,r);if(!q.enabled)return fail('无法抵达并预留返航油');s.fuel-=q.out;s.distance+=q.out;s.legs.push(q.out);s.lastLeg=q.out;s.depth++;s.history.push(r.id);const id=hasDream(s)&&!s.flags.dreamDone&&s.depth>2&&!['station','trader','workshop'].includes(r.id)?'dream':r.id;if(id==='dream')s.flags.dreamDone=true;s.event={id,nonce:`${s.runNo}/${s.depth}`,context:{fuel:s.fuel,hull:s.hull,cargo:clone(s.cargo),missionSlot:clone(s.missionSlot)}};s.phase='event';s.route=[];discoverArrival(s);log(s,`抵达第${s.depth}航点：${r.name}。航行耗油${q.out}，当前返航需${homeCost(s)}。`);telemetry(s,'travel',{signal:r.id,burn:q.out,returnFuel:homeCost(s),spare:spare(s)});break;}
+ case'travel':{if(s.phase!=='route')return fail('请先完成当前事件');const r=s.route.find(x=>x.uid===action.id);if(!r)return fail('航点已变化');const q=quote(s,r);if(!q.enabled)return fail('无法抵达并预留返航油');s.fuel-=q.out;s.distance+=q.out;s.legs.push(q.out);s.lastLeg=q.out;s.depth++;s.history.push(r.id);const id=hasDream(s)&&!s.flags.dreamDone&&s.depth>2&&!['station','trader','workshop'].includes(r.id)?'dream':r.id;if(id==='dream')s.flags.dreamDone=true;s.event={id,nonce:`${s.runNo}/${s.depth}`,context:{fuel:s.fuel,hull:s.hull,cargo:clone(s.cargo),missionSlot:clone(s.missionSlot)}};s.phase='event';s.route=[];discoverArrival(s);log(s,`抵达第${s.depth}航点：${r.name}。航行耗油${q.out}，当前可用返航需${safeReturnReserve(s)}。`);telemetry(s,'travel',{signal:r.id,burn:q.out,returnFuel:safeReturnReserve(s),spare:spare(s)});break;}
  case'choose':{
   if(s.phase!=='event'||s.event.nonce!==action.nonce)return fail('此事件已经处理');
   const ev=encounter(s),c=ev.choices.find(x=>x.id===action.id),err=checkChoice(s,c,{ignoreCargo:true});if(err)return fail(err);
@@ -218,7 +284,7 @@ function dispatch(input,action){
   const changes=apply(s,e);s.cargoGrid.placements=plan.placements;
   s.run.spent=s.run.account.eventSpent;s.run.earned=s.run.account.eventIncome;
   const delta={money:s.money-before.money,fuel:s.fuel-before.fuel,hull:s.hull-before.hull,cargoCount:s.cargo.length-before.cargoCount,cargoCells:used(s)-before.cargoCells};
-  const cargoChanges={added:s.cargo.filter(x=>!cargoBefore.some(old=>old.uid===x.uid)).map(({uid,name,cells})=>({uid,name,cells})),removed:cargoBefore.filter(x=>!s.cargo.some(next=>next.uid===x.uid)).map(x=>({...x,reason:x.uid===e.remove?'sale':'discard'}))};
+  const cargoChanges={added:s.cargo.filter(x=>!cargoBefore.some(old=>old.uid===x.uid)).map(({uid,name,cells,itemId,shapeId,shapeVersion})=>({uid,name,cells,itemId,shapeId,shapeVersion,rotation:s.cargoGrid.placements.find(placement=>placement.uid===uid)?.rotation??0})),removed:cargoBefore.filter(x=>!s.cargo.some(next=>next.uid===x.uid)).map(x=>({...x,reason:x.uid===e.remove?'sale':'discard'}))};
   s.result={...(ev.eggText?{eggText:ev.eggText}:{}),title:ev.title,text:c.out||(c.id==='leave'?'你记下坐标，把注意力放回前方航路。':'处理完成。咔哒检查了固定带。'),changes,delta,cargoChanges};s.phase='result';
   log(s,ev.title+' · '+c.label+(changes.length?'；'+changes.join('，'):''),'choice');telemetry(s,'choice',{event:ev.id,option:c.id,fuel:s.fuel,hull:s.hull,money:s.money,cargo:s.cargo.map(x=>x.uid),discarded:plan.discardUids});
   if(s.hull===0)finish(s,true);break;
@@ -229,9 +295,17 @@ function dispatch(input,action){
   s.cargoGrid.placements=clone(action.layout);break;
  }
  case'continue':if(s.phase!=='result')return fail('当前没有结果');s.phase='route';s.event=null;s.result=null;s.route=routeOptions(s);break;
- case'return':if(!['route','event','result'].includes(s.phase)||!s.depth)return fail('尚未离港航行');if(s.hull===0||s.fuel<homeCost(s))return fail('当前需要普通拖航');finish(s,false);break;
+ case'return': {
+  if(!['route','event','result'].includes(s.phase)||!s.depth) return fail('尚未离港航行');
+  const method=action.method??'normal';
+  const quote=returnQuotes(s).find(value=>value.method===method);
+  if(!quote) return fail('当前没有可用的折返信标');
+  if(s.hull===0 || s.fuel<quote.cost) return fail(s.hull>0&&s.fuel>=safeReturnReserve(s)?'请选择当前可负担的返航方式':'当前需要普通拖航');
+  finish(s,false,method);
+  break;
+ }
  case'abort':if(s.phase!=='route'||s.depth!==0)return fail('只能在未航行时取消');{const m=activeMission(s);if(m?.status==='active'){m.status='accepted';m.targetRun=s.runNo+1;if(s.missionSlot)s.missionSlot.acquiredRun=s.runNo+1;}}s.phase='port';s.run=null;s.voyageShip=null;s.route=[];log(s,'已取消出发，没有消耗燃料。');break;
- case'rescue':if(!['route','event','result'].includes(s.phase)||!s.depth)return fail('当前不需要救援');if(s.hull>0&&s.fuel>=homeCost(s))return fail('当前可以正常返航，无需拖航');finish(s,true);break;
+ case'rescue':if(!['route','event','result'].includes(s.phase)||!s.depth)return fail('当前不需要救援');if(s.hull>0&&s.fuel>=safeReturnReserve(s))return fail('当前有可用返航方式，无需拖航');finish(s,true);break;
  case'port':if(s.phase!=='summary')return fail('尚未返港');s.phase='port';break;
  case'fillFuel':case'fillHull':{if(s.phase!=='port')return fail('请先回港');const type=action.type==='fillFuel'?'buyFuel':'repair',q=supplyQuote(s,type,true);if(!q.amount)return fail('已经补满');if(!q.enabled)return fail('余额不足以补满，请选择明示数量的少量补给');cash(s,-q.cost,type==='buyFuel'?'supplySpent':'repairSpent');s[q.field]=q.target;log(s,`一次补满${q.field==='fuel'?'燃料':'耐久'}${q.from}→${q.target}，实付${q.cost}零件。`);break;}
  case'buyFuel':case'repair':{if(s.phase!=='port')return fail('请先回港');const q=portQuote(s,action.type);if(!q.amount)return fail(s[q.field]===resourceLimit(s,q.field)?'已经补满':'零件不足');cash(s,-q.cost,action.type==='buyFuel'?'supplySpent':'repairSpent');s[q.field]+=q.amount;log(s,`${q.field==='fuel'?'补充燃料':'维修船体'}${q.amount}，实付${q.cost}零件。`);break;}
@@ -333,7 +407,7 @@ function assertState(s){
  if(s.phase==='event'&&!s.event)throw Error('事件缺失');if(s.phase==='result'&&(!s.result||!text(s.result.text,2000)||!text(s.result.title,100)||!Array.isArray(s.result.changes)||s.result.changes.some(x=>!text(x,200))))throw Error('结果无效');
  if(s.result?.delta){const keys=['money','fuel','hull','cargoCount','cargoCells'];if(Object.keys(s.result.delta).length!==keys.length||keys.some(k=>!integer(s.result.delta[k],-1e9,1e9)))throw Error('结果资源变动无效');}
  if(s.result?.cargoChanges){const c=s.result.cargoChanges;if(!Array.isArray(c.added)||!Array.isArray(c.removed)||c.added.length>16||c.removed.length>16||[...c.added,...c.removed].some(x=>!x||!integer(x.uid,1)||!text(x.name,100)||!integer(x.cells,1,16))||c.removed.some(x=>!['discard','sale'].includes(x.reason))||new Set([...c.added,...c.removed].map(x=>x.uid)).size!==c.added.length+c.removed.length)throw Error('结果货物变动无效');}
- validateDiscoveries(s);Market.validate(s);
+ validateDiscoveries(s);Market.validate(s);validateProgress(s);
  if(s.phase==='summary'&&(!s.summary||!integer(s.summary.run,1,s.runNo)||typeof s.summary.rescue!=='boolean'||!integer(s.summary.depth,0,8)||!integer(s.summary.returnFuel,0,200)||!integer(s.summary.reward)||!Number.isSafeInteger(s.summary.cashDelta)))throw Error('返港明细无效');return true;
 }
 function validateDiscoveries(s) {
@@ -347,12 +421,37 @@ function validateDiscoveries(s) {
   }
  }
  if (new Set(discoveries.eggs.map(seen => seen.run)).size !== discoveries.eggs.length) throw Error('同趟彩蛋超过一次');
- if(s.run){const current=discoveries.eggs.find(seen=>seen.run===s.runNo);if((current?.id??null)!==s.run.eggId)throw Error('本趟彩蛋与已见记录不一致');if(s.run.contentPoolVersion==='v042'&&[...s.history,...s.route.map(route=>route.id),s.event?.id].some(id=>NewEncounters.metadata[id]))throw Error('旧航次不能切换奇遇池');}
+ if(s.run){const current=s.run.returnRules.version==='v051'?s.run.eggOccurrence:discoveries.eggs.find(seen=>seen.run===s.runNo);if((current?.id??null)!==s.run.eggId)throw Error('本趟彩蛋与已见记录不一致');if(s.run.contentPoolVersion==='v042'&&[...s.history,...s.route.map(route=>route.id),s.event?.id].some(id=>NewEncounters.metadata[id]))throw Error('旧航次不能切换奇遇池');}
  if (discoveries.mementoClaimed && !discoveries.eggs.some(seen => seen.id === 'shifting_coordinates')) throw Error('纪念物缺少实际发现');
 }
+function validateProgress(s) {
+ const p=s.progress;
+ if(!p||!integer(p.eligibleVoyages,0,s.runNo)||typeof p.newOptionShown!=='boolean'||typeof p.eggSeen!=='boolean'||!integer(p.dryReturns,0,s.runNo)) throw Error('发现进度无效');
+ if(!s.run) return;
+ const rules=s.run.returnRules;
+ if(!rules||!['v05','v051'].includes(rules.version)||rules.version==='v051'&&!V051.gate.candidateFuels.includes(rules.gateFuel)||rules.version==='v05'&&rules.gateFuel!==null) throw Error('返航规则快照无效');
+ if(rules.version==='v05') {
+  if(s.run.discovery!==null||s.run.eggOccurrence!==null) throw Error('旧航次不能切换发现保底');
+  return;
+ }
+ const d=s.run.discovery;
+ if(!d||['eligible','newCandidateShown','arrivedNew'].some(key=>typeof d[key]!=='boolean')||!integer(d.eligibleRolls,0,8)||d.eligible!==(s.depth>=2)) throw Error('本趟发现统计无效');
+ const egg=s.run.eggOccurrence;
+ if(egg!==null&&(!egg||!Object.hasOwn(NewEncounters.eggs,egg.id)||!integer(egg.depth,1,s.depth)||typeof egg.first!=='boolean'||!s.discoveries.eggs.some(seen=>seen.id===egg.id))) throw Error('航行异常来源无效');
+ if(s.run.contentPoolVersion!=='v05') throw Error('新返航规则不能更换旧内容池');
+ if(s.summary) {
+  const method=s.summary.returnMethod;
+  if(!['normal','gate','rescue'].includes(method)||s.summary.rescue!==(method==='rescue')) throw Error('返港方式无效');
+  const price=method==='rescue'?0:returnQuotes(s).find(quote=>quote.method===method)?.cost;
+  if(price===undefined||s.summary.returnFuel!==price) throw Error('返港实扣费用不一致');
+  const receipt=[...s.telemetry].reverse().find(row=>row.kind==='return'&&row.run===s.runNo);
+  if(!receipt||receipt.method!==method||receipt.fuelCost!==price) throw Error('返港记录与实扣不一致');
+ }
+}
 function inferLegs(depth,distance,last){function visit(a,sum){if(a.length===depth)return sum===distance&&(a.at(-1)||0)===last?a:null;for(let e=0;e<=3;e++){const v=forwardCost(a.length,a.at(-1)||0,e);if(sum+v<=distance){const found=visit([...a,v],sum+v);if(found)return found;}}return null;}const found=visit([],0);if(!found)throw Error('旧航路费用无法核对');return found;}
+function preserveMarketQuota(next,before){if(next.market.quota.key&&next.market.quota.key===before.market.quota.key&&before.market.quota.used)next.market.quota.used=true;return next;}
 function restore(raw){
- if(typeof raw==='string'&&raw.length>2000000)throw Error('存档过大');const s=typeof raw==='string'?JSON.parse(raw):clone(raw);if(!s||![1,2,3,4,5,6,SCHEMA].includes(s.schema))throw Error('版本不支持');
+ if(typeof raw==='string'&&raw.length>2000000)throw Error('存档过大');const s=typeof raw==='string'?JSON.parse(raw):clone(raw);if(!s||![1,2,3,4,5,6,7,SCHEMA].includes(s.schema))throw Error('版本不支持');
  if(s.schema===1){s.schema=2;s.version=VERSION;s.ledger=[];s.legs=inferLegs(s.depth,s.distance,s.lastLeg);s.flags=s.flags||{};for(const x of s.cargo||[]){const seen=s.archive?.find(y=>y.name===x.name);x.acquiredRun=x.contract?s.runNo:seen?.firstRun<s.runNo?seen.firstRun:0;if(x.name==='梦话行李箱')x.story='dream';}for(const r of s.route||[])r.extra=r.fuel-Math.max(LEG[s.depth],s.lastLeg+1);if(s.run){s.run.account=freshAccount(s.money);s.run.account.legacy=true;}if(s.event){if(!Object.hasOwn(EVENTS,s.event.id))throw Error('旧事件不支持');s.event={id:s.event.id,nonce:`${s.runNo}/${s.depth}`,context:{fuel:s.fuel,hull:s.hull,cargo:clone(s.cargo)}};}s.migration='v01-preserved-balance; unknown cargo origin protected; historical cash detail unavailable';}
  // Keep only known structural fields. Event effects and hidden outcome text never come from imports.
  if(s.event){if(Object.keys(s.event).some(k=>!['id','nonce','context'].includes(k))||Object.keys(s.event.context||{}).some(k=>!['fuel','hull','cargo','missionSlot'].includes(k)))throw Error('事件包含非模型字段');const e=s.event;s.event={id:e.id,nonce:e.nonce,context:{fuel:e.context?.fuel,hull:e.context?.hull,cargo:e.context?.cargo,...(e.context?.missionSlot!==undefined?{missionSlot:e.context.missionSlot}:{})}};}
@@ -384,13 +483,22 @@ function restore(raw){
   s.discoveries={encounters:[],eggs:[],mementoClaimed:false};
   s.market=Market.create(s.rng);
   if(s.run){s.run.contentPoolVersion='v042';s.run.eggId=null;}
-  // Validate the original geometry and finances before any safe port repack.
-  assertState(s);
-  tryHoldTransition(s);
+   s.pendingHoldTransition=true;
   s.migration=(s.migration?s.migration+'; ':'')+'v6-to-v7: old voyage pool and RNG retained, original rectangular cargo protected until a safe port repack; purchased capacities and all goods preserved';
+ }
+ if(s.schema===7) {
+  s.schema=8;
+  s.version=VERSION;
+  s.progress=freshProgress();
+  Market.migrate(s);
+  if(s.run) Object.assign(s.run,{returnRules:{version:'v05',gateFuel:null},discovery:null,eggOccurrence:null});
+  assertState(s);
+  if(s.pendingHoldTransition) tryHoldTransition(s);
+  delete s.pendingHoldTransition;
+  s.migration=(s.migration?s.migration+'; ':'')+'v7-to-v8: saved voyage return rules preserved; new signals begin next departure; consumed market opportunity retained';
  }
  const keys=Object.keys(create(1)),out={};for(const k of keys)out[k]=s[k];if(s.migration)out.migration=s.migration;assertState(out);return out;
 }
-return {Holds,Market,NewEncounters,V05,VERSION,SCHEMA,KEY,LEG,BALANCE,PORT,ITEM_IDS,Cargo,shipStats,shipResources,resourceCaps,resourceLimit,shipUpgradeQuote,shipComparison,cargoSpace,capacityCells,activeMission,missionProgress,cargoUpgradeQuote,supplyQuote,create,dispatch,restore,assertState,homeCost,spare,used,cargoValue,quote,checkChoice,encounter,summaryView,portQuote,preparation,cargoDraft,routeView};
+return {Holds,Market,NewEncounters,V05,V051,VERSION,SCHEMA,KEY,LEG,BALANCE,PORT,ITEM_IDS,Cargo,shipStats,shipResources,resourceCaps,resourceLimit,shipUpgradeQuote,shipComparison,cargoSpace,capacityCells,activeMission,missionProgress,cargoUpgradeQuote,supplyQuote,create,dispatch,restore,assertState,preserveMarketQuota,homeCost,returnQuotes,returnHint,safeReturnReserve,spare,used,cargoValue,quote,checkChoice,encounter,summaryView,portQuote,preparation,cargoDraft,routeView};
 
 });

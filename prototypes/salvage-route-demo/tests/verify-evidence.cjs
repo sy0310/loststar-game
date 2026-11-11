@@ -60,7 +60,7 @@ function packagedSourceNames(sha){
 function portConfig(sha){return /require\('\.\.\/\.\.\/\.\.\/(design\/star-salvage\/v[^']+\/BALANCE_[^']+\.json)'\)/.exec(source(sha,demo+'src/engine.js').toString())?.[1]??null;}
 function runtimeConfigs(sha){
  const config=portConfig(sha),version=/\bVERSION='([^']+)'/.exec(source(sha,demo+'src/engine.js').toString())?.[1];
- return ['design/star-salvage/BALANCE_V01.json',...(config?[config]:[]),...(version?.startsWith('0.5.')?['design/star-salvage/v05/BALANCE_V05.json','design/star-salvage/v05/ship-holds-approved.json']:[])];
+ return ['design/star-salvage/BALANCE_V01.json',...(config?[config]:[]),...(version?.startsWith('0.5.')?['design/star-salvage/v05/BALANCE_V05.json','design/star-salvage/v05/ship-holds-approved.json']:[]),...(version==='0.5.1'?['design/star-salvage/v051/BALANCE_V051.json']:[])];
 }
 function runtimeNames(sha){return [...packagedSourceNames(sha),demo+'build.py',...runtimeConfigs(sha)].sort();}
 function diskFiles(folder){
@@ -96,6 +96,8 @@ function expectedPackage(sha){
    raw=Buffer.from('globalThis.LostCargoBalance='+JSON.stringify(JSON.parse(source(sha,'design/star-salvage/BALANCE_V01.json')))+';\n');
   }else if(name===demo+'src/port-balance.js'){
    raw=Buffer.from('globalThis.LostCargoPortBalance='+JSON.stringify(JSON.parse(source(sha,portConfig(sha))))+';\n');
+  }else if(name===demo+'src/v051-balance.js'){
+   raw=Buffer.from('globalThis.LostCargoV051Balance='+JSON.stringify(JSON.parse(source(sha,'design/star-salvage/v051/BALANCE_V051.json')))+';\n');
   }else if(name===demo+'src/v05-balance.js'){
    raw=Buffer.from('globalThis.LostCargoV05Balance='+JSON.stringify(JSON.parse(source(sha,'design/star-salvage/v05/BALANCE_V05.json')))+';\n');
   }else if(name===demo+'src/hold-config.js'){
@@ -442,7 +444,7 @@ if (fs.existsSync(local(v05Proof))) {
  const p = json(v05Proof), folder = 'artifacts/salvage-v05/';
  assert.equal(p.schema, 7);
  ancestor(p.runtimeSourceSha);
- assertCurrentRuntime(p.runtimeSourceSha);
+ if(!fs.existsSync(local('artifacts/salvage-v051/verification.json')))assertCurrentRuntime(p.runtimeSourceSha);
  const evidence = verifyEvidence(p.evidenceFiles, 'v05 evidence');
  const build = boundJSON(p.buildInfo, evidence);
  verifyBuild(p, build);

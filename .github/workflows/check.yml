@@ -178,10 +178,9 @@ jobs:
   salvage-route:
     name: Salvage route real HTTP and persistence
     runs-on: ubuntu-24.04
-    # v0.5 adds 9,216 comparative + 2,560 repayment voyages before the 176
-    # browser cases. The 12-minute job expired mid-suite with no failed test.
-    # Preserve all cases and zero retries while allowing the full replay.
-    timeout-minutes: 20
+    # v0.5.1 compares five return variants,512-seed markets and paid policy
+    # replay before236 browser cases. Preserve all cases and zero retries.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -201,7 +200,7 @@ jobs:
           npm --prefix prototypes/salvage-route-demo test
           npm --prefix prototypes/salvage-route-demo run simulate
           npm --prefix prototypes/salvage-route-demo run simulate:compare
-          npm --prefix prototypes/salvage-route-demo run simulate:v05
+          npm --prefix prototypes/salvage-route-demo run simulate:v051
           npm --prefix prototypes/salvage-route-demo run check:art
       - name: Build and extract this exact isolated H5 ZIP
         run: |
@@ -231,7 +230,8 @@ jobs:
           name: salvage-development-evidence-spoilers
           path: |
             releases/salvage-browser-results.json
-            releases/v05-economy.json
+            releases/v051-economy.json
+            releases/v051-model-results.json
             releases/v05-isolated-geometry.json
             releases/v05-model-results.json
             releases/salvage-test-results/

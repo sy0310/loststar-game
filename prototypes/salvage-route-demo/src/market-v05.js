@@ -12,7 +12,29 @@
   const npcNames = ['灯塔研究员', '旧件收购员', '轨道收藏家'];
 
   function create(seed) {
-    return { rng: ((seed >>> 0) ^ 0x75ac981b) >>> 0 || 1, nextId: 1, offers: [] };
+    return { rng: ((seed >>> 0) ^ 0x75ac981b) >>> 0 || 1, nextId: 1, offers: [], quota: {returnRun:0,key:null,used:true} };
+  }
+  function returnKey(record) {
+    return [record.run,record.seq,record.depth,record.fuel,record.hull,record.money,record.rng??0].join('/');
+  }
+  function safeReturn(state) {
+    const record=state.telemetry.at(-1);
+    if(record?.kind!=='return'||record.rescue||!record.depth) throw Error('特殊交易机会缺少真实归航');
+    state.market.quota={returnRun:state.runNo,key:returnKey(record),used:false};
+  }
+  function migrate(state) {
+    const record=[...state.telemetry].reverse().find(row=>row.kind==='return'&&!row.rescue&&row.depth>0);
+    let returnRun=record?.run??0;
+    let key=record?returnKey(record):null;
+    if(!record&&state.summary&&!state.summary.rescue&&state.summary.depth>0) {
+      returnRun=state.summary.run;
+      key=['legacy',returnRun,state.summary.depth,state.summary.distance,state.run?.startFuel,state.run?.startMoney].join('/');
+    }
+    const used=!returnRun||state.market.offers.some(offer=>offer.run>=returnRun);
+    state.market.quota={returnRun,key,used};
+  }
+  function available(state) {
+    return state.phase==='port'&&state.market.quota.returnRun>0&&!state.market.quota.used;
   }
   function random(market, max) {
     let value = market.rng >>> 0;
@@ -33,6 +55,7 @@
     const item = state.cargo.find(item => item.uid === action.uid && !item.contract);
     if (!item) return '物件已不在货舱';
     if (offerFor(state, item.uid)) return '这件物品已经询过价，原报价已保存';
+    if(!available(state)) return state.market.quota.returnRun?'本趟特殊交易机会已使用，请等待下一趟安全归航':'安全归航后获得一次特殊交易机会';
     if (!['cautious', 'bold', 'auction'].includes(action.style)) return '请选择一次谈价或NPC快拍';
     const isAuction = action.style === 'auction';
     if (isAuction && !config.reservePercent.includes(action.reservePercent)) return '底价无效';
@@ -50,11 +73,12 @@
     })) : [];
     const offer = {
       id: state.market.nextId++, uid: item.uid, run: state.runNo, style: action.style,
-      baseValue: item.value, amount, fee, reserve, bids,
+      baseValue: item.value, amount, fee, reserve, bids, returnKey:state.market.quota.key,
       status: isAuction && amount < reserve ? 'noSale' : 'open'
     };
     if (fee) payFee(fee, offer.id);
     state.market.offers.push(offer);
+    state.market.quota.used=true;
     return null;
   }
   function accept(state, id, sell) {
@@ -86,6 +110,18 @@
     const market = state.market;
     const integer = (value, min = 0, max = 1e9) => Number.isSafeInteger(value) && value >= min && value <= max;
     if (!market || !integer(market.rng, 1, 4294967295) || !integer(market.nextId, 1) || !Array.isArray(market.offers) || market.offers.length > 180) throw Error('黑市记录无效');
+    const quota=market.quota;
+    if(!quota||!integer(quota.returnRun,0,state.runNo)||typeof quota.used!=='boolean'||
+      (quota.returnRun===0?quota.key!==null:typeof quota.key!=='string'||!quota.key.length||quota.key.length>200)||!quota.returnRun&&!quota.used) throw Error('特殊交易机会无效');
+    const witness=[...state.telemetry].reverse().find(row=>row.kind==='return'&&!row.rescue&&row.depth>0);
+    if(witness&&(quota.returnRun!==witness.run||quota.key!==returnKey(witness))) throw Error('特殊交易机会缺少对应归航');
+    if(!quota.used&&market.offers.some(offer=>offer.returnKey===undefined&&offer.run>=quota.returnRun)) throw Error('旧报价已消耗特殊交易机会');
+    const quotaKeys=new Set();
+    for(const offer of market.offers) if(offer.returnKey!==undefined) {
+      if(typeof offer.returnKey!=='string'||!offer.returnKey.length||quotaKeys.has(offer.returnKey)) throw Error('同次归航特殊交易重复');
+      quotaKeys.add(offer.returnKey);
+      if(offer.returnKey===quota.key&&!quota.used) throw Error('已报价的机会不能重置');
+    }
     const ids = new Set();
     const uids = new Set();
     for (const offer of market.offers) {
@@ -103,5 +139,5 @@
       uids.add(offer.uid);
     }
   }
-  return { create, request, accept, keep, prune, validate, offerFor, listingFee, npcNames };
+  return { create, safeReturn, migrate, available, request, accept, keep, prune, validate, offerFor, listingFee, npcNames };
 });

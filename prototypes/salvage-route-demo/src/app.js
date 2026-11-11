@@ -206,19 +206,38 @@
   function spaceArt(kind) {
     return `<svg class="hero-svg" viewBox="0 0 420 190" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="sky"><stop stop-color="#745a85"/><stop offset="1" stop-color="#26273e"/></radialGradient><linearGradient id="orb"><stop stop-color="#ba8ea9"/><stop offset=".5" stop-color="#665a82"/><stop offset="1" stop-color="#383d60"/></linearGradient></defs><rect width="420" height="190" fill="url(#sky)"/><g fill="#efcaa6" opacity=".8">${Array.from({ length: 31 }, (_, i) => `<rect x="${(i * 43 + 19) % 415}" y="${(i * 67 + 9) % 187}" width="${i % 5 === 0 ? 3 : 1.5}" height="${i % 5 === 0 ? 3 : 1.5}"/>`).join("")}</g><circle cx="320" cy="75" r="62" fill="url(#orb)"/><path d="M263 66q55 25 113-5M263 97q66 21 108-3" fill="none" stroke="#b29abb" stroke-width="6" opacity=".4"/>${ART.ship ? "" : `<g transform="translate(95 80)"><path d="M0 25L24 8H88L107 31L93 47H15Z" fill="#a9a1b6" stroke="#3a304c" stroke-width="4"/><path d="M45 9L56 0H75L83 9" fill="#94869f" stroke="#392e48" stroke-width="4"/><path d="M20 22H41V34H12ZM49 21H63V34H49ZM69 21H83V34H69Z" fill="#8eb5cc"/><path d="M37 45L31 58H75L81 45" fill="#d2b8a4" stroke="#3a304c" stroke-width="3"/><rect x="90" y="28" width="17" height="8" fill="#d69a7e"/><path d="M0 28L-22 33L0 38" fill="#92cfe5"/></g>`}<path d="M28 153Q180 125 255 160" stroke="#c9ab87" opacity=".6" stroke-dasharray="3 8" fill="none"/></svg>`;
   }
+  function lootCard(item, rotation=0, actual=false) {
+    const dimensions=E.Cargo.cells(item,rotation);
+    const original=E.Cargo.cells(item,0);
+    const width=Math.max(...dimensions.map(cell=>cell[0]))+1;
+    const height=Math.max(...dimensions.map(cell=>cell[1]))+1;
+    const baseWidth=Math.max(...original.map(cell=>cell[0]))+1;
+    const baseHeight=Math.max(...original.map(cell=>cell[1]))+1;
+    const scale=Math.min(72/width,52/height);
+    const style='width:'+baseWidth*scale+'px;height:'+baseHeight*scale+'px;transform:translate(-50%,-50%) rotate('+rotation*90+'deg)';
+    const image=window.SalvageArt.item(item,'loot-body').replace('draggable="false"','draggable="false" style="'+style+'"');
+    return '<figure class="loot-card" data-loot-uid="'+(actual?item.uid:'')+'" data-item-id="'+item.itemId+'" data-shape="'+item.shapeId+'"><span class="loot-frame">'+image+'</span><figcaption>'+esc(item.name)+'</figcaption></figure>';
+  }
   function eventPicture(event) {
-    const featured = event.choices.flatMap(choice => choice.effect.loot || []).find(item => E.NewEncounters.curios[item.itemId]);
-    if (!featured) return picture(event.kind);
-    return picture(event.kind).replace(/<\/div>$/, window.SalvageArt.item(featured, 'event-featured-item') + '</div>');
+    const candidates=event.choices.flatMap(choice=>choice.effect.loot||[]);
+    const seen=new Set();
+    const items=candidates.filter(item=>{const key=[item.itemId,item.shapeId,item.name].join('/');if(seen.has(key))return false;seen.add(key);return true;});
+    if(!items.length) return picture(event.kind);
+    return '<section class="event-loot-preview" aria-label="可能回收物"><small>可能回收 · 选择后装船</small><div class="loot-strip">'+items.map(item=>lootCard(item)).join('')+'</div></section>';
+  }
+  function anomalyCard(text) {
+    return text?'<aside class="anomaly-card" role="status"><span class="anomaly-signal" aria-hidden="true">'+icon('scan')+'</span><div><b>航行异常</b><p>'+esc(text)+'</p></div></aside>':'';
   }
   function reserveBox() {
-    return `<div class="reserve"><div class="row"><span>${icon("return")} 现在回港需 <b class="num">${E.homeCost(state)}</b> ${icon("fuel")}燃料</span><span>探索余油 <b class="num">${E.spare(state)}</b></span></div><p class="note" style="margin-bottom:0">越深入，前进与返航都更费油。加油不会缩短已走距离。</p></div>`;
+    const reserve=E.safeReturnReserve(state);
+    return '<div class="reserve"><div class="row"><span>'+icon('return')+'可用返航需 <b class="num">'+reserve+'</b> 燃料</span><span>探索余油 <b class="num">'+E.spare(state)+'</b></span></div><p class="note">'+esc(E.returnHint(state))+'</p></div>';
   }
+  function returnButtons() {return window.SalvagePortView.returnButtons(state,!storageOK||blocked);}
   function port(){return window.SalvagePortView.home(state,button);}
   function route(){return window.SalvagePortView.route(state,routeSelected,!storageOK||blocked);}
   function event() {
     const ev=E.encounter(state);
-    return '<div class="section-head"><div><div class="eyebrow">ENCOUNTER / '+state.depth+'</div><h1>探索现场</h1></div><span class="tag">'+icon('fuel')+'返航 '+E.homeCost(state)+'</span></div>'+eventPicture(ev)+'<section class="panel event-intro"><h2>'+icon(I.routeIcon(ev))+esc(ev.title)+'</h2><p class="event-record" aria-label="现场记录">'+esc(ev.text)+'</p>'+(ev.eggText?'<p class="event-flavor">'+esc(ev.eggText)+'</p>':'')+'</section><div class="event-options">'+ev.choices.map(c=>{const err=E.checkChoice(state,c,{ignoreCargo:true});return '<button class="choice" data-choice="'+esc(c.id)+'" data-nonce="'+esc(ev.nonce)+'" '+(err?'disabled':'')+'><strong>'+icon(I.choiceIcon(c))+esc(c.label)+icon('arrow','choice-arrow')+'</strong>'+((c.effect.remove||!Object.keys(c.effect).length)?'<small>'+esc(c.desc)+'</small>':'')+choiceChips(c)+((c.risk?.[1]||-(c.effect.hull||0))>=state.hull?'<small class="risk">可能触发拖航救援</small>':'')+(err?'<small>'+icon('warning')+esc(err)+'</small>':'')+'</button>';}).join('')+'</div>'+reserveBox()+'<div class="split">'+button(icon('cargo')+'货舱','cargo','ghost')+button(icon('return')+'返港','home','ghost')+'</div>';
+    return '<div class="section-head"><div><div class="eyebrow">ENCOUNTER / '+state.depth+'</div><h1>探索现场</h1></div><span class="tag">'+icon('fuel')+'返航 '+E.safeReturnReserve(state)+'</span></div>'+eventPicture(ev)+'<section class="panel event-intro"><h2>'+icon(I.routeIcon(ev))+esc(ev.title)+(ev.newDiscovery?'<span class="new-discovery">新发现</span>':'')+'</h2><p class="event-record" aria-label="现场记录">'+esc(ev.text)+'</p>'+'</section>'+anomalyCard(ev.eggText)+'<div class="event-options">'+ev.choices.map(c=>{const err=E.checkChoice(state,c,{ignoreCargo:true});return '<button class="choice" data-choice="'+esc(c.id)+'" data-nonce="'+esc(ev.nonce)+'" '+(err?'disabled':'')+'><strong>'+icon(I.choiceIcon(c))+esc(c.label)+icon('arrow','choice-arrow')+'</strong>'+((c.effect.remove||!Object.keys(c.effect).length)?'<small>'+esc(c.desc)+'</small>':'')+choiceChips(c)+((c.risk?.[1]||-(c.effect.hull||0))>=state.hull?'<small class="risk">可能触发拖航救援</small>':'')+(err?'<small>'+icon('warning')+esc(err)+'</small>':'')+'</button>';}).join('')+'</div>'+reserveBox()+button(icon('cargo')+'货舱','cargo','full ghost')+returnButtons();
   }
 
   function result() {
@@ -238,7 +257,13 @@
           .join("")
       : r.changes.map((x) => `<span>${esc(units(x))}</span>`).join("");
     const goods = [...(r.cargoChanges?.added || []).map(x=>`<span class="change positive">${icon('cargo')}装入：${esc(x.name)}</span>`), ...(r.cargoChanges?.removed || []).map(x=>`<span class="change negative">${icon(x.reason==='sale'?'trade':'leave')}${x.reason==='sale'?'售出':'放弃'}：${esc(x.name)}</span>`)].join('');
-    return `<div class="eyebrow">CHOICE RECORDED</div><section class="panel" style="margin-top:15px"><div class="result-mark">${icon("check")}</div><h2 style="text-align:center">${esc(r.title)}</h2><p class="lead" style="margin-top:18px">${esc(r.text)}</p><div class="changes">${delta || goods ? delta + goods : "<span>资源未变化</span>"}</div></section>${r.eggText?`<p class="event-flavor">${esc(r.eggText)}</p>`:""}${reserveBox()}${button(icon("route") + (state.depth >= 8 ? "查看返航路线" : "继续查看航路"), "continue", "primary full")}<div class="spacer"></div>${button(icon("return") + `见好就收 · 返航需${E.homeCost(state)}燃料`, "home", "full ghost")}`;
+    const actual=(r.cargoChanges?.added||[]).map(record=>{
+      const item=state.cargo.find(item=>item.uid===record.uid)||record;
+      if(!item.itemId||!item.shapeId) return '';
+      const rotation=state.cargoGrid.placements.find(placement=>placement.uid===record.uid)?.rotation??record.rotation??0;
+      return lootCard(item,rotation,true);
+    }).join('');
+    return `<div class="eyebrow">CHOICE RECORDED</div><section class="panel" style="margin-top:15px"><div class="result-mark">${icon("check")}</div><h2 style="text-align:center">${esc(r.title)}</h2><p class="lead" style="margin-top:18px">${esc(r.text)}</p><div class="changes">${delta || goods ? delta + goods : "<span>资源未变化</span>"}</div></section>${actual?`<section class="received-loot" aria-label="实际收下的物品"><small>本次实际收下</small><div class="loot-strip">${actual}</div></section>`:""}${anomalyCard(r.eggText)}${reserveBox()}${button(icon("route") + (state.depth >= 8 ? "查看返航路线" : "继续查看航路"), "continue", "primary full")}<div class="spacer"></div>${returnButtons()}`;
   }
   function summary(){return port();}
 
@@ -445,7 +470,7 @@
   function settings() {
     modal(
       "规则与存档",
-      `<div class="help-rule"><b>你的目标</b><p>开着二手船跑航线，把收获带回港口，慢慢还清12,000零件船款。没有时限、利息、挂机罚款。</p></div><div class="help-rule"><b>油耗会随深入增加</b><p>每站前进费用逐步提高。返航油耗 = 3 + 已走航线距离的一半（向上取整）。距离使用各次航行实际耗油记录，加油不会减少它。第1～8站的基础前进油耗为${E.LEG.join("、")}，支线另有少量差别。</p></div><div class="help-rule"><b>保持可返航</b><p>选择下一站前，必须有足够油抵达并预留新的返航费用。事件使用探索余油，不动返航储备。船体仍然可能损坏，请看清选择上的代价。</p></div><div class="help-rule"><b>不必走完8站</b><p>若主动接取测绘委托，探索3站可完成目标。早回来不是失败。全程没有强制倒计时；离线时不会偷偷损耗资源。</p></div><div class="help-rule"><b>保存方式</b><p>只保存到本浏览器的独立本地存档，刷新继续。文件移动、更换浏览器或清理数据可能使存档不可见，请导出备份。与旧版《失物星球》完全隔离。</p></div><div class="split" style="margin-top:15px">${button("导出存档", "export", "primary")}${button("导入存档", "import")}</div><div class="spacer"></div>${button("导出试玩反馈（不含未遇事件）", "report", "full")}<div class="spacer"></div>${button("重试保存", "retry", "full")}<div class="split">${button("航行手记","journal")}${button("已走航路","historymap")}${button("船款 / 还款","repay")}</div><p class="note">无联网、无广告SDK、无真实付款。原创像素素材开发自测版，画风与操作体验待你审核。</p>`,
+      `<div class="help-rule"><b>你的目标</b><p>开着二手船跑航线，把收获带回港口，慢慢还清12,000零件船款。没有时限、利息、挂机罚款。</p></div><div class="help-rule"><b>油耗会随深入增加</b><p>每站前进费用逐步提高。返航油耗 = 3 + 已走航线距离的一半（向上取整）。距离使用各次航行实际耗油记录，加油不会减少它。新航次第3和第5站有折返信标，可选择固定油耗返回。第1～8站的基础前进油耗为${E.LEG.join("、")}，支线另有少量差别。</p></div><div class="help-rule"><b>保持可返航</b><p>选择下一站前，必须有足够油抵达并预留新的返航费用。事件使用探索余油，不动返航储备。船体仍然可能损坏，请看清选择上的代价。</p></div><div class="help-rule"><b>不必走完8站</b><p>若主动接取测绘委托，探索3站可完成目标。早回来不是失败。全程没有强制倒计时；离线时不会偷偷损耗资源。</p></div><div class="help-rule"><b>保存方式</b><p>只保存到本浏览器的独立本地存档，刷新继续。文件移动、更换浏览器或清理数据可能使存档不可见，请导出备份。与旧版《失物星球》完全隔离。</p></div><div class="split" style="margin-top:15px">${button("导出存档", "export", "primary")}${button("导入存档", "import")}</div><div class="spacer"></div>${button("导出试玩反馈（不含未遇事件）", "report", "full")}<div class="spacer"></div>${button("重试保存", "retry", "full")}<div class="split">${button("航行手记","journal")}${button("已走航路","historymap")}${button("船款 / 还款","repay")}</div><p class="note">无联网、无广告SDK、无真实付款。原创像素素材开发自测版，画风与操作体验待你审核。</p>`,
     );
   }
   function download(name, data) {
@@ -490,12 +515,16 @@
       beginCargo({ type: "depart" });
       return;
     }
-    if (name === "home") {
+    if (name === "home" || name === "homeGate") {
+      const method=name==="homeGate"?"gate":"normal";
+      const quote=E.returnQuotes(state).find(quote=>quote.method===method);
+      if(!quote) return toast("当前位置没有折返信标");
+      const expected=controller.revision;
       modal(
-        "现在返航？",
-        `<p>消耗 <b>${E.homeCost(state)} 燃料</b>，带回当前货物。${state.phase === "event" ? "当前未处理的现场将放弃。" : ""}</p><p>不会自动卖货、维修或偿还船款。</p>`,
+        method==="gate"?"使用折返信标？":"沿原航道返航？",
+        `<p>消耗 <b>${quote.cost} 燃料</b>，带回当前货物。${state.phase === "event" ? "当前未处理的现场将放弃。" : ""}</p><p>不会自动卖货、维修或偿还船款。</p>`,
         "确认返航",
-        () => act({ type: "return" }),
+        () => act({ type: "return",method },expected),
       );
       return;
     }
@@ -610,7 +639,7 @@
       const text = style === 'auction'
         ? '挂牌费 '+fee+' 零件，底价 '+Math.ceil(good.value*reservePercent/100)+'。三位虚构NPC立即报价，流拍仍收挂牌费。'
         : '本件的一次询价会保存。看到报价后可接受或保留。';
-      modal(title, '<p>'+esc(good.name)+'</p><p>'+text+'</p>', style === 'auction' ? '支付挂牌费并开始' : '确认询价', () => act({type:'marketQuote',uid,style,reservePercent},expected,'market'));
+      modal(title, '<p>'+esc(good.name)+'</p><p>'+text+'</p><p>本趟只选一件；低价留货也消耗特殊交易机会。</p>', style === 'auction' ? '支付挂牌费并开始' : '确认询价', () => act({type:'marketQuote',uid,style,reservePercent},expected,'market'));
       return;
     }
     if (b.dataset.marketAccept) { void act({type:'marketAccept',id:Number(b.dataset.marketAccept)},inputRevision,'market'); return; }

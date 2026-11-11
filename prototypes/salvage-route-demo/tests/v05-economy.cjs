@@ -25,6 +25,7 @@ function marketHook(style) {
   if (!style) return undefined;
   return (model, state, act) => {
     for (const good of [...state().cargo]) {
+      if (model.Market.available&&!model.Market.available(state())) break;
       if (model.Market.offerFor(state(), good.uid)) continue;
       const fee = style === 'auction' ? model.Market.listingFee(good) : 0;
       if (state().money < fee) continue;
@@ -93,8 +94,7 @@ for (const style of ['ordinary', 'cautious', 'bold', 'auction', 'keep']) {
   let completed = 0;
   const differences = [];
   for (let seed = 1; seed <= 512; seed++) {
-    let state = E.create(seed);
-    state.money = 27049;
+    let state = require('./v051-fixtures.cjs').safePort(seed,27049);
     const goods = [
       { uid: 1, itemId: 'broken_engine', shapeId: 'line2', cells: 2, value: 22 },
       { uid: 2, itemId: 'echo_brood_capsule', shapeId: 'square4', cells: 4, value: 171 },

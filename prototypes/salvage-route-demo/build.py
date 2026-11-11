@@ -7,7 +7,7 @@ REPO=ROOT.parents[1]
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--freeze',action='store_true');args=ap.parse_args()
  sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
- dirty=bool(subprocess.check_output(['git','status','--porcelain','--','src','index.html','build.py','assets','../../design/star-salvage/BALANCE_V01.json','../../design/star-salvage/v04/BALANCE_V04.json','../../design/star-salvage/v041/BALANCE_V041.json','../../design/star-salvage/v05/BALANCE_V05.json','../../design/star-salvage/v05/ship-holds-approved.json'],cwd=ROOT,text=True).strip())
+ dirty=bool(subprocess.check_output(['git','status','--porcelain','--','src','index.html','build.py','assets','../../design/star-salvage/BALANCE_V01.json','../../design/star-salvage/v04/BALANCE_V04.json','../../design/star-salvage/v041/BALANCE_V041.json','../../design/star-salvage/v051/BALANCE_V051.json','../../design/star-salvage/v05/BALANCE_V05.json','../../design/star-salvage/v05/ship-holds-approved.json'],cwd=ROOT,text=True).strip())
  if args.freeze and dirty:raise SystemExit('Commit runtime and art before freezing the package')
  out=ROOT/'dist';entry=out/'loststar-salvage';entry.mkdir(parents=True,exist_ok=True)
  for folder in ['src','assets']:
@@ -18,7 +18,7 @@ def main():
    for version in ['v04','v041','v042','v05']:
     (target/version).mkdir(parents=True)
     for f in (ROOT/('assets/'+version)).glob('*@2x.png'):shutil.copyfile(f,target/version/f.name)
- for source,destination,name in [('design/star-salvage/v05/BALANCE_V05.json','v05-balance.js','LostCargoV05Balance'),('design/star-salvage/v05/ship-holds-approved.json','hold-config.js','LostCargoHoldConfig'),('design/star-salvage/BALANCE_V01.json','balance.js','LostCargoBalance'),('design/star-salvage/v041/BALANCE_V041.json','port-balance.js','LostCargoPortBalance')]:
+ for source,destination,name in [('design/star-salvage/v051/BALANCE_V051.json','v051-balance.js','LostCargoV051Balance'),('design/star-salvage/v05/BALANCE_V05.json','v05-balance.js','LostCargoV05Balance'),('design/star-salvage/v05/ship-holds-approved.json','hold-config.js','LostCargoHoldConfig'),('design/star-salvage/BALANCE_V01.json','balance.js','LostCargoBalance'),('design/star-salvage/v041/BALANCE_V041.json','port-balance.js','LostCargoPortBalance')]:
   generated='globalThis.'+name+'='+json.dumps(json.loads((REPO/source).read_text()),ensure_ascii=False,separators=(',',':'))+';\n'
   if (ROOT/'src'/destination).read_text()!=generated:raise ValueError('Generated balance bundle is stale: '+destination)
   (entry/'src'/destination).write_text(generated)

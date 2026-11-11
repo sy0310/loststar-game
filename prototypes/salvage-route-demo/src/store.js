@@ -21,7 +21,7 @@ async function open(seed){
    try{t=db.transaction('archive','readwrite');const a=t.objectStore('archive'),r=a.get('current');r.onsuccess=()=>{const current=r.result,actual=Number.isSafeInteger(current?.revision)?current.revision:0;
     try{if(actual!==expected){if(current){state=decode(current);revision=actual;}result={ok:false,message:'另一窗口已更新，已同步，请按当前画面重试'};return;}
      const before=current?decode(current):state;
-     if(replacement){next=E.restore(replacement);a.put(current??rawOriginal,'backup/previous');result={ok:true};}
+     if(replacement){next=E.preserveMarketQuota(E.restore(replacement),before);a.put(current??rawOriginal,'backup/previous');result={ok:true};}
      else{const applied=E.dispatch(before,{...action,expected:action.expected??before.revision});result=applied;if(!applied.ok)return;next=applied.state;}
      version=actual+1;a.put({format:1,revision:version,game:next},'current');
     }catch(e){if(replacement&&corrupt){try{next=E.restore(replacement);version=actual+1;a.put(current??rawOriginal,'backup/previous');a.put({format:1,revision:version,game:next},'current');result={ok:true};}catch(err){result={ok:false,message:err.message};}}else result={ok:false,message:e.message};}
