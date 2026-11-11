@@ -19,7 +19,8 @@
   let cargoDraft = null,
     cargoDraftRevision = null,
     cargoReturnTab = "play",
-    routeSelected = null;
+    routeSelected = null,
+    marketSelected = null;
   const scrollPositions = new Map(),
     routeScrollPositions = new Map();
   let state,
@@ -205,6 +206,11 @@
   function spaceArt(kind) {
     return `<svg class="hero-svg" viewBox="0 0 420 190" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="sky"><stop stop-color="#745a85"/><stop offset="1" stop-color="#26273e"/></radialGradient><linearGradient id="orb"><stop stop-color="#ba8ea9"/><stop offset=".5" stop-color="#665a82"/><stop offset="1" stop-color="#383d60"/></linearGradient></defs><rect width="420" height="190" fill="url(#sky)"/><g fill="#efcaa6" opacity=".8">${Array.from({ length: 31 }, (_, i) => `<rect x="${(i * 43 + 19) % 415}" y="${(i * 67 + 9) % 187}" width="${i % 5 === 0 ? 3 : 1.5}" height="${i % 5 === 0 ? 3 : 1.5}"/>`).join("")}</g><circle cx="320" cy="75" r="62" fill="url(#orb)"/><path d="M263 66q55 25 113-5M263 97q66 21 108-3" fill="none" stroke="#b29abb" stroke-width="6" opacity=".4"/>${ART.ship ? "" : `<g transform="translate(95 80)"><path d="M0 25L24 8H88L107 31L93 47H15Z" fill="#a9a1b6" stroke="#3a304c" stroke-width="4"/><path d="M45 9L56 0H75L83 9" fill="#94869f" stroke="#392e48" stroke-width="4"/><path d="M20 22H41V34H12ZM49 21H63V34H49ZM69 21H83V34H69Z" fill="#8eb5cc"/><path d="M37 45L31 58H75L81 45" fill="#d2b8a4" stroke="#3a304c" stroke-width="3"/><rect x="90" y="28" width="17" height="8" fill="#d69a7e"/><path d="M0 28L-22 33L0 38" fill="#92cfe5"/></g>`}<path d="M28 153Q180 125 255 160" stroke="#c9ab87" opacity=".6" stroke-dasharray="3 8" fill="none"/></svg>`;
   }
+  function eventPicture(event) {
+    const featured = event.choices.flatMap(choice => choice.effect.loot || []).find(item => E.NewEncounters.curios[item.itemId]);
+    if (!featured) return picture(event.kind);
+    return picture(event.kind).replace(/<\/div>$/, window.SalvageArt.item(featured, 'event-featured-item') + '</div>');
+  }
   function reserveBox() {
     return `<div class="reserve"><div class="row"><span>${icon("return")} 现在回港需 <b class="num">${E.homeCost(state)}</b> ${icon("fuel")}燃料</span><span>探索余油 <b class="num">${E.spare(state)}</b></span></div><p class="note" style="margin-bottom:0">越深入，前进与返航都更费油。加油不会缩短已走距离。</p></div>`;
   }
@@ -212,7 +218,7 @@
   function route(){return window.SalvagePortView.route(state,routeSelected,!storageOK||blocked);}
   function event() {
     const ev=E.encounter(state);
-    return '<div class="section-head"><div><div class="eyebrow">ENCOUNTER / '+state.depth+'</div><h1>探索现场</h1></div><span class="tag">'+icon('fuel')+'返航 '+E.homeCost(state)+'</span></div>'+picture(ev.kind)+'<section class="panel event-intro"><h2>'+icon(I.routeIcon(ev))+esc(ev.title)+'</h2><p class="event-record" aria-label="现场记录">'+esc(ev.text)+'</p></section><div class="event-options">'+ev.choices.map(c=>{const err=E.checkChoice(state,c,{ignoreCargo:true});return '<button class="choice" data-choice="'+esc(c.id)+'" data-nonce="'+esc(ev.nonce)+'" '+(err?'disabled':'')+'><strong>'+icon(I.choiceIcon(c))+esc(c.label)+icon('arrow','choice-arrow')+'</strong>'+((c.effect.remove||!Object.keys(c.effect).length)?'<small>'+esc(c.desc)+'</small>':'')+choiceChips(c)+((c.risk?.[1]||-(c.effect.hull||0))>=state.hull?'<small class="risk">可能触发拖航救援</small>':'')+(err?'<small>'+icon('warning')+esc(err)+'</small>':'')+'</button>';}).join('')+'</div>'+reserveBox()+'<div class="split">'+button(icon('cargo')+'货舱','cargo','ghost')+button(icon('return')+'返港','home','ghost')+'</div>';
+    return '<div class="section-head"><div><div class="eyebrow">ENCOUNTER / '+state.depth+'</div><h1>探索现场</h1></div><span class="tag">'+icon('fuel')+'返航 '+E.homeCost(state)+'</span></div>'+eventPicture(ev)+'<section class="panel event-intro"><h2>'+icon(I.routeIcon(ev))+esc(ev.title)+'</h2><p class="event-record" aria-label="现场记录">'+esc(ev.text)+'</p>'+(ev.eggText?'<p class="event-flavor">'+esc(ev.eggText)+'</p>':'')+'</section><div class="event-options">'+ev.choices.map(c=>{const err=E.checkChoice(state,c,{ignoreCargo:true});return '<button class="choice" data-choice="'+esc(c.id)+'" data-nonce="'+esc(ev.nonce)+'" '+(err?'disabled':'')+'><strong>'+icon(I.choiceIcon(c))+esc(c.label)+icon('arrow','choice-arrow')+'</strong>'+((c.effect.remove||!Object.keys(c.effect).length)?'<small>'+esc(c.desc)+'</small>':'')+choiceChips(c)+((c.risk?.[1]||-(c.effect.hull||0))>=state.hull?'<small class="risk">可能触发拖航救援</small>':'')+(err?'<small>'+icon('warning')+esc(err)+'</small>':'')+'</button>';}).join('')+'</div>'+reserveBox()+'<div class="split">'+button(icon('cargo')+'货舱','cargo','ghost')+button(icon('return')+'返港','home','ghost')+'</div>';
   }
 
   function result() {
@@ -232,7 +238,7 @@
           .join("")
       : r.changes.map((x) => `<span>${esc(units(x))}</span>`).join("");
     const goods = [...(r.cargoChanges?.added || []).map(x=>`<span class="change positive">${icon('cargo')}装入：${esc(x.name)}</span>`), ...(r.cargoChanges?.removed || []).map(x=>`<span class="change negative">${icon(x.reason==='sale'?'trade':'leave')}${x.reason==='sale'?'售出':'放弃'}：${esc(x.name)}</span>`)].join('');
-    return `<div class="eyebrow">CHOICE RECORDED</div><section class="panel" style="margin-top:15px"><div class="result-mark">${icon("check")}</div><h2 style="text-align:center">${esc(r.title)}</h2><p class="lead" style="margin-top:18px">${esc(r.text)}</p><div class="changes">${delta || goods ? delta + goods : "<span>资源未变化</span>"}</div></section>${reserveBox()}${button(icon("route") + (state.depth >= 8 ? "查看返航路线" : "继续查看航路"), "continue", "primary full")}<div class="spacer"></div>${button(icon("return") + `见好就收 · 返航需${E.homeCost(state)}燃料`, "home", "full ghost")}`;
+    return `<div class="eyebrow">CHOICE RECORDED</div><section class="panel" style="margin-top:15px"><div class="result-mark">${icon("check")}</div><h2 style="text-align:center">${esc(r.title)}</h2><p class="lead" style="margin-top:18px">${esc(r.text)}</p><div class="changes">${delta || goods ? delta + goods : "<span>资源未变化</span>"}</div></section>${r.eggText?`<p class="event-flavor">${esc(r.eggText)}</p>`:""}${reserveBox()}${button(icon("route") + (state.depth >= 8 ? "查看返航路线" : "继续查看航路"), "continue", "primary full")}<div class="spacer"></div>${button(icon("return") + `见好就收 · 返航需${E.homeCost(state)}燃料`, "home", "full ghost")}`;
   }
   function summary(){return port();}
 
@@ -243,8 +249,13 @@
     return cargoUI.render(state,{draft:cargoDraft,revision:cargoDraftRevision??controller.revision,disabled:!storageOK||blocked||busy,summaryHTML,costHTML});
   }
 
+  function discoveredNotes() {
+    const entries = state.discoveries.eggs;
+    if (!entries.length) return '';
+    return '<section class="panel"><h2>航行中的小发现</h2>' + entries.map(seen => '<p class="event-flavor">'+esc(seen.text)+'</p>').join('') + '</section>';
+  }
   function journal() {
-    return `<div class="section-head"><div><div class="eyebrow">LOCAL FLIGHT LOG</div><h1>${icon("journal")}航行手记</h1></div><span class="tag">${state.archive.length}件见闻</span></div><p class="note">只记录已经发生的事情。卖掉货物，不会抹掉见闻。</p>${state.archive.length ? `<section class="panel"><h3>带上过船的物件</h3><div class="changes">${state.archive.map((x) => `<span>${esc(x.name)}</span>`).join("")}</div></section>` : ""}<section class="panel">${
+    return `<div class="section-head"><div><div class="eyebrow">LOCAL FLIGHT LOG</div><h1>${icon("journal")}航行手记</h1></div><span class="tag">${state.archive.length}件见闻</span></div><p class="note">只记录已经发生的事情。卖掉货物，不会抹掉见闻。</p>${discoveredNotes()}${state.archive.length ? `<section class="panel"><h3>带上过船的物件</h3><div class="changes">${state.archive.map((x) => `<span>${esc(x.name)}</span>`).join("")}</div></section>` : ""}<section class="panel">${
       state.log.length
         ? [...state.log]
             .reverse()
@@ -259,7 +270,7 @@
   }
   function render(resetScroll = false) {
     document.body.classList.toggle('cargo-screen',tab==='cargo'&&!blocked);
-    document.body.dataset.phase=state.phase;document.body.dataset.screen=tab;document.body.classList.toggle('home-screen',tab==='play'&&['port','summary'].includes(state.phase)&&!blocked);$('#back').hidden=tab==='play';$('#back').setAttribute('aria-label',tab==='shipyard'?'返回当前飞船':'返回主场景');
+    document.body.dataset.phase=state.phase;document.body.dataset.screen=tab;document.body.classList.toggle('home-screen',tab==='play'&&['port','summary'].includes(state.phase)&&!blocked);$('#back').hidden=tab==='play';$('#back').setAttribute('aria-label',tab==='shipyard'?'返回当前飞船':tab==='market'?'返回商店':'返回主场景');
     if (tab !== "cargo") cargoUI.unmount();
     const health = $("#storage-warning");
     health.hidden = storageOK && !blocked;
@@ -304,7 +315,7 @@
     if (previousMap)
       routeScrollPositions.set(routeKey, previousMap.scrollTop);
     const body =
-      tab === "shop"?window.SalvagePortView.shop(state,button):tab === "fleet"?window.SalvagePortView.fleet(state,button):tab === "shipyard"?window.SalvagePortView.shipyard(state,button):tab === "missions"?window.SalvagePortView.missions(state,button):tab === "historymap"?window.SalvageRouteView.render(state,{selectedUid:routeSelected,disabled:!storageOK||blocked}):tab === "cargo"
+      tab === "market"?window.SalvageMarketView.render(state,marketSelected,!storageOK||blocked):tab === "shop"?window.SalvagePortView.shop(state,button):tab === "fleet"?window.SalvagePortView.fleet(state,button):tab === "shipyard"?window.SalvagePortView.shipyard(state,button):tab === "missions"?window.SalvagePortView.missions(state,button):tab === "historymap"?window.SalvageRouteView.render(state,{selectedUid:routeSelected,disabled:!storageOK||blocked}):tab === "cargo"
         ? cargo()
         : tab === "route"
           ? route()
@@ -354,7 +365,7 @@
     if (performance.now() - lastCommand < 450)
       return { ok: false, message: "请稍候，上一项操作正在落定" };
     lastCommand = performance.now();
-    const savedScroll=window.scrollY,retainScroll=nextTab===tab&&["buyFuel","repair","fillFuel","fillHull","buyShip","equipShip","upgradeCargo","upgradeShip","acceptMission","claimMission","abandonMission","buyProduct","layout","sell","sellAll","use"].includes(command.type);
+    const savedScroll=window.scrollY,retainScroll=nextTab===tab&&["buyFuel","repair","fillFuel","fillHull","buyShip","equipShip","upgradeCargo","upgradeShip","acceptMission","claimMission","abandonMission","buyProduct","layout","sell","sellAll","use","marketQuote","marketAccept","marketKeep"].includes(command.type);
     busy = true;
     let r;
     try {
@@ -451,9 +462,9 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
   function action(name) {
-    if(name==='backView'){switchTab(tab==='shipyard'?'fleet':'play');return;}
-    if(['shop','fleet','shipyard','missions','historymap'].includes(name)){close();if(name==='shop'&&state.phase==='summary'){void act({type:'port'},inputRevision,'shop');}else switchTab(name);return;}
-    if(name==='upgradeCargo'){const q=E.cargoUpgradeQuote(state),expected=controller.revision;modal('增加一排货舱？','<p>'+q.width+'×'+q.height+' → '+q.width+'×'+q.nextHeight+'；实付'+q.cost+'零件，当前余额'+state.money+'。</p>','确认扩容',()=>act({type:'upgradeCargo'},expected,'fleet'));return;}
+    if(name==='backView'){switchTab(tab==='shipyard'?'fleet':tab==='market'?'shop':'play');return;}
+    if(['shop','fleet','shipyard','missions','historymap','market'].includes(name)){close();if(['shop','market'].includes(name)&&state.phase==='summary'){void act({type:'port'},inputRevision,name);}else switchTab(name);return;}
+    if(name==='upgradeCargo'){const q=E.cargoUpgradeQuote(state),expected=controller.revision;modal('扩建固定货台？',window.SalvagePortView.holdPlan(state)+'<p>'+q.capacity+' → '+q.nextCapacity+'个有效格，实付'+q.cost+'零件，当前余额'+state.money+'。</p>','确认扩容',()=>act({type:'upgradeCargo'},expected,'fleet'));return;}
     if(['fillFuel','fillHull'].includes(name)){const type=name==='fillFuel'?'buyFuel':'repair',q=E.supplyQuote(state,type,true),expected=controller.revision;modal('确认一键补满','<p>'+q.from+' → '+q.target+'，增加'+q.amount+'，共'+q.cost+'零件；余额'+state.money+' → '+(state.money-q.cost)+'。</p>','确认补满',()=>act({type:name},expected,'shop'));return;}
 
     if (name === "close") {
@@ -582,6 +593,33 @@
       switchTab(b.dataset.tab);
       return;
     }
+    if (b.dataset.marketSelect) {
+      marketSelected = Number(b.dataset.marketSelect);
+      render();
+      return;
+    }
+    if (b.dataset.marketStyle) {
+      const uid = Number(b.dataset.marketUid);
+      const style = b.dataset.marketStyle;
+      const reservePercent = Number(b.dataset.marketReserve || 100);
+      const good = state.cargo.find(item => item.uid === uid);
+      if (!good) return;
+      const expected = controller.revision;
+      const fee = style === 'auction' ? E.Market.listingFee(good) : 0;
+      const title = style === 'auction' ? '开始NPC快拍？' : '向收购员询价？';
+      const text = style === 'auction'
+        ? '挂牌费 '+fee+' 零件，底价 '+Math.ceil(good.value*reservePercent/100)+'。三位虚构NPC立即报价，流拍仍收挂牌费。'
+        : '本件的一次询价会保存。看到报价后可接受或保留。';
+      modal(title, '<p>'+esc(good.name)+'</p><p>'+text+'</p>', style === 'auction' ? '支付挂牌费并开始' : '确认询价', () => act({type:'marketQuote',uid,style,reservePercent},expected,'market'));
+      return;
+    }
+    if (b.dataset.marketAccept) { void act({type:'marketAccept',id:Number(b.dataset.marketAccept)},inputRevision,'market'); return; }
+    if (b.dataset.marketKeep) { void act({type:'marketKeep',id:Number(b.dataset.marketKeep)},inputRevision,'market'); return; }
+    if (b.dataset.marketSell) {
+      const uid=Number(b.dataset.marketSell),good=state.cargo.find(item=>item.uid===uid),expected=controller.revision;
+      if(good)modal('按普通价出售？','<p>'+esc(good.name)+' · '+good.value+'零件</p>','确认出售',()=>act({type:'sell',id:uid},expected,'market'));
+      return;
+    }
     if(b.dataset.buyship){const id=b.dataset.buyship,p=E.PORT.ships[id],expected=controller.revision;modal('购买'+p.name+'？','<p>实付'+p.price+'零件，余额'+state.money+' → '+(state.money-p.price)+'。'+p.width*p.height+'格；油箱容量'+p.fuelBase+'，耐久上限'+p.hullBase+'。新船含完好船体，油箱为空；购买后可免费换装，各船油量和船况独立保存。</p>','确认购买',()=>act({type:'buyShip',id},expected,'shipyard'));return;}
     if(b.dataset.shipupgrade){const kind=b.dataset.shipupgrade,q=E.shipUpgradeQuote(state,kind),expected=controller.revision;modal(kind==='fuel'?'扩建油箱？':'加固船体？','<p>上限'+q.from+' → '+q.to+'，实付'+q.cost+'零件。</p><p>'+(kind==='fuel'?'增加油箱容量，不会自动补油。':'新增'+(q.to-q.from)+'点结构耐久，已有损伤不会被清除。')+'</p>','确认升级',()=>act({type:'upgradeShip',kind},expected,'fleet'));return;}
     if(b.dataset.equip){void act({type:'equipShip',id:b.dataset.equip},inputRevision,'shipyard');return;}
@@ -689,7 +727,7 @@
       return;
     }
     if (tab === "cargo" && (cargoDraft || cargoUI.dirty())) cargoUI.cancel();
-    else if (tab !== "play") switchTab(tab === "shipyard" ? "fleet" : "play");
+    else if (tab !== "play") switchTab(tab === "shipyard" ? "fleet" : tab === "market" ? "shop" : "play");
   });
   window.__SALVAGE__ = {
     state: () => E.restore(state),

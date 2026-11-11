@@ -86,7 +86,10 @@
       let grid = '';
       for (let y = 0; y < dims().height; y++) for (let x = 0; x < dims().width; x++) {
         const item = occupant(x, y);
-        grid += `<button type="button" class="cargo-cell${item ? ' occupied' : ''}${item?.uid === session.selected ? ' selected' : ''}" data-cargo-cell="${x},${y}" aria-label="第${y + 1}行第${x + 1}列，${item ? esc(item.name) : '空格'}"${disabled || busy ? ' disabled' : ''}></button>`;
+        const space = dims();
+        const usable = !space.usableCellMask || space.usableCellMask[y][x];
+        const tray = space.fixedTrayCells?.some(([tx, ty]) => tx === x && ty === y);
+        grid += `<button type="button" class="cargo-cell${tray ? ' fixed-tray' : ''}${usable ? '' : ' hold-closed'}${item ? ' occupied' : ''}${item?.uid === session.selected ? ' selected' : ''}" data-cargo-cell="${x},${y}" aria-label="第${y + 1}行第${x + 1}列，${!usable ? '船体边界' : item ? esc(item.name) : tray ? '固定货台空格' : '主舱空格'}"${disabled || busy || !usable ? ' disabled' : ''}></button>`;
       }
       let shapes = '', marks = '';
       for (const p of session.placements) {
@@ -101,7 +104,7 @@
         const item = itemById(session.selected), p = session.preview, shape = shapePath(cells(item, session.rotation));
         shapes += `<g class="cargo-preview ${p.ok ? 'can-place' : 'cannot-place'}" transform="translate(${p.x * 100},${p.y * 100})"><path d="${shape.fill}"/><path class="cargo-preview-outline" d="${shape.outline}"/></g>`;
       }
-      return `<div class="cargo-board" aria-label="${dims().height}行${dims().width}列拼图货舱" style="--cargo-cols:${dims().width};--cargo-rows:${dims().height}"><div class="cargo-cells">${grid}</div><svg class="cargo-shapes" viewBox="0 0 ${dims().width*100} ${dims().height*100}" aria-hidden="true">${shapes}</svg><div class="cargo-physical-layer" aria-hidden="true">${marks}</div></div>`;
+      return `<div class="cargo-board" data-hold-ship="${E.shipStats(latestState).id}" aria-label="${E.capacityCells(latestState)}个有效格，${dims().height}行${dims().width}列拼图货舱" style="--cargo-cols:${dims().width};--cargo-rows:${dims().height}"><div class="cargo-cells">${grid}</div><svg class="cargo-shapes" viewBox="0 0 ${dims().width*100} ${dims().height*100}" aria-hidden="true">${shapes}</svg><div class="cargo-physical-layer" aria-hidden="true">${marks}</div></div>`;
     }
 
     function itemButtons(items, tray = false) {
@@ -120,9 +123,13 @@
       if(!item||session.discardUids.includes(item.uid))return '<div class="cargo-detail empty-selection">点选物件查看；物件外形就是实际占格。</div>';
       const isNew=session.newUids.includes(item.uid);
       const actions=!session.action&&!dirty() ? (['port','summary'].includes(latestState.phase)?'<button data-cargo-action="sell">'+icon('money')+'出售</button>':'')+(['patch','fuel'].includes(item.ability)?'<button data-cargo-action="use" '+(latestState[item.ability==='fuel'?'fuel':'hull']===E.resourceLimit(latestState,item.ability==='fuel'?'fuel':'hull')?'disabled':'')+'>'+icon('repair')+'使用用品</button>':'')+(['route','event','result'].includes(latestState.phase)?'<button data-cargo-action="discard">放弃货物</button>':'') : '';
-      return '<section class="cargo-detail" aria-label="选中货物"><div class="cargo-detail-head"><span class="cargo-selected-shape">'+visual(item)+'</span><div><h3>'+esc(item.name)+'</h3><p>'+area(item)+'格 · 售价 '+item.value+' 零件'+(item.ability==='patch'?' · 用后修22耐久':item.ability==='fuel'?' · 用后补20燃料':' · 可出售')+(item.shapeId.startsWith('legacy')?' · 原包装':'')+'</p></div></div><details class="cargo-more"><summary>物品操作</summary><div class="cargo-item-actions"><button type="button" data-cargo-stage '+(!placement(item.uid)?'disabled':'')+'>移到托盘</button>'+actions+(session.action?.type==='choose'&&!isNew?'<button class="danger" data-cargo-discard>换下此旧货</button>':'')+'</div></details>'+(session.confirmDiscard?'<div class="cargo-discard-confirm" role="group" aria-label="确认弃货"><p>确认装载时放弃「'+esc(item.name)+'」，不获得零件。</p><div><button data-cargo-keep>保留</button><button class="danger" data-cargo-confirm-discard>确认放弃</button></div></div>':'')+'</section>';
+      return '<section class="cargo-detail" aria-label="选中货物"><div class="cargo-detail-head"><span class="cargo-selected-shape">'+visual(item)+'</span><div><h3>'+esc(item.name)+'</h3><p>'+area(item)+'格 · 售价 '+item.value+' 零件'+(item.ability==='patch'?' · 用后修22耐久':item.ability==='fuel'?' · 用后补20燃料':' · 可出售')+(item.shapeId.startsWith('legacy')?' · 原包装':'')+'</p></div></div><details class="cargo-more"><summary>物品操作</summary><div class="cargo-item-actions"><button type="button" data-cargo-stage '+(!placement(item.uid)?'disabled':'')+'>暂时拿起</button>'+actions+(session.action?.type==='choose'&&!isNew?'<button class="danger" data-cargo-discard>换下此旧货</button>':'')+'</div></details>'+(session.confirmDiscard?'<div class="cargo-discard-confirm" role="group" aria-label="确认弃货"><p>确认装载时放弃「'+esc(item.name)+'」，不获得零件。</p><div><button data-cargo-keep>保留</button><button class="danger" data-cargo-confirm-discard>确认放弃</button></div></div>':'')+'</section>';
     }
     function toolbar(){const noItem=session.selected==null;return '<div class="cargo-tools"><button type="button" data-cargo-rotate '+(disabled||busy||noItem?'disabled':'')+'>'+icon('rotate')+'<span>旋转</span></button><button type="button" data-cargo-arrange '+(disabled||busy||!remainingItems().length?'disabled':'')+'>'+icon('arrange')+'<span>整理</span></button></div>';}
+    function holdCaption() {
+      const space = dims();
+      return '<div class="hold-caption"><b>'+esc(E.shipStats(latestState).name)+'</b><span>'+esc(space.label)+'</span><small><i></i>主舱 <i class="tray-key"></i>固定货台</small></div>';
+    }
     function markup() {
       if(!session)return '';
       const items=remainingItems(),unplaced=items.filter(x=>!placement(x.uid)),validation=valid(),used=items.reduce((n,x)=>n+area(x),0),quick=session.mode==='quick'&&!!session.action;
@@ -132,7 +139,7 @@
       const footer='<div class="cargo-save-panel">'+(latestOptions.costHTML||'')+(!validation.ok?'<p class="cargo-save-reason">'+icon('warning')+(unplaced.length?'还有'+unplaced.length+'件未放入':esc(validation.message))+'</p>':'')+'<div class="cargo-save-actions"><button type="button" data-cargo-cancel '+(busy?'disabled':'')+'>'+icon('close')+(session.action?'取消':'取消调整')+'</button><button type="button" class="primary" data-cargo-save '+(saveDisabled?'disabled':'')+'>'+icon('check')+(busy?'保存中…':session.action?.type==='depart'?'确认出发':session.action?'收下并装入':'保存排布')+'</button></div></div>';
       let body='';
       if(quick){const incoming=items.filter(x=>session.newUids.includes(x.uid));body='<div class="cargo-body cargo-quick"><div class="cargo-choice-summary">'+(latestOptions.summaryHTML||'')+'</div>'+mission()+'<div class="quick-loot" aria-label="待收下物品">'+incoming.map(x=>'<div class="quick-loot-item"><span>'+visual(x)+'</span><div><b>'+esc(x.name)+'</b><small>'+area(x)+'格 · 售价 '+x.value+' 零件</small></div></div>').join('')+'</div><p class="cargo-quick-note">'+(session.action.type==='depart'?'普通货舱可用'+(E.capacityCells(latestState)-used)+'格；任务状态以已接取委托为准。':'已找到合法位置，现有货物保持原位。确认时才结算。')+'</p><button type="button" class="ghost full" data-cargo-edit>'+icon('cargo')+'手动调整</button></div>';}
-      else body='<div class="cargo-body">'+mission()+'<div class="cargo-editor"><div class="cargo-board-row">'+board()+toolbar()+'</div><p data-cargo-status role="status" aria-live="polite" class="cargo-status '+session.messageKind+'">'+icon(session.messageKind==='warning'?'warning':session.messageKind==='success'?'check':'cargo')+'<span>'+esc(session.message)+'</span></p></div>'+detail()+'<section class="cargo-tray"><h2>物件托盘 <small>'+items.length+'件'+(unplaced.length?' · '+unplaced.length+'件未放入':'')+'</small></h2><div class="cargo-item-list" data-cargo-strip>'+itemButtons(items)+'</div></section>'+(discarded.length?'<section class="cargo-discard-list"><h2>确认后将放弃</h2>'+discarded.map(x=>'<div><span>'+esc(x.name)+'</span><button data-cargo-restore="'+x.uid+'">恢复</button></div>').join('')+'</section>':'')+'</div>';
+      else body='<div class="cargo-body">'+mission()+holdCaption()+'<div class="cargo-editor"><div class="cargo-board-row">'+board()+toolbar()+'</div><p data-cargo-status role="status" aria-live="polite" class="cargo-status '+session.messageKind+'">'+icon(session.messageKind==='warning'?'warning':session.messageKind==='success'?'check':'cargo')+'<span>'+esc(session.message)+'</span></p></div>'+detail()+'<section class="cargo-tray"><h2>货物清单 <small>'+items.length+'件'+(unplaced.length?' · '+unplaced.length+'件未放入':'')+'</small></h2><div class="cargo-item-list" data-cargo-strip>'+itemButtons(items)+'</div></section>'+(discarded.length?'<section class="cargo-discard-list"><h2>确认后将放弃</h2>'+discarded.map(x=>'<div><span>'+esc(x.name)+'</span><button data-cargo-restore="'+x.uid+'">恢复</button></div>').join('')+'</section>':'')+'</div>';
       return '<section data-cargo-view class="cargo-view '+(session.action?'cargo-loading ':'')+(quick?'is-quick':'')+'"><div class="section-head"><h1>'+title+'</h1>'+(!session.action&&latestState.phase==='port'?'<button class="cargo-expand" data-cargo-growth>扩容</button>':'')+'<span class="tag">'+used+'/'+E.capacityCells(latestState)+' 格</span></div>'+body+footer+'</section>';
     }
 
@@ -154,8 +161,9 @@
     function select(uid) {
       const item = itemById(uid);
       if (!item || session.discardUids.includes(item.uid)) return;
+      const sameSelection = session.selected === item.uid;
       session.selected = item.uid;
-      session.rotation = placement(item.uid)?.rotation || 0;
+      session.rotation = placement(item.uid)?.rotation ?? (sameSelection ? session.rotation : 0);
       session.preview = null;
       session.confirmDiscard = false;
       notice(`已选「${item.name}」。点击空格放置，或拖动调整。`);
@@ -168,7 +176,13 @@
       else { session.placements = copy(result.placements); session.preview = null; notice('已放入草案。确认后保存排布。', 'success'); }
     }
 
-    function tapCell(x,y){const at=occupant(x,y);if(at){select(at.uid);return;}if(session.selected==null)notice('先点选一个物件。');else tryPlace(x,y);}
+    function tapCell(x, y) {
+      const at = occupant(x, y);
+      if (at) { select(at.uid); return; }
+      if (session.selected == null) { notice('先点选一个物件。'); return; }
+      const anchor = cells(itemById(session.selected), session.rotation)[0];
+      tryPlace(x - anchor[0], y - anchor[1]);
+    }
 
     async function commit() {
       if (busy || disabled || !valid().ok || (!session.action && !dirty())) return;
@@ -227,8 +241,18 @@
         if (session.selected == null) return;
         session.rotation = (session.rotation + 1) % 4;
         const p = placement(session.selected);
-        if(p){const rotated=G.place(remainingItems(),session.placements,p.uid,p.x,p.y,session.rotation,dims());session.preview={...p,ok:rotated.ok};if(rotated.ok){session.placements=copy(rotated.placements);session.preview=null;notice('已旋转，确认后保存。');}else notice('此处转不开，点空格重新放置。','warning');}else session.preview=null;
-        notice(`轮廓已旋转${session.rotation * 90}°，点击目标格放置。`);
+        if (p) {
+          const rotated = G.place(remainingItems(), session.placements, p.uid, p.x, p.y, session.rotation, dims());
+          session.preview = { ...p, ok: rotated.ok };
+          if (rotated.ok) {
+            session.placements = copy(rotated.placements);
+            session.preview = null;
+            notice('已旋转，确认后保存。', 'success');
+          } else notice('此处转不开，点空格重新放置。', 'warning');
+        } else {
+          session.preview = null;
+          notice(`轮廓已旋转${session.rotation * 90}°，点击目标格放置。`);
+        }
       } else if (b.hasAttribute('data-cargo-stage')) {
         session.placements = session.placements.filter(p => p.uid !== session.selected);
         session.preview = null;
@@ -236,7 +260,7 @@
       } else if (b.hasAttribute('data-cargo-arrange')) {
         const result = G.solve(remainingItems(), session.placements,dims());
         if (result) { session.placements = copy(result); session.preview = null; session.rotation = placement(session.selected)?.rotation || 0; notice('已找到可行排布。你可以继续微调，再确认保存。', 'success'); }
-        else notice(session.action?.type === 'depart' ? '这些货物无法一起装入，请取消装载，回港先出售部分旧货。' : '这些形状无法一起装入4×4货舱，需要明确选择保留哪些货物。', 'warning');
+        else notice(session.action?.type === 'depart' ? '这些货物无法一起装入，请取消装载，回港先出售部分旧货。' : '这些形状无法一起装入当前货舱，需要明确选择保留哪些货物。', 'warning');
       } else if (b.hasAttribute('data-cargo-discard')) session.confirmDiscard = true;
       else if (b.hasAttribute('data-cargo-keep')) session.confirmDiscard = false;
       else if (b.hasAttribute('data-cargo-confirm-discard')) {
@@ -277,6 +301,10 @@
       if (pointers.size > 1) { endDrag(); suppressedClick = performance.now() + 400; repaint(); return; }
       const cell = event.target.closest('[data-cargo-cell]'), pick = event.target.closest('[data-cargo-pick]');
       let uid = pick ? Number(pick.dataset.cargoPick) : null, ox = 0, oy = 0;
+      if (pick) {
+        const rotation = placement(uid)?.rotation ?? (session.selected === uid ? session.rotation : 0);
+        [ox, oy] = cells(itemById(uid), rotation)[0];
+      }
       if (cell) {
         const [x,y] = cell.dataset.cargoCell.split(',').map(Number), item = occupant(x,y);
         if (!item) return;

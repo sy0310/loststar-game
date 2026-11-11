@@ -58,7 +58,11 @@ function packagedSourceNames(sha){
   .toString().split('\0').filter(Boolean).sort();
 }
 function portConfig(sha){return /require\('\.\.\/\.\.\/\.\.\/(design\/star-salvage\/v[^']+\/BALANCE_[^']+\.json)'\)/.exec(source(sha,demo+'src/engine.js').toString())?.[1]??null;}
-function runtimeNames(sha){const config=portConfig(sha);return [...packagedSourceNames(sha),demo+'build.py','design/star-salvage/BALANCE_V01.json',...(config?[config]:[])].sort();}
+function runtimeConfigs(sha){
+ const config=portConfig(sha),version=/\bVERSION='([^']+)'/.exec(source(sha,demo+'src/engine.js').toString())?.[1];
+ return ['design/star-salvage/BALANCE_V01.json',...(config?[config]:[]),...(version?.startsWith('0.5.')?['design/star-salvage/v05/BALANCE_V05.json','design/star-salvage/v05/ship-holds-approved.json']:[])];
+}
+function runtimeNames(sha){return [...packagedSourceNames(sha),demo+'build.py',...runtimeConfigs(sha)].sort();}
 function diskFiles(folder){
  return fs.readdirSync(local(folder),{withFileTypes:true}).flatMap(entry=>{
   const name=folder+'/'+entry.name;
@@ -69,7 +73,7 @@ function diskFiles(folder){
 }
 function assertCurrentRuntime(sha){
  const expected=runtimeNames(sha);
- const actual=[...diskFiles(demo+'src'),...diskFiles(demo+'assets'),demo+'index.html',demo+'build.py','design/star-salvage/BALANCE_V01.json',...(portConfig(sha)?[portConfig(sha)]:[])].sort();
+ const actual=[...diskFiles(demo+'src'),...diskFiles(demo+'assets'),demo+'index.html',demo+'build.py',...runtimeConfigs(sha)].sort();
  assert.deepEqual(actual,expected,'runtime file set changed; refresh frozen package proof');
  for(const name of expected){
   assert.equal(hash(fs.readFileSync(local(name))),hash(source(sha,name)),
@@ -82,8 +86,8 @@ function expectedPackage(sha){
  let names=packagedSourceNames(sha);const result=new Map();
  const version=/\bVERSION='([^']+)'/.exec(source(sha,demo+'src/engine.js').toString())?.[1];
  assert(version,'frozen engine version missing');
- if(version.startsWith('0.4.'))names=names.filter(n=>!n.startsWith(demo+'assets/')||/assets\/v04(?:1|2)?\/[^/]+@2x\.png$/.test(n));
- const art={ship:version.startsWith('0.4.')?'./assets/v04/ship_starter@2x.png':'./assets/ship.webp'};
+ if(version.startsWith('0.4.')||version.startsWith('0.5.'))names=names.filter(n=>!n.startsWith(demo+'assets/')||/assets\/(v04(?:1|2)?|v05)\/[^/]+@2x\.png$/.test(n));
+ const art={ship:version.startsWith('0.4.')||version.startsWith('0.5.')?'./assets/v04/ship_starter@2x.png':'./assets/ship.webp'};
  for(const name of ['ship','port','wreck','harbor'])if(names.includes(demo+'assets/'+name+'.webp'))art[name]='./assets/'+name+'.webp';
  const build={version,commit:sha,dirty:false,blindTest:true};
  for(const name of names){
@@ -92,6 +96,10 @@ function expectedPackage(sha){
    raw=Buffer.from('globalThis.LostCargoBalance='+JSON.stringify(JSON.parse(source(sha,'design/star-salvage/BALANCE_V01.json')))+';\n');
   }else if(name===demo+'src/port-balance.js'){
    raw=Buffer.from('globalThis.LostCargoPortBalance='+JSON.stringify(JSON.parse(source(sha,portConfig(sha))))+';\n');
+  }else if(name===demo+'src/v05-balance.js'){
+   raw=Buffer.from('globalThis.LostCargoV05Balance='+JSON.stringify(JSON.parse(source(sha,'design/star-salvage/v05/BALANCE_V05.json')))+';\n');
+  }else if(name===demo+'src/hold-config.js'){
+   raw=Buffer.from('globalThis.LostCargoHoldConfig='+JSON.stringify(JSON.parse(source(sha,'design/star-salvage/v05/ship-holds-approved.json')))+';\n');
   }else if(name===demo+'index.html'){
    const html=raw.toString(),marker="const ART={ship:'./assets/ship.webp'};";
    assert.equal(html.split(marker).length,2,'frozen build HTML injection marker');
@@ -405,7 +413,7 @@ if(fs.existsSync(local(shipProof))){
 
 const polishProof='artifacts/salvage-polish-v042/verification.json';
 if(fs.existsSync(local(polishProof))){
- const p=json(polishProof),folder='artifacts/salvage-polish-v042/';assert.equal(p.schema,6);ancestor(p.runtimeSourceSha);assertCurrentRuntime(p.runtimeSourceSha);
+ const p=json(polishProof),folder='artifacts/salvage-polish-v042/';assert.equal(p.schema,6);ancestor(p.runtimeSourceSha);if(!fs.existsSync(local('artifacts/salvage-v05/verification.json')))assertCurrentRuntime(p.runtimeSourceSha);
  const evidence=verifyEvidence(p.evidenceFiles,'polish042 evidence'),build=boundJSON(p.buildInfo,evidence);verifyBuild(p,build);
  assert.equal(build.assets.length,40);assert.deepEqual(build.missingOptionalArt,[]);assert.equal(p.zip.files,57);
  git(['ls-files','--error-unmatch','--',p.zip.path]);const raw=fs.readFileSync(local(p.zip.path));assert(evidence.has(p.zip.path));assert.equal(raw.length,p.zip.bytes);assert.equal(hash(raw),p.zip.sha256);

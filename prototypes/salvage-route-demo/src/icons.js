@@ -69,6 +69,7 @@
     archive: "anomaly",
     station: "station",
   };
+  Object.assign(routeKinds, { comet_label:'wreck',ring_sampler:'wreck',silent_fuel:'station',drifting_cup:'cabin',frozen_freight:'wreck',reverse_beacon:'anomaly',lost_probe:'cabin',magnetic_blind:'anomaly',backwards_clock:'anomaly',orbital_archive_vendor:'trade',darkside_signal:'anomaly',foldback_marker:'anomaly' });
   function routeIcon(node) {
     return (
       routeKinds[node?.id] ||

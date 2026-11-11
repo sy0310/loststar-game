@@ -198,6 +198,7 @@ jobs:
           npm --prefix prototypes/salvage-route-demo test
           npm --prefix prototypes/salvage-route-demo run simulate
           npm --prefix prototypes/salvage-route-demo run simulate:compare
+          npm --prefix prototypes/salvage-route-demo run simulate:v05
           npm --prefix prototypes/salvage-route-demo run check:art
       - name: Build and extract this exact isolated H5 ZIP
         run: |
@@ -227,6 +228,9 @@ jobs:
           name: salvage-development-evidence-spoilers
           path: |
             releases/salvage-browser-results.json
+            releases/v05-economy.json
+            releases/v05-isolated-geometry.json
+            releases/v05-model-results.json
             releases/salvage-test-results/
             prototypes/salvage-route-demo/verification/
             prototypes/salvage-route-demo/dist/build-info.json
