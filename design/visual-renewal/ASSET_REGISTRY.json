@@ -11648,7 +11648,7 @@
     "baselineRuntime": "ff917872227b0f28a452dee1642d9cc8606251db",
     "delivery": {
       "status": "PENDING",
-      "title": "Chapter01 persistent development self-test; formal package remains unchanged",
+      "title": "Original first-planet runtime kept; independent survivor v0.6 TapTap469298 delivered for phone review. See salvageSurvivorDelivery and SALVAGE06 rows.",
       "proof": null
     },
     "sourceCoverage": {
@@ -11680,10 +11680,12 @@
         "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
         "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
         "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
-        "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md"
+        "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+        "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+        "design/star-salvage/v06/SURVIVOR_MODE_APPROVED.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps. Preserve251 rows and append7 POLISH042 review fixes; no old proof or phone status promoted. Preserve258 prior rows and append v05 exact normative clauses. Fixed842dc6a/465523 evidence is independently bound. Harbor sharpening is explicitly incomplete. Phone/user art remain pending. Preserve all298 earlier rows and historical hashes; append9 v051 repair capabilities. New68-file/236-case evidence is independent from old67-file/176-case proof. Original Mac schema7→8 verified; physical phone, user art and enjoyment pending. Initial349/468993 remains immutable historical candidate. Final066a657/469033 has240 browser checks plus24 real market UI traces after reserve-display rounding correction.",
+      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps. Preserve251 rows and append7 POLISH042 review fixes; no old proof or phone status promoted. Preserve258 prior rows and append v05 exact normative clauses. Fixed842dc6a/465523 evidence is independently bound. Harbor sharpening is explicitly incomplete. Phone/user art remain pending. Preserve all298 earlier rows and historical hashes; append9 v051 repair capabilities. New68-file/236-case evidence is independent from old67-file/176-case proof. Original Mac schema7→8 verified; physical phone, user art and enjoyment pending. Initial349/468993 remains immutable historical candidate. Final066a657/469033 has240 browser checks plus24 real market UI traces after reserve-display rounding correction. Preserve all307 prior rows and immutable proof; append10 survivor requirements. Latest user-approved360-degree mode supersedes the earlier main-loop direction only. The old modes and paid archives remain available. Physical phone, user art and main4283/newTapTap gate remain pending.",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -12079,7 +12081,17 @@
       "SALVAGE051-SAVE",
       "SALVAGE051-VALIDATION",
       "SALVAGE051-DELIVERY",
-      "SALVAGE051-BOUNDARY"
+      "SALVAGE051-BOUNDARY",
+      "SALVAGE06-ENTRY",
+      "SALVAGE06-WEAPONS",
+      "SALVAGE06-NATURAL",
+      "SALVAGE06-ART",
+      "SALVAGE06-READABLE",
+      "SALVAGE06-PERSISTENCE",
+      "SALVAGE06-LEGACY",
+      "SALVAGE06-DEVICES",
+      "SALVAGE06-DELIVERY",
+      "SALVAGE06-BOUNDARY"
     ],
     "requirements": [
       {
@@ -37752,6 +37764,546 @@
           "taptapVersion": 469033,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "SALVAGE06-ENTRY",
+        "parent": null,
+        "requirement": "4397独立真实HTTP，一指360°移动、镜头追随、四面来敌与自动开火。",
+        "acceptanceCriteria": "4397独立真实HTTP，一指360°移动、镜头追随、四面来敌与自动开火。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 17,
+            "endLine": 18
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/index.html",
+          "prototypes/salvage-survivor-demo/src/game.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "物理手机、TapTap WebView、实际锁屏与用户美术／二刷意愿待验收。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
+      },
+      {
+        "id": "SALVAGE06-WEAPONS",
+        "parent": null,
+        "requirement": "六主动、六被动、六进化、两融合与四种低阶联动均产生真实效果，融合释放槽位。",
+        "acceptanceCriteria": "六主动、六被动、六进化、两融合与四种低阶联动均产生真实效果，融合释放槽位。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 19,
+            "endLine": 19
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/tests/model.test.cjs",
+          "prototypes/salvage-survivor-demo/tests/browser/combat.spec.cjs"
+        ],
+        "assets": [
+          "design/star-salvage/v06/production/weapons/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "物理手机、TapTap WebView、实际锁屏与用户美术／二刷意愿待验收。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
+      },
+      {
+        "id": "SALVAGE06-NATURAL",
+        "parent": null,
+        "requirement": "自然10／30／60秒记录击杀、经验、敌群和升级，主循环限180秒并提供再次挑战。",
+        "acceptanceCriteria": "自然10／30／60秒记录击杀、经验、敌群和升级，主循环限180秒并提供再次挑战。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 20,
+            "endLine": 20
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/tests/capture.cjs",
+          "prototypes/salvage-survivor-demo/tests/simulate.cjs",
+          "prototypes/salvage-survivor-demo/src/game.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "物理手机、TapTap WebView、实际锁屏与用户美术／二刷意愿待验收。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
+      },
+      {
+        "id": "SALVAGE06-ART",
+        "parent": null,
+        "requirement": "原创飞船、四普通敌、精英／Boss、20图标和VFX，保留1×可编辑源与精确2×/4×。用户后续授权按PR描述继续美化。",
+        "acceptanceCriteria": "原创飞船、四普通敌、精英／Boss、20图标和VFX，保留1×可编辑源与精确2×/4×。用户后续授权按PR描述继续美化。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 23,
+            "endLine": 24
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/art.js",
+          "prototypes/salvage-survivor-demo/src/art-catalog.js",
+          "prototypes/salvage-survivor-demo/sync_runtime.py"
+        ],
+        "assets": [
+          "design/star-salvage/v06/production/actors/manifest.json",
+          "design/star-salvage/v06/production/weapons/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "物理手机、TapTap WebView、实际锁屏与用户美术／二刷意愿待验收。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
+      },
+      {
+        "id": "SALVAGE06-READABLE",
+        "parent": null,
+        "requirement": "三选一卡、简洁首页／结算与安全留白，危险弹和经验可辨，特效与实体受上限约束。",
+        "acceptanceCriteria": "三选一卡、简洁首页／结算与安全留白，危险弹和经验可辨，特效与实体受上限约束。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 25,
+            "endLine": 28
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/style.css",
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/tests/compatibility.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "物理手机、TapTap WebView、实际锁屏与用户美术／二刷意愿待验收。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
+      },
+      {
+        "id": "SALVAGE06-PERSISTENCE",
+        "parent": null,
+        "requirement": "独立新存档、刷新和关闭重开继续、同一随机结果、结算及付费强化防重复、失败可重试。",
+        "acceptanceCriteria": "独立新存档、刷新和关闭重开继续、同一随机结果、结算及付费强化防重复、失败可重试。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 18,
+            "endLine": 18
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/persistence.js",
+          "prototypes/salvage-survivor-demo/tests/browser/storage.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "物理手机、TapTap WebView、实际锁屏与用户美术／二刷意愿待验收。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
+      },
+      {
+        "id": "SALVAGE06-LEGACY",
+        "parent": null,
+        "requirement": "旧schema8真实档、旧四船货物欠款与原钱包留存回退，不自动硬折算，不导入真实原档测试。",
+        "acceptanceCriteria": "旧schema8真实档、旧四船货物欠款与原钱包留存回退，不自动硬折算，不导入真实原档测试。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 29,
+            "endLine": 29
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/persistence.js",
+          "prototypes/salvage-survivor-demo/tests/browser/storage.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "物理手机、TapTap WebView、实际锁屏与用户美术／二刷意愿待验收。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
+      },
+      {
+        "id": "SALVAGE06-DEVICES",
+        "parent": null,
+        "requirement": "Chromium/WebKit两竖屏、实际Safari、真实手机触控／安全区／锁屏分别验证，不互相冒充。",
+        "acceptanceCriteria": "Chromium/WebKit两竖屏、实际Safari、真实手机触控／安全区／锁屏分别验证，不互相冒充。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 18,
+            "endLine": 18
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/tests/browser/combat.spec.cjs",
+          "prototypes/salvage-survivor-demo/tests/compatibility.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "物理手机、TapTap WebView、实际锁屏与用户美术／二刷意愿待验收。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
+      },
+      {
+        "id": "SALVAGE06-DELIVERY",
+        "parent": null,
+        "requirement": "新TapTap开发自测上传回读ID／大小／竖屏／主包不变，保留469033。用户最新授权直接上传以进行手机验证，4283替换仍待手机反馈。",
+        "acceptanceCriteria": "新TapTap开发自测上传回读ID／大小／竖屏／主包不变，保留469033。用户最新授权直接上传以进行手机验证，4283替换仍待手机反馈。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 30,
+            "endLine": 30
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/build.py",
+          "prototypes/salvage-survivor-demo/verify_package.py",
+          "prototypes/salvage-survivor-demo/tests/verify-evidence.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "TapTap469298已上传并回读，物理手机结果待回传。原4283仍保留066a657，手机通过后切换。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
+      },
+      {
+        "id": "SALVAGE06-BOUNDARY",
+        "parent": null,
+        "requirement": "继续Draft，无正式发布、强制广告、联网竞价、第二星球或旧航点系统扩张。",
+        "acceptanceCriteria": "继续Draft，无正式发布、强制广告、联网竞价、第二星球或旧航点系统扩张。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 34,
+            "endLine": 34
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/index.html",
+          "prototypes/salvage-survivor-demo/src/game.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "4397独立幸存者HTTP／普通入口无QA"
+          }
+        ],
+        "checks": [
+          "survivor-v06-model15",
+          "survivor-v06-browser108",
+          "survivor-v06-art39",
+          "survivor-v06-fixed46",
+          "survivor-v06-profiles2"
+        ],
+        "proofs": [
+          "artifacts/survivor-v06/verification.json",
+          "design/star-salvage/v06/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "物理手机、TapTap WebView、实际锁屏与用户美术／二刷意愿待验收。",
+        "nextAction": "用户扫描TapTap469298复测并记录机型／系统，手机通过后替换4283。",
+        "reviewBasis": "Independent read of exact v06 task, actual frozen04ad5a8 art/frame reviews, natural input recordings, native Safari UI and real HTTP assertions. Engineering does not imply phone/art acceptance.",
+        "evidenceCompleteness": "ENGINEERING_VERIFIED_PHONE_USER_PENDING",
+        "sandboxBinding": {
+          "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+          "zipSha256": "621e84790956ea7a90213f0c1588040eb99a97216e55919e9ec1bff1a6905c5e",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 469298,
+          "formalIntegration": false,
+          "previewZipSha256": "00f64b45db8f62414b488e50030c318cb46978e1a84e54046b2ec4e0bb4aed5b"
+        }
       }
     ],
     "supersededRules": [
@@ -38218,6 +38770,35 @@
           }
         ],
         "rule": "Latest8fa8748 user-authorized repair adds actual3/5 fixed return gates after8/10/12 economic validation. v05 restriction on unimplemented8-oil shortcut no longer governs new v051 voyages. No new story chapters or ordinary return formula changes."
+      },
+      {
+        "id": "SALVAGE06-APPROVED-CORE-CHANGE",
+        "scope": "New survivor mode only; historical planet, chapter and salvage route archives remain intact.",
+        "originalRefs": [
+          {
+            "path": "AGENTS.md",
+            "startLine": 3,
+            "endLine": 6
+          },
+          {
+            "path": "AGENTS.md",
+            "startLine": 12,
+            "endLine": 12
+          }
+        ],
+        "replacementRefs": [
+          {
+            "path": "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
+            "startLine": 5,
+            "endLine": 5
+          },
+          {
+            "path": "design/star-salvage/v06/SURVIVOR_MODE_APPROVED.md",
+            "startLine": 9,
+            "endLine": 19
+          }
+        ],
+        "rule": "User expressly approves360-degree survival as the new core. Old node exploration, cargo puzzle, fuel and black market remain frozen for rollback. No rewriting historical acceptance or automatic value conversion."
       }
     ],
     "statusPolicy": {
@@ -38252,6 +38833,11 @@
         "title": "V045正式基线保留；UI参考样板待视觉确认与正式集成",
         "proof": "artifacts/v045-a-exploration/proof.json",
         "status": "PENDING"
+      },
+      {
+        "status": "PENDING",
+        "title": "Chapter01 persistent development self-test; formal package remains unchanged",
+        "proof": null
       }
     ],
     "chapterDelivery": {
@@ -38402,7 +38988,18 @@
         "task": "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
         "notes": "Four playtest repairs. Current old-schema7 voyage retains original rules until next departure; approved fixed8 gate applies new v051 voyages. Both rollbacks preserved."
       }
-    ]
+    ],
+    "salvageSurvivorDelivery": {
+      "status": "DEVELOPMENT_SELF_TEST_UPLOADED_PENDING_PHONE_USER",
+      "sourceCommit": "04ad5a8b908f5bfcfec7173d0b5a7cd8d010fe19",
+      "proof": "artifacts/survivor-v06/verification.json",
+      "localPort": 4397,
+      "mainPort4283Changed": false,
+      "newTapTapVersion": 469298,
+      "fallbackVersion": 469033,
+      "phone": "NOT_TESTED",
+      "uploadAuthorization": "Latest user explicitly requested direct TapTap upload for phone testing, replacing the LAN-first upload gate."
+    }
   },
   "approvedReferenceManifests": [
     {

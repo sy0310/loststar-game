@@ -255,6 +255,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: python3 -m pip install -r prototypes/salvage-route-demo/tests/requirements-port-art.txt
+      - name: Verify committed survivor package and immutable evidence
+        if: hashFiles('artifacts/survivor-v06/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-evidence.cjs
       - name: Verify native pixels, actual combat and fixed-seed policies
         run: |
           npm --prefix prototypes/salvage-survivor-demo run check:art

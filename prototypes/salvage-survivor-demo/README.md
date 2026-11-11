@@ -47,4 +47,4 @@ python3 prototypes/salvage-survivor-demo/verify_package.py releases/survivor-ext
 
 冻结要求相关源码与素材已提交。ZIP内46文件、39 PNG，校验绑定运行源码SHA、精确文件表和每个文件摘要。编译源、1×/4×和原始生成图保留在仓库，H5包完全本地依赖。
 
-原v0.5.1/066a657/TapTap469033与用户原档继续保留。真实 Safari、物理手机安全区、锁屏、帧率及用户趣味审核分别记录，自动测试通过不授予视觉或手机验收。PR #2保持Draft。
+新TapTap开发自测469298已上传。用户要求通过TapTap完成手机验证，4397保留工程入口。原v0.5.1/066a657/TapTap469033与用户原档继续保留。真实 Safari、物理手机安全区、锁屏、帧率及用户趣味审核分别记录，自动测试通过不授予视觉或手机验收。PR #2保持Draft。
