@@ -280,6 +280,7 @@ jobs:
           trap 'kill "$task_survivor_pid"' EXIT
           curl --fail --retry 10 --retry-delay 1 --retry-connrefused --silent http://127.0.0.1:4397/ > /dev/null
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_REPORT="$PWD/releases/survivor-browser.json" SURVIVOR_TEST_OUTPUT="$PWD/releases/survivor-browser-tests" npm --prefix prototypes/salvage-survivor-demo run test:browser
+          SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_COMPAT_OUT="$PWD/releases/survivor-compatibility.json" node prototypes/salvage-survivor-demo/tests/compatibility.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -288,6 +289,7 @@ jobs:
             releases/survivor-model.json
             releases/survivor-simulation.json
             releases/survivor-browser.json
+            releases/survivor-compatibility.json
             releases/survivor-browser-tests/
             prototypes/salvage-survivor-demo/dist/build-info.json
             prototypes/salvage-survivor-demo/dist/loststar-survivor-*.zip

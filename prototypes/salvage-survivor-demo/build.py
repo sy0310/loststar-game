@@ -23,9 +23,10 @@ def main():
     args = parser.parse_args()
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     relevant = [str(HERE.relative_to(ROOT)), 'design/star-salvage/v06/BALANCE_V06.json', 'design/star-salvage/v06/production']
-    dirty = bool(subprocess.check_output(['git', 'status', '--porcelain', '--', *relevant], cwd=ROOT, text=True).strip())
+    dirty_paths = subprocess.check_output(['git', 'status', '--porcelain', '--', *relevant], cwd=ROOT, text=True).strip()
+    dirty = bool(dirty_paths)
     if args.freeze and dirty:
-        raise RuntimeError('Commit survivor runtime and art before freezing a delivery package')
+        raise RuntimeError('Commit survivor runtime and art before freezing a delivery package\n' + dirty_paths)
     derived, catalog = generated()
     for path, expected in derived.items():
         if path.read_text() != expected:
