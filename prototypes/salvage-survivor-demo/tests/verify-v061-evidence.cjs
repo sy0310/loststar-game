@@ -5,7 +5,13 @@ const crypto = require("node:crypto");
 const cp = require("node:child_process");
 const assert = require("node:assert/strict");
 const root = path.resolve(__dirname, "../../..");
-const folder = path.join(root, "artifacts/survivor-v061/current");
+const folder = path.resolve(
+  root,
+  process.env.SURVIVOR_EVIDENCE_FOLDER || "artifacts/survivor-v061/current",
+);
+const folderRelative = path.relative(root, folder).split(path.sep).join("/");
+const originalDelivery = folderRelative === "artifacts/survivor-v061/current";
+const audioCases = originalDelivery ? 32 : 34;
 const raw = (name) => fs.readFileSync(path.join(folder, name));
 const json = (name) => JSON.parse(raw(name));
 const sha = (bytes) => crypto.createHash("sha256").update(bytes).digest("hex");
@@ -99,7 +105,7 @@ const sha = (bytes) => crypto.createHash("sha256").update(bytes).digest("hex");
   const simulation = json("simulation.json");
   assert.equal(simulation.rows.length, 160);
   const audio = json("audio.json");
-  assert.equal(audio.cases.length, 32);
+  assert.equal(audio.cases.length, audioCases);
   assert.equal(
     audio.sourceSha256,
     info.sourceFiles.find((row) => row.path.endsWith("/audio-engine.js"))
@@ -129,7 +135,7 @@ const sha = (bytes) => crypto.createHash("sha256").update(bytes).digest("hex");
     root,
     "artifacts/survivor-v061/audio-portability",
   );
-  if (fs.existsSync(portableFolder)) {
+  if (originalDelivery && fs.existsSync(portableFolder)) {
     const portable = JSON.parse(
       fs.readFileSync(path.join(portableFolder, "verification.json")),
     );
@@ -143,11 +149,13 @@ const sha = (bytes) => crypto.createHash("sha256").update(bytes).digest("hex");
     assert.equal(
       audioReport.testSourceSha256,
       sha(
-        fs.readFileSync(
-          path.join(
-            root,
-            "design/star-salvage/v061/production/audio/verify_audio.cjs",
-          ),
+        cp.execFileSync(
+          "git",
+          [
+            "show",
+            "d5134e9588726768447b17408e41dd093438f8b4:design/star-salvage/v061/production/audio/verify_audio.cjs",
+          ],
+          { cwd: root },
         ),
       ),
     );
@@ -163,7 +171,7 @@ const sha = (bytes) => crypto.createHash("sha256").update(bytes).digest("hex");
     archiveSha256: info.sha256,
     wrapperSha256: wrapper.sha256,
     browserCases: 288,
-    audioCases: 32,
+    audioCases,
     modelGroups: 21,
     simulationRuns: 160,
     natural600Seconds: true,
@@ -176,27 +184,28 @@ const sha = (bytes) => crypto.createHash("sha256").update(bytes).digest("hex");
     .readdirSync(folder)
     .filter(
       (name) =>
-        name.endsWith(".json") ||
-        name.endsWith(".mp4") ||
-        name.endsWith(".png") ||
-        name.endsWith(".txt"),
+        name !== "verification.json" &&
+        (name.endsWith(".json") ||
+          name.endsWith(".mp4") ||
+          name.endsWith(".png") ||
+          name.endsWith(".txt")),
     )
     .sort()
     .map((name) => ({
-      path: "artifacts/survivor-v061/current/" + name,
+      path: folderRelative + "/" + name,
       bytes: raw(name).length,
       sha256: sha(raw(name)),
     }));
-  const frozenProof = path.join(folder, "../verification.json");
+  const frozenProof = path.join(
+    folder,
+    originalDelivery ? "../verification.json" : "verification.json",
+  );
   if (fs.existsSync(frozenProof) && !process.env.SURVIVOR_PROOF_OUT) {
     const committed = JSON.parse(fs.readFileSync(frozenProof));
     assert.equal(committed.sourceCommit, info.sourceCommit);
     assert.equal(committed.http.length, 60);
     for (const file of committed.evidenceFiles) {
-      assert.equal(
-        file.path,
-        "artifacts/survivor-v061/current/" + path.basename(file.path),
-      );
+      assert.equal(file.path, folderRelative + "/" + path.basename(file.path));
       const bytes = fs.readFileSync(path.join(root, file.path));
       assert.equal(bytes.length, file.bytes, file.path);
       assert.equal(sha(bytes), file.sha256, file.path);

@@ -637,6 +637,8 @@
   }
 
   function setSlotTrack(slot, trackIndex) {
+    slot.cancelPlayback?.();
+    slot.playPending = false;
     slot.token++;
     slot.element.pause();
     slot.trackIndex = trackIndex;
@@ -717,7 +719,13 @@
     } catch (_) {
       result = Promise.reject(Error("Media gesture required"));
     }
-    const playback = Promise.resolve(result)
+    let confirm;
+    const played = new Promise((resolve) => {
+      confirm = resolve;
+    });
+    const onPlaying = () => confirm();
+    slot.element.addEventListener("playing", onPlaying);
+    const playback = Promise.race([Promise.resolve(result), played])
       .then(() => {
         if (slot.token !== token) return;
         slot.warmed = true;
@@ -730,6 +738,7 @@
       playback,
       new Promise((resolve) => root.setTimeout(resolve, 4000)),
     ]).then(() => {
+      slot.element.removeEventListener("playing", onPlaying);
       if (slot.token !== token) return;
       slot.token++;
       slot.element.pause();
@@ -757,6 +766,7 @@
     fadeInAt = null;
     mediaGeneration++;
     slots.forEach((slot, index) => {
+      slot.cancelPlayback?.();
       slot.token++;
       slot.playPending = false;
       slot.element.pause();
@@ -799,33 +809,48 @@
     slot.playPending = true;
     const token = ++slot.token;
     const owner = mediaGeneration;
+    let completed = false;
+    const cleanup = () => {
+      slot.element.removeEventListener("playing", confirm);
+      if (slot.cancelPlayback === cleanup) slot.cancelPlayback = null;
+    };
+    const confirm = () => {
+      if (completed) return;
+      completed = true;
+      cleanup();
+      if (
+        slot.token !== token ||
+        owner !== mediaGeneration ||
+        !canMusicPlay()
+      ) {
+        if (slot.token === token) slot.element.pause();
+        return;
+      }
+      slot.playPending = false;
+      slot.warmed = true;
+      slot.needsGesture = false;
+      mediaStarts++;
+      logMusicEvent("track-start", { track: tracks[slot.trackIndex].title });
+      externalStatus = "playing-approved-streams";
+      onStarted();
+    };
+    slot.cancelPlayback = cleanup;
+    slot.element.addEventListener("playing", confirm);
     let result;
     try {
       result = slot.element.play();
     } catch (_) {
+      cleanup();
       slot.playPending = false;
       slot.needsGesture = true;
       return;
     }
     Promise.resolve(result)
-      .then(() => {
-        if (
-          slot.token !== token ||
-          owner !== mediaGeneration ||
-          !canMusicPlay()
-        ) {
-          if (slot.token === token) slot.element.pause();
-          return;
-        }
-        slot.playPending = false;
-        slot.warmed = true;
-        slot.needsGesture = false;
-        mediaStarts++;
-        logMusicEvent("track-start", { track: tracks[slot.trackIndex].title });
-        externalStatus = "playing-approved-streams";
-        onStarted();
-      })
+      .then(confirm)
       .catch(() => {
+        if (completed) return;
+        completed = true;
+        cleanup();
         if (slot.token !== token) return;
         slot.playPending = false;
         slot.needsGesture = true;

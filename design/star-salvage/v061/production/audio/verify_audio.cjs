@@ -8,10 +8,9 @@ const ROOT = path.resolve(__dirname, "../../../../..");
 const { chromium, webkit } = require(
   path.join(ROOT, "node_modules/@playwright/test"),
 );
-const engine = path.join(
-  ROOT,
-  "prototypes/salvage-survivor-demo/src/audio-engine.js",
-);
+const engine =
+  process.env.SURVIVOR_AUDIO_ENGINE ||
+  path.join(ROOT, "prototypes/salvage-survivor-demo/src/audio-engine.js");
 const audioRoot = path.join(
   ROOT,
   "prototypes/salvage-survivor-demo/assets/audio",
@@ -132,6 +131,7 @@ const server = http.createServer((request, response) => {
   response.setHeader("Content-Type", "text/html");
   const unsupported = url.searchParams.has("unsupported");
   const stalled = url.searchParams.has("stalled-context");
+  const pendingMedia = url.searchParams.has("pending-media");
   response.end(
     '<!doctype html><meta charset="utf-8"><button id="unlock">Enable audio</button>' +
       (unsupported
@@ -141,6 +141,9 @@ const server = http.createServer((request, response) => {
         ? '<script>const NativeContext=window.AudioContext;window.AudioContext=function(options){const audio=new NativeContext(options);let prototype=NativeContext.prototype;while(prototype&&!Object.getOwnPropertyDescriptor(prototype,"state"))prototype=Object.getPrototypeOf(prototype);const getter=Object.getOwnPropertyDescriptor(prototype,"state").get;let held=true,calls=0;const resume=audio.resume.bind(audio);Object.defineProperty(audio,"state",{configurable:true,get:()=>held?"suspended":getter.call(audio)});audio.resume=()=>{if(++calls===1)return new Promise(()=>{});held=false;return resume();};return audio;};</script>'
         : "") +
       '<script>window.audioTestMedia=[];const OriginalAudio=window.Audio;window.Audio=function(...args){const element=new OriginalAudio(...args);window.audioTestMedia.push(element);return element;};window.Audio.prototype=OriginalAudio.prototype;window.audioGameRandomCalls=0;Math.random=()=>{window.audioGameRandomCalls++;throw Error("Audio consumed game randomness");};</script>' +
+      (pendingMedia
+        ? "<script>const createAudio=window.Audio;window.Audio=function(...args){const element=new createAudio(...args),play=element.play.bind(element);element.play=()=>{play().catch(()=>{});return new Promise(()=>{});};return element;};window.Audio.prototype=createAudio.prototype;</script>"
+        : "") +
       '<script src="/audio-engine.js"></script><script>document.getElementById("unlock").onclick=async()=>{window.audioUnlocked=await SurvivorAudio.unlock();SurvivorAudio.setState({playing:true,paused:false,phase:2});};</script>',
   );
 });
@@ -209,6 +212,40 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         state: await stalled.evaluate(() => SurvivorAudio.inspect()),
       });
       await stalled.close();
+      const pendingMediaPage = await browser.newPage();
+      await pendingMediaPage.goto(entry + "/?pending-media=1");
+      await pendingMediaPage.locator("#unlock").click();
+      await pendingMediaPage.waitForFunction(
+        () => SurvivorAudio.inspect().externalMusic.mediaStarts === 1,
+        null,
+        { timeout: 15000 },
+      );
+      await pendingMediaPage.waitForFunction(
+        () => SurvivorAudio.inspect().externalMusic.positions[0].seconds >= 0.2,
+        null,
+        { timeout: 15000 },
+      );
+      await pendingMediaPage.evaluate(() => {
+        const element = window.audioTestMedia[0];
+        element.currentTime = element.duration - 2.1;
+      });
+      await pendingMediaPage.waitForFunction(
+        () => SurvivorAudio.inspect().externalMusic.fadesCompleted === 1,
+        null,
+        { timeout: 15000 },
+      );
+      const pendingState = await pendingMediaPage.evaluate(() =>
+        SurvivorAudio.inspect(),
+      );
+      assert.equal(pendingState.externalMusic.activeTrack, "Nebula Loop");
+      assert.equal(pendingState.externalMusic.activeMedia, 1);
+      assert.equal(pendingState.externalMusic.mediaFailures, 0);
+      report.cases.push({
+        engine: name,
+        id: "actual-playing-events-confirm-start-and-crossfade-when-play-promises-remain-pending",
+        state: pendingState,
+      });
+      await pendingMediaPage.close();
       const musicLevels = await browser.newPage();
       await musicLevels.goto(entry);
       await musicLevels.locator("#unlock").click();
@@ -388,9 +425,13 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         state,
       });
       await page.locator("#unlock").click();
-      await page.waitForFunction(
-        () => SurvivorAudio.inspect().externalMusic.activeMedia === 1,
-      );
+      await page.waitForFunction(() => {
+        const audio = SurvivorAudio.inspect();
+        return (
+          audio.externalMusic.activeMedia === 1 &&
+          audio.externalMusic.mediaStarts >= 2
+        );
+      });
       await page.waitForTimeout(150);
       state = await page.evaluate(() => SurvivorAudio.inspect());
       assert.equal(state.totals.contexts, 1);
@@ -516,9 +557,13 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         id: "read-only-recording-stream-has-actual-music-and-sfx-without-microphone",
         ...recording,
       });
-      await page.waitForFunction(
-        () => SurvivorAudio.inspect().externalMusic.activeMedia === 1,
-      );
+      await page.waitForFunction(() => {
+        const audio = SurvivorAudio.inspect();
+        return (
+          audio.externalMusic.activeMedia === 1 &&
+          audio.externalMusic.mediaStarts >= 3
+        );
+      });
       // Explicit media-boundary QA, not natural3-minute progression.
       await page.evaluate(() => {
         const media = window.audioTestMedia[0];
