@@ -1,6 +1,6 @@
 # 本机 Codex｜v0.5 轻量奇遇、随船货舱与黑市交易
 
-> **货舱竞品机制审查门槛（2026-11-11）**：用户明确要求**优先借鉴已上线成功游戏的真实机制，不再直接实施我们拍脑袋画的四船异形mask**。先读 `design/star-salvage/v05/CARGO_REFERENCE_RESEARCH.md`（DREDGE开发者设计复盘、Backpack Brawl手机官方操作、RE4官方网格说明）。原 `SHIP_HOLDS_MARKET_CANDIDATES.json` 四个mask已标记 `REFERENCE_RESEARCH_GATE_DO_NOT_IMPLEMENT_OLD_MASKS`；scout/cargo候选无法容纳合法的4x4 legacy16大货。此部分先做 A现有矩形 / B DREDGE式连续主舱+边缘模块 / C Backpack Brawl式固定挂载托盘 的**同货物、同屏A/B/C隔离QA对照**，交玩家审核后才冻结新mask。不得因别的任务进度直接将自拟mask上传TapTap/覆盖Mac。其他12奇遇、6彩蛋、黑市和原创物件可独立按验收推进。
+> **货舱方案已获用户确认｜采用 B＋C（2026-11-11）**：用户明确选择**连续主货区＋边缘真实扩容（借鉴DREDGE的机制）**与**固定外挂托盘（借鉴Backpack Brawl的容器机制）**的组合。**不用再等待A/B/C方向审批；可实施 B＋C，但必须先测试具体mask**。唯一本轮货舱权威：[\`design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md\`](../design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md)。`CARGO_REFERENCE_RESEARCH.md`保留证据；`SHIP_HOLDS_MARKET_CANDIDATES.json`内的旧四船 baseRows 是历史**错误候选**，仍禁止照搬。四船真实有效格、旧4×4大件、付费升级、触控与存档测试合格后才集成/交付；不用把未确认的具体格子假装成熟设计已验证。其余12奇遇/6彩蛋/黑市/原创货物按同一任务继续。
 
 > **2026-11-11 三项追加正式并入本任务（替代旧“只扩奇遇”的狭义理解）**：①四艘飞船使用各自真实可放格的舱体mask（基础容量与已购升级数额不变）；②港口商店二级页增加单件谈价与即时NPC快拍；③原12奇遇/6彩蛋中加入原创科幻生命与遗物，首轮制作4张不同身份的整件像素图，不直接复刻《异形》等影视IP专有角色/道具。**先完整阅读** `design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md` 与 `SHIP_HOLDS_MARKET_CANDIDATES.json`，它们是这三项的验收权威；用户确认的是方向，示意mask和定价仍需隔离QA/经济评估后冻结。保留现有0.4.2/458870回退，不得直接将尚未验收设计上传平台。
 
@@ -12,9 +12,11 @@
 2. `design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md`；
 3. `design/star-salvage/v05/LIGHT_ENCOUNTERS_CANDIDATES.json`（候选，非已验收经济数值）；
 4. `design/star-salvage/v05/developer/EASTER_EGGS_INTERNAL.md`（含剧透，不在玩家版本公开）；
-5. `design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md`（船舱mask、黑市谈价/即时拍卖、原创奇物的权威补充）；
-6. `design/star-salvage/v05/SHIP_HOLDS_MARKET_CANDIDATES.json`（仅候选掩码和倍率，需冻结经济/交互）；
-7. `design/star-salvage/v042/DELIVERY.md`，现有`engine.js`/路由/货舱/存档/真实HTTP测试。
+5. **`design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md`（用户已确认B＋C，真实实施必须看）**；
+6. `design/star-salvage/v05/CARGO_REFERENCE_RESEARCH.md`（一手竞品原则，不复制商业素材）；
+7. `design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md`（船舱mask、黑市谈价/即时拍卖、原创奇物的权威补充）；
+8. `design/star-salvage/v05/SHIP_HOLDS_MARKET_CANDIDATES.json`（仅候选掩码和倍率，需冻结经济/交互）；
+9. `design/star-salvage/v042/DELIVERY.md`，现有`engine.js`/路由/货舱/存档/真实HTTP测试。
 
 ## 交付范围（仅新轻内容）
 
@@ -25,7 +27,7 @@
 5. 原3个任务可继续手动接取，普通航行渐进耗油、普通返港公式与正常返港储备**本轮不修改**。历史“稳定8油虫洞”属于独立候选：只写模拟/方案，不将其变成当前的真实航行按钮，更不要求旧五章剧情解锁。
 6. 原schema6资金/货物UID/拼格/飞船和升级/债务/当前已接任务待领、旧在途航路和随机状态完全保留。若新增发现记录需要schema7，先原子备份再迁移，失败不能覆盖旧档。
 7. 执行所有`EVENT05`/`EGG05`/`SAVE05`/`BAL05`验收：同0.4.2对照多策略多种子平均收入/前4站重复度/救援与购油情况，双引擎360/390真实HTTP、续玩、自然至少两趟、满舱和存储失败。**量化新内容实际被遇见的频率**，不要只说“新增12个文件”。
-8a. **货舱先复核成熟设计再选型（HOLD）**：读取`CARGO_REFERENCE_RESEARCH.md`与原版四mask候选缺陷。先用真实0.4.2作为A、DREDGE式连续主舱+外缘扩舱作为B、Backpack Brawl式固定挂载托盘作为C，使用相同现有物件、360/390手机、同容量和全部legacy4/8/12/16的实际装载比较。报告自动装入成功率、操作次数、旧存档安全和可读性，再由用户选定哪种。**在用户明确选择前，不得把当前自拟scout/cargo/heavy mask写成生产配置或替换原Mac试玩**。选定后再按新可用格规则实现全解求解器、升级、换船、存档原子迁移和`HOLD05-MASK/UPGRADE/SWAP`验收；原已购容量价格权益不变。
+8a. **B＋C组合货舱（选型已批准，执行）**：严格阅读`CARGO_BC_APPROVED_SPEC.md`。以DREDGE式连续主货区为基础，结合Backpack Brawl式**固定在飞船上的侧/尾托盘**，不用为不同船额外发明复杂规则。先在隔离QA中设计并算法验证四艘船各升级等级的权威usableCellMask（16/16/20/25基础、原升级容量与价不变），保证全部旧合法`legacy4/8/12/16`、在途/满载存档和跨船换装无损；禁用格无法落货，自动求解及手动旋转同源，升级新增格真实可用。用A当前0.4.2作基线，对比B＋C在360/390上的自动装入成功率、整理次数、经济和可读性，较差的具体mask在B＋C原则内迭代，不需重复询问方向；**已被否决的旧自拟mask不得直接进运行代码**。所有`BC05-*`和`HOLD05-*`测试通过后才能替换用户Mac和上传开发自测；若无法无损迁移必须维持0.4.2，不清档。
 
 8b. **黑市、议价和NPC快拍**：黑市只在现有商店二级与返港可选入口；普通固定价售货保留；谈价只有一次回合，快拍模拟三个明确的离线NPC而非真人竞价，支持接受/保留/流拍，展示实付挂牌费与最终报价。候选溢价未过经济审核前不得写死；一次报价一次持久化、一次移出UID和一次收款，无刷新重掷、多窗口双售或未成交通货丢失。先跑`MARKET05-CHOICE/ATOMIC/BALANCE`，增加普通卖/谈价/拍卖/留货的真实HTTP流程及财务流水对照。
 
