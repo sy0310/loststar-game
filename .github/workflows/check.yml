@@ -178,7 +178,10 @@ jobs:
   salvage-route:
     name: Salvage route real HTTP and persistence
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    # v0.5 adds 9,216 comparative + 2,560 repayment voyages before the 176
+    # browser cases. The 12-minute job expired mid-suite with no failed test.
+    # Preserve all cases and zero retries while allowing the full replay.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
