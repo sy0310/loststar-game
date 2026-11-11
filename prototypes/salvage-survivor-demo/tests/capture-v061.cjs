@@ -413,6 +413,60 @@ async function weaponAV(browser) {
       }, id),
     );
   }
+  await page.evaluate(() => {
+    const Q = SurvivorQA,
+      g = Q.startModel(616);
+    g.active = {};
+    g.qaLabel = "6+6 maximum build";
+    g.p.inv = 10000;
+    g.spawnTime = 999;
+    const equip = (id, n, passive = false) => {
+      while (((passive ? g.passive : g.active)[id] || 0) < n)
+        if (!Q.pick(id)) throw Error("Illegal maximum build " + id);
+    };
+    equip("cannon", 3);
+    equip("lens", 2, true);
+    Q.pick("piercebeam");
+    equip("drone", 3);
+    equip("arc", 3);
+    Q.pick("thunderhive");
+    equip("missile", 3);
+    equip("blade", 3);
+    Q.pick("blastwheel");
+    equip("shield", 3);
+    equip("armor", 2, true);
+    Q.pick("reactiveaegis");
+    equip("cooler", 2, true);
+    equip("prism", 3);
+    equip("refraction", 2, true);
+    Q.pick("kaleidoscope");
+    equip("gravity", 3);
+    equip("singularity", 2, true);
+    Q.pick("collapse");
+    equip("lock", 2, true);
+    for (let index = 0; index < 20; index++) {
+      const angle = (index * Math.PI) / 10;
+      Q.enemy("tank", Math.cos(angle) * 155, Math.sin(angle) * 155, 1000000);
+    }
+  });
+  await page.waitForTimeout(1000);
+  await page.screenshot({ path: path.join(output, "qa-six-plus-six.png") });
+  for (const key of ["d", "s", "a", "w"]) {
+    await page.keyboard.down(key);
+    await page.waitForTimeout(3500);
+    await page.keyboard.up(key);
+  }
+  report.maximumBuild = await page.evaluate(() => {
+    const g = SurvivorDemo.state();
+    return {
+      activeSlots: Object.keys(g.active).length + Object.keys(g.fused).length,
+      passiveSlots: Object.keys(g.passive).length,
+      damage: g.metrics.damage,
+      audio: SurvivorAudio.inspect(),
+    };
+  });
+  assert.equal(report.maximumBuild.activeSlots, 6);
+  assert.equal(report.maximumBuild.passiveSlots, 6);
   await page.evaluate(() => liveAV.stop());
   await page.waitForFunction(() => window.avDone);
   assert(fs.statSync(outputFile).size > 100000);
