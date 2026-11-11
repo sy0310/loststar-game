@@ -11674,10 +11674,14 @@
         "design/star-salvage/v04/ASSET_REQUIREMENTS.json",
         "design/star-salvage/v041/PHONE_FEEDBACK_AND_IMPLEMENTATION.md",
         "design/star-salvage/v042/README.md",
-        "design/star-salvage/v042/REVIEW_SOURCE.md"
+        "design/star-salvage/v042/REVIEW_SOURCE.md",
+        "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+        "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+        "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+        "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
-      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps. Preserve251 rows and append7 POLISH042 review fixes; no old proof or phone status promoted.",
+      "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps. Preserve251 rows and append7 POLISH042 review fixes; no old proof or phone status promoted. Preserve258 prior rows and append v05 exact normative clauses. Fixed842dc6a/465523 evidence is independently bound. Harbor sharpening is explicitly incomplete. Phone/user art remain pending.",
       "policy": "Every current normative clause maps to exact sourceRefs. Latest A045 user-authorized presentation replaces obsolete multi-entry presentation via explicit supersededRules; all other layers, complete states, model and earned rights remain. V043/V044 reports are historical only.",
       "informationalRefs": [
         {
@@ -12024,7 +12028,47 @@
       "POLISH042-GEOMETRY",
       "POLISH042-SAVE",
       "POLISH042-VERIFY",
-      "POLISH042-DELIVERY"
+      "POLISH042-DELIVERY",
+      "BC05-TOPOLOGY",
+      "BC05-CORE",
+      "BC05-TRAY",
+      "BC05-FLOW",
+      "BC05-LEGACY",
+      "BC05-EQUIP",
+      "BC05-ECONOMY",
+      "BC05-DELIVERY",
+      "EV05-01",
+      "EV05-02",
+      "EV05-03",
+      "EV05-04",
+      "EV05-05",
+      "EV05-06",
+      "EV05-07",
+      "EV05-08",
+      "EV05-09",
+      "EV05-10",
+      "EV05-11",
+      "EV05-12",
+      "EVENT05-COUNT",
+      "EVENT05-EARLY",
+      "EVENT05-ATOMIC",
+      "EGG05-SECRET",
+      "EGG05-PLAY",
+      "SALVAGE05-SAVE",
+      "SALVAGE05-BALANCE",
+      "SALVAGE05-ART",
+      "SALVAGE05-DELIVERY",
+      "HOLD05-MASK",
+      "HOLD05-UPGRADE",
+      "HOLD05-SWAP",
+      "MARKET05-CHOICE",
+      "MARKET05-ATOMIC",
+      "MARKET05-BALANCE",
+      "CURIOS05-ORIGINAL",
+      "EGG05-LOOP",
+      "SAVE05-OLD",
+      "SALVAGE05-BOUNDARY",
+      "SALVAGE05-HARBOR"
     ],
     "requirements": [
       {
@@ -27363,6 +27407,11 @@
             "path": "design/visual-renewal/ART_SPEC.md",
             "startLine": 44,
             "endLine": 44
+          },
+          {
+            "path": "design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md",
+            "startLine": 17,
+            "endLine": 17
           }
         ],
         "scope": "IN_SCOPE",
@@ -34166,6 +34215,2813 @@
           "taptapVersion": 458870,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "BC05-TOPOLOGY",
+        "parent": null,
+        "requirement": "四种船使用不同的结构/扩容表现，实际可用格数精确等于原购买/升级规格，旧自拟错误mask不被使用",
+        "acceptanceCriteria": "四种船使用不同的结构/扩容表现，实际可用格数精确等于原购买/升级规格，旧自拟错误mask不被使用",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 61,
+            "endLine": 61
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 25,
+            "endLine": 25
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 10,
+            "endLine": 10
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 18,
+            "endLine": 18
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 34,
+            "endLine": 34
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 53,
+            "endLine": 53
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 41,
+            "endLine": 41
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 114,
+            "endLine": 114
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "BC05-CORE",
+        "parent": null,
+        "requirement": "每款船至少存在能容纳合法4×4旧满格货的连续区域；额外边缘模块不能造成大件无法过渡",
+        "acceptanceCriteria": "每款船至少存在能容纳合法4×4旧满格货的连续区域；额外边缘模块不能造成大件无法过渡",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 62,
+            "endLine": 62
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "BC05-TRAY",
+        "parent": null,
+        "requirement": "固定外托盘随升级解锁，可用格实际增加；单套坐标/旋转/求解规则，没有免费额外仓",
+        "acceptanceCriteria": "固定外托盘随升级解锁，可用格实际增加；单套坐标/旋转/求解规则，没有免费额外仓",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 63,
+            "endLine": 63
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 11,
+            "endLine": 11
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 36,
+            "endLine": 36
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 52,
+            "endLine": 52
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 67,
+            "endLine": 67
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "BC05-FLOW",
+        "parent": null,
+        "requirement": "同屏看主区/托盘/物件/旋转与确认，自动装入正常，失败可取消而不丢货",
+        "acceptanceCriteria": "同屏看主区/托盘/物件/旋转与确认，自动装入正常，失败可取消而不丢货",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 64,
+            "endLine": 64
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 12,
+            "endLine": 12
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 32,
+            "endLine": 32
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 51,
+            "endLine": 51
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 78,
+            "endLine": 78
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 68,
+            "endLine": 68
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 121,
+            "endLine": 121
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "BC05-LEGACY",
+        "parent": null,
+        "requirement": "旧schema2–6、旧4×4大件和旧在途/满载/升级/各船资源续玩，数据无损且可以安全返港",
+        "acceptanceCriteria": "旧schema2–6、旧4×4大件和旧在途/满载/升级/各船资源续玩，数据无损且可以安全返港",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 65,
+            "endLine": 65
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "BC05-EQUIP",
+        "parent": null,
+        "requirement": "原子换船、货舱升级、卖/用/弃/救援一次生效，不吞货、不复制货，不凭空补油修船",
+        "acceptanceCriteria": "原子换船、货舱升级、卖/用/弃/救援一次生效，不吞货、不复制货，不凭空补油修船",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 66,
+            "endLine": 66
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 66,
+            "endLine": 66
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "BC05-ECONOMY",
+        "parent": null,
+        "requirement": "A现状 vs B＋C的装载率/收入/手工操作量数据留存，权衡差异，而不是只数格子",
+        "acceptanceCriteria": "A现状 vs B＋C的装载率/收入/手工操作量数据留存，权衡差异，而不是只数格子",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 67,
+            "endLine": 67
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "BC05-DELIVERY",
+        "parent": null,
+        "requirement": "冻结包/真实浏览器/真实Mac旧档核验、新开发自测回读与截图录像，真机仍标待测",
+        "acceptanceCriteria": "冻结包/真实浏览器/真实Mac旧档核验、新开发自测回读与截图录像，真机仍标待测",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 68,
+            "endLine": 68
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-01",
+        "parent": null,
+        "requirement": "彗星快递标签 | 回收/低风险 | 拆取标签换零件，或带走1格特殊邮戳 | 1～4",
+        "acceptanceCriteria": "彗星快递标签 | 回收/低风险 | 拆取标签换零件，或带走1格特殊邮戳 | 1～4",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 28,
+            "endLine": 28
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-02",
+        "parent": null,
+        "requirement": "行星环采样器 | 回收/低—中风险 | 花少量探索油取2件细小样本，或保存油离开 | 1～5",
+        "acceptanceCriteria": "行星环采样器 | 回收/低—中风险 | 花少量探索油取2件细小样本，或保存油离开 | 1～5",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 29,
+            "endLine": 29
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-03",
+        "parent": null,
+        "requirement": "无声补给机 | 补给/低风险 | 实付购油、少额维修或不采购 | 1～6",
+        "acceptanceCriteria": "无声补给机 | 补给/低风险 | 实付购油、少额维修或不采购 | 1～6",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 30,
+            "endLine": 30
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-04",
+        "parent": null,
+        "requirement": "漂流咖啡杯 | 漂流客舱/低风险 | 取1格古怪物件（可卖），或只做记录 | 1～4",
+        "acceptanceCriteria": "漂流咖啡杯 | 漂流客舱/低风险 | 取1格古怪物件（可卖），或只做记录 | 1～4",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 31,
+            "endLine": 31
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-05",
+        "parent": null,
+        "requirement": "冰封转运柜 | 回收/中风险 | 安全拆两件小货，或以耐久风险拖出大型货 | 2～7",
+        "acceptanceCriteria": "冰封转运柜 | 回收/中风险 | 安全拆两件小货，或以耐久风险拖出大型货 | 2～7",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 32,
+            "endLine": 32
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-06",
+        "parent": null,
+        "requirement": "反向航标 | 信号/中风险 | 花探索油校正导航、回收天线，或保守绕开 | 2～6",
+        "acceptanceCriteria": "反向航标 | 信号/中风险 | 花探索油校正导航、回收天线，或保守绕开 | 2～6",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 33,
+            "endLine": 33
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-07",
+        "parent": null,
+        "requirement": "失联探测球 | 遗物/低—中风险 | 取2格电路模块，或售卖已读扫描数据 | 2～7",
+        "acceptanceCriteria": "失联探测球 | 遗物/低—中风险 | 取2格电路模块，或售卖已读扫描数据 | 2～7",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 34,
+            "endLine": 34
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-08",
+        "parent": null,
+        "requirement": "磁暴盲区 | 异常/中风险 | 绕行多花探索油，或冒小幅耐久风险取样 | 2～7",
+        "acceptanceCriteria": "磁暴盲区 | 异常/中风险 | 绕行多花探索油，或冒小幅耐久风险取样 | 2～7",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 35,
+            "endLine": 35
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-09",
+        "parent": null,
+        "requirement": "倒走的时钟 | 异常/低风险 | 捡回小钟/换零件，或留下短记录 | 2～8",
+        "acceptanceCriteria": "倒走的时钟 | 异常/低风险 | 捡回小钟/换零件，或留下短记录 | 2～8",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 36,
+            "endLine": 36
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-10",
+        "parent": null,
+        "requirement": "轨道档案售货员 | 服务/低风险 | 用零件购一件已知维修品/油，或出售一件回收货 | 2～8",
+        "acceptanceCriteria": "轨道档案售货员 | 服务/低风险 | 用零件购一件已知维修品/油，或出售一件回收货 | 2～8",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 37,
+            "endLine": 37
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-11",
+        "parent": null,
+        "requirement": "背光信标 | 稀有异常/中风险 | 记录未知讯号或取一件中型物件；不揭晓隐藏文明全貌 | 3～8",
+        "acceptanceCriteria": "背光信标 | 稀有异常/中风险 | 记录未知讯号或取一件中型物件；不揭晓隐藏文明全貌 | 3～8",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 38,
+            "endLine": 38
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EV05-12",
+        "parent": null,
+        "requirement": "折返标记 | 稀有导航/低—中风险 | 获得一段疑似返港捷径的“异常记录”；**第一轮只记录，不直接解锁改变油耗的功能** | 3～8",
+        "acceptanceCriteria": "折返标记 | 稀有导航/低—中风险 | 获得一段疑似返港捷径的“异常记录”；**第一轮只记录，不直接解锁改变油耗的功能** | 3～8",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 39,
+            "endLine": 39
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EVENT05-COUNT",
+        "parent": null,
+        "requirement": "现有14模板保留，新增12个可触发且内容有区别，稀有/常见合计计数准确；对新旧全事件测试合法选项、价格、结算、UI图标",
+        "acceptanceCriteria": "现有14模板保留，新增12个可触发且内容有区别，稀有/常见合计计数准确；对新旧全事件测试合法选项、价格、结算、UI图标",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 93,
+            "endLine": 93
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 14,
+            "endLine": 14
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 35,
+            "endLine": 35
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 59,
+            "endLine": 59
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 13,
+            "endLine": 13
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 16,
+            "endLine": 16
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 46,
+            "endLine": 46
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 47,
+            "endLine": 47
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 48,
+            "endLine": 48
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 49,
+            "endLine": 49
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 50,
+            "endLine": 50
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 51,
+            "endLine": 51
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 60,
+            "endLine": 60
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 91,
+            "endLine": 91
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 32,
+            "endLine": 32
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 35,
+            "endLine": 35
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 36,
+            "endLine": 36
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 37,
+            "endLine": 37
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 64,
+            "endLine": 64
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 76,
+            "endLine": 76
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 78,
+            "endLine": 78
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 103,
+            "endLine": 103
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 113,
+            "endLine": 113
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EVENT05-EARLY",
+        "parent": null,
+        "requirement": "第2趟起首站不再固定两个旧选项；前4站能在多个固定种子中观察到多种新奇遇；首站/第二站的费用、风险、强制工具及返港储备都合法",
+        "acceptanceCriteria": "第2趟起首站不再固定两个旧选项；前4站能在多个固定种子中观察到多种新奇遇；首站/第二站的费用、风险、强制工具及返港储备都合法",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 94,
+            "endLine": 94
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 29,
+            "endLine": 29
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 57,
+            "endLine": 57
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 58,
+            "endLine": 58
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 59,
+            "endLine": 59
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EVENT05-ATOMIC",
+        "parent": null,
+        "requirement": "多件收获、装箱/弃箱/取消/刷新/竞争窗口、经济流水、UID、几何、RNG只提交一次；满舱和无钱有可解释出路",
+        "acceptanceCriteria": "多件收获、装箱/弃箱/取消/刷新/竞争窗口、经济流水、UID、几何、RNG只提交一次；满舱和无钱有可解释出路",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 95,
+            "endLine": 95
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EGG05-SECRET",
+        "parent": null,
+        "requirement": "6彩蛋各有可模拟的条件及已见记录；未触发不可从玩家UI/导出窥见；一趟最多1次，一次性纪念品不可重复售卖刷钱",
+        "acceptanceCriteria": "6彩蛋各有可模拟的条件及已见记录；未触发不可从玩家UI/导出窥见；一趟最多1次，一次性纪念品不可重复售卖刷钱",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 96,
+            "endLine": 96
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 23,
+            "endLine": 23
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 26,
+            "endLine": 26
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 14,
+            "endLine": 14
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 66,
+            "endLine": 66
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 68,
+            "endLine": 68
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 69,
+            "endLine": 69
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 21,
+            "endLine": 21
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 116,
+            "endLine": 116
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EGG05-PLAY",
+        "parent": null,
+        "requirement": "彩蛋可跳过，不阻塞正常事件、不迫使阅读或开新任务，正常拾荒4站前后依然流畅",
+        "acceptanceCriteria": "彩蛋可跳过，不阻塞正常事件、不迫使阅读或开新任务，正常拾荒4站前后依然流畅",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 97,
+            "endLine": 97
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE05-SAVE",
+        "parent": null,
+        "requirement": "schema2–6及原schema6在途/summary/港口、已有飞船/升级/货舱/欠款/普通委托待领/随机状态无损；旧版现玩航次不重新洗路线",
+        "acceptanceCriteria": "schema2–6及原schema6在途/summary/港口、已有飞船/升级/货舱/欠款/普通委托待领/随机状态无损；旧版现玩航次不重新洗路线",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 98,
+            "endLine": 98
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 24,
+            "endLine": 24
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 28,
+            "endLine": 28
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 36,
+            "endLine": 36
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 9,
+            "endLine": 9
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 13,
+            "endLine": 13
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 42,
+            "endLine": 42
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 43,
+            "endLine": 43
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 44,
+            "endLine": 44
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 45,
+            "endLine": 45
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 55,
+            "endLine": 55
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 62,
+            "endLine": 62
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 30,
+            "endLine": 30
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 65,
+            "endLine": 65
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 120,
+            "endLine": 120
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 146,
+            "endLine": 146
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE05-BALANCE",
+        "parent": null,
+        "requirement": "以0.4.2固定对照至少4策略×多种固定种子×多航次，展示新旧事件覆盖率、前4站重复度、平均件数/真实售货净现金、补给/维修/救援率；不能因新事件默认增加大量利润",
+        "acceptanceCriteria": "以0.4.2固定对照至少4策略×多种固定种子×多航次，展示新旧事件覆盖率、前4站重复度、平均件数/真实售货净现金、补给/维修/救援率；不能因新事件默认增加大量利润",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 99,
+            "endLine": 99
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 70,
+            "endLine": 70
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 87,
+            "endLine": 87
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 105,
+            "endLine": 105
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE05-ART",
+        "parent": null,
+        "requirement": "4件原生物件＋最多2小场景按统一源像素/图层/透明度/旋转验证，真实360/390手机视图及2浏览器截图，不新增大图海报",
+        "acceptanceCriteria": "4件原生物件＋最多2小场景按统一源像素/图层/透明度/旋转验证，真实360/390手机视图及2浏览器截图，不新增大图海报",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 100,
+            "endLine": 100
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 37,
+            "endLine": 37
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 67,
+            "endLine": 67
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 77,
+            "endLine": 77
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 100,
+            "endLine": 100
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 104,
+            "endLine": 104
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 107,
+            "endLine": 107
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 124,
+            "endLine": 124
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/tests/verify-05-art.py"
+        ],
+        "assets": [
+          "design/star-salvage/v05/production/bio/manifest.json",
+          "design/star-salvage/v05/production/instruments/instruments-manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE05-DELIVERY",
+        "parent": null,
+        "requirement": "固定ZIP及Hash，实际HTTP、浏览器/持久化自然两趟、可用开发自测和原Mac同入口旧档核对、PR证据和回退；真实TapTap WebView/锁屏/手感仍单列待测",
+        "acceptanceCriteria": "固定ZIP及Hash，实际HTTP、浏览器/持久化自然两趟、可用开发自测和原Mac同入口旧档核对、PR证据和回退；真实TapTap WebView/锁屏/手感仍单列待测",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 101,
+            "endLine": 101
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 140,
+            "endLine": 140
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 46,
+            "endLine": 46
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 61,
+            "endLine": 61
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "HOLD05-MASK",
+        "parent": null,
+        "requirement": "四船基础`usableCellMask`存在且面积16/16/20/25；禁用格不可放；mask不靠前端自报；1～8格及旧12/16大件跨禁用边界不能作弊",
+        "acceptanceCriteria": "四船基础`usableCellMask`存在且面积16/16/20/25；禁用格不可放；mask不靠前端自报；1～8格及旧12/16大件跨禁用边界不能作弊",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 131,
+            "endLine": 131
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "HOLD05-UPGRADE",
+        "parent": null,
+        "requirement": "升级容量与现有价格/次数一致，新增格真实可用；升级后原已放货安全，自动整理可查找全部合法解，手机360/390不会棋盘溢出或触区过小",
+        "acceptanceCriteria": "升级容量与现有价格/次数一致，新增格真实可用；升级后原已放货安全，自动整理可查找全部合法解，手机360/390不会棋盘溢出或触区过小",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 132,
+            "endLine": 132
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "HOLD05-SWAP",
+        "parent": null,
+        "requirement": "换船/回港/救援/使用/卖货释放正确格；无法装下不换船、不卖货、不断油；旧schema6在途与满舱合法恢复、不能因新mask变非法",
+        "acceptanceCriteria": "换船/回港/救援/使用/卖货释放正确格；无法装下不换船、不卖货、不断油；旧schema6在途与满舱合法恢复、不能因新mask变非法",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 133,
+            "endLine": 133
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/ship-holds.js",
+          "prototypes/salvage-route-demo/src/cargo-layout.js",
+          "prototypes/salvage-route-demo/tests/hold-v05-isolated.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "MARKET05-CHOICE",
+        "parent": null,
+        "requirement": "普通售价与原版一致；谈价与NPC拍卖可选、快速、全部费用/报价可见；普通卖仍可随时完成，不主动开展拍卖",
+        "acceptanceCriteria": "普通售价与原版一致；谈价与NPC拍卖可选、快速、全部费用/报价可见；普通卖仍可随时完成，不主动开展拍卖",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 134,
+            "endLine": 134
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 54,
+            "endLine": 54
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 15,
+            "endLine": 15
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 20,
+            "endLine": 20
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 20,
+            "endLine": 20
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 22,
+            "endLine": 22
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 80,
+            "endLine": 80
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 82,
+            "endLine": 82
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 90,
+            "endLine": 90
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 91,
+            "endLine": 91
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 102,
+            "endLine": 102
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 106,
+            "endLine": 106
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 125,
+            "endLine": 125
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 142,
+            "endLine": 142
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/market-v05.js",
+          "prototypes/salvage-route-demo/src/market-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "MARKET05-ATOMIC",
+        "parent": null,
+        "requirement": "UID/位置与交易`offerId`一次性，挂牌费/议价一次处理；取消/返回/刷新/存储失败/两标签/重复点不能复制款项、重复卖货、重新抽报价或吞物",
+        "acceptanceCriteria": "UID/位置与交易`offerId`一次性，挂牌费/议价一次处理；取消/返回/刷新/存储失败/两标签/重复点不能复制款项、重复卖货、重新抽报价或吞物",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 135,
+            "endLine": 135
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 32,
+            "endLine": 32
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 79,
+            "endLine": 79
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 86,
+            "endLine": 86
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 87,
+            "endLine": 87
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 88,
+            "endLine": 88
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 89,
+            "endLine": 89
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 92,
+            "endLine": 92
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 115,
+            "endLine": 115
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 122,
+            "endLine": 122
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/market-v05.js",
+          "prototypes/salvage-route-demo/src/market-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "MARKET05-BALANCE",
+        "parent": null,
+        "requirement": "4船/不同扩容×旧/新物件×多策略/种子，复核平均每趟现金、最高收益/价格上下界、升级与偿债时间，限制异常溢价导致通胀",
+        "acceptanceCriteria": "4船/不同扩容×旧/新物件×多策略/种子，复核平均每趟现金、最高收益/价格上下界、升级与偿债时间，限制异常溢价导致通胀",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 136,
+            "endLine": 136
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/src/market-v05.js",
+          "prototypes/salvage-route-demo/src/market-view.js"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "CURIOS05-ORIGINAL",
+        "parent": null,
+        "requirement": "4件具象原生科幻奇物原创、与名下mask同体积且旋转一体；与现有《异形》等影视IP的独特怪物轮廓不同，内容不包含受版权保护的电影人物/对白/Logo",
+        "acceptanceCriteria": "4件具象原生科幻奇物原创、与名下mask同体积且旋转一体；与现有《异形》等影视IP的独特怪物轮廓不同，内容不包含受版权保护的电影人物/对白/Logo",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 137,
+            "endLine": 137
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs",
+          "prototypes/salvage-route-demo/tests/verify-05-art.py"
+        ],
+        "assets": [
+          "design/star-salvage/v05/production/bio/manifest.json",
+          "design/star-salvage/v05/production/instruments/instruments-manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "EGG05-LOOP",
+        "parent": null,
+        "requirement": "与原12奇遇/6彩蛋**共用数量预算**，不强制剧情，正常前4站可遇到新内容，玩家UI不预告未出现内容",
+        "acceptanceCriteria": "与原12奇遇/6彩蛋**共用数量预算**，不强制剧情，正常前4站可遇到新内容，玩家UI不预告未出现内容",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 138,
+            "endLine": 138
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SAVE05-OLD",
+        "parent": null,
+        "requirement": "原money/debt/货物UID与货值/位置/各船油量船况与永久升级/任务/本趟路由/随机状态/流水无损；备份副本恢复和停机回退",
+        "acceptanceCriteria": "原money/debt/货物UID与货值/位置/各船油量船况与永久升级/任务/本趟路由/随机状态/流水无损；备份副本恢复和停机回退",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 139,
+            "endLine": 139
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE05-BOUNDARY",
+        "parent": null,
+        "requirement": "保留原港口、费用、自动存储与小游戏结构，旧五章与8油捷径不接入玩家规则，隐藏内容只展示已遇记录。",
+        "acceptanceCriteria": "保留原港口、费用、自动存储与小游戏结构，旧五章与8油捷径不接入玩家规则，隐藏内容只展示已遇记录。",
+        "sourceRefs": [
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 11,
+            "endLine": 11
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 12,
+            "endLine": 12
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 13,
+            "endLine": 13
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 14,
+            "endLine": 14
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 15,
+            "endLine": 15
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 16,
+            "endLine": 16
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 17,
+            "endLine": 17
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 18,
+            "endLine": 18
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 19,
+            "endLine": 19
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 27,
+            "endLine": 27
+          },
+          {
+            "path": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+            "startLine": 30,
+            "endLine": 30
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 38,
+            "endLine": 38
+          },
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 50,
+            "endLine": 50
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 76,
+            "endLine": 76
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 84,
+            "endLine": 84
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 85,
+            "endLine": 85
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 86,
+            "endLine": 86
+          },
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 107,
+            "endLine": 107
+          },
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 123,
+            "endLine": 123
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone touch, lock screen, heat, new object art and enjoyment remain pending user review. Old full holds can retain a legal legacy rectangle until lossless conversion.",
+        "nextAction": "Development self-test465523 and same-origin Mac4283. Remain Draft.",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "COMPLETE",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE05-HARBOR",
+        "parent": null,
+        "requirement": "港口背景轻量原生像素或裁切清晰度改善，保持已认可画风。",
+        "acceptanceCriteria": "港口背景轻量原生像素或裁切清晰度改善，保持已认可画风。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+            "startLine": 79,
+            "endLine": 79
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "TODO",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-route-demo/src/engine.js",
+          "prototypes/salvage-route-demo/tests/v05-model.test.cjs",
+          "prototypes/salvage-route-demo/tests/browser/port-v05.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/loststar-salvage/",
+            "label": "0.5 port / cargo / shop secondary market / voyage"
+          }
+        ],
+        "checks": [
+          "v05-fixed67",
+          "v05-browser176",
+          "v05-model37",
+          "v05-geometry1320",
+          "v05-economy9216"
+        ],
+        "proofs": [
+          "artifacts/salvage-v05/verification.json",
+          "design/star-salvage/v05/DELIVERY.md",
+          "design/star-salvage/v05/BALANCE_VALIDATION.md"
+        ],
+        "pendingProofs": [],
+        "gap": "本轮保留0.4.2已认可港口素材，独立背景锐度微调未实施。",
+        "nextAction": "当前新包用户验收后再独立对照原生裁切，避免无依据重绘。",
+        "reviewBasis": "Independent original-clause audit against frozen842dc6a package and actual44 hold screenshots,4 continuous recordings,original Mac UI exports.",
+        "evidenceCompleteness": "PARTIAL",
+        "sandboxBinding": {
+          "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+          "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+          "database": "lostcargo.route-demo.v1",
+          "taptapVersion": 465523,
+          "formalIntegration": false
+        }
       }
     ],
     "supersededRules": [
@@ -34590,6 +37446,24 @@
           }
         ],
         "rule": "New schema4 loot uses real1–8cells; old size remains4x and migrates unchanged. The same16cell board excludes independent missionSlot. Historical0.2 proof stays historical, not current geometry acceptance."
+      },
+      {
+        "rule": "Historical four-ship candidate masks superseded by approved B+C geometry.",
+        "reason": "The approved spec requires4x4 core and validated canonical configuration.",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
+            "startLine": 29,
+            "endLine": 63
+          }
+        ],
+        "replacementSourceRefs": [
+          {
+            "path": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+            "startLine": 7,
+            "endLine": 49
+          }
+        ]
       }
     ],
     "statusPolicy": {
@@ -34611,7 +37485,11 @@
       "design/star-salvage/DEMO_CODEX_HANDOFF.md",
       "design/star-salvage/CARGO_GRID_ROUTE_MAP_ICON_HANDOFF.md",
       "codex/SALVAGE_V03_MOBILE_UX_REWORK_TASK.md",
-      "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md"
+      "codex/SALVAGE_V04_PORT_UI_IMPLEMENTATION_TASK.md",
+      "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+      "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+      "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
+      "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md"
     ],
     "deliveryHistory": [
       {
@@ -34720,6 +37598,21 @@
       "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
       "task": "design/star-salvage/v042/README.md",
       "notes": "Review5835133388: gold affordability, secondary fleet,14 normal multigrid identities11 new skins;128 current+108 historical browser,131 model,40 art. Actual schema6 original export unchanged before/after/refresh. Phone/art/enjoyment pending."
+    },
+    "salvageV05Delivery": {
+      "status": "DEVELOPMENT_SELF_TEST_DELIVERED_PENDING_PHONE_USER_ART",
+      "proof": "artifacts/salvage-v05/verification.json",
+      "sourceCommit": "842dc6afcfc3da079c40dc996a4dd346769d62e0",
+      "zipSha256": "18aeba82a05221809f77a7ace3e8a58300b8fa42749caff5f7900698d7401c4a",
+      "database": "lostcargo.route-demo.v1",
+      "taptapVersion": 465523,
+      "formalIntegration": false,
+      "localMacUpdated": true,
+      "evidenceCompleteness": "COMPLETE",
+      "platformStatus": "UPLOADED_DEVELOPMENT_SELF_TEST",
+      "localStatus": "UPDATED_USER_MAC_SAME_ORIGIN_SAVE_VERIFIED",
+      "task": "codex/SALVAGE_V05_LIGHT_ENCOUNTERS_TASK.md",
+      "notes": "B+C four ships11 levels,12 encounters/6 eggs,one-round market,4 original objects. Harbor refinement remains separate pending item."
     }
   },
   "approvedReferenceManifests": [

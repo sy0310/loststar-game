@@ -28,10 +28,15 @@ function random(max) {
   return (randomState >>> 0) % max;
 }
 function simulateLoad(items, space) {
+  const geometry = Cargo.dimensions(space);
+  const capacity = space.usableCellMask
+    ? space.usableCellMask.flat().filter(Boolean).length
+    : geometry.width * geometry.height;
   let current = [];
   let placements = [];
   let rearranges = 0;
   let acceptedCells = 0;
+  let declinedWithEnoughArea = 0;
   for (const next of items) {
     const all = [...current, next];
     let layout = Cargo.extend(all, placements, space);
@@ -43,9 +48,25 @@ function simulateLoad(items, space) {
       current = all;
       placements = layout;
       acceptedCells += next.cells;
+    } else if (capacity - acceptedCells >= next.cells) {
+      declinedWithEnoughArea++;
     }
   }
-  return { acceptedCells, rearranges, items: current.length };
+  const occupied = new Set(placements.flatMap(placement =>
+    Cargo.cells(current.find(entry => entry.uid === placement.uid), placement.rotation)
+      .map(([x, y]) => [x + placement.x, y + placement.y].join(','))));
+  const free = new Set();
+  for (let y = 0; y < geometry.height; y++) {
+    for (let x = 0; x < geometry.width; x++) {
+      if ((!space.usableCellMask || space.usableCellMask[y][x]) && !occupied.has([x, y].join(','))) free.add([x, y].join(','));
+    }
+  }
+  const isolatedFreeCells = [...free].filter(key => {
+    const [x, y] = key.split(',').map(Number);
+    return ![[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]].some(cell => free.has(cell.join(',')));
+  }).length;
+  return { acceptedCells, rearranges, items: current.length, unusedCells: free.size,
+    isolatedFreeCells, declinedWithEnoughArea };
 }
 const report = { isolatedOnly: true, seed: randomState, casesPerLevel: 120, levels: [] };
 const normalShapes = ['point1', 'line2', 'ell3', 'line3', 'square4', 'tee4', 'ell5', 'rect6', 'ell7', 'rect8'];
@@ -76,7 +97,10 @@ for (const [shipId, spec] of Object.entries(PORT.ships)) {
       { uid: 1, x: cells[0][0], y: cells[0][1], rotation: 0 },
       { uid: 2, x: cells.at(-1)[0], y: cells.at(-1)[1], rotation: 0 }
     ], space).ok);
-    const metrics = { shipId, level, capacity, rows: space.usableCellMask.map(row => row.map(v => v ? '#' : '.').join('')), baseline: { packed: 0, acceptedCells: 0, rearranges: 0, items: 0 }, bc: { packed: 0, acceptedCells: 0, rearranges: 0, items: 0 } };
+    const emptyMetrics = () => ({ packed: 0, acceptedCells: 0, rearranges: 0, items: 0,
+      unusedCells: 0, isolatedFreeCells: 0, declinedWithEnoughArea: 0 });
+    const metrics = { shipId, level, capacity, rows: space.usableCellMask.map(row => row.map(v => v ? '#' : '.').join('')),
+      baseline: emptyMetrics(), bc: emptyMetrics() };
     for (let sample = 0; sample < report.casesPerLevel; sample++) {
       const items = [];
       let total = 0;

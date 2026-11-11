@@ -436,3 +436,148 @@ if(fs.existsSync(local(polishProof))){
  const localCheck=boundJSON(folder+'delivery/local-browser-check.json',evidence);assert.equal(localCheck.runtimeSourceSha,p.runtimeSourceSha);assert(localCheck.matchesFrozenMigration&&localCheck.refreshPreserves);assert.equal(localCheck.gameplayActionsTaken,false);assert.equal(p.physicalPhone,'NOT_TESTED');verifyPlatform(p.platform,evidence,p.zip);
  console.log('PASS polish042:57 exact ZIP/HTTP payloads,40 source assets,128 current+108 historical browser checks,14 actual multigrid identities,44 new rotations,unchanged prices/schema6,actual original Mac save. Phone/art pending.');
 }
+
+const v05Proof = 'artifacts/salvage-v05/verification.json';
+if (fs.existsSync(local(v05Proof))) {
+ const p = json(v05Proof), folder = 'artifacts/salvage-v05/';
+ assert.equal(p.schema, 7);
+ ancestor(p.runtimeSourceSha);
+ assertCurrentRuntime(p.runtimeSourceSha);
+ const evidence = verifyEvidence(p.evidenceFiles, 'v05 evidence');
+ const build = boundJSON(p.buildInfo, evidence);
+ verifyBuild(p, build);
+ assert.equal(build.assets.length, 44);
+ assert.deepEqual(build.missingOptionalArt, []);
+ assert.equal(p.zip.files, 67);
+ git(['ls-files', '--error-unmatch', '--', p.zip.path]);
+ const zip = fs.readFileSync(local(p.zip.path));
+ assert(evidence.has(p.zip.path));
+ assert.equal(zip.length, p.zip.bytes);
+ assert.equal(hash(zip), p.zip.sha256);
+ const expected = expectedPackage(p.runtimeSourceSha);
+ const actual = comparePackageFiles(readZipFiles(p.zip.path, 67), expected.files, 'v05 ZIP/source');
+ comparePackageFiles(p.packageFiles, actual, 'v05 manifest');
+ const browser = p.fixedPackageBrowser;
+ assert.equal(browser.expected, 176);
+ assert.equal(browser.runtimeSourceSha, p.runtimeSourceSha);
+ assert.equal(browser.zipSha256, p.zip.sha256);
+ verifyBrowser(boundJSON(browser.report, evidence), 176);
+ for (const [name, count] of [['engine-results.json',30], ['regression-results.json',18],
+   ['mobile-model.json',21], ['port-model.json',18], ['ship-capacities.json',17],
+   ['cargo-identity.json',5], ['v05-model-results.json',37]]) {
+  const result = boundJSON(folder+'developer/'+name, evidence);
+  assert.equal(result.passed ?? result.testsPassed, count, name);
+ }
+ for (const [name, count] of [['port-art.json',14], ['art-v041.json',15], ['art-v042.json',11], ['art-v05.json',4]]) {
+  const art = boundJSON(folder+'developer/'+name, evidence);
+  assert.equal(art.passed, count);
+  if (name === 'art-v05.json') assert.equal(art.physicalRotations, 16);
+  for (const row of art.assets) {
+   assert(row.exactNearest && row.editableMergedMatches && row.binaryAlpha && row.paletteSubset);
+   for (const file of row.files) {
+    assert.equal(hash(fs.readFileSync(local(file.path))), file.sha256);
+    assert.equal(hash(source(p.runtimeSourceSha, file.path)), file.sha256);
+   }
+  }
+ }
+ const geometry = boundJSON(folder+'developer/v05-isolated-geometry.json', evidence);
+ assert(geometry.isolatedOnly);
+ assert.equal(geometry.casesPerLevel, 120);
+ assert.equal(geometry.levels.length, 11);
+ const E = require('./legacy-engine.cjs')(p.runtimeSourceSha);
+ const O = require('./legacy-engine.cjs')('94e606fc773d1dc37341d29923e39e7ec7c3863b');
+ const config = JSON.parse(source(p.runtimeSourceSha, 'design/star-salvage/v05/ship-holds-approved.json'));
+ for (const row of geometry.levels) {
+  assert.deepEqual(row.rows, config.ships[row.shipId].levels[row.level]);
+  assert.equal(row.capacity, row.rows.join('').replaceAll('.', '').length);
+  assert(row.bc.packed >= row.baseline.packed, 'frozen normal-set packing regressed');
+ }
+ const economy = boundJSON(folder+'developer/v05-economy.json', evidence);
+ assert.equal(economy.seedCount, 24);
+ assert.equal(economy.voyagesPerSeed, 16);
+ assert.equal(Object.keys(economy.comparisons).length, 6);
+ assert.equal(economy.naturalNewEventCoverage.length, 12);
+ for (const file of economy.inputFiles) {
+  assert.equal(hash(source(p.runtimeSourceSha,file.path)), file.sha256, 'economy frozen input '+file.path);
+ }
+ assert.equal(economy.inputFiles.length, 11);
+ for (const policy of Object.values(economy.comparisons)) {
+  for (const result of Object.values(policy)) {
+   assert.equal(result.voyages, 384);
+   assert.equal(result.rescues, 0);
+  }
+  assert.equal(policy.v05ordinary.firstStationIdentities, 6);
+ }
+ assert.equal(economy.oldWallet.opening, 27049);
+ assert.equal(economy.oldWallet.afterMigration, 27049);
+ assert(economy.oldWallet.oldLedgerPreserved && economy.oldWallet.purchasePricesPreserved);
+ for (const result of Object.values(economy.marketLots)) assert.equal(result.seeds, 512);
+ const compat = boundJSON(folder+'developer/port-compatibility.json', evidence);
+ assert.equal(compat.passed,8);
+ assert.deepEqual(compat.errors,[]);
+ for (const row of compat.cases) {
+  assert.deepEqual(row.build,expected.build);
+  assert(row.keyboardAndReload);
+ }
+ const http = boundJSON(p.httpReport,evidence);
+ assert.equal(http.sourceCommit,p.runtimeSourceSha);
+ assert.equal(http.zipSha256,p.zip.sha256);
+ assert(http.allHttpBytesMatchZip);
+ comparePackageFiles(http.files,actual,'v05 real HTTP payloads');
+ const cap = boundJSON(p.capture.manifest,evidence);
+ assert.equal(cap.runtimeSourceSha,p.runtimeSourceSha);
+ assert.equal(cap.zipSha256,p.zip.sha256);
+ const media = verifyEvidence(cap.files,'v05 media');
+ for(const [name,row] of media) assert.deepEqual(evidence.get(name),row);
+ const report = boundJSON(cap.report,media);
+ assert(report.completed);
+ assert.equal(report.reviewOnly,false);
+ assert.deepEqual(report.errors,[]);
+ assert.deepEqual(report.build,expected.build);
+ assert.equal(report.physicalPhoneTested,false);
+ for(const name of ['imported','seedOverridden','clockOverridden']) assert.equal(report.natural[name],false);
+ const points = new Map(report.natural.checkpoints.map(point => {
+  E.assertState(point.state);
+  return [point.name,point.state];
+ }));
+ for(const voyage of [1,2]) {
+  assert.equal(points.get('before-voyage-'+voyage).phase,'port');
+  assert.equal(points.get('returned-voyage-'+voyage).phase,'summary');
+  assert.equal(points.get('saved-voyage-'+voyage).phase,'port');
+  assert.equal(points.get('returned-voyage-'+voyage).runNo,voyage);
+ }
+ assert.deepEqual(points.get('saved-voyage-1'),points.get('reopened-before-second-voyage'));
+ assert.equal(report.holds.length,44);
+ const identities = new Set();
+ for(const row of report.holds) {
+  const model = row.label === 'bc' ? E : O;
+  model.assertState(row.state);
+  assert.equal(model.capacityCells(row.state),row.capacity);
+  const id=[row.label,row.width,row.shipId,row.level].join(':');
+  assert(!identities.has(id)); identities.add(id);
+  assert.equal(row.images.length,4);
+  assert(row.images.every(image => image.decoded));
+  if(row.label==='bc') {
+   const old=report.holds.find(x=>x.label==='before042'&&x.width===row.width&&x.shipId===row.shipId&&x.level===row.level);
+   assert(old);
+   assert.deepEqual(row.state.cargo,old.state.cargo);
+   assert.equal(row.state.money,old.state.money);
+  }
+ }
+ for(const point of report.market.checkpoints) E.assertState(point.state);
+ assert(report.market.imported);
+ assert.deepEqual(report.market.checkpoints[2].state,report.market.checkpoints[3].state);
+ for(const name of ['natural-voyage-1','natural-voyage-2','qa-four-ship-holds-and-real-upgrades','qa-black-market-offers-and-refresh']) {
+  const file=folder+'developer/capture/'+name+'.webm';
+  assert(media.has(file));
+  assert.equal(fs.readFileSync(local(file)).subarray(0,4).toString('hex'),'1a45dfa3');
+ }
+ const localCheck = boundJSON(folder+'delivery/local-browser-check.json',evidence);
+ assert.equal(localCheck.runtimeSourceSha,p.runtimeSourceSha);
+ assert(localCheck.matchesFrozenMigration && localCheck.refreshPreserves);
+ assert.equal(localCheck.gameplayActionsTaken,false);
+ assert.equal(p.platform.previousPackageId,458870);
+ verifyPlatform(p.platform,evidence,p.zip);
+ assert.equal(p.physicalPhone,'NOT_TESTED');
+ console.log('PASS v05 frozen67/HTTP,176 browser,8 compatibility,44 native assets,11 B+C levels/1320 sets,37 new model groups,real economic replay,two natural voyages,original Mac migration and new unbound TapTap self-test. Phone/art/enjoyment pending.');
+}
