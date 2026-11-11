@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "status": "DESIGN_CANDIDATE_NOT_RUNTIME",
+  "status": "REFERENCE_RESEARCH_GATE_DO_NOT_IMPLEMENT_OLD_MASKS",
   "baseline": "0.4.2/94e606f/TapTap458870",
   "shipHoldTopologies": {
-    "description": "Base rows (top to bottom), # usable and . blocked, candidates not final game art. Reuse validated shipId/cargoLevel model; upgrades are monotone expanding masks.",
+    "description": "Historical unvalidated sample masks kept for audit only. NOT APPROVED, DO NOT COPY to runtime. See referenceResearch. Preserve legacy4x4 packing and mobile usability.",
     "starter": {
       "baseRows": [
         "####",
@@ -169,5 +169,20 @@
     "extraAuctionCurrency": false,
     "networkMultiplayer": false,
     "formalPublish": false
+  },
+  "referenceResearch": {
+    "uri": "design/star-salvage/v05/CARGO_REFERENCE_RESEARCH.md",
+    "approvedGeometry": false,
+    "oldMasks": "AUDIT_ONLY_UNVALIDATED",
+    "blockingExamples": [
+      "scout 5x4 effective16 lacks any contiguous 4x4 for legacy16",
+      "cargo 5x5 effective20 lacks any contiguous 4x4 for legacy16"
+    ],
+    "establishedPrinciples": [
+      "DREDGE contiguous hull with limited inaccessible edges and upgrades",
+      "Backpack Brawl modular containers and mobile snap/rotation",
+      "RE4 easy rectangular starter packing"
+    ],
+    "nextStep": "prepare A current rectangular vs B DREDGE-inspired contiguous core/edge modules vs C fixed attachable trays using same real items/mobile viewports, then request user review before freezing four final ship masks"
   }
 }
