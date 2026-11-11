@@ -20,6 +20,8 @@ const evolutions = [
   ["missile", "cooler", "meteorbarrage", "meteorbarrage"],
   ["blade", "magnet", "spiralsaw", "spiralsaw"],
   ["shield", "armor", "reactiveaegis", "reactiveaegis"],
+  ["prism", "refraction", "kaleidoscope", "kaleidoscope"],
+  ["gravity", "singularity", "collapse", "collapse"],
 ];
 for (const [active, passive, id, damageKind] of evolutions)
   test(
@@ -73,7 +75,7 @@ for (const [active, passive, id, damageKind] of evolutions)
       expect(result.id).toBe(id);
       expect(result.damage).toBeGreaterThan(0);
       expect(result.enemyHP.some((hp) => hp < 100000)).toBe(true);
-      expect(result.art).toBe(39);
+      expect(result.art).toBe(50);
       expect(result.slots).toBe(1);
       await info.attach("actual-evolution", {
         body: Buffer.from(JSON.stringify(result, null, 2)),
@@ -84,6 +86,7 @@ for (const [active, passive, id, damageKind] of evolutions)
 for (const [a, b, id] of [
   ["drone", "arc", "thunderhive"],
   ["missile", "blade", "blastwheel"],
+  ["prism", "gravity", "eventhorizon"],
 ])
   test(
     id + " releases a real slot and causes fusion damage",
@@ -196,10 +199,10 @@ test("default launch has no QA hooks and naturally attacks approaching enemies",
   expect(g.metrics.shots.pulse).toBeGreaterThan(0);
   expect(g.enemy.length + g.kills).toBeGreaterThan(0);
   await expect(page.locator(".slot-row").nth(0).locator(".slot")).toHaveCount(
-    4,
+    6,
   );
   await expect(page.locator(".slot-row").nth(1).locator(".slot")).toHaveCount(
-    3,
+    6,
   );
 });
 
@@ -265,15 +268,13 @@ test("real browser touch tap and synthetic drag/cancel cleanly release the float
   await page.waitForTimeout(250);
   expect((await state(page)).input.dx).toBeGreaterThan(0);
   await page.evaluate(() =>
-    document
-      .getElementById("game")
-      .dispatchEvent(
-        new PointerEvent("pointercancel", {
-          pointerId: 55,
-          pointerType: "touch",
-          bubbles: true,
-        }),
-      ),
+    document.getElementById("game").dispatchEvent(
+      new PointerEvent("pointercancel", {
+        pointerId: 55,
+        pointerType: "touch",
+        bubbles: true,
+      }),
+    ),
   );
   expect((await state(page)).input.active).toBe(false);
   await expect(page.locator("#joystick")).toBeHidden();
@@ -332,6 +333,7 @@ test("background, reduced motion and orientation pause the real timer and input"
   expect((await state(page)).time).toBe(paused.time);
   expect((await state(page)).keys).toEqual({});
   await page.locator("#resumeBtn").click();
+  await page.waitForFunction(() => SurvivorDemo.state()?.mode === "play");
   await page.setViewportSize({ width: 844, height: 390 });
   await page.evaluate(() =>
     window.dispatchEvent(new Event("orientationchange")),
@@ -339,18 +341,26 @@ test("background, reduced motion and orientation pause the real timer and input"
   expect((await state(page)).mode).toBe("pause");
   await page.setViewportSize({ width: 390, height: 844 });
   await page.locator("#resumeBtn").click();
+  await page.waitForFunction(() => SurvivorDemo.state()?.mode === "play");
   expect((await state(page)).mode).toBe("play");
 });
 
-test('the 180-second deadline settles before a same-frame XP upgrade can interrupt it', async ({page}) => {
-  await boot(page); await start(page);
+test("the 600-second deadline settles before a same-frame XP upgrade can interrupt it", async ({
+  page,
+}) => {
+  await boot(page);
+  await start(page);
   await page.evaluate(() => {
-    const g=SurvivorQA.state();g.time=179.999;g.xp=g.xpNext-1;
-    g.pickups=[{x:g.p.x,y:g.p.y,type:'xp',value:20,t:10}];
-    SurvivorQA.step(1/60);
+    const g = SurvivorQA.state();
+    g.time = g.endTime - 0.001;
+    g.xp = g.xpNext - 1;
+    g.pickups = [{ x: g.p.x, y: g.p.y, type: "xp", value: 20, t: 10 }];
+    SurvivorQA.step(1 / 60);
   });
-  await expect(page.locator('#results')).toBeVisible();
-  await page.waitForFunction(()=>!SurvivorDemo.saving());
-  const g=await state(page);expect(g.time).toBe(180);expect(g.mode).toBe('results');
+  await expect(page.locator("#results")).toBeVisible();
+  await page.waitForFunction(() => !SurvivorDemo.saving());
+  const g = await state(page);
+  expect(g.time).toBe(600);
+  expect(g.mode).toBe("results");
   expect((await stored(page)).profile.runs).toBe(1);
 });

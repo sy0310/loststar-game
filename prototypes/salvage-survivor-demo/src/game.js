@@ -6,8 +6,26 @@
   ctx.imageSmoothingEnabled = false;
   const B = window.SurvivorBalance;
   const T = 6.28318530718,
-    ACTIVE = ["cannon", "drone", "arc", "missile", "blade", "shield"],
-    PASSIVE = ["lens", "lock", "capacitor", "cooler", "magnet", "armor"];
+    ACTIVE = [
+      "cannon",
+      "drone",
+      "arc",
+      "missile",
+      "blade",
+      "shield",
+      "prism",
+      "gravity",
+    ],
+    PASSIVE = [
+      "lens",
+      "lock",
+      "capacitor",
+      "cooler",
+      "magnet",
+      "armor",
+      "refraction",
+      "singularity",
+    ];
   const NAMES = {
     cannon: "脉冲主炮",
     drone: "追踪无人机",
@@ -29,6 +47,13 @@
     reactiveaegis: "反应壁垒",
     thunderhive: "雷暴蜂群",
     blastwheel: "爆裂刃环",
+    prism: "折跃棱镜",
+    gravity: "引力锚",
+    refraction: "折射晶核",
+    singularity: "引力透镜",
+    kaleidoscope: "万花星阵",
+    collapse: "坍缩星核",
+    eventhorizon: "星环奇点",
   };
 
   const DESCS = {
@@ -52,6 +77,13 @@
     reactiveaegis: "更快恢复护盾，冲击反制",
     thunderhive: "五架蜂机，命中连锁放电",
     blastwheel: "六刃环绕，接触触发爆破",
+    prism: "分束折射，扫过多个方向",
+    gravity: "短时吸聚敌群，脉冲粉碎",
+    refraction: "拓宽折射光线，提高伤害",
+    singularity: "扩大引力范围，延长牵引",
+    kaleidoscope: "六向光阵，交错贯穿",
+    collapse: "引力收束，中心爆破",
+    eventhorizon: "吸聚敌群，旋转折射光环",
   };
   const EVO = [
     ["cannon", "lens", "piercebeam"],
@@ -60,12 +92,33 @@
     ["missile", "cooler", "meteorbarrage"],
     ["blade", "magnet", "spiralsaw"],
     ["shield", "armor", "reactiveaegis"],
+    ["prism", "refraction", "kaleidoscope"],
+    ["gravity", "singularity", "collapse"],
   ];
   const FUSION = [
     ["drone", "arc", "thunderhive"],
     ["missile", "blade", "blastwheel"],
+    ["prism", "gravity", "eventhorizon"],
   ];
 
+  const playSound = (id, options) => window.SurvivorAudio?.play(id, options);
+  function unlockAudio() {
+    // A denied or pending audio gesture must never hold the battle controller.
+    const request = window.SurvivorAudio?.unlock();
+    request?.catch(() => {
+      $("audioStatus").textContent = "声音等待下一次点击";
+    });
+  }
+  function runRules(game = g) {
+    return (
+      game?.rules || {
+        version: "0.6.0",
+        runSeconds: game?.endTime || 180,
+        activeSlots: 4,
+        passiveSlots: 3,
+      }
+    );
+  }
   function pixelIcon(id, size = 32) {
     return window.SurvivorArt.icon(id === "repair" ? "armor" : id, size);
   }
@@ -142,6 +195,12 @@
         : Date.now()) >>> 0;
     g = {
       mode: "play",
+      rules: {
+        version: B.version,
+        runSeconds: B.runSeconds,
+        activeSlots: B.activeSlots,
+        passiveSlots: B.passiveSlots,
+      },
       time: 0,
       p: {
         x: 0,
@@ -190,6 +249,9 @@
     Object.assign(g, {
       persisted: false,
       beams: [],
+      wells: [],
+      milestoneSeen: [],
+      celebration: null,
       bursts: [],
       salvos: [],
       facing: 0,
@@ -216,9 +278,19 @@
     updateHud(true);
     notify("失物号启动 · 自动开火！");
   }
+  function syncAudioState() {
+    window.SurvivorAudio?.setState({
+      playing: ["play", "upgrade"].includes(g?.mode),
+      upgrade: g?.mode === "upgrade",
+      paused: document.hidden || ["pause", "loading"].includes(g?.mode),
+      phase: g?.wave || 0,
+      boss: !!g?.enemy?.some((enemy) => enemy.t === "boss" && enemy.hp > 0),
+    });
+  }
   function setMode(mode) {
     if (!g) return;
     g.mode = mode;
+    syncAudioState();
     hideAll();
     releaseInput();
     if (["upgrade", "pause", "results"].includes(mode)) $(mode).hidden = false;
@@ -248,7 +320,7 @@
       if (
         !consumed.includes(id) &&
         level < B.activeMaxLevel &&
-        (level > 0 || activeSlots < B.activeSlots)
+        (level > 0 || activeSlots < runRules().activeSlots)
       ) {
         options.push({ id, kind: "active", level: level + 1 });
       }
@@ -257,7 +329,7 @@
       const level = g.passive[id] || 0;
       if (
         level < B.passiveMaxLevel &&
-        (level > 0 || Object.keys(g.passive).length < B.passiveSlots)
+        (level > 0 || Object.keys(g.passive).length < runRules().passiveSlots)
       ) {
         options.push({ id, kind: "passive", level: level + 1 });
       }
@@ -293,6 +365,8 @@
       )
         picks.push(option);
     }
+    if (runRules().runSeconds > 180 && g.p.hp / g.p.maxhp < 0.35)
+      add({ id: "repair", kind: "bonus", level: 0 });
     const ordinary = available.filter((option) =>
       ["active", "passive"].includes(option.kind),
     );
@@ -414,9 +488,12 @@
     $("upgradeBuild").textContent =
       "主动 " +
       (Object.keys(g.active).length + Object.keys(g.fused).length) +
-      "/4 · 辅助 " +
+      "/" +
+      runRules().activeSlots +
+      " · 增强 " +
       Object.keys(g.passive).length +
-      "/3";
+      "/" +
+      runRules().passiveSlots;
   }
   function levelUp() {
     releaseInput();
@@ -451,8 +528,18 @@
       const pair = EVO.find(([, passive]) => passive === option.id);
       if (pair && g.active[pair[0]]) g.buildFocus = pair[0];
     }
+    playSound(
+      option.kind === "evo"
+        ? "evolution"
+        : option.kind === "fusion"
+          ? "fusion"
+          : "upgrade",
+    );
+    if (["evo", "fusion"].includes(option.kind))
+      g.celebration = { kind: option.kind, id: option.id, t: 0.9, max: 0.9 };
     g.presented = [];
     g.upgradeGrace = 0.4;
+    g.p.inv = Math.max(g.p.inv, 0.65);
     g.mode = "play";
     hideAll();
     releaseInput();
@@ -486,7 +573,7 @@
       levelUp();
     }
   }
-  function spawnEnemy(force) {
+  function spawnEnemy(force, tier = 1) {
     if (!g) return null;
     const special = force === "boss" || force === "elite";
     if (g.enemy.length >= (special ? B.maxEnemies : B.maxEnemies - 2))
@@ -508,13 +595,17 @@
       elite: { hp: 470, radius: 32, speed: 90 },
       boss: { hp: 1900, radius: 44, speed: 82 },
     }[type];
-    const scale = 1 + g.time / 125;
+    const scale =
+      (1 +
+        g.time / (runRules().runSeconds > 180 ? B.enemyHealthTimeScale : 125)) *
+      (1 + 0.35 * (tier - 1));
     const side = Math.floor(rand() * 4),
       ex = VW / 2 + 30,
       ey = VH / 2 + 35;
     const enemy = {
       id: ++g.numberSpawned,
       t: type,
+      tier,
       x: g.p.x + (side < 2 ? (side === 0 ? -ex : ex) : rr(-ex, ex)),
       y: g.p.y + (side < 2 ? rr(-ey, ey) : side === 2 ? -ey : ey),
       hp: Math.round(stats.hp * scale),
@@ -566,6 +657,11 @@
       pierce: kind === "pulse" ? 1 + Math.min(1, g.passive.lens || 0) : 1,
     };
     g.shots.push(shot);
+    playSound(kind === "pulse" ? "cannon" : kind === "hive" ? "drone" : kind, {
+      evolved:
+        kind === "hive" || !!g.evolved[kind === "pulse" ? "cannon" : kind],
+      fused: kind === "hive",
+    });
     g.metrics.shots[kind] = (g.metrics.shots[kind] || 0) + 1;
   }
   function blast(x, y, radius, damage, color = "#f4c57a", source = "missile") {
@@ -590,6 +686,7 @@
     stun = 0,
   ) {
     let origin = { x, y };
+    playSound("arc", { evolved: sourceKind !== "arc" });
     const excluded = new Set(first ? [first] : []);
     for (let index = 0; index < Math.min(B.maxChainTargets, count); index++) {
       let target = null,
@@ -621,6 +718,7 @@
     if (enemy.hp <= 0) return;
     const damage = Math.max(1, amount * (1 + 0.13 * (g.passive.lens || 0)));
     const actual = Math.min(enemy.hp, damage);
+    playSound("hit", { strength: damage / 120 });
     g.metrics.damage[source] = (g.metrics.damage[source] || 0) + actual;
     enemy.hp -= damage;
     enemy.flash = 0.09;
@@ -639,6 +737,7 @@
   function killEnemy(enemy) {
     enemy.hp = 0;
     g.kills++;
+    playSound("explosion", { strength: enemy.t === "boss" ? 1 : 0.4 });
     g.metrics.killed[enemy.t] = (g.metrics.killed[enemy.t] || 0) + 1;
     burst(
       enemy.x,
@@ -688,6 +787,18 @@
         t: 30,
       });
     }
+    if (
+      runRules().runSeconds > 180 &&
+      ["boss", "elite"].includes(enemy.t) &&
+      g.pickups.length < B.maxPickups
+    )
+      g.pickups.push({
+        x: enemy.x,
+        y: enemy.y,
+        type: "heal",
+        value: enemy.t === "boss" ? 24 : 12,
+        t: 40,
+      });
     if (enemy.t === "boss") {
       g.bossKilled = true;
       g.metrics.events.push({ kind: "bossDefeated", time: g.time });
@@ -699,6 +810,7 @@
     if (g.p.shield > 0) {
       g.p.shield = 0;
       g.metrics.shieldsBlocked++;
+      playSound("shield", { evolved: !!g.evolved.shield });
       const evolved = !!g.evolved.shield;
       g.p.shieldCooldown =
         (evolved ? 4.5 : 12 - (g.active.shield || 1) * 1.5) *
@@ -718,6 +830,7 @@
     const damage = amount * (1 - 0.08 * (g.passive.armor || 0));
     g.p.hp = Math.max(0, g.p.hp - damage);
     g.metrics.shipDamage += damage;
+    playSound("hurt");
     g.p.inv = 0.85;
     particle(g.p.x, g.p.y, "#ff7597", 8, 100);
     if (g.p.hp <= 0) {
@@ -737,8 +850,165 @@
       callback();
     }
   }
+  function prismRay(heading, length, damage, source, width = 5) {
+    const x = g.p.x + Math.cos(heading) * length,
+      y = g.p.y + Math.sin(heading) * length;
+    g.beams.push({
+      x1: g.p.x,
+      y1: g.p.y,
+      x2: x,
+      y2: y,
+      t: 0.2,
+      kind: source,
+      width,
+    });
+    if (g.beams.length > 12) g.beams.shift();
+    g.metrics.shots[source] = (g.metrics.shots[source] || 0) + 1;
+    for (const enemy of g.enemy)
+      if (
+        enemy.hp > 0 &&
+        segmentDistance(enemy, g.p.x, g.p.y, x, y) < enemy.radius + width
+      )
+        hurtEnemy(enemy, damage, false, source);
+  }
+  function advancedWeapons(dt) {
+    g.wells ||= [];
+    const fused = !!g.fused.eventhorizon;
+    if (g.active.prism || fused) {
+      const level = g.active.prism || 3,
+        evolved = !!g.evolved.prism;
+      clock(
+        "prism",
+        dt,
+        cooldown("prism", fused ? 1.1 : evolved ? 1.3 : 2.4 - 0.2 * level),
+        () => {
+          const target = closest(g.p.x, g.p.y, 500);
+          if (!target) return;
+          const targets = g.enemy
+            .filter((enemy) => enemy.hp > 0 && dist(enemy, g.p) < 520)
+            .sort((a, b) => dist(a, g.p) - dist(b, g.p));
+          const heading = angle(g.p, target),
+            count = fused ? 6 : evolved ? 6 : level + 1;
+          playSound("prism", { evolved, fused });
+          for (let i = 0; i < count; i++)
+            prismRay(
+              targets[i]
+                ? angle(g.p, targets[i])
+                : heading + (i * T) / count + g.time * 0.2,
+              520,
+              (24 + 28 * level) * (1 + 0.1 * (g.passive.refraction || 0)),
+              fused ? "eventhorizon" : evolved ? "kaleidoscope" : "prism",
+              (evolved ? 7 : 5) + (g.passive.refraction || 0) * 1.5,
+            );
+        },
+      );
+    }
+    if (g.active.gravity || fused) {
+      const level = g.active.gravity || 3,
+        evolved = !!g.evolved.gravity;
+      clock(
+        "gravity",
+        dt,
+        cooldown("gravity", fused ? 3.4 : evolved ? 3.6 : 5.2 - 0.35 * level),
+        () => {
+          const target = closest(g.p.x, g.p.y, 430);
+          if (!target || g.wells.length >= 3) return;
+          const distance = dist(g.p, target),
+            heading = angle(g.p, target);
+          const center = {
+            x: g.p.x + Math.cos(heading) * Math.max(100, distance),
+            y: g.p.y + Math.sin(heading) * Math.max(100, distance),
+          };
+          const duration =
+            (evolved || fused ? 2.4 : 1.5) + 0.2 * (g.passive.singularity || 0);
+          if (g.arcs.length < B.maxArcs)
+            g.arcs.push({
+              x1: g.p.x,
+              y1: g.p.y,
+              x2: center.x,
+              y2: center.y,
+              t: 0.22,
+              color: "#b9a1e8",
+            });
+          g.wells.push({
+            x: center.x,
+            y: center.y,
+            t: duration,
+            max: duration,
+            born: g.time,
+            radius:
+              (evolved || fused ? 128 : 85) +
+              level * 7 +
+              (g.passive.singularity || 0) * 15,
+            clock: 0,
+            damage: 18 + level * 9,
+            evolved,
+            fused,
+            level,
+          });
+          blast(
+            center.x,
+            center.y,
+            ((evolved || fused ? 128 : 85) + level * 7) * 0.75,
+            25 + level * 18,
+            "#a795db",
+            fused ? "eventhorizon" : evolved ? "collapse" : "gravity",
+          );
+          playSound("gravity", { evolved, fused });
+        },
+      );
+    }
+    for (const well of g.wells) {
+      well.t -= dt;
+      well.clock -= dt;
+      const pulse = well.clock <= 0;
+      if (pulse) well.clock = 0.3;
+      for (const enemy of g.enemy) {
+        const distance = Math.hypot(enemy.x - well.x, enemy.y - well.y);
+        if (enemy.hp <= 0 || distance >= well.radius) continue;
+        const pull = Math.min(
+          distance,
+          dt *
+            (["boss", "elite"].includes(enemy.t)
+              ? 18
+              : well.evolved || well.fused
+                ? 115
+                : 75),
+        );
+        if (distance > 0) {
+          enemy.x += ((well.x - enemy.x) / distance) * pull;
+          enemy.y += ((well.y - enemy.y) / distance) * pull;
+        }
+        enemy.gravitySlow = Math.max(
+          enemy.gravitySlow || 0,
+          ["boss", "elite"].includes(enemy.t) ? 0.08 : 0.35,
+        );
+        if (pulse)
+          hurtEnemy(
+            enemy,
+            well.damage,
+            false,
+            well.fused ? "eventhorizon" : well.evolved ? "collapse" : "gravity",
+          );
+      }
+      if (well.t <= 0 && (well.evolved || well.fused)) {
+        playSound("gravity", { evolved: true, strength: 0.7 });
+        burst(well.x, well.y, "gravity_burst", well.radius / 48);
+        blast(
+          well.x,
+          well.y,
+          well.radius,
+          95,
+          "#b9a1e8",
+          well.fused ? "eventhorizon" : "collapse",
+        );
+      }
+    }
+    g.wells = g.wells.filter((well) => well.t > 0);
+  }
   function weapons(dt) {
     const player = g.p;
+    advancedWeapons(dt);
     if (g.active.cannon) {
       const level = g.active.cannon;
       clock(
@@ -873,6 +1143,10 @@
             y = player.y + Math.sin(heading) * radius;
           if (Math.hypot(enemy.x - x, enemy.y - y) < enemy.radius + 11) {
             enemy.bladeAt = g.time + (g.evolved.blade ? 0.2 : 0.26);
+            playSound("blade", {
+              evolved: !!g.evolved.blade,
+              fused: !!g.fused.blastwheel,
+            });
             hurtEnemy(
               enemy,
               (14 + level * 7) * (g.evolved.blade ? 1.25 : 1),
@@ -896,20 +1170,53 @@
     }
   }
   function wave(dt) {
-    if (g.time >= B.bossAt && !g.bossSpawned) {
-      const boss = spawnEnemy("boss");
-      if (boss) {
-        g.bossSpawned = true;
-        g.metrics.events.push({ kind: "boss", time: g.time });
-        notify("星海守卫者 · 来袭");
+    if (runRules().runSeconds > 180) {
+      for (const milestone of B.milestones) {
+        const key = milestone.type + ":" + milestone.at;
+        if (g.time < milestone.at || g.milestoneSeen.includes(key)) continue;
+        const existing = g.enemy.find(
+          (enemy) => enemy.t === milestone.type && enemy.hp > 0,
+        );
+        if (existing) {
+          existing.tier = Math.max(existing.tier || 1, milestone.tier);
+          existing.fire = Math.min(existing.fire, 0.3);
+        } else if (!spawnEnemy(milestone.type, milestone.tier)) continue;
+        g.milestoneSeen.push(key);
+        g.metrics.events.push({
+          kind: milestone.type,
+          time: g.time,
+          tier: milestone.tier,
+        });
+        if (milestone.type === "boss") {
+          g.bossSpawned = true;
+          playSound("boss");
+          notify(
+            milestone.tier === 3
+              ? "最终守卫 · 深空合围"
+              : milestone.tier === 2
+                ? "第二守卫 · 火力升阶"
+                : "星海守卫者 · 来袭",
+          );
+        } else {
+          g.eliteSpawned = true;
+          notify("追猎者 · 第" + milestone.tier + "阶段");
+        }
       }
-    }
-    if (g.time >= B.eliteAt && !g.eliteSpawned) {
-      const elite = spawnEnemy("elite");
-      if (elite) {
-        g.eliteSpawned = true;
-        g.metrics.events.push({ kind: "elite", time: g.time });
-        notify("反应堆追猎者 · 接近");
+    } else {
+      if (g.time >= 130 && !g.bossSpawned) {
+        if (spawnEnemy("boss")) {
+          g.bossSpawned = true;
+          g.metrics.events.push({ kind: "boss", time: g.time });
+          notify("星海守卫者 · 来袭");
+          playSound("boss");
+        }
+      }
+      if (g.time >= 70 && !g.eliteSpawned) {
+        if (spawnEnemy("elite")) {
+          g.eliteSpawned = true;
+          g.metrics.events.push({ kind: "elite", time: g.time });
+          notify("反应堆追猎者 · 接近");
+        }
       }
     }
     if (g.time >= 48 && !g.anomalySeen) {
@@ -919,25 +1226,43 @@
     }
     g.spawnTime -= dt;
     if (g.spawnTime <= 0) {
-      const count = g.time > 115 ? 4 : g.time > 55 ? 3 : g.time > 12 ? 2 : 1;
+      const count =
+        g.time > 420
+          ? 6
+          : g.time > 240
+            ? 5
+            : g.time > 115
+              ? 4
+              : g.time > 55
+                ? 3
+                : g.time > 12
+                  ? 2
+                  : 1;
       for (let index = 0; index < count; index++) spawnEnemy();
       g.spawnTime = Math.max(0.46, 1.05 - g.time * 0.0033);
     }
   }
   function update(dt) {
     if (!g || g.mode !== "play") return;
-    if (g.time >= B.runSeconds) {
+    if (g.time >= runRules().runSeconds) {
       void finish(true);
       return;
     }
-    dt = Math.min(dt, B.runSeconds - g.time);
+    dt = Math.min(dt, runRules().runSeconds - g.time);
     g.time += dt;
-    if (g.time >= B.runSeconds) {
+    if (g.time >= runRules().runSeconds) {
       updateHud(true);
       void finish(true);
       return;
     }
-    g.wave = Math.min(4, Math.floor(g.time / 45) + 1);
+    g.wave = Math.min(
+      runRules().runSeconds > 180 ? 5 : 4,
+      Math.floor(g.time / (runRules().runSeconds > 180 ? 120 : 45)) + 1,
+    );
+    if (g.celebration) {
+      g.celebration.t -= dt;
+      if (g.celebration.t <= 0) g.celebration = null;
+    }
     g.anomalyTime = Math.max(0, g.anomalyTime - dt);
     g.upgradeGrace = Math.max(0, g.upgradeGrace - dt);
     g.p.inv = Math.max(0, g.p.inv - dt);
@@ -995,8 +1320,16 @@
       }
       if (dist(pickup, g.p) < 19) {
         pickup.t = 0;
-        if (pickup.type === "xp") awardXP(pickup.value);
-        else g.credits += pickup.value;
+        if (pickup.type === "xp") {
+          playSound("pickup");
+          awardXP(pickup.value);
+        } else if (pickup.type === "heal") {
+          g.p.hp = Math.min(g.p.maxhp, g.p.hp + pickup.value);
+          playSound("heal");
+        } else {
+          g.credits += pickup.value;
+          playSound("scrap");
+        }
         if (g.mode !== "play") break;
       }
     }
@@ -1020,7 +1353,7 @@
       g[field] = g[field].filter((effect) => effect.t > 0);
     }
     awardXP(0);
-    if (g.mode === "play" && g.time >= B.runSeconds) void finish(true);
+    if (g.mode === "play" && g.time >= runRules().runSeconds) void finish(true);
     if (
       g.persisted &&
       g.mode === "play" &&
@@ -1079,7 +1412,7 @@
     if (!g) return;
     const position = toScreen(g.p.x, g.p.y);
     const actor = window.SurvivorArt.catalog.player;
-    const frame = Math.floor(g.time * 15) % 4;
+    const frame = window.SurvivorArt.frameAt("thruster", g.time * 1000, true);
     const flameScale = 0.32 + g.thrust * 0.3;
     ctx.save();
     ctx.translate(position.x, position.y);
@@ -1137,7 +1470,11 @@
       const point = toScreen(pickup.x, pickup.y);
       art.draw(
         ctx,
-        pickup.type === "xp" ? "xp_crystal" : "scrap",
+        pickup.type === "xp"
+          ? "xp_crystal"
+          : pickup.type === "heal"
+            ? "shield_piece"
+            : "scrap",
         point.x,
         point.y,
         { scale: 0.6 },
@@ -1163,6 +1500,39 @@
     drawOrbitals();
     for (const shot of g.shots) {
       const point = toScreen(shot.x, shot.y);
+      const heading = Math.atan2(shot.vy, shot.vx);
+      if (shot.kind === "missile") {
+        // Native missile exhaust begins at [12,20], center [12,12], scale .9.
+        art.draw(
+          ctx,
+          "thruster",
+          point.x - Math.cos(heading) * 7.2,
+          point.y - Math.sin(heading) * 7.2,
+          {
+            angle: heading + Math.PI / 2,
+            anchor: [12, 3],
+            scale: 0.3,
+            frame: art.frameAt("thruster", g.time * 1000, true),
+          },
+        );
+      } else {
+        ctx.fillStyle =
+          shot.kind === "hive"
+            ? "#f4c57a"
+            : shot.kind === "drone"
+              ? "#b9a1e8"
+              : "#73d9e8";
+        for (let trail = 1; trail <= 3; trail++) {
+          ctx.globalAlpha = 0.4 / trail;
+          ctx.fillRect(
+            Math.round(point.x - Math.cos(heading) * trail * 5),
+            Math.round(point.y - Math.sin(heading) * trail * 5),
+            2,
+            2,
+          );
+        }
+        ctx.globalAlpha = 1;
+      }
       art.draw(
         ctx,
         shot.kind === "missile" ? "missile_body" : "pulse",
@@ -1174,18 +1544,49 @@
         },
       );
     }
+    for (const well of g.wells || []) {
+      const point = toScreen(well.x, well.y),
+        progress = 1 - well.t / well.max;
+      ctx.save();
+      ctx.translate(point.x, point.y);
+      ctx.rotate(g.time * (well.fused ? 1.8 : 0.7));
+      ctx.strokeStyle = well.fused ? "#f4c57a" : "#a795db";
+      ctx.globalAlpha = 0.6;
+      ctx.lineWidth = 2;
+      for (let layer = 0; layer < 3; layer++) {
+        const radius =
+          well.radius * (0.28 + ((progress + layer / 3) % 1) * 0.6);
+        ctx.beginPath();
+        for (let step = 0; step <= 12; step++) {
+          const heading = (step * T) / 12;
+          const x = Math.round(Math.cos(heading) * radius),
+            y = Math.round(Math.sin(heading) * radius * 0.52);
+          if (!step) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      ctx.restore();
+      if (art.catalog.gravity_burst)
+        art.draw(ctx, "gravity_burst", point.x, point.y, {
+          frame:
+            Math.floor(g.time * 12) % art.catalog.gravity_burst.frames.length,
+          scale: 0.8,
+          alpha: 0.65,
+        });
+    }
     for (const beam of g.beams) {
       const start = toScreen(beam.x1, beam.y1),
         end = toScreen(beam.x2, beam.y2);
       ctx.globalAlpha = clamp(beam.t / 0.16, 0, 1);
-      ctx.strokeStyle = "#497c9d";
+      ctx.strokeStyle = beam.kind ? "#7151a0" : "#497c9d";
       ctx.lineWidth = 12;
       ctx.beginPath();
       ctx.moveTo(start.x, start.y);
       ctx.lineTo(end.x, end.y);
       ctx.stroke();
-      ctx.strokeStyle = "#73d9e8";
-      ctx.lineWidth = 6;
+      ctx.strokeStyle = beam.kind ? "#bd9ee8" : "#73d9e8";
+      ctx.lineWidth = beam.width || 6;
       ctx.stroke();
       ctx.strokeStyle = "#fff0ce";
       ctx.lineWidth = 2;
@@ -1196,7 +1597,7 @@
       const start = toScreen(arc.x1, arc.y1),
         end = toScreen(arc.x2, arc.y2);
       ctx.globalAlpha = clamp(arc.t / 0.22, 0, 1);
-      ctx.strokeStyle = "#73d9e8";
+      ctx.strokeStyle = arc.color || "#73d9e8";
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(start.x, start.y);
@@ -1207,6 +1608,7 @@
       ctx.strokeStyle = "#e4f4ec";
       ctx.lineWidth = 1;
       ctx.stroke();
+      art.draw(ctx, "beam_cap", end.x, end.y, { scale: 0.28 });
       ctx.globalAlpha = 1;
     }
     for (const effect of g.rings) {
@@ -1221,14 +1623,11 @@
     }
     for (const effect of g.bursts) {
       const point = toScreen(effect.x, effect.y);
-      const frames = art.catalog[effect.kind].frames;
-      const frame = Math.min(
-        frames.length - 1,
-        Math.floor((1 - effect.t / effect.max) * frames.length),
-      );
+      const frame = art.frameAt(effect.kind, (effect.max - effect.t) * 1000);
       art.draw(ctx, effect.kind, point.x, point.y, {
         frame,
         scale: effect.scale,
+        angle: effect.rotation || 0,
       });
     }
     for (const particle of g.particles) {
@@ -1243,6 +1642,17 @@
       );
     }
     ctx.globalAlpha = 1;
+    if (g.celebration) {
+      const point = toScreen(g.p.x, g.p.y),
+        effect = g.celebration;
+      const id = effect.kind === "fusion" ? "fusion_nova" : "evolution_corona";
+      if (art.catalog[id])
+        art.draw(ctx, id, point.x, point.y, {
+          frame: art.frameAt(id, (effect.max - effect.t) * 1000),
+          scale: 2.4,
+          alpha: Math.min(1, effect.t * 2),
+        });
+    }
     for (const shot of g.enemyShots) {
       const point = toScreen(shot.x, shot.y);
       art.draw(ctx, "threat", point.x, point.y, {
@@ -1261,8 +1671,14 @@
       ctx.fillText(text.s, point.x, point.y);
     }
     ctx.globalAlpha = 1;
+    if (QA && g?.qaLabel) {
+      ctx.fillStyle = "#c4bed2";
+      ctx.font = "12px sans-serif";
+      ctx.fillText("QA 靶场 · " + g.qaLabel, 12, VH - 25);
+    }
   }
   function updateHud(force = false) {
+    syncAudioState();
     if (!g) return;
     $("hud").hidden = false;
     $("hpLabel").textContent = Math.ceil(g.p.hp) + "/" + g.p.maxhp;
@@ -1335,13 +1751,16 @@
         "</div>"
       );
     }
-    $("loadout").innerHTML = row("武装", active, 4) + row("辅助", passive, 3);
+    $("loadout").innerHTML =
+      row("武装", active, runRules().activeSlots) +
+      row("增强", passive, runRules().passiveSlots);
   }
   async function finish(victory) {
     if (!g || ["results", "settling"].includes(g.mode)) return;
     releaseInput();
     const summary = {
       time: g.time,
+      endTime: runRules().runSeconds,
       kills: g.kills,
       credits: g.credits,
       level: g.level,
@@ -1353,6 +1772,8 @@
       fused: { ...g.fused },
     };
     g.mode = "settling";
+    syncAudioState();
+    playSound(victory ? "victory" : "defeat");
     $("pauseBtn").hidden = true;
     if (!g.persisted) {
       profile.runs++;
@@ -1434,6 +1855,7 @@
     void saveCheckpoint();
   }
   async function unpause() {
+    unlockAudio();
     if (!g || g.mode !== "pause" || actionBusy) return;
     if (runDetached) {
       await resumeSavedRun();
@@ -1499,9 +1921,11 @@
     g.rings.push({ x, y, to: radius, t: duration, max: duration, color });
     if (g.rings.length > B.maxRings) g.rings.shift();
   }
-  function burst(x, y, kind, scale) {
-    const duration = kind === "explosion" ? 0.39 : 0.18;
-    g.bursts.push({ x, y, kind, scale, t: duration, max: duration });
+  function burst(x, y, kind, scale, rotation = 0) {
+    const duration =
+      (window.SurvivorArt.catalog[kind]?.durationMs ||
+        (kind === "explosion" ? 390 : kind === "hit" ? 180 : 500)) / 1000;
+    g.bursts.push({ x, y, kind, scale, rotation, t: duration, max: duration });
     if (g.bursts.length > B.maxBursts) g.bursts.shift();
   }
   function segmentDistance(point, x1, y1, x2, y2) {
@@ -1523,6 +1947,15 @@
       y = g.p.y + Math.sin(heading) * 660;
     g.beams.push({ x1: g.p.x, y1: g.p.y, x2: x, y2: y, t: 0.16 });
     if (g.beams.length > 6) g.beams.shift();
+    playSound("cannon", { evolved: true });
+    if (window.SurvivorArt.catalog.rail_muzzle)
+      burst(
+        g.p.x + Math.cos(heading) * 14,
+        g.p.y + Math.sin(heading) * 14,
+        "rail_muzzle",
+        1.1,
+        heading + Math.PI / 2,
+      );
     g.metrics.shots.piercebeam = (g.metrics.shots.piercebeam || 0) + 1;
     for (const enemy of g.enemy)
       if (
@@ -1542,7 +1975,13 @@
       elite = enemy.t === "elite";
     const radial =
       boss && enemy.hp / enemy.maxhp < 0.5 && enemy.pattern % 2 === 0;
-    const count = radial ? 12 : boss ? 7 : elite ? 3 : 1;
+    const count = radial
+      ? 10 + 2 * (enemy.tier || 1)
+      : boss
+        ? 5 + 2 * (enemy.tier || 1)
+        : elite
+          ? 3
+          : 1;
     for (
       let index = 0;
       index < count && g.enemyShots.length < B.maxEnemyShots;
@@ -1551,7 +1990,7 @@
       const heading = radial
         ? (index * T) / count
         : enemy.aim + (index - (count - 1) / 2) * 0.17;
-      const speed = boss ? 150 : 125;
+      const speed = boss ? 150 + 8 * ((enemy.tier || 1) - 1) : 125;
       g.enemyShots.push({
         x: enemy.x,
         y: enemy.y,
@@ -1579,7 +2018,11 @@
       if (enemy.t === "ranger" && distance < 175) heading += Math.PI;
       else if (enemy.t === "wisp")
         heading += Math.sin(g.time * 2.5 + enemy.phase) * 0.5;
-      let speed = enemy.speed * (1 + g.time / 1000);
+      let speed =
+        enemy.speed *
+        (1 + Math.min(300, g.time) / 1000) *
+        (1 - (enemy.gravitySlow || 0));
+      enemy.gravitySlow = 0;
       if (
         ["boss", "elite"].includes(enemy.t) &&
         distance > Math.min(VW, VH) * 0.85
@@ -1604,7 +2047,11 @@
             enemy.pattern++;
             enemy.warn = enemy.t === "boss" ? 0.7 : 0.4;
             enemy.fire =
-              enemy.t === "boss" ? 1.5 : enemy.t === "elite" ? 2 : 2.5;
+              enemy.t === "boss"
+                ? Math.max(1, 1.8 - 0.25 * ((enemy.tier || 1) - 1))
+                : enemy.t === "elite"
+                  ? 2
+                  : 2.5;
           }
         }
       }
@@ -1758,6 +2205,17 @@
       const radius = g.evolved.blade || g.fused.blastwheel ? 78 : 48;
       for (let index = 0; index < count; index++) {
         const heading = g.time * 2.7 + (index * T) / count;
+        if (!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
+          for (let trail = 1; trail <= 2; trail++) {
+            const old = heading - trail * 0.14;
+            art.draw(
+              ctx,
+              "blade_body",
+              player.x + Math.cos(old) * radius,
+              player.y + Math.sin(old) * radius,
+              { angle: old, scale: 0.9, alpha: 0.22 / trail },
+            );
+          }
         art.draw(
           ctx,
           "blade_body",
@@ -1835,6 +2293,7 @@
   }
   function validateSnapshot(snapshot) {
     const game = snapshot?.game;
+    const rules = runRules(game);
     if (
       snapshot?.schema !== 1 ||
       !Number.isSafeInteger(snapshot.seed) ||
@@ -1842,7 +2301,7 @@
       !["pause", "upgrade"].includes(game.mode) ||
       !Number.isFinite(game.time) ||
       game.time < 0 ||
-      game.time > B.runSeconds
+      game.time > rules.runSeconds
     )
       throw Error("对局快照无效，原数据保留");
     if (
@@ -1855,10 +2314,18 @@
       throw Error("对局数值无效");
     if (
       Object.keys(game.active).length + Object.keys(game.fused).length >
-        B.activeSlots ||
-      Object.keys(game.passive).length > B.passiveSlots
+        rules.activeSlots ||
+      Object.keys(game.passive).length > rules.passiveSlots
     )
       throw Error("武装槽位无效");
+    if (
+      ![180, 600].includes(rules.runSeconds) ||
+      (rules.runSeconds === 180 &&
+        (rules.activeSlots !== 4 || rules.passiveSlots !== 3)) ||
+      (rules.runSeconds === 600 &&
+        (rules.activeSlots !== 6 || rules.passiveSlots !== 6))
+    )
+      throw Error("对局规则快照无效，原数据保留");
     for (const [id, level] of Object.entries(game.active))
       if (
         !ACTIVE.includes(id) ||
@@ -1954,6 +2421,7 @@
       .join("");
   }
   async function reset() {
+    unlockAudio();
     if (!ready || actionBusy) return;
     actionBusy = true;
     try {
@@ -1998,6 +2466,7 @@
     }
   }
   async function resumeSavedRun() {
+    unlockAudio();
     if (!ready || actionBusy) return;
     actionBusy = true;
     try {
@@ -2013,10 +2482,14 @@
       applyStored(result.record);
       const snapshot = validateSnapshot(storeView.active.snapshot);
       g = structuredClone(snapshot.game);
+      g.wells ||= [];
+      g.milestoneSeen ||= [];
       seed = snapshot.seed;
       runId = storeView.active.id;
       runRevision = storeView.active.revision;
       g.persisted = true;
+      if (runRules().runSeconds === 180)
+        notify("继续原短局 · 下一局10分钟、6+6");
       runDetached = false;
       lastCheckpointTime = g.time;
       releaseInput();
@@ -2039,7 +2512,56 @@
       if (g?.mode === "results") refreshPerks();
     }
   }
+  function updateAudioSettings() {
+    const settings = window.SurvivorAudio?.inspect().settings;
+    if (!settings) return;
+    for (const kind of ["music", "sfx"]) {
+      $(kind + "Volume").value = Math.round(settings[kind] * 100);
+      $(kind + "VolumeValue").textContent =
+        Math.round(settings[kind] * 100) + "%";
+    }
+    $("audioMuteBtn").textContent = settings.muted ? "开启声音" : "静音";
+    $("audioMuteBtn").setAttribute?.("aria-pressed", String(settings.muted));
+    $("audioStatus").textContent = settings.muted
+      ? "已静音"
+      : "Nebula Groove / Nebula Loop · 交替循环";
+  }
+  function configureAudio(change) {
+    window.SurvivorAudio?.configure(change);
+    try {
+      localStorage.setItem(
+        "loststar.survivor.audio.v1",
+        JSON.stringify(window.SurvivorAudio?.inspect().settings),
+      );
+    } catch {}
+    updateAudioSettings();
+  }
+  function initializeAudioSettings() {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem("loststar.survivor.audio.v1") || "null",
+      );
+      if (saved)
+        window.SurvivorAudio?.configure(
+          Object.fromEntries(
+            ["master", "music", "sfx", "muted"]
+              .filter((key) => key in saved)
+              .map((key) => [key, saved[key]]),
+          ),
+        );
+    } catch {}
+    for (const kind of ["music", "sfx"])
+      $(kind + "Volume").addEventListener("input", (event) =>
+        configureAudio({ [kind]: Number(event.target.value) / 100 }),
+      );
+    $("audioMuteBtn").onclick = () =>
+      configureAudio({
+        muted: !window.SurvivorAudio?.inspect().settings.muted,
+      });
+    updateAudioSettings();
+  }
   function showStart() {
+    window.SurvivorAudio?.setState({ playing: false, paused: false });
     hideAll();
     $("start").hidden = false;
     $("hud").hidden = true;
@@ -2050,10 +2572,12 @@
     const active = storeView?.active;
     $("continueBtn").hidden = !active;
     $("continueBtn").textContent = active
-      ? "继续上次 · " + fmt(active.snapshot.game.time)
+      ? "继续上次 · " +
+        fmt(active.snapshot.game.time) +
+        (runRules(active.snapshot.game).runSeconds === 180 ? " · 原短局" : "")
       : "继续上次";
     $("startBtn").disabled = !ready;
-    $("startBtn").textContent = active ? "结算上局并重新挑战" : "开始一局";
+    $("startBtn").textContent = active ? "结算上局，开始10分钟" : "开始一局";
     $("recordText").textContent =
       "完成 " + profile.runs + " 局 · 最佳 " + profile.best + " 击落";
     $("buildStamp").textContent =
@@ -2073,9 +2597,12 @@
     $("bossBar").hidden = true;
     $("joystick").hidden = true;
     if (g) g.mode = "results";
+    syncAudioState();
     $("resultState").textContent = committed ? "本局已归档" : "结算等待保存";
     $("resultTitle").textContent = summary.victory
-      ? "三分钟，稳稳归来"
+      ? summary.endTime >= 600
+        ? "十分钟，穿过星海"
+        : "三分钟，稳稳归来"
       : "下一局，会更强";
     $("resultDesc").textContent = summary.victory
       ? summary.bossKilled
@@ -2160,7 +2687,8 @@
   canvas.addEventListener("pointercancel", handlePointer);
   canvas.addEventListener("lostpointercapture", handlePointer);
   window.addEventListener("keydown", (event) => {
-    if (!g) return;
+    if (!g || ["INPUT", "TEXTAREA", "SELECT"].includes(event.target?.tagName))
+      return;
     const key = event.key.toLowerCase();
     if (["arrowleft", "arrowright", "arrowup", "arrowdown", " "].includes(key))
       event.preventDefault();
@@ -2176,19 +2704,25 @@
   window.addEventListener("keyup", (event) => {
     if (g) g.keys[event.key.toLowerCase()] = false;
   });
-  window.addEventListener("blur", pause);
+  window.addEventListener("blur", () => {
+    pause();
+    window.SurvivorAudio?.setState({ playing: false, paused: true });
+  });
+  window.addEventListener("focus", syncAudioState);
   window.addEventListener("orientationchange", () => {
     pause();
     resize();
   });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
+      window.SurvivorAudio?.setState({ playing: false, paused: true });
       releaseInput();
       pause();
       void saveCheckpoint();
     }
   });
   window.addEventListener("pagehide", () => {
+    window.SurvivorAudio?.setState({ playing: false, paused: true });
     releaseInput();
     pause();
     void saveCheckpoint();
@@ -2272,6 +2806,7 @@
       storageName: () => storage?.name,
     };
   resize();
+  initializeAudioSettings();
   void initialize();
   raf = requestAnimationFrame(loop);
 })();

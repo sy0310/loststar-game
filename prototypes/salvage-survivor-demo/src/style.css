@@ -830,3 +830,48 @@ h2 {
     font-size: 10px;
   }
 }
+
+.audio-settings {
+  width: 100%;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: var(--pane);
+}
+.audio-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.audio-heading button {
+  padding: 5px 14px;
+  min-height: 34px;
+}
+.audio-settings label {
+  display: grid;
+  grid-template-columns: 36px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  margin: 9px 0;
+}
+.audio-settings input {
+  width: 100%;
+  accent-color: var(--ice);
+  min-height: 32px;
+}
+.audio-settings output {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+}
+@media (max-height: 700px) {
+  .audio-settings {
+    padding: 7px;
+    margin: 6px 0;
+  }
+  .audio-settings label {
+    margin: 1px 0;
+  }
+}

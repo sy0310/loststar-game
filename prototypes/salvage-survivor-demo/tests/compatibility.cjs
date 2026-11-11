@@ -73,9 +73,13 @@ async function read(page) {
     // all weapons, enemy shots and rendering still run normally.
     await page.goto(url + "?qa=1");
     await page.waitForFunction(() => SurvivorDemo.ready());
+    await page.locator("#startBtn").click();
+    await page.waitForFunction(
+      () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
+    );
     await page.evaluate(() => {
       const Q = SurvivorQA,
-        g = Q.startModel(481);
+        g = Q.state();
       const equip = (id, n, passive = false) => {
         while (((passive ? g.passive : g.active)[id] || 0) < n)
           if (!Q.pick(id)) throw Error("Invalid benchmark " + id);
@@ -93,6 +97,13 @@ async function read(page) {
       equip("armor", 2, true);
       Q.pick("reactiveaegis");
       equip("cooler", 2, true);
+      equip("prism", 3);
+      equip("refraction", 2, true);
+      Q.pick("kaleidoscope");
+      equip("gravity", 3);
+      equip("singularity", 2, true);
+      Q.pick("collapse");
+      equip("lock", 2, true);
       g.time = 135;
       g.bossSpawned = g.eliteSpawned = true;
       g.p.inv = 50;
@@ -106,10 +117,10 @@ async function read(page) {
       Q.enemy("elite", 165, 60, 1000000);
       Q.enemy("boss", -165, -70, 1000000);
       for (const enemy of g.enemy) enemy.fire = 0.2;
-      for (let i = 0; i < 48; i++)
+      for (let i = 0; i < 56; i++)
         g.enemyShots.push({
-          x: Math.cos((i * Math.PI) / 24) * 200,
-          y: Math.sin((i * Math.PI) / 24) * 200,
+          x: Math.cos((i * Math.PI) / 28) * 200,
+          y: Math.sin((i * Math.PI) / 28) * 200,
           vx: 0,
           vy: 0,
           t: 60,
@@ -122,7 +133,7 @@ async function read(page) {
           value: 8,
           t: 60,
         });
-      for (let i = 0; i < 128; i++)
+      for (let i = 0; i < 160; i++)
         g.particles.push({
           x: ((i % 16) - 8) * 24,
           y: (Math.floor(i / 16) - 4) * 30,
@@ -170,6 +181,9 @@ async function read(page) {
                 max,
                 damage: g.metrics.damage,
                 actualGameTime: g.time,
+                persisted: g.persisted,
+                profile: SurvivorDemo.profile(),
+                audio: SurvivorAudio.inspect(),
                 mode: g.mode,
               });
             } else requestAnimationFrame(sample);
@@ -179,14 +193,14 @@ async function read(page) {
     );
     for (const [key, max] of Object.entries({
       enemy: 40,
-      shots: 60,
-      enemyShots: 48,
+      shots: 72,
+      enemyShots: 56,
       pickups: 140,
-      particles: 128,
+      particles: 160,
       texts: 28,
-      arcs: 20,
-      rings: 20,
-      bursts: 24,
+      arcs: 24,
+      rings: 24,
+      bursts: 28,
     }))
       assert(metrics.max[key] <= max, key);
     assert.equal(metrics.mode, "play");

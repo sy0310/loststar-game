@@ -31,6 +31,30 @@ const priorities = {
     "lens",
     "cooler",
   ],
+  optics: [
+    "kaleidoscope",
+    "prism",
+    "refraction",
+    "shield",
+    "armor",
+    "reactiveaegis",
+    "cannon",
+    "lens",
+    "gravity",
+    "singularity",
+    "collapse",
+  ],
+  void: [
+    "eventhorizon",
+    "gravity",
+    "prism",
+    "shield",
+    "armor",
+    "cannon",
+    "lens",
+    "singularity",
+    "refraction",
+  ],
   guard: [
     "reactiveaegis",
     "shield",
@@ -44,8 +68,14 @@ const priorities = {
     "cooler",
   ],
 };
+const policyIds = process.env.SURVIVOR_POLICIES
+  ? process.env.SURVIVOR_POLICIES.split(",")
+  : Object.keys(priorities);
+for (const id of policyIds) assert(priorities[id], "Unknown policy");
 function select(g, policy) {
   const choices = g.presented;
+  const emergency = choices.findIndex((choice) => choice.id === "repair");
+  if (g.p.hp / g.p.maxhp < 0.35 && emergency >= 0) return emergency;
   for (const id of priorities[policy]) {
     const index = choices.findIndex((choice) => choice.id === id);
     if (index >= 0) return index;
@@ -63,13 +93,16 @@ function select(g, policy) {
     summary: {},
   };
   for (const perks of [0, 3])
-    for (const policy of Object.keys(priorities))
+    for (const policy of policyIds)
       for (let seed = 1; seed <= 16; seed++) {
         const g = Q.startModel(seed, { hull: perks, gun: perks });
         const samples = [],
           choices = [];
-        let next = 10;
-        for (let frame = 0; frame < 180 * 60 + 80; frame++) {
+        const thresholds = [
+          10, 30, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600,
+        ];
+        let sampleIndex = 0;
+        for (let frame = 0; frame < g.endTime * 60 + 100; frame++) {
           if (g.mode === "results") break;
           if (g.mode === "upgrade") {
             const index = select(g, policy);
@@ -88,9 +121,12 @@ function select(g, policy) {
             w: direction === 3,
           };
           Q.step(1 / 60);
-          if (g.time >= next) {
+          if (
+            sampleIndex < thresholds.length &&
+            g.time >= thresholds[sampleIndex]
+          ) {
             samples.push({
-              time: next,
+              time: thresholds[sampleIndex],
               hp: g.p.hp,
               level: g.level,
               kills: g.kills,
@@ -98,17 +134,16 @@ function select(g, policy) {
               xp: g.xp,
               credits: g.credits,
             });
-            next =
-              next === 10 ? 30 : next === 30 ? 60 : next === 60 ? 120 : 180;
+            sampleIndex++;
           }
-          if (next === 180 && samples.at(-1)?.time === 180) break;
+          if (sampleIndex === thresholds.length) break;
         }
         const receipt = {
           seed,
           policy,
           perks,
           time: g.time,
-          victory: g.time >= 180,
+          victory: g.time >= g.endTime,
           kills: g.kills,
           level: g.level,
           credits: g.credits,
@@ -123,6 +158,9 @@ function select(g, policy) {
               "reactiveaegis",
               "thunderhive",
               "blastwheel",
+              "kaleidoscope",
+              "collapse",
+              "eventhorizon",
             ].includes(choice.id),
           ),
           bossSeen: !!g.metrics.spawned.boss,
@@ -134,7 +172,7 @@ function select(g, policy) {
         report.rows.push(receipt);
       }
   for (const perks of [0, 3])
-    for (const policy of Object.keys(priorities)) {
+    for (const policy of policyIds) {
       const rows = report.rows.filter(
         (row) => row.perks === perks && row.policy === policy,
       );

@@ -1318,5 +1318,658 @@ window.SurvivorArtCatalog = {
         ]
       }
     ]
+  },
+  "prism": {
+    "nativeSize": [
+      24,
+      24
+    ],
+    "src": "./assets/v061/prism@2x.png",
+    "sha256": "a1aa2fd4bc8375442e03b70629e30fa1ad44c3261790c55b49ef274b3b33fb59",
+    "kind": "icon",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          12
+        ],
+        "bounds": [
+          3,
+          1,
+          22,
+          23
+        ]
+      }
+    ]
+  },
+  "gravity": {
+    "nativeSize": [
+      24,
+      24
+    ],
+    "src": "./assets/v061/gravity@2x.png",
+    "sha256": "d8459475b2d5232aaab11e67ab89b9ba2ae84e8e87372b309d73d9b2afabe7bf",
+    "kind": "icon",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          12
+        ],
+        "bounds": [
+          2,
+          2,
+          23,
+          23
+        ]
+      }
+    ]
+  },
+  "refraction": {
+    "nativeSize": [
+      24,
+      24
+    ],
+    "src": "./assets/v061/refraction@2x.png",
+    "sha256": "bde465db80f5b3cc8b1c7a1184786195e5231b5eda05bec11ef48c1be1e5dea0",
+    "kind": "icon",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          12
+        ],
+        "bounds": [
+          2,
+          2,
+          22,
+          22
+        ]
+      }
+    ]
+  },
+  "singularity": {
+    "nativeSize": [
+      24,
+      24
+    ],
+    "src": "./assets/v061/singularity@2x.png",
+    "sha256": "188adcf805877d80f33aec0015e2031308df33a27365da6a0843d4d73ef581be",
+    "kind": "icon",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          12
+        ],
+        "bounds": [
+          2,
+          3,
+          23,
+          22
+        ]
+      }
+    ]
+  },
+  "kaleidoscope": {
+    "nativeSize": [
+      24,
+      24
+    ],
+    "src": "./assets/v061/kaleidoscope@2x.png",
+    "sha256": "66f21e10f7bf63c587d67500cfec9fec386fe469ee853015cad389fc0cb87a01",
+    "kind": "icon",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          12
+        ],
+        "bounds": [
+          3,
+          2,
+          22,
+          23
+        ]
+      }
+    ]
+  },
+  "collapse": {
+    "nativeSize": [
+      24,
+      24
+    ],
+    "src": "./assets/v061/collapse@2x.png",
+    "sha256": "7cfc4bec55cc4670046179f592aef3b2c44d2ecb405315d290f359b14966f8f2",
+    "kind": "icon",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          12
+        ],
+        "bounds": [
+          3,
+          2,
+          22,
+          23
+        ]
+      }
+    ]
+  },
+  "eventhorizon": {
+    "nativeSize": [
+      24,
+      24
+    ],
+    "src": "./assets/v061/eventhorizon@2x.png",
+    "sha256": "aae96d0f8555c52fd5c4248b6eba1a9ef89314fb696d99ecedae4b39c8e2c3e9",
+    "kind": "icon",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          12
+        ],
+        "bounds": [
+          2,
+          1,
+          23,
+          23
+        ]
+      }
+    ]
+  },
+  "rail_muzzle": {
+    "nativeSize": [
+      144,
+      24
+    ],
+    "durationMs": 180,
+    "originAnchor": [
+      12,
+      17
+    ],
+    "emissionDirection": [
+      0,
+      -1
+    ],
+    "src": "./assets/v061/rail_muzzle@2x.png",
+    "sha256": "86ce889ee304b35c701919caa201200365c5331414780d6f20bc580377717cd5",
+    "kind": "atlas",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          17
+        ],
+        "bounds": [
+          10,
+          15,
+          14,
+          18
+        ],
+        "durationMs": 28
+      },
+      {
+        "x": 24,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          17
+        ],
+        "bounds": [
+          8,
+          8,
+          15,
+          18
+        ],
+        "durationMs": 35
+      },
+      {
+        "x": 48,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          17
+        ],
+        "bounds": [
+          6,
+          4,
+          18,
+          18
+        ],
+        "durationMs": 45
+      },
+      {
+        "x": 72,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          17
+        ],
+        "bounds": [
+          5,
+          4,
+          19,
+          18
+        ],
+        "durationMs": 30
+      },
+      {
+        "x": 96,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          17
+        ],
+        "bounds": [
+          7,
+          6,
+          16,
+          18
+        ],
+        "durationMs": 22
+      },
+      {
+        "x": 120,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12,
+          17
+        ],
+        "bounds": [
+          10,
+          12,
+          14,
+          18
+        ],
+        "durationMs": 20
+      }
+    ]
+  },
+  "gravity_burst": {
+    "nativeSize": [
+      288,
+      48
+    ],
+    "durationMs": 480,
+    "src": "./assets/v061/gravity_burst@2x.png",
+    "sha256": "80f5144f345d80b927e8dce17556adee3472d2f33463aa18491b60ab93d9ad1c",
+    "kind": "atlas",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          19,
+          19,
+          29,
+          28
+        ],
+        "durationMs": 55
+      },
+      {
+        "x": 48,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          11,
+          11,
+          37,
+          37
+        ],
+        "durationMs": 80
+      },
+      {
+        "x": 96,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          3,
+          3,
+          46,
+          44
+        ],
+        "durationMs": 95
+      },
+      {
+        "x": 144,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          8,
+          8,
+          41,
+          40
+        ],
+        "durationMs": 100
+      },
+      {
+        "x": 192,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          15,
+          14,
+          33,
+          34
+        ],
+        "durationMs": 85
+      },
+      {
+        "x": 240,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          16,
+          19,
+          30,
+          29
+        ],
+        "durationMs": 65
+      }
+    ]
+  },
+  "evolution_corona": {
+    "nativeSize": [
+      288,
+      48
+    ],
+    "durationMs": 580,
+    "src": "./assets/v061/evolution_corona@2x.png",
+    "sha256": "80ede63e36084a291a0763cc5b740ed84030ba5917289c6a01f05b0574df4a78",
+    "kind": "atlas",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          16,
+          17,
+          32,
+          32
+        ],
+        "durationMs": 70
+      },
+      {
+        "x": 48,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          12,
+          11,
+          36,
+          36
+        ],
+        "durationMs": 95
+      },
+      {
+        "x": 96,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          5,
+          5,
+          43,
+          42
+        ],
+        "durationMs": 130
+      },
+      {
+        "x": 144,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          6,
+          6,
+          42,
+          39
+        ],
+        "durationMs": 110
+      },
+      {
+        "x": 192,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          11,
+          10,
+          36,
+          36
+        ],
+        "durationMs": 95
+      },
+      {
+        "x": 240,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          17,
+          16,
+          31,
+          30
+        ],
+        "durationMs": 80
+      }
+    ]
+  },
+  "fusion_nova": {
+    "nativeSize": [
+      288,
+      48
+    ],
+    "durationMs": 600,
+    "src": "./assets/v061/fusion_nova@2x.png",
+    "sha256": "df4f1bc89a22c29ebf3283607d26dda0c022f07a54b6e2e5e30075997e11a18f",
+    "kind": "atlas",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          11,
+          17,
+          38,
+          30
+        ],
+        "durationMs": 70
+      },
+      {
+        "x": 48,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          9,
+          15,
+          38,
+          33
+        ],
+        "durationMs": 95
+      },
+      {
+        "x": 96,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          10,
+          12,
+          37,
+          34
+        ],
+        "durationMs": 135
+      },
+      {
+        "x": 144,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          5,
+          4,
+          44,
+          39
+        ],
+        "durationMs": 115
+      },
+      {
+        "x": 192,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          10,
+          9,
+          38,
+          34
+        ],
+        "durationMs": 95
+      },
+      {
+        "x": 240,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24,
+          24
+        ],
+        "bounds": [
+          15,
+          14,
+          32,
+          30
+        ],
+        "durationMs": 90
+      }
+    ]
   }
 };

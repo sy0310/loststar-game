@@ -1,0 +1,5231 @@
+{
+  "sourcePath": "prototypes/salvage-survivor-demo/src/audio-engine.js",
+  "sourceSha256": "d4fb35eed6c3203c4abef7434613a7ef54482e8d87a2aab3921dd5735b8700ba",
+  "cases": [
+    {
+      "engine": "chromium",
+      "id": "five-second-music-network-delay-does-not-block-unlock-or-sfx",
+      "unlockMs": 334,
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "waiting-for-gesture",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 2,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": null,
+              "paused": false,
+              "warmed": false,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": null,
+              "paused": false,
+              "warmed": false,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 0,
+          "maxMediaPlaying": 0,
+          "mediaFailures": 0,
+          "warming": true,
+          "playbackEvents": []
+        },
+        "schedulerCount": 0,
+        "musicStarts": 0,
+        "maxTotalVoices": 4,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 2,
+        "sfxVoices": 2,
+        "musicVoices": 0,
+        "maxVoices": 2,
+        "maxSfx": 2,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {
+          "cannon": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -14.243239402770996
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "stalled-audio-context-resume-times-out-and-next-gesture-recovers",
+      "stallMs": 1545,
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "waiting-for-gesture",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0.004704,
+              "duration": 200,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 0,
+          "maxMediaPlaying": 0,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": []
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 0,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 1
+        },
+        "lastError": "Audio output is waiting for another user gesture",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.13831643760204315
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "default-stable-music-mix-level-without-duck",
+      "title": "Nebula Groove",
+      "window": "One second sampled after media position5s, following the2s entry/crossfade; isolated no-SFX QA",
+      "rms": 0.01126821777346847,
+      "rmsDbfs": -38.96289536560009,
+      "peak": 0.06297919154167175,
+      "peakDbfs": -24.0160583732732,
+      "before": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 5.165668,
+              "duration": 200,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9350000023841858,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.016,
+              "pageMs": 74.10000002384186,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 1,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.00013602619583252817
+        }
+      },
+      "after": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 6.202914,
+              "duration": 200,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9350000023841858,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.016,
+              "pageMs": 74.10000002384186,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 1,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.0001342038594884798
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "default-stable-music-mix-level-without-duck",
+      "title": "Nebula Loop",
+      "window": "One second sampled after media position5s, following the2s entry/crossfade; isolated no-SFX QA",
+      "rms": 0.014419319894496446,
+      "rmsDbfs": -36.82110446366724,
+      "peak": 0.05481413006782532,
+      "peakDbfs": -25.222149480142836,
+      "before": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 5.169342,
+              "duration": 185.2,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9350000023841858,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 2,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.016,
+              "pageMs": 74.10000002384186,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 6.261333333333333,
+              "pageMs": 6314.300000071526,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 6.261333333333333,
+              "pageMs": 6314.300000071526,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 8.261333333333333,
+              "pageMs": 8314.5,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 2,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.0001342038594884798
+        }
+      },
+      "after": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 6.206323,
+              "duration": 185.2,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9350000023841858,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 2,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.016,
+              "pageMs": 74.10000002384186,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 6.261333333333333,
+              "pageMs": 6314.300000071526,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 6.261333333333333,
+              "pageMs": 6314.300000071526,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 8.261333333333333,
+              "pageMs": 8314.5,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 2,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.0001342038594884798
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "no-autoplay-context-or-media",
+      "state": {
+        "supported": true,
+        "unlocked": false,
+        "contextCreated": false,
+        "contextState": "uncreated",
+        "state": {
+          "playing": false,
+          "paused": false,
+          "phase": 1,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "waiting-for-gesture",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 0,
+          "activeMedia": 0,
+          "positions": [],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 0,
+          "maxMediaPlaying": 0,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": []
+        },
+        "schedulerCount": 0,
+        "musicStarts": 0,
+        "maxTotalVoices": 0,
+        "recording": {
+          "supported": false,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 0,
+          "unlockCalls": 0,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {}
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "trusted-gesture-preunlocks-two-streams",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0.356201,
+              "duration": 200,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.1496,
+              "gainValue": 0.14083479344844818,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 1,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -5.10951042175293
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "bounded-polyphony-rate-limit-and-one-scheduler",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0.37017,
+              "duration": 200,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.1496,
+              "gainValue": 0.14497815072536469,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 18,
+        "sfxVoices": 18,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 1,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 0.7301250100135803,
+          "limiterReductionDb": -4.8640642166137695
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "pause-stops-streams-sfx-and-scheduler",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "suspended",
+        "state": {
+          "playing": true,
+          "paused": true,
+          "phase": 3,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0.375728,
+              "duration": 200,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0.14586608111858368,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.4,
+              "pageMs": 468.2000000476837,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 0,
+        "musicStarts": 1,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 1,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.224960595369339,
+          "sfx": 0.550000011920929,
+          "duck": 0.6298583149909973,
+          "limiterReductionDb": -4.784896373748779
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "resume-preserves-position-with-one-context",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0.497077,
+              "duration": 200,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.054853333333333344,
+              "gainValue": 0.02460733987390995,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 2,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.4,
+              "pageMs": 468.2000000476837,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.416,
+              "pageMs": 600.3999999761581,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 2,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 1,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 0.36000001430511475,
+          "limiterReductionDb": -3.1230576038360596
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "read-only-recording-stream-has-actual-music-and-sfx-without-microphone",
+      "sameStream": true,
+      "musicRms": 0.002574751011305487,
+      "sfxRms": 0.0279462381158519,
+      "played": true,
+      "mimeType": "audio/webm;codecs=opus",
+      "tracks": [
+        {
+          "kind": "audio",
+          "readyState": "live"
+        }
+      ],
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 1.255259,
+              "duration": 200,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 2,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.4,
+              "pageMs": 468.2000000476837,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.416,
+              "pageMs": 600.3999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.296,
+              "pageMs": 1522.8999999761581,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 0,
+        "musicStarts": 2,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 2,
+        "sfxVoices": 2,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 2,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.41057366132736206,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.013575213961303234
+        }
+      },
+      "file": "design/star-salvage/v061/production/audio/auditions/chromium-actual-mixed-recording.webm",
+      "bytes": 28310,
+      "sha256": "6b958b5c0e2c2e61b0fb10b17297af1e80d667bb5a706a755fd0490b4a2b16af"
+    },
+    {
+      "engine": "chromium",
+      "id": "two-second-crossfade-streams-overlap-only-at-boundary",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 2,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 197.949342,
+              "duration": 200,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.07480000000000007,
+              "gainValue": 0.049373559653759,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0.01161,
+              "duration": 185.2,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": true,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.4,
+              "pageMs": 468.2000000476837,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.416,
+              "pageMs": 600.3999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.296,
+              "pageMs": 1522.8999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3146666666666667,
+              "pageMs": 2540.2999999523163,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 3,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 2,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.007954842410981655
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "second-approved-track-continues-and-old-stream-pauses",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0.03997303545475006,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 2.011429,
+              "duration": 185.2,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9336365461349487,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.4,
+              "pageMs": 468.2000000476837,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.416,
+              "pageMs": 600.3999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.296,
+              "pageMs": 1522.8999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3146666666666667,
+              "pageMs": 2540.2999999523163,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 4.474666666666667,
+              "pageMs": 4701.299999952316,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 3,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 2,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.00015071197412908077
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "results-allow-victory-tail-without-music",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": false,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 3.114376,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0.08954233676195145,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.4,
+              "pageMs": 468.2000000476837,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.416,
+              "pageMs": 600.3999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.296,
+              "pageMs": 1522.8999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3146666666666667,
+              "pageMs": 2540.2999999523163,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 4.474666666666667,
+              "pageMs": 4701.299999952316,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 5.589333333333333,
+              "pageMs": 5818.5,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 0,
+        "musicStarts": 3,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 6,
+        "sfxVoices": 6,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 3,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.00013456400483846664
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "muted-stops-all-voices",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "suspended",
+        "state": {
+          "playing": false,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": true,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 3.114376,
+              "duration": 185.2,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0.08954233676195145,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.4,
+              "pageMs": 468.2000000476837,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.416,
+              "pageMs": 600.3999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.296,
+              "pageMs": 1522.8999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3146666666666667,
+              "pageMs": 2540.2999999523163,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 4.474666666666667,
+              "pageMs": 4701.299999952316,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 5.589333333333333,
+              "pageMs": 5818.5,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 0,
+        "musicStarts": 3,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 3,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.00013456400483846664
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "broken-music-falls-back-without-stopping-game-audio",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "custom"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "fallback-synthesis",
+          "mode": "synthesis",
+          "activeTrack": "User music",
+          "tracks": [
+            {
+              "id": "custom",
+              "title": "User music"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": null,
+              "paused": true,
+              "warmed": false,
+              "needsGesture": false,
+              "failed": true,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": null,
+              "paused": true,
+              "warmed": false,
+              "needsGesture": false,
+              "failed": true,
+              "gain": 0,
+              "gainValue": 0.04721500352025032,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 2,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.021333333333333333,
+              "pageMs": 90.5,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.4,
+              "pageMs": 468.2000000476837,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.416,
+              "pageMs": 600.3999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.296,
+              "pageMs": 1522.8999999761581,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3146666666666667,
+              "pageMs": 2540.2999999523163,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.474666666666667,
+              "pageMs": 2701.7999999523163,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 4.474666666666667,
+              "pageMs": 4701.299999952316,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 5.589333333333333,
+              "pageMs": 5818.5,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 5.653333333333333,
+              "pageMs": 5937.299999952316,
+              "track": "User music"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 5,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 3,
+          "lockedDrops": 2,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "A music stream could not load; gameplay and sound effects remain available",
+        "activeVoices": 6,
+        "sfxVoices": 0,
+        "musicVoices": 6,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 6,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 3,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.00013454165309667587
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "id": "unsupported-context-is-safe",
+      "state": {
+        "supported": false,
+        "unlocked": false,
+        "contextCreated": false,
+        "contextState": "uncreated",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 1,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.3,
+          "sfx": 0.4,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "waiting-for-gesture",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 0,
+          "activeMedia": 0,
+          "positions": [],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 0,
+          "maxMediaPlaying": 0,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": []
+        },
+        "schedulerCount": 0,
+        "musicStarts": 0,
+        "maxTotalVoices": 0,
+        "recording": {
+          "supported": false,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 0,
+          "unlockCalls": 1,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {}
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "five-second-music-network-delay-does-not-block-unlock-or-sfx",
+      "unlockMs": 156,
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "waiting-for-gesture",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 2,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": null,
+              "paused": false,
+              "warmed": false,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": null,
+              "paused": false,
+              "warmed": false,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 0,
+          "maxMediaPlaying": 0,
+          "mediaFailures": 0,
+          "warming": true,
+          "playbackEvents": []
+        },
+        "schedulerCount": 0,
+        "musicStarts": 0,
+        "maxTotalVoices": 4,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 2,
+        "sfxVoices": 2,
+        "musicVoices": 0,
+        "maxVoices": 2,
+        "maxSfx": 2,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {
+          "cannon": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": 0
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "stalled-audio-context-resume-times-out-and-next-gesture-recovers",
+      "stallMs": 1560,
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 1.0719919086454897,
+              "duration": 200.0457142857143,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 1.0078099169546855,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 0,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 1.5306666666666666,
+              "pageMs": 1617,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 0,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 1
+        },
+        "lastError": "Audio output is waiting for another user gesture",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.14528949558734894
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "default-stable-music-mix-level-without-duck",
+      "title": "Nebula Groove",
+      "window": "One second sampled after media position5s, following the2s entry/crossfade; isolated no-SFX QA",
+      "rms": 0.011259269003099474,
+      "rmsDbfs": -38.969796094179436,
+      "peak": 0.063023142516613,
+      "peakDbfs": -24.0099989088012,
+      "before": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 5.175991680986074,
+              "duration": 200.0457142857143,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9350000023841858,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.032,
+              "pageMs": 123,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 1,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.0001346161589026451
+        }
+      },
+      "after": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 6.2275088064327635,
+              "duration": 200.0457142857143,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9350000023841858,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.032,
+              "pageMs": 123,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 1,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.0001342038594884798
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "default-stable-music-mix-level-without-duck",
+      "title": "Nebula Loop",
+      "window": "One second sampled after media position5s, following the2s entry/crossfade; isolated no-SFX QA",
+      "rms": 0.014666474681084425,
+      "rmsDbfs": -36.673485263066794,
+      "peak": 0.0549926832318306,
+      "peakDbfs": -25.19390178954192,
+      "before": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200.0457142857143,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 5.157335097270281,
+              "duration": 185.2342857142857,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9350000023841858,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 2,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.032,
+              "pageMs": 123,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 6.730666666666667,
+              "pageMs": 6821,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 6.730666666666667,
+              "pageMs": 6821,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 8.746666666666666,
+              "pageMs": 8837,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 2,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.0001342038594884798
+        }
+      },
+      "after": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200.0457142857143,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 6.196087597030391,
+              "duration": 185.2342857142857,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9350000023841858,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 2,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.032,
+              "pageMs": 123,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 6.730666666666667,
+              "pageMs": 6821,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 6.730666666666667,
+              "pageMs": 6821,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 8.746666666666666,
+              "pageMs": 8837,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 2,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.0001342038594884798
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "no-autoplay-context-or-media",
+      "state": {
+        "supported": true,
+        "unlocked": false,
+        "contextCreated": false,
+        "contextState": "uncreated",
+        "state": {
+          "playing": false,
+          "paused": false,
+          "phase": 1,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "waiting-for-gesture",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 0,
+          "activeMedia": 0,
+          "positions": [],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 0,
+          "maxMediaPlaying": 0,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": []
+        },
+        "schedulerCount": 0,
+        "musicStarts": 0,
+        "maxTotalVoices": 0,
+        "recording": {
+          "supported": false,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 0,
+          "unlockCalls": 0,
+          "lockedDrops": 0,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {}
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "trusted-gesture-preunlocks-two-streams",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0.0000030994415283203125,
+              "duration": 200.0457142857143,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.15209333333333333,
+              "gainValue": 0.14093054831027985,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 1,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {},
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -4.904136657714844
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "bounded-polyphony-rate-limit-and-one-scheduler",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0.0000030994415283203125,
+              "duration": 200.0457142857143,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.15209333333333333,
+              "gainValue": 0.1448076069355011,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 1,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 18,
+        "sfxVoices": 18,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 1,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 0.8640007376670837,
+          "limiterReductionDb": -4.745797157287598
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "pause-stops-streams-sfx-and-scheduler",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "suspended",
+        "state": {
+          "playing": true,
+          "paused": true,
+          "phase": 3,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0.0000030994415283203125,
+              "duration": 200.0457142857143,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0.1462073177099228,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 1,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.408,
+              "pageMs": 495,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 0,
+        "musicStarts": 1,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 1,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 1,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.23614901304244995,
+          "sfx": 0.550000011920929,
+          "duck": 0.7274673581123352,
+          "limiterReductionDb": -4.668553829193115
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "resume-preserves-position-with-one-context",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200.0457142857143,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.07604666666666668,
+              "gainValue": 0.03624714910984039,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 2,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.408,
+              "pageMs": 495,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.408,
+              "pageMs": 618,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 2,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 1,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 0.36000001430511475,
+          "limiterReductionDb": -2.830221652984619
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "read-only-recording-stream-has-actual-music-and-sfx-without-microphone",
+      "sameStream": true,
+      "musicRms": 0.0013485749884202904,
+      "sfxRms": 0.021140152275544083,
+      "played": true,
+      "mimeType": "audio/mp4; codecs=mp4a.40.2",
+      "tracks": [
+        {
+          "kind": "audio",
+          "readyState": "live"
+        }
+      ],
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0.5180201817055935,
+              "duration": 200.0457142857143,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 2,
+          "maxMediaPlaying": 1,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.408,
+              "pageMs": 495,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.408,
+              "pageMs": 618,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.328,
+              "pageMs": 1538,
+              "track": "Nebula Groove"
+            }
+          ]
+        },
+        "schedulerCount": 0,
+        "musicStarts": 2,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 2,
+        "sfxVoices": 2,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 2,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.5,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.012215306982398033
+        }
+      },
+      "file": "design/star-salvage/v061/production/audio/auditions/webkit-actual-mixed-recording.mp4",
+      "bytes": 15647,
+      "sha256": "1eb5168b93b1cbe4b53573fd870130ba2af100f8892f12642b5afb5317cd54fb"
+    },
+    {
+      "engine": "webkit",
+      "id": "two-second-crossfade-streams-overlap-only-at-boundary",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 2,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 197.9457142857143,
+              "duration": 200.0457142857143,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.03740000000000004,
+              "gainValue": 0.010219387710094452,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 0,
+              "duration": 185.2342857142857,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": true,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.408,
+              "pageMs": 495,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.408,
+              "pageMs": 618,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.328,
+              "pageMs": 1538,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3466666666666667,
+              "pageMs": 2556,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 3,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 1,
+        "sfxVoices": 1,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 2,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.2501310408115387,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.009274250827729702
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "second-approved-track-continues-and-old-stream-pauses",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 1,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200.0457142857143,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0.003261345438659191,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 1.9622607839419675,
+              "duration": 185.2342857142857,
+              "paused": false,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0.935,
+              "gainValue": 0.9349359273910522,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.408,
+              "pageMs": 495,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.408,
+              "pageMs": 618,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.328,
+              "pageMs": 1538,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3466666666666667,
+              "pageMs": 2556,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 4.512,
+              "pageMs": 4721,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 3,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 2,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 1,
+          "limiterReductionDb": -0.00014915328938513994
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "results-allow-victory-tail-without-music",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": false,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200.0457142857143,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 3.067489867314724,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0.0996217206120491,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.408,
+              "pageMs": 495,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.408,
+              "pageMs": 618,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.328,
+              "pageMs": 1538,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3466666666666667,
+              "pageMs": 2556,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 4.512,
+              "pageMs": 4721,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 5.624,
+              "pageMs": 5832,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 0,
+        "musicStarts": 3,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 6,
+        "sfxVoices": 6,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 3,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.800000011920929,
+          "music": 0.25,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.0001345193013548851
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "muted-stops-all-voices",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "suspended",
+        "state": {
+          "playing": false,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": true,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "playing-approved-streams",
+          "mode": "playlist",
+          "activeTrack": "Nebula Loop",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": 200.0457142857143,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 1,
+              "seconds": 3.067489867314724,
+              "duration": 185.2342857142857,
+              "paused": true,
+              "warmed": true,
+              "needsGesture": false,
+              "failed": false,
+              "gain": 0,
+              "gainValue": 0.08954253047704697,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.408,
+              "pageMs": 495,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.408,
+              "pageMs": 618,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.328,
+              "pageMs": 1538,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3466666666666667,
+              "pageMs": 2556,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 4.512,
+              "pageMs": 4721,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 5.624,
+              "pageMs": 5832,
+              "track": "Nebula Loop"
+            }
+          ]
+        },
+        "schedulerCount": 0,
+        "musicStarts": 3,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 2,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 0,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 3,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.6417031288146973,
+          "music": 0.2005321979522705,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.00013451557606458664
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "broken-music-falls-back-without-stopping-game-audio",
+      "state": {
+        "supported": true,
+        "unlocked": true,
+        "contextCreated": true,
+        "contextState": "running",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 2,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.25,
+          "sfx": 0.55,
+          "muted": false,
+          "musicUrl": "custom"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "fallback-synthesis",
+          "mode": "synthesis",
+          "activeTrack": "User music",
+          "tracks": [
+            {
+              "id": "custom",
+              "title": "User music"
+            }
+          ],
+          "mediaElements": 2,
+          "activeMedia": 0,
+          "positions": [
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": null,
+              "paused": true,
+              "warmed": false,
+              "needsGesture": true,
+              "failed": true,
+              "gain": 0,
+              "gainValue": 0,
+              "elementVolume": 1
+            },
+            {
+              "track": 0,
+              "seconds": 0,
+              "duration": null,
+              "paused": true,
+              "warmed": false,
+              "needsGesture": false,
+              "failed": true,
+              "gain": 0,
+              "gainValue": 0.027698559686541557,
+              "elementVolume": 1
+            }
+          ],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 1,
+          "mediaStarts": 4,
+          "maxMediaPlaying": 2,
+          "mediaFailures": 2,
+          "warming": false,
+          "playbackEvents": [
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.034666666666666665,
+              "pageMs": 121,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 0.408,
+              "pageMs": 495,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 0.408,
+              "pageMs": 618,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 1.328,
+              "pageMs": 1538,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.3466666666666667,
+              "pageMs": 2556,
+              "track": "Nebula Groove"
+            },
+            {
+              "kind": "track-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "crossfade-start",
+              "audioSeconds": 2.429333333333333,
+              "pageMs": 2638,
+              "from": "Nebula Groove",
+              "to": "Nebula Loop",
+              "seconds": 2
+            },
+            {
+              "kind": "crossfade-complete",
+              "audioSeconds": 4.512,
+              "pageMs": 4721,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 5.624,
+              "pageMs": 5832,
+              "track": "Nebula Loop"
+            },
+            {
+              "kind": "stop",
+              "audioSeconds": 5.696,
+              "pageMs": 5969,
+              "track": "User music"
+            }
+          ]
+        },
+        "schedulerCount": 1,
+        "musicStarts": 5,
+        "maxTotalVoices": 19,
+        "recording": {
+          "supported": true,
+          "created": true,
+          "audioTracks": 1
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 1,
+          "unlockCalls": 3,
+          "lockedDrops": 2,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "A music stream could not load; gameplay and sound effects remain available",
+        "activeVoices": 6,
+        "sfxVoices": 0,
+        "musicVoices": 6,
+        "maxVoices": 18,
+        "maxSfx": 18,
+        "maxMusic": 6,
+        "voiceDrops": 13,
+        "rateDrops": 3980,
+        "stolenVoices": 34,
+        "played": {
+          "cannon": 1,
+          "drone": 1,
+          "arc": 1,
+          "missile": 1,
+          "blade": 1,
+          "shield": 1,
+          "heal": 1,
+          "hurt": 1,
+          "upgrade": 1,
+          "evolution": 1,
+          "fusion": 1,
+          "boss": 1,
+          "victory": 3,
+          "defeat": 1
+        },
+        "gains": {
+          "master": 0.7861433029174805,
+          "music": 0.24566978216171265,
+          "sfx": 0.550000011920929,
+          "duck": 0.2800000011920929,
+          "limiterReductionDb": -0.00013447459787130356
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "id": "unsupported-context-is-safe",
+      "state": {
+        "supported": false,
+        "unlocked": false,
+        "contextCreated": false,
+        "contextState": "uncreated",
+        "state": {
+          "playing": true,
+          "paused": false,
+          "phase": 1,
+          "boss": false,
+          "upgrade": false
+        },
+        "settings": {
+          "master": 0.8,
+          "music": 0.3,
+          "sfx": 0.4,
+          "muted": false,
+          "musicUrl": "approved-playlist"
+        },
+        "externalMusic": {
+          "configured": true,
+          "streaming": true,
+          "fullTrackDecodeCalls": 0,
+          "status": "waiting-for-gesture",
+          "mode": "playlist",
+          "activeTrack": "Nebula Groove",
+          "tracks": [
+            {
+              "id": "nebula-groove",
+              "title": "Nebula Groove"
+            },
+            {
+              "id": "nebula-loop",
+              "title": "Nebula Loop"
+            }
+          ],
+          "mediaElements": 0,
+          "activeMedia": 0,
+          "positions": [],
+          "crossfading": false,
+          "fadeSeconds": 2,
+          "fadesCompleted": 0,
+          "mediaStarts": 0,
+          "maxMediaPlaying": 0,
+          "mediaFailures": 0,
+          "warming": false,
+          "playbackEvents": []
+        },
+        "schedulerCount": 0,
+        "musicStarts": 0,
+        "maxTotalVoices": 0,
+        "recording": {
+          "supported": false,
+          "created": false,
+          "audioTracks": 0
+        },
+        "limits": {
+          "voices": 24,
+          "sfx": 18,
+          "music": 8,
+          "schedulerMs": 80,
+          "lookahead": 0.16
+        },
+        "totals": {
+          "contexts": 0,
+          "unlockCalls": 1,
+          "lockedDrops": 1,
+          "contextWaitTimeouts": 0
+        },
+        "lastError": "",
+        "activeVoices": 0,
+        "sfxVoices": 0,
+        "musicVoices": 0,
+        "maxVoices": 0,
+        "maxSfx": 0,
+        "maxMusic": 0,
+        "voiceDrops": 0,
+        "rateDrops": 0,
+        "stolenVoices": 0,
+        "played": {}
+      }
+    }
+  ],
+  "errors": [],
+  "physicalPhoneTested": false,
+  "scope": "Real HTTP Chromium/WebKit audio contexts and streaming media. End-boundary seeking and visibility override are explicitly isolated QA. Hearing and physical-phone audio pending.",
+  "passed": 32
+}

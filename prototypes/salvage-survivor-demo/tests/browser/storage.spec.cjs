@@ -385,3 +385,81 @@ test("all legacy planet, chapter and route namespaces remain byte-for-byte untou
     inFlight: true,
   });
 });
+
+test("old v0.6 short-run snapshots retain180seconds,4/3slots and the original cash", async ({
+  page,
+}) => {
+  await boot(page);
+  await start(page);
+  await pause(page);
+  const before = await stored(page);
+  const legacy = structuredClone(before);
+  delete legacy.active.snapshot.game.rules;
+  legacy.active.snapshot.game.endTime = 180;
+  legacy.active.snapshot.game.time = 150;
+  legacy.profile.credits = 27049;
+  legacy.profile.hull = 3;
+  legacy.profile.gun = 3;
+  await page.evaluate(async (record) => {
+    const request = indexedDB.open(SurvivorBalance.database + ".qa", 1);
+    await new Promise((resolve) => {
+      request.onsuccess = () => {
+        const db = request.result;
+        const tx = db.transaction("state", "readwrite");
+        tx.objectStore("state").put(record, "current");
+        tx.oncomplete = () => {
+          db.close();
+          resolve();
+        };
+      };
+    });
+  }, legacy);
+  await page.reload();
+  await page.waitForFunction(() => SurvivorDemo.ready());
+  await page.locator("#continueBtn").click();
+  await page.waitForFunction(
+    () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
+  );
+  expect((await state(page)).endTime).toBe(180);
+  expect((await stored(page)).profile.credits).toBe(27049);
+  await page.evaluate(() => {
+    const g = SurvivorQA.state();
+    g.time = 179.99;
+    SurvivorQA.step(0.02);
+  });
+  await expect(page.locator("#results")).toBeVisible();
+  await page.waitForFunction(() => !SurvivorDemo.saving());
+  expect((await state(page)).time).toBe(180);
+  const cash = (await stored(page)).profile.credits;
+  await page.locator("#retryBtn").click();
+  await page.waitForFunction(() => SurvivorDemo.state()?.mode === "play");
+  expect((await state(page)).endTime).toBe(600);
+  expect((await state(page)).rules).toMatchObject({
+    activeSlots: 6,
+    passiveSlots: 6,
+  });
+  expect((await stored(page)).profile.credits).toBe(cash);
+});
+
+test("a long-run repair pickup restores HP once and adds no currency", async ({
+  page,
+}) => {
+  await boot(page);
+  await start(page);
+  await page.evaluate(() => {
+    const g = SurvivorQA.state();
+    g.p.hp = 40;
+    g.pickups = [{ x: g.p.x, y: g.p.y, type: "heal", value: 12, t: 10 }];
+    SurvivorQA.step(0.02);
+  });
+  await pause(page);
+  const once = await stored(page);
+  expect(once.active.snapshot.game.p.hp).toBe(52);
+  expect(once.active.snapshot.game.credits).toBe(0);
+  await page.reload();
+  await page.waitForFunction(() => SurvivorDemo.ready());
+  await page.locator("#continueBtn").click();
+  await pause(page);
+  expect((await stored(page)).active.snapshot.game.p.hp).toBe(52);
+  expect((await stored(page)).active.snapshot.game.pickups.length).toBe(0);
+});

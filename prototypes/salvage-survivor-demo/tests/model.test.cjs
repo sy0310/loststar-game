@@ -19,6 +19,8 @@ const evo = [
   ["missile", "cooler", "meteorbarrage"],
   ["blade", "magnet", "spiralsaw"],
   ["shield", "armor", "reactiveaegis"],
+  ["prism", "refraction", "kaleidoscope"],
+  ["gravity", "singularity", "collapse"],
 ];
 let context, Q;
 function start(seed = 91, perks = {}) {
@@ -59,7 +61,7 @@ async function test(name, run) {
 (async () => {
   context = await createModel();
   Q = context.SurvivorQA;
-  await test("six EVO prerequisites and mutual exclusion are actual legal choices", () => {
+  await test("eight EVO prerequisites and mutual exclusion are actual legal choices", () => {
     for (const [active, passive, id] of evo) {
       start();
       equip(active, 2);
@@ -454,12 +456,12 @@ async function test(name, run) {
       Q.step(0.025);
       for (const [field, max] of [
         ["enemy", 40],
-        ["shots", 60],
-        ["enemyShots", 48],
-        ["particles", 128],
-        ["arcs", 20],
-        ["rings", 20],
-        ["bursts", 24],
+        ["shots", 72],
+        ["enemyShots", 56],
+        ["particles", 160],
+        ["arcs", 24],
+        ["rings", 24],
+        ["bursts", 28],
         ["texts", 28],
         ["pickups", 140],
       ])
@@ -470,6 +472,106 @@ async function test(name, run) {
       shots: g.shots.length,
       effects: g.bursts.length,
     };
+  });
+  await test("new sessions use600seconds and6/6 slots, with eight meaningful acquisition choices", () => {
+    const g = start();
+    assert.equal(g.endTime, 600);
+    assert.equal(g.rules.activeSlots, 6);
+    assert.equal(g.rules.passiveSlots, 6);
+    for (const id of ["cannon", "drone", "arc", "missile", "prism", "gravity"])
+      equip(id, 1);
+    assert(!Q.pick("blade"));
+    for (const id of [
+      "lens",
+      "lock",
+      "capacitor",
+      "cooler",
+      "refraction",
+      "singularity",
+    ])
+      equip(id, 1);
+    assert(!Q.pick("armor"));
+    return { active: Object.keys(g.active), passive: Object.keys(g.passive) };
+  });
+  await test("prism has a central real hit and its evolution spreads six damaging rays", () => {
+    const g = setup("prism", "refraction", false);
+    Q.enemy("skimmer", 0, -260, 100000);
+    Q.step(0.02);
+    assert(g.metrics.damage.prism > 0);
+    assert.equal(g.beams.length, 4);
+    assert(Q.pick("kaleidoscope"));
+    g.attackClock = {};
+    Q.step(0.02);
+    assert(g.metrics.damage.kaleidoscope > 0);
+    assert(g.metrics.shots.kaleidoscope >= 6);
+    return g.metrics.damage;
+  });
+  await test("gravity moves real enemies, scales with its passive and collapse adds a real final burst", () => {
+    const g = setup("gravity", "singularity", true);
+    const id = Q.enemy("skimmer", 90, 0, 100000);
+    Q.enemy("skimmer", 130, 20, 100000);
+    Q.step(0.02);
+    const origin = g.enemy.find((enemy) => enemy.id === id);
+    const before = g.enemy.find((enemy) => enemy.id !== id).x;
+    assert(g.wells.length);
+    assert(g.wells[0].radius >= 130);
+    g.attackClock.gravity = 999;
+    Q.step(3);
+    assert(g.metrics.damage.collapse > 0);
+    assert(g.enemy.find((enemy) => enemy.id !== id).x < before);
+    assert(g.wells.length === 0);
+    return {
+      damage: g.metrics.damage.collapse,
+      pulledEnemyX: g.enemy.find((enemy) => enemy.id !== id).x,
+    };
+  });
+  await test("event horizon consumes prism/gravity and deals both line and field damage", () => {
+    const g = start();
+    equip("prism", 3);
+    equip("gravity", 3);
+    assert(Q.pick("eventhorizon"));
+    assert.equal(Object.keys(g.active).length + Object.keys(g.fused).length, 1);
+    assert(!Q.pick("prism"));
+    assert(!Q.pick("gravity"));
+    Q.enemy("skimmer", 0, -90, 100000);
+    Q.enemy("skimmer", 30, -100, 100000);
+    Q.step(2);
+    assert(g.metrics.damage.eventhorizon > 0);
+    assert(g.metrics.shots.eventhorizon >= 6);
+    assert(g.wells.length);
+    return g.metrics;
+  });
+  await test("600second milestones are one-time, bounded and never heal an existing boss", () => {
+    const g = start();
+    g.time = 129.99;
+    Q.step(0.02);
+    const boss = g.enemy.find((enemy) => enemy.t === "boss");
+    assert(boss);
+    boss.hp = 100;
+    g.time = 309.99;
+    Q.step(0.02);
+    assert.equal(g.enemy.filter((enemy) => enemy.t === "boss").length, 1);
+    assert.equal(boss.hp, 100);
+    assert.equal(boss.tier, 2);
+    const count = g.metrics.events.filter(
+      (event) => event.kind === "boss",
+    ).length;
+    Q.step(0.1);
+    assert.equal(
+      g.metrics.events.filter((event) => event.kind === "boss").length,
+      count,
+    );
+    return g.milestoneSeen;
+  });
+  await test("legacy180-second runs retain their deadline and never receive600-second spawns", () => {
+    const g = start();
+    delete g.rules;
+    g.endTime = 180;
+    g.time = 179.99;
+    Q.step(0.02);
+    assert.equal(g.time, 180);
+    assert.equal(g.mode, "results");
+    return { time: g.time };
   });
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + "\n");

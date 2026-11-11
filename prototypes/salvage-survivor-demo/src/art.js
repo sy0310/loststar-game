@@ -32,6 +32,18 @@
     );
   }
 
+  function frameAt(id, elapsedMs, loop = false) {
+    const frames = catalog[id]?.frames || [];
+    const duration =
+      catalog[id]?.durationMs ||
+      frames.reduce((sum, frame) => sum + (frame.durationMs || 65), 0);
+    let remaining = loop && duration ? elapsedMs % duration : elapsedMs;
+    for (let index = 0; index < frames.length; index++) {
+      remaining -= frames[index].durationMs || 65;
+      if (remaining < 0) return index;
+    }
+    return Math.max(0, frames.length - 1);
+  }
   function draw(ctx, id, x, y, options = {}) {
     const entry = catalog[id],
       image = images.get(id);
@@ -75,5 +87,12 @@
     );
   }
 
-  root.SurvivorArt = { load, draw, icon, catalog, loaded: () => images.size };
+  root.SurvivorArt = {
+    load,
+    draw,
+    icon,
+    frameAt,
+    catalog,
+    loaded: () => images.size,
+  };
 })(window);

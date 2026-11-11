@@ -1,16 +1,18 @@
 {
   "name": "loststar-survivor-demo",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": true,
   "type": "commonjs",
   "scripts": {
     "test": "node tests/model.test.cjs",
     "test:browser": "playwright test --config playwright.config.cjs",
     "simulate": "node tests/simulate.cjs",
-    "check:art": "python3 ../../design/star-salvage/v06/production/actors/verify.py && python3 ../../design/star-salvage/v06/production/weapons/verify.py",
+    "check:art": "python3 ../../design/star-salvage/v06/production/actors/verify.py && python3 ../../design/star-salvage/v06/production/weapons/verify.py && python3 ../../design/star-salvage/v061/production/effects/verify.py",
     "build": "python3 build.py",
     "capture": "node tests/capture.cjs",
     "verify:evidence": "node tests/verify-evidence.cjs",
-    "package:taptap": "python3 package_taptap.py"
+    "package:taptap": "python3 package_taptap.py",
+    "dev": "node serve.cjs --port 4397",
+    "test:audio": "node ../../design/star-salvage/v061/production/audio/verify_audio.cjs"
   }
 }

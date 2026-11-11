@@ -22,7 +22,7 @@ def main():
     parser.add_argument('--freeze', action='store_true')
     args = parser.parse_args()
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    relevant = [str(HERE.relative_to(ROOT)), 'design/star-salvage/v06/BALANCE_V06.json', 'design/star-salvage/v06/production']
+    relevant = [str(HERE.relative_to(ROOT)), 'design/star-salvage/v06/BALANCE_V06.json', 'design/star-salvage/v06/production', 'design/star-salvage/v061']
     dirty_paths = subprocess.check_output(['git', 'status', '--porcelain', '--', *relevant], cwd=ROOT, text=True).strip()
     dirty = bool(dirty_paths)
     if args.freeze and dirty:
@@ -31,17 +31,17 @@ def main():
     for path, expected in derived.items():
         if path.read_text() != expected:
             raise RuntimeError('Run sync_runtime.py before building')
-    runtime = [HERE / 'index.html', *sorted((HERE / 'src').glob('*')), *[HERE / entry['src'][2:] for entry in catalog.values()]]
+    runtime = [HERE / 'index.html', *sorted((HERE / 'src').glob('*')), *[HERE / entry['src'][2:] for entry in catalog.values()], *sorted((HERE / 'assets/audio').glob('*.mp3'))]
     payload = {}
     source_files = []
     for path in sorted(runtime):
         raw = path.read_bytes()
         source_files.append({'path': path.relative_to(ROOT).as_posix(), 'bytes': len(raw), 'sha256': digest(raw)})
         if path.name == 'index.html':
-            stamp = {'version': '0.6.0', 'commit': commit, 'dirty': dirty}
+            stamp = {'version': '0.6.1', 'commit': commit, 'dirty': dirty}
             raw = re.sub(r'window.SurvivorBuild = \{.*?\};', 'window.SurvivorBuild = ' + json.dumps(stamp) + ';', raw.decode(), flags=re.S).encode()
         payload[path.relative_to(HERE).as_posix()] = raw
-    if len(payload) != 46 or sum(name.endswith('.png') for name in payload) != 39:
+    if len(payload) != 60 or sum(name.endswith('.png') for name in payload) != 50 or sum(name.endswith('.mp3') for name in payload) != 2:
         raise RuntimeError('Unexpected runtime inventory')
     output = HERE / 'dist'
     output.mkdir(exist_ok=True)
@@ -59,9 +59,9 @@ def main():
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o644 << 16
             zipped.writestr(info, raw, compresslevel=9)
-    report = {'version': '0.6.0', 'sourceCommit': commit, 'dirty': dirty, 'archive': archive.name,
+    report = {'version': '0.6.1', 'sourceCommit': commit, 'dirty': dirty, 'archive': archive.name,
               'bytes': archive.stat().st_size, 'sha256': digest(archive.read_bytes()),
-              'fileCount': len(payload), 'pngCount': 39, 'uncompressedBytes': sum(map(len, payload.values())),
+              'fileCount': len(payload), 'pngCount': 50, 'uncompressedBytes': sum(map(len, payload.values())),
               'files': [{'path': name, 'bytes': len(raw), 'sha256': digest(raw)} for name, raw in sorted(payload.items())],
               'sourceFiles': source_files}
     (output / 'build-info.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
