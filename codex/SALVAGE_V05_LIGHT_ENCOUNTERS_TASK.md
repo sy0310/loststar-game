@@ -1,6 +1,6 @@
 # 本机 Codex｜v0.5 轻量奇遇、随船货舱与黑市交易
 
-> **货舱方案已获用户确认｜采用 B＋C（2026-11-11）**：用户明确选择**连续主货区＋边缘真实扩容（借鉴DREDGE的机制）**与**固定外挂托盘（借鉴Backpack Brawl的容器机制）**的组合。**不用再等待A/B/C方向审批；可实施 B＋C，但必须先测试具体mask**。唯一本轮货舱权威：[\`design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md\`](../design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md)。`CARGO_REFERENCE_RESEARCH.md`保留证据；`SHIP_HOLDS_MARKET_CANDIDATES.json`内的旧四船 baseRows 是历史**错误候选**，仍禁止照搬。四船真实有效格、旧4×4大件、付费升级、触控与存档测试合格后才集成/交付；不用把未确认的具体格子假装成熟设计已验证。其余12奇遇/6彩蛋/黑市/原创货物按同一任务继续。
+> **货舱方案已获用户确认｜采用 B＋C（2026-11-11）**：用户明确选择**连续主货区＋边缘真实扩容（借鉴DREDGE的机制）**与**固定外挂托盘（借鉴Backpack Brawl的容器机制）**的组合。**不用再等待A/B/C方向审批；可实施 B＋C，但必须先测试具体mask**。唯一本轮货舱权威：[design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md](../design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md)。`CARGO_REFERENCE_RESEARCH.md`保留证据；`SHIP_HOLDS_MARKET_CANDIDATES.json`内的旧四船 baseRows 是历史**错误候选**，仍禁止照搬。四船真实有效格、旧4×4大件、付费升级、触控与存档测试合格后才集成/交付；不用把未确认的具体格子假装成熟设计已验证。其余12奇遇/6彩蛋/黑市/原创货物按同一任务继续。
 
 > **2026-11-11 三项追加正式并入本任务（替代旧“只扩奇遇”的狭义理解）**：①四艘飞船使用各自真实可放格的舱体mask（基础容量与已购升级数额不变）；②港口商店二级页增加单件谈价与即时NPC快拍；③原12奇遇/6彩蛋中加入原创科幻生命与遗物，首轮制作4张不同身份的整件像素图，不直接复刻《异形》等影视IP专有角色/道具。**先完整阅读** `design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md` 与 `SHIP_HOLDS_MARKET_CANDIDATES.json`，它们是这三项的验收权威；用户确认的是方向，示意mask和定价仍需隔离QA/经济评估后冻结。保留现有0.4.2/458870回退，不得直接将尚未验收设计上传平台。
 
