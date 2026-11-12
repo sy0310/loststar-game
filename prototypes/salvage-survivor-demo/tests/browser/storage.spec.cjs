@@ -141,60 +141,72 @@ test("two IndexedDB clients cannot both buy the same displayed upgrade", async (
   expect((await stored(page)).profile).toMatchObject({ gun: 1, credits: 910 });
 });
 
-for (const storageDelay of [0, 700]) test("a second tab claims a saved run and a stale writer cannot settle it (storage delay " + storageDelay + "ms)", async ({
-  page,
-  context,
-}) => {
-  await boot(page);
-  await start(page);
-  await pause(page);
-  const before = (await stored(page)).active;
-  const second = await context.newPage();
-  await boot(second);
-  if (storageDelay) {
-    // A real queued IDB transaction delays ownership without rewriting game code.
-    await second.evaluate(async (duration) => {
-      const db = await new Promise((resolve, reject) => {
-        const request = indexedDB.open(SurvivorQA.storageName(), 1);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      });
-      const tx = db.transaction("state", "readwrite");
-      const store = tx.objectStore("state");
-      const began = performance.now();
-      function hold() {
-        const request = store.get("current");
-        request.onsuccess = () => {
-          if (performance.now() - began < duration) hold();
-        };
+for (const storageDelay of [0, 700])
+  test(
+    "a second tab claims a saved run and a stale writer cannot settle it (storage delay " +
+      storageDelay +
+      "ms)",
+    async ({ page, context }) => {
+      await boot(page);
+      await start(page);
+      await pause(page);
+      const before = (await stored(page)).active;
+      const second = await context.newPage();
+      await boot(second);
+      if (storageDelay) {
+        // A real queued IDB transaction delays ownership without rewriting game code.
+        await second.evaluate(async (duration) => {
+          const db = await new Promise((resolve, reject) => {
+            const request = indexedDB.open(SurvivorQA.storageName(), 1);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+          });
+          const tx = db.transaction("state", "readwrite");
+          const store = tx.objectStore("state");
+          const began = performance.now();
+          function hold() {
+            const request = store.get("current");
+            request.onsuccess = () => {
+              if (performance.now() - began < duration) hold();
+            };
+          }
+          tx.oncomplete = () => db.close();
+          tx.onabort = () => db.close();
+          hold();
+        }, storageDelay);
       }
-      tx.oncomplete = () => db.close();
-      tx.onabort = () => db.close();
-      hold();
-    }, storageDelay);
-  }
-  await second.locator("#continueBtn").click();
-  await page.waitForTimeout(200);
-  const failure = await page.evaluate(async (active) => {
-    const store = await SurvivorPersistence.create({ qa: true });
-    try {
-      await store.settle(active.id, active.revision, {
-        credits: 999,
-        kills: 0,
-      });
-      return null;
-    } catch (error) {
-      return error.message;
-    } finally {
-      store.close();
-    }
-  }, before);
-  expect(failure).toContain("未重复结算");
-  expect((await stored(page)).profile.credits).toBe(0);
-  await settle(second, 33);
-  expect((await stored(page)).profile).toMatchObject({ credits: 33, runs: 1 });
-  await second.close();
-});
+      await second.locator("#continueBtn").click();
+      await second.waitForFunction(
+        () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
+      );
+      const claimed = (await stored(second)).active;
+      expect(claimed.id).toBe(before.id);
+      expect(claimed.revision).toBeGreaterThan(before.revision);
+      const failure = await page.evaluate(async (active) => {
+        const store = await SurvivorPersistence.create({ qa: true });
+        try {
+          await store.settle(active.id, active.revision, {
+            credits: 999,
+            kills: 0,
+          });
+          return null;
+        } catch (error) {
+          return error.message;
+        } finally {
+          store.close();
+        }
+      }, before);
+      expect(failure).toContain("未重复结算");
+      expect((await stored(page)).profile.credits).toBe(0);
+      await settle(second, 33);
+      const settled = await stored(page);
+      expect(settled.profile).toMatchObject({ credits: 33, runs: 1 });
+      expect(
+        settled.receipts.filter((receipt) => receipt.id === before.id),
+      ).toHaveLength(1);
+      await second.close();
+    },
+  );
 
 test("checkpoint failure preserves the previous record and can be retried", async ({
   page,
