@@ -303,6 +303,7 @@ test("visitor banner, boss bar and toast fit actual safe area without overlap", 
     ),
   );
   expect(boxes.encounterNotice.top).toBeGreaterThan(boxes.bossBar.bottom);
+  expect(boxes.bossBar.top).toBeGreaterThan(boxes.hud.bottom);
   expect(boxes.toast.top).toBeGreaterThan(boxes.encounterNotice.bottom);
   expect(boxes.encounterNotice.left).toBeGreaterThanOrEqual(0);
   expect(boxes.encounterNotice.right).toBeLessThanOrEqual(
