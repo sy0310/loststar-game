@@ -273,6 +273,9 @@ jobs:
       - name: Verify five-level progression frozen delivery when present
         if: hashFiles('artifacts/survivor-v063/verification.json') != ''
         run: node prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs
+      - name: Verify fifteen-minute combat delivery when present
+        if: hashFiles('artifacts/survivor-v064/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v064-evidence.cjs
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'
@@ -291,6 +294,7 @@ jobs:
           python3 prototypes/salvage-survivor-demo/sync_runtime.py --check
           SURVIVOR_MODEL_OUT="$PWD/releases/survivor-model.json" npm --prefix prototypes/salvage-survivor-demo test
           SURVIVOR_SIM_OUT="$PWD/releases/survivor-simulation.json" npm --prefix prototypes/salvage-survivor-demo run simulate
+          SURVIVOR_MOVEMENT=adaptive SURVIVOR_SEEDS=2 SURVIVOR_SIM_OUT="$PWD/releases/survivor-adaptive.json" npm --prefix prototypes/salvage-survivor-demo run simulate
           python3 prototypes/salvage-survivor-demo/build.py --freeze
           python3 prototypes/salvage-survivor-demo/verify_package.py releases/survivor-ci-extracted
       - name: Test extracted ZIP on real HTTP in both browser engines
@@ -311,6 +315,7 @@ jobs:
             releases/audio-recordings/
             releases/survivor-model.json
             releases/survivor-simulation.json
+            releases/survivor-adaptive.json
             releases/survivor-browser.json
             releases/survivor-compatibility.json
             releases/survivor-migration.json

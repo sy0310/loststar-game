@@ -1,9 +1,9 @@
 window.SurvivorBalance = {
-  "version": "0.6.3",
-  "runSeconds": 600,
+  "version": "0.6.4",
+  "runSeconds": 900,
   "eliteAt": 70,
   "bossAt": 130,
-  "firstLevelXP": 72,
+  "firstLevelXP": 100,
   "activeSlots": 6,
   "passiveSlots": 6,
   "activeMaxLevel": 5,
@@ -211,6 +211,197 @@ window.SurvivorBalance = {
         "at": 550,
         "type": "boss",
         "tier": 3
+      }
+    ]
+  },
+  "assault": {
+    "version": 3,
+    "firstLevelXP": 100,
+    "levelXP": {
+      "base": 86,
+      "linear": 22,
+      "power": 1.4,
+      "powerScale": 3.6
+    },
+    "healthTimeScale": 210,
+    "lateHealthAfter": 240,
+    "lateHealthQuadratic": 6e-06,
+    "lateSpeedAfter": 300,
+    "lateSpeedScale": 0.00022,
+    "lateProjectileAfter": 300,
+    "lateProjectileScale": 0.0003,
+    "eliteDamageResistance": 0.18,
+    "bossDamageResistance": 0.18,
+    "eliteStunScale": 0.22,
+    "railInterval": 0.44,
+    "bastionInterval": 0.4,
+    "enemies": {
+      "elite": {
+        "hp": 500,
+        "radius": 30,
+        "speed": 94
+      },
+      "boss": {
+        "hp": 2400,
+        "radius": 40,
+        "speed": 84
+      }
+    },
+    "eliteProfiles": {
+      "hunter": {
+        "name": "反应堆追猎者",
+        "art": "elite",
+        "hpScale": 1,
+        "speedScale": 1,
+        "radius": 30,
+        "attacks": [
+          "dash",
+          "fan"
+        ],
+        "barrier": 0
+      },
+      "raider": {
+        "name": "破阵先锋",
+        "art": "elite_raider",
+        "hpScale": 1.15,
+        "speedScale": 1.1,
+        "radius": 28,
+        "attacks": [
+          "dash",
+          "cross"
+        ],
+        "barrier": 0
+      },
+      "warden": {
+        "name": "封锁母舰",
+        "art": "elite_warden",
+        "hpScale": 1.5,
+        "speedScale": 0.7,
+        "radius": 26,
+        "attacks": [
+          "mine",
+          "beam",
+          "shock"
+        ],
+        "barrier": 0.3
+      }
+    },
+    "milestones": [
+      {
+        "at": 140,
+        "type": "elite",
+        "tier": 1,
+        "profile": "hunter"
+      },
+      {
+        "at": 220,
+        "type": "elite",
+        "tier": 2,
+        "profile": "raider"
+      },
+      {
+        "at": 300,
+        "type": "boss",
+        "tier": 1
+      },
+      {
+        "at": 350,
+        "type": "elite",
+        "tier": 2,
+        "profile": "warden"
+      },
+      {
+        "at": 440,
+        "type": "boss",
+        "tier": 2
+      },
+      {
+        "at": 510,
+        "type": "elite",
+        "tier": 3,
+        "profile": "raider"
+      },
+      {
+        "at": 590,
+        "type": "elite",
+        "tier": 3,
+        "profile": "warden"
+      },
+      {
+        "at": 650,
+        "type": "boss",
+        "tier": 3
+      },
+      {
+        "at": 720,
+        "type": "elite",
+        "tier": 4,
+        "profile": "hunter"
+      },
+      {
+        "at": 790,
+        "type": "elite",
+        "tier": 4,
+        "profile": "warden"
+      },
+      {
+        "at": 850,
+        "type": "boss",
+        "tier": 4
+      }
+    ],
+    "earlySpawnScale": 1.18,
+    "attackUnlock": {
+      "wisp": 90,
+      "tank": 150
+    },
+    "waves": [
+      {
+        "from": 0,
+        "pool": [
+          "skimmer",
+          "skimmer",
+          "wisp",
+          "ranger"
+        ],
+        "hint": "四面来敌 · 自由移动"
+      },
+      {
+        "from": 60,
+        "pool": [
+          "skimmer",
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank"
+        ],
+        "hint": "突刺接近 · 留意锁线"
+      },
+      {
+        "from": 150,
+        "pool": [
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank",
+          "minelayer"
+        ],
+        "hint": "封锁空域 · 留意雷区"
+      },
+      {
+        "from": 240,
+        "pool": [
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank",
+          "minelayer",
+          "sentinel"
+        ],
+        "hint": "交叉火力 · 留意束流"
       }
     ]
   }

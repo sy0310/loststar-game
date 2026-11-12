@@ -1,13 +1,13 @@
 {
   "name": "loststar-survivor-demo",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "test": "node tests/model.test.cjs && node tests/progression.test.cjs",
+    "test": "node tests/model.test.cjs && node tests/progression.test.cjs && node tests/assault.test.cjs",
     "test:browser": "playwright test --config playwright.config.cjs",
     "simulate": "node tests/simulate.cjs",
-    "check:art": "python3 ../../design/star-salvage/v06/production/actors/verify.py && python3 ../../design/star-salvage/v06/production/weapons/verify.py && python3 ../../design/star-salvage/v061/production/effects/verify.py && python3 ../../design/star-salvage/v062/production/actors/verify.py && python3 ../../design/star-salvage/v062/production/space/verify.py",
+    "check:art": "python3 ../../design/star-salvage/v06/production/actors/verify.py && python3 ../../design/star-salvage/v06/production/weapons/verify.py && python3 ../../design/star-salvage/v061/production/effects/verify.py && python3 ../../design/star-salvage/v062/production/actors/verify.py && python3 ../../design/star-salvage/v062/production/space/verify.py && python3 ../../design/star-salvage/v064/production/actors/verify.py && python3 ../../design/star-salvage/v064/production/weapons/verify.py",
     "build": "python3 build.py",
     "capture": "node tests/capture.cjs",
     "verify:evidence": "node tests/verify-evidence.cjs",

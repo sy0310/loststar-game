@@ -2236,5 +2236,130 @@ window.SurvivorArtCatalog = {
         ]
       }
     ]
+  },
+  "elite_raider": {
+    "nativeSize": [
+      40,
+      40
+    ],
+    "center": [
+      20.0,
+      20.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        11.5,
+        38
+      ],
+      [
+        27.5,
+        38
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      20.0,
+      20.0
+    ],
+    "collisionRadius": 14,
+    "src": "./assets/v064/actors/elite_raider@2x.png",
+    "sha256": "1efaa114eb249332819c93f166f63d8a561f3b0be27bbed3f3ed7b9b06d180da",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 40,
+        "height": 40,
+        "anchor": [
+          20.0,
+          20.0
+        ]
+      }
+    ]
+  },
+  "elite_warden": {
+    "nativeSize": [
+      48,
+      48
+    ],
+    "center": [
+      24.0,
+      24.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        11.5,
+        37
+      ],
+      [
+        35.5,
+        37
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      24.0,
+      24.0
+    ],
+    "collisionRadius": 13,
+    "src": "./assets/v064/actors/elite_warden@2x.png",
+    "sha256": "219c721ce4ea09658d98499f42b1e7959431242407a95e1346559c286004e9aa",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24.0,
+          24.0
+        ]
+      }
+    ]
+  },
+  "prism_crystal": {
+    "nativeSize": [
+      16,
+      24
+    ],
+    "center": [
+      8,
+      12
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "src": "./assets/v064/weapons/prism_crystal@2x.png",
+    "sha256": "a32512d81751380ce03c7561508b4f46c1b57fe88ac75a100394f240817809ac",
+    "kind": "effect",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 16,
+        "height": 24,
+        "anchor": [
+          8,
+          12
+        ]
+      }
+    ]
   }
 };

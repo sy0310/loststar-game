@@ -1,4 +1,4 @@
-/* Actual v062 HTTP -> v063 HTTP on the same isolated origin and persistent browser. */
+/* Real v062 and v063 ZIPs upgrade on the same isolated persistent browser origin. */
 const { chromium, webkit } = require("@playwright/test");
 const { spawn, execFileSync } = require("node:child_process");
 const fs = require("node:fs");
@@ -7,7 +7,7 @@ const path = require("node:path");
 const assert = require("node:assert/strict");
 const here = path.resolve(__dirname, "..");
 const root = path.resolve(here, "../..");
-const temp = fs.mkdtempSync(path.join(os.tmpdir(), "loststar-v063-migration-"));
+const temp = fs.mkdtempSync(path.join(os.tmpdir(), "loststar-v064-migration-"));
 const oldRoot = path.join(temp, "old");
 const newRoot = process.env.SURVIVOR_CURRENT_ROOT || here;
 const output = path.resolve(
@@ -46,128 +46,163 @@ async function stored(page) {
   });
 }
 (async () => {
-  const archive = path.join(
-    root,
-    "artifacts/survivor-v062/loststar-survivor-4ca726f.zip",
-  );
-  execFileSync("python3", [
-    "-c",
-    "import sys,zipfile;zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])",
-    archive,
-    oldRoot,
-  ]);
   const report = {
     scope:
-      "Actual committed4ca726f ZIP served over HTTP, same-origin server replacement and isolated persistent browser. No original user browser or namespaces touched.",
+      "Actual committed4ca726f and f9bf85c ZIPs served over same-origin HTTP before replacing the server with the current frozen package. Original user profiles are separate.",
     engines: [],
   };
-  for (const type of [chromium, webkit]) {
-    await serve(oldRoot);
-    const folder = path.join(temp, type.name());
-    const context = await type.launchPersistentContext(folder, {
-      headless: true,
-      viewport: { width: 390, height: 844 },
-    });
-    const page = await context.newPage();
-    const errors = [];
-    page.on("pageerror", (e) => errors.push(String(e)));
-    try {
-      await page.goto(url);
-      await page.waitForFunction(() => SurvivorDemo.ready());
-      const oldBuild = await page.evaluate(() => SurvivorBuild);
-      assert.equal(oldBuild.commit, "4ca726f6a18cc0b2e597379d68cf1df9e87b6c4b");
-      await page.locator("#startBtn").click();
-      await page.waitForFunction(
-        () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
-      );
-      await page.evaluate(async () => {
-        SurvivorQA.state().credits = 28009;
-        await SurvivorQA.end(false);
+  for (const baseline of [
+    {
+      version: "0.6.2",
+      commit: "4ca726f6a18cc0b2e597379d68cf1df9e87b6c4b",
+      archive: "artifacts/survivor-v062/loststar-survivor-4ca726f.zip",
+      activeMax: 3,
+      passiveMax: 2,
+    },
+    {
+      version: "0.6.3",
+      commit: "f9bf85c1ac9313d44edfc63403761a648cd9b2cb",
+      archive: "artifacts/survivor-v063/loststar-survivor-f9bf85c.zip",
+      activeMax: 5,
+      passiveMax: 5,
+    },
+  ]) {
+    execFileSync("python3", [
+      "-c",
+      "import sys,zipfile;zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])",
+      path.join(root, baseline.archive),
+      oldRoot,
+    ]);
+    for (const type of [chromium, webkit]) {
+      await serve(oldRoot);
+      const folder = path.join(temp, baseline.version + "-" + type.name());
+      const context = await type.launchPersistentContext(folder, {
+        headless: true,
+        viewport: { width: 390, height: 844 },
       });
-      await page.waitForFunction(() => !SurvivorDemo.saving());
-      for (const id of ["upgradeHullBtn", "upgradeGunBtn"])
-        for (let rank = 0; rank < 3; rank++) {
-          await page.locator("#" + id).click();
-          await page.waitForFunction(() => !SurvivorDemo.saving());
-          await delay(600);
-        }
-      await page.locator("#retryBtn").click();
-      await page.waitForFunction(
-        () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
-      );
-      await page.evaluate(async () => {
-        const Q = SurvivorQA,
-          g = Q.state();
-        g.spawnTime = 999;
-        g.p.inv = 999;
-        Q.pick("cannon");
-        Q.pick("cannon");
-        Q.pick("lens");
-        Q.pick("lens");
-        if (!Q.pick("piercebeam")) throw Error("Old EVO fixture rejected");
-        for (const id of ["drone", "arc"])
-          for (let i = 0; i < 3; i++) Q.pick(id);
-        if (!Q.pick("thunderhive")) throw Error("Old fusion fixture rejected");
-        g.mode = "pause";
-        await Q.save();
-        await Q.settled();
-      });
-      const before = await stored(page);
-      assert.equal(before.profile.credits, 27049);
-      assert.equal(before.profile.hull, 3);
-      assert.equal(before.profile.gun, 3);
-      assert.equal(before.active.snapshot.game.active.cannon, 3);
-      assert.equal(before.active.snapshot.game.evolved.cannon, "piercebeam");
-      assert.equal(before.active.snapshot.game.fused.thunderhive, true);
-      await serve(newRoot);
-      await page.reload();
-      await page.waitForFunction(() => SurvivorDemo.ready());
-      const newBuild = await page.evaluate(() => SurvivorBuild);
-      assert.equal(newBuild.version, "0.6.3");
-      assert.deepEqual(await stored(page), before);
-      await page.locator("#continueBtn").click();
-      await page.waitForFunction(
-        () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
-      );
-      const oldRun = await page.evaluate(() => SurvivorDemo.state());
-      assert.equal(oldRun.active.cannon, 3);
-      assert.equal(oldRun.evolved.cannon, "piercebeam");
-      assert.equal(oldRun.fused.thunderhive, true);
-      assert(!oldRun.rules.progressionVersion);
-      await page.locator("#pauseBtn").click();
-      await page.waitForFunction(() => !SurvivorDemo.saving());
-      await page.locator("#leaveBtn").click();
-      await page.waitForFunction(() => !SurvivorDemo.saving());
-      assert.equal((await stored(page)).profile.credits, 27049);
-      await page.locator("#retryBtn").click();
-      await page.waitForFunction(
-        () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
-      );
-      const next = await page.evaluate(() => SurvivorDemo.state());
-      assert.equal(next.rules.progressionVersion, 2);
-      assert.equal((await stored(page)).profile.credits, 27049);
-      assert.equal(next.p.maxhp, 148);
-      assert.deepEqual(errors, []);
-      report.engines.push({
-        engine: type.name(),
-        oldBuild,
-        newBuild,
-        oldWallet: 27049,
-        oldHull: 3,
-        oldGun: 3,
-        wholeOldRecordExactOnReload: true,
-        oldEvoAndFusionRetained: true,
-        newRunFivePlusFive: true,
-        errors,
-      });
-    } finally {
-      await context.close();
+      const page = await context.newPage();
+      const errors = [];
+      page.on("pageerror", (e) => errors.push(String(e)));
+      try {
+        await page.goto(url);
+        await page.waitForFunction(() => SurvivorDemo.ready());
+        const oldBuild = await page.evaluate(() => SurvivorBuild);
+        assert.equal(oldBuild.commit, baseline.commit);
+        await page.locator("#startBtn").click();
+        await page.waitForFunction(
+          () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
+        );
+        await page.evaluate(async () => {
+          SurvivorQA.state().credits = 28009;
+          await SurvivorQA.end(false);
+        });
+        await page.waitForFunction(() => !SurvivorDemo.saving());
+        for (const id of ["upgradeHullBtn", "upgradeGunBtn"])
+          for (let rank = 0; rank < 3; rank++) {
+            await page.locator("#" + id).click();
+            await page.waitForFunction(() => !SurvivorDemo.saving());
+            await delay(600);
+          }
+        await page.locator("#retryBtn").click();
+        await page.waitForFunction(
+          () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
+        );
+        await page.evaluate(async ({ activeMax, passiveMax }) => {
+          const Q = SurvivorQA;
+          const game = Q.state();
+          game.spawnTime = 999;
+          game.p.inv = 999;
+          for (let index = 1; index < activeMax; index++) Q.pick("cannon");
+          for (let index = 0; index < passiveMax; index++) Q.pick("lens");
+          if (activeMax === 5) Q.reward(true);
+          if (!Q.pick("piercebeam")) throw Error("Old EVO fixture rejected");
+          for (const [weapon, passive, evo] of [
+            ["drone", "lock", "hunterswarm"],
+            ["arc", "capacitor", "chainstorm"],
+          ]) {
+            for (let index = 0; index < activeMax; index++) Q.pick(weapon);
+            if (activeMax === 5) {
+              for (let index = 0; index < passiveMax; index++) Q.pick(passive);
+              Q.reward(true);
+              if (!Q.pick(evo))
+                throw Error("Old five-level EVO fixture rejected");
+            }
+          }
+          if (activeMax === 5) Q.reward(true);
+          if (!Q.pick("thunderhive"))
+            throw Error("Old fusion fixture rejected");
+          game.mode = "pause";
+          await Q.save();
+          await Q.settled();
+        }, baseline);
+        const before = await stored(page);
+        assert.equal(before.profile.credits, 27049);
+        assert.equal(before.profile.hull, 3);
+        assert.equal(before.profile.gun, 3);
+        assert.equal(
+          before.active.snapshot.game.active.cannon,
+          baseline.activeMax,
+        );
+        assert.equal(before.active.snapshot.game.evolved.cannon, "piercebeam");
+        assert.equal(before.active.snapshot.game.fused.thunderhive, true);
+        await serve(newRoot);
+        await page.reload();
+        await page.waitForFunction(() => SurvivorDemo.ready());
+        const newBuild = await page.evaluate(() => SurvivorBuild);
+        assert.equal(newBuild.version, "0.6.4");
+        assert.deepEqual(await stored(page), before);
+        await page.locator("#continueBtn").click();
+        await page.waitForFunction(
+          () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
+        );
+        const oldRun = await page.evaluate(() => SurvivorDemo.state());
+        assert.equal(oldRun.active.cannon, baseline.activeMax);
+        assert.equal(oldRun.evolved.cannon, "piercebeam");
+        assert.equal(oldRun.fused.thunderhive, true);
+        assert.equal(oldRun.endTime, 600);
+        assert.equal(
+          oldRun.rules.progressionVersion,
+          baseline.activeMax === 5 ? 2 : undefined,
+        );
+        await page.locator("#pauseBtn").click();
+        await page.waitForFunction(() => !SurvivorDemo.saving());
+        await page.locator("#leaveBtn").click();
+        await page.waitForFunction(() => !SurvivorDemo.saving());
+        assert.equal((await stored(page)).profile.credits, 27049);
+        await page.locator("#retryBtn").click();
+        await page.waitForFunction(
+          () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
+        );
+        const next = await page.evaluate(() => SurvivorDemo.state());
+        assert.equal(next.rules.progressionVersion, 2);
+        assert.equal(next.rules.combatVersion, 3);
+        assert.equal(next.endTime, 900);
+        assert.equal((await stored(page)).profile.credits, 27049);
+        assert.equal(next.p.maxhp, 148);
+        assert.deepEqual(errors, []);
+        report.engines.push({
+          engine: type.name(),
+          baseline: baseline.version,
+          oldBuild,
+          newBuild,
+          oldWallet: 27049,
+          oldHull: 3,
+          oldGun: 3,
+          wholeOldRecordExactOnReload: true,
+          oldEvoAndFusionRetained: true,
+          newRunFivePlusFive: true,
+          newRunFifteenMinutes: true,
+          errors,
+        });
+      } finally {
+        await context.close();
+      }
     }
   }
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
   console.log(
-    "PASS both engines actual v062 ZIP -> v063 HTTP, old27049/rights/EVO/fusion and new run",
+    "PASS both engines actual v062/v063 ZIP -> v064 HTTP, old27049/rights/EVO/fusion and new900-second run",
   );
 })()
   .catch((e) => {

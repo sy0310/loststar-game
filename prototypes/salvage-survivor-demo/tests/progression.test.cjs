@@ -25,6 +25,7 @@ const fusions = [
 let Q;
 function start(seed = 91) {
   const g = Q.startModel(seed);
+  Q.legacyV063(); // Regress the already-delivered five-level 600-second rules.
   g.active = {};
   g.spawnTime = 999;
   g.p.inv = 10000;

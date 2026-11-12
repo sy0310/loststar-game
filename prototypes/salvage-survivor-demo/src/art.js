@@ -68,7 +68,7 @@
     ];
     ctx.drawImage(image, ...args);
     if (options.flash && flashes.has(id)) {
-      ctx.globalAlpha = 0.8;
+      ctx.globalAlpha = options.flashAlpha ?? 0.8;
       ctx.drawImage(flashes.get(id), ...args);
     }
     ctx.restore();

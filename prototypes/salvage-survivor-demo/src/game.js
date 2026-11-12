@@ -28,7 +28,7 @@
     ];
   const NAMES = {
     cannon: "脉冲主炮",
-    drone: "追踪无人机",
+    drone: "护航无人机",
     arc: "电弧线圈",
     missile: "震荡导弹",
     blade: "旋刃护卫",
@@ -59,9 +59,9 @@
 
   const DESCS = {
     cannon: "增强齐射火力，自动瞄准近敌",
-    drone: "环绕副机，发射追踪弹",
+    drone: "环绕副机，锁定位置后直射",
     arc: "连锁电击，扫开成群目标",
-    missile: "追踪弹头，命中范围爆炸",
+    missile: "直射目标区域，命中范围爆炸",
     blade: "环绕切割，保护近处空域",
     shield: "抵挡伤害，自动恢复护盾",
     lens: "增加贯穿，提高武器伤害",
@@ -78,11 +78,11 @@
     reactiveaegis: "更快恢复护盾，冲击反制",
     thunderhive: "五架蜂机，命中连锁放电",
     blastwheel: "六刃环绕，接触触发爆破",
-    prism: "分束折射，扫过多个方向",
+    prism: "晶体环绕，射出折射晶片",
     gravity: "短时吸聚敌群，脉冲粉碎",
-    refraction: "拓宽折射光线，提高伤害",
+    refraction: "晶片命中后折射，提高伤害",
     singularity: "扩大引力范围，延长牵引",
-    kaleidoscope: "六向光阵，交错贯穿",
+    kaleidoscope: "六晶环阵，多次折射穿梭",
     collapse: "引力收束，中心爆破",
     eventhorizon: "吸聚敌群，旋转折射光环",
     ionbastion: "强化贯穿轨炮，护盾破裂时追加反击",
@@ -149,7 +149,8 @@
       }
     );
   }
-  const newCombat = (game = g) => runRules(game).combatVersion === 2;
+  const newCombat = (game = g) => [2, 3].includes(runRules(game).combatVersion);
+  const assaultCombat = (game = g) => runRules(game).combatVersion === 3;
   const newProgression = (game = g) => runRules(game).progressionVersion === 2;
   const activeMaximum = (game = g) => (newProgression(game) ? 5 : 3);
   const passiveMaximum = (game = g) => (newProgression(game) ? 5 : 2);
@@ -163,7 +164,13 @@
       : g.passive[id] || 0;
   function pixelIcon(id, size = 32) {
     return window.SurvivorArt.icon(
-      id === "repair" ? "armor" : id === "ionbastion" ? "piercebeam" : id,
+      assaultCombat() && id === "prism"
+        ? "prism_crystal"
+        : id === "repair"
+          ? "armor"
+          : id === "ionbastion"
+            ? "piercebeam"
+            : id,
       size,
     );
   }
@@ -247,7 +254,7 @@
         runSeconds: B.runSeconds,
         activeSlots: B.activeSlots,
         passiveSlots: B.passiveSlots,
-        combatVersion: 2,
+        combatVersion: 3,
         progressionVersion: 2,
       },
       time: 0,
@@ -365,7 +372,11 @@
   }
   const levelXP = (level) => {
     const growth = Math.max(0, level - 2);
-    const curve = newProgression() ? B.levelXP : B.legacyLevelXP;
+    const curve = assaultCombat()
+      ? B.assault.levelXP
+      : newProgression()
+        ? B.levelXP
+        : B.legacyLevelXP;
     return Math.round(
       curve.base +
         curve.linear * growth +
@@ -760,19 +771,20 @@
       shieldArc: "护盾 × 电弧",
       bladeMissile: "旋刃 × 导弹",
       gravityPrism: "引力 × 棱镜",
+      armorBreak: "装甲破裂",
     }[id];
     g.metrics.events.push({ kind: "link", id, time: g.time });
     if (g.texts.length < B.maxDamageNumbers)
       g.texts.push({ x, y: y - 25, t: 1.1, s: label, color: "#73d9e8" });
   }
-  function spawnEnemy(force, tier = 1) {
+  function spawnEnemy(force, tier = 1, eliteProfile = "hunter") {
     if (!g) return null;
     const special = force === "boss" || force === "elite" || !!VISITORS[force];
     if (g.enemy.length >= (special ? B.maxEnemies : B.maxEnemies - 2))
       return null;
     let type = force;
     if (!type && newCombat()) {
-      const pool = B.combat.waves
+      const pool = (assaultCombat() ? B.assault.waves : B.combat.waves)
         .filter((entry) => g.time >= entry.from)
         .at(-1).pool;
       type = pool[Math.floor(rand() * pool.length)];
@@ -780,7 +792,7 @@
       if (
         cap &&
         g.enemy.filter((enemy) => enemy.t === type && enemy.hp > 0).length >=
-          cap
+          cap + (assaultCombat() && g.time >= 360 ? 1 : 0)
       )
         type = "skimmer";
     }
@@ -792,16 +804,28 @@
           : rand() < 0.27
             ? "wisp"
             : "skimmer";
-    const stats = ENEMY_STATS[type];
+    const stats =
+      (assaultCombat() && B.assault.enemies[type]) || ENEMY_STATS[type];
+    const profile =
+      assaultCombat() && type === "elite"
+        ? B.assault.eliteProfiles[eliteProfile]
+        : null;
     const scale =
       (1 +
         g.time /
-          (newCombat()
-            ? B.combat.healthTimeScale
-            : runRules().runSeconds > 180
-              ? B.enemyHealthTimeScale
-              : 125)) *
-      (1 + 0.35 * (tier - 1));
+          (assaultCombat()
+            ? B.assault.healthTimeScale
+            : newCombat()
+              ? B.combat.healthTimeScale
+              : runRules().runSeconds > 180
+                ? B.enemyHealthTimeScale
+                : 125)) *
+      (1 + 0.35 * (tier - 1)) *
+      (profile?.hpScale || 1);
+    const lateHealth = assaultCombat()
+      ? Math.max(0, g.time - B.assault.lateHealthAfter) ** 2 *
+        B.assault.lateHealthQuadratic
+      : 0;
     const side = Math.floor(rand() * 4),
       ex = VW / 2 + 30,
       ey = VH / 2 + 35;
@@ -811,10 +835,10 @@
       tier,
       x: g.p.x + (side < 2 ? (side === 0 ? -ex : ex) : rr(-ex, ex)),
       y: g.p.y + (side < 2 ? rr(-ey, ey) : side === 2 ? -ey : ey),
-      hp: Math.round(stats.hp * scale),
-      maxhp: Math.round(stats.hp * scale),
-      radius: stats.radius,
-      speed: stats.speed,
+      hp: Math.round(stats.hp * (scale + lateHealth)),
+      maxhp: Math.round(stats.hp * (scale + lateHealth)),
+      radius: profile?.radius || stats.radius,
+      speed: stats.speed * (profile?.speedScale || 1),
       fire: rr(1.3, 2.5),
       phase: rr(0, T),
       marked: 0,
@@ -826,6 +850,11 @@
       pattern: 0,
       charge: 0,
     };
+    if (profile) {
+      enemy.eliteProfile = eliteProfile;
+      enemy.barrier = Math.round(enemy.maxhp * profile.barrier);
+      enemy.maxBarrier = enemy.barrier;
+    }
     g.enemy.push(enemy);
     g.metrics.spawned[type] = (g.metrics.spawned[type] || 0) + 1;
     return enemy;
@@ -846,7 +875,15 @@
     }
     return best;
   }
-  function fireBullet(x, y, target, kind = "pulse", damage = 19, speed = 305) {
+  function fireBullet(
+    x,
+    y,
+    target,
+    kind = "pulse",
+    damage = 19,
+    speed = 305,
+    properties = {},
+  ) {
     if (!target || g.shots.length >= B.maxFriendlyShots) return;
     const heading = angle({ x, y }, target);
     const shot = {
@@ -860,6 +897,20 @@
       t: 3.2,
       hit: new Set(),
       targetId: target.id,
+      ...(assaultCombat()
+        ? {
+            homing:
+              kind === "hive" ||
+              (kind === "drone" && !!g.evolved.drone) ||
+              (kind === "missile" && !!g.evolved.missile),
+            destinationX: target.x,
+            destinationY: target.y,
+            evolvedAtLaunch:
+              kind === "hive" ||
+              !!g.evolved[kind === "pulse" ? "cannon" : kind],
+            ...properties,
+          }
+        : {}),
       pierce: kind === "pulse" ? 1 + Math.min(1, g.passive.lens || 0) : 1,
     };
     g.shots.push(shot);
@@ -913,9 +964,26 @@
           x2: target.x,
           y2: target.y,
           t: 0.22,
+          ...(assaultCombat()
+            ? {
+                color:
+                  sourceKind === "thunderhive"
+                    ? "#bc85f2"
+                    : g.evolved.arc
+                      ? "#c49bef"
+                      : g.active.arc >= 3
+                        ? "#f4c57a"
+                        : "#73d9e8",
+                core: sourceKind === "thunderhive" ? "#ffe5a1" : "#fff0ce",
+              }
+            : {}),
         });
       hurtEnemy(target, damage, false, sourceKind);
-      target.disabled = Math.max(target.disabled, stun);
+      const stunScale =
+        assaultCombat() && ["elite", "boss"].includes(target.t)
+          ? B.assault.eliteStunScale
+          : 1;
+      target.disabled = Math.max(target.disabled, stun * stunScale);
       excluded.add(target);
       origin = target;
     }
@@ -926,7 +994,24 @@
     if (enemy.hp <= 0) return;
     if (newProgression() && VISITORS[enemy.t] && (enemy.arrivalAge || 0) < 1.6)
       return;
-    const damage = Math.max(1, amount * (1 + 0.13 * passivePower("lens")));
+    let damage = Math.max(1, amount * (1 + 0.13 * passivePower("lens")));
+    if (assaultCombat() && ["elite", "boss"].includes(enemy.t)) {
+      damage *=
+        1 -
+        (enemy.t === "boss"
+          ? B.assault.bossDamageResistance
+          : B.assault.eliteDamageResistance);
+      if (enemy.barrier > 0) {
+        const absorbed = Math.min(enemy.barrier, damage * 0.7);
+        enemy.barrier -= absorbed;
+        damage -= absorbed;
+        g.metrics.armorAbsorbed = (g.metrics.armorAbsorbed || 0) + absorbed;
+        if (enemy.barrier === 0) {
+          ring(enemy.x, enemy.y, 56, "#f4c57a", 0.45);
+          showLink("armorBreak", enemy.x, enemy.y);
+        }
+      }
+    }
     const actual = Math.min(enemy.hp, damage);
     playSound("hit", { strength: damage / 120 });
     g.metrics.damage[source] = (g.metrics.damage[source] || 0) + actual;
@@ -1055,6 +1140,7 @@
   }
   function damageShip(amount) {
     if (!g || g.mode !== "play" || g.p.inv > 0) return;
+    if (assaultCombat()) amount *= 1 + Math.max(0, g.time - 300) / 1800;
     if (g.p.shield > 0) {
       g.p.shield = 0;
       g.metrics.shieldsBlocked++;
@@ -1110,7 +1196,28 @@
       callback();
     }
   }
-  function prismRay(heading, length, damage, source, width = 5) {
+  function prismRay(
+    heading,
+    length,
+    damage,
+    source,
+    width = 5,
+    destination = null,
+  ) {
+    if (assaultCombat()) {
+      const node = prismNodes()[0];
+      if (node)
+        fireCrystal(
+          node,
+          destination || {
+            x: g.p.x + Math.cos(heading) * length,
+            y: g.p.y + Math.sin(heading) * length,
+          },
+          damage,
+          source,
+        );
+      return;
+    }
     const x = g.p.x + Math.cos(heading) * length,
       y = g.p.y + Math.sin(heading) * length;
     g.beams.push({
@@ -1131,10 +1238,88 @@
       )
         hurtEnemy(enemy, damage, false, source);
   }
+  function prismNodes() {
+    if (!g.active.prism && !g.fused.eventhorizon) return [];
+    const evolved = !!g.evolved.prism || !!g.fused.eventhorizon;
+    const count = evolved ? 6 : Math.max(1, g.active.prism || 1);
+    const radius = evolved ? 66 : 42 + (g.passive.refraction || 0) * 2;
+    return Array.from({ length: count }, (_, index) => {
+      const heading = g.time * 0.65 + (index * T) / count;
+      return {
+        x: g.p.x + Math.cos(heading) * radius,
+        y: g.p.y + Math.sin(heading) * radius,
+        heading,
+      };
+    });
+  }
+  function fireCrystal(origin, target, damage, source) {
+    if (!target || g.shots.length >= B.maxFriendlyShots) return;
+    const heading = angle(origin, target);
+    const evolved = !!g.evolved.prism || !!g.fused.eventhorizon;
+    g.shots.push({
+      x: origin.x,
+      y: origin.y,
+      vx: Math.cos(heading) * 520,
+      vy: Math.sin(heading) * 520,
+      damage,
+      kind: "crystal",
+      source,
+      r: evolved ? 7 : 5,
+      t: 2.2,
+      hit: new Set(),
+      pierce: 1,
+      bounces: evolved ? 4 : Math.ceil((g.passive.refraction || 0) / 2),
+    });
+    g.metrics.shots[source] = (g.metrics.shots[source] || 0) + 1;
+    if (g.arcs.length < B.maxArcs)
+      g.arcs.push({
+        x1: g.p.x,
+        y1: g.p.y,
+        x2: origin.x,
+        y2: origin.y,
+        t: 0.12,
+        color: evolved ? "#f4c57a" : "#b9a1e8",
+        core: "#f5dff7",
+      });
+  }
+  function prismArray(dt, fused) {
+    const evolved = !!g.evolved.prism;
+    clock(
+      "prism",
+      dt,
+      cooldown("prism", fused ? 1.2 : evolved ? 1.45 : 1.9),
+      () => {
+        const nodes = prismNodes();
+        const targets = g.enemy
+          .filter((enemy) => enemy.hp > 0 && dist(enemy, g.p) < 390)
+          .sort((a, b) => dist(a, g.p) - dist(b, g.p));
+        if (!targets.length) return;
+        const damage =
+          (30 + 30 * (activePower("prism") || 3)) *
+          (1 + 0.1 * passivePower("refraction")) *
+          (fused ? 1.25 : 1);
+        const source = fused
+          ? "eventhorizon"
+          : evolved
+            ? "kaleidoscope"
+            : "prism";
+        for (let index = 0; index < nodes.length; index++)
+          fireCrystal(
+            nodes[index],
+            targets[index % targets.length],
+            damage,
+            source,
+          );
+        g.prismFlashUntil = g.time + 0.18;
+        playSound("prism", { evolved, fused });
+      },
+    );
+  }
   function advancedWeapons(dt) {
     g.wells ||= [];
     const fused = !!g.fused.eventhorizon;
-    if (g.active.prism || fused) {
+    if (assaultCombat() && (g.active.prism || fused)) prismArray(dt, fused);
+    else if (g.active.prism || fused) {
       const level = activePower("prism") || 3,
         evolved = !!g.evolved.prism;
       clock(
@@ -1234,6 +1419,7 @@
               32 + 12 * activePower("prism"),
               "gravityPrism",
               8,
+              center,
             );
             showLink("gravityPrism", center.x, center.y);
           }
@@ -1299,7 +1485,15 @@
         dt,
         cooldown(
           "cannon",
-          g.fused.ionbastion ? 0.28 : rail ? 0.34 : 0.54 - (level - 1) * 0.1,
+          g.fused.ionbastion
+            ? assaultCombat()
+              ? B.assault.bastionInterval
+              : 0.28
+            : rail
+              ? assaultCombat()
+                ? B.assault.railInterval
+                : 0.34
+              : 0.54 - (level - 1) * 0.1,
         ),
         () => {
           const target = closest(player.x, player.y, rail ? 660 : 465);
@@ -1396,16 +1590,33 @@
         dt,
         cooldown("missile", evolved ? 0.9 : 2.25 - 0.3 * level),
         () => {
-          for (
-            let index = 0;
-            index < (evolved ? 4 : Math.max(1, level - 1));
-            index++
-          ) {
+          const target = assaultCombat()
+            ? closest(player.x, player.y, 400)
+            : null;
+          if (assaultCombat() && !target) return;
+          const count = evolved ? 4 : Math.max(1, Math.ceil(level - 1));
+          for (let index = 0; index < count; index++) {
+            const offset =
+              !evolved && target ? (index - (count - 1) / 2) * 18 : 0;
+            const heading = target ? angle(player, target) : 0;
             if (g.salvos.length < 8)
               g.salvos.push({
-                delay: evolved ? index * 0.1 : 0,
+                delay: evolved
+                  ? index * 0.1
+                  : assaultCombat()
+                    ? index * 0.12
+                    : 0,
                 damage: 23 + 12 * level,
                 evolved,
+                ...(target
+                  ? {
+                      destination: {
+                        id: target.id,
+                        x: target.x - Math.sin(heading) * offset,
+                        y: target.y + Math.cos(heading) * offset,
+                      },
+                    }
+                  : {}),
               });
           }
         },
@@ -1417,10 +1628,11 @@
         fireBullet(
           player.x,
           player.y,
-          closest(player.x, player.y, 540),
+          salvo.destination || closest(player.x, player.y, 540),
           "missile",
           salvo.damage,
           270,
+          { homing: salvo.evolved, evolvedAtLaunch: salvo.evolved },
         );
         salvo.fired = true;
       }
@@ -1472,9 +1684,12 @@
   }
   function wave(dt) {
     if (runRules().runSeconds > 180) {
-      for (const milestone of newProgression()
-        ? B.progression.milestones
-        : B.milestones) {
+      const milestones = assaultCombat()
+        ? B.assault.milestones
+        : newProgression()
+          ? B.progression.milestones
+          : B.milestones;
+      for (const milestone of milestones) {
         const key = milestone.type + ":" + milestone.at;
         if (g.time < milestone.at || g.milestoneSeen.includes(key)) continue;
         const existing = g.enemy.find(
@@ -1484,7 +1699,10 @@
           if (newProgression()) continue;
           existing.tier = Math.max(existing.tier || 1, milestone.tier);
           existing.fire = Math.min(existing.fire, 0.3);
-        } else if (!spawnEnemy(milestone.type, milestone.tier)) continue;
+        } else if (
+          !spawnEnemy(milestone.type, milestone.tier, milestone.profile)
+        )
+          continue;
         g.milestoneSeen.push(key);
         g.metrics.events.push({
           kind: milestone.type,
@@ -1503,7 +1721,11 @@
           );
         } else {
           g.eliteSpawned = true;
-          notify("追猎者 · 第" + milestone.tier + "阶段");
+          notify(
+            assaultCombat()
+              ? B.assault.eliteProfiles[milestone.profile].name + " · 来袭"
+              : "追猎者 · 第" + milestone.tier + "阶段",
+          );
         }
       }
     } else {
@@ -1545,7 +1767,8 @@
       for (let index = 0; index < count; index++) spawnEnemy();
       g.spawnTime =
         Math.max(0.46, 1.05 - g.time * 0.0033) *
-        (newCombat() ? B.combat.spawnIntervalScale : 1);
+        (newCombat() ? B.combat.spawnIntervalScale : 1) *
+        (assaultCombat() && g.time < 180 ? B.assault.earlySpawnScale : 1);
     }
     if (newCombat()) updateEncounters(dt);
   }
@@ -1874,11 +2097,49 @@
     for (const enemy of g.enemy) {
       if (enemy.hp <= 0) continue;
       const point = toScreen(enemy.x, enemy.y);
-      const body = art.catalog[enemy.t];
-      const bodyScale = newProgression() && VISITORS[enemy.t] ? 1.5 : 1;
+      const artId =
+        assaultCombat() && enemy.eliteProfile
+          ? B.assault.eliteProfiles[enemy.eliteProfile].art
+          : enemy.t;
+      const body = art.catalog[artId];
+      const bodyScale = newProgression() && VISITORS[enemy.t] ? 3 : 2;
+      if (assaultCombat() && enemy.t === "elite") {
+        const healthY = point.y + (body.nativeSize[1] * bodyScale) / 2 + 5;
+        ctx.fillStyle = "#211b31";
+        ctx.fillRect(point.x - 32, healthY, 64, 6);
+        ctx.fillStyle = "#f4c57a";
+        ctx.fillRect(
+          point.x - 32,
+          healthY,
+          64 * Math.max(0, enemy.hp / enemy.maxhp),
+          4,
+        );
+        if (enemy.barrier > 0) {
+          ctx.strokeStyle = "#bc85f2";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.ellipse(
+            point.x,
+            point.y,
+            54,
+            39,
+            angle(enemy, g.p) + Math.PI / 2,
+            0,
+            T,
+          );
+          ctx.stroke();
+          ctx.fillStyle = "#bc85f2";
+          ctx.fillRect(
+            point.x - 32,
+            healthY + 7,
+            (64 * enemy.barrier) / enemy.maxBarrier,
+            3,
+          );
+        }
+      }
       if (newProgression() && VISITORS[enemy.t]) {
         const age = enemy.arrivalAge || 0;
-        const healthY = point.y + body.nativeSize[1] * bodyScale + 4;
+        const healthY = point.y + (body.nativeSize[1] * bodyScale) / 2 + 4;
         ctx.save();
         ctx.strokeStyle = age < 1.6 ? "#c8b4ef" : "#73d9e8";
         ctx.lineWidth = age < 1.6 ? 3 : 1;
@@ -1911,6 +2172,21 @@
         ctx.restore();
       }
       if (enemy.warn > 0) drawWarning(enemy, point);
+      if (assaultCombat() && enemy.echo) {
+        ctx.strokeStyle = "#c49bef";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([3, 7]);
+        ctx.beginPath();
+        for (const spread of [-0.36, 0, 0.36]) {
+          ctx.moveTo(point.x, point.y);
+          ctx.lineTo(
+            point.x + Math.cos(enemy.echo.aim + spread) * 170,
+            point.y + Math.sin(enemy.echo.aim + spread) * 170,
+          );
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
       const heading =
         (enemy.charge > 0
           ? enemy.chargeAngle
@@ -1918,13 +2194,12 @@
             ? enemy.aim
             : Math.atan2(g.p.y - enemy.y, g.p.x - enemy.x)) +
         Math.PI / 2;
-      if (
-        newCombat() &&
+      const propelled =
         ["lancer", "sentinel", "minelayer", "courier", "watcher"].includes(
           enemy.t,
-        ) &&
-        (enemy.speed > 0 || enemy.charge > 0)
-      ) {
+        ) ||
+        (assaultCombat() && enemy.eliteProfile && body.exhaustAnchors);
+      if (newCombat() && propelled && (enemy.speed > 0 || enemy.charge > 0)) {
         ctx.save();
         ctx.translate(point.x, point.y);
         ctx.rotate(heading);
@@ -1932,19 +2207,21 @@
           art.draw(
             ctx,
             "thruster",
-            (x - body.center[0]) * 2 * bodyScale,
-            (y - body.center[1]) * 2 * bodyScale,
+            (x - body.center[0]) * bodyScale,
+            (y - body.center[1]) * bodyScale,
             {
               frame: art.frameAt("thruster", g.time * 1000, true),
-              scale: (enemy.charge > 0 ? 0.3 : 0.13) * bodyScale,
+              scale: (enemy.charge > 0 ? 0.15 : 0.065) * bodyScale,
               anchor: [12, 3],
             },
           );
         ctx.restore();
       }
-      art.draw(ctx, enemy.t, point.x, point.y, {
+      art.draw(ctx, artId, point.x, point.y, {
         angle: enemy.t === "boss" ? Math.sin(g.time * 0.8) * 0.1 : heading,
         flash: enemy.flash > 0,
+        flashAlpha:
+          assaultCombat() && ["elite", "boss"].includes(enemy.t) ? 0.28 : 0.8,
         scale: bodyScale,
       });
       if (enemy.marked > 0) {
@@ -1959,6 +2236,22 @@
     for (const shot of g.shots) {
       const point = toScreen(shot.x, shot.y);
       const heading = Math.atan2(shot.vy, shot.vx);
+      if (shot.kind === "crystal") {
+        art.draw(ctx, "prism_crystal", point.x, point.y, {
+          angle: heading + Math.PI / 2,
+          scale: 0.65,
+        });
+        ctx.fillStyle = "#d2b5f0";
+        ctx.globalAlpha = 0.55;
+        ctx.fillRect(
+          Math.round(point.x - Math.cos(heading) * 9),
+          Math.round(point.y - Math.sin(heading) * 9),
+          3,
+          3,
+        );
+        ctx.globalAlpha = 1;
+        continue;
+      }
       if (shot.kind === "shard") {
         art.draw(ctx, "blade_body", point.x, point.y, {
           angle: heading + g.time * 8,
@@ -2070,7 +2363,7 @@
       ctx.lineTo((start.x + end.x) / 2 + 5, (start.y + end.y) / 2 - 4);
       ctx.lineTo(end.x, end.y);
       ctx.stroke();
-      ctx.strokeStyle = "#e4f4ec";
+      ctx.strokeStyle = arc.core || "#e4f4ec";
       ctx.lineWidth = 1;
       ctx.stroke();
       art.draw(ctx, "beam_cap", end.x, end.y, { scale: 0.28 });
@@ -2124,7 +2417,8 @@
         ctx.save();
         ctx.translate(point.x, point.y);
         ctx.rotate(Math.atan2(shot.vy, shot.vx));
-        ctx.fillStyle = shot.kind === "needle" ? "#f0a565" : "#b9a1e8";
+        ctx.fillStyle =
+          shot.color || (shot.kind === "needle" ? "#f0a565" : "#b9a1e8");
         ctx.fillRect(-7, -3, 11, 6);
         ctx.fillStyle = "#fff0ce";
         ctx.fillRect(-2, -1, 7, 2);
@@ -2173,7 +2467,7 @@
         : g.time < B.bossAt
           ? "精英追猎"
           : "守卫来袭";
-    $("footHint").hidden = g.time > 8 || g.mode !== "play";
+    $("footHint").hidden = QA || g.time > 8 || g.mode !== "play";
     const events = g.encounters;
     const eventKind = events?.pending?.kind || events?.active?.kind;
     const activeVisitor = events?.active
@@ -2213,11 +2507,18 @@
         ? special.t === "boss"
           ? "守卫锁定 · 留意攻击预警"
           : "精英追猎 · 侧向避让"
-        : B.combat.waves.filter((entry) => g.time >= entry.from).at(-1).hint;
+        : (assaultCombat() ? B.assault.waves : B.combat.waves)
+            .filter((entry) => g.time >= entry.from)
+            .at(-1).hint;
     $("bossBar").hidden = !special || g.mode === "results";
     if (special) {
       $("bossName").textContent =
-        special.t === "boss" ? "星海守卫者" : "反应堆追猎者";
+        special.t === "boss"
+          ? "星海守卫者"
+          : assaultCombat()
+            ? B.assault.eliteProfiles[special.eliteProfile].name +
+              (special.barrier > 0 ? " · 护甲" : "")
+            : "反应堆追猎者";
       $("bossHealth").textContent =
         Math.ceil(special.hp) + " / " + special.maxhp;
       $("bossFill").style.width =
@@ -2495,6 +2796,8 @@
       }
   }
   function enemyFire(enemy) {
+    if (assaultCombat() && enemy.t === "boss" && g.time >= 450)
+      enemy.echo = { remaining: 0.75, aim: enemy.aim };
     if (newCombat() && fireModernAttack(enemy)) return;
     const boss = enemy.t === "boss",
       elite = enemy.t === "elite";
@@ -2531,6 +2834,10 @@
     }
   }
   function attackKind(enemy) {
+    if (assaultCombat() && enemy.t === "elite") {
+      const patterns = B.assault.eliteProfiles[enemy.eliteProfile].attacks;
+      return patterns[Math.max(0, enemy.pattern - 1) % patterns.length];
+    }
     if (enemy.t === "lancer") return "dash";
     if (["minelayer", "courier"].includes(enemy.t)) return "mine";
     if (["sentinel", "watcher"].includes(enemy.t)) return "beam";
@@ -2563,22 +2870,23 @@
           x: enemy.x,
           y: enemy.y,
           heading: enemy.aim + (index - (count - 1) / 2) * 0.72 - 0.2,
-          sweep: 0.4,
+          sweep: assaultCombat() && enemy.t === "elite" ? 0.65 : 0.4,
           length: enemy.t === "boss" ? 440 : 310,
-          width: 9,
+          width: assaultCombat() && enemy.t === "elite" ? 12 : 9,
           age: 0,
-          duration: 0.65,
+          duration: assaultCombat() && enemy.t === "elite" ? 0.9 : 0.65,
           damage: B.combat.damage.beam,
         });
     } else if (kind === "mine") {
-      const count = enemy.t === "courier" ? 3 : 1;
+      const targetMines = assaultCombat() && enemy.eliteProfile === "warden";
+      const count = enemy.t === "courier" || targetMines ? 3 : 1;
       for (let index = 0; index < count; index++) {
         const heading = enemy.aim + (index - (count - 1) / 2) * 0.85;
         addHazard({
           kind,
           owner: enemy.id,
-          x: enemy.x + Math.cos(heading) * 38,
-          y: enemy.y + Math.sin(heading) * 38,
+          x: (targetMines ? enemy.targetX : enemy.x) + Math.cos(heading) * 38,
+          y: (targetMines ? enemy.targetY : enemy.y) + Math.sin(heading) * 38,
           age: 0,
           duration: 6,
           stage: "arming",
@@ -2601,8 +2909,39 @@
         damage: B.combat.damage.shock,
       });
     } else {
+      if (assaultCombat() && enemy.t === "elite") {
+        const count = kind === "cross" ? 8 : 5;
+        const speed =
+          155 * (1 + Math.max(0, g.time - 300) * B.assault.lateProjectileScale);
+        for (
+          let index = 0;
+          index < count && g.enemyShots.length < B.maxEnemyShots;
+          index++
+        ) {
+          const heading =
+            kind === "cross"
+              ? enemy.aim +
+                (Math.floor(index / 2) * T) / 4 +
+                (index % 2 ? 0.12 : -0.12)
+              : enemy.aim + (index - 2) * 0.22;
+          g.enemyShots.push({
+            x: enemy.x,
+            y: enemy.y,
+            vx: Math.cos(heading) * speed,
+            vy: Math.sin(heading) * speed,
+            t: 3.8,
+            kind: "needle",
+            color: kind === "cross" ? "#c49bef" : "#f4c57a",
+            damage: 9,
+            radius: 4,
+          });
+        }
+        playSound("enemyFire", { strength: 0.8 });
+        return true;
+      }
       if (!["ranger", "wisp"].includes(enemy.t)) return false;
-      const count = enemy.t === "wisp" ? 2 : 3;
+      const count =
+        enemy.t === "wisp" ? 2 : assaultCombat() && g.time < 150 ? 1 : 3;
       for (
         let index = 0;
         index < count && g.enemyShots.length < B.maxEnemyShots;
@@ -2612,7 +2951,11 @@
           enemy.aim +
           (index - (count - 1) / 2) * (enemy.t === "wisp" ? 0.55 : 0.22);
         const speed =
-          (enemy.t === "wisp" ? 118 : 155) * B.combat.fireSpeedScale;
+          (enemy.t === "wisp" ? 118 : 155) *
+          B.combat.fireSpeedScale *
+          (assaultCombat()
+            ? 1 + Math.max(0, g.time - 300) * B.assault.lateProjectileScale
+            : 1);
         g.enemyShots.push({
           x: enemy.x,
           y: enemy.y,
@@ -2723,6 +3066,37 @@
           point.x < VW - 15 &&
           point.y > 215 &&
           point.y < VH - 30);
+      if (assaultCombat() && enemy.echo) {
+        enemy.echo.remaining -= dt;
+        if (!visibleThreat || distance > 420) enemy.echo = null;
+        else if (enemy.echo.remaining <= 0) {
+          for (
+            let index = 0;
+            index < 5 && g.enemyShots.length < B.maxEnemyShots;
+            index++
+          ) {
+            const heading = enemy.echo.aim + (index - 2) * 0.18;
+            const speed =
+              170 *
+              (1 + Math.max(0, g.time - 300) * B.assault.lateProjectileScale);
+            g.enemyShots.push({
+              x: enemy.x,
+              y: enemy.y,
+              vx: Math.cos(heading) * speed,
+              vy: Math.sin(heading) * speed,
+              t: 3.8,
+              kind: "needle",
+              color: "#c49bef",
+              damage: 9,
+              radius: 4,
+            });
+          }
+          g.metrics.shots["hostile-boss-echo"] =
+            (g.metrics.shots["hostile-boss-echo"] || 0) + 1;
+          playSound("enemyFire", { strength: 0.8 });
+          enemy.echo = null;
+        }
+      }
       if (
         newProgression() &&
         enemy.warn > 0 &&
@@ -2733,7 +3107,8 @@
       }
       let heading = angle(enemy, g.p);
       if (
-        ["ranger", "sentinel", "watcher"].includes(enemy.t) &&
+        (["ranger", "sentinel", "watcher"].includes(enemy.t) ||
+          (assaultCombat() && enemy.eliteProfile === "warden")) &&
         distance < (newProgression() && enemy.t === "watcher" ? 130 : 175)
       )
         heading += Math.PI;
@@ -2747,6 +3122,11 @@
       let speed =
         enemy.speed *
         (1 + Math.min(300, g.time) / 1000) *
+        (assaultCombat()
+          ? 1 +
+            Math.max(0, g.time - B.assault.lateSpeedAfter) *
+              B.assault.lateSpeedScale
+          : 1) *
         (1 - (enemy.gravitySlow || 0));
       enemy.gravitySlow = 0;
       enemy.recovery = Math.max(0, (enemy.recovery || 0) - dt);
@@ -2768,7 +3148,10 @@
       enemy.y += Math.sin(heading) * speed * dt;
       const canFire = newCombat()
         ? enemy.t !== "skimmer" &&
-          g.time >= (B.combat.attackUnlock[enemy.t] || 0)
+          g.time >=
+            ((assaultCombat() ? B.assault.attackUnlock : B.combat.attackUnlock)[
+              enemy.t
+            ] || 0)
         : ["ranger", "elite", "boss"].includes(enemy.t);
       if (canFire && visibleThreat && distance < (newCombat() ? 380 : 520)) {
         if (enemy.warn > 0) {
@@ -2778,38 +3161,53 @@
           enemy.fire -= dt;
           if (enemy.fire <= 0) {
             enemy.aim = angle(enemy, g.p);
+            if (assaultCombat()) {
+              enemy.targetX = g.p.x;
+              enemy.targetY = g.p.y;
+            }
             enemy.pattern++;
             if (newCombat()) playSound("enemyCharge");
-            enemy.warn = newCombat()
-              ? {
-                  lancer: 0.9,
-                  sentinel: 1.1,
-                  watcher: 1.2,
-                  minelayer: 0.8,
-                  courier: 1,
-                  tank: 1,
-                  ranger: 0.7,
-                  wisp: 0.65,
-                }[enemy.t] || 1
-              : enemy.t === "boss"
-                ? 0.7
-                : 0.4;
-            enemy.fire = newCombat()
-              ? {
-                  lancer: 3.1,
-                  sentinel: 3.8,
-                  watcher: 3.5,
-                  minelayer: 4.2,
-                  courier: 3.7,
-                  tank: 5,
-                  ranger: 2.6,
-                  wisp: 3.5,
-                }[enemy.t] || Math.max(1.7, 2.5 - 0.3 * ((enemy.tier || 1) - 1))
-              : enemy.t === "boss"
-                ? Math.max(1, 1.8 - 0.25 * ((enemy.tier || 1) - 1))
-                : enemy.t === "elite"
-                  ? 2
-                  : 2.5;
+            enemy.warn =
+              assaultCombat() && enemy.t === "elite"
+                ? enemy.eliteProfile === "warden"
+                  ? 1.2
+                  : 0.9
+                : newCombat()
+                  ? {
+                      lancer: 0.9,
+                      sentinel: 1.1,
+                      watcher: 1.2,
+                      minelayer: 0.8,
+                      courier: 1,
+                      tank: 1,
+                      ranger: 0.7,
+                      wisp: 0.65,
+                    }[enemy.t] || 1
+                  : enemy.t === "boss"
+                    ? 0.7
+                    : 0.4;
+            enemy.fire =
+              assaultCombat() && enemy.t === "elite"
+                ? enemy.eliteProfile === "warden"
+                  ? 3.2
+                  : 2.5
+                : newCombat()
+                  ? {
+                      lancer: 3.1,
+                      sentinel: 3.8,
+                      watcher: 3.5,
+                      minelayer: 4.2,
+                      courier: 3.7,
+                      tank: 5,
+                      ranger: 2.6,
+                      wisp: 3.5,
+                    }[enemy.t] ||
+                    Math.max(1.7, 2.5 - 0.3 * ((enemy.tier || 1) - 1))
+                  : enemy.t === "boss"
+                    ? Math.max(1, 1.8 - 0.25 * ((enemy.tier || 1) - 1))
+                    : enemy.t === "elite"
+                      ? 2
+                      : 2.5;
           }
         }
       }
@@ -2842,7 +3240,10 @@
       shot.t -= dt;
       const previousX = shot.x,
         previousY = shot.y;
-      if (["missile", "drone", "hive"].includes(shot.kind)) {
+      const steering = assaultCombat()
+        ? shot.homing === true
+        : ["missile", "drone", "hive"].includes(shot.kind);
+      if (steering) {
         const target =
           g.enemy.find((enemy) => enemy.id === shot.targetId && enemy.hp > 0) ||
           closest(shot.x, shot.y, 350);
@@ -2855,7 +3256,12 @@
               Math.cos(desired - current),
             );
           const speed = Math.hypot(shot.vx, shot.vy),
-            rate = shot.kind === "missile" ? 3.4 : g.evolved.drone ? 4.8 : 2.8;
+            rate =
+              shot.kind === "missile"
+                ? 3.4
+                : assaultCombat() || g.evolved.drone
+                  ? 4.8
+                  : 2.8;
           const heading = current + clamp(turn, -rate * dt, rate * dt);
           shot.vx = Math.cos(heading) * speed;
           shot.vy = Math.sin(heading) * speed;
@@ -2863,6 +3269,29 @@
       }
       shot.x += shot.vx * dt;
       shot.y += shot.vy * dt;
+      if (
+        assaultCombat() &&
+        shot.kind === "missile" &&
+        !shot.homing &&
+        segmentDistance(
+          { x: shot.destinationX, y: shot.destinationY },
+          previousX,
+          previousY,
+          shot.x,
+          shot.y,
+        ) < 8
+      ) {
+        blast(
+          shot.destinationX,
+          shot.destinationY,
+          46,
+          shot.damage,
+          "#f4c57a",
+          "missile",
+        );
+        shot.t = 0;
+        continue;
+      }
       for (const enemy of g.enemy) {
         if (
           enemy.hp <= 0 ||
@@ -2876,7 +3305,28 @@
           shot.kind === "pulse" && !!(g.active.drone || g.fused.thunderhive);
         const damage =
           shot.damage + (enemy.marked > 0 && shot.kind !== "pulse" ? 7 : 0);
-        hurtEnemy(enemy, damage, mark, shot.kind);
+        hurtEnemy(enemy, damage, mark, shot.source || shot.kind);
+        if (shot.kind === "crystal" && shot.bounces > 0) {
+          const target = g.enemy
+            .filter(
+              (candidate) =>
+                candidate.hp > 0 &&
+                !shot.hit.has(candidate.id) &&
+                dist(candidate, shot) < 210,
+            )
+            .sort((a, b) => dist(a, shot) - dist(b, shot))[0];
+          if (target) {
+            const heading = angle(shot, target);
+            const speed = Math.hypot(shot.vx, shot.vy);
+            shot.vx = Math.cos(heading) * speed;
+            shot.vy = Math.sin(heading) * speed;
+            shot.damage *= 0.84;
+            shot.bounces--;
+            g.metrics.refractions = (g.metrics.refractions || 0) + 1;
+            ring(shot.x, shot.y, 12, "#b9a1e8", 0.18);
+            break;
+          }
+        }
         if (
           shot.kind === "pulse" &&
           g.active.arc &&
@@ -2902,10 +3352,14 @@
           blast(
             shot.x,
             shot.y,
-            g.evolved.missile ? 68 : 46,
+            (assaultCombat() ? shot.evolvedAtLaunch : g.evolved.missile)
+              ? 68
+              : 46,
             shot.damage * 0.7,
             "#f4c57a",
-            g.evolved.missile ? "meteorbarrage" : "missile",
+            (assaultCombat() ? shot.evolvedAtLaunch : g.evolved.missile)
+              ? "meteorbarrage"
+              : "missile",
           );
         if (
           newProgression() &&
@@ -2957,13 +3411,17 @@
         ctx.arc(point.x, point.y, 60, opening + 0.48, opening + T - 0.48);
         ctx.stroke();
       } else {
-        const count = enemy.t === "courier" ? 3 : 1;
+        const targetMines = assaultCombat() && enemy.eliteProfile === "warden";
+        const origin = targetMines
+          ? toScreen(enemy.targetX, enemy.targetY)
+          : point;
+        const count = enemy.t === "courier" || targetMines ? 3 : 1;
         for (let index = 0; index < count; index++) {
           const heading = enemy.aim + (index - (count - 1) / 2) * 0.85;
           ctx.beginPath();
           ctx.arc(
-            point.x + Math.cos(heading) * 38,
-            point.y + Math.sin(heading) * 38,
+            origin.x + Math.cos(heading) * 38,
+            origin.y + Math.sin(heading) * 38,
             26,
             0,
             T,
@@ -2985,9 +3443,13 @@
             ? 160
             : 100;
     ctx.beginPath();
-    const count = kind === "beam" && enemy.t === "watcher" ? 3 : 1;
+    const count =
+      kind === "cross" ? 4 : kind === "beam" && enemy.t === "watcher" ? 3 : 1;
     for (let index = 0; index < count; index++) {
-      const heading = enemy.aim + (index - (count - 1) / 2) * 0.72;
+      const heading =
+        kind === "cross"
+          ? enemy.aim + (index * T) / 4
+          : enemy.aim + (index - (count - 1) / 2) * 0.72;
       for (const spread of kind === "beam" ? [-0.2, 0.2] : [0]) {
         ctx.moveTo(point.x, point.y);
         ctx.lineTo(
@@ -3072,6 +3534,30 @@
   function drawOrbitals() {
     const art = window.SurvivorArt,
       player = toScreen(g.p.x, g.p.y);
+    if (assaultCombat()) {
+      const nodes = prismNodes();
+      const energized = g.time < (g.prismFlashUntil || 0);
+      for (const node of nodes) {
+        const point = toScreen(node.x, node.y);
+        if (nodes.length > 1 && energized) {
+          const next = toScreen(
+            nodes[(nodes.indexOf(node) + 1) % nodes.length].x,
+            nodes[(nodes.indexOf(node) + 1) % nodes.length].y,
+          );
+          ctx.strokeStyle =
+            g.evolved.prism || g.fused.eventhorizon ? "#f4c57a" : "#b9a1e8";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(point.x, point.y);
+          ctx.lineTo(next.x, next.y);
+          ctx.stroke();
+        }
+        art.draw(ctx, "prism_crystal", point.x, point.y, {
+          angle: node.heading,
+          scale: energized ? 1.1 : 0.9,
+        });
+      }
+    }
     if (g.active.blade || g.fused.blastwheel) {
       const count = g.fused.blastwheel
         ? newProgression()
@@ -3199,15 +3685,19 @@
     )
       throw Error("武装槽位无效");
     if (
-      ![180, 600].includes(rules.runSeconds) ||
-      (rules.combatVersion !== undefined && rules.combatVersion !== 2) ||
+      ![180, 600, 900].includes(rules.runSeconds) ||
+      (rules.combatVersion !== undefined &&
+        ![2, 3].includes(rules.combatVersion)) ||
       (rules.progressionVersion !== undefined &&
         rules.progressionVersion !== 2) ||
       (newProgression(game) &&
-        (!newCombat(game) || rules.runSeconds !== 600)) ||
+        (!newCombat(game) || ![600, 900].includes(rules.runSeconds))) ||
+      (assaultCombat(game) &&
+        (rules.runSeconds !== 900 || !newProgression(game))) ||
+      (rules.runSeconds === 900 && !assaultCombat(game)) ||
       (rules.runSeconds === 180 &&
         (rules.activeSlots !== 4 || rules.passiveSlots !== 3)) ||
-      (rules.runSeconds === 600 &&
+      ([600, 900].includes(rules.runSeconds) &&
         (rules.activeSlots !== 6 || rules.passiveSlots !== 6))
     )
       throw Error("对局规则快照无效，原数据保留");
@@ -3227,6 +3717,48 @@
         !Array.isArray(game.encounters?.log))
     )
       throw Error("遭遇记录无效，原数据保留");
+    if (assaultCombat(game)) {
+      for (const enemy of game.enemy) {
+        if (
+          enemy.echo &&
+          (enemy.t !== "boss" ||
+            !Number.isFinite(enemy.echo.aim) ||
+            !Number.isFinite(enemy.echo.remaining) ||
+            enemy.echo.remaining <= 0 ||
+            enemy.echo.remaining > 0.75)
+        )
+          throw Error("守卫追加预警无效，原数据保留");
+        if (enemy.t !== "elite") continue;
+        if (
+          !B.assault.eliteProfiles[enemy.eliteProfile] ||
+          !Number.isFinite(enemy.barrier) ||
+          enemy.barrier < 0 ||
+          !Number.isFinite(enemy.maxBarrier) ||
+          enemy.barrier > enemy.maxBarrier
+        )
+          throw Error("精英装甲记录无效，原数据保留");
+      }
+      for (const shot of game.shots) {
+        if (
+          ["drone", "missile", "hive"].includes(shot.kind) &&
+          (typeof shot.homing !== "boolean" ||
+            typeof shot.evolvedAtLaunch !== "boolean" ||
+            !Number.isFinite(shot.destinationX) ||
+            !Number.isFinite(shot.destinationY))
+        )
+          throw Error("发射记录无效，原数据保留");
+        if (
+          shot.kind === "crystal" &&
+          (!Number.isInteger(shot.bounces) ||
+            shot.bounces < 0 ||
+            shot.bounces > 4 ||
+            !["prism", "kaleidoscope", "eventhorizon", "gravityPrism"].includes(
+              shot.source,
+            ))
+        )
+          throw Error("晶体折射记录无效，原数据保留");
+      }
+    }
     for (const [id, level] of Object.entries(game.active))
       if (
         !ACTIVE.includes(id) ||
@@ -3520,11 +4052,11 @@
     $("continueBtn").textContent = active
       ? "继续上次 · " +
         fmt(active.snapshot.game.time) +
-        (!newProgression(active.snapshot.game) ? " · 原规则" : "")
+        (!assaultCombat(active.snapshot.game) ? " · 原规则" : "")
       : "继续上次";
     $("startBtn").disabled = !ready;
     $("startBtn").textContent = active
-      ? newProgression(active.snapshot.game)
+      ? assaultCombat(active.snapshot.game)
         ? "结算上局，开始10分钟"
         : "结算上局，开始新版"
       : "开始一局";
@@ -3550,9 +4082,11 @@
     syncAudioState();
     $("resultState").textContent = committed ? "本局已归档" : "结算等待保存";
     $("resultTitle").textContent = summary.victory
-      ? summary.endTime >= 600
-        ? "十分钟，穿过星海"
-        : "三分钟，稳稳归来"
+      ? summary.endTime >= 900
+        ? "十五分钟，穿过星海"
+        : summary.endTime >= 600
+          ? "十分钟，穿过星海"
+          : "三分钟，稳稳归来"
       : "下一局，会更强";
     $("resultDesc").textContent = summary.victory
       ? summary.bossKilled
@@ -3725,7 +4259,19 @@
         return g;
       },
       legacyProgression: () => {
+        g.rules.combatVersion = 2;
+        g.rules.runSeconds = 600;
+        g.endTime = 600;
+        g.xpNext = 112;
         delete g.rules.progressionVersion;
+        return g;
+      },
+      legacyV063: () => {
+        g.rules.version = "0.6.3";
+        g.rules.combatVersion = 2;
+        g.rules.runSeconds = 600;
+        g.endTime = 600;
+        g.xpNext = 72;
         return g;
       },
       reward: (forcedRoll) => {
@@ -3759,10 +4305,16 @@
       forceEnemies: (count = 5, type = "skimmer") => {
         for (let index = 0; index < count; index++) spawnEnemy(type);
       },
-      enemy: (type, x, y, hp = 1000) => {
-        const enemy = spawnEnemy(type);
+      enemy: (type, x, y, hp = 1000, profile = "hunter") => {
+        const enemy = spawnEnemy(type, 1, profile);
         if (!enemy) return null;
         Object.assign(enemy, { x, y, hp, maxhp: hp, speed: 0, fire: 999 });
+        if (assaultCombat() && type === "elite") {
+          enemy.barrier = Math.round(
+            hp * B.assault.eliteProfiles[profile].barrier,
+          );
+          enemy.maxBarrier = enemy.barrier;
+        }
         return enemy.id;
       },
       forceDamage: damageShip,

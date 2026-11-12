@@ -34,6 +34,7 @@ const priority = [
   "引力透镜",
   "雷暴蜂群",
   "追踪无人机",
+  "护航无人机",
   "电弧线圈",
   "锁定芯片",
   "超导电容",
@@ -42,6 +43,19 @@ const priority = [
   "旋刃护卫",
   "冷却矩阵",
   "回收磁场",
+];
+const guardPriority = [
+  "星舰壁垒",
+  "反应壁垒",
+  "离子护盾",
+  "反应装甲",
+  "贯星轨炮",
+  "脉冲主炮",
+  "聚能透镜",
+  "磁旋收割阵",
+  "旋刃护卫",
+  "回收磁场",
+  ...priority,
 ];
 function steer(g, previous) {
   const visible = (point) => {
@@ -74,8 +88,11 @@ function steer(g, previous) {
       y = g.p.y + vy * 0.55;
     let risk = 0;
     for (const enemy of enemies) {
-      const heading = Math.atan2(g.p.y - enemy.y, g.p.x - enemy.x),
-        speed = enemy.charge > 0 ? 315 : enemy.speed;
+      const heading =
+          enemy.charge > 0
+            ? enemy.chargeAngle
+            : Math.atan2(g.p.y - enemy.y, g.p.x - enemy.x),
+        speed = enemy.charge > 0 ? 350 : enemy.speed;
       const ex = enemy.x + Math.cos(heading) * speed * 0.45,
         ey = enemy.y + Math.sin(heading) * speed * 0.45;
       const distance = Math.max(1, Math.hypot(x - ex, y - ey) - enemy.radius);
@@ -83,6 +100,17 @@ function steer(g, previous) {
         distance < 25
           ? 20000 + (25 - distance) * 100
           : 50 * (100 / distance) ** 2;
+      const warningAim = enemy.echo?.aim ?? enemy.aim;
+      if ((enemy.warn > 0 || enemy.echo) && Number.isFinite(warningAim)) {
+        const along =
+          (x - enemy.x) * Math.cos(warningAim) +
+          (y - enemy.y) * Math.sin(warningAim);
+        const across = Math.abs(
+          (x - enemy.x) * Math.sin(warningAim) -
+            (y - enemy.y) * Math.cos(warningAim),
+        );
+        if (along > 0 && along < 440 && across < 35) risk += 16000;
+      }
     }
     for (const hazard of (g.hazards || []).filter(visible)) {
       if (hazard.kind === "mine" && hazard.stage !== "blast") {
@@ -153,7 +181,7 @@ async function choose(page, g, row) {
   if (g.p.hp / g.p.maxhp < 0.4)
     index = cards.findIndex((name) => name === "船体修补");
   if (index < 0)
-    for (const name of priority) {
+    for (const name of row.policy === "guard" ? guardPriority : priority) {
       index = cards.findIndex((text) => text === name);
       if (index >= 0) break;
     }
@@ -191,7 +219,7 @@ async function natural(browser) {
     imports: false,
     timeOrSeedOverride: false,
     policy:
-      "Automated keyboard avoidance of visible enemies/projectiles/hazards, visible pickups and actual offered-card titles. No game-state mutation. This is not a human skill benchmark. The whole-page Playwright video has no audio.",
+      "Automated keyboard avoidance of visible enemies, locked charge direction, displayed telegraphs, projectiles/hazards, visible pickups and actual offered-card titles. No game-state mutation. This is not a human skill benchmark. The whole-page Playwright video has no audio.",
     runs: [],
     errors,
   };
@@ -211,14 +239,21 @@ async function natural(browser) {
     await page.waitForFunction(
       () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
     );
-    const row = { run, upgrades: [], samples: [] },
+    const row = {
+        run,
+        policy: run === 2 ? "guard" : "beam",
+        startingProfile: await page.evaluate(() => SurvivorDemo.profile()),
+        upgrades: [],
+        samples: [],
+      },
       began = Date.now();
     let previous = -1,
       next = 0;
     const thresholds = [
-      10, 30, 60, 120, 180, 240, 300, 360, 420, 480, 540, 590,
+      10, 30, 60, 120, 180, 240, 300, 360, 420, 480, 540, 590, 660, 720, 780,
+      840, 890,
     ];
-    while (Date.now() - began < 900000) {
+    while (Date.now() - began < 1300000) {
       const g = await page.evaluate(() => SurvivorDemo.state());
       if (g.mode === "results") {
         await page.waitForFunction(() => !SurvivorDemo.saving());
@@ -236,7 +271,7 @@ async function natural(browser) {
           audio: await page.evaluate(() => SurvivorAudio.inspect()),
           wallSeconds: (Date.now() - began) / 1000,
         };
-        completed = g.time >= 600;
+        completed = g.time >= g.endTime;
         break;
       }
       if (g.mode === "upgrade") {
@@ -296,7 +331,7 @@ async function natural(browser) {
   }
   assert(
     completed,
-    "Retain failed attempts and repair the game or policy before claiming a natural600second run",
+    "Retain failed attempts and repair the game or policy before claiming a full-duration natural run",
   );
   await page.locator("#retryBtn").click();
   await page.waitForFunction(() => SurvivorDemo.state()?.mode === "play");
@@ -519,7 +554,7 @@ async function main() {
     await browser.close();
   }
 }
-module.exports = { natural };
+module.exports = { natural, steer, inputDirections: directions };
 if (require.main === module)
   main().catch((error) => {
     console.error(error);

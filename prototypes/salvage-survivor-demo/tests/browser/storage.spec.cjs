@@ -433,7 +433,7 @@ test("old v0.6 short-run snapshots retain180seconds,4/3slots and the original ca
   const cash = (await stored(page)).profile.credits;
   await page.locator("#retryBtn").click();
   await page.waitForFunction(() => SurvivorDemo.state()?.mode === "play");
-  expect((await state(page)).endTime).toBe(600);
+  expect((await state(page)).endTime).toBe(900);
   expect((await state(page)).rules).toMatchObject({
     activeSlots: 6,
     passiveSlots: 6,

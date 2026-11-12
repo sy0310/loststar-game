@@ -3,6 +3,9 @@ const fs = require("node:fs");
 const path = require("node:path");
 const assert = require("node:assert/strict");
 const { createModel } = require("./model-harness.cjs");
+const { steer, inputDirections } = require("./capture-v062.cjs");
+const movement = process.env.SURVIVOR_MOVEMENT || "square";
+assert(["square", "adaptive"].includes(movement));
 const output = path.resolve(
   process.env.SURVIVOR_SIM_OUT || "releases/survivor-v06-simulation.json",
 );
@@ -100,6 +103,7 @@ function select(g, policy) {
     scope:
       "Actual update, damage, drops and offered-card choices under fixed model seeds. Square movement policy, no invulnerability or reward overrides. Not physical device, wall-clock or human preference evidence.",
     policies: priorities,
+    movement,
     rows: [],
     summary: {},
   };
@@ -110,9 +114,11 @@ function select(g, policy) {
         const samples = [],
           choices = [];
         const thresholds = [
-          10, 30, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600,
+          10, 30, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600, 660, 720,
+          780, 840, 900,
         ];
         let sampleIndex = 0;
+        let previousDirection = -1;
         for (let frame = 0; frame < g.endTime * 60 + 100; frame++) {
           if (g.mode === "results") break;
           if (g.mode === "upgrade") {
@@ -125,13 +131,22 @@ function select(g, policy) {
             });
             assert(Q.select(index));
           }
-          const direction = Math.floor(g.time / 1.5) % 4;
-          g.keys = {
-            d: direction === 0,
-            s: direction === 1,
-            a: direction === 2,
-            w: direction === 3,
-          };
+          if (movement === "adaptive") {
+            if (frame % 6 === 0) {
+              previousDirection = steer(g, previousDirection);
+              g.keys = Object.fromEntries(
+                inputDirections[previousDirection].map((key) => [key, true]),
+              );
+            }
+          } else {
+            const direction = Math.floor(g.time / 1.5) % 4;
+            g.keys = {
+              d: direction === 0,
+              s: direction === 1,
+              a: direction === 2,
+              w: direction === 3,
+            };
+          }
           Q.step(1 / 60);
           if (
             sampleIndex < thresholds.length &&
@@ -145,6 +160,16 @@ function select(g, policy) {
               enemies: g.enemy.length,
               xp: g.xp,
               credits: g.credits,
+              damageTaken: g.metrics.shipDamage,
+              shieldsBlocked: g.metrics.shieldsBlocked,
+              hostileShots: g.enemyShots.length,
+              nearestEnemy: g.enemy.length
+                ? Math.min(
+                    ...g.enemy.map((enemy) =>
+                      Math.hypot(enemy.x - g.p.x, enemy.y - g.p.y),
+                    ),
+                  )
+                : null,
             });
             sampleIndex++;
           }

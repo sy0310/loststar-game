@@ -76,7 +76,7 @@ for (const [active, passive, id, damageKind] of evolutions)
       expect(result.id).toBe(id);
       expect(result.damage).toBeGreaterThan(0);
       expect(result.enemyHP.some((hp) => hp < 100000)).toBe(true);
-      expect(result.art).toBe(56);
+      expect(result.art).toBe(59);
       expect(result.slots).toBe(1);
       await info.attach("actual-evolution", {
         body: Buffer.from(JSON.stringify(result, null, 2)),
@@ -367,6 +367,7 @@ test("the 600-second deadline settles before a same-frame XP upgrade can interru
   await boot(page);
   await start(page);
   await page.evaluate(() => {
+    SurvivorQA.legacyV063();
     const g = SurvivorQA.state();
     g.time = g.endTime - 0.001;
     g.xp = g.xpNext - 1;

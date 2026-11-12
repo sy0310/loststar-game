@@ -94,6 +94,7 @@ test("new decoded enemy bodies produce actual dash, beam, mine, curved and shock
     return ["lancer", "sentinel", "minelayer", "wisp", "ranger", "tank"].map(
       (type) => {
         const g = Q.startModel(46);
+        Q.legacyV063();
         g.active = {};
         g.spawnTime = 999;
         g.p.inv = 999;
@@ -116,7 +117,7 @@ test("new decoded enemy bodies produce actual dash, beam, mine, curved and shock
       },
     );
   });
-  for (const row of rows) expect(row.art).toBe(56);
+  for (const row of rows) expect(row.art).toBe(59);
   expect(rows.find((r) => r.type === "lancer").charge).toBeGreaterThan(0);
   expect(rows.find((r) => r.type === "sentinel").hazards).toContain("beam");
   expect(rows.find((r) => r.type === "minelayer").hazards).toContain("mine");
@@ -203,6 +204,8 @@ test("old v061 ten-minute snapshot preserves profile and old combat through resu
       g = Q.state();
     g.time = 169;
     g.rules.version = "0.6.1";
+    g.rules.runSeconds = 600;
+    g.endTime = 600;
     delete g.rules.progressionVersion;
     delete g.rules.combatVersion;
     delete g.hazards;
@@ -355,7 +358,7 @@ test("galaxy raster and all five actor sources decode and reduced motion keeps m
   await page.touchscreen.tap(80, 450);
   await page.waitForTimeout(250);
   expect((await state(page)).time).toBeGreaterThan(0);
-  expect((await state(page)).rules.combatVersion).toBe(2);
+  expect((await state(page)).rules.combatVersion).toBe(3);
 });
 
 test("boss alternates actual fan, sweep and gap shock while hazard and bullet caps stay bounded", async ({

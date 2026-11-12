@@ -295,7 +295,7 @@ test("v063 scaled visitor exhaust and health use the same actual sprite scale", 
         SurvivorArt.draw = draw;
       }
       const body = SurvivorArt.catalog[kind],
-        scale = kind === "courier" || kind === "watcher" ? 1.5 : 1;
+        scale = kind === "courier" || kind === "watcher" ? 3 : 2;
       result.push({
         kind,
         scale,
@@ -304,8 +304,8 @@ test("v063 scaled visitor exhaust and health use the same actual sprite scale", 
           .filter((c) => c.id === "thruster")
           .slice(0, body.exhaustAnchors.length),
         expected: body.exhaustAnchors.map(([x, y]) => [
-          (x - body.center[0]) * 2 * scale,
-          (y - body.center[1]) * 2 * scale,
+          (x - body.center[0]) * scale,
+          (y - body.center[1]) * scale,
         ]),
       });
     }
@@ -315,7 +315,7 @@ test("v063 scaled visitor exhaust and health use the same actual sprite scale", 
     expect(r.body.options.scale).toBe(r.scale);
     expect(r.exhaust.map((c) => [c.x, c.y])).toEqual(r.expected);
     for (const flame of r.exhaust)
-      expect(flame.options.scale).toBeCloseTo(0.13 * r.scale, 6);
+      expect(flame.options.scale).toBeCloseTo(0.065 * r.scale, 6);
   }
 });
 
