@@ -740,6 +740,10 @@
     ]).then(() => {
       slot.element.removeEventListener("playing", onPlaying);
       if (slot.token !== token) return;
+      if (!slot.element.paused && slot.element.currentTime > position + 0.02) {
+        slot.warmed = true;
+        slot.needsGesture = false;
+      }
       slot.token++;
       slot.element.pause();
       try {
@@ -813,6 +817,8 @@
     const cleanup = () => {
       slot.element.removeEventListener("playing", confirm);
       if (slot.cancelPlayback === cleanup) slot.cancelPlayback = null;
+      if (slot.pendingPlayback?.confirm === confirm)
+        slot.pendingPlayback = null;
     };
     const confirm = () => {
       if (completed) return;
@@ -835,6 +841,7 @@
       onStarted();
     };
     slot.cancelPlayback = cleanup;
+    slot.pendingPlayback = { confirm, position: slot.element.currentTime };
     slot.element.addEventListener("playing", confirm);
     let result;
     try {
@@ -869,6 +876,18 @@
 
   function streamTick() {
     if (!canMusicPlay() || mediaWarming || slots.length !== 2) return;
+    // Confirm actual progress when a backend omits both the event and promise.
+    for (const slot of slots) {
+      const pending = slot.pendingPlayback;
+      if (
+        pending &&
+        !slot.element.paused &&
+        !slot.element.ended &&
+        !slot.element.seeking &&
+        slot.element.currentTime > pending.position + 0.02
+      )
+        pending.confirm();
+    }
     const now = context.currentTime;
     const active = slots[activeSlot];
     if (active.failed) {

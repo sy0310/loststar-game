@@ -37,3 +37,7 @@ Linux WebKit记录到音轨实际播放、play确认仍未返回，控制器未�
 [自然整局与刷新继续录像](../../../artifacts/survivor-v061/recovery/natural-ten-minute-ui-silent.mp4)为实时全页面录像，无音轨。[11配方与6+6实际混音录像](../../../artifacts/survivor-v061/recovery/qa-eleven-weapons-with-mix.mp4)录取真实Canvas和最终音乐／音效总线，显式QA靶与合法直接配方，不含HTML控件。原始报告及[冻结证明](../../../artifacts/survivor-v061/recovery/verification.json)分别绑定新运行源码。
 
 首分钟真人体验、路线平衡、十分钟发热与扬声器混音继续待审。CI以Draft PR #2当前提交的实际checks与完成回执为准。测试和内部复核没有替代用户美术、趣味和真机签收。
+
+### Linux CI继续返修
+
+469398候选的Mac34项与新包HTTP验证通过，Linux WebKit又捕捉到未发出playing事件的场景，CI尚未通过。后续修正增加真实媒体时钟前进的确认通道，仍经过同一个token／代际保护，不以缺少事件就强行判成功。新测试同时抑制Promise确认和playing事件，要求实际音轨推进并完成换曲。修正验证完成后另给新冻结包与平台编号，469398保留历史候选。

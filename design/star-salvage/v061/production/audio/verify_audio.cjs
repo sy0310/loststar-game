@@ -142,7 +142,7 @@ const server = http.createServer((request, response) => {
         : "") +
       '<script>window.audioTestMedia=[];const OriginalAudio=window.Audio;window.Audio=function(...args){const element=new OriginalAudio(...args);window.audioTestMedia.push(element);return element;};window.Audio.prototype=OriginalAudio.prototype;window.audioGameRandomCalls=0;Math.random=()=>{window.audioGameRandomCalls++;throw Error("Audio consumed game randomness");};</script>' +
       (pendingMedia
-        ? "<script>const createAudio=window.Audio;window.Audio=function(...args){const element=new createAudio(...args),play=element.play.bind(element);element.play=()=>{play().catch(()=>{});return new Promise(()=>{});};return element;};window.Audio.prototype=createAudio.prototype;</script>"
+        ? "<script>const createAudio=window.Audio;window.Audio=function(...args){const element=new createAudio(...args),play=element.play.bind(element),listen=element.addEventListener.bind(element);element.play=()=>{play().catch(()=>{});return new Promise(()=>{});};element.addEventListener=(type,...args)=>{if(type!=='playing')listen(type,...args);};return element;};window.Audio.prototype=createAudio.prototype;</script>"
         : "") +
       '<script src="/audio-engine.js"></script><script>document.getElementById("unlock").onclick=async()=>{window.audioUnlocked=await SurvivorAudio.unlock();SurvivorAudio.setState({playing:true,paused:false,phase:2});};</script>',
   );
@@ -242,7 +242,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       assert.equal(pendingState.externalMusic.mediaFailures, 0);
       report.cases.push({
         engine: name,
-        id: "actual-playing-events-confirm-start-and-crossfade-when-play-promises-remain-pending",
+        id: "actual-media-clock-confirms-start-and-crossfade-with-pending-promises-and-missing-playing-events",
         state: pendingState,
       });
       await pendingMediaPage.close();

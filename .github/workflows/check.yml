@@ -264,14 +264,6 @@ jobs:
       - name: Verify playback-recovery frozen delivery when present
         if: hashFiles('artifacts/survivor-v061/recovery/verification.json') != ''
         run: SURVIVOR_EVIDENCE_FOLDER=artifacts/survivor-v061/recovery node prototypes/salvage-survivor-demo/tests/verify-v061-evidence.cjs
-      - name: Verify native pixels, actual combat and fixed-seed policies
-        run: |
-          npm --prefix prototypes/salvage-survivor-demo run check:art
-          python3 prototypes/salvage-survivor-demo/sync_runtime.py --check
-          SURVIVOR_MODEL_OUT="$PWD/releases/survivor-model.json" npm --prefix prototypes/salvage-survivor-demo test
-          SURVIVOR_SIM_OUT="$PWD/releases/survivor-simulation.json" npm --prefix prototypes/salvage-survivor-demo run simulate
-          python3 prototypes/salvage-survivor-demo/build.py --freeze
-          python3 prototypes/salvage-survivor-demo/verify_package.py releases/survivor-ci-extracted
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'
@@ -282,6 +274,16 @@ jobs:
           PY
       - run: npx playwright install --with-deps chromium webkit
         timeout-minutes: 5
+      - name: Audio streaming, transitions, mix and bounded voices
+        run: SURVIVOR_AUDIO_REPORT="$PWD/releases/survivor-audio.json" npm --prefix prototypes/salvage-survivor-demo run test:audio
+      - name: Verify native pixels, actual combat and fixed-seed policies
+        run: |
+          npm --prefix prototypes/salvage-survivor-demo run check:art
+          python3 prototypes/salvage-survivor-demo/sync_runtime.py --check
+          SURVIVOR_MODEL_OUT="$PWD/releases/survivor-model.json" npm --prefix prototypes/salvage-survivor-demo test
+          SURVIVOR_SIM_OUT="$PWD/releases/survivor-simulation.json" npm --prefix prototypes/salvage-survivor-demo run simulate
+          python3 prototypes/salvage-survivor-demo/build.py --freeze
+          python3 prototypes/salvage-survivor-demo/verify_package.py releases/survivor-ci-extracted
       - name: Test extracted ZIP on real HTTP in both browser engines
         run: |
           node prototypes/salvage-survivor-demo/serve.cjs --port 4397 --root releases/survivor-ci-extracted > /tmp/survivor-http.log 2>&1 &
@@ -290,8 +292,6 @@ jobs:
           curl --fail --retry 10 --retry-delay 1 --retry-connrefused --silent http://127.0.0.1:4397/ > /dev/null
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_REPORT="$PWD/releases/survivor-browser.json" SURVIVOR_TEST_OUTPUT="$PWD/releases/survivor-browser-tests" npm --prefix prototypes/salvage-survivor-demo run test:browser
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_COMPAT_OUT="$PWD/releases/survivor-compatibility.json" node prototypes/salvage-survivor-demo/tests/compatibility.cjs
-      - name: Audio streaming, transitions, mix and bounded voices
-        run: SURVIVOR_AUDIO_REPORT="$PWD/releases/survivor-audio.json" npm --prefix prototypes/salvage-survivor-demo run test:audio
       - uses: actions/upload-artifact@v4
         if: always()
         with:
