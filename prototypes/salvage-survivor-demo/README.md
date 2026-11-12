@@ -36,7 +36,7 @@ SURVIVOR_URL=http://127.0.0.1:4397/ npm --prefix prototypes/salvage-survivor-dem
 
 ## 素材与构建
 
-原生 PNG、可编辑 ORA、原始生成图与提示分别保存在 `design/star-salvage/v06/production`、`v061/production`与`v062/production`。原50项图像及新增5敌机／1银河背板加两型精英与独立折射水晶共59项，使用共同紫灰、暖金、冰蓝像素语言。仓库保留1×/2×/4×，运行包只带2×。
+原生 PNG、可编辑 ORA、原始生成图与提示分别保存在 `design/star-salvage/v06/production`、`v061/production`、`v062/production`与`v064/production`。原50项图像及新增5敌机／1银河背板加两型精英与独立折射水晶共59项，使用共同紫灰、暖金、冰蓝像素语言。仓库保留1×/2×/4×，运行包只带2×。
 
 用户已授权按 PR 文字美化飞船、生存画面和武器。缺失的三手机概念板没有被假称入库。新增素材仍待用户视觉审核。
 
@@ -49,7 +49,7 @@ python3 prototypes/salvage-survivor-demo/verify_package.py releases/survivor-ext
 
 用户已反馈470518方向大体认可。本轮武器和辅助上限各5级，精英／Boss击退后直接升一级，合格进化／融合有75%概率进入三选一。普通武器组合有实际联动，四条终极融合要求两件已进化武器。旧180秒／4+3与既有600秒／6+6在途局继续原规则，新局使用progressionVersion2。
 
-新增 `tests/upgrade-save.cjs` 从已提交470518原ZIP启动真实HTTP，保留27049及满永久强化、旧进化／融合，在同一隔离HTTP源替换新版，检查整个原记录和下一局。实际Safari、物理手机、锁屏、帧率和用户趣味分别登记，PR #2保持Draft。
+新增 `tests/upgrade-save.cjs` 从已提交470518与474099原ZIP启动真实HTTP，保留27049及满永久强化、旧进化／融合，在同一隔离HTTP源替换新版，分别检查两种旧成长规则、整个原记录和新版900秒下一局。实际Safari、物理手机、锁屏、帧率和用户趣味分别登记，PR #2保持Draft。
 
 ## v0.6.4规则与回归
 
