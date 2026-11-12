@@ -350,6 +350,10 @@ async function threatsAV(browser) {
   const report = {
     source: await page.evaluate(() => SurvivorBuild),
     qa: true,
+    captureSourceSha256: require("node:crypto")
+      .createHash("sha256")
+      .update(fs.readFileSync(__filename))
+      .digest("hex"),
     scope:
       "Explicit threat fixtures, highHP and time/visitor schedule jumps. Real wall-clock attacks and final audio bus. Canvas recording includes music/SFX, whole-page recording is silent. No natural progress claim.",
     rows: [],
@@ -410,14 +414,22 @@ async function threatsAV(browser) {
       g.qaLabel = "攻击验证 · " + type;
       Q.enemy(type, -105, -100, 100000);
       const enemy = g.enemy[0];
-      enemy.speed = type === "lancer" ? 65 : 18;
+      enemy.speed = type === "minelayer" ? 0 : type === "lancer" ? 65 : 18;
       enemy.fire = 0.6;
     }, type);
     await page.waitForTimeout(1100);
     await page.screenshot({
       path: path.join(output, `qa-${type}-warning.png`),
     });
-    await page.waitForTimeout(type === "boss" ? 6500 : 4200);
+    if (type === "minelayer") {
+      await page.waitForTimeout(1300);
+      await page.keyboard.down("a");
+      await page.keyboard.down("w");
+      await page.waitForTimeout(350);
+      await page.keyboard.up("a");
+      await page.keyboard.up("w");
+      await page.waitForTimeout(1800);
+    } else await page.waitForTimeout(type === "boss" ? 6500 : 4200);
     await page.screenshot({ path: path.join(output, `qa-${type}-attack.png`) });
     report.rows.push(
       await page.evaluate(
@@ -432,6 +444,10 @@ async function threatsAV(browser) {
       ),
     );
   }
+  assert(
+    report.rows.find((row) => row.type === "minelayer").damage > 0,
+    "Actual keyboard approach must trigger the armed mine and its real explosion",
+  );
   for (const type of ["courier", "watcher"]) {
     await page.evaluate((type) => {
       const Q = SurvivorQA,

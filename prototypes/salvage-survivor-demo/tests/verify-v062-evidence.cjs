@@ -120,6 +120,13 @@ assert.equal(qa.qa, true);
 assert.equal(qa.rows.length, 9);
 assert.equal(qa.source.commit, build.sourceCommit);
 assert.deepEqual(qa.errors, []);
+assert(qa.rows.find((row) => row.type === "minelayer").damage > 0);
+const captureCode = cp.execFileSync(
+  "git",
+  ["cat-file", "blob", proof.qaCaptureHarnessBlob],
+  { cwd: root },
+);
+assert.equal(hash(captureCode), qa.captureSourceSha256);
 const tap = read("taptap-receipt.json");
 assert.equal(tap.sourceCommit, build.sourceCommit);
 assert.equal(tap.mainModuleUnchanged, true);
