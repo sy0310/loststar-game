@@ -498,3 +498,9 @@ B＋C四船11档货舱、12短奇遇/6彩蛋、一次谈价/即时NPC快拍、4�
 Mac4283／4397已替换同一冻结包，同源legacy-v051与独立4399保留原玩法。真实旧档替换前后UI导出逐字段相等，未导入QA。用户已认可原469298核心和两首原始歌曲，新469347的音画、十分钟节奏、物理手机锁屏、发热和最终混音待实机审核。
 
 详细交付与逐项证据见design/star-salvage/v061/DELIVERY.md、artifacts/survivor-v061/verification.json及唯一要求表SALVAGE061六项。CI使用PR当前提交的实际checks，工程结果与用户美术／趣味分开登记。
+
+### v0.6.1播放恢复候选469398
+
+运行5934dae，重新完成34音频、288双引擎双尺寸HTTP、21模型、160策略与自然600秒。真实playing事件与play Promise共同确认并用token取消迟到回调，新增旧实现稳定失败的两个反例。原469347及32项记录保留，未挪作新版证明。
+
+新自然对局4945击落、20级、861零件、三进化、击退Boss、三次音乐淡化。首升级43.84秒，保留与模型时间差异。Mac原档更新前后导出一致，原生Safari刷新／静音／后台复核完成；新版手机混音、锁屏、发热与十分钟趣味仍待用户。最新冻结证据见artifacts/survivor-v061/recovery/verification.json，交付见design/star-salvage/v061/RECOVERY_DELIVERY.md。

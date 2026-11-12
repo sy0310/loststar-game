@@ -111,6 +111,31 @@ const sha = (bytes) => crypto.createHash("sha256").update(bytes).digest("hex");
     info.sourceFiles.find((row) => row.path.endsWith("/audio-engine.js"))
       .sha256,
   );
+  if (!originalDelivery) {
+    assert.equal(audio.passed, 34);
+    assert.equal(
+      audio.testSourceSha256,
+      sha(
+        cp.execFileSync(
+          "git",
+          [
+            "show",
+            info.sourceCommit +
+              ":design/star-salvage/v061/production/audio/verify_audio.cjs",
+          ],
+          { cwd: root },
+        ),
+      ),
+    );
+    for (const row of audio.cases.filter((row) =>
+      row.id.startsWith("read-only-recording"),
+    )) {
+      const bytes = fs.readFileSync(path.join(root, row.file));
+      assert.equal(bytes.length, row.bytes);
+      assert.equal(sha(bytes), row.sha256);
+      assert(row.pcmRms > 0.00001 && row.sampleCount >= row.sampleRate);
+    }
+  }
   const media = json("media.json");
   assert(
     media.rows.some(
