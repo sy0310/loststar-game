@@ -244,7 +244,7 @@ jobs:
   survivor:
     name: Survivor actual combat, art and persistence
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
@@ -276,6 +276,9 @@ jobs:
       - name: Verify fifteen-minute combat delivery when present
         if: hashFiles('artifacts/survivor-v064/verification.json') != ''
         run: node prototypes/salvage-survivor-demo/tests/verify-v064-evidence.cjs
+      - name: Verify evolved fleets and distinct Boss delivery when present
+        if: hashFiles('artifacts/survivor-v065/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v065-evidence.cjs
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'
