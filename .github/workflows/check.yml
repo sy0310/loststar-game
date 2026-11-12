@@ -307,6 +307,7 @@ jobs:
           trap 'kill "$task_survivor_pid"' EXIT
           curl --fail --retry 10 --retry-delay 1 --retry-connrefused --silent http://127.0.0.1:4397/ > /dev/null
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_REPORT="$PWD/releases/survivor-browser.json" SURVIVOR_TEST_OUTPUT="$PWD/releases/survivor-browser-tests" npm --prefix prototypes/salvage-survivor-demo run test:browser
+          SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_REPORT="$PWD/releases/survivor-claim-regression.json" SURVIVOR_TEST_OUTPUT="$PWD/releases/survivor-claim-regression-tests" npm --prefix prototypes/salvage-survivor-demo run test:browser -- storage.spec.cjs --grep 'a second tab claims' --repeat-each=10
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_COMPAT_OUT="$PWD/releases/survivor-compatibility.json" node prototypes/salvage-survivor-demo/tests/compatibility.cjs
           SURVIVOR_CURRENT_ROOT="$PWD/releases/survivor-ci-extracted" SURVIVOR_MIGRATION_OUT="$PWD/releases/survivor-migration.json" node prototypes/salvage-survivor-demo/tests/upgrade-save.cjs
       - uses: actions/upload-artifact@v4
@@ -320,6 +321,8 @@ jobs:
             releases/survivor-simulation.json
             releases/survivor-adaptive.json
             releases/survivor-browser.json
+            releases/survivor-claim-regression.json
+            releases/survivor-claim-regression-tests/
             releases/survivor-compatibility.json
             releases/survivor-migration.json
             releases/survivor-browser-tests/

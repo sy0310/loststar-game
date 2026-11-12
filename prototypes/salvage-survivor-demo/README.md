@@ -59,4 +59,4 @@ python3 prototypes/salvage-survivor-demo/verify_package.py releases/survivor-ext
 
 ## v0.6.5
 
-新局规则4，内外武装轨道分离、进化主体放大，独立星舰壁垒和新5精英／4Boss攻击。旧规则2／3继续其原快照。新增9项正式像素资源位于v065/production，原生、ORA、2×／4×与提示完整。80模型、560固定包HTTP、6旧ZIP迁移、普通900秒与QA27分别记录，手机和用户视觉待审。
+新局规则4，内外武装轨道分离、进化主体放大，独立星舰壁垒和新5精英／4Boss攻击。旧规则2／3继续其原快照。新增9项正式像素资源位于v065/production，原生、ORA、2×／4×与提示完整。80模型、568固定包HTTP、6旧ZIP迁移、普通900秒与QA27分别记录，手机和用户视觉待审。
