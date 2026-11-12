@@ -118,8 +118,8 @@ async function read(page) {
           (Math.floor(i / 7) - 3) * 62,
           1000000,
         );
-      Q.enemy("elite", 165, 60, 1000000);
-      Q.enemy("boss", -165, -70, 1000000);
+      Q.enemy("elite", 165, 60, 1000000, "hive");
+      Q.enemy("boss", -165, -70, 1000000, "judicator");
       for (const enemy of g.enemy) enemy.fire = 0.2;
       for (let i = 0; i < 56; i++)
         g.enemyShots.push({

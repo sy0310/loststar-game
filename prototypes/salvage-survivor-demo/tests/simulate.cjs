@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const assert = require("node:assert/strict");
 const { createModel } = require("./model-harness.cjs");
-const { steer, inputDirections } = require("./capture-v062.cjs");
+const { steer, inputDirections } = require("./capture-v065.cjs");
 const movement = process.env.SURVIVOR_MOVEMENT || "square";
 assert(["square", "adaptive"].includes(movement));
 const output = path.resolve(

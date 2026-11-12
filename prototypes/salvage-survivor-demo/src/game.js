@@ -149,12 +149,17 @@
       }
     );
   }
-  const newCombat = (game = g) => [2, 3, 4].includes(runRules(game).combatVersion);
-  const assaultCombat = (game = g) => [3, 4].includes(runRules(game).combatVersion);
+  const newCombat = (game = g) =>
+    [2, 3, 4].includes(runRules(game).combatVersion);
+  const assaultCombat = (game = g) =>
+    [3, 4].includes(runRules(game).combatVersion);
   const showcaseCombat = (game = g) => runRules(game).combatVersion === 4;
   const eliteSpec = (enemy, game = g) =>
-    (showcaseCombat(game) ? B.showcase : B.assault).eliteProfiles[enemy.eliteProfile];
-  const bossSpec = (enemy) => B.showcase.bossProfiles[enemy.bossProfile || "core"];
+    (showcaseCombat(game) ? B.showcase : B.assault).eliteProfiles[
+      enemy.eliteProfile
+    ];
+  const bossSpec = (enemy) =>
+    B.showcase.bossProfiles[enemy.bossProfile || "core"];
   const newProgression = (game = g) => runRules(game).progressionVersion === 2;
   const activeMaximum = (game = g) => (newProgression(game) ? 5 : 3);
   const passiveMaximum = (game = g) => (newProgression(game) ? 5 : 2);
@@ -781,7 +786,62 @@
     if (g.texts.length < B.maxDamageNumbers)
       g.texts.push({ x, y: y - 25, t: 1.1, s: label, color: "#73d9e8" });
   }
-  function spawnEnemy(force, tier = 1, eliteProfile = "hunter") {
+  function actorId(enemy) {
+    if (assaultCombat() && enemy.t === "elite") return eliteSpec(enemy).art;
+    if (showcaseCombat() && enemy.t === "boss") return bossSpec(enemy).art;
+    return enemy.t;
+  }
+  function enemyPose(enemy) {
+    if (showcaseCombat() && ["boss", "elite"].includes(enemy.t))
+      return enemy.facing ?? angle(enemy, g.p) + Math.PI / 2;
+    return enemy.t === "boss"
+      ? Math.sin(g.time * 0.8) * 0.1
+      : (enemy.charge > 0
+          ? enemy.chargeAngle
+          : enemy.warn > 0
+            ? enemy.aim
+            : angle(enemy, g.p)) +
+          Math.PI / 2;
+  }
+  function enemyAnchor(enemy, anchor) {
+    const body = window.SurvivorArt.catalog[actorId(enemy)];
+    if (!anchor || !body) return { x: enemy.x, y: enemy.y };
+    const x = (anchor[0] - body.center[0]) * 2;
+    const y = (anchor[1] - body.center[1]) * 2;
+    const rotation = enemyPose(enemy);
+    return {
+      x: enemy.x + x * Math.cos(rotation) - y * Math.sin(rotation),
+      y: enemy.y + x * Math.sin(rotation) + y * Math.cos(rotation),
+    };
+  }
+  function enemyPort(enemy, index = 0, launcher = false) {
+    const body = window.SurvivorArt.catalog[actorId(enemy)];
+    const ports = launcher
+      ? body?.launcherAnchors || body?.launchAnchors
+      : body?.shotNozzles || body?.weaponAnchors || body?.muzzleAnchors;
+    return enemyAnchor(enemy, ports?.[index % ports.length]);
+  }
+  function enemyCircles(enemy) {
+    const body = window.SurvivorArt.catalog[actorId(enemy)];
+    if (showcaseCombat() && body?.collisionCircles)
+      return body.collisionCircles.map((circle) => ({
+        ...enemyAnchor(enemy, [circle.x, circle.y]),
+        radius: circle.r * 2,
+      }));
+    return [{ x: enemy.x, y: enemy.y, radius: enemy.radius }];
+  }
+  function hitsEnemy(enemy, x1, y1, x2, y2, width) {
+    return enemyCircles(enemy).some(
+      (circle) =>
+        segmentDistance(circle, x1, y1, x2, y2) < circle.radius + width,
+    );
+  }
+  function spawnEnemy(
+    force,
+    tier = 1,
+    eliteProfile = "hunter",
+    bossProfile = "core",
+  ) {
     if (!g) return null;
     const special = force === "boss" || force === "elite" || !!VISITORS[force];
     if (g.enemy.length >= (special ? B.maxEnemies : B.maxEnemies - 2))
@@ -812,8 +872,12 @@
       (assaultCombat() && B.assault.enemies[type]) || ENEMY_STATS[type];
     const profile =
       assaultCombat() && type === "elite"
-        ? B.assault.eliteProfiles[eliteProfile]
-        : null;
+        ? (showcaseCombat() ? B.showcase : B.assault).eliteProfiles[
+            eliteProfile
+          ]
+        : showcaseCombat() && type === "boss"
+          ? B.showcase.bossProfiles[bossProfile]
+          : null;
     const scale =
       (1 +
         g.time /
@@ -854,7 +918,12 @@
       pattern: 0,
       charge: 0,
     };
-    if (profile) {
+    if (showcaseCombat() && ["boss", "elite"].includes(type)) {
+      enemy.facing = angle(enemy, g.p) + Math.PI / 2;
+      if (type === "boss") enemy.bossProfile = bossProfile;
+      if (eliteProfile === "hive" && type === "elite") enemy.summonsLeft = 4;
+    }
+    if (profile && type === "elite") {
       enemy.eliteProfile = eliteProfile;
       enemy.barrier = Math.round(enemy.maxhp * profile.barrier);
       enemy.maxBarrier = enemy.barrier;
@@ -1236,10 +1305,7 @@
     if (g.beams.length > 12) g.beams.shift();
     g.metrics.shots[source] = (g.metrics.shots[source] || 0) + 1;
     for (const enemy of g.enemy)
-      if (
-        enemy.hp > 0 &&
-        segmentDistance(enemy, g.p.x, g.p.y, x, y) < enemy.radius + width
-      )
+      if (enemy.hp > 0 && hitsEnemy(enemy, g.p.x, g.p.y, x, y, width))
         hurtEnemy(enemy, damage, false, source);
   }
   function prismNodes() {
@@ -1247,8 +1313,12 @@
     const evolved = !!g.evolved.prism || !!g.fused.eventhorizon;
     const count = evolved ? 6 : Math.max(1, g.active.prism || 1);
     const radius = showcaseCombat()
-      ? evolved ? 51 : 40 + Math.min(5, g.passive.refraction || 0)
-      : evolved ? 66 : 42 + (g.passive.refraction || 0) * 2;
+      ? evolved
+        ? 51
+        : 40 + Math.min(5, g.passive.refraction || 0)
+      : evolved
+        ? 66
+        : 42 + (g.passive.refraction || 0) * 2;
     return Array.from({ length: count }, (_, index) => {
       const heading = g.time * 0.65 + (index * T) / count;
       return {
@@ -1260,10 +1330,15 @@
   }
   function droneNodes() {
     const count = g.fused.thunderhive
-      ? newProgression() ? 6 : 5
-      : g.evolved.drone ? 4 : Math.ceil(activePower("drone"));
+      ? newProgression()
+        ? 6
+        : 5
+      : g.evolved.drone
+        ? 4
+        : Math.ceil(activePower("drone"));
     return Array.from({ length: count }, (_, index) => {
-      const heading = g.time * (showcaseCombat() ? -0.75 : 1.6) + (index * T) / count;
+      const heading =
+        g.time * (showcaseCombat() ? -0.75 : 1.6) + (index * T) / count;
       return {
         x: g.p.x + Math.cos(heading) * (showcaseCombat() ? 130 : 47),
         y: g.p.y + Math.sin(heading) * (showcaseCombat() ? 114 : 47),
@@ -1691,11 +1766,13 @@
   }
   function wave(dt) {
     if (runRules().runSeconds > 180) {
-      const milestones = assaultCombat()
-        ? B.assault.milestones
-        : newProgression()
-          ? B.progression.milestones
-          : B.milestones;
+      const milestones = showcaseCombat()
+        ? B.showcase.milestones
+        : assaultCombat()
+          ? B.assault.milestones
+          : newProgression()
+            ? B.progression.milestones
+            : B.milestones;
       for (const milestone of milestones) {
         const key = milestone.type + ":" + milestone.at;
         if (g.time < milestone.at || g.milestoneSeen.includes(key)) continue;
@@ -1707,7 +1784,12 @@
           existing.tier = Math.max(existing.tier || 1, milestone.tier);
           existing.fire = Math.min(existing.fire, 0.3);
         } else if (
-          !spawnEnemy(milestone.type, milestone.tier, milestone.profile)
+          !spawnEnemy(
+            milestone.type,
+            milestone.tier,
+            milestone.profile,
+            milestone.bossProfile,
+          )
         )
           continue;
         g.milestoneSeen.push(key);
@@ -1715,22 +1797,30 @@
           kind: milestone.type,
           time: g.time,
           tier: milestone.tier,
+          ...(showcaseCombat()
+            ? { identity: milestone.bossProfile || milestone.profile }
+            : {}),
         });
         if (milestone.type === "boss") {
           g.bossSpawned = true;
           playSound("boss");
           notify(
-            milestone.tier === 3
-              ? "最终守卫 · 深空合围"
-              : milestone.tier === 2
-                ? "第二守卫 · 火力升阶"
-                : "星海守卫者 · 来袭",
+            showcaseCombat()
+              ? B.showcase.bossProfiles[milestone.bossProfile || "core"].name +
+                  " · 来袭"
+              : milestone.tier === 3
+                ? "最终守卫 · 深空合围"
+                : milestone.tier === 2
+                  ? "第二守卫 · 火力升阶"
+                  : "星海守卫者 · 来袭",
           );
         } else {
           g.eliteSpawned = true;
           notify(
             assaultCombat()
-              ? B.assault.eliteProfiles[milestone.profile].name + " · 来袭"
+              ? (showcaseCombat() ? B.showcase : B.assault).eliteProfiles[
+                  milestone.profile
+                ].name + " · 来袭"
               : "追猎者 · 第" + milestone.tier + "阶段",
           );
         }
@@ -1898,6 +1988,7 @@
       updateHud(true);
       return;
     }
+    const siegeDetonations = [];
     for (const shot of g.enemyShots) {
       const previousX = shot.x,
         previousY = shot.y;
@@ -1911,15 +2002,45 @@
       shot.y += shot.vy * dt;
       shot.t -= dt;
       if (
+        shot.kind === "siege" &&
+        (shot.t <= 0 ||
+          segmentDistance(
+            { x: shot.destinationX, y: shot.destinationY },
+            previousX,
+            previousY,
+            shot.x,
+            shot.y,
+          ) < 5)
+      ) {
+        siegeDetonations.push({ x: shot.destinationX, y: shot.destinationY });
+        shot.t = 0;
+        continue;
+      }
+      if (
         segmentDistance(g.p, previousX, previousY, shot.x, shot.y) <
         10 + (shot.radius || 2)
       ) {
         damageShip(shot.damage || 8);
         shot.t = 0;
+        if (shot.kind === "siege")
+          siegeDetonations.push({ x: shot.x, y: shot.y });
       }
       if (g.mode !== "play") return;
     }
     g.enemyShots = g.enemyShots.filter((shot) => shot.t > 0);
+    for (const origin of siegeDetonations) {
+      g.metrics.shots["hostile-siege-detonation"] =
+        (g.metrics.shots["hostile-siege-detonation"] || 0) + 1;
+      burst(origin.x, origin.y, "explosion", 1.8);
+      ring(origin.x, origin.y, 32, "#f4c57a", 0.3);
+      if (dist(origin, g.p) < 32) damageShip(9);
+      for (let index = 0; index < 6; index++)
+        hostileShot(origin, (index * T) / 6, 105, {
+          t: 1.8,
+          color: "#f4c57a",
+          damage: 8,
+        });
+    }
     const attraction =
       150 + passivePower("magnet") * 55 + (g.evolved.blade ? 65 : 0);
     for (const pickup of g.pickups) {
@@ -2056,14 +2177,52 @@
       angle: g.facing,
       alpha: g.p.inv > 0 && Math.floor(g.time * 18) % 2 ? 0.6 : 1,
     });
-    window.SurvivorArt.draw(ctx, "cannon", position.x, position.y - 1, {
-      angle: g.aim + Math.PI / 2,
-      scale: 0.55,
-    });
+    const bastion = showcaseCombat() && g.fused.ionbastion;
+    window.SurvivorArt.draw(
+      ctx,
+      bastion ? "bastion_mount" : "cannon",
+      position.x,
+      position.y - 1,
+      {
+        angle: g.aim + Math.PI / 2,
+        scale: bastion
+          ? 1.6
+          : showcaseCombat() && g.evolved.cannon
+            ? 1.05
+            : 0.55,
+      },
+    );
+    if (bastion) {
+      const charge =
+        1 - clamp((g.attackClock.cannon || 0) / cooldown("cannon", 0.9), 0, 1);
+      ctx.save();
+      ctx.translate(position.x, position.y - 1);
+      ctx.rotate(g.aim + Math.PI / 2);
+      for (const side of [-1, 1]) {
+        ctx.fillStyle = "#b694d9";
+        ctx.fillRect(side * 20 - 2, 8, 4, 9);
+        ctx.fillStyle = "#fff0ce";
+        ctx.fillRect(
+          side * 20 - 1,
+          17 - Math.round(charge * 9),
+          2,
+          Math.max(1, Math.round(charge * 9)),
+        );
+      }
+      ctx.restore();
+    }
     if (g.p.shield > 0) {
-      const radius = g.evolved.shield ? 35 : 29;
+      const radius =
+        showcaseCombat() && g.fused.ionbastion
+          ? 45
+          : g.evolved.shield
+            ? showcaseCombat()
+              ? 41
+              : 35
+            : 29;
       ctx.strokeStyle = g.evolved.shield ? "#d4f6ed" : "#73d9e8";
-      ctx.lineWidth = 2;
+      ctx.lineWidth =
+        showcaseCombat() && (g.evolved.shield || g.fused.ionbastion) ? 4 : 2;
       ctx.beginPath();
       for (let index = 0; index <= 6; index++) {
         const heading = (index * T) / 6;
@@ -2078,7 +2237,12 @@
         "shield_piece",
         position.x,
         position.y - radius,
-        { scale: 0.6 },
+        {
+          scale:
+            showcaseCombat() && (g.evolved.shield || g.fused.ionbastion)
+              ? 1
+              : 0.6,
+        },
       );
     }
   }
@@ -2104,10 +2268,7 @@
     for (const enemy of g.enemy) {
       if (enemy.hp <= 0) continue;
       const point = toScreen(enemy.x, enemy.y);
-      const artId =
-        assaultCombat() && enemy.eliteProfile
-          ? B.assault.eliteProfiles[enemy.eliteProfile].art
-          : enemy.t;
+      const artId = actorId(enemy);
       const body = art.catalog[artId];
       const bodyScale = newProgression() && VISITORS[enemy.t] ? 3 : 2;
       if (assaultCombat() && enemy.t === "elite") {
@@ -2194,17 +2355,14 @@
         ctx.stroke();
         ctx.setLineDash([]);
       }
-      const heading =
-        (enemy.charge > 0
-          ? enemy.chargeAngle
-          : enemy.warn > 0
-            ? enemy.aim
-            : Math.atan2(g.p.y - enemy.y, g.p.x - enemy.x)) +
-        Math.PI / 2;
+      const heading = enemyPose(enemy);
       const propelled =
         ["lancer", "sentinel", "minelayer", "courier", "watcher"].includes(
           enemy.t,
         ) ||
+        (showcaseCombat() &&
+          ["elite", "boss"].includes(enemy.t) &&
+          body.exhaustAnchors) ||
         (assaultCombat() && enemy.eliteProfile && body.exhaustAnchors);
       if (newCombat() && propelled && (enemy.speed > 0 || enemy.charge > 0)) {
         ctx.save();
@@ -2225,12 +2383,28 @@
         ctx.restore();
       }
       art.draw(ctx, artId, point.x, point.y, {
-        angle: enemy.t === "boss" ? Math.sin(g.time * 0.8) * 0.1 : heading,
+        angle: heading,
         flash: enemy.flash > 0,
         flashAlpha:
           assaultCombat() && ["elite", "boss"].includes(enemy.t) ? 0.28 : 0.8,
         scale: bodyScale,
       });
+      if (
+        showcaseCombat() &&
+        enemy.t === "boss" &&
+        enemy.hp < enemy.maxhp / 2
+      ) {
+        const core = toScreen(enemy.x, enemy.y);
+        ctx.strokeStyle = "#f4c57a";
+        ctx.lineWidth = 2;
+        for (const sign of [-1, 1]) {
+          ctx.beginPath();
+          ctx.moveTo(core.x + sign * 10, core.y - 8);
+          ctx.lineTo(core.x + sign * 15, core.y);
+          ctx.lineTo(core.x + sign * 10, core.y + 8);
+          ctx.stroke();
+        }
+      }
       if (enemy.marked > 0) {
         ctx.strokeStyle = "#f4c57a";
         ctx.lineWidth = 1;
@@ -2246,7 +2420,11 @@
       if (shot.kind === "crystal") {
         art.draw(ctx, "prism_crystal", point.x, point.y, {
           angle: heading + Math.PI / 2,
-          scale: 0.65,
+          scale: showcaseCombat()
+            ? shot.source === "prism"
+              ? 0.8
+              : 1.2
+            : 0.65,
         });
         ctx.fillStyle = "#d2b5f0";
         ctx.globalAlpha = 0.55;
@@ -2262,21 +2440,22 @@
       if (shot.kind === "shard") {
         art.draw(ctx, "blade_body", point.x, point.y, {
           angle: heading + g.time * 8,
-          scale: 0.6,
+          scale: showcaseCombat() ? 1 : 0.6,
         });
         continue;
       }
+      const missileScale = showcaseCombat() && shot.evolvedAtLaunch ? 1.4 : 0.9;
       if (shot.kind === "missile") {
-        // Native missile exhaust begins at [12,20], center [12,12], scale .9.
+        // The native nozzle [12,20] follows the same body scale as its projectile.
         art.draw(
           ctx,
           "thruster",
-          point.x - Math.cos(heading) * 7.2,
-          point.y - Math.sin(heading) * 7.2,
+          point.x - Math.cos(heading) * 8 * missileScale,
+          point.y - Math.sin(heading) * 8 * missileScale,
           {
             angle: heading + Math.PI / 2,
             anchor: [12, 3],
-            scale: 0.3,
+            scale: missileScale / 3,
             frame: art.frameAt("thruster", g.time * 1000, true),
           },
         );
@@ -2305,7 +2484,12 @@
         point.y,
         {
           angle: Math.atan2(shot.vy, shot.vx) + Math.PI / 2,
-          scale: shot.kind === "missile" ? 0.9 : 0.55,
+          scale:
+            shot.kind === "missile"
+              ? missileScale
+              : showcaseCombat() && shot.evolvedAtLaunch
+                ? 0.95
+                : 0.55,
         },
       );
     }
@@ -2336,25 +2520,70 @@
         art.draw(ctx, "gravity_burst", point.x, point.y, {
           frame:
             Math.floor(g.time * 12) % art.catalog.gravity_burst.frames.length,
-          scale: 0.8,
+          scale: showcaseCombat()
+            ? well.fused
+              ? 1.9
+              : g.evolved.gravity
+                ? 1.4
+                : 0.8
+            : 0.8,
           alpha: 0.65,
         });
     }
     for (const beam of g.beams) {
       const start = toScreen(beam.x1, beam.y1),
         end = toScreen(beam.x2, beam.y2);
-      ctx.globalAlpha = clamp(beam.t / 0.16, 0, 1);
-      ctx.strokeStyle = beam.kind ? "#7151a0" : "#497c9d";
-      ctx.lineWidth = 12;
+      const bastion = showcaseCombat() && beam.source === "ionbastion";
+      ctx.globalAlpha = clamp(beam.t / (bastion ? 0.26 : 0.16), 0, 1);
+      if (bastion) {
+        const heading = Math.atan2(end.y - start.y, end.x - start.x);
+        ctx.save();
+        ctx.translate(start.x, start.y);
+        ctx.rotate(heading + Math.PI / 2);
+        ctx.strokeStyle = "#f4c57a";
+        ctx.lineWidth = 4;
+        for (const [x, y] of window.SurvivorArt.catalog.bastion_mount
+          .muzzleAnchors) {
+          ctx.beginPath();
+          ctx.moveTo((x - 20) * 1.6, (y - 20) * 1.6 - 1);
+          ctx.lineTo(0, -52);
+          ctx.stroke();
+        }
+        ctx.restore();
+        const dx = Math.cos(heading),
+          dy = Math.sin(heading);
+        for (
+          let step = 45;
+          step < Math.hypot(end.x - start.x, end.y - start.y);
+          step += 34
+        ) {
+          const x = start.x + dx * step,
+            y = start.y + dy * step;
+          ctx.strokeStyle = "#b694d9";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(x - dy * 14 - dx * 4, y + dx * 14 - dy * 4);
+          ctx.lineTo(x - dy * 18, y + dx * 18);
+          ctx.moveTo(x + dy * 14 - dx * 4, y - dx * 14 - dy * 4);
+          ctx.lineTo(x + dy * 18, y - dx * 18);
+          ctx.stroke();
+        }
+      }
+      ctx.strokeStyle = bastion ? "#8c6846" : beam.kind ? "#7151a0" : "#497c9d";
+      ctx.lineWidth = bastion
+        ? 20
+        : showcaseCombat() && beam.source === "piercebeam"
+          ? 16
+          : 12;
       ctx.beginPath();
       ctx.moveTo(start.x, start.y);
       ctx.lineTo(end.x, end.y);
       ctx.stroke();
-      ctx.strokeStyle = beam.kind ? "#bd9ee8" : "#73d9e8";
-      ctx.lineWidth = beam.width || 6;
+      ctx.strokeStyle = bastion ? "#f4c57a" : beam.kind ? "#bd9ee8" : "#73d9e8";
+      ctx.lineWidth = bastion ? 10 : beam.width || 6;
       ctx.stroke();
       ctx.strokeStyle = "#fff0ce";
-      ctx.lineWidth = 2;
+      ctx.lineWidth = bastion ? 4 : 2;
       ctx.stroke();
       ctx.globalAlpha = 1;
     }
@@ -2363,7 +2592,8 @@
         end = toScreen(arc.x2, arc.y2);
       ctx.globalAlpha = clamp(arc.t / 0.22, 0, 1);
       ctx.strokeStyle = arc.color || "#73d9e8";
-      ctx.lineWidth = 3;
+      ctx.lineWidth =
+        showcaseCombat() && (g.evolved.arc || g.fused.thunderhive) ? 6 : 3;
       ctx.beginPath();
       ctx.moveTo(start.x, start.y);
       ctx.lineTo((start.x + end.x) / 2 - 5, (start.y + end.y) / 2 + 5);
@@ -2373,7 +2603,12 @@
       ctx.strokeStyle = arc.core || "#e4f4ec";
       ctx.lineWidth = 1;
       ctx.stroke();
-      art.draw(ctx, "beam_cap", end.x, end.y, { scale: 0.28 });
+      art.draw(ctx, "beam_cap", end.x, end.y, {
+        scale:
+          showcaseCombat() && (g.evolved.arc || g.fused.thunderhive)
+            ? 0.6
+            : 0.28,
+      });
       ctx.globalAlpha = 1;
     }
     for (const effect of g.rings) {
@@ -2420,13 +2655,30 @@
     }
     for (const shot of g.enemyShots) {
       const point = toScreen(shot.x, shot.y);
-      if (["needle", "curl"].includes(shot.kind)) {
+      if (shot.kind === "siege") {
+        const target = toScreen(shot.destinationX, shot.destinationY);
+        ctx.strokeStyle = "#f4c57a";
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.strokeRect(target.x - 16, target.y - 16, 32, 32);
+        ctx.setLineDash([]);
+        art.draw(ctx, "missile_body", point.x, point.y, {
+          angle: Math.atan2(shot.vy, shot.vx) + Math.PI / 2,
+          scale: 1.15,
+        });
+      } else if (["needle", "curl"].includes(shot.kind)) {
         ctx.save();
         ctx.translate(point.x, point.y);
         ctx.rotate(Math.atan2(shot.vy, shot.vx));
         ctx.fillStyle =
           shot.color || (shot.kind === "needle" ? "#f0a565" : "#b9a1e8");
-        ctx.fillRect(-7, -3, 11, 6);
+        if (showcaseCombat() && shot.kind === "curl" && shot.radius === 7) {
+          ctx.beginPath();
+          ctx.lineWidth = 4;
+          ctx.strokeStyle = "#73d9e8";
+          ctx.arc(-2, 0, 8, -1.5, 1.5);
+          ctx.stroke();
+        } else ctx.fillRect(-7, -3, 11, 6);
         ctx.fillStyle = "#fff0ce";
         ctx.fillRect(-2, -1, 7, 2);
         ctx.restore();
@@ -2521,10 +2773,12 @@
     if (special) {
       $("bossName").textContent =
         special.t === "boss"
-          ? "星海守卫者"
+          ? showcaseCombat()
+            ? bossSpec(special).name +
+              (special.hp < special.maxhp / 2 ? " · 第二阶段" : "")
+            : "星海守卫者"
           : assaultCombat()
-            ? B.assault.eliteProfiles[special.eliteProfile].name +
-              (special.barrier > 0 ? " · 护甲" : "")
+            ? eliteSpec(special).name + (special.barrier > 0 ? " · 护甲" : "")
             : "反应堆追猎者";
       $("bossHealth").textContent =
         Math.ceil(special.hp) + " / " + special.maxhp;
@@ -2778,7 +3032,10 @@
       x = g.p.x + Math.cos(heading) * 660,
       y = g.p.y + Math.sin(heading) * 660;
     g.beams.push({
-      x1: g.p.x, y1: g.p.y, x2: x, y2: y,
+      x1: g.p.x,
+      y1: g.p.y,
+      x2: x,
+      y2: y,
       t: showcaseCombat() && source === "ionbastion" ? 0.26 : 0.16,
       source,
     });
@@ -2794,10 +3051,7 @@
       );
     g.metrics.shots[source] = (g.metrics.shots[source] || 0) + 1;
     for (const enemy of g.enemy)
-      if (
-        enemy.hp > 0 &&
-        segmentDistance(enemy, g.p.x, g.p.y, x, y) < enemy.radius + 5
-      ) {
+      if (enemy.hp > 0 && hitsEnemy(enemy, g.p.x, g.p.y, x, y, 5)) {
         hurtEnemy(
           enemy,
           damage,
@@ -2807,7 +3061,12 @@
       }
   }
   function enemyFire(enemy) {
-    if (assaultCombat() && enemy.t === "boss" && g.time >= 450)
+    if (
+      assaultCombat() &&
+      enemy.t === "boss" &&
+      g.time >= 450 &&
+      (!showcaseCombat() || enemy.bossProfile === "core")
+    )
       enemy.echo = { remaining: 0.75, aim: enemy.aim };
     if (newCombat() && fireModernAttack(enemy)) return;
     const boss = enemy.t === "boss",
@@ -2846,13 +3105,19 @@
   }
   function attackKind(enemy) {
     if (assaultCombat() && enemy.t === "elite") {
-      const patterns = B.assault.eliteProfiles[enemy.eliteProfile].attacks;
+      const patterns = eliteSpec(enemy).attacks;
       return patterns[Math.max(0, enemy.pattern - 1) % patterns.length];
     }
     if (enemy.t === "lancer") return "dash";
     if (["minelayer", "courier"].includes(enemy.t)) return "mine";
     if (["sentinel", "watcher"].includes(enemy.t)) return "beam";
     if (enemy.t === "tank") return "shock";
+    if (showcaseCombat() && enemy.t === "boss") {
+      const profile = bossSpec(enemy);
+      const patterns =
+        enemy.hp / enemy.maxhp < 0.5 ? profile.phaseTwo : profile.attacks;
+      return patterns[Math.max(0, enemy.pattern - 1) % patterns.length];
+    }
     if (enemy.t === "boss") return ["fan", "beam", "shock"][enemy.pattern % 3];
     if (enemy.t === "elite") return enemy.pattern % 2 ? "fan" : "dash";
     return "fan";
@@ -2868,6 +3133,10 @@
     const kind = attackKind(enemy);
     g.metrics.shots["hostile-" + enemy.t] =
       (g.metrics.shots["hostile-" + enemy.t] || 0) + 1;
+    if (showcaseCombat() && fireShowcaseAttack(enemy, kind)) {
+      playSound("enemyFire", { strength: 0.8 });
+      return true;
+    }
     if (kind === "dash") {
       enemy.charge = 0.48;
       enemy.chargeAngle = enemy.aim;
@@ -2889,7 +3158,11 @@
           damage: B.combat.damage.beam,
         });
     } else if (kind === "mine") {
-      const targetMines = assaultCombat() && enemy.eliteProfile === "warden";
+      const targetMines =
+        assaultCombat() &&
+        (enemy.eliteProfile === "warden" ||
+          (showcaseCombat() &&
+            ["hive", "ark"].includes(enemy.eliteProfile || enemy.bossProfile)));
       const count = enemy.t === "courier" || targetMines ? 3 : 1;
       for (let index = 0; index < count; index++) {
         const heading = enemy.aim + (index - (count - 1) / 2) * 0.85;
@@ -2983,6 +3256,142 @@
     playSound("enemyFire", { strength: 0.5 });
     return true;
   }
+  function hostileShot(origin, heading, speed, properties = {}) {
+    if (g.enemyShots.length >= B.maxEnemyShots) return false;
+    g.enemyShots.push({
+      ...origin,
+      vx: Math.cos(heading) * speed,
+      vy: Math.sin(heading) * speed,
+      t: 3.8,
+      kind: "needle",
+      radius: 4,
+      damage: 9,
+      ...properties,
+    });
+    return true;
+  }
+  function fireShowcaseAttack(enemy, kind) {
+    const phaseTwo = enemy.hp / enemy.maxhp < 0.5;
+    if (kind === "escort") {
+      const live = g.enemy.filter(
+        (e) => e.ownerId === enemy.id && e.hp > 0,
+      ).length;
+      const count = Math.min(2 - live, enemy.summonsLeft);
+      for (let index = 0; index < count; index++) {
+        const escort = spawnEnemy("wisp");
+        if (!escort) break;
+        const origin = enemyPort(enemy, 4 - enemy.summonsLeft, true);
+        Object.assign(escort, origin, { ownerId: enemy.id, fire: 1.5 });
+        enemy.summonsLeft--;
+        g.metrics.shots["hostile-escort-launched"] =
+          (g.metrics.shots["hostile-escort-launched"] || 0) + 1;
+        ring(origin.x, origin.y, 24, "#b9a1e8", 0.4);
+      }
+    } else if (kind === "hook" || kind === "spiral") {
+      const count = kind === "hook" ? 2 : phaseTwo ? 8 : 6;
+      for (let index = 0; index < count; index++) {
+        const heading =
+          kind === "hook"
+            ? enemy.aim + (index ? 0.55 : -0.55)
+            : enemy.aim + (index * T) / count;
+        hostileShot(
+          enemyPort(enemy, index % 2),
+          heading,
+          kind === "hook" ? 155 : 115,
+          {
+            kind: "curl",
+            turn: (index % 2 ? -1 : 1) * (kind === "hook" ? 1.15 : 0.5),
+            radius: kind === "hook" ? 7 : 4,
+            color: kind === "hook" ? "#73d9e8" : "#d0a4ef",
+          },
+        );
+      }
+    } else if (kind === "splitbeam") {
+      for (let index = 0; index < 2; index++) {
+        const origin = enemyPort(enemy, index);
+        addHazard({
+          kind: "beam",
+          owner: enemy.id,
+          portIndex: index,
+          ...origin,
+          heading: enemy.aim + (index ? 0.28 : -0.28),
+          sweep: index ? -0.5 : 0.5,
+          length: 420,
+          width: 10,
+          age: 0,
+          duration: phaseTwo ? 1 : 0.8,
+          damage: B.combat.damage.beam,
+        });
+      }
+    } else if (kind === "siege") {
+      for (let index = 0; index < 3; index++) {
+        const origin = enemyPort(enemy, index * 2, true);
+        const destination = {
+          x: enemy.targetX + (index - 1) * 65,
+          y: enemy.targetY,
+        };
+        hostileShot(origin, angle(origin, destination), 150, {
+          kind: "siege",
+          t: 3,
+          destinationX: destination.x,
+          destinationY: destination.y,
+          radius: 7,
+          damage: 10,
+        });
+      }
+    } else if (kind === "pincer") {
+      addHazard({
+        kind,
+        owner: enemy.id,
+        x: enemy.targetX,
+        y: enemy.targetY,
+        heading: enemy.aim,
+        age: 0,
+        duration: 2.6,
+        warning: 1.1,
+        damage: 9,
+      });
+    } else if (kind === "dualburst") {
+      for (let port = 0; port < 2; port++)
+        for (let index = 0; index < (phaseTwo ? 4 : 3); index++)
+          hostileShot(
+            enemyPort(enemy, port),
+            enemy.aim + (index - (phaseTwo ? 1.5 : 1)) * 0.18,
+            165,
+            { color: port ? "#f4c57a" : "#c49bef" },
+          );
+    } else if (enemy.t === "boss" && kind === "cross") {
+      for (let index = 0; index < 8; index++)
+        hostileShot(
+          enemyPort(enemy, index % 2),
+          enemy.aim +
+            (Math.floor(index / 2) * T) / 4 +
+            (index % 2 ? 0.12 : -0.12),
+          145,
+          { color: "#f4c57a" },
+        );
+    } else return false;
+    g.metrics.shots["hostile-" + kind] =
+      (g.metrics.shots["hostile-" + kind] || 0) + 1;
+    return true;
+  }
+  function pincerWalls(hazard) {
+    const progress = clamp(
+      (hazard.age - hazard.warning) / (hazard.duration - hazard.warning),
+      0,
+      1,
+    );
+    const separation = 90 - progress * 56;
+    const normalX = -Math.sin(hazard.heading),
+      normalY = Math.cos(hazard.heading);
+    const alongX = Math.cos(hazard.heading) * 120,
+      alongY = Math.sin(hazard.heading) * 120;
+    return [-1, 1].map((side) => {
+      const x = hazard.x + normalX * separation * side;
+      const y = hazard.y + normalY * separation * side;
+      return { x1: x - alongX, y1: y - alongY, x2: x + alongX, y2: y + alongY };
+    });
+  }
   function updateHazards(dt) {
     for (const hazard of g.hazards) {
       hazard.age += dt;
@@ -2994,8 +3403,12 @@
           hazard.age = hazard.duration;
           continue;
         }
-        hazard.x = owner.x;
-        hazard.y = owner.y;
+        const origin =
+          hazard.portIndex === undefined
+            ? owner
+            : enemyPort(owner, hazard.portIndex);
+        hazard.x = origin.x;
+        hazard.y = origin.y;
         const heading =
           hazard.heading + (hazard.sweep * hazard.age) / hazard.duration;
         if (
@@ -3007,6 +3420,15 @@
             hazard.y + Math.sin(heading) * hazard.length,
           ) <
           10 + hazard.width / 2
+        )
+          damageShip(hazard.damage);
+      } else if (hazard.kind === "pincer") {
+        if (
+          hazard.age >= hazard.warning &&
+          pincerWalls(hazard).some(
+            (wall) =>
+              segmentDistance(g.p, wall.x1, wall.y1, wall.x2, wall.y2) < 16,
+          )
         )
           damageShip(hazard.damage);
       } else if (hazard.kind === "shock") {
@@ -3155,6 +3577,24 @@
         heading = enemy.chargeAngle;
       }
       if (enemy.warn > 0) speed *= 0.35;
+      if (showcaseCombat() && ["elite", "boss"].includes(enemy.t)) {
+        const desired =
+          (enemy.charge > 0
+            ? enemy.chargeAngle
+            : enemy.warn > 0
+              ? enemy.aim
+              : angle(enemy, g.p)) +
+          Math.PI / 2;
+        const delta = Math.atan2(
+          Math.sin(desired - enemy.facing),
+          Math.cos(desired - enemy.facing),
+        );
+        enemy.facing += clamp(
+          delta,
+          -(enemy.t === "boss" ? 1.9 : 4) * dt,
+          (enemy.t === "boss" ? 1.9 : 4) * dt,
+        );
+      }
       enemy.x += Math.cos(heading) * speed * dt;
       enemy.y += Math.sin(heading) * speed * dt;
       const canFire = newCombat()
@@ -3222,7 +3662,11 @@
           }
         }
       }
-      if (dist(enemy, g.p) < enemy.radius + 12) {
+      if (
+        enemyCircles(enemy).some(
+          (circle) => dist(circle, g.p) < circle.radius + 12,
+        )
+      ) {
         damageShip(
           enemy.t === "boss"
             ? 22
@@ -3307,8 +3751,7 @@
         if (
           enemy.hp <= 0 ||
           shot.hit.has(enemy.id) ||
-          segmentDistance(enemy, previousX, previousY, shot.x, shot.y) >=
-            enemy.radius + shot.r
+          !hitsEnemy(enemy, previousX, previousY, shot.x, shot.y, shot.r)
         )
           continue;
         shot.hit.add(enemy.id);
@@ -3415,6 +3858,69 @@
       kind === "dash" ? "#73d9e8" : kind === "mine" ? "#bd9ce9" : "#efad72";
     ctx.lineWidth = 2;
     ctx.setLineDash([4, 7]);
+    if (
+      showcaseCombat() &&
+      [
+        "hook",
+        "spiral",
+        "escort",
+        "siege",
+        "pincer",
+        "splitbeam",
+        "dualburst",
+      ].includes(kind)
+    ) {
+      if (["siege", "pincer"].includes(kind)) {
+        const target = toScreen(enemy.targetX, enemy.targetY);
+        ctx.strokeRect(target.x - 24, target.y - 24, 48, 48);
+        if (kind === "pincer") {
+          for (const wall of pincerWalls({
+            x: enemy.targetX,
+            y: enemy.targetY,
+            heading: enemy.aim,
+            age: 0,
+            warning: 1.1,
+            duration: 2.6,
+          })) {
+            const a = toScreen(wall.x1, wall.y1),
+              b = toScreen(wall.x2, wall.y2);
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      } else if (kind === "splitbeam" || kind === "dualburst") {
+        for (let port = 0; port < 2; port++) {
+          const origin = enemyPort(enemy, port),
+            start = toScreen(origin.x, origin.y);
+          const heading = enemy.aim + (port ? 0.28 : -0.28);
+          ctx.beginPath();
+          ctx.moveTo(start.x, start.y);
+          ctx.lineTo(
+            start.x + Math.cos(heading) * 320,
+            start.y + Math.sin(heading) * 320,
+          );
+          ctx.stroke();
+        }
+      } else {
+        for (let port = 0; port < 2; port++) {
+          const origin = enemyPort(enemy, port, kind === "escort"),
+            start = toScreen(origin.x, origin.y);
+          ctx.beginPath();
+          ctx.arc(
+            start.x,
+            start.y,
+            kind === "escort" ? 22 : 38,
+            enemy.aim - 0.9,
+            enemy.aim + 0.9,
+          );
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+      return;
+    }
     if (newCombat() && ["shock", "mine"].includes(kind)) {
       if (kind === "shock") {
         ctx.beginPath();
@@ -3422,7 +3928,13 @@
         ctx.arc(point.x, point.y, 60, opening + 0.48, opening + T - 0.48);
         ctx.stroke();
       } else {
-        const targetMines = assaultCombat() && enemy.eliteProfile === "warden";
+        const targetMines =
+          assaultCombat() &&
+          (enemy.eliteProfile === "warden" ||
+            (showcaseCombat() &&
+              ["hive", "ark"].includes(
+                enemy.eliteProfile || enemy.bossProfile,
+              )));
         const origin = targetMines
           ? toScreen(enemy.targetX, enemy.targetY)
           : point;
@@ -3487,6 +3999,28 @@
         ctx.fillRect(0, -3, hazard.length, 6);
         ctx.fillStyle = "#fff0ce";
         ctx.fillRect(0, -1, hazard.length, 2);
+      } else if (hazard.kind === "pincer") {
+        ctx.restore();
+        ctx.save();
+        const active = hazard.age >= hazard.warning;
+        ctx.strokeStyle = active ? "#f4c57a" : "#c49bef";
+        ctx.lineWidth = active ? 12 : 2;
+        ctx.setLineDash(active ? [] : [5, 6]);
+        for (const wall of pincerWalls(hazard)) {
+          const start = toScreen(wall.x1, wall.y1),
+            end = toScreen(wall.x2, wall.y2);
+          ctx.beginPath();
+          ctx.moveTo(start.x, start.y);
+          ctx.lineTo(end.x, end.y);
+          ctx.stroke();
+          if (active) {
+            ctx.strokeStyle = "#fff0ce";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            ctx.strokeStyle = "#f4c57a";
+            ctx.lineWidth = 12;
+          }
+        }
       } else if (hazard.kind === "shock") {
         ctx.lineWidth = 5;
         ctx.strokeStyle = "#cf805f";
@@ -3565,7 +4099,15 @@
         }
         art.draw(ctx, "prism_crystal", point.x, point.y, {
           angle: node.heading,
-          scale: energized ? 1.1 : 0.9,
+          scale: showcaseCombat()
+            ? g.fused.eventhorizon
+              ? 1.7
+              : g.evolved.prism
+                ? 1.5
+                : 1.15
+            : energized
+              ? 1.1
+              : 0.9,
         });
       }
     }
@@ -3588,7 +4130,14 @@
               "blade_body",
               player.x + Math.cos(old) * radius,
               player.y + Math.sin(old) * radius,
-              { angle: old, scale: 0.9, alpha: 0.22 / trail },
+              {
+                angle: old,
+                scale:
+                  showcaseCombat() && (g.evolved.blade || g.fused.blastwheel)
+                    ? 1.2
+                    : 0.9,
+                alpha: 0.22 / trail,
+              },
             );
           }
         art.draw(
@@ -3596,30 +4145,38 @@
           "blade_body",
           player.x + Math.cos(heading) * radius,
           player.y + Math.sin(heading) * radius,
-          { angle: heading, scale: 0.9 },
+          {
+            angle: heading,
+            scale:
+              showcaseCombat() && (g.evolved.blade || g.fused.blastwheel)
+                ? 1.2
+                : 0.9,
+          },
         );
       }
     }
-    if (g.active.drone || g.fused.thunderhive) {
-      const count = g.fused.thunderhive
-        ? newProgression()
-          ? 6
-          : 5
-        : g.evolved.drone
-          ? 4
-          : Math.ceil(activePower("drone"));
-      for (let index = 0; index < count; index++) {
-        const heading = g.time * 1.6 + (index * T) / count;
-        art.draw(
-          ctx,
-          "drone_body",
-          player.x + Math.cos(heading) * 47,
-          player.y + Math.sin(heading) * 47,
-          { angle: g.aim + Math.PI / 2, scale: 0.8 },
-        );
-      }
+    for (const node of droneNodes()) {
+      const point = toScreen(node.x, node.y);
+      const id = showcaseCombat()
+        ? g.fused.thunderhive
+          ? "hive_drone"
+          : g.evolved.drone
+            ? "hunter_drone"
+            : "drone_body"
+        : "drone_body";
+      art.draw(ctx, id, point.x, point.y, {
+        angle: g.aim + Math.PI / 2,
+        scale: showcaseCombat()
+          ? g.fused.thunderhive
+            ? 1.4
+            : g.evolved.drone
+              ? 1.45
+              : 1.7
+          : 0.8,
+      });
     }
   }
+
   function releaseInput() {
     if (g) {
       g.keys = {};
@@ -3718,7 +4275,11 @@
         game.hazards.length > B.combat.maxHazards ||
         game.hazards.some(
           (hazard) =>
-            !["mine", "beam", "shock"].includes(hazard.kind) ||
+            !(
+              showcaseCombat(game)
+                ? ["mine", "beam", "shock", "pincer"]
+                : ["mine", "beam", "shock"]
+            ).includes(hazard.kind) ||
             ![hazard.x, hazard.y, hazard.age, hazard.duration].every(
               Number.isFinite,
             ),
@@ -3739,15 +4300,62 @@
             enemy.echo.remaining > 0.75)
         )
           throw Error("守卫追加预警无效，原数据保留");
+        if (showcaseCombat(game) && ["boss", "elite"].includes(enemy.t)) {
+          if (
+            !Number.isFinite(enemy.facing) ||
+            (enemy.t === "boss" &&
+              !B.showcase.bossProfiles[enemy.bossProfile]) ||
+            (enemy.eliteProfile === "hive" &&
+              (!Number.isInteger(enemy.summonsLeft) ||
+                enemy.summonsLeft < 0 ||
+                enemy.summonsLeft > 4))
+          )
+            throw Error("舰体行为记录无效，原数据保留");
+        }
         if (enemy.t !== "elite") continue;
         if (
-          !B.assault.eliteProfiles[enemy.eliteProfile] ||
+          !eliteSpec(enemy, game) ||
           !Number.isFinite(enemy.barrier) ||
           enemy.barrier < 0 ||
           !Number.isFinite(enemy.maxBarrier) ||
           enemy.barrier > enemy.maxBarrier
         )
           throw Error("精英装甲记录无效，原数据保留");
+      }
+      if (showcaseCombat(game)) {
+        for (const hazard of game.hazards) {
+          if (
+            hazard.kind === "pincer" &&
+            (![hazard.heading, hazard.warning, hazard.damage].every(
+              Number.isFinite,
+            ) ||
+              hazard.warning < 0 ||
+              hazard.warning >= hazard.duration)
+          )
+            throw Error("合围记录无效，原数据保留");
+          if (
+            hazard.portIndex !== undefined &&
+            (!Number.isInteger(hazard.portIndex) ||
+              hazard.portIndex < 0 ||
+              hazard.portIndex > 5)
+          )
+            throw Error("炮口记录无效，原数据保留");
+        }
+        for (const shot of game.enemyShots) {
+          if (
+            shot.kind === "siege" &&
+            ![
+              shot.destinationX,
+              shot.destinationY,
+              shot.x,
+              shot.y,
+              shot.vx,
+              shot.vy,
+              shot.t,
+            ].every(Number.isFinite)
+          )
+            throw Error("重雷记录无效，原数据保留");
+        }
       }
       for (const shot of game.shots) {
         if (
@@ -4277,6 +4885,11 @@
         delete g.rules.progressionVersion;
         return g;
       },
+      legacyV064: () => {
+        g.rules.version = "0.6.4";
+        g.rules.combatVersion = 3;
+        return g;
+      },
       legacyV063: () => {
         g.rules.version = "0.6.3";
         g.rules.combatVersion = 2;
@@ -4317,13 +4930,18 @@
         for (let index = 0; index < count; index++) spawnEnemy(type);
       },
       enemy: (type, x, y, hp = 1000, profile = "hunter") => {
-        const enemy = spawnEnemy(type, 1, profile);
+        const enemy = spawnEnemy(
+          type,
+          1,
+          profile,
+          B.showcase.bossProfiles[profile] ? profile : "core",
+        );
         if (!enemy) return null;
         Object.assign(enemy, { x, y, hp, maxhp: hp, speed: 0, fire: 999 });
+        if (showcaseCombat() && ["elite", "boss"].includes(type))
+          enemy.facing = angle(enemy, g.p) + Math.PI / 2;
         if (assaultCombat() && type === "elite") {
-          enemy.barrier = Math.round(
-            hp * B.assault.eliteProfiles[profile].barrier,
-          );
+          enemy.barrier = Math.round(hp * eliteSpec(enemy).barrier);
           enemy.maxBarrier = enemy.barrier;
         }
         return enemy.id;

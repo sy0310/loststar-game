@@ -190,6 +190,7 @@ test("v064 prism uses orbiting decoded crystal art and actual refraction instead
   const result = await page.evaluate(() => {
     const Q = SurvivorQA;
     const game = Q.startModel(91);
+    Q.legacyV064();
     game.active = {};
     game.spawnTime = 999;
     game.p.inv = 999;
@@ -345,7 +346,7 @@ test("v064900-second shots refractions and elite armor persist through an actual
   await page.waitForFunction(
     () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
   );
-  expect((await state(page)).rules.combatVersion).toBe(3);
+  expect((await state(page)).rules.combatVersion).toBe(4);
   expect((await state(page)).endTime).toBe(900);
 });
 

@@ -82,6 +82,12 @@ async function createModel(sourceFiles = {}) {
   };
   scope.window = scope;
   vm.createContext(scope);
+  vm.runInContext(
+    fs.readFileSync(path.join(folder, "src/art-catalog.js"), "utf8"),
+    scope,
+  );
+  for (const [id, entry] of Object.entries(scope.SurvivorArtCatalog))
+    if (entry.src.includes("/v065/")) scope.SurvivorArt.catalog[id] = entry;
   for (const file of ["balance.js", "game.js"])
     vm.runInContext(
       sourceFiles[file] ||

@@ -2361,5 +2361,684 @@ window.SurvivorArtCatalog = {
         ]
       }
     ]
+  },
+  "boss_weaver": {
+    "nativeSize": [
+      64,
+      64
+    ],
+    "center": [
+      32.0,
+      32.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        25,
+        57
+      ],
+      [
+        39,
+        57
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      32.0,
+      32.0
+    ],
+    "collisionRadius": 7,
+    "collisionCircles": [
+      {
+        "part": "core",
+        "x": 32,
+        "y": 30,
+        "r": 6
+      },
+      {
+        "part": "left_emitter",
+        "x": 18,
+        "y": 11,
+        "r": 4
+      },
+      {
+        "part": "left_upper_arm",
+        "x": 12,
+        "y": 22,
+        "r": 5
+      },
+      {
+        "part": "left_lower_arm",
+        "x": 13,
+        "y": 37,
+        "r": 5
+      },
+      {
+        "part": "left_joint",
+        "x": 20,
+        "y": 46,
+        "r": 5
+      },
+      {
+        "part": "right_emitter",
+        "x": 46,
+        "y": 11,
+        "r": 4
+      },
+      {
+        "part": "right_upper_arm",
+        "x": 52,
+        "y": 22,
+        "r": 5
+      },
+      {
+        "part": "right_lower_arm",
+        "x": 51,
+        "y": 37,
+        "r": 5
+      },
+      {
+        "part": "right_joint",
+        "x": 44,
+        "y": 46,
+        "r": 5
+      },
+      {
+        "part": "lower_bridge",
+        "x": 32,
+        "y": 48,
+        "r": 6
+      }
+    ],
+    "shotNozzles": [
+      [
+        18,
+        8
+      ],
+      [
+        46,
+        8
+      ]
+    ],
+    "src": "./assets/v065/bosses/boss_weaver@2x.png",
+    "sha256": "2fea428b0bbd8880f0d88a3726a4a74af24229e4755bb6ebd08964b285913566",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "anchor": [
+          32.0,
+          32.0
+        ]
+      }
+    ]
+  },
+  "boss_ark": {
+    "nativeSize": [
+      64,
+      64
+    ],
+    "center": [
+      32.0,
+      32.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        18,
+        52
+      ],
+      [
+        46,
+        52
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      32.0,
+      32.0
+    ],
+    "collisionRadius": 8,
+    "collisionCircles": [
+      {
+        "part": "command_deck",
+        "x": 32,
+        "y": 34,
+        "r": 8
+      },
+      {
+        "part": "left_magazines",
+        "x": 17,
+        "y": 34,
+        "r": 9
+      },
+      {
+        "part": "right_magazines",
+        "x": 47,
+        "y": 34,
+        "r": 9
+      },
+      {
+        "part": "left_bow",
+        "x": 23,
+        "y": 21,
+        "r": 5
+      },
+      {
+        "part": "right_bow",
+        "x": 41,
+        "y": 21,
+        "r": 5
+      },
+      {
+        "part": "left_engine",
+        "x": 18,
+        "y": 45,
+        "r": 5
+      },
+      {
+        "part": "right_engine",
+        "x": 46,
+        "y": 45,
+        "r": 5
+      }
+    ],
+    "launcherAnchors": [
+      [
+        10,
+        32
+      ],
+      [
+        17,
+        32
+      ],
+      [
+        24,
+        32
+      ],
+      [
+        40,
+        32
+      ],
+      [
+        47,
+        32
+      ],
+      [
+        54,
+        32
+      ]
+    ],
+    "shotNozzles": [
+      [
+        32,
+        24
+      ]
+    ],
+    "src": "./assets/v065/bosses/boss_ark@2x.png",
+    "sha256": "7f6d3ed18e337dc88e708c41aaf14ed55db17bd683a629521ad860d7c8702196",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "anchor": [
+          32.0,
+          32.0
+        ]
+      }
+    ]
+  },
+  "boss_judicator": {
+    "nativeSize": [
+      64,
+      64
+    ],
+    "center": [
+      32.0,
+      32.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        18,
+        61
+      ],
+      [
+        46,
+        61
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      32.0,
+      32.0
+    ],
+    "collisionRadius": 5,
+    "collisionCircles": [
+      {
+        "part": "bridge_core",
+        "x": 32,
+        "y": 34,
+        "r": 5
+      },
+      {
+        "part": "left_forward_spine",
+        "x": 18,
+        "y": 14,
+        "r": 6
+      },
+      {
+        "part": "left_mid_spine",
+        "x": 18,
+        "y": 28,
+        "r": 7
+      },
+      {
+        "part": "left_aft_spine",
+        "x": 18,
+        "y": 43,
+        "r": 6
+      },
+      {
+        "part": "left_engine",
+        "x": 18,
+        "y": 54,
+        "r": 5
+      },
+      {
+        "part": "right_forward_spine",
+        "x": 46,
+        "y": 14,
+        "r": 6
+      },
+      {
+        "part": "right_mid_spine",
+        "x": 46,
+        "y": 28,
+        "r": 7
+      },
+      {
+        "part": "right_aft_spine",
+        "x": 46,
+        "y": 43,
+        "r": 6
+      },
+      {
+        "part": "right_engine",
+        "x": 46,
+        "y": 54,
+        "r": 5
+      }
+    ],
+    "shotNozzles": [
+      [
+        18,
+        5
+      ],
+      [
+        46,
+        5
+      ]
+    ],
+    "src": "./assets/v065/bosses/boss_judicator@2x.png",
+    "sha256": "8a930afa12e78fb66524b500d28ea0769e5952d20d813ee306023048e957605e",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "anchor": [
+          32.0,
+          32.0
+        ]
+      }
+    ]
+  },
+  "elite_reaver": {
+    "nativeSize": [
+      40,
+      40
+    ],
+    "center": [
+      20.0,
+      20.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        17.5,
+        31
+      ],
+      [
+        22.5,
+        31
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      20.0,
+      20.0
+    ],
+    "collisionRadius": 11,
+    "weaponAnchors": [
+      [
+        6.5,
+        7.5
+      ],
+      [
+        33.5,
+        7.5
+      ]
+    ],
+    "src": "./assets/v065/elites/elite_reaver@2x.png",
+    "sha256": "976a5f0dac600e871f38fccb7b3913cd8cea498e4a710cb9940bdd7d23a2545a",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 40,
+        "height": 40,
+        "anchor": [
+          20.0,
+          20.0
+        ]
+      }
+    ]
+  },
+  "elite_hive": {
+    "nativeSize": [
+      48,
+      40
+    ],
+    "center": [
+      24.0,
+      20.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        19.5,
+        39
+      ],
+      [
+        27.5,
+        39
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      24.0,
+      20.0
+    ],
+    "collisionRadius": 14,
+    "weaponAnchors": [
+      [
+        8,
+        14
+      ],
+      [
+        39,
+        14
+      ]
+    ],
+    "launchAnchors": [
+      [
+        8,
+        15.5
+      ],
+      [
+        39,
+        15.5
+      ],
+      [
+        8,
+        23.5
+      ],
+      [
+        39,
+        23.5
+      ]
+    ],
+    "src": "./assets/v065/elites/elite_hive@2x.png",
+    "sha256": "dd649e6c9ff7662296ab0cb6e1d865a45b03e47a40319a7b25dccbcb83b0dbd7",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 48,
+        "height": 40,
+        "anchor": [
+          24.0,
+          20.0
+        ]
+      }
+    ]
+  },
+  "hunter_drone": {
+    "nativeSize": [
+      28,
+      28
+    ],
+    "center": [
+      14.0,
+      14.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        12,
+        23
+      ],
+      [
+        16,
+        23
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionRadius": 9,
+    "muzzleAnchors": [
+      [
+        10.5,
+        4.5
+      ],
+      [
+        17.5,
+        4.5
+      ]
+    ],
+    "src": "./assets/v065/weapons/hunter_drone@2x.png",
+    "sha256": "09cc7ef68e6aff96bef1e2204be60ff2d4adbdb70631c6eaa10b5a93578e6974",
+    "kind": "sprite",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 28,
+        "height": 28,
+        "anchor": [
+          14.0,
+          14.0
+        ]
+      }
+    ]
+  },
+  "hive_drone": {
+    "nativeSize": [
+      32,
+      28
+    ],
+    "center": [
+      16.0,
+      14.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        14,
+        20
+      ],
+      [
+        18,
+        20
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionRadius": 9,
+    "muzzleAnchors": [
+      [
+        14.5,
+        7.5
+      ],
+      [
+        17.5,
+        7.5
+      ]
+    ],
+    "src": "./assets/v065/weapons/hive_drone@2x.png",
+    "sha256": "7cea71ce5cb37d6f64414b6f999cc7166cf8953f286edda888e85e90940d4365",
+    "kind": "sprite",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 32,
+        "height": 28,
+        "anchor": [
+          16.0,
+          14.0
+        ]
+      }
+    ]
+  },
+  "bastion_mount": {
+    "nativeSize": [
+      40,
+      40
+    ],
+    "center": [
+      20.0,
+      20.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionRadius": 0,
+    "originAnchor": [
+      20,
+      20
+    ],
+    "muzzleAnchors": [
+      [
+        7.5,
+        2.5
+      ],
+      [
+        32.5,
+        2.5
+      ]
+    ],
+    "src": "./assets/v065/weapons/bastion_mount@2x.png",
+    "sha256": "bc51bb6e5f2230e937082a4c20443d3b2bde8ee3fbd0d6ba37cecec340bd7a3b",
+    "kind": "sprite",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 40,
+        "height": 40,
+        "anchor": [
+          20.0,
+          20.0
+        ]
+      }
+    ]
+  },
+  "ionbastion": {
+    "nativeSize": [
+      24,
+      24
+    ],
+    "center": [
+      12.0,
+      12.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "collisionRadius": 0,
+    "src": "./assets/v065/weapons/ionbastion@2x.png",
+    "sha256": "4c8b4d9599176fa92a2bf20e76cf899797ba3c27d4c397619cf9339626c87255",
+    "kind": "icon",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12.0,
+          12.0
+        ]
+      }
+    ]
   }
 };

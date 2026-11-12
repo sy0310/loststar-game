@@ -20,6 +20,7 @@ const recipes = [
 let Q, balance;
 function start(seed = 91, perks = {}) {
   const game = Q.startModel(seed, perks);
+  Q.legacyV064();
   game.active = {};
   game.spawnTime = 9999;
   game.p.inv = 10000;

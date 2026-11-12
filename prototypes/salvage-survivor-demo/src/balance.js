@@ -450,7 +450,7 @@ window.SurvivorBalance = {
         "art": "elite_reaver",
         "hpScale": 1.05,
         "speedScale": 1.05,
-        "radius": 24,
+        "radius": 22,
         "attacks": [
           "hook",
           "dash"
@@ -462,7 +462,7 @@ window.SurvivorBalance = {
         "art": "elite_hive",
         "hpScale": 1.25,
         "speedScale": 0.75,
-        "radius": 30,
+        "radius": 28,
         "attacks": [
           "escort",
           "mine"
@@ -478,14 +478,14 @@ window.SurvivorBalance = {
         "speedScale": 1,
         "radius": 40,
         "attacks": [
-          "fan",
           "beam",
-          "shock"
+          "shock",
+          "fan"
         ],
         "phaseTwo": [
-          "cross",
           "beam",
-          "shock"
+          "shock",
+          "cross"
         ]
       },
       "weaver": {
