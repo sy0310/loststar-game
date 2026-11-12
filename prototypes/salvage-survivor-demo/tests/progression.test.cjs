@@ -43,6 +43,21 @@ function evolve(weapon) {
 }
 (async () => {
   Q = (await createModel()).SurvivorQA;
+  const oldFiles = JSON.parse(
+    require("node:child_process").execFileSync(
+      "python3",
+      [
+        "-c",
+        "import json,zipfile,sys;z=zipfile.ZipFile(sys.argv[1]);print(json.dumps({n:z.read('src/'+n).decode() for n in ['balance.js','game.js']}))",
+        path.resolve(
+          __dirname,
+          "../../../artifacts/survivor-v062/loststar-survivor-4ca726f.zip",
+        ),
+      ],
+      { encoding: "utf8", maxBuffer: 1024 * 1024 },
+    ),
+  );
+  const oldQ = (await createModel(oldFiles)).SurvivorQA;
   const report = fs.existsSync(output)
     ? JSON.parse(fs.readFileSync(output))
     : { passed: 0, cases: [], errors: [] };
@@ -71,6 +86,23 @@ function evolve(weapon) {
       assert(!Q.pick(passive));
       assert(!Q.pick(recipes.find(([source]) => source === weapon)[2]));
       Q.validate(Q.snapshot());
+    }
+  });
+  await test("saved legacy upgrade vectors match the actual v062 ZIP over repeated choices", () => {
+    for (let seed = 1; seed <= 20; seed++) {
+      oldQ.startModel(seed);
+      Q.startModel(seed);
+      Q.legacyProgression();
+      for (let level = 0; level < 25; level++) {
+        oldQ.level();
+        Q.level();
+        assert.equal(
+          JSON.stringify(Q.state().presented),
+          JSON.stringify(oldQ.state().presented),
+        );
+        assert(Q.select(level % 3));
+        assert(oldQ.select(level % 3));
+      }
     }
   });
   await test("starter card choices expose multiple real weapon routes", () => {
@@ -275,6 +307,54 @@ function evolve(weapon) {
     Q.step(3);
     assert(g.metrics.damage.gravityPrism > 0);
     assert(g.metrics.events.some((event) => event.id === "gravityPrism"));
+  });
+  await test("visible elite targets receive automatic fire priority within actual range", () => {
+    const g = start();
+    equip("cannon", 1);
+    const ordinary = Q.enemy("skimmer", 0, -90, 100000);
+    const elite = Q.enemy("elite", 0, -150, 100000);
+    Q.step(0.01);
+    assert.equal(g.shots[0].targetId, elite);
+    const old = start();
+    Q.legacyProgression();
+    equip("cannon", 1);
+    const oldOrdinary = Q.enemy("skimmer", 0, -90, 100000);
+    Q.enemy("elite", 0, -150, 100000);
+    Q.step(0.01);
+    assert.equal(old.shots[0].targetId, oldOrdinary);
+  });
+  await test("out-of-range telegraphs cancel and the boss can approach again", () => {
+    const g = start();
+    Q.enemy("boss", -1000, 0, 100000);
+    Object.assign(g.enemy[0], { speed: 82, warn: 0.5, fire: 0.1 });
+    Q.step(1);
+    assert.equal(g.enemy[0].warn, 0);
+    assert(g.enemy[0].x > -750);
+  });
+  await test("all four special ships catch a moving player inside the actual portrait playfield", () => {
+    const rows = [];
+    for (const [kind, speed] of [
+      ["boss", 82],
+      ["elite", 90],
+      ["courier", 94],
+      ["watcher", 72],
+    ]) {
+      const g = start();
+      Q.enemy(kind, -700, -30, 100000);
+      g.enemy[0].speed = speed;
+      g.keys = { d: true };
+      let visible = 0;
+      for (let frame = 0; frame < 1200; frame++) {
+        Q.step(1 / 60);
+        const e = g.enemy[0],
+          x = e.x - g.camera.x + 195,
+          y = e.y - g.camera.y + 844 * 0.51;
+        if (frame > 840 && x > 20 && x < 370 && y > 215 && y < 814) visible++;
+      }
+      assert(visible > 180, kind + " visible frames " + visible);
+      rows.push({ kind, visible, lastSixSeconds: 359 });
+    }
+    return rows;
   });
   await test("snapshot rejects changed caps, bogus source, duplicate reward and missing fused accessory", () => {
     const g = start();

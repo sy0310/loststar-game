@@ -263,6 +263,36 @@ test("v063 lottery produces both offers and misses through actual rendered choic
   expect(result).toBeLessThan(175);
 });
 
+test("v063 pursuing boss stays visible and its out-of-range warning releases correctly", async ({
+  page,
+}) => {
+  await boot(page);
+  const r = await page.evaluate(() => {
+    const Q = SurvivorQA,
+      g = Q.startModel(63);
+    g.active = {};
+    g.spawnTime = 999;
+    g.p.inv = 999;
+    g.encounters.schedule = [];
+    Q.enemy("boss", -700, 0, 100000);
+    Object.assign(g.enemy[0], { speed: 82, warn: 0.4 });
+    g.keys = { d: true };
+    let count = 0;
+    for (let i = 0; i < 1200; i++) {
+      Q.step(1 / 60);
+      const e = g.enemy[0],
+        x = e.x - g.camera.x + document.getElementById("game").width / 2;
+      if (i > 840 && x > 15 && x < document.getElementById("game").width - 15)
+        count++;
+    }
+    Q.runRender();
+    return { visible: count, hp: g.enemy[0].hp, mode: g.mode };
+  });
+  expect(r.visible).toBeGreaterThan(180);
+  expect(r.hp).toBe(100000);
+  expect(r.mode).toBe("play");
+});
+
 test("v062 three-plus-two evolved save resumes, retains27049 and next new run uses5+5", async ({
   page,
 }) => {

@@ -480,9 +480,10 @@
     if (pair) add(ordinary.find((option) => option.id === pair[1]));
     const complement = FUSION.find(
       ([a, b, id]) =>
+        (newProgression() || id !== "ionbastion") &&
         !g.fused[id] &&
         (g.active[a] || g.active[b]) &&
-        (!g.active[a] || !g.active[b]),
+        (!newProgression() || !g.active[a] || !g.active[b]),
     );
     if (complement && (!newProgression() || rand() < 0.35)) {
       const other = g.active[complement[0]] ? complement[1] : complement[0];
@@ -554,7 +555,9 @@
           const recipe = EVO.find(([, , result]) => result === option.id);
           hint = NAMES[recipe[0]] + " MAX ＋ " + NAMES[recipe[1]] + " MAX";
         } else if (option.kind === "fusion")
-          hint = "两件已进化武器 · 合并空出1格";
+          hint = newProgression()
+            ? "两件已进化武器 · 合并空出1格"
+            : "合并两件武器 · 空出1格";
         else if (pair) {
           const weaponLevel =
             option.id === pair[0] ? option.level : g.active[pair[0]] || 0;
@@ -833,8 +836,11 @@
     for (const e of g.enemy) {
       if (e.hp <= 0 || e === exclude) continue;
       const n = (e.x - x) ** 2 + (e.y - y) ** 2;
-      if (n < d2) {
-        d2 = n;
+      if (n >= range * range) continue;
+      const special = ["boss", "elite"].includes(e.t) || VISITORS[e.t];
+      const score = newProgression() && special ? n * 0.25 : n;
+      if (score < d2) {
+        d2 = score;
         best = e;
       }
     }
@@ -2707,8 +2713,28 @@
         continue;
       }
       const distance = dist(enemy, g.p);
+      const special = ["boss", "elite"].includes(enemy.t) || VISITORS[enemy.t];
+      const point = toScreen(enemy.x, enemy.y);
+      const visibleThreat =
+        !newProgression() ||
+        !special ||
+        (point.x > 15 &&
+          point.x < VW - 15 &&
+          point.y > 215 &&
+          point.y < VH - 30);
+      if (
+        newProgression() &&
+        enemy.warn > 0 &&
+        (!visibleThreat || distance >= 380)
+      ) {
+        enemy.warn = 0;
+        enemy.fire = Math.max(enemy.fire, 0.65);
+      }
       let heading = angle(enemy, g.p);
-      if (["ranger", "sentinel", "watcher"].includes(enemy.t) && distance < 175)
+      if (
+        ["ranger", "sentinel", "watcher"].includes(enemy.t) &&
+        distance < (newProgression() && enemy.t === "watcher" ? 130 : 175)
+      )
         heading += Math.PI;
       else if (["minelayer", "courier"].includes(enemy.t))
         heading +=
@@ -2725,10 +2751,12 @@
       enemy.recovery = Math.max(0, (enemy.recovery || 0) - dt);
       if (newCombat() && enemy.recovery > 0 && enemy.charge <= 0) speed *= 0.4;
       if (
-        (["boss", "elite"].includes(enemy.t) || VISITORS[enemy.t]) &&
-        distance > Math.min(VW, VH) * (VISITORS[enemy.t] ? 0.58 : 0.85)
+        special &&
+        distance >
+          Math.min(VW, VH) *
+            (newProgression() ? 0.38 : VISITORS[enemy.t] ? 0.58 : 0.85)
       )
-        speed *= 2.7;
+        speed *= newProgression() ? 4 : 2.7;
       if (enemy.charge > 0) {
         enemy.charge -= dt;
         speed = newCombat() ? 350 : 315;
@@ -2741,7 +2769,7 @@
         ? enemy.t !== "skimmer" &&
           g.time >= (B.combat.attackUnlock[enemy.t] || 0)
         : ["ranger", "elite", "boss"].includes(enemy.t);
-      if (canFire && distance < (newCombat() ? 380 : 520)) {
+      if (canFire && visibleThreat && distance < (newCombat() ? 380 : 520)) {
         if (enemy.warn > 0) {
           enemy.warn -= dt;
           if (enemy.warn <= 0) enemyFire(enemy);
@@ -3494,7 +3522,11 @@
         (!newProgression(active.snapshot.game) ? " · 原规则" : "")
       : "继续上次";
     $("startBtn").disabled = !ready;
-    $("startBtn").textContent = active ? "结算上局，开始10分钟" : "开始一局";
+    $("startBtn").textContent = active
+      ? newProgression(active.snapshot.game)
+        ? "结算上局，开始10分钟"
+        : "结算上局，开始新版"
+      : "开始一局";
     $("recordText").textContent =
       "完成 " + profile.runs + " 局 · 最佳 " + profile.best + " 击落";
     $("buildStamp").textContent =

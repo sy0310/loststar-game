@@ -5,7 +5,7 @@ const vm = require("node:vm");
 const { webcrypto } = require("node:crypto");
 const folder = path.resolve(__dirname, "..");
 
-async function createModel() {
+async function createModel(sourceFiles = {}) {
   const elements = new Map();
   const context2d = new Proxy(
     {},
@@ -84,7 +84,8 @@ async function createModel() {
   vm.createContext(scope);
   for (const file of ["balance.js", "game.js"])
     vm.runInContext(
-      fs.readFileSync(path.join(folder, "src", file), "utf8"),
+      sourceFiles[file] ||
+        fs.readFileSync(path.join(folder, "src", file), "utf8"),
       scope,
       { filename: file },
     );

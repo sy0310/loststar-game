@@ -71,13 +71,13 @@ const inventory = cp.execFileSync(
 );
 for (const name of ["browser.json", "taptap-package-browser.json"]) {
   const report = read(name);
-  assert.equal(report.stats.expected, 212, name);
+  assert.equal(report.stats.expected, 216, name);
   for (const key of ["skipped", "unexpected", "flaky"])
     assert.equal(report.stats[key], 0, name);
   assert.deepEqual(report.errors, []);
 }
 const model = read("model.json");
-assert.equal(model.passed, 49);
+assert.equal(model.passed, 53);
 assert.deepEqual(model.errors, []);
 const simulation = read("simulation.json");
 assert.equal(simulation.rows.length, 160);
@@ -235,5 +235,5 @@ assert.equal(proof.phone, "NOT_TESTED");
 console.log(
   "PASS v0.6.3 frozen source,",
   inventory.trim(),
-  ", model49 / HTTP424 / audio38 / policies160 / natural600 / real persistence",
+  ", model53 / HTTP432 / audio38 / policies160 / natural600 / real persistence",
 );
