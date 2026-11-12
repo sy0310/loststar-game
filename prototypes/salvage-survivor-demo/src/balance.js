@@ -1,5 +1,5 @@
 window.SurvivorBalance = {
-  "version": "0.6.1",
+  "version": "0.6.2",
   "runSeconds": 600,
   "eliteAt": 70,
   "bossAt": 130,
@@ -67,5 +67,78 @@ window.SurvivorBalance = {
       "tier": 3
     }
   ],
-  "enemyHealthTimeScale": 200
+  "enemyHealthTimeScale": 200,
+  "combat": {
+    "healthTimeScale": 190,
+    "fireSpeedScale": 1.08,
+    "spawnIntervalScale": 0.96,
+    "maxHazards": 12,
+    "waves": [
+      {
+        "from": 0,
+        "pool": [
+          "skimmer",
+          "skimmer",
+          "wisp",
+          "ranger"
+        ],
+        "hint": "四面来敌 · 自由移动"
+      },
+      {
+        "from": 25,
+        "pool": [
+          "skimmer",
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank"
+        ],
+        "hint": "突刺接近 · 留意锁线"
+      },
+      {
+        "from": 65,
+        "pool": [
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank",
+          "minelayer"
+        ],
+        "hint": "封锁空域 · 留意雷区"
+      },
+      {
+        "from": 105,
+        "pool": [
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank",
+          "minelayer",
+          "sentinel"
+        ],
+        "hint": "交叉火力 · 留意束流"
+      }
+    ],
+    "damage": {
+      "shot": 6,
+      "beam": 8,
+      "shock": 8,
+      "mine": 10
+    },
+    "attackUnlock": {
+      "wisp": 30,
+      "tank": 70
+    },
+    "populationCaps": {
+      "lancer": 3,
+      "sentinel": 2,
+      "minelayer": 2,
+      "ranger": 3,
+      "wisp": 4,
+      "tank": 3
+    }
+  }
 };

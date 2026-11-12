@@ -75,7 +75,7 @@ for (const [active, passive, id, damageKind] of evolutions)
       expect(result.id).toBe(id);
       expect(result.damage).toBeGreaterThan(0);
       expect(result.enemyHP.some((hp) => hp < 100000)).toBe(true);
-      expect(result.art).toBe(50);
+      expect(result.art).toBe(56);
       expect(result.slots).toBe(1);
       await info.attach("actual-evolution", {
         body: Buffer.from(JSON.stringify(result, null, 2)),

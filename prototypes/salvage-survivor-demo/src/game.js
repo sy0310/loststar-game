@@ -100,6 +100,33 @@
     ["missile", "blade", "blastwheel"],
     ["prism", "gravity", "eventhorizon"],
   ];
+  const ENEMY_STATS = {
+    skimmer: { hp: 32, radius: 16, speed: 112 },
+    wisp: { hp: 44, radius: 13, speed: 121 },
+    ranger: { hp: 60, radius: 17, speed: 85 },
+    tank: { hp: 135, radius: 25, speed: 64 },
+    elite: { hp: 470, radius: 32, speed: 90 },
+    boss: { hp: 1900, radius: 44, speed: 82 },
+    lancer: { hp: 54, radius: 15, speed: 90 },
+    sentinel: { hp: 112, radius: 22, speed: 66 },
+    minelayer: { hp: 96, radius: 22, speed: 78 },
+    courier: { hp: 260, radius: 24, speed: 94 },
+    watcher: { hp: 420, radius: 30, speed: 72 },
+  };
+  const VISITORS = {
+    courier: {
+      name: "逆向投递员",
+      hint: "有份快递，寄件人填了你。",
+      tactic: "留意包裹落点",
+      result: "退件已拒收 · 零件回收",
+    },
+    watcher: {
+      name: "折光巡游者",
+      hint: "未识别舰影，正在描摹你的航迹。",
+      tactic: "避开折射光束",
+      result: "舰影已散开 · 零件回收",
+    },
+  };
 
   const playSound = (id, options) => window.SurvivorAudio?.play(id, options);
   function unlockAudio() {
@@ -119,6 +146,7 @@
       }
     );
   }
+  const newCombat = (game = g) => runRules(game).combatVersion === 2;
   function pixelIcon(id, size = 32) {
     return window.SurvivorArt.icon(id === "repair" ? "armor" : id, size);
   }
@@ -188,8 +216,9 @@
     }
   }
 
-  function resetWorld() {
+  function resetWorld(initialSeed) {
     seed =
+      initialSeed ??
       (crypto && crypto.getRandomValues
         ? crypto.getRandomValues(new Uint32Array(1))[0]
         : Date.now()) >>> 0;
@@ -200,6 +229,7 @@
         runSeconds: B.runSeconds,
         activeSlots: B.activeSlots,
         passiveSlots: B.passiveSlots,
+        combatVersion: 2,
       },
       time: 0,
       p: {
@@ -257,6 +287,18 @@
       facing: 0,
       aim: -Math.PI / 2,
       thrust: 0,
+      hazards: [],
+      encounters: {
+        schedule: [
+          { at: 165 + Math.floor(rand() * 25), kind: "courier" },
+          { at: 380 + Math.floor(rand() * 35), kind: "watcher" },
+        ],
+        seen: [],
+        pending: null,
+        active: null,
+        log: [],
+        notice: null,
+      },
       upgradeGrace: 0,
       metrics: {
         damage: {},
@@ -307,50 +349,66 @@
         B.levelXP.powerScale * Math.pow(growth, B.levelXP.power),
     );
   };
-  function availableUpgrades() {
-    if (!g) return [];
+  function availableUpgrades(game = g) {
+    if (!game) return [];
     const options = [];
     const activeSlots =
-      Object.keys(g.active).length + Object.keys(g.fused).length;
-    const consumed = FUSION.filter(([, , id]) => g.fused[id]).flatMap(
+      Object.keys(game.active).length + Object.keys(game.fused).length;
+    const consumed = FUSION.filter(([, , id]) => game.fused[id]).flatMap(
       ([a, b]) => [a, b],
     );
     for (const id of ACTIVE) {
-      const level = g.active[id] || 0;
+      const level = game.active[id] || 0;
       if (
         !consumed.includes(id) &&
         level < B.activeMaxLevel &&
-        (level > 0 || activeSlots < runRules().activeSlots)
+        (level > 0 || activeSlots < runRules(game).activeSlots)
       ) {
         options.push({ id, kind: "active", level: level + 1 });
       }
     }
     for (const id of PASSIVE) {
-      const level = g.passive[id] || 0;
+      const level = game.passive[id] || 0;
       if (
         level < B.passiveMaxLevel &&
-        (level > 0 || Object.keys(g.passive).length < runRules().passiveSlots)
+        (level > 0 ||
+          Object.keys(game.passive).length < runRules(game).passiveSlots)
       ) {
         options.push({ id, kind: "passive", level: level + 1 });
       }
     }
     for (const [id, passive, evolution] of EVO) {
-      if (g.active[id] === 3 && g.passive[passive] === 2 && !g.evolved[id]) {
+      if (
+        game.active[id] === B.activeMaxLevel &&
+        game.passive[passive] === B.passiveMaxLevel &&
+        !game.evolved[id]
+      ) {
         options.push({ id: evolution, kind: "evo", source: id, level: "MAX" });
       }
     }
     for (const [a, b, id] of FUSION) {
       if (
-        g.active[a] === 3 &&
-        g.active[b] === 3 &&
-        !g.evolved[a] &&
-        !g.evolved[b] &&
-        !g.fused[id]
+        game.active[a] === B.activeMaxLevel &&
+        game.active[b] === B.activeMaxLevel &&
+        !game.evolved[a] &&
+        !game.evolved[b] &&
+        !game.fused[id]
       ) {
         options.push({ id, kind: "fusion", source: [a, b], level: "FUSION" });
       }
     }
     return options;
+  }
+  function isLegalUpgrade(option) {
+    if (option.kind === "bonus")
+      return ["repair", "reserveShield", "salvage"].includes(option.id);
+    return availableUpgrades().some(
+      (candidate) =>
+        candidate.id === option.id &&
+        candidate.kind === option.kind &&
+        candidate.level === option.level &&
+        JSON.stringify(candidate.source) === JSON.stringify(option.source),
+    );
   }
   function chooseOptions() {
     const available = availableUpgrades();
@@ -407,19 +465,25 @@
     return picks;
   }
   function renderUpgrades(reuse = false) {
+    if (g.presented?.some((option) => !isLegalUpgrade(option))) reuse = false;
     if (!reuse || !g.presented?.length) g.presented = chooseOptions();
     $("upgradeList").innerHTML = g.presented
       .map((option, index) => {
         const type = {
           active: "主动武器",
-          passive: "辅助装置",
+          passive: "辅助配件",
           evo: "满级进化",
           fusion: "双武器融合",
           bonus: "应急补给",
         }[option.kind];
         const current = g.active[option.id] || g.passive[option.id] || 0;
+        const maximum =
+          option.kind === "active" ? B.activeMaxLevel : B.passiveMaxLevel;
         const rank = ["active", "passive"].includes(option.kind)
-          ? "Lv" + current + " → " + option.level
+          ? "Lv" +
+            current +
+            " → " +
+            (option.level === maximum ? "MAX" : option.level)
           : type;
         const name =
           NAMES[option.id] ||
@@ -439,19 +503,23 @@
           ([id, passive]) => id === option.id || passive === option.id,
         );
         let hint = "";
-        if (option.kind === "evo") hint = "替换原武器 · 槽位不变";
-        else if (option.kind === "fusion") hint = "合并两件武器 · 空出1格";
+        if (option.kind === "evo") {
+          const recipe = EVO.find(([, , result]) => result === option.id);
+          hint = NAMES[recipe[0]] + " MAX ＋ " + NAMES[recipe[1]] + " MAX";
+        } else if (option.kind === "fusion") hint = "合并两件武器 · 空出1格";
         else if (pair) {
           const weaponLevel =
             option.id === pair[0] ? option.level : g.active[pair[0]] || 0;
           const passiveLevel =
             option.id === pair[1] ? option.level : g.passive[pair[1]] || 0;
           hint =
-            "进化搭配 " +
-            NAMES[pair[1]] +
-            " · " +
+            "双满级进化 · " +
+            NAMES[pair[0]] +
+            " " +
             weaponLevel +
-            "/3 + " +
+            "/3 ＋ " +
+            NAMES[pair[1]] +
+            " " +
             passiveLevel +
             "/2";
         }
@@ -507,6 +575,11 @@
     if (!g || g.mode !== "upgrade" || (!qaBypass && actionBusy)) return false;
     const option = g.presented[index];
     if (!option) return false;
+    if (!isLegalUpgrade(option)) {
+      renderUpgrades();
+      notify("装置状态已更新 · 请重新选择");
+      return false;
+    }
     if (option.kind === "active") g.active[option.id] = option.level;
     else if (option.kind === "passive") {
       g.passive[option.id] = option.level;
@@ -575,29 +648,40 @@
   }
   function spawnEnemy(force, tier = 1) {
     if (!g) return null;
-    const special = force === "boss" || force === "elite";
+    const special = force === "boss" || force === "elite" || !!VISITORS[force];
     if (g.enemy.length >= (special ? B.maxEnemies : B.maxEnemies - 2))
       return null;
-    const type =
-      force ||
-      (g.time > 24 && rand() < 0.12
+    let type = force;
+    if (!type && newCombat()) {
+      const pool = B.combat.waves
+        .filter((entry) => g.time >= entry.from)
+        .at(-1).pool;
+      type = pool[Math.floor(rand() * pool.length)];
+      const cap = B.combat.populationCaps[type];
+      if (
+        cap &&
+        g.enemy.filter((enemy) => enemy.t === type && enemy.hp > 0).length >=
+          cap
+      )
+        type = "skimmer";
+    }
+    type ||=
+      g.time > 24 && rand() < 0.12
         ? "tank"
         : rand() < 0.18
           ? "ranger"
           : rand() < 0.27
             ? "wisp"
-            : "skimmer");
-    const stats = {
-      skimmer: { hp: 32, radius: 16, speed: 112 },
-      wisp: { hp: 44, radius: 13, speed: 121 },
-      ranger: { hp: 60, radius: 17, speed: 85 },
-      tank: { hp: 135, radius: 25, speed: 64 },
-      elite: { hp: 470, radius: 32, speed: 90 },
-      boss: { hp: 1900, radius: 44, speed: 82 },
-    }[type];
+            : "skimmer";
+    const stats = ENEMY_STATS[type];
     const scale =
       (1 +
-        g.time / (runRules().runSeconds > 180 ? B.enemyHealthTimeScale : 125)) *
+        g.time /
+          (newCombat()
+            ? B.combat.healthTimeScale
+            : runRules().runSeconds > 180
+              ? B.enemyHealthTimeScale
+              : 125)) *
       (1 + 0.35 * (tier - 1));
     const side = Math.floor(rand() * 4),
       ex = VW / 2 + 30,
@@ -799,7 +883,44 @@
         value: enemy.t === "boss" ? 24 : 12,
         t: 40,
       });
-    if (enemy.t === "boss") {
+    if (VISITORS[enemy.t]) {
+      // An event's only payout uses the same per-enemy death/receipt path.
+      // Re-entering its banner or restoring a checkpoint cannot pay it again.
+      const visitor = VISITORS[enemy.t];
+      g.encounters.log.push({
+        kind: enemy.t,
+        result: "repelled",
+        time: g.time,
+      });
+      g.encounters.active = null;
+      g.encounters.notice = {
+        title: visitor.name,
+        text: visitor.result,
+        until: g.time + 7,
+      };
+      g.metrics.events.push({
+        kind: "encounterResult",
+        visitor: enemy.t,
+        result: "repelled",
+        time: g.time,
+      });
+      if (g.pickups.length >= B.maxPickups) {
+        const replace = g.pickups.findIndex(
+          (pickup) =>
+            pickup.type === "xp" ||
+            (pickup.type === "scrap" && pickup.value < 12),
+        );
+        g.pickups.splice(Math.max(0, replace), 1);
+      }
+      g.pickups.push({
+        x: enemy.x,
+        y: enemy.y,
+        type: "scrap",
+        value: 12,
+        t: 40,
+      });
+      notify(visitor.result);
+    } else if (enemy.t === "boss") {
       g.bossKilled = true;
       g.metrics.events.push({ kind: "bossDefeated", time: g.time });
       notify("守卫已击退！");
@@ -1239,8 +1360,65 @@
                   ? 2
                   : 1;
       for (let index = 0; index < count; index++) spawnEnemy();
-      g.spawnTime = Math.max(0.46, 1.05 - g.time * 0.0033);
+      g.spawnTime =
+        Math.max(0.46, 1.05 - g.time * 0.0033) *
+        (newCombat() ? B.combat.spawnIntervalScale : 1);
     }
+    if (newCombat()) updateEncounters(dt);
+  }
+  function updateEncounters(dt) {
+    const events = g.encounters;
+    if (events.active) {
+      const visitor = g.enemy.find(
+        (enemy) => enemy.id === events.active.id && enemy.hp > 0,
+      );
+      if (visitor && g.time >= events.active.until) {
+        visitor.hp = 0;
+        events.log.push({ kind: visitor.t, result: "departed", time: g.time });
+        events.notice = {
+          title: VISITORS[visitor.t].name,
+          text: "舰影离去 · 继续航行",
+          until: g.time + 6,
+        };
+        g.metrics.events.push({
+          kind: "encounterResult",
+          visitor: visitor.t,
+          result: "departed",
+          time: g.time,
+        });
+        events.active = null;
+      }
+      return;
+    }
+    if (events.pending) {
+      events.pending.remaining -= dt;
+      if (events.pending.remaining <= 0) {
+        const enemy = spawnEnemy(events.pending.kind);
+        if (!enemy) return;
+        events.active = { kind: enemy.t, id: enemy.id, until: g.time + 42 };
+        events.pending = null;
+        g.metrics.events.push({
+          kind: "encounterArrival",
+          visitor: enemy.t,
+          time: g.time,
+        });
+      }
+      return;
+    }
+    const next = events.schedule.find(
+      (entry) => !events.seen.includes(entry.kind) && g.time >= entry.at,
+    );
+    if (!next) return;
+    events.seen.push(next.kind);
+    events.pending = { kind: next.kind, remaining: 2.2 };
+    events.notice = null;
+    playSound("boss", { strength: 0.45 });
+    notify("异常航迹 · " + VISITORS[next.kind].name);
+    g.metrics.events.push({
+      kind: "encounterWarning",
+      visitor: next.kind,
+      time: g.time,
+    });
   }
   function update(dt) {
     if (!g || g.mode !== "play") return;
@@ -1293,12 +1471,25 @@
     updateEnemies(dt);
     if (g.mode !== "play") return;
     updateShots(dt);
+    if (newCombat()) updateHazards(dt);
+    if (g.mode !== "play") return;
     for (const shot of g.enemyShots) {
+      const previousX = shot.x,
+        previousY = shot.y;
+      if (shot.turn) {
+        const heading = Math.atan2(shot.vy, shot.vx) + shot.turn * dt;
+        const speed = Math.hypot(shot.vx, shot.vy);
+        shot.vx = Math.cos(heading) * speed;
+        shot.vy = Math.sin(heading) * speed;
+      }
       shot.x += shot.vx * dt;
       shot.y += shot.vy * dt;
       shot.t -= dt;
-      if (Math.hypot(shot.x - g.p.x, shot.y - g.p.y) < 12) {
-        damageShip(8);
+      if (
+        segmentDistance(g.p, previousX, previousY, shot.x, shot.y) <
+        10 + (shot.radius || 2)
+      ) {
+        damageShip(shot.damage || 8);
         shot.t = 0;
       }
       if (g.mode !== "play") return;
@@ -1369,10 +1560,28 @@
     };
   }
   function background() {
-    ctx.fillStyle = "#101225";
+    ctx.fillStyle = "#0b1024";
     ctx.fillRect(0, 0, VW, VH);
     const ox = g ? g.camera.x : 0,
       oy = g ? g.camera.y : 0;
+    const backdrop = window.SurvivorArt.catalog.deep_space;
+    if (backdrop) {
+      const reduced = window.matchMedia?.(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      window.SurvivorArt.draw(
+        ctx,
+        "deep_space",
+        VW / 2 + (reduced ? 0 : Math.sin(ox / 950) * 8),
+        VH / 2 + (reduced ? 0 : Math.sin(oy / 1200) * 10),
+        {
+          scale: Math.max(
+            (VW + 24) / backdrop.nativeSize[0],
+            (VH + 28) / backdrop.nativeSize[1],
+          ),
+        },
+      );
+    }
     for (let layer = 0; layer < 3; layer++) {
       const spacing = [43, 83, 151][layer],
         depth = [0.16, 0.3, 0.55][layer];
@@ -1393,20 +1602,6 @@
         }
     }
     ctx.globalAlpha = 1;
-    const driftX = (((ox * 0.12) % 300) + 300) % 300,
-      driftY = (((oy * 0.12) % 420) + 420) % 420;
-    ctx.fillStyle = "#2a21423d";
-    for (let index = 0; index < 6; index++) {
-      const x = (index * 73 + 110 - driftX + VW) % VW,
-        y = (index * 181 - driftY + VH) % VH;
-      ctx.fillRect(Math.round(x), Math.round(y), index % 2 ? 44 : 30, 2);
-      ctx.fillRect(
-        Math.round(x + 7),
-        Math.round(y + 3),
-        index % 2 ? 26 : 18,
-        2,
-      );
-    }
   }
   function drawShip() {
     if (!g) return;
@@ -1480,12 +1675,43 @@
         { scale: 0.6 },
       );
     }
+    drawHazards();
     for (const enemy of g.enemy) {
       if (enemy.hp <= 0) continue;
       const point = toScreen(enemy.x, enemy.y);
       if (enemy.warn > 0) drawWarning(enemy, point);
       const heading =
-        Math.atan2(g.p.y - enemy.y, g.p.x - enemy.x) + Math.PI / 2;
+        (enemy.charge > 0
+          ? enemy.chargeAngle
+          : enemy.warn > 0
+            ? enemy.aim
+            : Math.atan2(g.p.y - enemy.y, g.p.x - enemy.x)) +
+        Math.PI / 2;
+      const body = art.catalog[enemy.t];
+      if (
+        newCombat() &&
+        ["lancer", "sentinel", "minelayer", "courier", "watcher"].includes(
+          enemy.t,
+        ) &&
+        (enemy.speed > 0 || enemy.charge > 0)
+      ) {
+        ctx.save();
+        ctx.translate(point.x, point.y);
+        ctx.rotate(heading);
+        for (const [x, y] of body.exhaustAnchors)
+          art.draw(
+            ctx,
+            "thruster",
+            (x - body.center[0]) * 2,
+            (y - body.center[1]) * 2,
+            {
+              frame: art.frameAt("thruster", g.time * 1000, true),
+              scale: enemy.charge > 0 ? 0.3 : 0.13,
+              anchor: [12, 3],
+            },
+          );
+        ctx.restore();
+      }
       art.draw(ctx, enemy.t, point.x, point.y, {
         angle: enemy.t === "boss" ? Math.sin(g.time * 0.8) * 0.1 : heading,
         flash: enemy.flash > 0,
@@ -1495,7 +1721,8 @@
         ctx.lineWidth = 1;
         ctx.strokeRect(point.x - 10, point.y - 10, 20, 20);
       }
-      if (["boss", "elite"].includes(enemy.t)) drawOffscreenMarker(point);
+      if (["boss", "elite"].includes(enemy.t) || VISITORS[enemy.t])
+        drawOffscreenMarker(point);
     }
     drawOrbitals();
     for (const shot of g.shots) {
@@ -1655,10 +1882,20 @@
     }
     for (const shot of g.enemyShots) {
       const point = toScreen(shot.x, shot.y);
-      art.draw(ctx, "threat", point.x, point.y, {
-        angle: Math.atan2(shot.vy, shot.vx) + Math.PI / 2,
-        scale: 0.65,
-      });
+      if (["needle", "curl"].includes(shot.kind)) {
+        ctx.save();
+        ctx.translate(point.x, point.y);
+        ctx.rotate(Math.atan2(shot.vy, shot.vx));
+        ctx.fillStyle = shot.kind === "needle" ? "#f0a565" : "#b9a1e8";
+        ctx.fillRect(-7, -3, 11, 6);
+        ctx.fillStyle = "#fff0ce";
+        ctx.fillRect(-2, -1, 7, 2);
+        ctx.restore();
+      } else
+        art.draw(ctx, "threat", point.x, point.y, {
+          angle: Math.atan2(shot.vy, shot.vx) + Math.PI / 2,
+          scale: 0.65,
+        });
     }
     drawShip();
     for (const text of g.texts) {
@@ -1699,9 +1936,33 @@
           ? "精英追猎"
           : "守卫来袭";
     $("footHint").hidden = g.time > 8 || g.mode !== "play";
+    const events = g.encounters;
+    const eventKind = events?.pending?.kind || events?.active?.kind;
+    const notice = events?.notice;
+    const eventVisible =
+      newCombat() &&
+      ["play", "pause", "upgrade"].includes(g.mode) &&
+      (eventKind || (notice && notice.until > g.time));
+    $("encounterNotice").hidden = !eventVisible;
+    if (eventVisible) {
+      $("encounterTitle").textContent = eventKind
+        ? VISITORS[eventKind].name
+        : notice.title;
+      $("encounterText").textContent = events.pending
+        ? VISITORS[eventKind].hint
+        : events.active
+          ? VISITORS[eventKind].tactic
+          : notice.text;
+    }
     const special =
       g.enemy.find((enemy) => enemy.hp > 0 && enemy.t === "boss") ||
       g.enemy.find((enemy) => enemy.hp > 0 && enemy.t === "elite");
+    if (newCombat())
+      $("waveTip").textContent = special
+        ? special.t === "boss"
+          ? "守卫锁定 · 留意攻击预警"
+          : "精英追猎 · 侧向避让"
+        : B.combat.waves.filter((entry) => g.time >= entry.from).at(-1).hint;
     $("bossBar").hidden = !special || g.mode === "results";
     if (special) {
       $("bossName").textContent =
@@ -1716,16 +1977,24 @@
     const active = Object.keys(g.active)
       .map((id) => ({
         id: g.evolved[id] || id,
-        rank: g.evolved[id] ? "EVO" : g.active[id],
-        kind: g.evolved[id] ? "evo" : "",
+        rank: g.evolved[id]
+          ? "EVO"
+          : g.active[id] === B.activeMaxLevel
+            ? "MAX"
+            : g.active[id],
+        kind: g.evolved[id]
+          ? "evo"
+          : g.active[id] === B.activeMaxLevel
+            ? "maxed"
+            : "",
       }))
       .concat(
         Object.keys(g.fused).map((id) => ({ id, rank: "融合", kind: "fused" })),
       );
     const passive = Object.keys(g.passive).map((id) => ({
       id,
-      rank: g.passive[id],
-      kind: "",
+      rank: g.passive[id] === B.passiveMaxLevel ? "MAX" : g.passive[id],
+      kind: g.passive[id] === B.passiveMaxLevel ? "maxed" : "",
     }));
     function row(label, items, count) {
       return (
@@ -1770,6 +2039,7 @@
       passive: { ...g.passive },
       evolved: { ...g.evolved },
       fused: { ...g.fused },
+      encounters: structuredClone(g.encounters?.log || []),
     };
     g.mode = "settling";
     syncAudioState();
@@ -1971,6 +2241,7 @@
       }
   }
   function enemyFire(enemy) {
+    if (newCombat() && fireModernAttack(enemy)) return;
     const boss = enemy.t === "boss",
       elite = enemy.t === "elite";
     const radial =
@@ -1997,12 +2268,176 @@
         vx: Math.cos(heading) * speed,
         vy: Math.sin(heading) * speed,
         t: 3.6,
+        kind: "pulse",
       });
     }
     if (boss && enemy.pattern % 3 === 0) {
       enemy.charge = 0.42;
       enemy.chargeAngle = enemy.aim;
     }
+  }
+  function attackKind(enemy) {
+    if (enemy.t === "lancer") return "dash";
+    if (["minelayer", "courier"].includes(enemy.t)) return "mine";
+    if (["sentinel", "watcher"].includes(enemy.t)) return "beam";
+    if (enemy.t === "tank") return "shock";
+    if (enemy.t === "boss") return ["fan", "beam", "shock"][enemy.pattern % 3];
+    if (enemy.t === "elite") return enemy.pattern % 2 ? "fan" : "dash";
+    return "fan";
+  }
+  function addHazard(hazard) {
+    if (g.hazards.length >= B.combat.maxHazards) return false;
+    g.hazards.push(hazard);
+    g.metrics.shots["hostile-" + hazard.kind] =
+      (g.metrics.shots["hostile-" + hazard.kind] || 0) + 1;
+    return true;
+  }
+  function fireModernAttack(enemy) {
+    const kind = attackKind(enemy);
+    g.metrics.shots["hostile-" + enemy.t] =
+      (g.metrics.shots["hostile-" + enemy.t] || 0) + 1;
+    if (kind === "dash") {
+      enemy.charge = 0.48;
+      enemy.chargeAngle = enemy.aim;
+      enemy.recovery = 1.2;
+    } else if (kind === "beam") {
+      const count = enemy.t === "watcher" ? 3 : 1;
+      for (let index = 0; index < count; index++)
+        addHazard({
+          kind,
+          owner: enemy.id,
+          x: enemy.x,
+          y: enemy.y,
+          heading: enemy.aim + (index - (count - 1) / 2) * 0.72 - 0.2,
+          sweep: 0.4,
+          length: enemy.t === "boss" ? 440 : 310,
+          width: 9,
+          age: 0,
+          duration: 0.65,
+          damage: B.combat.damage.beam,
+        });
+    } else if (kind === "mine") {
+      const count = enemy.t === "courier" ? 3 : 1;
+      for (let index = 0; index < count; index++) {
+        const heading = enemy.aim + (index - (count - 1) / 2) * 0.85;
+        addHazard({
+          kind,
+          owner: enemy.id,
+          x: enemy.x + Math.cos(heading) * 38,
+          y: enemy.y + Math.sin(heading) * 38,
+          age: 0,
+          duration: 6,
+          stage: "arming",
+          fuse: 0,
+          radius: 42,
+          damage: B.combat.damage.mine,
+          parcel: enemy.t === "courier",
+        });
+      }
+    } else if (kind === "shock") {
+      addHazard({
+        kind,
+        owner: enemy.id,
+        x: enemy.x,
+        y: enemy.y,
+        age: 0,
+        duration: 1.5,
+        radius: enemy.t === "boss" ? 240 : 165,
+        opening: enemy.aim + 0.5,
+        damage: B.combat.damage.shock,
+      });
+    } else {
+      if (!["ranger", "wisp"].includes(enemy.t)) return false;
+      const count = enemy.t === "wisp" ? 2 : 3;
+      for (
+        let index = 0;
+        index < count && g.enemyShots.length < B.maxEnemyShots;
+        index++
+      ) {
+        const heading =
+          enemy.aim +
+          (index - (count - 1) / 2) * (enemy.t === "wisp" ? 0.55 : 0.22);
+        const speed =
+          (enemy.t === "wisp" ? 118 : 155) * B.combat.fireSpeedScale;
+        g.enemyShots.push({
+          x: enemy.x,
+          y: enemy.y,
+          vx: Math.cos(heading) * speed,
+          vy: Math.sin(heading) * speed,
+          t: 3.8,
+          kind: enemy.t === "wisp" ? "curl" : "needle",
+          turn: enemy.t === "wisp" ? (index ? -0.32 : 0.32) : 0,
+          damage: B.combat.damage.shot,
+          radius: 3,
+        });
+      }
+    }
+    playSound("enemyFire", { strength: 0.5 });
+    return true;
+  }
+  function updateHazards(dt) {
+    for (const hazard of g.hazards) {
+      hazard.age += dt;
+      if (hazard.kind === "beam") {
+        const owner = g.enemy.find(
+          (enemy) => enemy.id === hazard.owner && enemy.hp > 0,
+        );
+        if (!owner) {
+          hazard.age = hazard.duration;
+          continue;
+        }
+        hazard.x = owner.x;
+        hazard.y = owner.y;
+        const heading =
+          hazard.heading + (hazard.sweep * hazard.age) / hazard.duration;
+        if (
+          segmentDistance(
+            g.p,
+            hazard.x,
+            hazard.y,
+            hazard.x + Math.cos(heading) * hazard.length,
+            hazard.y + Math.sin(heading) * hazard.length,
+          ) <
+          10 + hazard.width / 2
+        )
+          damageShip(hazard.damage);
+      } else if (hazard.kind === "shock") {
+        const radius = (hazard.radius * hazard.age) / hazard.duration;
+        const heading = angle(hazard, g.p);
+        const gap = Math.abs(
+          Math.atan2(
+            Math.sin(heading - hazard.opening),
+            Math.cos(heading - hazard.opening),
+          ),
+        );
+        if (gap > 0.48 && Math.abs(dist(hazard, g.p) - radius) < 13)
+          damageShip(hazard.damage);
+      } else {
+        if (hazard.stage === "arming" && hazard.age >= 0.9)
+          hazard.stage = "armed";
+        if (
+          hazard.stage === "armed" &&
+          (dist(hazard, g.p) < 54 || hazard.age >= 4.8)
+        ) {
+          hazard.stage = "fuse";
+          hazard.fuse = 0.6;
+        }
+        if (hazard.stage === "fuse") {
+          hazard.fuse -= dt;
+          if (hazard.fuse <= 0) {
+            hazard.stage = "blast";
+            hazard.age = 0;
+            hazard.duration = 0.24;
+            ring(hazard.x, hazard.y, hazard.radius, "#e5a76c", 0.24);
+            burst(hazard.x, hazard.y, "explosion", 1.25);
+            if (dist(hazard, g.p) < hazard.radius + 10)
+              damageShip(hazard.damage);
+          }
+        }
+      }
+      if (g.mode !== "play") return;
+    }
+    g.hazards = g.hazards.filter((hazard) => hazard.age < hazard.duration);
   }
   function updateEnemies(dt) {
     for (const enemy of g.enemy) {
@@ -2015,7 +2450,13 @@
       }
       const distance = dist(enemy, g.p);
       let heading = angle(enemy, g.p);
-      if (enemy.t === "ranger" && distance < 175) heading += Math.PI;
+      if (["ranger", "sentinel", "watcher"].includes(enemy.t) && distance < 175)
+        heading += Math.PI;
+      else if (["minelayer", "courier"].includes(enemy.t))
+        heading +=
+          distance < 145
+            ? Math.PI * 0.65
+            : Math.sin(g.time + enemy.phase) * 0.35;
       else if (enemy.t === "wisp")
         heading += Math.sin(g.time * 2.5 + enemy.phase) * 0.5;
       let speed =
@@ -2023,20 +2464,26 @@
         (1 + Math.min(300, g.time) / 1000) *
         (1 - (enemy.gravitySlow || 0));
       enemy.gravitySlow = 0;
+      enemy.recovery = Math.max(0, (enemy.recovery || 0) - dt);
+      if (newCombat() && enemy.recovery > 0 && enemy.charge <= 0) speed *= 0.4;
       if (
-        ["boss", "elite"].includes(enemy.t) &&
-        distance > Math.min(VW, VH) * 0.85
+        (["boss", "elite"].includes(enemy.t) || VISITORS[enemy.t]) &&
+        distance > Math.min(VW, VH) * (VISITORS[enemy.t] ? 0.58 : 0.85)
       )
         speed *= 2.7;
       if (enemy.charge > 0) {
         enemy.charge -= dt;
-        speed = 315;
+        speed = newCombat() ? 350 : 315;
         heading = enemy.chargeAngle;
       }
       if (enemy.warn > 0) speed *= 0.35;
       enemy.x += Math.cos(heading) * speed * dt;
       enemy.y += Math.sin(heading) * speed * dt;
-      if (["ranger", "elite", "boss"].includes(enemy.t) && distance < 520) {
+      const canFire = newCombat()
+        ? enemy.t !== "skimmer" &&
+          g.time >= (B.combat.attackUnlock[enemy.t] || 0)
+        : ["ranger", "elite", "boss"].includes(enemy.t);
+      if (canFire && distance < (newCombat() ? 380 : 520)) {
         if (enemy.warn > 0) {
           enemy.warn -= dt;
           if (enemy.warn <= 0) enemyFire(enemy);
@@ -2045,9 +2492,33 @@
           if (enemy.fire <= 0) {
             enemy.aim = angle(enemy, g.p);
             enemy.pattern++;
-            enemy.warn = enemy.t === "boss" ? 0.7 : 0.4;
-            enemy.fire =
-              enemy.t === "boss"
+            if (newCombat()) playSound("enemyCharge");
+            enemy.warn = newCombat()
+              ? {
+                  lancer: 0.9,
+                  sentinel: 1.1,
+                  watcher: 1.2,
+                  minelayer: 0.8,
+                  courier: 1,
+                  tank: 1,
+                  ranger: 0.7,
+                  wisp: 0.65,
+                }[enemy.t] || 1
+              : enemy.t === "boss"
+                ? 0.7
+                : 0.4;
+            enemy.fire = newCombat()
+              ? {
+                  lancer: 3.1,
+                  sentinel: 3.8,
+                  watcher: 3.5,
+                  minelayer: 4.2,
+                  courier: 3.7,
+                  tank: 5,
+                  ranger: 2.6,
+                  wisp: 3.5,
+                }[enemy.t] || Math.max(1.7, 2.5 - 0.3 * ((enemy.tier || 1) - 1))
+              : enemy.t === "boss"
                 ? Math.max(1, 1.8 - 0.25 * ((enemy.tier || 1) - 1))
                 : enemy.t === "elite"
                   ? 2
@@ -2074,6 +2545,7 @@
       (enemy) =>
         enemy.hp > 0 &&
         (["boss", "elite"].includes(enemy.t) ||
+          VISITORS[enemy.t] ||
           (Math.abs(enemy.x - g.p.x) < VW / 2 + 150 &&
             Math.abs(enemy.y - g.p.y) < VH / 2 + 150)),
     );
@@ -2161,19 +2633,112 @@
   }
   function drawWarning(enemy, point) {
     ctx.save();
-    ctx.globalAlpha = 0.45;
-    ctx.strokeStyle = "#ff7597";
+    ctx.globalAlpha = 0.65;
+    const kind = newCombat() ? attackKind(enemy) : "fan";
+    ctx.strokeStyle =
+      kind === "dash" ? "#73d9e8" : kind === "mine" ? "#bd9ce9" : "#efad72";
     ctx.lineWidth = 2;
     ctx.setLineDash([4, 7]);
-    const length = enemy.t === "boss" ? 160 : 70;
+    if (newCombat() && ["shock", "mine"].includes(kind)) {
+      if (kind === "shock") {
+        ctx.beginPath();
+        const opening = enemy.aim + 0.5;
+        ctx.arc(point.x, point.y, 60, opening + 0.48, opening + T - 0.48);
+        ctx.stroke();
+      } else {
+        const count = enemy.t === "courier" ? 3 : 1;
+        for (let index = 0; index < count; index++) {
+          const heading = enemy.aim + (index - (count - 1) / 2) * 0.85;
+          ctx.beginPath();
+          ctx.arc(
+            point.x + Math.cos(heading) * 38,
+            point.y + Math.sin(heading) * 38,
+            26,
+            0,
+            T,
+          );
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+      return;
+    }
+    const length =
+      kind === "beam"
+        ? enemy.t === "boss"
+          ? 440
+          : 310
+        : kind === "dash"
+          ? 180
+          : enemy.t === "boss"
+            ? 160
+            : 100;
     ctx.beginPath();
-    ctx.moveTo(point.x, point.y);
-    ctx.lineTo(
-      point.x + Math.cos(enemy.aim) * length,
-      point.y + Math.sin(enemy.aim) * length,
-    );
+    const count = kind === "beam" && enemy.t === "watcher" ? 3 : 1;
+    for (let index = 0; index < count; index++) {
+      const heading = enemy.aim + (index - (count - 1) / 2) * 0.72;
+      for (const spread of kind === "beam" ? [-0.2, 0.2] : [0]) {
+        ctx.moveTo(point.x, point.y);
+        ctx.lineTo(
+          point.x + Math.cos(heading + spread) * length,
+          point.y + Math.sin(heading + spread) * length,
+        );
+      }
+    }
     ctx.stroke();
     ctx.restore();
+  }
+  function drawHazards() {
+    for (const hazard of g.hazards || []) {
+      const point = toScreen(hazard.x, hazard.y);
+      ctx.save();
+      ctx.translate(point.x, point.y);
+      if (hazard.kind === "beam") {
+        const heading =
+          hazard.heading + (hazard.sweep * hazard.age) / hazard.duration;
+        ctx.rotate(heading);
+        ctx.fillStyle = "#aa4d51";
+        ctx.fillRect(0, -7, hazard.length, 14);
+        ctx.fillStyle = "#f3a66c";
+        ctx.fillRect(0, -3, hazard.length, 6);
+        ctx.fillStyle = "#fff0ce";
+        ctx.fillRect(0, -1, hazard.length, 2);
+      } else if (hazard.kind === "shock") {
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#cf805f";
+        ctx.beginPath();
+        ctx.arc(
+          0,
+          0,
+          Math.max(1, (hazard.radius * hazard.age) / hazard.duration),
+          hazard.opening + 0.48,
+          hazard.opening + T - 0.48,
+        );
+        ctx.stroke();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "#ffe4a1";
+        ctx.stroke();
+      } else if (hazard.stage !== "blast") {
+        const danger = hazard.stage === "fuse";
+        ctx.lineWidth = danger ? 2 : 1;
+        ctx.strokeStyle = danger ? "#ffb36b" : "#bca1da";
+        ctx.setLineDash(danger ? [] : [3, 5]);
+        ctx.beginPath();
+        ctx.arc(0, 0, hazard.radius, 0, T);
+        ctx.stroke();
+        ctx.fillStyle = hazard.parcel ? "#b88858" : "#705785";
+        ctx.fillRect(-7, -6, 14, 12);
+        ctx.fillStyle = hazard.parcel ? "#f4d590" : "#ceb8e7";
+        ctx.fillRect(-5, -4, 10, 2);
+        ctx.fillRect(-1, -5, 2, 11);
+        if (danger) {
+          ctx.fillStyle = "#fff0ce";
+          ctx.fillRect(-1, -17, 2, 6);
+          ctx.fillRect(-1, -9, 2, 2);
+        }
+      }
+      ctx.restore();
+    }
   }
   function drawOffscreenMarker(point) {
     if (point.x > 20 && point.x < VW - 20 && point.y > 195 && point.y < VH - 25)
@@ -2320,12 +2885,29 @@
       throw Error("武装槽位无效");
     if (
       ![180, 600].includes(rules.runSeconds) ||
+      (rules.combatVersion !== undefined && rules.combatVersion !== 2) ||
       (rules.runSeconds === 180 &&
         (rules.activeSlots !== 4 || rules.passiveSlots !== 3)) ||
       (rules.runSeconds === 600 &&
         (rules.activeSlots !== 6 || rules.passiveSlots !== 6))
     )
       throw Error("对局规则快照无效，原数据保留");
+    if (
+      newCombat(game) &&
+      (!Array.isArray(game.hazards) ||
+        game.hazards.length > B.combat.maxHazards ||
+        game.hazards.some(
+          (hazard) =>
+            !["mine", "beam", "shock"].includes(hazard.kind) ||
+            ![hazard.x, hazard.y, hazard.age, hazard.duration].every(
+              Number.isFinite,
+            ),
+        ) ||
+        !Array.isArray(game.encounters?.schedule) ||
+        !Array.isArray(game.encounters?.seen) ||
+        !Array.isArray(game.encounters?.log))
+    )
+      throw Error("遭遇记录无效，原数据保留");
     for (const [id, level] of Object.entries(game.active))
       if (
         !ACTIVE.includes(id) ||
@@ -2484,6 +3066,7 @@
       g = structuredClone(snapshot.game);
       g.wells ||= [];
       g.milestoneSeen ||= [];
+      g.hazards ||= [];
       seed = snapshot.seed;
       runId = storeView.active.id;
       runRevision = storeView.active.revision;
@@ -2609,6 +3192,16 @@
         ? "守卫已击退。带着新武装，再试一种搭配。"
         : "坚持到了最后。下次，试着击退守卫。"
       : "带回已收集的零件，整备后再出发。";
+    const encounters = summary.encounters || [];
+    $("resultEncounters").hidden = encounters.length === 0;
+    $("resultEncounters").textContent = encounters.length
+      ? "途中奇遇 " +
+        encounters.length +
+        " 次 · 击退 " +
+        encounters.filter((event) => event.result === "repelled").length +
+        " 次"
+      : "";
+    $("encounterNotice").hidden = true;
     $("statTime").textContent = fmt(summary.time);
     $("statKills").textContent = summary.kills;
     $("statScrap").textContent = summary.credits;
@@ -2760,8 +3353,7 @@
       profile: () => profile,
       startModel: (value = 38191, perks = {}) => {
         profile = { credits: 0, best: 0, runs: 0, hull: 0, gun: 0, ...perks };
-        resetWorld();
-        seed = value >>> 0;
+        resetWorld(value >>> 0);
         g.persisted = false;
         return g;
       },

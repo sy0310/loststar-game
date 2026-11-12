@@ -50,6 +50,8 @@
     evolution: 1.1,
     fusion: 1.3,
     boss: 1.5,
+    enemyCharge: 0.5,
+    enemyFire: 0.24,
     victory: 1,
     defeat: 1,
   });
@@ -502,6 +504,17 @@
             }),
           );
           duckMusic(at, 0.32, 1.2);
+          break;
+        case "enemyCharge":
+          note(0, 0.17, 230, 440, 0.045, { wave: "triangle" });
+          note(0.18, 0.14, 440, 620, 0.035, { wave: "triangle" });
+          break;
+        case "enemyFire":
+          note(0, 0.12, 270, 95, 0.04, {
+            wave: "sawtooth",
+            filter: "lowpass",
+            cutoff: 1100,
+          });
           break;
         case "victory":
           [62, 65, 69, 74, 77, 81].forEach((midi, index) =>

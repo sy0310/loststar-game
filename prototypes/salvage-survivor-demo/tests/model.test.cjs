@@ -573,6 +573,291 @@ async function test(name, run) {
     assert.equal(g.mode, "results");
     return { time: g.time };
   });
+  await test("all eight EVO reject missing and half-level accessories before both maxima", () => {
+    for (const [active, passive, evolution] of evo) {
+      const g = start();
+      equip(active, 3);
+      assert(!Q.pick(evolution), active + " without accessory");
+      equip(passive, 1);
+      assert(!Q.pick(evolution), active + " with Lv1 accessory");
+      assert(!Q.options().some((option) => option.id === evolution));
+      equip(passive, 1);
+      assert(Q.pick(evolution));
+      assert.equal(g.evolved[active], evolution);
+    }
+  });
+  await test("stale EVO input is revalidated against real equipment and never grants an evolution", () => {
+    const g = start();
+    equip("cannon", 3);
+    equip("lens", 2);
+    const option = Q.options().find((entry) => entry.id === "piercebeam");
+    g.presented = [option];
+    g.mode = "upgrade";
+    g.passive.lens = 1;
+    const credits = g.credits;
+    assert.equal(Q.select(0), false);
+    assert(!g.evolved.cannon);
+    assert.equal(g.credits, credits);
+    assert.equal(g.presented.length, 3);
+  });
+  function threat(type, x = 0, y = -150) {
+    const g = start();
+    g.active = {};
+    g.encounters.schedule = [];
+    g.time = 110;
+    g.milestoneSeen = context.SurvivorBalance.milestones.map(
+      (m) => m.type + ":" + m.at,
+    );
+    Q.enemy(type, x, y, 100000);
+    const enemy = g.enemy[0];
+    enemy.fire = 0;
+    return { g, enemy };
+  }
+  await test("lancer telegraphs, locks heading, really charges then recovers", () => {
+    const { g, enemy } = threat("lancer");
+    Q.step(0.5);
+    assert(enemy.warn > 0);
+    assert.equal(enemy.y, -150);
+    const aim = enemy.aim;
+    g.p.x = 90;
+    Q.step(0.5);
+    assert(enemy.charge > 0);
+    assert.equal(enemy.chargeAngle, aim);
+    assert(enemy.y > -150);
+    assert.equal(g.enemyShots.length, 0);
+    Q.step(0.5);
+    assert(enemy.recovery > 0 && enemy.charge <= 0);
+  });
+  await test("sentinel beam and tank shock have real safe paths and real ship damage", () => {
+    const results = [];
+    for (const type of ["sentinel", "tank"]) {
+      const { g } = threat(type);
+      Q.step(1.2);
+      const hazard = g.hazards.find(
+        (entry) => entry.kind === (type === "tank" ? "shock" : "beam"),
+      );
+      assert(hazard, type);
+      if (type === "tank") Q.step(0.6);
+      g.p.inv = 0;
+      if (type === "tank") {
+        const radius =
+          (hazard.radius * (hazard.age + 1 / 60)) / hazard.duration;
+        g.p.x = hazard.x + Math.cos(hazard.opening) * radius;
+        g.p.y = hazard.y + Math.sin(hazard.opening) * radius;
+      } else {
+        g.p.x = hazard.x + 100;
+        g.p.y = hazard.y - 100;
+      }
+      const hp = g.p.hp;
+      Q.step(1 / 60);
+      assert.equal(g.p.hp, hp, "safe path");
+      if (type === "tank") {
+        const heading = hazard.opening + Math.PI;
+        const radius =
+          (hazard.radius * (hazard.age + 1 / 60)) / hazard.duration;
+        g.p.x = hazard.x + Math.cos(heading) * radius;
+        g.p.y = hazard.y + Math.sin(heading) * radius;
+      } else {
+        const heading =
+          hazard.heading +
+          (hazard.sweep * (hazard.age + 1 / 60)) / hazard.duration;
+        g.p.x = hazard.x + Math.cos(heading) * 120;
+        g.p.y = hazard.y + Math.sin(heading) * 120;
+      }
+      Q.step(1 / 60);
+      assert(g.p.hp < hp, "actual impact");
+      results.push({ type, damage: hp - g.p.hp });
+    }
+    return results;
+  });
+  await test("killing a beam source interrupts it and mines wait for arm and fuse", () => {
+    let { g, enemy } = threat("sentinel");
+    Q.step(1.2);
+    assert(g.hazards.some((entry) => entry.kind === "beam"));
+    enemy.hp = 0;
+    Q.step(1 / 60);
+    assert.equal(g.hazards.length, 0);
+    ({ g } = threat("minelayer"));
+    Q.step(0.85);
+    const mine = g.hazards[0];
+    assert(mine && mine.stage === "arming");
+    g.p.x = mine.x;
+    g.p.y = mine.y;
+    g.p.inv = 0;
+    const hp = g.p.hp;
+    Q.step(0.5);
+    assert.equal(g.p.hp, hp);
+    Q.step(0.5);
+    assert.equal(mine.stage, "fuse");
+    assert.equal(g.p.hp, hp);
+    Q.step(0.6);
+    assert(g.p.hp < hp);
+  });
+  await test("ranger needles and wisp curved pairs have distinct actual trajectories", () => {
+    const rows = [];
+    for (const type of ["ranger", "wisp"]) {
+      const { g } = threat(type);
+      Q.step(0.8);
+      assert.equal(g.enemyShots.length, type === "ranger" ? 3 : 2);
+      assert(
+        g.enemyShots.every(
+          (shot) => shot.kind === (type === "ranger" ? "needle" : "curl"),
+        ),
+      );
+      const shot = g.enemyShots[0],
+        vx = shot.vx;
+      Q.step(0.1);
+      assert.equal(shot.vx === vx, type === "ranger");
+      rows.push({ type, count: g.enemyShots.length });
+    }
+    return rows;
+  });
+  await test("two finite visitors warn, arrive, depart and never respawn during the same run", () => {
+    const g = start();
+    g.active = {};
+    g.encounters.schedule = [
+      { at: 0, kind: "courier" },
+      { at: 3, kind: "watcher" },
+    ];
+    Q.step(1);
+    assert.equal(g.encounters.pending.kind, "courier");
+    assert.equal(g.enemy.length, 0);
+    Q.step(2);
+    assert.equal(g.encounters.active.kind, "courier");
+    g.encounters.active.until = g.time;
+    Q.step(0.1);
+    assert.equal(g.encounters.log[0].result, "departed");
+    Q.step(2.5);
+    assert.equal(g.encounters.active.kind, "watcher");
+    g.encounters.active.until = g.time;
+    Q.step(0.1);
+    Q.step(1);
+    assert.equal(g.encounters.log.length, 2);
+    assert.equal(g.encounters.seen.length, 2);
+    assert.equal(
+      g.metrics.events.filter((event) => event.kind === "encounterArrival")
+        .length,
+      2,
+    );
+  });
+  await test("visitor destruction uses actual damage, pays bounded scrap once and cannot be repeated", () => {
+    const g = start();
+    equip("cannon", 1);
+    g.encounters.schedule = [{ at: 0, kind: "courier" }];
+    Q.step(2.3);
+    const visitor = g.enemy.find((enemy) => enemy.t === "courier");
+    assert(visitor);
+    Object.assign(visitor, { x: 0, y: -60, hp: 1, speed: 0, fire: 999 });
+    g.attackClock = {};
+    Q.step(0.3);
+    assert.equal(g.encounters.log.length, 1);
+    assert.equal(g.encounters.log[0].result, "repelled");
+    const paid = g.pickups.filter(
+      (pickup) => pickup.type === "scrap" && pickup.value === 12,
+    ).length;
+    const received = g.credits;
+    assert(paid === 1 || received >= 12);
+    Q.step(1);
+    assert.equal(g.encounters.log.length, 1);
+    assert(g.credits <= 12);
+  });
+  await test("legacy600 snapshots retain old combat population and never receive new visitors", () => {
+    const g = start();
+    delete g.rules.combatVersion;
+    g.time = 170;
+    g.spawnTime = 0;
+    Q.step(0.5);
+    assert(
+      !g.enemy.some((enemy) =>
+        ["lancer", "sentinel", "minelayer", "courier", "watcher"].includes(
+          enemy.t,
+        ),
+      ),
+    );
+    assert.equal(g.encounters.seen.length, 0);
+  });
+  await test("fixed seeds include the visitor schedule and reproduce combat RNG exactly", () => {
+    const rows = [];
+    for (let i = 0; i < 2; i++) {
+      const g = start(182);
+      g.spawnTime = 0;
+      Q.step(3);
+      rows.push(
+        JSON.stringify({
+          schedule: g.encounters.schedule,
+          enemy: g.enemy,
+          shots: g.enemyShots,
+        }),
+      );
+    }
+    assert.equal(rows[0], rows[1]);
+  });
+  await test("wisp and tank attacks unlock progressively while their early movement remains live", () => {
+    for (const [type, unlock] of [
+      ["wisp", 30],
+      ["tank", 70],
+    ]) {
+      const { g, enemy } = threat(type);
+      g.time = 0;
+      Q.step(2);
+      assert.equal(g.hazards.length, 0);
+      assert.equal(g.enemyShots.length, 0);
+      assert.equal(g.metrics.shots["hostile-" + type], undefined);
+      g.time = unlock;
+      enemy.fire = 0;
+      Q.step(1.2);
+      assert(g.metrics.shots["hostile-" + type] > 0);
+    }
+  });
+  await test("visitor catches up from outside the viewport and shows a real near-screen encounter", () => {
+    const { g, enemy } = threat("courier", 0, -800);
+    enemy.speed = 94;
+    Q.step(3);
+    assert(enemy.y > -300);
+    assert(g.enemy.includes(enemy));
+  });
+  await test("a full pickup field preserves one actual visitor scrap drop within the same entity cap", () => {
+    const g = start();
+    equip("cannon", 1);
+    g.encounters.schedule = [{ at: 0, kind: "courier" }];
+    Q.step(2.3);
+    const visitor = g.enemy.find((enemy) => enemy.t === "courier");
+    Object.assign(visitor, { x: 0, y: -60, hp: 1, speed: 0, fire: 999 });
+    g.pickups = Array.from({ length: 140 }, (_, i) => ({
+      x: 1000 + i,
+      y: 1000,
+      t: 30,
+      type: "xp",
+      value: 8,
+    }));
+    g.attackClock = {};
+    Q.step(0.4);
+    assert.equal(g.encounters.log.length, 1);
+    assert(g.pickups.length <= 140);
+    assert(
+      g.credits === 12 ||
+        g.pickups.some(
+          (pickup) => pickup.type === "scrap" && pickup.value === 12,
+        ),
+    );
+  });
+  await test("natural waves bound simultaneous specialists and retain a pursuing swarm", () => {
+    const g = start(58);
+    g.time = 110;
+    g.encounters.schedule = [];
+    g.milestoneSeen = context.SurvivorBalance.milestones.map(
+      (m) => m.type + ":" + m.at,
+    );
+    for (let i = 0; i < 100; i++) {
+      g.spawnTime = 0;
+      Q.step(1 / 60);
+    }
+    for (const [type, cap] of Object.entries(
+      context.SurvivorBalance.combat.populationCaps,
+    ))
+      assert(g.enemy.filter((enemy) => enemy.t === type).length <= cap, type);
+    assert(g.enemy.filter((enemy) => enemy.t === "skimmer").length >= 12);
+  });
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
   if (report.errors.length) process.exitCode = 1;

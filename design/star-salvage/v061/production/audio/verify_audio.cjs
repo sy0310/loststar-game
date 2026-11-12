@@ -34,6 +34,8 @@ const ids = [
   "evolution",
   "fusion",
   "boss",
+  "enemyCharge",
+  "enemyFire",
   "victory",
   "defeat",
 ];
@@ -673,6 +675,32 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         state: await unsupported.evaluate(() => SurvivorAudio.inspect()),
       });
       await unsupported.close();
+      for (const cue of ["enemyCharge", "enemyFire"]) {
+        const measured = await page.evaluate(async (id) => {
+          const { buffer, stats } = await SurvivorAudio.renderOffline(id);
+          const pcm = buffer.getChannelData(0);
+          let square = 0,
+            peak = 0;
+          for (const sample of pcm) {
+            square += sample * sample;
+            peak = Math.max(peak, Math.abs(sample));
+          }
+          return {
+            rms: Math.sqrt(square / pcm.length),
+            peak,
+            played: stats.played[id],
+          };
+        }, cue);
+        assert(
+          measured.rms > 0.0001 && measured.peak > 0.001 && measured.peak < 1,
+        );
+        assert.equal(measured.played, 1);
+        report.cases.push({
+          engine: name,
+          id: cue + "-actual-offline-signal",
+          measured,
+        });
+      }
       await page.close();
     } catch (error) {
       report.failedEngine = name;

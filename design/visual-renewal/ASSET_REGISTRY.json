@@ -11683,7 +11683,8 @@
         "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
         "codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md",
         "design/star-salvage/v06/SURVIVOR_MODE_APPROVED.md",
-        "design/star-salvage/v061/README.md"
+        "design/star-salvage/v061/README.md",
+        "design/star-salvage/v062/README.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
       "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps. Preserve251 rows and append7 POLISH042 review fixes; no old proof or phone status promoted. Preserve258 prior rows and append v05 exact normative clauses. Fixed842dc6a/465523 evidence is independently bound. Harbor sharpening is explicitly incomplete. Phone/user art remain pending. Preserve all298 earlier rows and historical hashes; append9 v051 repair capabilities. New68-file/236-case evidence is independent from old67-file/176-case proof. Original Mac schema7→8 verified; physical phone, user art and enjoyment pending. Initial349/468993 remains immutable historical candidate. Final066a657/469033 has240 browser checks plus24 real market UI traces after reserve-display rounding correction. Preserve all307 prior rows and immutable proof; append10 survivor requirements. Latest user-approved360-degree mode supersedes the earlier main-loop direction only. The old modes and paid archives remain available. Physical phone, user art and main4283/newTapTap gate remain pending. Preserve317 historical requirements/proofs and append6 SALVAGE061 rows. User approved469298 core and both MP3 originals. New600-second/6+6 runtime55610d6, TapTap469347, real HTTP288, audio32, model21, policies160 and natural600seconds are independent. Mac4283/4397 updated after engineering and prior core phone feedback; actual old UI export unchanged. New phone/audio/art/fun acceptance pending. New5934dae fixes delayed WebKit playback confirmation using actual playing events and token cancellation. Fresh34audio/288HTTP/160policies/21model/600second evidence replaces only SALVAGE061 current binding. Prior469347, Linux recorder failure and Mac timeout reports remain unchanged. Final media-clock ec58f9c confirms actual playback progress when both promises and playing events are absent. Mac and Linux34audio checks pass. Fresh natural600,HTTP288,model21,policy160,art50,oldUI-save equality and nativeSafari independently bound. No prior candidate proof or phone status overwritten.",
@@ -12098,7 +12099,14 @@
       "SALVAGE061-AUDIO",
       "SALVAGE061-VFX",
       "SALVAGE061-LEGACY",
-      "SALVAGE061-DELIVERY"
+      "SALVAGE061-DELIVERY",
+      "SALVAGE062-DIFFICULTY",
+      "SALVAGE062-ENEMIES",
+      "SALVAGE062-EVOLUTION",
+      "SALVAGE062-SPACE",
+      "SALVAGE062-VISITORS",
+      "SALVAGE062-CONTINUITY",
+      "SALVAGE062-DELIVERY"
     ],
     "requirements": [
       {
@@ -38679,6 +38687,306 @@
           "taptapVersion": 469459,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "SALVAGE062-DIFFICULTY",
+        "parent": null,
+        "requirement": "小幅提高十分钟生存压力，保留构筑与躲避空间。",
+        "acceptanceCriteria": "小幅提高十分钟生存压力，保留构筑与躲避空间。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v062/README.md",
+            "startLine": 5,
+            "endLine": 15
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "design/star-salvage/v062/BALANCE_V062.json",
+          "prototypes/salvage-survivor-demo/tests/simulate.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "v0.6.2普通十分钟入口"
+          }
+        ],
+        "checks": [
+          "survivor-v062-model",
+          "survivor-v062-browser",
+          "survivor-v062-audio",
+          "survivor-v062-policy",
+          "survivor-v062-art"
+        ],
+        "proofs": [],
+        "pendingProofs": [
+          "artifacts/survivor-v062/verification.json"
+        ],
+        "gap": "固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。",
+        "nextAction": "完成固定源码证据与开发自测上传，保留所有历史记录。"
+      },
+      {
+        "id": "SALVAGE062-ENEMIES",
+        "parent": null,
+        "requirement": "三种新普通敌机与原敌机能力差异，攻击预警和真实躲避／伤害。",
+        "acceptanceCriteria": "三种新普通敌机与原敌机能力差异，攻击预警和真实躲避／伤害。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v062/README.md",
+            "startLine": 5,
+            "endLine": 15
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js"
+        ],
+        "assets": [
+          "design/star-salvage/v062/production/actors/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "v0.6.2普通十分钟入口"
+          }
+        ],
+        "checks": [
+          "survivor-v062-model",
+          "survivor-v062-browser",
+          "survivor-v062-audio",
+          "survivor-v062-policy",
+          "survivor-v062-art"
+        ],
+        "proofs": [],
+        "pendingProofs": [
+          "artifacts/survivor-v062/verification.json"
+        ],
+        "gap": "固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。",
+        "nextAction": "完成固定源码证据与开发自测上传，保留所有历史记录。"
+      },
+      {
+        "id": "SALVAGE062-EVOLUTION",
+        "parent": null,
+        "requirement": "八配方主动与对应配件同时满级，实际点击及续玩校验。",
+        "acceptanceCriteria": "八配方主动与对应配件同时满级，实际点击及续玩校验。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v062/README.md",
+            "startLine": 5,
+            "endLine": 15
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/tests/browser/v062.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "v0.6.2普通十分钟入口"
+          }
+        ],
+        "checks": [
+          "survivor-v062-model",
+          "survivor-v062-browser",
+          "survivor-v062-audio",
+          "survivor-v062-policy",
+          "survivor-v062-art"
+        ],
+        "proofs": [],
+        "pendingProofs": [
+          "artifacts/survivor-v062/verification.json"
+        ],
+        "gap": "固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。",
+        "nextAction": "完成固定源码证据与开发自测上传，保留所有历史记录。"
+      },
+      {
+        "id": "SALVAGE062-SPACE",
+        "parent": null,
+        "requirement": "统一像素深空、星云与银河作战背景，保持危险可读。",
+        "acceptanceCriteria": "统一像素深空、星云与银河作战背景，保持危险可读。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v062/README.md",
+            "startLine": 5,
+            "endLine": 15
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js"
+        ],
+        "assets": [
+          "design/star-salvage/v062/production/space/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "v0.6.2普通十分钟入口"
+          }
+        ],
+        "checks": [
+          "survivor-v062-model",
+          "survivor-v062-browser",
+          "survivor-v062-audio",
+          "survivor-v062-policy",
+          "survivor-v062-art"
+        ],
+        "proofs": [],
+        "pendingProofs": [
+          "artifacts/survivor-v062/verification.json"
+        ],
+        "gap": "固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。",
+        "nextAction": "完成固定源码证据与开发自测上传，保留所有历史记录。"
+      },
+      {
+        "id": "SALVAGE062-VISITORS",
+        "parent": null,
+        "requirement": "两种原创科幻奇遇来访者，出场、攻击和可观察结果，不重复领取。",
+        "acceptanceCriteria": "两种原创科幻奇遇来访者，出场、攻击和可观察结果，不重复领取。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v062/README.md",
+            "startLine": 5,
+            "endLine": 15
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/tests/browser/v062.spec.cjs"
+        ],
+        "assets": [
+          "design/star-salvage/v062/production/actors/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "v0.6.2普通十分钟入口"
+          }
+        ],
+        "checks": [
+          "survivor-v062-model",
+          "survivor-v062-browser",
+          "survivor-v062-audio",
+          "survivor-v062-policy",
+          "survivor-v062-art"
+        ],
+        "proofs": [],
+        "pendingProofs": [
+          "artifacts/survivor-v062/verification.json"
+        ],
+        "gap": "固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。",
+        "nextAction": "完成固定源码证据与开发自测上传，保留所有历史记录。"
+      },
+      {
+        "id": "SALVAGE062-CONTINUITY",
+        "parent": null,
+        "requirement": "原数据库、旧短局／长局、余额、强化及历史玩法权益兼容。",
+        "acceptanceCriteria": "原数据库、旧短局／长局、余额、强化及历史玩法权益兼容。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v062/README.md",
+            "startLine": 5,
+            "endLine": 15
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/persistence.js",
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/tests/browser/storage.spec.cjs",
+          "prototypes/salvage-survivor-demo/tests/browser/v062.spec.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "v0.6.2普通十分钟入口"
+          }
+        ],
+        "checks": [
+          "survivor-v062-model",
+          "survivor-v062-browser",
+          "survivor-v062-audio",
+          "survivor-v062-policy",
+          "survivor-v062-art"
+        ],
+        "proofs": [],
+        "pendingProofs": [
+          "artifacts/survivor-v062/verification.json"
+        ],
+        "gap": "固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。",
+        "nextAction": "完成固定源码证据与开发自测上传，保留所有历史记录。"
+      },
+      {
+        "id": "SALVAGE062-DELIVERY",
+        "parent": null,
+        "requirement": "固定源码包、双引擎双尺寸、连续录像、实际Mac与TapTap开发自测。",
+        "acceptanceCriteria": "固定源码包、双引擎双尺寸、连续录像、实际Mac与TapTap开发自测。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v062/README.md",
+            "startLine": 5,
+            "endLine": 15
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IN_PROGRESS",
+        "evidence": "MISSING",
+        "visual": "NOT_REVIEWED",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/build.py",
+          "prototypes/salvage-survivor-demo/tests/capture-v062.cjs"
+        ],
+        "assets": [],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "v0.6.2普通十分钟入口"
+          }
+        ],
+        "checks": [
+          "survivor-v062-model",
+          "survivor-v062-browser",
+          "survivor-v062-audio",
+          "survivor-v062-policy",
+          "survivor-v062-art"
+        ],
+        "proofs": [],
+        "pendingProofs": [
+          "artifacts/survivor-v062/verification.json"
+        ],
+        "gap": "固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。",
+        "nextAction": "完成固定源码证据与开发自测上传，保留所有历史记录。"
       }
     ],
     "supersededRules": [
@@ -39220,7 +39528,8 @@
       "design/star-salvage/v05/LIGHT_ENCOUNTERS_PLAN.md",
       "design/star-salvage/v05/SHIP_HOLDS_MARKET_CURIOS_PLAN.md",
       "codex/SALVAGE_V051_PLAYTEST_REPAIR_TASK.md",
-      "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md"
+      "design/star-salvage/v051/PLAYTEST_FEEDBACK_FIX_SPEC.md",
+      "design/star-salvage/v062/README.md"
     ],
     "deliveryHistory": [
       {

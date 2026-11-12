@@ -875,3 +875,43 @@ h2 {
     margin: 1px 0;
   }
 }
+
+.slot.maxed {
+  border-color: #c2ab76;
+  background: #393044;
+}
+.slot.maxed small {
+  color: #f4d590;
+  font-size: 8px;
+}
+#encounterNotice {
+  position: absolute;
+  z-index: 5;
+  top: calc(var(--safe-top) + 233px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(330px, calc(100% - 32px));
+  padding: 8px 12px;
+  border-left: 3px solid #d1ab70;
+  background: #201c35e8;
+  box-shadow: 0 2px 0 #0a0e1c;
+  pointer-events: none;
+}
+#encounterNotice strong,
+#encounterNotice span {
+  display: block;
+  line-height: 1.5;
+}
+#encounterNotice strong {
+  color: #f1d49d;
+  font-size: 13px;
+}
+#encounterNotice span {
+  color: #d1c6e0;
+  font-size: 11px;
+}
+#toast {
+  top: auto;
+  bottom: calc(var(--safe-bottom) + 48px);
+  font-size: 15px;
+}

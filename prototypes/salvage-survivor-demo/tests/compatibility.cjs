@@ -109,7 +109,7 @@ async function read(page) {
       g.p.inv = 50;
       for (let i = 0; i < 38; i++)
         Q.enemy(
-          "tank",
+          ["tank", "lancer", "sentinel", "minelayer", "wisp", "ranger"][i % 6],
           ((i % 7) - 3) * 56,
           (Math.floor(i / 7) - 3) * 62,
           1000000,
@@ -166,6 +166,7 @@ async function read(page) {
               "arcs",
               "rings",
               "bursts",
+              "hazards",
             ])
               max[key] = Math.max(max[key] || 0, g[key].length);
             if (now - began >= 30000) {
@@ -201,6 +202,7 @@ async function read(page) {
       arcs: 24,
       rings: 24,
       bursts: 28,
+      hazards: 12,
     }))
       assert(metrics.max[key] <= max, key);
     assert.equal(metrics.mode, "play");

@@ -1971,5 +1971,270 @@ window.SurvivorArtCatalog = {
         "durationMs": 90
       }
     ]
+  },
+  "lancer": {
+    "nativeSize": [
+      28,
+      28
+    ],
+    "center": [
+      14.0,
+      14.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        11,
+        23
+      ],
+      [
+        16,
+        23
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      14.0,
+      14.0
+    ],
+    "collisionRadius": 7,
+    "src": "./assets/v062/actors/lancer@2x.png",
+    "sha256": "a7e2941750c9400ca1ec96c3da39b69f6d57ab9487fe7ef608b6a36753d3769d",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 28,
+        "height": 28,
+        "anchor": [
+          14.0,
+          14.0
+        ]
+      }
+    ]
+  },
+  "sentinel": {
+    "nativeSize": [
+      32,
+      32
+    ],
+    "center": [
+      16.0,
+      16.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        10,
+        29
+      ],
+      [
+        22,
+        29
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      16.0,
+      16.0
+    ],
+    "collisionRadius": 11,
+    "src": "./assets/v062/actors/sentinel@2x.png",
+    "sha256": "87585b555480978ada2b6660c31485a57823fcc8fc31cc8a0333cadef583fa83",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 32,
+        "height": 32,
+        "anchor": [
+          16.0,
+          16.0
+        ]
+      }
+    ]
+  },
+  "minelayer": {
+    "nativeSize": [
+      32,
+      32
+    ],
+    "center": [
+      16.0,
+      16.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        12,
+        25
+      ],
+      [
+        20,
+        25
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      16.0,
+      16.0
+    ],
+    "collisionRadius": 11,
+    "src": "./assets/v062/actors/minelayer@2x.png",
+    "sha256": "3e13bfabdede7a6cd4f540f6b186dff594b8d5818a332c883cafef68fd38b97e",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 32,
+        "height": 32,
+        "anchor": [
+          16.0,
+          16.0
+        ]
+      }
+    ]
+  },
+  "courier": {
+    "nativeSize": [
+      32,
+      32
+    ],
+    "center": [
+      16.0,
+      16.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        5,
+        22
+      ],
+      [
+        26,
+        22
+      ],
+      [
+        16,
+        30
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      16.0,
+      16.0
+    ],
+    "collisionRadius": 12,
+    "src": "./assets/v062/actors/courier@2x.png",
+    "sha256": "decf45cfa83b808b634fa9c061ab04cc0dcc6ddd3047de9264e8eca7f642b4c9",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 32,
+        "height": 32,
+        "anchor": [
+          16.0,
+          16.0
+        ]
+      }
+    ]
+  },
+  "watcher": {
+    "nativeSize": [
+      40,
+      40
+    ],
+    "center": [
+      20.0,
+      20.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "exhaustAnchors": [
+      [
+        19,
+        33
+      ]
+    ],
+    "exhaustDirection": [
+      0,
+      1
+    ],
+    "collisionCenter": [
+      20.0,
+      20.0
+    ],
+    "collisionRadius": 15,
+    "src": "./assets/v062/actors/watcher@2x.png",
+    "sha256": "274e8a2f3ea663d469186815fb53917b835ba0d5635e97a0a434b67c72af1e7d",
+    "kind": "actor",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 40,
+        "height": 40,
+        "anchor": [
+          20.0,
+          20.0
+        ]
+      }
+    ]
+  },
+  "deep_space": {
+    "nativeSize": [
+      384,
+      640
+    ],
+    "center": [
+      192,
+      320
+    ],
+    "src": "./assets/v062/space/deep_space@2x.png",
+    "sha256": "fed3ee5844a08915d82e5cb41800d029187feb2e0ed2e21fbd4595ddac79dcf9",
+    "kind": "background",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 640,
+        "anchor": [
+          192,
+          320
+        ]
+      }
+    ]
   }
 };

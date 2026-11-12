@@ -14,7 +14,7 @@ assert hashlib.sha256(archive.read_bytes()).hexdigest() == report['sha256']
 target = Path(sys.argv[1] if len(sys.argv) > 1 else 'releases/survivor-v06-extracted').resolve()
 expected = {item['path']: item for item in report['files']}
 with zipfile.ZipFile(archive) as zipped:
-    assert len(zipped.namelist()) == 60
+    assert len(zipped.namelist()) == report['fileCount'] == 66
     assert set(zipped.namelist()) == set(expected)
     for name in zipped.namelist():
         assert not name.startswith('/') and '..' not in Path(name).parts

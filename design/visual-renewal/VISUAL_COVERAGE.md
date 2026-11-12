@@ -4,14 +4,14 @@
 
 基线运行源码：`ff917872227b0f28a452dee1642d9cc8606251db`。当前交付声明：`PENDING`；Original first-planet proofs retained. Survivor v0.6.1 ec58f9c/TapTap469459 development self-test. SALVAGE061 current evidence separate from prior candidates; phone/user pending.。
 
-共 323 项（94 个父项 / 229 个子项）；用户视觉和真实手机独立登记。
+共 330 项（101 个父项 / 229 个子项）；用户视觉和真实手机独立登记。
 
 | 维度 | 当前登记 |
 |---|---|
-| `implementation` | IMPLEMENTED 308 / IN_PROGRESS 14 / TODO 1 |
-| `evidence` | CURRENT_VERIFIED 310 / MISSING 13 |
-| `visual` | INTERNAL_PASS 291 / NOT_REVIEWED 32 |
-| `phone` | NOT_TESTED 323 |
+| `implementation` | IMPLEMENTED 314 / IN_PROGRESS 15 / TODO 1 |
+| `evidence` | CURRENT_VERIFIED 310 / MISSING 20 |
+| `visual` | INTERNAL_PASS 291 / NOT_REVIEWED 39 |
+| `phone` | NOT_TESTED 330 |
 
 工程全绿与图片数量不构成艺术签收；门禁的 `NOT_READY`、具体缺口与固定包证明单独读取。
 
@@ -812,6 +812,48 @@
 |---|---|---|---|---|
 | `SALVAGE061-DELIVERY` Frozen60-file payload, actual dual-engine/two-sizeHTTP, nativeSafari, originalMac4283 replacement, same-origin legacy fallback, TapTap development only.<br>[design/star-salvage/v061/README.md:3–18](../../design/star-salvage/v061/README.md#L3-L18)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/build.py](../../prototypes/salvage-survivor-demo/build.py)<br>[prototypes/salvage-survivor-demo/serve.cjs](../../prototypes/salvage-survivor-demo/serve.cjs)<br>[prototypes/salvage-survivor-demo/tests/verify-v061-evidence.cjs](../../prototypes/salvage-survivor-demo/tests/verify-v061-evidence.cjs)<br>入口：`/`<br>素材：— | `survivor-v061-model21`<br>`survivor-v061-browser288`<br>`survivor-v061-audio34`<br>`survivor-v061-art50`<br>`survivor-v061-policy160`<br>`survivor-v061-frozen60`<br>[artifacts/survivor-v061/clock-recovery/verification.json](../../artifacts/survivor-v061/clock-recovery/verification.json)<br>[design/star-salvage/v061/CLOCK_RECOVERY_DELIVERY.md](../../design/star-salvage/v061/CLOCK_RECOVERY_DELIVERY.md) | 缺口：v0.6.1 physical phone, final mix, heat and subjective build/ten-minute enjoyment remain pending. Recorded model economy/route biases are explicit.<br>下一动作：User scans TapTap469459/ec58f9c and reviews phone audio,background recovery,ten-minute build play. Earlier candidate IDs remain rollback. |
 
+### SALVAGE062-DIFFICULTY · 小幅提高十分钟生存压力，保留构筑与躲避空间。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE062-DIFFICULTY` 小幅提高十分钟生存压力，保留构筑与躲避空间。<br>[design/star-salvage/v062/README.md:5–15](../../design/star-salvage/v062/README.md#L5-L15)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `MISSING`<br>visual: `NOT_REVIEWED`<br>phone: `NOT_TESTED` | [design/star-salvage/v062/BALANCE_V062.json](../../design/star-salvage/v062/BALANCE_V062.json)<br>[prototypes/salvage-survivor-demo/tests/simulate.cjs](../../prototypes/salvage-survivor-demo/tests/simulate.cjs)<br>入口：`/`<br>素材：— | `survivor-v062-model`<br>`survivor-v062-browser`<br>`survivor-v062-audio`<br>`survivor-v062-policy`<br>`survivor-v062-art`<br>— | 缺口：固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。<br>下一动作：完成固定源码证据与开发自测上传，保留所有历史记录。 |
+
+### SALVAGE062-ENEMIES · 三种新普通敌机与原敌机能力差异，攻击预警和真实躲避／伤害。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE062-ENEMIES` 三种新普通敌机与原敌机能力差异，攻击预警和真实躲避／伤害。<br>[design/star-salvage/v062/README.md:5–15](../../design/star-salvage/v062/README.md#L5-L15)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `MISSING`<br>visual: `NOT_REVIEWED`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>入口：`/`<br>素材：[design/star-salvage/v062/production/actors/manifest.json](../../design/star-salvage/v062/production/actors/manifest.json) | `survivor-v062-model`<br>`survivor-v062-browser`<br>`survivor-v062-audio`<br>`survivor-v062-policy`<br>`survivor-v062-art`<br>— | 缺口：固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。<br>下一动作：完成固定源码证据与开发自测上传，保留所有历史记录。 |
+
+### SALVAGE062-EVOLUTION · 八配方主动与对应配件同时满级，实际点击及续玩校验。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE062-EVOLUTION` 八配方主动与对应配件同时满级，实际点击及续玩校验。<br>[design/star-salvage/v062/README.md:5–15](../../design/star-salvage/v062/README.md#L5-L15)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `MISSING`<br>visual: `NOT_REVIEWED`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/browser/v062.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v062.spec.cjs)<br>入口：`/`<br>素材：— | `survivor-v062-model`<br>`survivor-v062-browser`<br>`survivor-v062-audio`<br>`survivor-v062-policy`<br>`survivor-v062-art`<br>— | 缺口：固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。<br>下一动作：完成固定源码证据与开发自测上传，保留所有历史记录。 |
+
+### SALVAGE062-SPACE · 统一像素深空、星云与银河作战背景，保持危险可读。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE062-SPACE` 统一像素深空、星云与银河作战背景，保持危险可读。<br>[design/star-salvage/v062/README.md:5–15](../../design/star-salvage/v062/README.md#L5-L15)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `MISSING`<br>visual: `NOT_REVIEWED`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>入口：`/`<br>素材：[design/star-salvage/v062/production/space/manifest.json](../../design/star-salvage/v062/production/space/manifest.json) | `survivor-v062-model`<br>`survivor-v062-browser`<br>`survivor-v062-audio`<br>`survivor-v062-policy`<br>`survivor-v062-art`<br>— | 缺口：固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。<br>下一动作：完成固定源码证据与开发自测上传，保留所有历史记录。 |
+
+### SALVAGE062-VISITORS · 两种原创科幻奇遇来访者，出场、攻击和可观察结果，不重复领取。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE062-VISITORS` 两种原创科幻奇遇来访者，出场、攻击和可观察结果，不重复领取。<br>[design/star-salvage/v062/README.md:5–15](../../design/star-salvage/v062/README.md#L5-L15)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `MISSING`<br>visual: `NOT_REVIEWED`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/browser/v062.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v062.spec.cjs)<br>入口：`/`<br>素材：[design/star-salvage/v062/production/actors/manifest.json](../../design/star-salvage/v062/production/actors/manifest.json) | `survivor-v062-model`<br>`survivor-v062-browser`<br>`survivor-v062-audio`<br>`survivor-v062-policy`<br>`survivor-v062-art`<br>— | 缺口：固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。<br>下一动作：完成固定源码证据与开发自测上传，保留所有历史记录。 |
+
+### SALVAGE062-CONTINUITY · 原数据库、旧短局／长局、余额、强化及历史玩法权益兼容。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE062-CONTINUITY` 原数据库、旧短局／长局、余额、强化及历史玩法权益兼容。<br>[design/star-salvage/v062/README.md:5–15](../../design/star-salvage/v062/README.md#L5-L15)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `MISSING`<br>visual: `NOT_REVIEWED`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/persistence.js](../../prototypes/salvage-survivor-demo/src/persistence.js)<br>[prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/browser/storage.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/storage.spec.cjs)<br>[prototypes/salvage-survivor-demo/tests/browser/v062.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v062.spec.cjs)<br>入口：`/`<br>素材：— | `survivor-v062-model`<br>`survivor-v062-browser`<br>`survivor-v062-audio`<br>`survivor-v062-policy`<br>`survivor-v062-art`<br>— | 缺口：固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。<br>下一动作：完成固定源码证据与开发自测上传，保留所有历史记录。 |
+
+### SALVAGE062-DELIVERY · 固定源码包、双引擎双尺寸、连续录像、实际Mac与TapTap开发自测。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE062-DELIVERY` 固定源码包、双引擎双尺寸、连续录像、实际Mac与TapTap开发自测。<br>[design/star-salvage/v062/README.md:5–15](../../design/star-salvage/v062/README.md#L5-L15)<br>`IN_SCOPE` | implementation: `IN_PROGRESS`<br>evidence: `MISSING`<br>visual: `NOT_REVIEWED`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/build.py](../../prototypes/salvage-survivor-demo/build.py)<br>[prototypes/salvage-survivor-demo/tests/capture-v062.cjs](../../prototypes/salvage-survivor-demo/tests/capture-v062.cjs)<br>入口：`/`<br>素材：— | `survivor-v062-model`<br>`survivor-v062-browser`<br>`survivor-v062-audio`<br>`survivor-v062-policy`<br>`survivor-v062-art`<br>— | 缺口：固定包、完整策略与连续录像正在验证，用户视觉和真实手机待审。<br>下一动作：完成固定源码证据与开发自测上传，保留所有历史记录。 |
+
 ## 明确替代的历史规则
 
 | ID / 范围 | 原规则出处 | 当前替代依据 | 生效规则 |
@@ -867,6 +909,7 @@
 - [codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md](../../codex/SALVAGE_V06_SURVIVOR_IMPLEMENTATION_TASK.md)
 - [design/star-salvage/v06/SURVIVOR_MODE_APPROVED.md](../../design/star-salvage/v06/SURVIVOR_MODE_APPROVED.md)
 - [design/star-salvage/v061/README.md](../../design/star-salvage/v061/README.md)
+- [design/star-salvage/v062/README.md](../../design/star-salvage/v062/README.md)
 
 Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.
 
