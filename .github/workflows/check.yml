@@ -264,6 +264,9 @@ jobs:
       - name: Verify playback-recovery frozen delivery when present
         if: hashFiles('artifacts/survivor-v061/recovery/verification.json') != ''
         run: SURVIVOR_EVIDENCE_FOLDER=artifacts/survivor-v061/recovery node prototypes/salvage-survivor-demo/tests/verify-v061-evidence.cjs
+      - name: Verify media-clock recovery delivery when present
+        if: hashFiles('artifacts/survivor-v061/clock-recovery/verification.json') != ''
+        run: SURVIVOR_EVIDENCE_FOLDER=artifacts/survivor-v061/clock-recovery node prototypes/salvage-survivor-demo/tests/verify-v061-evidence.cjs
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'
