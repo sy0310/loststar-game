@@ -2,16 +2,16 @@
 
 > 此文件由 `scripts/render_execution_coverage.mjs` 从 `ASSET_REGISTRY.json.acceptance` 生成。先更新唯一登记，再生成视图；历史媒体不代表本轮完成。
 
-基线运行源码：`ff917872227b0f28a452dee1642d9cc8606251db`。当前交付声明：`PENDING`；Original first-planet proofs retained. CurrentSurvivor v0.6.2 /4ca726f/TapTap470518 development self-test. Physicalphone/user acceptance pending.。
+基线运行源码：`ff917872227b0f28a452dee1642d9cc8606251db`。当前交付声明：`PENDING`；Original first-planet proofs retained. CurrentSurvivor v0.6.3 /f9bf85c/TapTap474099 development self-test. Physicalphone/user acceptance pending.。
 
-共 330 项（101 个父项 / 229 个子项）；用户视觉和真实手机独立登记。
+共 338 项（109 个父项 / 229 个子项）；用户视觉和真实手机独立登记。
 
 | 维度 | 当前登记 |
 |---|---|
-| `implementation` | IMPLEMENTED 315 / IN_PROGRESS 14 / TODO 1 |
-| `evidence` | CURRENT_VERIFIED 317 / MISSING 13 |
-| `visual` | INTERNAL_PASS 298 / NOT_REVIEWED 32 |
-| `phone` | NOT_TESTED 330 |
+| `implementation` | IMPLEMENTED 323 / IN_PROGRESS 14 / TODO 1 |
+| `evidence` | CURRENT_VERIFIED 325 / MISSING 13 |
+| `visual` | INTERNAL_PASS 306 / NOT_REVIEWED 32 |
+| `phone` | NOT_TESTED 338 |
 
 工程全绿与图片数量不构成艺术签收；门禁的 `NOT_READY`、具体缺口与固定包证明单独读取。
 
@@ -854,6 +854,54 @@
 |---|---|---|---|---|
 | `SALVAGE062-DELIVERY` 固定源码包、双引擎双尺寸、连续录像、实际Mac与TapTap开发自测。<br>[design/star-salvage/v062/README.md:5–15](../../design/star-salvage/v062/README.md#L5-L15)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/build.py](../../prototypes/salvage-survivor-demo/build.py)<br>[prototypes/salvage-survivor-demo/tests/capture-v062.cjs](../../prototypes/salvage-survivor-demo/tests/capture-v062.cjs)<br>入口：`/`<br>素材：— | `survivor-v062-model`<br>`survivor-v062-browser`<br>`survivor-v062-audio`<br>`survivor-v062-policy`<br>`survivor-v062-art`<br>[artifacts/survivor-v062/verification.json](../../artifacts/survivor-v062/verification.json)<br>[design/star-salvage/v062/DELIVERY.md](../../design/star-salvage/v062/DELIVERY.md) | 缺口：Physicalphone/audio/lockscreen/heat/userart/fun pending. Guard-first basic model0/16, capped optics16/16. Original960parts permanent total retained.<br>下一动作：Scan TapTap470518 /4ca726f. Start a new run to use newcombat; active legacy sessions retain their original rules. |
 
+### SALVAGE063-GEAR · 八种主动武器与八种辅助各有1～5级，每级产生实际作用，双方5级后具备单武器进化资格。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE063-GEAR` 八种主动武器与八种辅助各有1～5级，每级产生实际作用，双方5级后具备单武器进化资格。<br>[design/star-salvage/v063/README.md:7](../../design/star-salvage/v063/README.md#L7)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/progression.test.cjs](../../prototypes/salvage-survivor-demo/tests/progression.test.cjs)<br>[prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs)<br>[prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs](../../prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs)<br>入口：`/`<br>素材：[design/star-salvage/v063/BALANCE_V063.json](../../design/star-salvage/v063/BALANCE_V063.json) | `survivor-v063-model`<br>`survivor-v063-browser`<br>`survivor-v063-audio`<br>`survivor-v063-policy`<br>`survivor-v063-migration`<br>[artifacts/survivor-v063/verification.json](../../artifacts/survivor-v063/verification.json)<br>[design/star-salvage/v063/DELIVERY.md](../../design/star-salvage/v063/DELIVERY.md) | 缺口：Physical phone, subjective hearing, lockscreen, heat, user visual and fun pending. Guard-first policy weak. Dedicated ionbastion icon pending.<br>下一动作：Scan TapTap474099 /f9bf85c. Start a new run for5+5, old active run retains original rules. |
+
+### SALVAGE063-BOSS-LOTTERY · 进化卡只进入精英／Boss战利品三选一。击退实体后直接升一级，保留已有经验。符合条件时有75%概率出现一张随机进化／融合卡，普通升级继续提供武器、辅助和补给。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE063-BOSS-LOTTERY` 进化卡只进入精英／Boss战利品三选一。击退实体后直接升一级，保留已有经验。符合条件时有75%概率出现一张随机进化／融合卡，普通升级继续提供武器、辅助和补给。<br>[design/star-salvage/v063/README.md:8](../../design/star-salvage/v063/README.md#L8)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/progression.test.cjs](../../prototypes/salvage-survivor-demo/tests/progression.test.cjs)<br>[prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs)<br>[prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs](../../prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs)<br>入口：`/`<br>素材：[design/star-salvage/v063/BALANCE_V063.json](../../design/star-salvage/v063/BALANCE_V063.json) | `survivor-v063-model`<br>`survivor-v063-browser`<br>`survivor-v063-audio`<br>`survivor-v063-policy`<br>`survivor-v063-migration`<br>[artifacts/survivor-v063/verification.json](../../artifacts/survivor-v063/verification.json)<br>[design/star-salvage/v063/DELIVERY.md](../../design/star-salvage/v063/DELIVERY.md) | 缺口：Physical phone, subjective hearing, lockscreen, heat, user visual and fun pending. Guard-first policy weak. Dedicated ionbastion icon pending.<br>下一动作：Scan TapTap474099 /f9bf85c. Start a new run for5+5, old active run retains original rules. |
+
+### SALVAGE063-FUSIONS · 两件已进化武器才能进入终极融合。四组为无人机＋电弧、导弹＋旋刃、棱镜＋引力、主炮＋护盾。融合释放一格，继承辅助，使用真实攻击和原音频总线。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE063-FUSIONS` 两件已进化武器才能进入终极融合。四组为无人机＋电弧、导弹＋旋刃、棱镜＋引力、主炮＋护盾。融合释放一格，继承辅助，使用真实攻击和原音频总线。<br>[design/star-salvage/v063/README.md:9](../../design/star-salvage/v063/README.md#L9)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/progression.test.cjs](../../prototypes/salvage-survivor-demo/tests/progression.test.cjs)<br>[prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs)<br>[prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs](../../prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs)<br>入口：`/`<br>素材：[design/star-salvage/v063/BALANCE_V063.json](../../design/star-salvage/v063/BALANCE_V063.json) | `survivor-v063-model`<br>`survivor-v063-browser`<br>`survivor-v063-audio`<br>`survivor-v063-policy`<br>`survivor-v063-migration`<br>[artifacts/survivor-v063/verification.json](../../artifacts/survivor-v063/verification.json)<br>[design/star-salvage/v063/DELIVERY.md](../../design/star-salvage/v063/DELIVERY.md) | 缺口：Physical phone, subjective hearing, lockscreen, heat, user visual and fun pending. Guard-first policy weak. Dedicated ionbastion icon pending.<br>下一动作：Scan TapTap474099 /f9bf85c. Start a new run for5+5, old active run retains original rules. |
+
+### SALVAGE063-LINKS · 普通武器组合保留主炮／蜂机／护盾与电弧的联动，增加导弹命中后的旋刃碎片、引力场形成时的棱镜聚束，并显示短暂现场反馈。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE063-LINKS` 普通武器组合保留主炮／蜂机／护盾与电弧的联动，增加导弹命中后的旋刃碎片、引力场形成时的棱镜聚束，并显示短暂现场反馈。<br>[design/star-salvage/v063/README.md:10](../../design/star-salvage/v063/README.md#L10)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/progression.test.cjs](../../prototypes/salvage-survivor-demo/tests/progression.test.cjs)<br>[prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs)<br>[prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs](../../prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs)<br>入口：`/`<br>素材：[design/star-salvage/v063/BALANCE_V063.json](../../design/star-salvage/v063/BALANCE_V063.json) | `survivor-v063-model`<br>`survivor-v063-browser`<br>`survivor-v063-audio`<br>`survivor-v063-policy`<br>`survivor-v063-migration`<br>[artifacts/survivor-v063/verification.json](../../artifacts/survivor-v063/verification.json)<br>[design/star-salvage/v063/DELIVERY.md](../../design/star-salvage/v063/DELIVERY.md) | 缺口：Physical phone, subjective hearing, lockscreen, heat, user visual and fun pending. Guard-first policy weak. Dedicated ionbastion icon pending.<br>下一动作：Scan TapTap474099 /f9bf85c. Start a new run for5+5, old active run retains original rules. |
+
+### SALVAGE063-VISITORS · 两种已有原创奇遇从实际可见战场跃迁入场，显现护盾持续1.6秒，最后1秒预警。显现结束发出真实攻击，使用实体血条、原机体、真实伤害与一次结算。调整体型和耐久以保留观察时间。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE063-VISITORS` 两种已有原创奇遇从实际可见战场跃迁入场，显现护盾持续1.6秒，最后1秒预警。显现结束发出真实攻击，使用实体血条、原机体、真实伤害与一次结算。调整体型和耐久以保留观察时间。<br>[design/star-salvage/v063/README.md:11](../../design/star-salvage/v063/README.md#L11)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/progression.test.cjs](../../prototypes/salvage-survivor-demo/tests/progression.test.cjs)<br>[prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs)<br>[prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs](../../prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs)<br>入口：`/`<br>素材：[design/star-salvage/v063/BALANCE_V063.json](../../design/star-salvage/v063/BALANCE_V063.json) | `survivor-v063-model`<br>`survivor-v063-browser`<br>`survivor-v063-audio`<br>`survivor-v063-policy`<br>`survivor-v063-migration`<br>[artifacts/survivor-v063/verification.json](../../artifacts/survivor-v063/verification.json)<br>[design/star-salvage/v063/DELIVERY.md](../../design/star-salvage/v063/DELIVERY.md) | 缺口：Physical phone, subjective hearing, lockscreen, heat, user visual and fun pending. Guard-first policy weak. Dedicated ionbastion icon pending.<br>下一动作：Scan TapTap474099 /f9bf85c. Start a new run for5+5, old active run retains original rules. |
+
+### SALVAGE063-SNAPSHOTS · 奖励队列、概率结果、三张选卡、随机种子及终极融合进度进入原对局快照。刷新／关闭续玩保持结果，同一精英不会重复发奖。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE063-SNAPSHOTS` 奖励队列、概率结果、三张选卡、随机种子及终极融合进度进入原对局快照。刷新／关闭续玩保持结果，同一精英不会重复发奖。<br>[design/star-salvage/v063/README.md:12](../../design/star-salvage/v063/README.md#L12)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/progression.test.cjs](../../prototypes/salvage-survivor-demo/tests/progression.test.cjs)<br>[prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs)<br>[prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs](../../prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs)<br>入口：`/`<br>素材：[design/star-salvage/v063/BALANCE_V063.json](../../design/star-salvage/v063/BALANCE_V063.json) | `survivor-v063-model`<br>`survivor-v063-browser`<br>`survivor-v063-audio`<br>`survivor-v063-policy`<br>`survivor-v063-migration`<br>[artifacts/survivor-v063/verification.json](../../artifacts/survivor-v063/verification.json)<br>[design/star-salvage/v063/DELIVERY.md](../../design/star-salvage/v063/DELIVERY.md) | 缺口：Physical phone, subjective hearing, lockscreen, heat, user visual and fun pending. Guard-first policy weak. Dedicated ionbastion icon pending.<br>下一动作：Scan TapTap474099 /f9bf85c. Start a new run for5+5, old active run retains original rules. |
+
+### SALVAGE063-LEGACY · 保留旧180秒与旧600秒在途规则、已有进化和融合。旧局入口提示“原规则”，下次新局启用5＋5。原始4ca726f包在同源隔离HTTP中直接升级验证，原玩家数据库与旧玩法档案保持兼容。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE063-LEGACY` 保留旧180秒与旧600秒在途规则、已有进化和融合。旧局入口提示“原规则”，下次新局启用5＋5。原始4ca726f包在同源隔离HTTP中直接升级验证，原玩家数据库与旧玩法档案保持兼容。<br>[design/star-salvage/v063/README.md:13](../../design/star-salvage/v063/README.md#L13)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/progression.test.cjs](../../prototypes/salvage-survivor-demo/tests/progression.test.cjs)<br>[prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs)<br>[prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs](../../prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs)<br>入口：`/`<br>素材：[design/star-salvage/v063/BALANCE_V063.json](../../design/star-salvage/v063/BALANCE_V063.json) | `survivor-v063-model`<br>`survivor-v063-browser`<br>`survivor-v063-audio`<br>`survivor-v063-policy`<br>`survivor-v063-migration`<br>[artifacts/survivor-v063/verification.json](../../artifacts/survivor-v063/verification.json)<br>[design/star-salvage/v063/DELIVERY.md](../../design/star-salvage/v063/DELIVERY.md) | 缺口：Physical phone, subjective hearing, lockscreen, heat, user visual and fun pending. Guard-first policy weak. Dedicated ionbastion icon pending.<br>下一动作：Scan TapTap474099 /f9bf85c. Start a new run for5+5, old active run retains original rules. |
+
+### SALVAGE063-DELIVERY · 交付固定源码包、真实HTTP双引擎双竖屏、自然十分钟与明确标记的QA录像、实际Mac和TapTap开发自测，继续同一Draft PR。
+
+| ID / 原要求与出处 | 四维状态 | 实现 / 正式入口 / 素材 | 自动检查 / 证据 | 当前缺口 / 下一动作 |
+|---|---|---|---|---|
+| `SALVAGE063-DELIVERY` 交付固定源码包、真实HTTP双引擎双竖屏、自然十分钟与明确标记的QA录像、实际Mac和TapTap开发自测，继续同一Draft PR。<br>[design/star-salvage/v063/README.md:14](../../design/star-salvage/v063/README.md#L14)<br>`IN_SCOPE` | implementation: `IMPLEMENTED`<br>evidence: `CURRENT_VERIFIED`<br>visual: `INTERNAL_PASS`<br>phone: `NOT_TESTED` | [prototypes/salvage-survivor-demo/src/game.js](../../prototypes/salvage-survivor-demo/src/game.js)<br>[prototypes/salvage-survivor-demo/tests/progression.test.cjs](../../prototypes/salvage-survivor-demo/tests/progression.test.cjs)<br>[prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs](../../prototypes/salvage-survivor-demo/tests/browser/v063.spec.cjs)<br>[prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs](../../prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs)<br>入口：`/`<br>素材：[design/star-salvage/v063/BALANCE_V063.json](../../design/star-salvage/v063/BALANCE_V063.json) | `survivor-v063-model`<br>`survivor-v063-browser`<br>`survivor-v063-audio`<br>`survivor-v063-policy`<br>`survivor-v063-migration`<br>[artifacts/survivor-v063/verification.json](../../artifacts/survivor-v063/verification.json)<br>[design/star-salvage/v063/DELIVERY.md](../../design/star-salvage/v063/DELIVERY.md) | 缺口：Physical phone, subjective hearing, lockscreen, heat, user visual and fun pending. Guard-first policy weak. Dedicated ionbastion icon pending.<br>下一动作：Scan TapTap474099 /f9bf85c. Start a new run for5+5, old active run retains original rules. |
+
 ## 明确替代的历史规则
 
 | ID / 范围 | 原规则出处 | 当前替代依据 | 生效规则 |
@@ -910,6 +958,7 @@
 - [design/star-salvage/v06/SURVIVOR_MODE_APPROVED.md](../../design/star-salvage/v06/SURVIVOR_MODE_APPROVED.md)
 - [design/star-salvage/v061/README.md](../../design/star-salvage/v061/README.md)
 - [design/star-salvage/v062/README.md](../../design/star-salvage/v062/README.md)
+- [design/star-salvage/v063/README.md](../../design/star-salvage/v063/README.md)
 
 Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.
 
