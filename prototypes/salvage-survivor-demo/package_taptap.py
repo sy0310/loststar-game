@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 parser=argparse.ArgumentParser()
-parser.add_argument('--folder', default='artifacts/survivor-v061/current')
+parser.add_argument('--folder', default='prototypes/salvage-survivor-demo/dist')
 args=parser.parse_args()
 folder=ROOT/args.folder
 info = json.loads((folder / 'build-info.json').read_text())
@@ -18,7 +18,7 @@ assert not info['dirty']
 expected = {item['path']: item for item in info['files']}
 name = f"loststar-survivor-{info['sourceCommit'][:7]}-taptap.zip"
 archive = folder / name
-extract = ROOT / 'releases' / f"survivor-v061-taptap-{info['sourceCommit'][:7]}"
+extract = ROOT / 'releases' / f"survivor-taptap-{info['sourceCommit'][:7]}"
 with zipfile.ZipFile(source) as original, zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as wrapped:
     assert set(original.namelist()) == set(expected)
     for path, record in sorted(expected.items()):
