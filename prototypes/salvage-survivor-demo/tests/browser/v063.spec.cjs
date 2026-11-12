@@ -263,6 +263,62 @@ test("v063 lottery produces both offers and misses through actual rendered choic
   expect(result).toBeLessThan(175);
 });
 
+test("v063 scaled visitor exhaust and health use the same actual sprite scale", async ({
+  page,
+}) => {
+  await boot(page);
+  const rows = await page.evaluate(() => {
+    const Q = SurvivorQA,
+      result = [];
+    for (const kind of [
+      "courier",
+      "watcher",
+      "lancer",
+      "sentinel",
+      "minelayer",
+    ]) {
+      const g = Q.startModel(63);
+      g.active = {};
+      g.spawnTime = 999;
+      Q.enemy(kind, 20, -100, 100000);
+      Object.assign(g.enemy[0], { speed: 1, arrivalAge: 2 });
+      const calls = [],
+        draw = SurvivorArt.draw;
+      try {
+        SurvivorArt.draw = function (ctx, id, x, y, options) {
+          if (id === "thruster" || id === kind)
+            calls.push({ id, x, y, options });
+          return draw.apply(this, arguments);
+        };
+        Q.runRender();
+      } finally {
+        SurvivorArt.draw = draw;
+      }
+      const body = SurvivorArt.catalog[kind],
+        scale = kind === "courier" || kind === "watcher" ? 1.5 : 1;
+      result.push({
+        kind,
+        scale,
+        body: calls.find((c) => c.id === kind),
+        exhaust: calls
+          .filter((c) => c.id === "thruster")
+          .slice(0, body.exhaustAnchors.length),
+        expected: body.exhaustAnchors.map(([x, y]) => [
+          (x - body.center[0]) * 2 * scale,
+          (y - body.center[1]) * 2 * scale,
+        ]),
+      });
+    }
+    return result;
+  });
+  for (const r of rows) {
+    expect(r.body.options.scale).toBe(r.scale);
+    expect(r.exhaust.map((c) => [c.x, c.y])).toEqual(r.expected);
+    for (const flame of r.exhaust)
+      expect(flame.options.scale).toBeCloseTo(0.13 * r.scale, 6);
+  }
+});
+
 test("v063 pursuing boss stays visible and its out-of-range warning releases correctly", async ({
   page,
 }) => {

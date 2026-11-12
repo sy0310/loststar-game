@@ -1874,9 +1874,11 @@
     for (const enemy of g.enemy) {
       if (enemy.hp <= 0) continue;
       const point = toScreen(enemy.x, enemy.y);
+      const body = art.catalog[enemy.t];
+      const bodyScale = newProgression() && VISITORS[enemy.t] ? 1.5 : 1;
       if (newProgression() && VISITORS[enemy.t]) {
         const age = enemy.arrivalAge || 0;
-        const healthY = point.y + art.catalog[enemy.t].nativeSize[1] * 1.5 + 4;
+        const healthY = point.y + body.nativeSize[1] * bodyScale + 4;
         ctx.save();
         ctx.strokeStyle = age < 1.6 ? "#c8b4ef" : "#73d9e8";
         ctx.lineWidth = age < 1.6 ? 3 : 1;
@@ -1916,7 +1918,6 @@
             ? enemy.aim
             : Math.atan2(g.p.y - enemy.y, g.p.x - enemy.x)) +
         Math.PI / 2;
-      const body = art.catalog[enemy.t];
       if (
         newCombat() &&
         ["lancer", "sentinel", "minelayer", "courier", "watcher"].includes(
@@ -1931,11 +1932,11 @@
           art.draw(
             ctx,
             "thruster",
-            (x - body.center[0]) * 2,
-            (y - body.center[1]) * 2,
+            (x - body.center[0]) * 2 * bodyScale,
+            (y - body.center[1]) * 2 * bodyScale,
             {
               frame: art.frameAt("thruster", g.time * 1000, true),
-              scale: enemy.charge > 0 ? 0.3 : 0.13,
+              scale: (enemy.charge > 0 ? 0.3 : 0.13) * bodyScale,
               anchor: [12, 3],
             },
           );
@@ -1944,7 +1945,7 @@
       art.draw(ctx, enemy.t, point.x, point.y, {
         angle: enemy.t === "boss" ? Math.sin(g.time * 0.8) * 0.1 : heading,
         flash: enemy.flash > 0,
-        scale: newProgression() && VISITORS[enemy.t] ? 1.5 : 1,
+        scale: bodyScale,
       });
       if (enemy.marked > 0) {
         ctx.strokeStyle = "#f4c57a";
