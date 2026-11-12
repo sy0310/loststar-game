@@ -3966,7 +3966,7 @@
       runRevision = storeView.active.revision;
       g.persisted = true;
       if (runRules().runSeconds === 180)
-        notify("继续原短局 · 下一局10分钟、6+6");
+        notify("继续原短局 · 下一局15分钟、6+6");
       else if (!newProgression()) notify("继续原等级规则 · 新开一局启用5＋5");
       runDetached = false;
       lastCheckpointTime = g.time;
@@ -4057,7 +4057,7 @@
     $("startBtn").disabled = !ready;
     $("startBtn").textContent = active
       ? assaultCombat(active.snapshot.game)
-        ? "结算上局，开始10分钟"
+        ? "结算上局，开始15分钟"
         : "结算上局，开始新版"
       : "开始一局";
     $("recordText").textContent =

@@ -340,6 +340,7 @@ test("v064900-second shots refractions and elite armor persist through an actual
   await page.reload();
   await page.waitForFunction(() => SurvivorDemo.ready());
   expect(await stored(page)).toEqual(before);
+  await expect(page.locator("#startBtn")).toHaveText("结算上局，开始15分钟");
   await page.locator("#continueBtn").click();
   await page.waitForFunction(
     () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
