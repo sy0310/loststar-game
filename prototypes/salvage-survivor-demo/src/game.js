@@ -149,8 +149,12 @@
       }
     );
   }
-  const newCombat = (game = g) => [2, 3].includes(runRules(game).combatVersion);
-  const assaultCombat = (game = g) => runRules(game).combatVersion === 3;
+  const newCombat = (game = g) => [2, 3, 4].includes(runRules(game).combatVersion);
+  const assaultCombat = (game = g) => [3, 4].includes(runRules(game).combatVersion);
+  const showcaseCombat = (game = g) => runRules(game).combatVersion === 4;
+  const eliteSpec = (enemy, game = g) =>
+    (showcaseCombat(game) ? B.showcase : B.assault).eliteProfiles[enemy.eliteProfile];
+  const bossSpec = (enemy) => B.showcase.bossProfiles[enemy.bossProfile || "core"];
   const newProgression = (game = g) => runRules(game).progressionVersion === 2;
   const activeMaximum = (game = g) => (newProgression(game) ? 5 : 3);
   const passiveMaximum = (game = g) => (newProgression(game) ? 5 : 2);
@@ -168,7 +172,7 @@
         ? "prism_crystal"
         : id === "repair"
           ? "armor"
-          : id === "ionbastion"
+          : id === "ionbastion" && !showcaseCombat()
             ? "piercebeam"
             : id,
       size,
@@ -254,7 +258,7 @@
         runSeconds: B.runSeconds,
         activeSlots: B.activeSlots,
         passiveSlots: B.passiveSlots,
-        combatVersion: 3,
+        combatVersion: 4,
         progressionVersion: 2,
       },
       time: 0,
@@ -1242,12 +1246,27 @@
     if (!g.active.prism && !g.fused.eventhorizon) return [];
     const evolved = !!g.evolved.prism || !!g.fused.eventhorizon;
     const count = evolved ? 6 : Math.max(1, g.active.prism || 1);
-    const radius = evolved ? 66 : 42 + (g.passive.refraction || 0) * 2;
+    const radius = showcaseCombat()
+      ? evolved ? 51 : 40 + Math.min(5, g.passive.refraction || 0)
+      : evolved ? 66 : 42 + (g.passive.refraction || 0) * 2;
     return Array.from({ length: count }, (_, index) => {
       const heading = g.time * 0.65 + (index * T) / count;
       return {
         x: g.p.x + Math.cos(heading) * radius,
         y: g.p.y + Math.sin(heading) * radius,
+        heading,
+      };
+    });
+  }
+  function droneNodes() {
+    const count = g.fused.thunderhive
+      ? newProgression() ? 6 : 5
+      : g.evolved.drone ? 4 : Math.ceil(activePower("drone"));
+    return Array.from({ length: count }, (_, index) => {
+      const heading = g.time * (showcaseCombat() ? -0.75 : 1.6) + (index * T) / count;
+      return {
+        x: g.p.x + Math.cos(heading) * (showcaseCombat() ? 130 : 47),
+        y: g.p.y + Math.sin(heading) * (showcaseCombat() ? 114 : 47),
         heading,
       };
     });
@@ -1522,23 +1541,11 @@
     }
     if (g.active.drone || g.fused.thunderhive) {
       const level = activePower("drone") || 3;
-      const count = g.fused.thunderhive
-        ? newProgression()
-          ? 6
-          : 5
-        : g.evolved.drone
-          ? 4
-          : Math.ceil(level);
       const interval =
         (g.fused.thunderhive ? 0.39 : g.evolved.drone ? 0.55 : 0.87) *
         (1 - 0.08 * passivePower("lock"));
       clock("drone", dt, cooldown("drone", interval), () => {
-        for (let index = 0; index < count; index++) {
-          const heading = g.time * 1.6 + (index * T) / count;
-          const origin = {
-            x: player.x + Math.cos(heading) * 47,
-            y: player.y + Math.sin(heading) * 47,
-          };
+        for (const origin of droneNodes()) {
           const marked = g.enemy.find(
             (enemy) =>
               enemy.hp > 0 && enemy.marked > 0 && dist(enemy, origin) < 460,
@@ -2770,7 +2777,11 @@
     const heading = angle(g.p, target),
       x = g.p.x + Math.cos(heading) * 660,
       y = g.p.y + Math.sin(heading) * 660;
-    g.beams.push({ x1: g.p.x, y1: g.p.y, x2: x, y2: y, t: 0.16 });
+    g.beams.push({
+      x1: g.p.x, y1: g.p.y, x2: x, y2: y,
+      t: showcaseCombat() && source === "ionbastion" ? 0.26 : 0.16,
+      source,
+    });
     if (g.beams.length > 6) g.beams.shift();
     playSound("cannon", { evolved: true });
     if (window.SurvivorArt.catalog.rail_muzzle)
@@ -3687,7 +3698,7 @@
     if (
       ![180, 600, 900].includes(rules.runSeconds) ||
       (rules.combatVersion !== undefined &&
-        ![2, 3].includes(rules.combatVersion)) ||
+        ![2, 3, 4].includes(rules.combatVersion)) ||
       (rules.progressionVersion !== undefined &&
         rules.progressionVersion !== 2) ||
       (newProgression(game) &&

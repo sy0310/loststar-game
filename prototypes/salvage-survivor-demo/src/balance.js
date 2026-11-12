@@ -1,5 +1,5 @@
 window.SurvivorBalance = {
-  "version": "0.6.4",
+  "version": "0.6.5",
   "runSeconds": 900,
   "eliteAt": 70,
   "bossAt": 130,
@@ -402,6 +402,207 @@ window.SurvivorBalance = {
           "sentinel"
         ],
         "hint": "交叉火力 · 留意束流"
+      }
+    ]
+  },
+  "showcase": {
+    "version": 4,
+    "eliteProfiles": {
+      "hunter": {
+        "name": "反应堆追猎者",
+        "art": "elite",
+        "hpScale": 1,
+        "speedScale": 1,
+        "radius": 30,
+        "attacks": [
+          "dash",
+          "fan"
+        ],
+        "barrier": 0
+      },
+      "raider": {
+        "name": "破阵先锋",
+        "art": "elite_raider",
+        "hpScale": 1.15,
+        "speedScale": 1.1,
+        "radius": 28,
+        "attacks": [
+          "dash",
+          "cross"
+        ],
+        "barrier": 0
+      },
+      "warden": {
+        "name": "封锁母舰",
+        "art": "elite_warden",
+        "hpScale": 1.5,
+        "speedScale": 0.7,
+        "radius": 26,
+        "attacks": [
+          "mine",
+          "beam",
+          "shock"
+        ],
+        "barrier": 0.3
+      },
+      "reaver": {
+        "name": "折返截击者",
+        "art": "elite_reaver",
+        "hpScale": 1.05,
+        "speedScale": 1.05,
+        "radius": 24,
+        "attacks": [
+          "hook",
+          "dash"
+        ],
+        "barrier": 0
+      },
+      "hive": {
+        "name": "跃迁蜂巢",
+        "art": "elite_hive",
+        "hpScale": 1.25,
+        "speedScale": 0.75,
+        "radius": 30,
+        "attacks": [
+          "escort",
+          "mine"
+        ],
+        "barrier": 0
+      }
+    },
+    "bossProfiles": {
+      "core": {
+        "name": "星海守卫者",
+        "art": "boss",
+        "hpScale": 1,
+        "speedScale": 1,
+        "radius": 40,
+        "attacks": [
+          "fan",
+          "beam",
+          "shock"
+        ],
+        "phaseTwo": [
+          "cross",
+          "beam",
+          "shock"
+        ]
+      },
+      "weaver": {
+        "name": "裂隙织网者",
+        "art": "boss_weaver",
+        "hpScale": 0.95,
+        "speedScale": 0.85,
+        "radius": 35,
+        "attacks": [
+          "spiral",
+          "splitbeam"
+        ],
+        "phaseTwo": [
+          "spiral",
+          "splitbeam",
+          "hook"
+        ]
+      },
+      "ark": {
+        "name": "机雷方舟",
+        "art": "boss_ark",
+        "hpScale": 1,
+        "speedScale": 0.75,
+        "radius": 47,
+        "attacks": [
+          "siege",
+          "mine"
+        ],
+        "phaseTwo": [
+          "siege",
+          "mine",
+          "cross"
+        ]
+      },
+      "judicator": {
+        "name": "双相裁决舰",
+        "art": "boss_judicator",
+        "hpScale": 1,
+        "speedScale": 0.85,
+        "radius": 43,
+        "attacks": [
+          "pincer",
+          "dualburst"
+        ],
+        "phaseTwo": [
+          "pincer",
+          "splitbeam",
+          "dualburst"
+        ]
+      }
+    },
+    "milestones": [
+      {
+        "at": 140,
+        "type": "elite",
+        "tier": 1,
+        "profile": "hunter"
+      },
+      {
+        "at": 220,
+        "type": "elite",
+        "tier": 2,
+        "profile": "reaver"
+      },
+      {
+        "at": 300,
+        "type": "boss",
+        "tier": 1,
+        "bossProfile": "core"
+      },
+      {
+        "at": 350,
+        "type": "elite",
+        "tier": 2,
+        "profile": "hive"
+      },
+      {
+        "at": 440,
+        "type": "boss",
+        "tier": 2,
+        "bossProfile": "weaver"
+      },
+      {
+        "at": 510,
+        "type": "elite",
+        "tier": 3,
+        "profile": "raider"
+      },
+      {
+        "at": 590,
+        "type": "elite",
+        "tier": 3,
+        "profile": "warden"
+      },
+      {
+        "at": 650,
+        "type": "boss",
+        "tier": 3,
+        "bossProfile": "ark"
+      },
+      {
+        "at": 720,
+        "type": "elite",
+        "tier": 4,
+        "profile": "reaver"
+      },
+      {
+        "at": 790,
+        "type": "elite",
+        "tier": 4,
+        "profile": "hive"
+      },
+      {
+        "at": 850,
+        "type": "boss",
+        "tier": 4,
+        "bossProfile": "judicator"
       }
     ]
   }

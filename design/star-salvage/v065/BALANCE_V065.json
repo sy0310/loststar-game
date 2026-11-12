@@ -1,0 +1,609 @@
+{
+  "version": "0.6.5",
+  "runSeconds": 900,
+  "eliteAt": 70,
+  "bossAt": 130,
+  "firstLevelXP": 100,
+  "activeSlots": 6,
+  "passiveSlots": 6,
+  "activeMaxLevel": 5,
+  "passiveMaxLevel": 5,
+  "hullUpgradeBase": 70,
+  "gunUpgradeBase": 90,
+  "permanentMaxLevel": 3,
+  "maxEnemies": 40,
+  "maxFriendlyShots": 72,
+  "maxEnemyShots": 56,
+  "maxPickups": 140,
+  "maxParticles": 160,
+  "maxDamageNumbers": 28,
+  "maxArcs": 24,
+  "maxRings": 24,
+  "maxBursts": 28,
+  "maxChainTargets": 4,
+  "checkpointSeconds": 2,
+  "profileKey": "loststar.survivor.prototype.v01",
+  "database": "loststar.survivor.demo.v06",
+  "levelXP": {
+    "base": 56,
+    "linear": 14,
+    "power": 1.4,
+    "powerScale": 2.5
+  },
+  "milestones": [
+    {
+      "at": 70,
+      "type": "elite",
+      "tier": 1
+    },
+    {
+      "at": 130,
+      "type": "boss",
+      "tier": 1
+    },
+    {
+      "at": 220,
+      "type": "elite",
+      "tier": 2
+    },
+    {
+      "at": 310,
+      "type": "boss",
+      "tier": 2
+    },
+    {
+      "at": 400,
+      "type": "elite",
+      "tier": 3
+    },
+    {
+      "at": 490,
+      "type": "elite",
+      "tier": 3
+    },
+    {
+      "at": 550,
+      "type": "boss",
+      "tier": 3
+    }
+  ],
+  "enemyHealthTimeScale": 200,
+  "combat": {
+    "healthTimeScale": 190,
+    "fireSpeedScale": 1.08,
+    "spawnIntervalScale": 0.96,
+    "maxHazards": 12,
+    "waves": [
+      {
+        "from": 0,
+        "pool": [
+          "skimmer",
+          "skimmer",
+          "wisp",
+          "ranger"
+        ],
+        "hint": "四面来敌 · 自由移动"
+      },
+      {
+        "from": 25,
+        "pool": [
+          "skimmer",
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank"
+        ],
+        "hint": "突刺接近 · 留意锁线"
+      },
+      {
+        "from": 65,
+        "pool": [
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank",
+          "minelayer"
+        ],
+        "hint": "封锁空域 · 留意雷区"
+      },
+      {
+        "from": 105,
+        "pool": [
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank",
+          "minelayer",
+          "sentinel"
+        ],
+        "hint": "交叉火力 · 留意束流"
+      }
+    ],
+    "damage": {
+      "shot": 6,
+      "beam": 8,
+      "shock": 8,
+      "mine": 10
+    },
+    "attackUnlock": {
+      "wisp": 30,
+      "tank": 70
+    },
+    "populationCaps": {
+      "lancer": 3,
+      "sentinel": 2,
+      "minelayer": 2,
+      "ranger": 3,
+      "wisp": 4,
+      "tank": 3
+    }
+  },
+  "legacyLevelXP": {
+    "base": 80,
+    "linear": 38,
+    "power": 1.4,
+    "powerScale": 8
+  },
+  "progression": {
+    "version": 2,
+    "bossAdvancedChance": 0.75,
+    "activePower": [
+      0,
+      1,
+      1.7,
+      2.4,
+      2.7,
+      3
+    ],
+    "passivePower": [
+      0,
+      0.8,
+      1.2,
+      1.5,
+      1.8,
+      2
+    ],
+    "milestones": [
+      {
+        "at": 70,
+        "type": "elite",
+        "tier": 1
+      },
+      {
+        "at": 130,
+        "type": "boss",
+        "tier": 1
+      },
+      {
+        "at": 160,
+        "type": "elite",
+        "tier": 1
+      },
+      {
+        "at": 250,
+        "type": "elite",
+        "tier": 2
+      },
+      {
+        "at": 310,
+        "type": "boss",
+        "tier": 2
+      },
+      {
+        "at": 340,
+        "type": "elite",
+        "tier": 2
+      },
+      {
+        "at": 430,
+        "type": "elite",
+        "tier": 3
+      },
+      {
+        "at": 520,
+        "type": "elite",
+        "tier": 3
+      },
+      {
+        "at": 550,
+        "type": "boss",
+        "tier": 3
+      }
+    ]
+  },
+  "assault": {
+    "version": 3,
+    "firstLevelXP": 100,
+    "levelXP": {
+      "base": 86,
+      "linear": 22,
+      "power": 1.4,
+      "powerScale": 3.6
+    },
+    "healthTimeScale": 210,
+    "lateHealthAfter": 240,
+    "lateHealthQuadratic": 6e-06,
+    "lateSpeedAfter": 300,
+    "lateSpeedScale": 0.00022,
+    "lateProjectileAfter": 300,
+    "lateProjectileScale": 0.0003,
+    "eliteDamageResistance": 0.18,
+    "bossDamageResistance": 0.18,
+    "eliteStunScale": 0.22,
+    "railInterval": 0.44,
+    "bastionInterval": 0.4,
+    "enemies": {
+      "elite": {
+        "hp": 500,
+        "radius": 30,
+        "speed": 94
+      },
+      "boss": {
+        "hp": 2400,
+        "radius": 40,
+        "speed": 84
+      }
+    },
+    "eliteProfiles": {
+      "hunter": {
+        "name": "反应堆追猎者",
+        "art": "elite",
+        "hpScale": 1,
+        "speedScale": 1,
+        "radius": 30,
+        "attacks": [
+          "dash",
+          "fan"
+        ],
+        "barrier": 0
+      },
+      "raider": {
+        "name": "破阵先锋",
+        "art": "elite_raider",
+        "hpScale": 1.15,
+        "speedScale": 1.1,
+        "radius": 28,
+        "attacks": [
+          "dash",
+          "cross"
+        ],
+        "barrier": 0
+      },
+      "warden": {
+        "name": "封锁母舰",
+        "art": "elite_warden",
+        "hpScale": 1.5,
+        "speedScale": 0.7,
+        "radius": 26,
+        "attacks": [
+          "mine",
+          "beam",
+          "shock"
+        ],
+        "barrier": 0.3
+      }
+    },
+    "milestones": [
+      {
+        "at": 140,
+        "type": "elite",
+        "tier": 1,
+        "profile": "hunter"
+      },
+      {
+        "at": 220,
+        "type": "elite",
+        "tier": 2,
+        "profile": "raider"
+      },
+      {
+        "at": 300,
+        "type": "boss",
+        "tier": 1
+      },
+      {
+        "at": 350,
+        "type": "elite",
+        "tier": 2,
+        "profile": "warden"
+      },
+      {
+        "at": 440,
+        "type": "boss",
+        "tier": 2
+      },
+      {
+        "at": 510,
+        "type": "elite",
+        "tier": 3,
+        "profile": "raider"
+      },
+      {
+        "at": 590,
+        "type": "elite",
+        "tier": 3,
+        "profile": "warden"
+      },
+      {
+        "at": 650,
+        "type": "boss",
+        "tier": 3
+      },
+      {
+        "at": 720,
+        "type": "elite",
+        "tier": 4,
+        "profile": "hunter"
+      },
+      {
+        "at": 790,
+        "type": "elite",
+        "tier": 4,
+        "profile": "warden"
+      },
+      {
+        "at": 850,
+        "type": "boss",
+        "tier": 4
+      }
+    ],
+    "earlySpawnScale": 1.18,
+    "attackUnlock": {
+      "wisp": 90,
+      "tank": 150
+    },
+    "waves": [
+      {
+        "from": 0,
+        "pool": [
+          "skimmer",
+          "skimmer",
+          "wisp",
+          "ranger"
+        ],
+        "hint": "四面来敌 · 自由移动"
+      },
+      {
+        "from": 60,
+        "pool": [
+          "skimmer",
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank"
+        ],
+        "hint": "突刺接近 · 留意锁线"
+      },
+      {
+        "from": 150,
+        "pool": [
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank",
+          "minelayer"
+        ],
+        "hint": "封锁空域 · 留意雷区"
+      },
+      {
+        "from": 240,
+        "pool": [
+          "skimmer",
+          "wisp",
+          "ranger",
+          "lancer",
+          "tank",
+          "minelayer",
+          "sentinel"
+        ],
+        "hint": "交叉火力 · 留意束流"
+      }
+    ]
+  },
+  "showcase": {
+    "version": 4,
+    "eliteProfiles": {
+      "hunter": {
+        "name": "反应堆追猎者",
+        "art": "elite",
+        "hpScale": 1,
+        "speedScale": 1,
+        "radius": 30,
+        "attacks": [
+          "dash",
+          "fan"
+        ],
+        "barrier": 0
+      },
+      "raider": {
+        "name": "破阵先锋",
+        "art": "elite_raider",
+        "hpScale": 1.15,
+        "speedScale": 1.1,
+        "radius": 28,
+        "attacks": [
+          "dash",
+          "cross"
+        ],
+        "barrier": 0
+      },
+      "warden": {
+        "name": "封锁母舰",
+        "art": "elite_warden",
+        "hpScale": 1.5,
+        "speedScale": 0.7,
+        "radius": 26,
+        "attacks": [
+          "mine",
+          "beam",
+          "shock"
+        ],
+        "barrier": 0.3
+      },
+      "reaver": {
+        "name": "折返截击者",
+        "art": "elite_reaver",
+        "hpScale": 1.05,
+        "speedScale": 1.05,
+        "radius": 24,
+        "attacks": [
+          "hook",
+          "dash"
+        ],
+        "barrier": 0
+      },
+      "hive": {
+        "name": "跃迁蜂巢",
+        "art": "elite_hive",
+        "hpScale": 1.25,
+        "speedScale": 0.75,
+        "radius": 30,
+        "attacks": [
+          "escort",
+          "mine"
+        ],
+        "barrier": 0
+      }
+    },
+    "bossProfiles": {
+      "core": {
+        "name": "星海守卫者",
+        "art": "boss",
+        "hpScale": 1,
+        "speedScale": 1,
+        "radius": 40,
+        "attacks": [
+          "fan",
+          "beam",
+          "shock"
+        ],
+        "phaseTwo": [
+          "cross",
+          "beam",
+          "shock"
+        ]
+      },
+      "weaver": {
+        "name": "裂隙织网者",
+        "art": "boss_weaver",
+        "hpScale": 0.95,
+        "speedScale": 0.85,
+        "radius": 35,
+        "attacks": [
+          "spiral",
+          "splitbeam"
+        ],
+        "phaseTwo": [
+          "spiral",
+          "splitbeam",
+          "hook"
+        ]
+      },
+      "ark": {
+        "name": "机雷方舟",
+        "art": "boss_ark",
+        "hpScale": 1,
+        "speedScale": 0.75,
+        "radius": 47,
+        "attacks": [
+          "siege",
+          "mine"
+        ],
+        "phaseTwo": [
+          "siege",
+          "mine",
+          "cross"
+        ]
+      },
+      "judicator": {
+        "name": "双相裁决舰",
+        "art": "boss_judicator",
+        "hpScale": 1,
+        "speedScale": 0.85,
+        "radius": 43,
+        "attacks": [
+          "pincer",
+          "dualburst"
+        ],
+        "phaseTwo": [
+          "pincer",
+          "splitbeam",
+          "dualburst"
+        ]
+      }
+    },
+    "milestones": [
+      {
+        "at": 140,
+        "type": "elite",
+        "tier": 1,
+        "profile": "hunter"
+      },
+      {
+        "at": 220,
+        "type": "elite",
+        "tier": 2,
+        "profile": "reaver"
+      },
+      {
+        "at": 300,
+        "type": "boss",
+        "tier": 1,
+        "bossProfile": "core"
+      },
+      {
+        "at": 350,
+        "type": "elite",
+        "tier": 2,
+        "profile": "hive"
+      },
+      {
+        "at": 440,
+        "type": "boss",
+        "tier": 2,
+        "bossProfile": "weaver"
+      },
+      {
+        "at": 510,
+        "type": "elite",
+        "tier": 3,
+        "profile": "raider"
+      },
+      {
+        "at": 590,
+        "type": "elite",
+        "tier": 3,
+        "profile": "warden"
+      },
+      {
+        "at": 650,
+        "type": "boss",
+        "tier": 3,
+        "bossProfile": "ark"
+      },
+      {
+        "at": 720,
+        "type": "elite",
+        "tier": 4,
+        "profile": "reaver"
+      },
+      {
+        "at": 790,
+        "type": "elite",
+        "tier": 4,
+        "profile": "hive"
+      },
+      {
+        "at": 850,
+        "type": "boss",
+        "tier": 4,
+        "bossProfile": "judicator"
+      }
+    ]
+  }
+}

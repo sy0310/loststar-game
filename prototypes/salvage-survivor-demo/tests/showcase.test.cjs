@@ -18,7 +18,7 @@ const output = path.resolve(process.env.SURVIVOR_MODEL_OUT || 'releases/survivor
     catch(error){report.errors.push({name:'v065 '+name,message:error.stack});console.error('FAIL v065',name,error.message);process.exitCode=1;}
   }
   await test('new fifteen-minute runs have independently saved version4 combat',()=>{
-    const game=start();assert.equal(game.rules.combatVersion,4);assert.equal(game.endTime,900);
+    const game=start();assert.equal(game.rules.combatVersion,4);assert.equal(game.endTime,900);Q.validate(Q.snapshot());
   });
   await test('actual drone and crystal launch origins occupy distinct inner and outer bands',()=>{
     const game=start();assert(Q.pick('drone'));assert(Q.pick('prism'));Q.enemy('skimmer',0,-220,100000);Q.step(.001);
