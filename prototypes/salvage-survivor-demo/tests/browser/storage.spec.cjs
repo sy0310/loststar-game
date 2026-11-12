@@ -141,7 +141,7 @@ test("two IndexedDB clients cannot both buy the same displayed upgrade", async (
   expect((await stored(page)).profile).toMatchObject({ gun: 1, credits: 910 });
 });
 
-test("a second tab claims a saved run and a stale writer cannot settle it", async ({
+for (const storageDelay of [0, 700]) test("a second tab claims a saved run and a stale writer cannot settle it (storage delay " + storageDelay + "ms)", async ({
   page,
   context,
 }) => {
@@ -151,6 +151,28 @@ test("a second tab claims a saved run and a stale writer cannot settle it", asyn
   const before = (await stored(page)).active;
   const second = await context.newPage();
   await boot(second);
+  if (storageDelay) {
+    // A real queued IDB transaction delays ownership without rewriting game code.
+    await second.evaluate(async (duration) => {
+      const db = await new Promise((resolve, reject) => {
+        const request = indexedDB.open(SurvivorQA.storageName(), 1);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+      const tx = db.transaction("state", "readwrite");
+      const store = tx.objectStore("state");
+      const began = performance.now();
+      function hold() {
+        const request = store.get("current");
+        request.onsuccess = () => {
+          if (performance.now() - began < duration) hold();
+        };
+      }
+      tx.oncomplete = () => db.close();
+      tx.onabort = () => db.close();
+      hold();
+    }, storageDelay);
+  }
   await second.locator("#continueBtn").click();
   await page.waitForTimeout(200);
   const failure = await page.evaluate(async (active) => {
