@@ -10,6 +10,15 @@
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
+#qaWatermark {
+  position: absolute;
+  right: 12px;
+  top: calc(var(--safe-top) + 2px);
+  z-index: 80;
+  color: var(--muted);
+  font-size: 9px;
+  pointer-events: none;
+}
 * {
   box-sizing: border-box;
 }

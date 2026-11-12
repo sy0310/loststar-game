@@ -19,6 +19,7 @@ const directions = [
   ["d", "w"],
 ];
 const priority = [
+  "星舰壁垒",
   "贯星轨炮",
   "脉冲主炮",
   "聚能透镜",
@@ -157,7 +158,12 @@ async function choose(page, g, row) {
       if (index >= 0) break;
     }
   if (index < 0) index = 0;
-  row.upgrades.push({ time: g.time, offered: cards, chosen: cards[index] });
+  row.upgrades.push({
+    time: g.time,
+    offered: cards,
+    chosen: cards[index],
+    source: g.upgradeSource || null,
+  });
   if (row.upgrades.length === 1)
     await page.screenshot({
       path: path.join(output, `natural-${row.run}-first-upgrade.png`),
@@ -224,6 +230,7 @@ async function natural(browser) {
           evolved: g.evolved,
           fused: g.fused,
           bossKilled: g.bossKilled,
+          bossRewards: g.bossRewards || null,
           metrics: g.metrics,
           profile: await page.evaluate(() => SurvivorDemo.profile()),
           audio: await page.evaluate(() => SurvivorAudio.inspect()),
@@ -502,7 +509,7 @@ async function threatsAV(browser) {
   await context.close();
   await video.saveAs(path.join(output, "qa-threats-whole-page-silent.webm"));
 }
-(async () => {
+async function main() {
   fs.mkdirSync(output, { recursive: true });
   const browser = await chromium.launch();
   try {
@@ -511,7 +518,10 @@ async function threatsAV(browser) {
   } finally {
     await browser.close();
   }
-})().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+}
+module.exports = { natural };
+if (require.main === module)
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });

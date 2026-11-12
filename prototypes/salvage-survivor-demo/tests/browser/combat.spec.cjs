@@ -35,10 +35,11 @@ for (const [active, passive, id, damageKind] of evolutions)
           g.active = {};
           g.p.inv = 10000;
           g.spawnTime = 999;
-          for (let i = 0; i < 3; i++)
+          for (let i = 0; i < 5; i++)
             if (!Q.pick(active)) throw Error("active upgrade rejected");
-          for (let i = 0; i < 2; i++)
+          for (let i = 0; i < 5; i++)
             if (!Q.pick(passive)) throw Error("passive upgrade rejected");
+          Q.reward(true);
           if (!Q.pick(id)) throw Error("evolution rejected");
           Q.enemy(
             "skimmer",
@@ -100,8 +101,23 @@ for (const [a, b, id] of [
           g.p.inv = 10000;
           g.spawnTime = 999;
           for (const weapon of [a, b])
-            for (let i = 0; i < 3; i++)
+            for (let i = 0; i < 5; i++)
               if (!Q.pick(weapon)) throw Error("weapon rejected");
+          const pairs = {
+            drone: ["lock", "hunterswarm"],
+            arc: ["capacitor", "chainstorm"],
+            missile: ["cooler", "meteorbarrage"],
+            blade: ["magnet", "spiralsaw"],
+            prism: ["refraction", "kaleidoscope"],
+            gravity: ["singularity", "collapse"],
+          };
+          for (const weapon of [a, b]) {
+            const [passive, evolution] = pairs[weapon];
+            for (let i = 0; i < 5; i++) Q.pick(passive);
+            Q.reward(true);
+            if (!Q.pick(evolution)) throw Error("component evolution rejected");
+          }
+          Q.reward(true);
           const before = Object.keys(g.active).length;
           if (!Q.pick(id)) throw Error("fusion rejected");
           Q.enemy(

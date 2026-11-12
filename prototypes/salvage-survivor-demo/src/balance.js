@@ -1,13 +1,13 @@
 window.SurvivorBalance = {
-  "version": "0.6.2",
+  "version": "0.6.3",
   "runSeconds": 600,
   "eliteAt": 70,
   "bossAt": 130,
-  "firstLevelXP": 112,
+  "firstLevelXP": 72,
   "activeSlots": 6,
   "passiveSlots": 6,
-  "activeMaxLevel": 3,
-  "passiveMaxLevel": 2,
+  "activeMaxLevel": 5,
+  "passiveMaxLevel": 5,
   "hullUpgradeBase": 70,
   "gunUpgradeBase": 90,
   "permanentMaxLevel": 3,
@@ -25,10 +25,10 @@ window.SurvivorBalance = {
   "profileKey": "loststar.survivor.prototype.v01",
   "database": "loststar.survivor.demo.v06",
   "levelXP": {
-    "base": 80,
-    "linear": 38,
+    "base": 56,
+    "linear": 14,
     "power": 1.4,
-    "powerScale": 8
+    "powerScale": 2.5
   },
   "milestones": [
     {
@@ -140,5 +140,78 @@ window.SurvivorBalance = {
       "wisp": 4,
       "tank": 3
     }
+  },
+  "legacyLevelXP": {
+    "base": 80,
+    "linear": 38,
+    "power": 1.4,
+    "powerScale": 8
+  },
+  "progression": {
+    "version": 2,
+    "bossAdvancedChance": 0.75,
+    "activePower": [
+      0,
+      1,
+      1.7,
+      2.4,
+      2.7,
+      3
+    ],
+    "passivePower": [
+      0,
+      0.8,
+      1.2,
+      1.5,
+      1.8,
+      2
+    ],
+    "milestones": [
+      {
+        "at": 70,
+        "type": "elite",
+        "tier": 1
+      },
+      {
+        "at": 130,
+        "type": "boss",
+        "tier": 1
+      },
+      {
+        "at": 160,
+        "type": "elite",
+        "tier": 1
+      },
+      {
+        "at": 250,
+        "type": "elite",
+        "tier": 2
+      },
+      {
+        "at": 310,
+        "type": "boss",
+        "tier": 2
+      },
+      {
+        "at": 340,
+        "type": "elite",
+        "tier": 2
+      },
+      {
+        "at": 430,
+        "type": "elite",
+        "tier": 3
+      },
+      {
+        "at": 520,
+        "type": "elite",
+        "tier": 3
+      },
+      {
+        "at": 550,
+        "type": "boss",
+        "tier": 3
+      }
+    ]
   }
 };

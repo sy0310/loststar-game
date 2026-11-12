@@ -270,6 +270,9 @@ jobs:
       - name: Verify deep-space encounter delivery when present
         if: hashFiles('artifacts/survivor-v062/verification.json') != ''
         run: node prototypes/salvage-survivor-demo/tests/verify-v062-evidence.cjs
+      - name: Verify five-level progression frozen delivery when present
+        if: hashFiles('artifacts/survivor-v063/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'
@@ -298,6 +301,7 @@ jobs:
           curl --fail --retry 10 --retry-delay 1 --retry-connrefused --silent http://127.0.0.1:4397/ > /dev/null
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_REPORT="$PWD/releases/survivor-browser.json" SURVIVOR_TEST_OUTPUT="$PWD/releases/survivor-browser-tests" npm --prefix prototypes/salvage-survivor-demo run test:browser
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_COMPAT_OUT="$PWD/releases/survivor-compatibility.json" node prototypes/salvage-survivor-demo/tests/compatibility.cjs
+          SURVIVOR_CURRENT_ROOT="$PWD/releases/survivor-ci-extracted" SURVIVOR_MIGRATION_OUT="$PWD/releases/survivor-migration.json" node prototypes/salvage-survivor-demo/tests/upgrade-save.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -309,6 +313,7 @@ jobs:
             releases/survivor-simulation.json
             releases/survivor-browser.json
             releases/survivor-compatibility.json
+            releases/survivor-migration.json
             releases/survivor-browser-tests/
             prototypes/salvage-survivor-demo/dist/build-info.json
             prototypes/salvage-survivor-demo/dist/loststar-survivor-*.zip

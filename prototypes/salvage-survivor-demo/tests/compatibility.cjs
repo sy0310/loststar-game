@@ -84,26 +84,30 @@ async function read(page) {
         while (((passive ? g.passive : g.active)[id] || 0) < n)
           if (!Q.pick(id)) throw Error("Invalid benchmark " + id);
       };
-      equip("cannon", 3);
-      equip("lens", 2, true);
-      Q.pick("piercebeam");
-      equip("drone", 3);
-      equip("arc", 3);
-      Q.pick("thunderhive");
-      equip("missile", 3);
-      equip("blade", 3);
-      Q.pick("blastwheel");
-      equip("shield", 3);
-      equip("armor", 2, true);
-      Q.pick("reactiveaegis");
-      equip("cooler", 2, true);
-      equip("prism", 3);
-      equip("refraction", 2, true);
-      Q.pick("kaleidoscope");
-      equip("gravity", 3);
-      equip("singularity", 2, true);
-      Q.pick("collapse");
-      equip("lock", 2, true);
+      const evolve = (weapon, passive, evolution) => {
+        equip(weapon, 5);
+        equip(passive, 5, true);
+        Q.reward(true);
+        if (!Q.pick(evolution))
+          throw Error("Benchmark evolution rejected " + evolution);
+      };
+      evolve("cannon", "lens", "piercebeam");
+      evolve("drone", "lock", "hunterswarm");
+      evolve("arc", "capacitor", "chainstorm");
+      Q.reward(true);
+      if (!Q.pick("thunderhive")) throw Error("Benchmark hive rejected");
+      evolve("missile", "cooler", "meteorbarrage");
+      evolve("blade", "magnet", "spiralsaw");
+      Q.reward(true);
+      if (!Q.pick("blastwheel")) throw Error("Benchmark wheel rejected");
+      evolve("shield", "armor", "reactiveaegis");
+      equip("prism", 5);
+      equip("gravity", 5);
+      if (
+        Object.keys(g.active).length + Object.keys(g.fused).length !== 6 ||
+        Object.keys(g.passive).length !== 6
+      )
+        throw Error("Incomplete6+6 benchmark");
       g.time = 135;
       g.bossSpawned = g.eliteSpawned = true;
       g.p.inv = 50;

@@ -28,6 +28,7 @@ test("eight evolutions require both full levels and display MAX on real loadout"
     return recipes.map(([weapon, accessory, evolution]) => {
       const Q = SurvivorQA,
         g = Q.startModel(16);
+      Q.legacyProgression(); // Explicit old 3+2 archive regression.
       g.active = {};
       g.spawnTime = 999;
       g.p.inv = 999;
@@ -68,6 +69,7 @@ test("an offered EVO is rechecked on actual click and stale accessory cannot evo
   await page.evaluate(() => {
     const Q = SurvivorQA,
       g = Q.state();
+    Q.legacyProgression();
     g.spawnTime = 999;
     Q.pick("cannon");
     Q.pick("cannon");
@@ -160,7 +162,7 @@ test("visitor warning, planted mine and its fuse persist through actual refresh 
     Q.step(1.5);
     const enemy = g.enemy.find((e) => e.t === "courier");
     Object.assign(enemy, { x: 0, y: -120, speed: 0, fire: 0 });
-    Q.step(1.1);
+    Q.step(1.8); // Includes the visible v063 materialization phase.
     g.mode = "pause";
     await Q.save();
     await Q.settled();
@@ -201,6 +203,7 @@ test("old v061 ten-minute snapshot preserves profile and old combat through resu
       g = Q.state();
     g.time = 169;
     g.rules.version = "0.6.1";
+    delete g.rules.progressionVersion;
     delete g.rules.combatVersion;
     delete g.hazards;
     delete g.encounters;
@@ -247,7 +250,14 @@ test("visitor result is recorded once and actual settlement cannot claim it twic
     g.encounters.schedule = [{ at: 0, kind: "courier" }];
     Q.step(2.3);
     const visitor = g.enemy.find((e) => e.t === "courier");
-    Object.assign(visitor, { x: 0, y: -60, hp: 1, speed: 0, fire: 999 });
+    Object.assign(visitor, {
+      x: 0,
+      y: -60,
+      hp: 1,
+      speed: 0,
+      fire: 999,
+      arrivalAge: 2,
+    });
     g.attackClock = {};
     Q.step(0.5);
     g.mode = "pause";

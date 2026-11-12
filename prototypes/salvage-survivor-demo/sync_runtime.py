@@ -31,7 +31,7 @@ def generated():
             if 'frameMs' in asset:
                 entry['frameMs'] = asset['frameMs']
             catalog[asset['id']] = entry
-    balance = json.loads((ROOT / 'design/star-salvage/v062/BALANCE_V062.json').read_text())
+    balance = json.loads((ROOT / 'design/star-salvage/v063/BALANCE_V063.json').read_text())
     return {
         HERE / 'src/art-catalog.js': 'window.SurvivorArtCatalog = ' + json.dumps(catalog, ensure_ascii=False, indent=2) + ';\n',
         HERE / 'src/balance.js': 'window.SurvivorBalance = ' + json.dumps(balance, ensure_ascii=False, indent=2) + ';\n',

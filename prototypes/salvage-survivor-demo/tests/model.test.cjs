@@ -25,6 +25,7 @@ const evo = [
 let context, Q;
 function start(seed = 91, perks = {}) {
   const g = Q.startModel(seed, perks);
+  Q.legacyProgression(); // Keep the committed 3+2 combat regression for saved old runs.
   g.active = {};
   g.p.inv = 10000;
   g.spawnTime = 999;

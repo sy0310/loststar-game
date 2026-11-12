@@ -54,6 +54,7 @@
     kaleidoscope: "万花星阵",
     collapse: "坍缩星核",
     eventhorizon: "星环奇点",
+    ionbastion: "星舰壁垒",
   };
 
   const DESCS = {
@@ -84,6 +85,7 @@
     kaleidoscope: "六向光阵，交错贯穿",
     collapse: "引力收束，中心爆破",
     eventhorizon: "吸聚敌群，旋转折射光环",
+    ionbastion: "强化贯穿轨炮，护盾破裂时追加反击",
   };
   const EVO = [
     ["cannon", "lens", "piercebeam"],
@@ -99,6 +101,7 @@
     ["drone", "arc", "thunderhive"],
     ["missile", "blade", "blastwheel"],
     ["prism", "gravity", "eventhorizon"],
+    ["cannon", "shield", "ionbastion"],
   ];
   const ENEMY_STATS = {
     skimmer: { hp: 32, radius: 16, speed: 112 },
@@ -147,10 +150,25 @@
     );
   }
   const newCombat = (game = g) => runRules(game).combatVersion === 2;
+  const newProgression = (game = g) => runRules(game).progressionVersion === 2;
+  const activeMaximum = (game = g) => (newProgression(game) ? 5 : 3);
+  const passiveMaximum = (game = g) => (newProgression(game) ? 5 : 2);
+  const activePower = (id) =>
+    newProgression()
+      ? B.progression.activePower[g.active[id] || 0]
+      : g.active[id] || 0;
+  const passivePower = (id) =>
+    newProgression()
+      ? B.progression.passivePower[g.passive[id] || 0]
+      : g.passive[id] || 0;
   function pixelIcon(id, size = 32) {
-    return window.SurvivorArt.icon(id === "repair" ? "armor" : id, size);
+    return window.SurvivorArt.icon(
+      id === "repair" ? "armor" : id === "ionbastion" ? "piercebeam" : id,
+      size,
+    );
   }
   const QA = new URLSearchParams(location.search).has("qa");
+  $("qaWatermark").hidden = !QA;
   let profile = { credits: 0, best: 0, runs: 0, hull: 0, gun: 0 };
   let storage = null,
     storeView = null,
@@ -230,6 +248,7 @@
         activeSlots: B.activeSlots,
         passiveSlots: B.passiveSlots,
         combatVersion: 2,
+        progressionVersion: 2,
       },
       time: 0,
       p: {
@@ -300,6 +319,9 @@
         notice: null,
       },
       upgradeGrace: 0,
+      bossRewards: { ids: [], pending: [] },
+      upgradeSource: null,
+      linkTimes: {},
       metrics: {
         damage: {},
         shots: {},
@@ -343,10 +365,11 @@
   }
   const levelXP = (level) => {
     const growth = Math.max(0, level - 2);
+    const curve = newProgression() ? B.levelXP : B.legacyLevelXP;
     return Math.round(
-      B.levelXP.base +
-        B.levelXP.linear * growth +
-        B.levelXP.powerScale * Math.pow(growth, B.levelXP.power),
+      curve.base +
+        curve.linear * growth +
+        curve.powerScale * Math.pow(growth, curve.power),
     );
   };
   function availableUpgrades(game = g) {
@@ -361,7 +384,8 @@
       const level = game.active[id] || 0;
       if (
         !consumed.includes(id) &&
-        level < B.activeMaxLevel &&
+        !game.evolved[id] &&
+        level < activeMaximum(game) &&
         (level > 0 || activeSlots < runRules(game).activeSlots)
       ) {
         options.push({ id, kind: "active", level: level + 1 });
@@ -370,28 +394,36 @@
     for (const id of PASSIVE) {
       const level = game.passive[id] || 0;
       if (
-        level < B.passiveMaxLevel &&
+        level < passiveMaximum(game) &&
         (level > 0 ||
           Object.keys(game.passive).length < runRules(game).passiveSlots)
       ) {
         options.push({ id, kind: "passive", level: level + 1 });
       }
     }
+    const advancedAllowed =
+      !newProgression(game) ||
+      (game.upgradeSource?.kind === "boss" &&
+        game.upgradeSource.advancedRoll === true);
     for (const [id, passive, evolution] of EVO) {
       if (
-        game.active[id] === B.activeMaxLevel &&
-        game.passive[passive] === B.passiveMaxLevel &&
+        advancedAllowed &&
+        game.active[id] === activeMaximum(game) &&
+        game.passive[passive] === passiveMaximum(game) &&
         !game.evolved[id]
       ) {
         options.push({ id: evolution, kind: "evo", source: id, level: "MAX" });
       }
     }
     for (const [a, b, id] of FUSION) {
+      if (id === "ionbastion" && !newProgression(game)) continue;
       if (
-        game.active[a] === B.activeMaxLevel &&
-        game.active[b] === B.activeMaxLevel &&
-        !game.evolved[a] &&
-        !game.evolved[b] &&
+        advancedAllowed &&
+        game.active[a] === activeMaximum(game) &&
+        game.active[b] === activeMaximum(game) &&
+        (newProgression(game)
+          ? !!game.evolved[a] && !!game.evolved[b]
+          : !game.evolved[a] && !game.evolved[b]) &&
         !game.fused[id]
       ) {
         options.push({ id, kind: "fusion", source: [a, b], level: "FUSION" });
@@ -412,9 +444,14 @@
   }
   function chooseOptions() {
     const available = availableUpgrades();
-    const picks = available
-      .filter((option) => ["evo", "fusion"].includes(option.kind))
-      .slice(0, 2);
+    const advanced = available.filter((option) =>
+      ["evo", "fusion"].includes(option.kind),
+    );
+    const picks = newProgression()
+      ? advanced.length
+        ? [advanced[Math.floor(rand() * advanced.length)]]
+        : []
+      : advanced.slice(0, 2);
     function add(option) {
       if (
         option &&
@@ -442,9 +479,12 @@
     add(ordinary.find((option) => option.id === focus));
     if (pair) add(ordinary.find((option) => option.id === pair[1]));
     const complement = FUSION.find(
-      ([a, b, id]) => !g.fused[id] && (g.active[a] || g.active[b]),
+      ([a, b, id]) =>
+        !g.fused[id] &&
+        (g.active[a] || g.active[b]) &&
+        (!g.active[a] || !g.active[b]),
     );
-    if (complement) {
+    if (complement && (!newProgression() || rand() < 0.35)) {
       const other = g.active[complement[0]] ? complement[1] : complement[0];
       add(ordinary.find((option) => option.id === other));
     }
@@ -473,12 +513,12 @@
           active: "主动武器",
           passive: "辅助配件",
           evo: "满级进化",
-          fusion: "双武器融合",
+          fusion: newProgression() ? "终极融合" : "双武器融合",
           bonus: "应急补给",
         }[option.kind];
         const current = g.active[option.id] || g.passive[option.id] || 0;
         const maximum =
-          option.kind === "active" ? B.activeMaxLevel : B.passiveMaxLevel;
+          option.kind === "active" ? activeMaximum() : passiveMaximum();
         const rank = ["active", "passive"].includes(option.kind)
           ? "Lv" +
             current +
@@ -493,6 +533,13 @@
             salvage: "回收零件",
           }[option.id];
         const description =
+          (newProgression()
+            ? {
+                armor: "船体＋5，碰撞减伤提高",
+                thunderhive: "六架蜂机，命中连锁放电",
+                blastwheel: "八刃环绕，接触触发爆破",
+              }[option.id]
+            : null) ||
           DESCS[option.id] ||
           {
             repair: "恢复28船体",
@@ -506,7 +553,8 @@
         if (option.kind === "evo") {
           const recipe = EVO.find(([, , result]) => result === option.id);
           hint = NAMES[recipe[0]] + " MAX ＋ " + NAMES[recipe[1]] + " MAX";
-        } else if (option.kind === "fusion") hint = "合并两件武器 · 空出1格";
+        } else if (option.kind === "fusion")
+          hint = "两件已进化武器 · 合并空出1格";
         else if (pair) {
           const weaponLevel =
             option.id === pair[0] ? option.level : g.active[pair[0]] || 0;
@@ -517,11 +565,15 @@
             NAMES[pair[0]] +
             " " +
             weaponLevel +
-            "/3 ＋ " +
+            "/" +
+            activeMaximum() +
+            " ＋ " +
             NAMES[pair[1]] +
             " " +
             passiveLevel +
-            "/2";
+            "/" +
+            passiveMaximum() +
+            (newProgression() ? " · 精英战利品中抽取" : "");
         }
         const icon =
           { repair: "armor", reserveShield: "shield", salvage: "scrap" }[
@@ -562,9 +614,31 @@
       Object.keys(g.passive).length +
       "/" +
       runRules().passiveSlots;
+    const bossReward = g.upgradeSource?.kind === "boss";
+    $("upgradeTitle").textContent = bossReward
+      ? "精英战利品 · 等级＋1"
+      : "等级提升";
+    $("upgradeHint").textContent = newProgression()
+      ? bossReward
+        ? "符合满级条件时，75%机会出现进化／融合"
+        : "武器与专属辅助各5级，击退精英抽取进化"
+      : "选一项，继续出击";
+    const fusion = FUSION.find(
+      ([a, b, id]) => !g.fused[id] && (g.active[a] || g.active[b]),
+    );
+    $("fusionGuide").textContent =
+      newProgression() && fusion
+        ? NAMES[fusion[0]] +
+          " ＋ " +
+          NAMES[fusion[1]] +
+          " → " +
+          NAMES[fusion[2]] +
+          " · 两者进化后可融合"
+        : "";
   }
-  function levelUp() {
+  function levelUp(source = null) {
     releaseInput();
+    g.upgradeSource = source;
     g.upgradeCount++;
     g.metrics.events.push({ kind: "upgrade", time: g.time, level: g.level });
     renderUpgrades();
@@ -584,18 +658,27 @@
     else if (option.kind === "passive") {
       g.passive[option.id] = option.level;
       if (option.id === "armor") {
-        g.p.maxhp += 12;
-        g.p.hp += 12;
+        const increase = newProgression() ? 5 : 12;
+        g.p.maxhp += increase;
+        g.p.hp += increase;
       }
     } else if (option.kind === "evo") g.evolved[option.source] = option.id;
     else if (option.kind === "fusion") {
-      option.source.forEach((id) => delete g.active[id]);
+      option.source.forEach((id) => {
+        delete g.active[id];
+        delete g.evolved[id];
+      });
       g.fused[option.id] = true;
     } else if (option.id === "repair")
       g.p.hp = Math.min(g.p.maxhp, g.p.hp + 28);
     else if (option.id === "reserveShield") g.p.shield = 1;
     else g.credits += 8;
-    g.metrics.events.push({ kind: option.kind, id: option.id, time: g.time });
+    g.metrics.events.push({
+      kind: option.kind,
+      id: option.id,
+      time: g.time,
+      rewardId: g.upgradeSource?.id || null,
+    });
     if (option.kind === "active") g.buildFocus = option.id;
     if (option.kind === "passive") {
       const pair = EVO.find(([, passive]) => passive === option.id);
@@ -611,6 +694,7 @@
     if (["evo", "fusion"].includes(option.kind))
       g.celebration = { kind: option.kind, id: option.id, t: 0.9, max: 0.9 };
     g.presented = [];
+    g.upgradeSource = null;
     g.upgradeGrace = 0.4;
     g.p.inv = Math.max(g.p.inv, 0.65);
     g.mode = "play";
@@ -645,6 +729,38 @@
       g.xpNext = levelXP(g.level);
       levelUp();
     }
+  }
+  function queueBossReward(enemy) {
+    if (!newProgression() || g.bossRewards.ids.includes(enemy.id)) return;
+    g.bossRewards.ids.push(enemy.id);
+    g.bossRewards.pending.push({ id: enemy.id, enemy: enemy.t, at: g.time });
+  }
+  function openBossReward() {
+    if (!newProgression() || g.mode !== "play" || !g.bossRewards.pending.length)
+      return false;
+    const reward = g.bossRewards.pending.shift();
+    g.level++;
+    g.xpNext = levelXP(g.level);
+    levelUp({
+      kind: "boss",
+      id: reward.id,
+      advancedRoll: rand() < B.progression.bossAdvancedChance,
+    });
+    return true;
+  }
+  function showLink(id, x, y) {
+    if (!newProgression() || g.time < (g.linkTimes[id] || 0)) return;
+    g.linkTimes[id] = g.time + 4;
+    const label = {
+      droneArc: "蜂机 × 电弧",
+      pulseArc: "主炮 × 电弧",
+      shieldArc: "护盾 × 电弧",
+      bladeMissile: "旋刃 × 导弹",
+      gravityPrism: "引力 × 棱镜",
+    }[id];
+    g.metrics.events.push({ kind: "link", id, time: g.time });
+    if (g.texts.length < B.maxDamageNumbers)
+      g.texts.push({ x, y: y - 25, t: 1.1, s: label, color: "#73d9e8" });
   }
   function spawnEnemy(force, tier = 1) {
     if (!g) return null;
@@ -797,10 +913,14 @@
       excluded.add(target);
       origin = target;
     }
+    if (["droneArc", "pulseArc", "shieldArc"].includes(sourceKind))
+      showLink(sourceKind, x, y);
   }
   function hurtEnemy(enemy, amount, mark = false, source = "pulse") {
     if (enemy.hp <= 0) return;
-    const damage = Math.max(1, amount * (1 + 0.13 * (g.passive.lens || 0)));
+    if (newProgression() && VISITORS[enemy.t] && (enemy.arrivalAge || 0) < 1.6)
+      return;
+    const damage = Math.max(1, amount * (1 + 0.13 * passivePower("lens")));
     const actual = Math.min(enemy.hp, damage);
     playSound("hit", { strength: damage / 120 });
     g.metrics.damage[source] = (g.metrics.damage[source] || 0) + actual;
@@ -925,30 +1045,43 @@
       g.metrics.events.push({ kind: "bossDefeated", time: g.time });
       notify("守卫已击退！");
     } else if (enemy.t === "elite") notify("精英击退 · 能量散落");
+    if (["boss", "elite"].includes(enemy.t)) queueBossReward(enemy);
   }
   function damageShip(amount) {
     if (!g || g.mode !== "play" || g.p.inv > 0) return;
     if (g.p.shield > 0) {
       g.p.shield = 0;
       g.metrics.shieldsBlocked++;
-      playSound("shield", { evolved: !!g.evolved.shield });
-      const evolved = !!g.evolved.shield;
+      playSound("shield", {
+        evolved: !!g.evolved.shield || !!g.fused.ionbastion,
+        fused: !!g.fused.ionbastion,
+      });
+      const evolved = !!g.evolved.shield || !!g.fused.ionbastion;
       g.p.shieldCooldown =
-        (evolved ? 4.5 : 12 - (g.active.shield || 1) * 1.5) *
-        (1 - 0.12 * (g.passive.armor || 0));
+        (evolved ? 4.5 : 12 - (activePower("shield") || 1) * 1.5) *
+        (1 - 0.12 * passivePower("armor"));
       ring(g.p.x, g.p.y, evolved ? 112 : 63, "#73d9e8", 0.35);
       if (evolved) {
         for (const enemy of g.enemy)
           if (dist(enemy, g.p) < 112 + enemy.radius) {
-            hurtEnemy(enemy, 58, false, "reactiveaegis");
+            hurtEnemy(
+              enemy,
+              g.fused.ionbastion ? 85 : 58,
+              false,
+              g.fused.ionbastion ? "ionbastion" : "reactiveaegis",
+            );
             enemy.disabled = 0.4;
           }
+        if (g.fused.ionbastion) {
+          const target = closest(g.p.x, g.p.y, 660);
+          if (target) beamAttack(target, 170, "ionbastion");
+        }
       } else if (g.active.arc || g.fused.thunderhive)
         chain(g.p.x, g.p.y, 3, 22, 165, null, "shieldArc");
       g.p.inv = 0.5;
       return;
     }
-    const damage = amount * (1 - 0.08 * (g.passive.armor || 0));
+    const damage = amount * (1 - 0.08 * passivePower("armor"));
     g.p.hp = Math.max(0, g.p.hp - damage);
     g.metrics.shipDamage += damage;
     playSound("hurt");
@@ -960,7 +1093,7 @@
     }
   }
   function cooldown(id, base) {
-    let r = base * (1 - 0.115 * (g.passive.cooler || 0));
+    let r = base * (1 - 0.115 * passivePower("cooler"));
     if (g.evolved[id]) r *= 0.8;
     return Math.max(0.17, r);
   }
@@ -996,7 +1129,7 @@
     g.wells ||= [];
     const fused = !!g.fused.eventhorizon;
     if (g.active.prism || fused) {
-      const level = g.active.prism || 3,
+      const level = activePower("prism") || 3,
         evolved = !!g.evolved.prism;
       clock(
         "prism",
@@ -1009,7 +1142,12 @@
             .filter((enemy) => enemy.hp > 0 && dist(enemy, g.p) < 520)
             .sort((a, b) => dist(a, g.p) - dist(b, g.p));
           const heading = angle(g.p, target),
-            count = fused ? 6 : evolved ? 6 : level + 1;
+            count =
+              fused && newProgression()
+                ? 8
+                : fused || evolved
+                  ? 6
+                  : Math.ceil(level + 1);
           playSound("prism", { evolved, fused });
           for (let i = 0; i < count; i++)
             prismRay(
@@ -1017,15 +1155,22 @@
                 ? angle(g.p, targets[i])
                 : heading + (i * T) / count + g.time * 0.2,
               520,
-              (24 + 28 * level) * (1 + 0.1 * (g.passive.refraction || 0)),
+              (24 + 28 * level) *
+                (1 + 0.1 * passivePower("refraction")) *
+                (fused && newProgression() ? 1.25 : 1),
               fused ? "eventhorizon" : evolved ? "kaleidoscope" : "prism",
-              (evolved ? 7 : 5) + (g.passive.refraction || 0) * 1.5,
+              (evolved ? 7 : 5) + passivePower("refraction") * 1.5,
             );
+          const well = g.wells.find((item) => item.t > 0);
+          if (newProgression() && !fused && g.active.gravity && well) {
+            prismRay(angle(g.p, well), 560, 32 + 12 * level, "gravityPrism", 8);
+            showLink("gravityPrism", well.x, well.y);
+          }
         },
       );
     }
     if (g.active.gravity || fused) {
-      const level = g.active.gravity || 3,
+      const level = activePower("gravity") || 3,
         evolved = !!g.evolved.gravity;
       clock(
         "gravity",
@@ -1041,7 +1186,7 @@
             y: g.p.y + Math.sin(heading) * Math.max(100, distance),
           };
           const duration =
-            (evolved || fused ? 2.4 : 1.5) + 0.2 * (g.passive.singularity || 0);
+            (evolved || fused ? 2.4 : 1.5) + 0.2 * passivePower("singularity");
           if (g.arcs.length < B.maxArcs)
             g.arcs.push({
               x1: g.p.x,
@@ -1060,9 +1205,9 @@
             radius:
               (evolved || fused ? 128 : 85) +
               level * 7 +
-              (g.passive.singularity || 0) * 15,
+              passivePower("singularity") * 15,
             clock: 0,
-            damage: 18 + level * 9,
+            damage: (18 + level * 9) * (fused && newProgression() ? 1.35 : 1),
             evolved,
             fused,
             level,
@@ -1076,6 +1221,16 @@
             fused ? "eventhorizon" : evolved ? "collapse" : "gravity",
           );
           playSound("gravity", { evolved, fused });
+          if (newProgression() && !fused && g.active.prism) {
+            prismRay(
+              angle(g.p, center),
+              560,
+              32 + 12 * activePower("prism"),
+              "gravityPrism",
+              8,
+            );
+            showLink("gravityPrism", center.x, center.y);
+          }
         },
       );
     }
@@ -1130,24 +1285,29 @@
   function weapons(dt) {
     const player = g.p;
     advancedWeapons(dt);
-    if (g.active.cannon) {
-      const level = g.active.cannon;
+    if (g.active.cannon || g.fused.ionbastion) {
+      const level = activePower("cannon") || 3;
+      const rail = !!g.evolved.cannon || !!g.fused.ionbastion;
       clock(
         "cannon",
         dt,
-        cooldown("cannon", g.evolved.cannon ? 0.34 : 0.54 - (level - 1) * 0.1),
+        cooldown(
+          "cannon",
+          g.fused.ionbastion ? 0.28 : rail ? 0.34 : 0.54 - (level - 1) * 0.1,
+        ),
         () => {
-          const target = closest(
-            player.x,
-            player.y,
-            g.evolved.cannon ? 660 : 465,
-          );
+          const target = closest(player.x, player.y, rail ? 660 : 465);
           if (!target) return;
           g.aim = angle(player, target);
-          if (g.evolved.cannon) beamAttack(target, 128 + profile.gun * 5);
+          if (rail)
+            beamAttack(
+              target,
+              (g.fused.ionbastion ? 150 : 128) + profile.gun * 5,
+              g.fused.ionbastion ? "ionbastion" : "piercebeam",
+            );
           else
-            for (let index = 0; index < level; index++) {
-              const offset = (index - (level - 1) / 2) * 9;
+            for (let index = 0; index < Math.ceil(level); index++) {
+              const offset = (index - (Math.ceil(level) - 1) / 2) * 9;
               fireBullet(
                 player.x - Math.sin(g.aim) * offset + Math.cos(g.aim) * 15,
                 player.y + Math.cos(g.aim) * offset + Math.sin(g.aim) * 15,
@@ -1161,11 +1321,17 @@
       );
     }
     if (g.active.drone || g.fused.thunderhive) {
-      const level = g.active.drone || 3;
-      const count = g.fused.thunderhive ? 5 : g.evolved.drone ? 4 : level;
+      const level = activePower("drone") || 3;
+      const count = g.fused.thunderhive
+        ? newProgression()
+          ? 6
+          : 5
+        : g.evolved.drone
+          ? 4
+          : Math.ceil(level);
       const interval =
         (g.fused.thunderhive ? 0.39 : g.evolved.drone ? 0.55 : 0.87) *
-        (1 - 0.08 * (g.passive.lock || 0));
+        (1 - 0.08 * passivePower("lock"));
       clock("drone", dt, cooldown("drone", interval), () => {
         for (let index = 0; index < count; index++) {
           const heading = g.time * 1.6 + (index * T) / count;
@@ -1179,23 +1345,25 @@
           );
           const target =
             marked ||
-            closest(origin.x, origin.y, 440 + (g.passive.lock || 0) * 25);
+            closest(origin.x, origin.y, 440 + passivePower("lock") * 25);
           if (target)
             fireBullet(
               origin.x,
               origin.y,
               target,
               g.fused.thunderhive ? "hive" : "drone",
-              (18 + level * 12) * (1 + 0.08 * (g.passive.lock || 0)),
+              (18 + level * 12) *
+                (1 + 0.08 * passivePower("lock")) *
+                (g.fused.thunderhive && newProgression() ? 1.25 : 1),
               345,
             );
         }
       });
     }
     if (g.active.arc) {
-      const level = g.active.arc,
+      const level = activePower("arc"),
         evolved = !!g.evolved.arc,
-        capacitor = g.passive.capacitor || 0;
+        capacitor = passivePower("capacitor");
       clock(
         "arc",
         dt,
@@ -1215,7 +1383,7 @@
       );
     }
     if (g.active.missile) {
-      const level = g.active.missile,
+      const level = activePower("missile"),
         evolved = !!g.evolved.missile;
       clock(
         "missile",
@@ -1253,8 +1421,14 @@
     }
     g.salvos = g.salvos.filter((salvo) => !salvo.fired);
     if (g.active.blade || g.fused.blastwheel) {
-      const level = g.active.blade || 3;
-      const count = g.fused.blastwheel ? 6 : g.evolved.blade ? 5 : level + 1;
+      const level = activePower("blade") || 3;
+      const count = g.fused.blastwheel
+        ? newProgression()
+          ? 8
+          : 6
+        : g.evolved.blade
+          ? 5
+          : Math.ceil(level + 1);
       const radius = g.evolved.blade || g.fused.blastwheel ? 78 : 48;
       for (const enemy of g.enemy) {
         if (enemy.hp <= 0 || enemy.bladeAt > g.time) continue;
@@ -1285,20 +1459,23 @@
         }
       }
     }
-    if (g.active.shield) {
+    if (g.active.shield || g.fused.ionbastion) {
       g.p.shieldCooldown = Math.max(0, g.p.shieldCooldown - dt);
       if (g.p.shield === 0 && g.p.shieldCooldown === 0) g.p.shield = 1;
     }
   }
   function wave(dt) {
     if (runRules().runSeconds > 180) {
-      for (const milestone of B.milestones) {
+      for (const milestone of newProgression()
+        ? B.progression.milestones
+        : B.milestones) {
         const key = milestone.type + ":" + milestone.at;
         if (g.time < milestone.at || g.milestoneSeen.includes(key)) continue;
         const existing = g.enemy.find(
           (enemy) => enemy.t === milestone.type && enemy.hp > 0,
         );
         if (existing) {
+          if (newProgression()) continue;
           existing.tier = Math.max(existing.tier || 1, milestone.tier);
           existing.fire = Math.min(existing.fire, 0.3);
         } else if (!spawnEnemy(milestone.type, milestone.tier)) continue;
@@ -1395,6 +1572,14 @@
       if (events.pending.remaining <= 0) {
         const enemy = spawnEnemy(events.pending.kind);
         if (!enemy) return;
+        if (newProgression()) {
+          enemy.x = g.p.x + (enemy.t === "courier" ? -1 : 1) * VW * 0.3;
+          enemy.y = g.p.y - Math.min(100, VH * 0.13);
+          enemy.arrivalAge = 0;
+          enemy.hp *= 2.5;
+          enemy.maxhp = enemy.hp;
+          enemy.fire = 1.7;
+        }
         events.active = { kind: enemy.t, id: enemy.id, until: g.time + 42 };
         events.pending = null;
         g.metrics.events.push({
@@ -1473,6 +1658,10 @@
     updateShots(dt);
     if (newCombat()) updateHazards(dt);
     if (g.mode !== "play") return;
+    if (openBossReward()) {
+      updateHud(true);
+      return;
+    }
     for (const shot of g.enemyShots) {
       const previousX = shot.x,
         previousY = shot.y;
@@ -1496,7 +1685,7 @@
     }
     g.enemyShots = g.enemyShots.filter((shot) => shot.t > 0);
     const attraction =
-      150 + (g.passive.magnet || 0) * 55 + (g.evolved.blade ? 65 : 0);
+      150 + passivePower("magnet") * 55 + (g.evolved.blade ? 65 : 0);
     for (const pickup of g.pickups) {
       if (pickup.t <= 0) continue;
       pickup.t -= dt;
@@ -1679,6 +1868,40 @@
     for (const enemy of g.enemy) {
       if (enemy.hp <= 0) continue;
       const point = toScreen(enemy.x, enemy.y);
+      if (newProgression() && VISITORS[enemy.t]) {
+        const age = enemy.arrivalAge || 0;
+        const healthY = point.y + art.catalog[enemy.t].nativeSize[1] * 1.5 + 4;
+        ctx.save();
+        ctx.strokeStyle = age < 1.6 ? "#c8b4ef" : "#73d9e8";
+        ctx.lineWidth = age < 1.6 ? 3 : 1;
+        if (age < 2.8) {
+          ctx.globalAlpha = Math.max(0, 1 - age / 2.8);
+          ctx.beginPath();
+          ctx.ellipse(point.x, point.y, 42 + age * 12, 56 + age * 8, 0, 0, T);
+          ctx.stroke();
+          for (let i = 0; i < 8; i++) {
+            const heading = (i * T) / 8 + age;
+            ctx.fillStyle = "#73d9e8";
+            ctx.fillRect(
+              point.x + Math.cos(heading) * 52 - 2,
+              point.y + Math.sin(heading) * 52 - 2,
+              4,
+              4,
+            );
+          }
+        }
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = "#1b1730";
+        ctx.fillRect(point.x - 28, healthY, 56, 5);
+        ctx.fillStyle = age < 1.6 ? "#c8b4ef" : "#73d9e8";
+        ctx.fillRect(
+          point.x - 28,
+          healthY,
+          56 * Math.max(0, enemy.hp / enemy.maxhp),
+          3,
+        );
+        ctx.restore();
+      }
       if (enemy.warn > 0) drawWarning(enemy, point);
       const heading =
         (enemy.charge > 0
@@ -1715,6 +1938,7 @@
       art.draw(ctx, enemy.t, point.x, point.y, {
         angle: enemy.t === "boss" ? Math.sin(g.time * 0.8) * 0.1 : heading,
         flash: enemy.flash > 0,
+        scale: newProgression() && VISITORS[enemy.t] ? 1.5 : 1,
       });
       if (enemy.marked > 0) {
         ctx.strokeStyle = "#f4c57a";
@@ -1728,6 +1952,13 @@
     for (const shot of g.shots) {
       const point = toScreen(shot.x, shot.y);
       const heading = Math.atan2(shot.vy, shot.vx);
+      if (shot.kind === "shard") {
+        art.draw(ctx, "blade_body", point.x, point.y, {
+          angle: heading + g.time * 8,
+          scale: 0.6,
+        });
+        continue;
+      }
       if (shot.kind === "missile") {
         // Native missile exhaust begins at [12,20], center [12,12], scale .9.
         art.draw(
@@ -1938,6 +2169,9 @@
     $("footHint").hidden = g.time > 8 || g.mode !== "play";
     const events = g.encounters;
     const eventKind = events?.pending?.kind || events?.active?.kind;
+    const activeVisitor = events?.active
+      ? g.enemy.find((enemy) => enemy.id === events.active.id)
+      : null;
     const notice = events?.notice;
     const eventVisible =
       newCombat() &&
@@ -1951,7 +2185,17 @@
       $("encounterText").textContent = events.pending
         ? VISITORS[eventKind].hint
         : events.active
-          ? VISITORS[eventKind].tactic
+          ? newProgression() && (activeVisitor?.arrivalAge || 0) < 1.6
+            ? "跃迁入场 · 护盾正在消散"
+            : VISITORS[eventKind].tactic +
+              (newProgression()
+                ? " · " +
+                  Math.ceil(
+                    ((activeVisitor?.hp || 0) / (activeVisitor?.maxhp || 1)) *
+                      100,
+                  ) +
+                  "%"
+                : "")
           : notice.text;
     }
     const special =
@@ -1979,12 +2223,12 @@
         id: g.evolved[id] || id,
         rank: g.evolved[id]
           ? "EVO"
-          : g.active[id] === B.activeMaxLevel
-            ? "MAX"
+          : g.active[id] === activeMaximum()
+            ? activeMaximum() + " MAX"
             : g.active[id],
         kind: g.evolved[id]
           ? "evo"
-          : g.active[id] === B.activeMaxLevel
+          : g.active[id] === activeMaximum()
             ? "maxed"
             : "",
       }))
@@ -1993,8 +2237,11 @@
       );
     const passive = Object.keys(g.passive).map((id) => ({
       id,
-      rank: g.passive[id] === B.passiveMaxLevel ? "MAX" : g.passive[id],
-      kind: g.passive[id] === B.passiveMaxLevel ? "maxed" : "",
+      rank:
+        g.passive[id] === passiveMaximum()
+          ? passiveMaximum() + " MAX"
+          : g.passive[id],
+      kind: g.passive[id] === passiveMaximum() ? "maxed" : "",
     }));
     function row(label, items, count) {
       return (
@@ -2211,7 +2458,7 @@
       point.y - y1 - dy * fraction,
     );
   }
-  function beamAttack(target, damage) {
+  function beamAttack(target, damage, source = "piercebeam") {
     const heading = angle(g.p, target),
       x = g.p.x + Math.cos(heading) * 660,
       y = g.p.y + Math.sin(heading) * 660;
@@ -2226,7 +2473,7 @@
         1.1,
         heading + Math.PI / 2,
       );
-    g.metrics.shots.piercebeam = (g.metrics.shots.piercebeam || 0) + 1;
+    g.metrics.shots[source] = (g.metrics.shots[source] || 0) + 1;
     for (const enemy of g.enemy)
       if (
         enemy.hp > 0 &&
@@ -2236,7 +2483,7 @@
           enemy,
           damage,
           !!(g.active.drone || g.fused.thunderhive),
-          "piercebeam",
+          source,
         );
       }
   }
@@ -2442,6 +2689,17 @@
   function updateEnemies(dt) {
     for (const enemy of g.enemy) {
       if (enemy.hp <= 0) continue;
+      if (newProgression() && VISITORS[enemy.t]) {
+        enemy.arrivalAge = (enemy.arrivalAge || 0) + dt;
+        if (enemy.arrivalAge < 1.6) {
+          if (enemy.arrivalAge >= 0.6) {
+            enemy.aim = angle(enemy, g.p);
+            enemy.warn = 1.6 - enemy.arrivalAge;
+            enemy.fire = 3.5;
+          }
+          continue;
+        }
+      }
       enemy.flash = Math.max(0, enemy.flash - dt);
       enemy.marked = Math.max(0, enemy.marked - dt);
       if (enemy.disabled > 0) {
@@ -2620,6 +2878,30 @@
             "#f4c57a",
             g.evolved.missile ? "meteorbarrage" : "missile",
           );
+        if (
+          newProgression() &&
+          shot.kind === "missile" &&
+          g.active.blade &&
+          g.time >= (g.shardsAt || 0)
+        ) {
+          g.shardsAt = g.time + 0.6;
+          showLink("bladeMissile", shot.x, shot.y);
+          for (let i = 0; i < 3 && g.shots.length < B.maxFriendlyShots; i++) {
+            const heading = (i * T) / 3;
+            g.shots.push({
+              x: shot.x,
+              y: shot.y,
+              vx: Math.cos(heading) * 230,
+              vy: Math.sin(heading) * 230,
+              damage: 16 + activePower("blade") * 8,
+              kind: "shard",
+              r: 7,
+              t: 0.65,
+              pierce: 2,
+              hit: new Set([enemy.id]),
+            });
+          }
+        }
         shot.pierce--;
         if (shot.pierce <= 0) {
           shot.t = 0;
@@ -2763,10 +3045,12 @@
       player = toScreen(g.p.x, g.p.y);
     if (g.active.blade || g.fused.blastwheel) {
       const count = g.fused.blastwheel
-        ? 6
+        ? newProgression()
+          ? 8
+          : 6
         : g.evolved.blade
           ? 5
-          : g.active.blade + 1;
+          : Math.ceil(activePower("blade") + 1);
       const radius = g.evolved.blade || g.fused.blastwheel ? 78 : 48;
       for (let index = 0; index < count; index++) {
         const heading = g.time * 2.7 + (index * T) / count;
@@ -2792,10 +3076,12 @@
     }
     if (g.active.drone || g.fused.thunderhive) {
       const count = g.fused.thunderhive
-        ? 5
+        ? newProgression()
+          ? 6
+          : 5
         : g.evolved.drone
           ? 4
-          : g.active.drone;
+          : Math.ceil(activePower("drone"));
       for (let index = 0; index < count; index++) {
         const heading = g.time * 1.6 + (index * T) / count;
         art.draw(
@@ -2886,6 +3172,10 @@
     if (
       ![180, 600].includes(rules.runSeconds) ||
       (rules.combatVersion !== undefined && rules.combatVersion !== 2) ||
+      (rules.progressionVersion !== undefined &&
+        rules.progressionVersion !== 2) ||
+      (newProgression(game) &&
+        (!newCombat(game) || rules.runSeconds !== 600)) ||
       (rules.runSeconds === 180 &&
         (rules.activeSlots !== 4 || rules.passiveSlots !== 3)) ||
       (rules.runSeconds === 600 &&
@@ -2913,7 +3203,7 @@
         !ACTIVE.includes(id) ||
         !Number.isSafeInteger(level) ||
         level < 1 ||
-        level > 3
+        level > activeMaximum(game)
       )
         throw Error("主动武器无效");
     for (const [id, level] of Object.entries(game.passive))
@@ -2921,20 +3211,25 @@
         !PASSIVE.includes(id) ||
         !Number.isSafeInteger(level) ||
         level < 1 ||
-        level > 2
+        level > passiveMaximum(game)
       )
         throw Error("辅助装置无效");
     for (const [id, evolved] of Object.entries(game.evolved)) {
       const recipe = EVO.find(
         ([source, , result]) => source === id && result === evolved,
       );
-      if (!recipe || game.active[id] !== 3 || game.passive[recipe[1]] !== 2)
+      if (
+        !recipe ||
+        game.active[id] !== activeMaximum(game) ||
+        game.passive[recipe[1]] !== passiveMaximum(game)
+      )
         throw Error("进化记录无效，原数据保留");
     }
     for (const [id, enabled] of Object.entries(game.fused)) {
       const recipe = FUSION.find(([, , result]) => result === id);
       if (
         !recipe ||
+        (id === "ionbastion" && !newProgression(game)) ||
         enabled !== true ||
         game.active[recipe[0]] ||
         game.active[recipe[1]] ||
@@ -2942,6 +3237,44 @@
         game.evolved[recipe[1]]
       )
         throw Error("融合记录无效，原数据保留");
+      if (
+        newProgression(game) &&
+        recipe.some(
+          (source, index) =>
+            index < 2 &&
+            game.passive[EVO.find(([weapon]) => weapon === source)[1]] !== 5,
+        )
+      )
+        throw Error("融合辅助等级无效，原数据保留");
+    }
+    if (newProgression(game)) {
+      const rewards = game.bossRewards;
+      if (
+        !rewards ||
+        !Array.isArray(rewards.ids) ||
+        !Array.isArray(rewards.pending) ||
+        rewards.ids.length > 32 ||
+        new Set(rewards.ids).size !== rewards.ids.length ||
+        rewards.ids.some((id) => !Number.isSafeInteger(id) || id <= 0) ||
+        new Set(rewards.pending.map((reward) => reward.id)).size !==
+          rewards.pending.length ||
+        rewards.pending.some(
+          (reward) =>
+            !rewards.ids.includes(reward.id) ||
+            !["elite", "boss"].includes(reward.enemy),
+        )
+      )
+        throw Error("精英战利品记录无效，原数据保留");
+      if (
+        game.upgradeSource &&
+        (game.upgradeSource.kind !== "boss" ||
+          !rewards.ids.includes(game.upgradeSource.id) ||
+          rewards.pending.some(
+            (reward) => reward.id === game.upgradeSource.id,
+          ) ||
+          typeof game.upgradeSource.advancedRoll !== "boolean")
+      )
+        throw Error("强化来源无效，原数据保留");
     }
     if (
       !Number.isFinite(game.p.maxhp) ||
@@ -3073,6 +3406,7 @@
       g.persisted = true;
       if (runRules().runSeconds === 180)
         notify("继续原短局 · 下一局10分钟、6+6");
+      else if (!newProgression()) notify("继续原等级规则 · 新开一局启用5＋5");
       runDetached = false;
       lastCheckpointTime = g.time;
       releaseInput();
@@ -3157,7 +3491,7 @@
     $("continueBtn").textContent = active
       ? "继续上次 · " +
         fmt(active.snapshot.game.time) +
-        (runRules(active.snapshot.game).runSeconds === 180 ? " · 原短局" : "")
+        (!newProgression(active.snapshot.game) ? " · 原规则" : "")
       : "继续上次";
     $("startBtn").disabled = !ready;
     $("startBtn").textContent = active ? "结算上局，开始10分钟" : "开始一局";
@@ -3357,6 +3691,22 @@
         g.persisted = false;
         return g;
       },
+      legacyProgression: () => {
+        delete g.rules.progressionVersion;
+        return g;
+      },
+      reward: (forcedRoll) => {
+        queueBossReward({ id: ++g.numberSpawned, t: "elite" });
+        g.mode = "play";
+        const opened = openBossReward();
+        if (opened && typeof forcedRoll === "boolean") {
+          g.upgradeSource.advancedRoll = forcedRoll;
+          renderUpgrades();
+        }
+        return opened;
+      },
+      snapshot: captureSnapshot,
+      validate: validateSnapshot,
       level: () => {
         if (g) {
           g.level++;

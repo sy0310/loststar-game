@@ -8,6 +8,7 @@ const output = path.resolve(
 );
 const priorities = {
   beam: [
+    "ionbastion",
     "piercebeam",
     "cannon",
     "lens",
@@ -22,40 +23,47 @@ const priorities = {
   ],
   swarm: [
     "thunderhive",
+    "hunterswarm",
+    "chainstorm",
     "drone",
     "arc",
+    "lock",
+    "capacitor",
+    "cannon",
+    "lens",
     "shield",
     "armor",
     "reactiveaegis",
-    "cannon",
-    "lens",
     "cooler",
   ],
   optics: [
     "kaleidoscope",
     "prism",
     "refraction",
+    "cannon",
+    "lens",
     "shield",
     "armor",
     "reactiveaegis",
-    "cannon",
-    "lens",
     "gravity",
     "singularity",
     "collapse",
   ],
   void: [
     "eventhorizon",
+    "kaleidoscope",
+    "collapse",
     "gravity",
     "prism",
-    "shield",
-    "armor",
-    "cannon",
-    "lens",
     "singularity",
     "refraction",
+    "cannon",
+    "lens",
+    "shield",
+    "armor",
   ],
   guard: [
+    "ionbastion",
     "reactiveaegis",
     "shield",
     "armor",
@@ -72,6 +80,8 @@ const policyIds = process.env.SURVIVOR_POLICIES
   ? process.env.SURVIVOR_POLICIES.split(",")
   : Object.keys(priorities);
 for (const id of policyIds) assert(priorities[id], "Unknown policy");
+const seedCount = Number(process.env.SURVIVOR_SEEDS || 16);
+assert(Number.isInteger(seedCount) && seedCount >= 1 && seedCount <= 16);
 function select(g, policy) {
   const choices = g.presented;
   const emergency = choices.findIndex((choice) => choice.id === "repair");
@@ -89,12 +99,13 @@ function select(g, policy) {
   const report = {
     scope:
       "Actual update, damage, drops and offered-card choices under fixed model seeds. Square movement policy, no invulnerability or reward overrides. Not physical device, wall-clock or human preference evidence.",
+    policies: priorities,
     rows: [],
     summary: {},
   };
   for (const perks of [0, 3])
     for (const policy of policyIds)
-      for (let seed = 1; seed <= 16; seed++) {
+      for (let seed = 1; seed <= seedCount; seed++) {
         const g = Q.startModel(seed, { hull: perks, gun: perks });
         const samples = [],
           choices = [];
@@ -110,6 +121,7 @@ function select(g, policy) {
               time: g.time,
               id: g.presented[index].id,
               offered: g.presented.map((option) => option.id),
+              source: g.upgradeSource ? structuredClone(g.upgradeSource) : null,
             });
             assert(Q.select(index));
           }
@@ -161,11 +173,16 @@ function select(g, policy) {
               "kaleidoscope",
               "collapse",
               "eventhorizon",
+              "ionbastion",
             ].includes(choice.id),
           ),
           bossSeen: !!g.metrics.spawned.boss,
           bossKilled: g.bossKilled,
           enemyKinds: Object.keys(g.metrics.spawned),
+          rewards: structuredClone(g.bossRewards),
+          evolved: structuredClone(g.evolved),
+          fused: structuredClone(g.fused),
+          links: g.metrics.events.filter((event) => event.kind === "link"),
           samples,
           choices,
         };
