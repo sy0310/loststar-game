@@ -61,7 +61,7 @@ def main():
             zipped.writestr(info, raw, compresslevel=9)
     report = {'version': '0.6.4', 'sourceCommit': commit, 'dirty': dirty, 'archive': archive.name,
               'bytes': archive.stat().st_size, 'sha256': digest(archive.read_bytes()),
-              'fileCount': len(payload), 'pngCount': 56, 'uncompressedBytes': sum(map(len, payload.values())),
+              'fileCount': len(payload), 'pngCount': sum(name.endswith('.png') for name in payload), 'uncompressedBytes': sum(map(len, payload.values())),
               'files': [{'path': name, 'bytes': len(raw), 'sha256': digest(raw)} for name, raw in sorted(payload.items())],
               'sourceFiles': source_files}
     (output / 'build-info.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
