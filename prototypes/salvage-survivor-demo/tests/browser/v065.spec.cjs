@@ -211,7 +211,7 @@ test("v065 real pause reload keeps boss identity, finite escort budget and pince
   await page.waitForFunction(() => SurvivorDemo.state()?.mode === "play");
   await pause(page);
   const after = await state(page);
-  expect(after.rules.combatVersion).toBe(4);
+  expect(after.rules.combatVersion).toBe(5);
   expect(after.enemy.find((e) => e.t === "boss").bossProfile).toBe("judicator");
   expect(after.enemy.find((e) => e.eliteProfile === "hive").summonsLeft).toBe(
     2,

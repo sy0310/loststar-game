@@ -63,6 +63,7 @@ test("v063 real elite kill opens a one-level reward and trusted touch cannot cla
     g.spawnTime = 999;
     g.p.inv = 999;
     g.encounters.schedule = [];
+    Q.legacyV063(); // Explicit delivered one-level reward fixture.
     g.xp = 31;
     Q.enemy("elite", 0, -70, 1);
     Q.step(0.5);

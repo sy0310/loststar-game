@@ -153,7 +153,8 @@
     [2, 3, 4, 5].includes(runRules(game).combatVersion);
   const assaultCombat = (game = g) =>
     [3, 4, 5].includes(runRules(game).combatVersion);
-  const showcaseCombat = (game = g) => [4, 5].includes(runRules(game).combatVersion);
+  const showcaseCombat = (game = g) =>
+    [4, 5].includes(runRules(game).combatVersion);
   const recoveryCombat = (game = g) => runRules(game).combatVersion === 5;
   const eliteSpec = (enemy, game = g) =>
     (showcaseCombat(game) ? B.showcase : B.assault).eliteProfiles[
@@ -453,29 +454,52 @@
     return options;
   }
   function validEliteLoot(grants, game = g) {
-    if (!Array.isArray(grants) || grants.length > 3 ||
-        new Set(grants.map((grant) => grant.id)).size !== grants.length) return false;
-    const total = grants.reduce((sum, grant) => sum + grant.level - grant.from, 0);
-    return total >= 0 && total <= B.recovery.rewardLevels[1] && grants.every((grant) =>
-      ["active", "passive"].includes(grant.kind) &&
-      (grant.kind === "active" ? ACTIVE : PASSIVE).includes(grant.id) &&
-      Number.isInteger(grant.from) && grant.from >= 1 &&
-      Number.isInteger(grant.level) && grant.level > grant.from && grant.level <= 5 &&
-      game[grant.kind][grant.id] === grant.from &&
-      !(grant.kind === "active" && game.evolved[grant.id]));
+    if (
+      !Array.isArray(grants) ||
+      grants.length > 3 ||
+      new Set(grants.map((grant) => grant.id)).size !== grants.length
+    )
+      return false;
+    const total = grants.reduce(
+      (sum, grant) => sum + grant.level - grant.from,
+      0,
+    );
+    return (
+      total >= 0 &&
+      total <= B.recovery.rewardLevels[1] &&
+      grants.every(
+        (grant) =>
+          ["active", "passive"].includes(grant.kind) &&
+          (grant.kind === "active" ? ACTIVE : PASSIVE).includes(grant.id) &&
+          Number.isInteger(grant.from) &&
+          grant.from >= 1 &&
+          Number.isInteger(grant.level) &&
+          grant.level > grant.from &&
+          grant.level <= 5 &&
+          game[grant.kind][grant.id] === grant.from &&
+          !(grant.kind === "active" && game.evolved[grant.id]),
+      )
+    );
   }
   function rollEliteLoot() {
     const levels = 1 + Math.floor(rand() * B.recovery.rewardLevels[1]);
-    const eligible = availableUpgrades().filter((option) =>
-      ["active", "passive"].includes(option.kind) && g[option.kind][option.id] > 0);
+    const eligible = availableUpgrades().filter(
+      (option) =>
+        ["active", "passive"].includes(option.kind) &&
+        g[option.kind][option.id] > 0,
+    );
     const grants = [];
     for (let count = 0; count < levels && eligible.length; count++) {
       const index = Math.floor(rand() * eligible.length);
       const option = eligible[index];
       let grant = grants.find((item) => item.id === option.id);
       if (!grant) {
-        grant = { id: option.id, kind: option.kind,
-          from: g[option.kind][option.id], level: g[option.kind][option.id] };
+        grant = {
+          id: option.id,
+          kind: option.kind,
+          from: g[option.kind][option.id],
+          level: g[option.kind][option.id],
+        };
         grants.push(grant);
       }
       grant.level++;
@@ -487,7 +511,8 @@
     if (option.kind === "active") g.active[option.id] = option.level;
     else {
       if (option.id === "armor") {
-        const increase = (option.level - (g.passive.armor || 0)) * (newProgression() ? 5 : 12);
+        const increase =
+          (option.level - (g.passive.armor || 0)) * (newProgression() ? 5 : 12);
         g.p.maxhp += increase;
         g.p.hp += increase;
       }
@@ -496,9 +521,13 @@
   }
   function isLegalUpgrade(option) {
     if (option.kind === "cache")
-      return recoveryCombat() && g.upgradeSource?.kind === "boss" &&
-        option.grants?.length > 0 && validEliteLoot(option.grants) &&
-        JSON.stringify(option.grants) === JSON.stringify(g.upgradeSource.loot);
+      return (
+        recoveryCombat() &&
+        g.upgradeSource?.kind === "boss" &&
+        option.grants?.length > 0 &&
+        validEliteLoot(option.grants) &&
+        JSON.stringify(option.grants) === JSON.stringify(g.upgradeSource.loot)
+      );
     if (option.kind === "bonus")
       return ["repair", "reserveShield", "salvage"].includes(option.id);
     return availableUpgrades().some(
@@ -531,9 +560,14 @@
       add({ id: "repair", kind: "bonus", level: 0 });
     if (recoveryCombat() && g.upgradeSource?.kind === "boss") {
       if (g.upgradeSource.loot.length)
-        add({id: "eliteCache", kind: "cache", grants: structuredClone(g.upgradeSource.loot)});
-      else for (const id of ["repair", "reserveShield", "salvage"])
-        add({id, kind: "bonus", level: 0});
+        add({
+          id: "eliteCache",
+          kind: "cache",
+          grants: structuredClone(g.upgradeSource.loot),
+        });
+      else
+        for (const id of ["repair", "reserveShield", "salvage"])
+          add({ id, kind: "bonus", level: 0 });
       return picks;
     }
     const ordinary = available.filter((option) =>
@@ -585,12 +619,36 @@
     $("upgradeList").innerHTML = g.presented
       .map((option, index) => {
         if (option.kind === "cache") {
-          const total = option.grants.reduce((sum, grant) => sum + grant.level - grant.from, 0);
-          return '<button class="skill loot-cache" data-pick="' + index + '">' +
-            '<span class="ico">' + pixelIcon(option.grants[0].id, 44) + '</span><div>' +
+          const total = option.grants.reduce(
+            (sum, grant) => sum + grant.level - grant.from,
+            0,
+          );
+          return (
+            '<button class="skill loot-cache" data-pick="' +
+            index +
+            '">' +
+            '<span class="ico">' +
+            pixelIcon(option.grants[0].id, 44) +
+            "</span><div>" +
             '<span class="type-label">随机强化 · 已抽出</span><h3>装载全部强化</h3>' +
-            option.grants.map((grant) => '<p>' + NAMES[grant.id] + ' Lv' + grant.from + ' → ' + grant.level + '</p>').join('') +
-            '<span class="tag">共 ' + total + ' 级 · 无需零件</span></div><span class="rank">＋' + total + '</span></button>';
+            option.grants
+              .map(
+                (grant) =>
+                  "<p>" +
+                  NAMES[grant.id] +
+                  " Lv" +
+                  grant.from +
+                  " → " +
+                  grant.level +
+                  "</p>",
+              )
+              .join("") +
+            '<span class="tag">共 ' +
+            total +
+            ' 级 · 无需零件</span></div><span class="rank">＋' +
+            total +
+            "</span></button>"
+          );
         }
         const type = {
           active: "主动武器",
@@ -703,15 +761,17 @@
     const lottery = recoveryCombat() && bossReward;
     $("upgradeTitle").textContent = lottery
       ? "精英战利品 · 随机强化"
-      : bossReward ? "精英战利品 · 等级＋1" : "等级提升";
+      : bossReward
+        ? "精英战利品 · 等级＋1"
+        : "等级提升";
     $("upgradeHint").textContent = newProgression()
       ? lottery
         ? g.upgradeSource.loot.length
           ? "1～3级随机分配 · 选择后装载，刷新保留结果"
           : "已装备装置均已满级 · 选择一项补给或进化"
         : bossReward
-        ? "符合满级条件时，75%机会出现进化／融合"
-        : "武器与专属辅助各5级，击退精英抽取进化"
+          ? "符合满级条件时，75%机会出现进化／融合"
+          : "武器与专属辅助各5级，击退精英抽取进化"
       : "选一项，继续出击";
     const fusion = FUSION.find(
       ([a, b, id]) => !g.fused[id] && (g.active[a] || g.active[b]),
@@ -747,10 +807,17 @@
     if (option.kind === "cache") {
       for (const grant of option.grants) {
         applyEquipmentUpgrade(grant);
-        g.metrics.events.push({kind: grant.kind, id: grant.id, time: g.time,
-          from: grant.from, level: grant.level, rewardId: g.upgradeSource.id});
+        g.metrics.events.push({
+          kind: grant.kind,
+          id: grant.id,
+          time: g.time,
+          from: grant.from,
+          level: grant.level,
+          rewardId: g.upgradeSource.id,
+        });
       }
-    } else if (["active", "passive"].includes(option.kind)) applyEquipmentUpgrade(option);
+    } else if (["active", "passive"].includes(option.kind))
+      applyEquipmentUpgrade(option);
     else if (option.kind === "evo") g.evolved[option.source] = option.id;
     else if (option.kind === "fusion") {
       option.source.forEach((id) => {
@@ -805,7 +872,11 @@
       );
     } else if (option.kind === "cache") {
       ring(g.p.x, g.p.y, 80, "#f4c57a", 0.6);
-      notify(option.grants.map((grant) => NAMES[grant.id] + "＋" + (grant.level - grant.from)).join(" · "));
+      notify(
+        option.grants
+          .map((grant) => NAMES[grant.id] + "＋" + (grant.level - grant.from))
+          .join(" · "),
+      );
     } else notify(NAMES[option.id] || "补给已装载");
     updateHud(true);
     void saveCheckpoint();
@@ -833,8 +904,11 @@
     const reward = g.bossRewards.pending.shift();
     g.level++;
     g.xpNext = levelXP(g.level);
-    const source = {kind: "boss", id: reward.id,
-      advancedRoll: rand() < B.progression.bossAdvancedChance};
+    const source = {
+      kind: "boss",
+      id: reward.id,
+      advancedRoll: rand() < B.progression.bossAdvancedChance,
+    };
     if (recoveryCombat()) source.loot = rollEliteLoot();
     levelUp(source);
     return true;
@@ -971,8 +1045,20 @@
       tier,
       x: g.p.x + (side < 2 ? (side === 0 ? -ex : ex) : rr(-ex, ex)),
       y: g.p.y + (side < 2 ? rr(-ey, ey) : side === 2 ? -ey : ey),
-      hp: Math.round(stats.hp * (scale + lateHealth) * (recoveryCombat() && type === "elite" ? B.recovery.eliteHullMultiplier : 1)),
-      maxhp: Math.round(stats.hp * (scale + lateHealth) * (recoveryCombat() && type === "elite" ? B.recovery.eliteHullMultiplier : 1)),
+      hp: Math.round(
+        stats.hp *
+          (scale + lateHealth) *
+          (recoveryCombat() && type === "elite"
+            ? B.recovery.eliteHullMultiplier
+            : 1),
+      ),
+      maxhp: Math.round(
+        stats.hp *
+          (scale + lateHealth) *
+          (recoveryCombat() && type === "elite"
+            ? B.recovery.eliteHullMultiplier
+            : 1),
+      ),
       radius: profile?.radius || stats.radius,
       speed: stats.speed * (profile?.speedScale || 1),
       fire: rr(1.3, 2.5),
@@ -1227,17 +1313,25 @@
       // Reserve the repair pack even when the field is full. Merge the displaced
       // ordinary pickup's value into the same resource type without losing XP/cash.
       if (recoveryCombat() && g.pickups.length >= B.maxPickups) {
-        const index = g.pickups.findIndex((pickup) => pickup.type !== "heal" &&
-          g.pickups.some((other) => other !== pickup && other.type === pickup.type));
+        const index = g.pickups.findIndex(
+          (pickup) =>
+            pickup.type !== "heal" &&
+            g.pickups.some(
+              (other) => other !== pickup && other.type === pickup.type,
+            ),
+        );
         if (index >= 0) {
           const displaced = g.pickups[index];
-          g.pickups.find((pickup, i) => i !== index && pickup.type === displaced.type).value += displaced.value;
+          g.pickups.find(
+            (pickup, i) => i !== index && pickup.type === displaced.type,
+          ).value += displaced.value;
           g.pickups.splice(index, 1);
         } else {
           // A field already full of repair packs keeps their full combined value.
           const pack = g.pickups.find((pickup) => pickup.type === "heal");
-          pack.value += enemy.t === "boss" ? B.recovery.bossRepair : B.recovery.eliteRepair;
-          Object.assign(pack, {x: enemy.x, y: enemy.y, t: 40});
+          pack.value +=
+            enemy.t === "boss" ? B.recovery.bossRepair : B.recovery.eliteRepair;
+          Object.assign(pack, { x: enemy.x, y: enemy.y, t: 40 });
         }
       }
       if (g.pickups.length < B.maxPickups)
@@ -1246,8 +1340,12 @@
           y: enemy.y,
           type: "heal",
           value: recoveryCombat()
-            ? enemy.t === "boss" ? B.recovery.bossRepair : B.recovery.eliteRepair
-            : enemy.t === "boss" ? 24 : 12,
+            ? enemy.t === "boss"
+              ? B.recovery.bossRepair
+              : B.recovery.eliteRepair
+            : enemy.t === "boss"
+              ? 24
+              : 12,
           t: 40,
         });
     }
@@ -1424,8 +1522,22 @@
       const heading =
         g.time * (showcaseCombat() ? -0.75 : 1.6) + (index * T) / count;
       return {
-        x: g.p.x + Math.cos(heading) * (recoveryCombat() ? B.recovery.droneOrbit[0] : showcaseCombat() ? 130 : 47),
-        y: g.p.y + Math.sin(heading) * (recoveryCombat() ? B.recovery.droneOrbit[1] : showcaseCombat() ? 114 : 47),
+        x:
+          g.p.x +
+          Math.cos(heading) *
+            (recoveryCombat()
+              ? B.recovery.droneOrbit[0]
+              : showcaseCombat()
+                ? 130
+                : 47),
+        y:
+          g.p.y +
+          Math.sin(heading) *
+            (recoveryCombat()
+              ? B.recovery.droneOrbit[1]
+              : showcaseCombat()
+                ? 114
+                : 47),
         heading,
       };
     });
@@ -2150,8 +2262,13 @@
           if (recoveryCombat()) {
             ring(g.p.x, g.p.y, 36, "#a5edb8", 0.55);
             if (g.texts.length >= B.maxDamageNumbers) g.texts.shift();
-            g.texts.push({x: g.p.x, y: g.p.y - 28, t: 1.3,
-              s: restored > 0 ? "船体 +" + Math.round(restored) : "船体已满", color: "#a5edb8"});
+            g.texts.push({
+              x: g.p.x,
+              y: g.p.y - 28,
+              t: 1.3,
+              s: restored > 0 ? "船体 +" + Math.round(restored) : "船体已满",
+              color: "#a5edb8",
+            });
           }
           playSound("heal");
         } else {
@@ -4558,8 +4675,11 @@
           typeof game.upgradeSource.advancedRoll !== "boolean")
       )
         throw Error("强化来源无效，原数据保留");
-      if (recoveryCombat(game) && game.upgradeSource &&
-          !validEliteLoot(game.upgradeSource.loot, game))
+      if (
+        recoveryCombat(game) &&
+        game.upgradeSource &&
+        !validEliteLoot(game.upgradeSource.loot, game)
+      )
         throw Error("随机强化记录无效，原数据保留");
     }
     if (
@@ -4587,10 +4707,15 @@
       game.mode === "upgrade" &&
       (!Array.isArray(game.presented) ||
         (recoveryCombat(game) && game.upgradeSource?.kind === "boss"
-          ? game.presented.length < 1 || game.presented.length > 3 ||
-            game.presented.some((option) => option.kind === "cache" &&
-              (!validEliteLoot(option.grants, game) ||
-                JSON.stringify(option.grants) !== JSON.stringify(game.upgradeSource.loot)))
+          ? game.presented.length < 1 ||
+            game.presented.length > 3 ||
+            game.presented.some(
+              (option) =>
+                option.kind === "cache" &&
+                (!validEliteLoot(option.grants, game) ||
+                  JSON.stringify(option.grants) !==
+                    JSON.stringify(game.upgradeSource.loot)),
+            )
           : game.presented.length !== 3))
     )
       throw Error("强化选项未保存");
