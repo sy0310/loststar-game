@@ -57,7 +57,7 @@ const guardPriority = [
   "回收磁场",
   ...priority,
 ];
-function steer(g, previous) {
+function steer(g, previous, collectClose = false) {
   const visible = (point) => {
     const x = point.x - g.camera.x + 195,
       y = point.y - g.camera.y + 844 * 0.51;
@@ -84,8 +84,18 @@ function steer(g, previous) {
     const angle = (index * Math.PI) / 4,
       vx = Math.cos(angle) * g.p.speed,
       vy = Math.sin(angle) * g.p.speed;
-    const x = g.p.x + vx * 0.55,
-      y = g.p.y + vy * 0.55;
+    const horizon =
+      collectClose && pickup
+        ? Math.max(
+            0.12,
+            Math.min(
+              0.55,
+              Math.hypot(pickup.x - g.p.x, pickup.y - g.p.y) / g.p.speed,
+            ),
+          )
+        : 0.55;
+    const x = g.p.x + vx * horizon,
+      y = g.p.y + vy * horizon;
     let risk = 0;
     for (const enemy of enemies) {
       const heading =
@@ -183,11 +193,15 @@ function steer(g, previous) {
       const distance = Math.max(1, Math.hypot(rx + dx * time, ry + dy * time));
       risk += distance < 22 ? 25000 : 20 * (55 / distance) ** 2;
     }
-    if (pickup) risk += Math.hypot(x - pickup.x, y - pickup.y) * 0.13;
+    if (pickup)
+      risk +=
+        Math.hypot(x - pickup.x, y - pickup.y) * (collectClose ? 1.2 : 0.13);
     else if (target)
       risk += Math.abs(Math.hypot(x - target.x, y - target.y) - 165) * 0.09;
     if (previous >= 0)
-      risk += (1 - Math.cos(((index - previous) * Math.PI) / 4)) * 7;
+      risk +=
+        (1 - Math.cos(((index - previous) * Math.PI) / 4)) *
+        (collectClose ? 1 : 7);
     if (risk < minimum) {
       minimum = risk;
       best = index;

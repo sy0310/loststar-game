@@ -43,6 +43,10 @@ async function ordinary(browser) {
   const report = {
     source: await page.evaluate(() => SurvivorBuild),
     qa: false,
+    steering:
+      process.env.SURVIVOR_COLLECT_CLOSE === "1"
+        ? "visible pickups plus threat avoidance"
+        : "original avoidance-focused policy",
     imports: false,
     timeOrSeedOverride: false,
     scope:
@@ -131,6 +135,26 @@ async function ordinary(browser) {
           selected = labels.findIndex((text) => text.includes(name));
           if (selected >= 0) break;
         }
+      if (
+        selected < 0 &&
+        process.env.SURVIVOR_COLLECT_CLOSE === "1" &&
+        g.rerollsRemaining > 0 &&
+        !g.upgradeSource
+      ) {
+        const reroll = page.locator("#rerollBtn");
+        if (await reroll.isEnabled()) {
+          await reroll.tap();
+          await page.waitForFunction(() => !SurvivorDemo.saving());
+          report.choices.push({
+            at: g.time,
+            action: "reroll",
+            remaining: (await page.evaluate(() => SurvivorDemo.state()))
+              .rerollsRemaining,
+          });
+          await sleep(600);
+          continue;
+        }
+      }
       if (selected < 0) selected = 0;
       report.choices.push({
         at: g.time,
@@ -140,7 +164,11 @@ async function ordinary(browser) {
       await cards.nth(selected).click();
       await page.waitForFunction(() => !SurvivorDemo.saving());
     } else if (g.mode === "play") {
-      direction = steer(g, direction);
+      direction = steer(
+        g,
+        direction,
+        process.env.SURVIVOR_COLLECT_CLOSE === "1",
+      );
       const wanted = inputDirections[direction];
       for (const key of held)
         if (!wanted.includes(key)) await page.keyboard.up(key);

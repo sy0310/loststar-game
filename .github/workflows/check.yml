@@ -288,6 +288,9 @@ jobs:
       - name: Verify first-release polish delivery when present
         if: hashFiles('artifacts/survivor-v068/verification.json') != ''
         run: node prototypes/salvage-survivor-demo/tests/verify-v068-evidence.cjs
+      - name: Verify random loadouts and purple-gold delivery when present
+        if: hashFiles('artifacts/survivor-v069/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v069-evidence.cjs
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'
