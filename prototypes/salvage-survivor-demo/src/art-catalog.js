@@ -3114,5 +3114,133 @@ window.SurvivorArtCatalog = {
         ]
       }
     ]
+  },
+  "eventhorizon_core": {
+    "nativeSize": [
+      64,
+      64
+    ],
+    "center": [
+      32.0,
+      32.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "collisionRadius": 0,
+    "src": "./assets/v068/fusion/eventhorizon_core@2x.png",
+    "sha256": "ce5d14337edf49e5e0296ca926aca4b1de39ec84913c5df996ec17c646c7019a",
+    "kind": "sprite",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "anchor": [
+          32.0,
+          32.0
+        ]
+      }
+    ]
+  },
+  "eventhorizon_ring": {
+    "nativeSize": [
+      64,
+      64
+    ],
+    "center": [
+      32.0,
+      32.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "collisionRadius": 0,
+    "src": "./assets/v068/fusion/eventhorizon_ring@2x.png",
+    "sha256": "91c8e23a55157f184e8abf78c7ebca0ef142a8dfe99bcdc7b0e68a89346f0ef5",
+    "kind": "sprite",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "anchor": [
+          32.0,
+          32.0
+        ]
+      }
+    ]
+  },
+  "thunder_relay": {
+    "nativeSize": [
+      40,
+      40
+    ],
+    "center": [
+      20.0,
+      20.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "collisionRadius": 0,
+    "originAnchor": [
+      20,
+      20
+    ],
+    "src": "./assets/v068/fusion/thunder_relay@2x.png",
+    "sha256": "f760786a4464b04a69d8caeeacd88b027d236339bc43c063ef0ebb4ed0178174",
+    "kind": "sprite",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 40,
+        "height": 40,
+        "anchor": [
+          20.0,
+          20.0
+        ]
+      }
+    ]
+  },
+  "blastwheel_hub": {
+    "nativeSize": [
+      48,
+      48
+    ],
+    "center": [
+      24.0,
+      24.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "collisionRadius": 0,
+    "originAnchor": [
+      24,
+      24
+    ],
+    "src": "./assets/v068/fusion/blastwheel_hub@2x.png",
+    "sha256": "8eb586613d20ff6e83b2bc783b416ad9ea3591cd78f38312aed240a70d588750",
+    "kind": "sprite",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 48,
+        "height": 48,
+        "anchor": [
+          24.0,
+          24.0
+        ]
+      }
+    ]
   }
 };

@@ -18,6 +18,11 @@ const {createModel} = require('./model-harness.cjs');
     catch(error){report.errors.push({name:'v068 '+name,message:error.stack});console.error('FAIL v068',name,error.message);process.exitCode=1;}
   }
   function crystal(g,distance) {const p={x:g.p.x+distance,y:g.p.y,t:20,type:'xp',value:1};g.pickups.push(p);return p;}
+  function evolve(w,p,e) {
+    for(let i=0;i<5;i++){assert(Q.pick(w));assert(Q.pick(p));}
+    Q.reward(true);assert(Q.pick(e));
+  }
+  function fuse(a,pa,ea,b,pb,eb,id){evolve(a,pa,ea);evolve(b,pb,eb);Q.reward(true);assert(Q.pick(id));}
   await test('new runs save version7 while v067 snapshots remain valid',()=>{
     const g=start();assert.equal(g.rules.combatVersion,7);Q.validate(Q.snapshot());
     g.rules.version='0.6.7';g.rules.combatVersion=6;Q.validate(Q.snapshot());
@@ -39,7 +44,7 @@ const {createModel} = require('./model-harness.cjs');
     assert.equal(B.permanentMaxLevel,3);assert.equal(B.engineering.magnetPerLevel,8);
   });
   await test('star-ring singularity draws an independent core and accretion structure',()=>{
-    const g=start();g.fused.eventhorizon=true;g.evolved.prism=true;g.evolved.gravity=true;
+    const g=start();fuse('prism','refraction','kaleidoscope','gravity','singularity','collapse','eventhorizon');
     Q.enemy('tank',180,0,1e7);Q.step(.01);assert(g.wells.some(w=>w.fused));
     const calls=[];context.SurvivorArt.draw=(ctx,id,x,y,options)=>calls.push({id,x,y,options});Q.runRender();
     assert(calls.some(x=>x.id==='eventhorizon_core'),'fusion needs its own physical core');
@@ -48,7 +53,8 @@ const {createModel} = require('./model-harness.cjs');
     return {well:g.wells[0],uniqueArt:[...new Set(calls.map(x=>x.id))]};
   });
   await test('lightning fleet and explosive blades have separate physical fusion hardware',()=>{
-    const g=start();g.fused.thunderhive=true;g.fused.blastwheel=true;
+    const g=start();fuse('drone','lock','hunterswarm','arc','capacitor','chainstorm','thunderhive');
+    fuse('missile','cooler','meteorbarrage','blade','magnet','spiralsaw','blastwheel');
     Q.enemy('tank',150,0,1e7);Q.step(.05);
     const calls=[];context.SurvivorArt.draw=(ctx,id)=>calls.push(id);Q.runRender();
     assert(calls.includes('thunder_relay'));assert(calls.includes('blastwheel_hub'));

@@ -160,7 +160,7 @@
       begin(id, snapshot) {
         return transaction((record) => {
           if (record.active) throw Error("还有未结束的一局，请先继续或结算");
-          if (snapshot.game?.rules?.combatVersion === 6) {
+          if ([6, 7].includes(snapshot.game?.rules?.combatVersion)) {
             const engineering = {
               version: 1,
               thrusters: 0,
@@ -241,8 +241,7 @@
             throw Error("强化已变化，请按当前界面重试");
           const level = record.profile[kind];
           const cost =
-            (kind === "hull" ? B.hullUpgradeBase : B.gunUpgradeBase) *
-            (level + 1);
+            B.permanentCosts[kind][level];
           if (level >= B.permanentMaxLevel || record.profile.credits < cost)
             throw Error("当前零件不足或已满级");
           record.profile.credits -= cost;

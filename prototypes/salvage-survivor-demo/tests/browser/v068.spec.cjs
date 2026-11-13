@@ -3,6 +3,7 @@ const {boot,start,settle,stored,state}=require('./helpers.cjs');
 async function dock(page){await boot(page);await start(page);await settle(page,27049);await page.locator('#resultDockBtn').tap();}
 test('v068 launch selection is six image cards with one selected portrait and true reservation',async({page})=>{
  await dock(page);
+ await page.locator("#chooseLaunchBtn").tap();
  await expect(page.locator('[data-launch-weapon]')).toHaveCount(6);
  for(const id of ['drone','arc','missile','blade','prism','gravity']){
   const card=page.locator(`[data-launch-weapon="${id}"]`);await card.scrollIntoViewIfNeeded();await card.tap();

@@ -21,6 +21,7 @@ def generated():
     manifests.append(ROOT/'design/star-salvage/v064/production/weapons/manifest.json')
     manifests.extend(ROOT/'design/star-salvage/v065/production'/group/'manifest.json' for group in ('bosses', 'elites', 'weapons'))
     manifests.append(ROOT/'design/star-salvage/v067/production/repair/manifest.json')
+    manifests.append(ROOT/'design/star-salvage/v068/production/fusion/manifest.json')
     for path in manifests:
         manifest = json.loads(path.read_text())
         for asset in manifest['assets']:
@@ -35,7 +36,7 @@ def generated():
             if 'frameMs' in asset:
                 entry['frameMs'] = asset['frameMs']
             catalog[asset['id']] = entry
-    balance = json.loads((ROOT / 'design/star-salvage/v067/BALANCE_V067.json').read_text())
+    balance = json.loads((ROOT / 'design/star-salvage/v068/BALANCE_V068.json').read_text())
     return {
         HERE / 'src/art-catalog.js': 'window.SurvivorArtCatalog = ' + json.dumps(catalog, ensure_ascii=False, indent=2) + ';\n',
         HERE / 'src/balance.js': 'window.SurvivorBalance = ' + json.dumps(balance, ensure_ascii=False, indent=2) + ';\n',

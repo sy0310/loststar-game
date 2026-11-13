@@ -1,5 +1,5 @@
 window.SurvivorBalance = {
-  "version": "0.6.7",
+  "version": "0.6.8",
   "runSeconds": 900,
   "eliteAt": 70,
   "bossAt": 130,
@@ -624,12 +624,12 @@ window.SurvivorBalance = {
     "version": 1,
     "maxLevel": 6,
     "costs": [
-      300,
-      500,
-      800,
-      1200,
-      1700,
-      2300
+      550,
+      900,
+      1400,
+      2100,
+      3000,
+      4200
     ],
     "speedPerLevel": 0.02,
     "magnetPerLevel": 8,
@@ -659,5 +659,21 @@ window.SurvivorBalance = {
       "blade": 152,
       "evolvedBlade": 156
     }
+  },
+  "permanentCosts": {
+    "hull": [
+      400,
+      1000,
+      1800
+    ],
+    "gun": [
+      500,
+      1200,
+      2100
+    ]
+  },
+  "pickup": {
+    "baseExperienceRadius": 190,
+    "basePartsRadius": 150
   }
 };

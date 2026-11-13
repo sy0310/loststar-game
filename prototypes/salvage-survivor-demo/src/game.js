@@ -153,14 +153,15 @@
     );
   }
   const newCombat = (game = g) =>
-    [2, 3, 4, 5, 6].includes(runRules(game).combatVersion);
+    [2, 3, 4, 5, 6, 7].includes(runRules(game).combatVersion);
   const assaultCombat = (game = g) =>
-    [3, 4, 5, 6].includes(runRules(game).combatVersion);
+    [3, 4, 5, 6, 7].includes(runRules(game).combatVersion);
   const showcaseCombat = (game = g) =>
-    [4, 5, 6].includes(runRules(game).combatVersion);
+    [4, 5, 6, 7].includes(runRules(game).combatVersion);
   const recoveryCombat = (game = g) =>
-    [5, 6].includes(runRules(game).combatVersion);
-  const engineeringCombat = (game = g) => runRules(game).combatVersion === 6;
+    [5, 6, 7].includes(runRules(game).combatVersion);
+  const engineeringCombat = (game = g) => [6, 7].includes(runRules(game).combatVersion);
+  const polishedCombat = (game = g) => runRules(game).combatVersion === 7;
   const eliteSpec = (enemy, game = g) =>
     (showcaseCombat(game) ? B.showcase : B.assault).eliteProfiles[
       enemy.eliteProfile
@@ -222,7 +223,7 @@
   const fmt = (s) =>
     `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
   const hideAll = () =>
-    ["start", "upgrade", "pause", "results", "dock"].forEach(
+    ["start", "upgrade", "pause", "results", "dock", "launchPicker"].forEach(
       (id) => ($(id).hidden = true),
     );
   function resize() {
@@ -270,7 +271,7 @@
         runSeconds: B.runSeconds,
         activeSlots: B.activeSlots,
         passiveSlots: B.passiveSlots,
-        combatVersion: 6,
+        combatVersion: 7,
         progressionVersion: 2,
       },
       time: 0,
@@ -1815,7 +1816,7 @@
       }
       if (well.t <= 0 && (well.evolved || well.fused)) {
         playSound("gravity", { evolved: true, strength: 0.7 });
-        burst(well.x, well.y, "gravity_burst", well.radius / 48);
+        burst(well.x, well.y, well.fused ? "fusion_nova" : "gravity_burst", well.radius / 48);
         blast(
           well.x,
           well.y,
@@ -2321,8 +2322,7 @@
           damage: 8,
         });
     }
-    const attraction =
-      150 +
+    const bonusAttraction =
       passivePower("magnet") * 55 +
       (g.evolved.blade ? 65 : 0) +
       (engineeringCombat()
@@ -2332,7 +2332,9 @@
       if (pickup.t <= 0) continue;
       pickup.t -= dt;
       const distance = dist(pickup, g.p);
-      if (distance < attraction || pickup.magnetized) {
+      const baseRadius = polishedCombat() && pickup.type === "xp"
+        ? B.pickup.baseExperienceRadius : 150;
+      if (distance < baseRadius + bonusAttraction || pickup.magnetized) {
         pickup.magnetized = true;
         const travel = Math.min(distance, dt * (360 + distance * 2));
         if (distance > 0) {
@@ -2584,8 +2586,27 @@
     background();
     if (!g || !window.SurvivorArt.loaded()) return;
     const art = window.SurvivorArt;
+    if (polishedCombat() && g.time < 3.5) {
+      const ship = toScreen(g.p.x,g.p.y);
+      ctx.save();
+      ctx.strokeStyle="#897391";
+      ctx.globalAlpha=Math.max(0,1-g.time/3.5)*0.4;
+      ctx.lineWidth=1;
+      ctx.setLineDash([3,11]);
+      ctx.beginPath();ctx.arc(ship.x,ship.y,B.pickup.baseExperienceRadius,0,T);ctx.stroke();
+      ctx.restore();
+    }
     for (const pickup of g.pickups) {
       const point = toScreen(pickup.x, pickup.y);
+      if (polishedCombat() && pickup.type === "xp" && pickup.magnetized) {
+        const heading=angle(g.p,pickup);
+        ctx.fillStyle="#73d9e8";
+        for(let trail=1;trail<=3;trail++) {
+          ctx.globalAlpha=0.55/trail;
+          ctx.fillRect(Math.round(point.x+Math.cos(heading)*trail*5),Math.round(point.y+Math.sin(heading)*trail*5),2,2);
+        }
+        ctx.globalAlpha=1;
+      }
       if (recoveryCombat() && pickup.type === "heal") {
         ctx.fillStyle = "#18382f";
         ctx.fillRect(point.x - 12, point.y - 12, 24, 24);
@@ -2764,6 +2785,13 @@
       const point = toScreen(shot.x, shot.y);
       const heading = Math.atan2(shot.vy, shot.vx);
       if (shot.kind === "crystal") {
+        if(showcaseCombat() && shot.source === "eventhorizon") {
+          ctx.save();ctx.translate(point.x,point.y);ctx.rotate(heading);
+          ctx.strokeStyle="#f4c57a";ctx.lineWidth=2;
+          ctx.beginPath();ctx.moveTo(-14,-5);ctx.lineTo(-4,-10);ctx.lineTo(7,-5);
+          ctx.moveTo(-14,5);ctx.lineTo(-4,10);ctx.lineTo(7,5);ctx.stroke();
+          ctx.fillStyle="#fff0ce";ctx.fillRect(-19,-1,10,2);ctx.restore();
+        }
         art.draw(ctx, "prism_crystal", point.x, point.y, {
           angle: heading + Math.PI / 2,
           scale: showcaseCombat()
@@ -2840,6 +2868,10 @@
       );
     }
     for (const well of g.wells || []) {
+      if (well.fused && showcaseCombat()) {
+        drawEventHorizon(well);
+        continue;
+      }
       const point = toScreen(well.x, well.y),
         progress = 1 - well.t / well.max;
       ctx.save();
@@ -2913,6 +2945,9 @@
           ctx.moveTo(x + dy * 14 - dx * 4, y - dx * 14 - dy * 4);
           ctx.lineTo(x + dy * 18, y - dx * 18);
           ctx.stroke();
+          ctx.fillStyle="#fff0ce";
+          const phase=(g.time*7+step/34)%1;
+          ctx.fillRect(Math.round(x-dy*(phase*22-11))-2,Math.round(y+dx*(phase*22-11))-2,4,4);
         }
       }
       ctx.strokeStyle = bastion ? "#8c6846" : beam.kind ? "#7151a0" : "#497c9d";
@@ -3238,7 +3273,7 @@
       ["upgradeGunBtn", "gun", B.gunUpgradeBase],
     ]) {
       const level = profile[kind],
-        cost = base * (level + 1);
+        cost = B.permanentCosts[kind][level];
       $(button).disabled =
         actionBusy ||
         !!storeView?.active ||
@@ -3260,6 +3295,7 @@
     renderEngineering();
   }
   let dockReturn = "start";
+  let selectedLaunch = "drone";
   function showDock(from) {
     dockReturn = from;
     hideAll();
@@ -3305,25 +3341,43 @@
         );
       })
       .join("");
+    renderLaunch();
+  }
+  function renderLaunch() {
     const plan = profile.launchPlan;
-    if (!$("launchWeapon").innerHTML)
-      $("launchWeapon").innerHTML = B.engineering.launchWeapons
-        .map((id) => '<option value="' + id + '">' + NAMES[id] + "</option>")
-        .join("");
-    if (plan) $("launchWeapon").value = plan.weapon;
-    $("launchWeapon").disabled = actionBusy || !!plan || !!storeView?.active;
-    $("bookLaunchBtn").textContent =
-      "预约下局 · " + B.engineering.launchCost + "零件";
-    $("bookLaunchBtn").disabled =
-      actionBusy ||
-      !!plan ||
-      !!storeView?.active ||
-      profile.credits < B.engineering.launchCost;
+    if (plan) selectedLaunch = plan.weapon;
+    const bodies = {drone: "drone_body", arc: "arc", missile: "missile_body", blade: "blade_body", prism: "prism_crystal", gravity: "gravity"};
+    const descriptions = {
+      drone: "两架副机 · 锁点直射",
+      arc: "连锁电击 · 扫开敌群",
+      missile: "区域爆破 · 直线投射",
+      blade: "外圈旋刃 · 近身切割",
+      prism: "环绕晶体 · 折射晶片",
+      gravity: "引力牵引 · 聚拢敌群",
+    };
+    $("launchWeapon").value = selectedLaunch;
+    $("launchBalance").textContent = profile.credits + " 零件";
+    $("launchCards").innerHTML = B.engineering.launchWeapons.map((id) =>
+      '<button class="launch-card" data-launch-weapon="' + id + '" aria-pressed="' + (id === selectedLaunch) + '"' +
+      (actionBusy || plan || storeView?.active ? ' disabled' : '') + '>' + pixelIcon(id,48) +
+      '<strong>' + NAMES[id] + '</strong><span>' + descriptions[id] + '</span></button>'
+    ).join("");
+    $("launchPortrait").innerHTML = pixelIcon(bodies[selectedLaunch],84) +
+      '<div><span class="launch-tag">起始武器 · Lv1</span><h3>' + NAMES[selectedLaunch] + '</h3><p>' + DESCS[selectedLaunch] + '</p></div>';
+    $("launchSummary").innerHTML = pixelIcon(plan?.weapon || "cannon",40) +
+      '<span><strong>' + (plan ? NAMES[plan.weapon] : "脉冲主炮") + '</strong><small>' + (plan ? "下局已预约 · Lv1" : "默认出发 · 免费") + '</small></span><b>选择 ›</b>';
+    $("bookLaunchBtn").textContent = plan ? "已预约 · " + NAMES[plan.weapon] : "预约下局 · " + B.engineering.launchCost + " 零件";
+    $("bookLaunchBtn").disabled = actionBusy || !!plan || !!storeView?.active || profile.credits < B.engineering.launchCost;
     $("cancelLaunchBtn").hidden = !plan;
     $("cancelLaunchBtn").disabled = actionBusy || !!storeView?.active;
     $("launchStatus").textContent = plan
-      ? "下局以" + NAMES[plan.weapon] + "出发 · 已付" + plan.paid + "零件"
-      : "默认主炮免费 · 预约仅用于下一局";
+      ? "已付" + plan.paid + "零件 · 出发时消耗一次"
+      : "默认主炮免费 · 预约替换起始武器，占1武器槽";
+  }
+  function showLaunchPicker() {
+    hideAll();
+    $("launchPicker").hidden = false;
+    renderLaunch();
   }
   async function engineeringAction(kind) {
     if (
@@ -4454,7 +4508,7 @@
         const active = hazard.age >= hazard.warning;
         ctx.strokeStyle = active ? "#f4c57a" : "#c49bef";
         ctx.lineWidth = active ? 12 : 2;
-        ctx.setLineDash(active ? [] : [5, 6]);
+        ctx.setLineDash(active ? [] : [5, 6, 7]);
         for (const wall of pincerWalls(hazard)) {
           const start = toScreen(wall.x1, wall.y1),
             end = toScreen(wall.x2, wall.y2);
@@ -4525,9 +4579,93 @@
     ctx.stroke();
     ctx.restore();
   }
+  function drawEventHorizon(well) {
+    const art = window.SurvivorArt, point = toScreen(well.x,well.y);
+    const age = well.max - well.t;
+    const growth = clamp(age / 0.3,0,1);
+    const closing = clamp(well.t / 0.26,0.15,1);
+    const radius = well.radius * growth;
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const rotation = reduced ? 0 : age * 1.5;
+    ctx.save();ctx.translate(point.x,point.y);
+    // Broken arcs follow the real pull radius. Hostile projectiles are drawn above them.
+    ctx.globalAlpha=0.38 * closing;
+    ctx.strokeStyle="#a58bd3";ctx.lineWidth=1;
+    for (let arm=0;arm<4;arm++) {
+      ctx.beginPath();
+      for(let step=0;step<=18;step++) {
+        const u=step/18, heading=arm*T/4+rotation+u*1.8;
+        const r=radius*(1-u*0.7);
+        const x=Math.round(Math.cos(heading)*r), y=Math.round(Math.sin(heading)*r);
+        if(!step)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+    const scale = (0.35+growth*0.65)*closing;
+    // Core and mechanical crystal ring rotate separately around one real center.
+    art.draw(ctx,"eventhorizon_ring",0,0,{scale:2.6*scale,angle:-rotation*0.7,alpha:0.94});
+    ctx.fillStyle="#120e25";ctx.beginPath();ctx.arc(0,0,24*scale,0,T);ctx.fill();
+    art.draw(ctx,"eventhorizon_core",0,0,{scale:2.1*scale,angle:rotation,alpha:1});
+    const count=reduced?4:10;
+    for(let i=0;i<count;i++) {
+      const phase=(age*0.65+i/count)%1;
+      const heading=i*T/count+rotation+phase*1.2;
+      const r=radius*(0.88-phase*0.68);
+      art.draw(ctx,"prism_crystal",Math.cos(heading)*r,Math.sin(heading)*r,{
+        scale:0.25+phase*0.15,angle:heading+T/4,alpha:(0.25+phase*0.6)*closing,
+      });
+    }
+    // The final contraction leads directly into the existing damaging nova.
+    if(well.t<0.5) {
+      ctx.strokeStyle="#fff0ce";ctx.lineWidth=2;ctx.globalAlpha=0.8;
+      ctx.beginPath();ctx.arc(0,0,well.radius*closing,0,T);ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function drawFusionHardware() {
+    if(!showcaseCombat())return;
+    const art=window.SurvivorArt, p=toScreen(g.p.x,g.p.y);
+    const reduced=window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if(g.fused.thunderhive) {
+      const rotation=reduced?0:g.time*0.45;
+      art.draw(ctx,"thunder_relay",p.x,p.y,{scale:2,angle:rotation});
+      const nodes=droneNodes();
+      const phase=1-clamp((g.attackClock.drone||0)/0.39,0,1);
+      ctx.save();ctx.strokeStyle=phase>0.7?"#fff0ce":"#b79bdf";
+      ctx.globalAlpha=phase>0.7?0.7:0.26;ctx.lineWidth=phase>0.7?2:1;
+      for(let i=0;i<nodes.length;i++) {
+        const a=toScreen(nodes[i].x,nodes[i].y), b=toScreen(nodes[(i+1)%nodes.length].x,nodes[(i+1)%nodes.length].y);
+        ctx.beginPath();ctx.moveTo(a.x,a.y);
+        ctx.lineTo((a.x+b.x)/2+Math.sin(g.time*16+i)*4,(a.y+b.y)/2-4);
+        ctx.lineTo(b.x,b.y);ctx.stroke();
+      }
+      ctx.restore();
+    }
+    if(g.fused.blastwheel) {
+      art.draw(ctx,"blastwheel_hub",p.x,p.y,{scale:1.9,angle:reduced?0:-g.time*0.6});
+      const radius=bladeRadius();
+      ctx.save();ctx.translate(p.x,p.y);ctx.strokeStyle="#f4c57a";ctx.lineWidth=3;
+      ctx.globalAlpha=0.55;
+      for(let i=0;i<8;i++) {
+        const heading=g.time*2.7+i*T/8;
+        ctx.beginPath();
+        for(let j=0;j<=6;j++) {
+          const theta=heading-j*0.045;
+          const x=Math.round(Math.cos(theta)*radius),y=Math.round(Math.sin(theta)*radius);
+          if(j===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+        ctx.fillStyle="#fff0ce";
+        ctx.fillRect(Math.round(Math.cos(heading)*(radius-10))-2,Math.round(Math.sin(heading)*(radius-10))-2,4,4);
+      }
+      ctx.restore();
+    }
+  }
   function drawOrbitals() {
     const art = window.SurvivorArt,
       player = toScreen(g.p.x, g.p.y);
+    drawFusionHardware();
     if (assaultCombat()) {
       const nodes = prismNodes();
       const energized = g.time < (g.prismFlashUntil || 0);
@@ -4704,7 +4842,7 @@
     if (
       ![180, 600, 900].includes(rules.runSeconds) ||
       (rules.combatVersion !== undefined &&
-        ![2, 3, 4, 5, 6].includes(rules.combatVersion)) ||
+        ![2, 3, 4, 5, 6, 7].includes(rules.combatVersion)) ||
       (rules.progressionVersion !== undefined &&
         rules.progressionVersion !== 2) ||
       (newProgression(game) &&
@@ -5348,6 +5486,15 @@
     const button = event.target.closest("[data-engineering]");
     if (button) void engineeringAction(button.dataset.engineering);
   };
+  $("chooseLaunchBtn").onclick = showLaunchPicker;
+  $("closeLaunchBtn").onclick = () => showDock(dockReturn);
+  $("launchCards").onclick = (event) => {
+    const button = event.target.closest("[data-launch-weapon]");
+    if (!button || button.disabled) return;
+    selectedLaunch = button.dataset.launchWeapon;
+    renderLaunch();
+    playSound("ui");
+  };
   $("bookLaunchBtn").onclick = () => engineeringAction("book");
   $("cancelLaunchBtn").onclick = () => engineeringAction("cancel");
   $("upgradeHullBtn").onclick = () => buy("hull");
@@ -5383,6 +5530,11 @@
         g.endTime = 600;
         g.xpNext = 112;
         delete g.rules.progressionVersion;
+        return g;
+      },
+      legacyV067: () => {
+        g.rules.version = "0.6.7";
+        g.rules.combatVersion = 6;
         return g;
       },
       legacyV066: () => {
