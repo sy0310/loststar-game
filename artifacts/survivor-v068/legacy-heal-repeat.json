@@ -1,0 +1,937 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+      "/Users/shuhuayu/loststar-game/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.config.cjs",
+      "v066.spec.cjs",
+      "--grep",
+      "elite repair",
+      "--repeat-each=5"
+    ],
+    "configFile": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/playwright.config.cjs",
+    "rootDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/legacy-heal-repeat-green",
+        "repeatEach": 5,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium360",
+        "name": "chromium360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/legacy-heal-repeat-green",
+        "repeatEach": 5,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium390",
+        "name": "chromium390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/legacy-heal-repeat-green",
+        "repeatEach": 5,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit360",
+        "name": "webkit360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/legacy-heal-repeat-green",
+        "repeatEach": 5,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit390",
+        "name": "webkit390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/legacy-heal-repeat-green",
+        "repeatEach": 5,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "chromium360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4442/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/legacy-heal-repeat-green",
+        "repeatEach": 5,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "chromium390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4442/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium390"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/legacy-heal-repeat-green",
+        "repeatEach": 5,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "webkit360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4442/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "webkit",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "webkit360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/legacy-heal-repeat-green",
+        "repeatEach": 5,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "webkit390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4442/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "webkit",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "webkit390"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/legacy-heal-repeat-green.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "v066.spec.cjs",
+      "file": "v066.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1854,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:13.897Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-9fa534f3eea15020d65e",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1854,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:13.897Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-f9550d3b00e8384c6a9f",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1537,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:16.263Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-9ed2858e704bc7bbd634",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1538,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:16.262Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-6be800caf691b2e76411",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1520,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:18.168Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-d5b23b01ea09836fcf85",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1527,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:18.169Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-ccfe3194aa17f2cb6d0b",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1526,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:20.067Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-25db5511eb706d04db78",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1556,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:20.062Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-8aab00fa148faffbf678",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1544,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:21.958Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-2c0ce7fa4171b15cb15f",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1520,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:21.980Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-8284f47f2be1caa8a259",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1797,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:23.849Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-40b702126c4533d2d5a2",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1797,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:23.850Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-de92d79233b7a2135b69",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1571,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:26.187Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-25b916b87bcb479a3db6",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1549,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:26.205Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-4ed136800732ceab1669",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 14,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1528,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:28.211Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-1974f78ca69943eadc7c",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 15,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1518,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:28.226Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-4afe0fa020bbbbed3b10",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 16,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1575,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:30.197Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-ece0395c42733f824a58",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 17,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1576,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:30.215Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-5e47a975fe15e87ce205",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1583,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:32.259Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-1875d5f4a5dd5b0b7d35",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        },
+        {
+          "title": "v066 elite repair is visible on the real field and touch claim and real controller collect it once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 18,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1583,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:12:32.247Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef3d9365872fb4923c8b-c58e95bb1a82719b4611",
+          "file": "v066.spec.cjs",
+          "line": 60,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-13T15:12:13.632Z",
+    "duration": 20465.216,
+    "expected": 20,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

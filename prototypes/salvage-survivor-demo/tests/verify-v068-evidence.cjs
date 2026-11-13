@@ -84,6 +84,10 @@ for (const [file, count] of [
 const audio = read("audio.json");
 assert.equal(audio.passed, 38);
 assert.deepEqual(audio.errors, []);
+assert.equal(
+  audio.sourceSha256,
+  b.sourceFiles.find((x) => x.path.endsWith("src/audio-engine.js")).sha256,
+);
 assert.equal(read("simulation.json").rows.length, 160);
 assert.equal(read("simulation-adaptive.json").rows.length, 20);
 const economy = read("economy.json");
