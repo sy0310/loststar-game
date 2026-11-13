@@ -48,7 +48,7 @@ async function stored(page) {
 (async () => {
   const report = {
     scope:
-      "Actual committed4ca726f and f9bf85c ZIPs served over same-origin HTTP before replacing the server with the current frozen v068 package. Original user profiles are separate.",
+      "Actual committed4ca726f and f9bf85c ZIPs served over same-origin HTTP before replacing the server with the current frozen v069 package. Original user profiles are separate.",
     engines: [],
   };
   for (const baseline of [
@@ -94,6 +94,13 @@ async function stored(page) {
       activeMax: 5,
       passiveMax: 5,
     },
+    {
+      version: "0.6.8",
+      commit: "5066bd01154f2901305e5263b6c048b39dce109f",
+      archive: "artifacts/survivor-v068/loststar-survivor-5066bd0.zip",
+      activeMax: 5,
+      passiveMax: 5,
+    },
   ]) {
     execFileSync("python3", [
       "-c",
@@ -120,10 +127,17 @@ async function stored(page) {
         await page.waitForFunction(
           () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
         );
-        await page.evaluate(async (is067) => {
-          SurvivorQA.state().credits = is067 ? 28909 : 28009;
-          await SurvivorQA.end(false);
-        }, baseline.version === "0.6.7");
+        await page.evaluate(
+          async (amount) => {
+            SurvivorQA.state().credits = amount;
+            await SurvivorQA.end(false);
+          },
+          baseline.version === "0.6.8"
+            ? 35699
+            : baseline.version === "0.6.7"
+              ? 28909
+              : 28009,
+        );
         await page.waitForFunction(() => !SurvivorDemo.saving());
         for (const id of ["upgradeHullBtn", "upgradeGunBtn"])
           for (let rank = 0; rank < 3; rank++) {
@@ -131,7 +145,7 @@ async function stored(page) {
             await page.waitForFunction(() => !SurvivorDemo.saving());
             await delay(600);
           }
-        if (baseline.version === "0.6.7") {
+        if (["0.6.7", "0.6.8"].includes(baseline.version)) {
           await page.locator("#resultDockBtn").click();
           for (const id of ["thrusters", "salvage", "plating"]) {
             await delay(600);
@@ -176,7 +190,7 @@ async function stored(page) {
         assert.equal(before.profile.credits, 27049);
         assert.equal(before.profile.hull, 3);
         assert.equal(before.profile.gun, 3);
-        if (baseline.version === "0.6.7")
+        if (["0.6.7", "0.6.8"].includes(baseline.version))
           assert.deepEqual(before.profile.engineering, {
             version: 1,
             thrusters: 1,
@@ -224,11 +238,12 @@ async function stored(page) {
         );
         const next = await page.evaluate(() => SurvivorDemo.state());
         assert.equal(next.rules.progressionVersion, 2);
-        assert.equal(next.rules.combatVersion, 7);
+        assert.equal(next.rules.combatVersion, 8);
+        assert.equal(next.rerollsRemaining, 3);
         assert.equal(next.endTime, 900);
         assert.equal((await stored(page)).profile.credits, 27049);
         assert.equal(next.p.maxhp, 148);
-        if (baseline.version === "0.6.7") {
+        if (["0.6.7", "0.6.8"].includes(baseline.version)) {
           assert.deepEqual(next.engineering, before.profile.engineering);
           assert(Math.abs(next.p.speed - 178.5) < 0.001);
         }
@@ -255,7 +270,7 @@ async function stored(page) {
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
   console.log(
-    "PASS both engines actual v062/v063/v064/v065/v066/v067 ZIP -> v068 HTTP, old27049/rights/EVO/fusion and new900-second run",
+    "PASS both engines actual v062/v063/v064/v065/v066/v067/v068 ZIP -> v069 HTTP, old27049/rights/EVO/fusion and new900-second run",
   );
 })()
   .catch((e) => {

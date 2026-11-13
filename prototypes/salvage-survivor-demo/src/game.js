@@ -153,16 +153,18 @@
     );
   }
   const newCombat = (game = g) =>
-    [2, 3, 4, 5, 6, 7].includes(runRules(game).combatVersion);
+    [2, 3, 4, 5, 6, 7, 8].includes(runRules(game).combatVersion);
   const assaultCombat = (game = g) =>
-    [3, 4, 5, 6, 7].includes(runRules(game).combatVersion);
+    [3, 4, 5, 6, 7, 8].includes(runRules(game).combatVersion);
   const showcaseCombat = (game = g) =>
-    [4, 5, 6, 7].includes(runRules(game).combatVersion);
+    [4, 5, 6, 7, 8].includes(runRules(game).combatVersion);
   const recoveryCombat = (game = g) =>
-    [5, 6, 7].includes(runRules(game).combatVersion);
+    [5, 6, 7, 8].includes(runRules(game).combatVersion);
   const engineeringCombat = (game = g) =>
-    [6, 7].includes(runRules(game).combatVersion);
-  const polishedCombat = (game = g) => runRules(game).combatVersion === 7;
+    [6, 7, 8].includes(runRules(game).combatVersion);
+  const polishedCombat = (game = g) =>
+    [7, 8].includes(runRules(game).combatVersion);
+  const selectionCombat = (game = g) => runRules(game).combatVersion === 8;
   const eliteSpec = (enemy, game = g) =>
     (showcaseCombat(game) ? B.showcase : B.assault).eliteProfiles[
       enemy.eliteProfile
@@ -200,6 +202,7 @@
     ready = false,
     actionBusy = false,
     purchaseLockedUntil = 0,
+    rerollLockedUntil = 0,
     runDetached = false;
   let runId = null,
     runRevision = 0,
@@ -272,7 +275,7 @@
         runSeconds: B.runSeconds,
         activeSlots: B.activeSlots,
         passiveSlots: B.passiveSlots,
-        combatVersion: 7,
+        combatVersion: 8,
         progressionVersion: 2,
       },
       time: 0,
@@ -369,6 +372,8 @@
     g.active = { [g.launchWeapon]: 1 };
     g.p.speed *= 1 + g.engineering.thrusters * B.engineering.speedPerLevel;
     g.repairShown = 0;
+    g.rerollsRemaining = B.selection.rerolls;
+    rerollLockedUntil = 0;
     hideAll();
     $("hud").hidden = false;
     $("pauseBtn").hidden = false;
@@ -557,7 +562,7 @@
         JSON.stringify(candidate.source) === JSON.stringify(option.source),
     );
   }
-  function chooseOptions() {
+  function chooseOptions(excluded = []) {
     const available = availableUpgrades();
     const advanced = available.filter((option) =>
       ["evo", "fusion"].includes(option.kind),
@@ -606,24 +611,50 @@
         ? g.buildFocus
         : strongest[0];
     const pair = EVO.find(([id]) => id === focus);
-    add(ordinary.find((option) => option.id === focus));
-    if (pair) add(ordinary.find((option) => option.id === pair[1]));
-    const complement = FUSION.find(
-      ([a, b, id]) =>
-        (newProgression() || id !== "ionbastion") &&
-        !g.fused[id] &&
-        (g.active[a] || g.active[b]) &&
-        (!newProgression() || !g.active[a] || !g.active[b]),
-    );
-    if (complement && (!newProgression() || rand() < 0.35)) {
-      const other = g.active[complement[0]] ? complement[1] : complement[0];
-      add(ordinary.find((option) => option.id === other));
+    if (selectionCombat()) {
+      const remaining = ordinary.filter(
+        (option) => !picks.some((pick) => pick.id === option.id),
+      );
+      while (picks.length < 3 && remaining.length) {
+        const fresh = remaining.filter(
+          (option) => !excluded.includes(option.id),
+        );
+        const candidates = fresh.length ? fresh : remaining;
+        const weights = candidates.map((option) =>
+          option.id === focus || option.id === pair?.[1]
+            ? B.selection.focusWeight
+            : 1,
+        );
+        let draw = rand() * weights.reduce((sum, weight) => sum + weight, 0);
+        let index = 0;
+        while (index < weights.length - 1 && draw >= weights[index]) {
+          draw -= weights[index];
+          index++;
+        }
+        const chosen = candidates[index];
+        add(chosen);
+        remaining.splice(remaining.indexOf(chosen), 1);
+      }
+    } else {
+      add(ordinary.find((option) => option.id === focus));
+      if (pair) add(ordinary.find((option) => option.id === pair[1]));
+      const complement = FUSION.find(
+        ([a, b, id]) =>
+          (newProgression() || id !== "ionbastion") &&
+          !g.fused[id] &&
+          (g.active[a] || g.active[b]) &&
+          (!newProgression() || !g.active[a] || !g.active[b]),
+      );
+      if (complement && (!newProgression() || rand() < 0.35)) {
+        const other = g.active[complement[0]] ? complement[1] : complement[0];
+        add(ordinary.find((option) => option.id === other));
+      }
+      const newWeapons = ordinary.filter(
+        (option) => option.kind === "active" && !g.active[option.id],
+      );
+      if (newWeapons.length)
+        add(newWeapons[Math.floor(rand() * newWeapons.length)]);
     }
-    const newWeapons = ordinary.filter(
-      (option) => option.kind === "active" && !g.active[option.id],
-    );
-    if (newWeapons.length)
-      add(newWeapons[Math.floor(rand() * newWeapons.length)]);
     const rest = ordinary.filter(
       (option) => !picks.some((pick) => pick.id === option.id),
     );
@@ -789,6 +820,7 @@
         );
       })
       .join("");
+    updateRerollButton();
     $("upgradeBuild").textContent =
       "主动 " +
       (Object.keys(g.active).length + Object.keys(g.fused).length) +
@@ -797,7 +829,8 @@
       " · 增强 " +
       Object.keys(g.passive).length +
       "/" +
-      runRules().passiveSlots;
+      runRules().passiveSlots +
+      (selectionCombat() ? " · 9种武装／8种增强可选" : "");
     const bossReward = g.upgradeSource?.kind === "boss";
     const lottery = recoveryCombat() && bossReward;
     $("upgradeTitle").textContent = lottery
@@ -827,6 +860,71 @@
           " · 两者进化后可融合"
         : "";
   }
+  function canReroll() {
+    return (
+      selectionCombat() &&
+      g.mode === "upgrade" &&
+      !g.upgradeSource &&
+      g.rerollsRemaining > 0 &&
+      availableUpgrades().some(
+        (option) => !g.presented.some((pick) => pick.id === option.id),
+      )
+    );
+  }
+  function updateRerollButton() {
+    const button = $("rerollBtn");
+    button.hidden = !selectionCombat();
+    button.disabled =
+      actionBusy ||
+      runDetached ||
+      !canReroll() ||
+      performance.now() < rerollLockedUntil;
+    button.textContent = actionBusy
+      ? "保存新选项…"
+      : g.upgradeSource
+        ? "战利品已抽定"
+        : g.rerollsRemaining > 0
+          ? "刷新选项 · 剩余 " + g.rerollsRemaining + " 次"
+          : "本局刷新已用完";
+    if (g.rerollsRemaining > 0 && !g.upgradeSource && !canReroll())
+      button.textContent = "当前无其他强化";
+  }
+  async function rerollOptions(qaBypass = false) {
+    if (
+      !g ||
+      actionBusy ||
+      runDetached ||
+      !canReroll() ||
+      (!qaBypass && performance.now() < rerollLockedUntil)
+    )
+      return false;
+    actionBusy = true;
+    if (!qaBypass) {
+      rerollLockedUntil = performance.now() + 550;
+      window.setTimeout(() => {
+        if (g?.mode === "upgrade") updateRerollButton();
+      }, 550);
+    }
+    const before = {
+      seed,
+      choices: g.presented,
+      remaining: g.rerollsRemaining,
+    };
+    g.rerollsRemaining--;
+    g.presented = chooseOptions(before.choices.map((option) => option.id));
+    renderUpgrades(true);
+    const committed = !g.persisted || (await saveCheckpoint());
+    if (!committed) {
+      seed = before.seed;
+      g.presented = before.choices;
+      g.rerollsRemaining = before.remaining;
+    } else {
+      playSound("upgrade");
+    }
+    actionBusy = false;
+    renderUpgrades(true);
+    return committed;
+  }
   function levelUp(source = null) {
     releaseInput();
     g.upgradeSource = source;
@@ -834,6 +932,7 @@
     g.metrics.events.push({ kind: "upgrade", time: g.time, level: g.level });
     renderUpgrades();
     setMode("upgrade");
+    updateRerollButton();
     void saveCheckpoint();
   }
   function pick(index, qaBypass = false) {
@@ -1244,6 +1343,10 @@
                         : "#73d9e8",
                 core: sourceKind === "thunderhive" ? "#ffe5a1" : "#fff0ce",
               }
+            : {}),
+          ...(selectionCombat() &&
+          ["chainstorm", "thunderhive"].includes(sourceKind)
+            ? { color: "#b14cff", core: "#ffcf58", width: 12 }
             : {}),
         });
       hurtEnemy(target, damage, false, sourceKind);
@@ -2328,22 +2431,11 @@
           damage: 8,
         });
     }
-    const bonusAttraction =
-      passivePower("magnet") * 55 +
-      (g.evolved.blade ? 65 : 0) +
-      (engineeringCombat()
-        ? g.engineering.salvage * B.engineering.magnetPerLevel
-        : 0);
     for (const pickup of g.pickups) {
       if (pickup.t <= 0) continue;
       pickup.t -= dt;
       const distance = dist(pickup, g.p);
-      const baseRadius = polishedCombat()
-        ? pickup.type === "xp"
-          ? B.pickup.baseExperienceRadius
-          : B.pickup.basePartsRadius
-        : 150;
-      if (distance < baseRadius + bonusAttraction || pickup.magnetized) {
+      if (distance < pickupRadius(pickup.type) || pickup.magnetized) {
         pickup.magnetized = true;
         const travel = Math.min(distance, dt * (360 + distance * 2));
         if (distance > 0) {
@@ -2591,6 +2683,23 @@
       );
     }
   }
+  function pickupRadius(type) {
+    const base = polishedCombat()
+      ? type === "xp"
+        ? selectionCombat()
+          ? B.pickup.baseExperienceRadius
+          : B.pickup.legacyExperienceRadius
+        : B.pickup.basePartsRadius
+      : 150;
+    return (
+      base +
+      passivePower("magnet") * 55 +
+      (g.evolved.blade ? 65 : 0) +
+      (engineeringCombat()
+        ? g.engineering.salvage * B.engineering.magnetPerLevel
+        : 0)
+    );
+  }
   function render() {
     background();
     if (!g || !window.SurvivorArt.loaded()) return;
@@ -2603,7 +2712,7 @@
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 11]);
       ctx.beginPath();
-      ctx.arc(ship.x, ship.y, B.pickup.baseExperienceRadius, 0, T);
+      ctx.arc(ship.x, ship.y, pickupRadius("xp"), 0, T);
       ctx.stroke();
       ctx.restore();
     }
@@ -3006,7 +3115,8 @@
       ctx.globalAlpha = clamp(arc.t / 0.22, 0, 1);
       ctx.strokeStyle = arc.color || "#73d9e8";
       ctx.lineWidth =
-        showcaseCombat() && (g.evolved.arc || g.fused.thunderhive) ? 6 : 3;
+        arc.width ||
+        (showcaseCombat() && (g.evolved.arc || g.fused.thunderhive) ? 6 : 3);
       ctx.beginPath();
       ctx.moveTo(start.x, start.y);
       ctx.lineTo((start.x + end.x) / 2 - 5, (start.y + end.y) / 2 + 5);
@@ -3014,8 +3124,17 @@
       ctx.lineTo(end.x, end.y);
       ctx.stroke();
       ctx.strokeStyle = arc.core || "#e4f4ec";
-      ctx.lineWidth = 1;
+      ctx.lineWidth = arc.width ? 5 : 1;
       ctx.stroke();
+      if (arc.width) {
+        ctx.strokeStyle = "#fff1ba";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.fillStyle = "#b14cff";
+        ctx.fillRect(Math.round(end.x) - 7, Math.round(end.y) - 7, 14, 14);
+        ctx.fillStyle = "#ffcf58";
+        ctx.fillRect(Math.round(end.x) - 4, Math.round(end.y) - 4, 8, 8);
+      }
       art.draw(ctx, "beam_cap", end.x, end.y, {
         scale:
           showcaseCombat() && (g.evolved.arc || g.fused.thunderhive)
@@ -4592,7 +4711,7 @@
         const active = hazard.age >= hazard.warning;
         ctx.strokeStyle = active ? "#f4c57a" : "#c49bef";
         ctx.lineWidth = active ? 12 : 2;
-        ctx.setLineDash(active ? [] : [5, 6, 7]);
+        ctx.setLineDash(active ? [] : [5, 6, 7, 8]);
         for (const wall of pincerWalls(hazard)) {
           const start = toScreen(wall.x1, wall.y1),
             end = toScreen(wall.x2, wall.y2);
@@ -4759,7 +4878,13 @@
       const nodes = droneNodes();
       const phase = 1 - clamp((g.attackClock.drone || 0) / 0.39, 0, 1);
       ctx.save();
-      ctx.strokeStyle = phase > 0.7 ? "#fff0ce" : "#b79bdf";
+      ctx.strokeStyle = selectionCombat()
+        ? phase > 0.7
+          ? "#ffcf58"
+          : "#b14cff"
+        : phase > 0.7
+          ? "#fff0ce"
+          : "#b79bdf";
       ctx.globalAlpha = phase > 0.7 ? 0.7 : 0.26;
       ctx.lineWidth = phase > 0.7 ? 2 : 1;
       for (let i = 0; i < nodes.length; i++) {
@@ -4992,7 +5117,7 @@
     if (
       ![180, 600, 900].includes(rules.runSeconds) ||
       (rules.combatVersion !== undefined &&
-        ![2, 3, 4, 5, 6, 7].includes(rules.combatVersion)) ||
+        ![2, 3, 4, 5, 6, 7, 8].includes(rules.combatVersion)) ||
       (rules.progressionVersion !== undefined &&
         rules.progressionVersion !== 2) ||
       (newProgression(game) &&
@@ -5241,6 +5366,13 @@
       if (!Array.isArray(game[field]) || game[field].length > maximum)
         throw Error("对局实体记录无效");
     if (
+      selectionCombat(game) &&
+      (!Number.isInteger(game.rerollsRemaining) ||
+        game.rerollsRemaining < 0 ||
+        game.rerollsRemaining > B.selection.rerolls)
+    )
+      throw Error("刷新次数记录无效，原数据保留");
+    if (
       game.mode === "upgrade" &&
       (!Array.isArray(game.presented) ||
         (recoveryCombat(game) && game.upgradeSource?.kind === "boss"
@@ -5278,8 +5410,10 @@
         applyStored(result.record);
         savedMessage();
       });
+      return true;
     } catch (error) {
       storageWarning(error);
+      return false;
     } finally {
       saving = false;
     }
@@ -5650,6 +5784,9 @@
   $("upgradeHullBtn").onclick = () => buy("hull");
   $("upgradeGunBtn").onclick = () => buy("gun");
   $("retrySaveBtn").onclick = retrySaving;
+  $("rerollBtn").onclick = () => {
+    void rerollOptions();
+  };
   $("upgradeList").onclick = (event) => {
     const button = event.target.closest("[data-pick]");
     if (button) pick(Number(button.dataset.pick));
@@ -5682,6 +5819,12 @@
         delete g.rules.progressionVersion;
         return g;
       },
+      legacyV068: () => {
+        g.rules.version = "0.6.8";
+        g.rules.combatVersion = 7;
+        return g;
+      },
+      reroll: () => rerollOptions(true),
       legacyV067: () => {
         g.rules.version = "0.6.7";
         g.rules.combatVersion = 6;

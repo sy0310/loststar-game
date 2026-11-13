@@ -17,7 +17,7 @@ const raw = fs.readFileSync(input),
   samples = JSON.parse(raw),
   B = JSON.parse(
     fs.readFileSync(
-      path.join(root, "design/star-salvage/v068/BALANCE_V068.json"),
+      path.join(root, "design/star-salvage/v069/BALANCE_V069.json"),
     ),
   );
 const report = {

@@ -1,5 +1,5 @@
 window.SurvivorBalance = {
-  "version": "0.6.8",
+  "version": "0.6.9",
   "runSeconds": 900,
   "eliteAt": 70,
   "bossAt": 130,
@@ -673,7 +673,12 @@ window.SurvivorBalance = {
     ]
   },
   "pickup": {
-    "baseExperienceRadius": 190,
-    "basePartsRadius": 150
+    "baseExperienceRadius": 36,
+    "basePartsRadius": 150,
+    "legacyExperienceRadius": 190
+  },
+  "selection": {
+    "rerolls": 3,
+    "focusWeight": 1.35
   }
 };

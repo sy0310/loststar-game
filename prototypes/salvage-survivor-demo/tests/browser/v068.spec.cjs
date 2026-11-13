@@ -71,6 +71,7 @@ test("v068 new ship pulls a visible experience crystal before contact and refres
   const before = await page.evaluate(async () => {
     const Q = SurvivorQA,
       g = Q.state();
+    Q.legacyV068();
     g.spawnTime = 9999;
     g.enemy = [];
     g.encounters.schedule = [];
