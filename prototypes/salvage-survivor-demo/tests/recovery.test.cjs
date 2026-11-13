@@ -104,6 +104,83 @@ const { createModel } = require('./model-harness.cjs');
     assert.equal(game.p.hp, game.p.maxhp);
     Q.validate(Q.snapshot());
   });
+  await test('elite lottery grants1to3 total owned equipment levels, with real misses for evolution', () => {
+    const counts = new Set(), targets = new Set();
+    for (let seed = 1; seed <= 500; seed++) {
+      const game = start(seed);
+      game.active = { cannon: 1, drone: 1 };
+      game.passive = { lens: 1, lock: 1 };
+      Q.reward(false);
+      const option = game.presented.find((item) => item.kind === 'cache');
+      assert(option, 'a committed random cache is shown');
+      const levels = option.grants.reduce((sum, grant) => sum + grant.level - grant.from, 0);
+      assert(levels >= 1 && levels <= 3);
+      counts.add(levels);
+      const before = JSON.parse(JSON.stringify({ active: game.active, passive: game.passive }));
+      for (const grant of option.grants) {
+        assert(before[grant.kind][grant.id] > 0);
+        targets.add(grant.kind);
+      }
+      const snapshot = Q.snapshot(); Q.validate(snapshot);
+      assert(Q.select(game.presented.indexOf(option)));
+      let delta = 0;
+      for (const kind of ['active', 'passive'])
+        for (const [id, level] of Object.entries(game[kind])) delta += level - before[kind][id];
+      assert.equal(delta, levels);
+      assert(!Q.select(0), 'a second tap cannot award the same cache');
+      assert.deepEqual(snapshot.game.upgradeSource.loot, option.grants);
+      Q.validate(Q.snapshot());
+    }
+    assert.deepEqual([...counts].sort(), [1, 2, 3]);
+    assert.equal(targets.size, 2);
+  });
+  await test('random levels clamp to5, cannot auto-evolve, and preserve armor hull benefits', () => {
+    const game = start();
+    game.active = { cannon: 5 };
+    game.passive = { armor: 4 };
+    const hp = game.p.maxhp;
+    Q.reward(false);
+    const option = game.presented.find((item) => item.kind === 'cache');
+    assert.equal(option.grants.length, 1);
+    assert.equal(option.grants[0].level, 5);
+    assert(Q.select(game.presented.indexOf(option)));
+    assert.equal(game.p.maxhp, hp + 5);
+    assert.equal(game.passive.armor, 5);
+    assert.deepEqual(Object.keys(game.evolved), []);
+    Q.reward(false);
+    assert(game.presented.every((item) => item.kind === 'bonus'));
+    Q.validate(Q.snapshot());
+  });
+  await test('tampered, duplicated and stale lottery grants are rejected without changing equipment', () => {
+    const game = start();
+    Q.reward(false);
+    const snapshot = Q.snapshot();
+    const bad = structuredClone(snapshot);
+    bad.game.upgradeSource.loot[0].level = 100;
+    assert.throws(() => Q.validate(bad));
+    const duplicate = structuredClone(snapshot);
+    duplicate.game.upgradeSource.loot.push(duplicate.game.upgradeSource.loot[0]);
+    assert.throws(() => Q.validate(duplicate));
+    const option = game.presented.find((item) => item.kind === 'cache');
+    option.grants[0].level = 100;
+    assert(!Q.select(game.presented.indexOf(option)));
+    assert.equal(game.active.cannon, 1);
+    Q.validate(Q.snapshot());
+  });
+  await test('saturated mixed drops keep XP and cash separate from combined repair', () => {
+    const game = start();
+    game.pickups = [
+      {x:3000,y:3000,type:'xp',value:7,t:30},
+      {x:3000,y:3000,type:'scrap',value:9,t:30},
+      ...Array.from({length:138}, () => ({x:3000,y:3000,type:'heal',value:2,t:30}))
+    ];
+    Q.enemy('elite', 0, -70, 1); Q.step(0.6);
+    const sum = type => game.pickups.filter(item => item.type === type).reduce((total,item) => total + item.value,0);
+    assert.equal(sum('xp'), 7);
+    assert.equal(sum('scrap'), 9);
+    assert.equal(sum('heal'), 138*2+24);
+    assert.equal(game.pickups.length, 140);
+  });
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(report, null, 2));
 })();
