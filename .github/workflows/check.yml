@@ -279,6 +279,9 @@ jobs:
       - name: Verify evolved fleets and distinct Boss delivery when present
         if: hashFiles('artifacts/survivor-v065/verification.json') != ''
         run: node prototypes/salvage-survivor-demo/tests/verify-v065-evidence.cjs
+      - name: Verify elite recovery and random reinforcement delivery when present
+        if: hashFiles('artifacts/survivor-v066/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v066-evidence.cjs
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'
@@ -296,6 +299,7 @@ jobs:
           npm --prefix prototypes/salvage-survivor-demo run check:art
           python3 prototypes/salvage-survivor-demo/sync_runtime.py --check
           SURVIVOR_MODEL_OUT="$PWD/releases/survivor-model.json" npm --prefix prototypes/salvage-survivor-demo test
+          SURVIVOR_ELITE_OUT="$PWD/releases/survivor-elite-balance.json" node prototypes/salvage-survivor-demo/tests/elite-balance.cjs
           SURVIVOR_SIM_OUT="$PWD/releases/survivor-simulation.json" npm --prefix prototypes/salvage-survivor-demo run simulate
           SURVIVOR_MOVEMENT=adaptive SURVIVOR_SEEDS=2 SURVIVOR_SIM_OUT="$PWD/releases/survivor-adaptive.json" npm --prefix prototypes/salvage-survivor-demo run simulate
           python3 prototypes/salvage-survivor-demo/build.py --freeze
@@ -318,6 +322,7 @@ jobs:
             releases/survivor-audio.json
             releases/audio-recordings/
             releases/survivor-model.json
+            releases/survivor-elite-balance.json
             releases/survivor-simulation.json
             releases/survivor-adaptive.json
             releases/survivor-browser.json
