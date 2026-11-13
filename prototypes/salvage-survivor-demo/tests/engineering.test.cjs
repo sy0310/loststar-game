@@ -145,6 +145,14 @@ const { createModel } = require("./model-harness.cjs");
     assert(Math.hypot(s.x - g.p.x, s.y - g.p.y) > 110);
     Q.validate(Q.snapshot());
   });
+  await test("critical hull exposes both upgrade-based repair and the slot-based module", () => {
+    const g=start();g.p.hp=34;Q.level();
+    assert(g.presented.some(o=>o.id==="repair"));
+    assert(g.presented.some(o=>o.id==="repairpod"));
+    assert(Q.select(g.presented.findIndex(o=>o.id==="repairpod")));
+    assert.equal(g.p.hp,34);assert.equal(g.active.repairpod,1);
+    Q.step(4);assert(Math.abs(g.p.hp-35)<.001);
+  });
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(report, null, 2));
 })();
