@@ -150,10 +150,11 @@
     );
   }
   const newCombat = (game = g) =>
-    [2, 3, 4].includes(runRules(game).combatVersion);
+    [2, 3, 4, 5].includes(runRules(game).combatVersion);
   const assaultCombat = (game = g) =>
-    [3, 4].includes(runRules(game).combatVersion);
-  const showcaseCombat = (game = g) => runRules(game).combatVersion === 4;
+    [3, 4, 5].includes(runRules(game).combatVersion);
+  const showcaseCombat = (game = g) => [4, 5].includes(runRules(game).combatVersion);
+  const recoveryCombat = (game = g) => runRules(game).combatVersion === 5;
   const eliteSpec = (enemy, game = g) =>
     (showcaseCombat(game) ? B.showcase : B.assault).eliteProfiles[
       enemy.eliteProfile
@@ -263,7 +264,7 @@
         runSeconds: B.runSeconds,
         activeSlots: B.activeSlots,
         passiveSlots: B.passiveSlots,
-        combatVersion: 4,
+        combatVersion: 5,
         progressionVersion: 2,
       },
       time: 0,
@@ -903,8 +904,8 @@
       tier,
       x: g.p.x + (side < 2 ? (side === 0 ? -ex : ex) : rr(-ex, ex)),
       y: g.p.y + (side < 2 ? rr(-ey, ey) : side === 2 ? -ey : ey),
-      hp: Math.round(stats.hp * (scale + lateHealth)),
-      maxhp: Math.round(stats.hp * (scale + lateHealth)),
+      hp: Math.round(stats.hp * (scale + lateHealth) * (recoveryCombat() && type === "elite" ? B.recovery.eliteHullMultiplier : 1)),
+      maxhp: Math.round(stats.hp * (scale + lateHealth) * (recoveryCombat() && type === "elite" ? B.recovery.eliteHullMultiplier : 1)),
       radius: profile?.radius || stats.radius,
       speed: stats.speed * (profile?.speedScale || 1),
       fire: rr(1.3, 2.5),
@@ -1155,18 +1156,32 @@
         t: 30,
       });
     }
-    if (
-      runRules().runSeconds > 180 &&
-      ["boss", "elite"].includes(enemy.t) &&
-      g.pickups.length < B.maxPickups
-    )
-      g.pickups.push({
-        x: enemy.x,
-        y: enemy.y,
-        type: "heal",
-        value: enemy.t === "boss" ? 24 : 12,
-        t: 40,
-      });
+    if (runRules().runSeconds > 180 && ["boss", "elite"].includes(enemy.t)) {
+      // Reserve the repair pack even when the field is full. Merge the displaced
+      // ordinary pickup's value into the same resource type without losing XP/cash.
+      if (recoveryCombat() && g.pickups.length >= B.maxPickups) {
+        const index = g.pickups.findIndex((pickup) => pickup.type !== "heal" &&
+          g.pickups.some((other) => other !== pickup && other.type === pickup.type));
+        if (index >= 0) {
+          const displaced = g.pickups[index];
+          g.pickups.find((pickup, i) => i !== index && pickup.type === displaced.type).value += displaced.value;
+          g.pickups.splice(index, 1);
+        } else {
+          // A field already full of repair packs keeps their full combined value.
+          g.pickups[0].value += enemy.t === "boss" ? B.recovery.bossRepair : B.recovery.eliteRepair;
+        }
+      }
+      if (g.pickups.length < B.maxPickups)
+        g.pickups.push({
+          x: enemy.x,
+          y: enemy.y,
+          type: "heal",
+          value: recoveryCombat()
+            ? enemy.t === "boss" ? B.recovery.bossRepair : B.recovery.eliteRepair
+            : enemy.t === "boss" ? 24 : 12,
+          t: 40,
+        });
+    }
     if (VISITORS[enemy.t]) {
       // An event's only payout uses the same per-enemy death/receipt path.
       // Re-entering its banner or restoring a checkpoint cannot pay it again.
@@ -1340,8 +1355,8 @@
       const heading =
         g.time * (showcaseCombat() ? -0.75 : 1.6) + (index * T) / count;
       return {
-        x: g.p.x + Math.cos(heading) * (showcaseCombat() ? 130 : 47),
-        y: g.p.y + Math.sin(heading) * (showcaseCombat() ? 114 : 47),
+        x: g.p.x + Math.cos(heading) * (recoveryCombat() ? B.recovery.droneOrbit[0] : showcaseCombat() ? 130 : 47),
+        y: g.p.y + Math.sin(heading) * (recoveryCombat() ? B.recovery.droneOrbit[1] : showcaseCombat() ? 114 : 47),
         heading,
       };
     });
@@ -2061,7 +2076,14 @@
           playSound("pickup");
           awardXP(pickup.value);
         } else if (pickup.type === "heal") {
-          g.p.hp = Math.min(g.p.maxhp, g.p.hp + pickup.value);
+          const restored = Math.min(pickup.value, g.p.maxhp - g.p.hp);
+          g.p.hp += restored;
+          if (recoveryCombat()) {
+            ring(g.p.x, g.p.y, 36, "#a5edb8", 0.55);
+            if (g.texts.length >= B.maxDamageNumbers) g.texts.shift();
+            g.texts.push({x: g.p.x, y: g.p.y - 28, t: 1.3,
+              s: restored > 0 ? "船体 +" + Math.round(restored) : "船体已满", color: "#a5edb8"});
+          }
           playSound("heal");
         } else {
           g.credits += pickup.value;
@@ -2252,6 +2274,13 @@
     const art = window.SurvivorArt;
     for (const pickup of g.pickups) {
       const point = toScreen(pickup.x, pickup.y);
+      if (recoveryCombat() && pickup.type === "heal") {
+        ctx.fillStyle = "#18382f";
+        ctx.fillRect(point.x - 12, point.y - 12, 24, 24);
+        ctx.strokeStyle = "#a5edb8";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(point.x - 12, point.y - 12, 24, 24);
+      }
       art.draw(
         ctx,
         pickup.type === "xp"
@@ -2261,8 +2290,13 @@
             : "scrap",
         point.x,
         point.y,
-        { scale: 0.6 },
+        { scale: recoveryCombat() && pickup.type === "heal" ? 1 : 0.6 },
       );
+      if (recoveryCombat() && pickup.type === "heal") {
+        ctx.fillStyle = "#e6ffe8";
+        ctx.fillRect(point.x - 2, point.y - 7, 4, 14);
+        ctx.fillRect(point.x - 7, point.y - 2, 14, 4);
+      }
     }
     drawHazards();
     for (const enemy of g.enemy) {
@@ -4255,7 +4289,7 @@
     if (
       ![180, 600, 900].includes(rules.runSeconds) ||
       (rules.combatVersion !== undefined &&
-        ![2, 3, 4].includes(rules.combatVersion)) ||
+        ![2, 3, 4, 5].includes(rules.combatVersion)) ||
       (rules.progressionVersion !== undefined &&
         rules.progressionVersion !== 2) ||
       (newProgression(game) &&
@@ -4885,6 +4919,12 @@
         delete g.rules.progressionVersion;
         return g;
       },
+      legacyV065: () => {
+        g.rules.version = "0.6.5";
+        g.rules.combatVersion = 4;
+        return g;
+      },
+      spawn: spawnEnemy,
       legacyV064: () => {
         g.rules.version = "0.6.4";
         g.rules.combatVersion = 3;

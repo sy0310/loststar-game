@@ -14,6 +14,7 @@ const output = path.resolve(
     : { passed: 0, cases: [], errors: [] };
   function start() {
     const game = Q.startModel(91);
+    Q.legacyV065();
     game.active = {};
     game.spawnTime = 9999;
     game.p.inv = 10000;

@@ -57,7 +57,7 @@ const { createModel } = require('./model-harness.cjs');
     Q.step(0.001);
     const shot = game.shots.find((item) => item.kind === 'drone');
     const radius = Math.hypot(shot.x - game.p.x, shot.y - game.p.y);
-    assert(radius > 100 && radius < 121, radius);
+    assert(radius > 100 && radius < 121, String(radius));
     return { radius };
   });
   await test('all five elites have triple saved hull while ordinary enemies and bosses retain prior values', () => {

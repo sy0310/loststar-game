@@ -1,5 +1,5 @@
 window.SurvivorBalance = {
-  "version": "0.6.5",
+  "version": "0.6.6",
   "runSeconds": 900,
   "eliteAt": 70,
   "bossAt": 130,
@@ -604,6 +604,20 @@ window.SurvivorBalance = {
         "tier": 4,
         "bossProfile": "judicator"
       }
+    ]
+  },
+  "recovery": {
+    "version": 5,
+    "eliteHullMultiplier": 3,
+    "eliteRepair": 24,
+    "bossRepair": 32,
+    "droneOrbit": [
+      116,
+      102
+    ],
+    "rewardLevels": [
+      1,
+      3
     ]
   }
 };
