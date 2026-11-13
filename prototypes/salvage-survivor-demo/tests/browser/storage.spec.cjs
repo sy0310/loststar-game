@@ -82,18 +82,18 @@ test("settlement replay and refresh credit the run once; the next run uses saved
   await boot(page);
   await start(page);
   const active = (await stored(page)).active;
-  await settle(page, 300);
+  await settle(page, 600);
   const once = await stored(page);
   await page.evaluate(async (active) => {
     const store = await SurvivorPersistence.create({ qa: true });
-    await store.settle(active.id, active.revision, { credits: 300, kills: 0 });
+    await store.settle(active.id, active.revision, { credits: 600, kills: 0 });
     store.close();
   }, active);
   expect((await stored(page)).profile).toEqual(once.profile);
   await page.locator("#upgradeHullBtn").click();
   await page.waitForFunction(() => !SurvivorDemo.saving());
   expect((await stored(page)).profile).toMatchObject({
-    credits: 230,
+    credits: 200,
     hull: 1,
     runs: 1,
   });
@@ -110,14 +110,17 @@ test("rapid permanent-upgrade input charges only the displayed tier", async ({
 }) => {
   await boot(page);
   await start(page);
-  await settle(page, 1000);
+  await settle(page, 2000);
   await page.locator("#upgradeHullBtn").dblclick({ delay: 80 });
   await page.waitForFunction(() => !SurvivorDemo.saving());
-  expect((await stored(page)).profile).toMatchObject({ hull: 1, credits: 930 });
+  expect((await stored(page)).profile).toMatchObject({
+    hull: 1,
+    credits: 1600,
+  });
   await page.waitForTimeout(600);
   await page.locator("#upgradeHullBtn").click();
   await page.waitForFunction(() => !SurvivorDemo.saving());
-  expect((await stored(page)).profile).toMatchObject({ hull: 2, credits: 790 });
+  expect((await stored(page)).profile).toMatchObject({ hull: 2, credits: 600 });
 });
 
 test("two IndexedDB clients cannot both buy the same displayed upgrade", async ({
@@ -138,7 +141,7 @@ test("two IndexedDB clients cannot both buy the same displayed upgrade", async (
     return results.map((result) => result.status);
   });
   expect(results.sort()).toEqual(["fulfilled", "rejected"]);
-  expect((await stored(page)).profile).toMatchObject({ gun: 1, credits: 910 });
+  expect((await stored(page)).profile).toMatchObject({ gun: 1, credits: 500 });
 });
 
 for (const storageDelay of [0, 700])
@@ -247,7 +250,7 @@ test("failed permanent purchase changes neither cash nor level", async ({
 }) => {
   await boot(page);
   await start(page);
-  await settle(page, 300);
+  await settle(page, 600);
   const before = (await stored(page)).profile;
   await abortNextPut(page);
   await page.locator("#upgradeGunBtn").click();

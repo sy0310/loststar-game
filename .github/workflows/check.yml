@@ -285,6 +285,9 @@ jobs:
       - name: Verify repair engineering frozen delivery when present
         if: hashFiles('artifacts/survivor-v067/verification.json') != ''
         run: node prototypes/salvage-survivor-demo/tests/verify-v067-evidence.cjs
+      - name: Verify first-release polish delivery when present
+        if: hashFiles('artifacts/survivor-v068/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v068-evidence.cjs
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'

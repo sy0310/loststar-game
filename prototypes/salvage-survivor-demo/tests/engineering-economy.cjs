@@ -17,7 +17,7 @@ const raw = fs.readFileSync(input),
   samples = JSON.parse(raw),
   B = JSON.parse(
     fs.readFileSync(
-      path.join(root, "design/star-salvage/v067/BALANCE_V067.json"),
+      path.join(root, "design/star-salvage/v068/BALANCE_V068.json"),
     ),
   );
 const report = {
@@ -55,9 +55,7 @@ for (const old of [false, true]) {
         if (account[id] < 3)
           offers.push({
             kind: id,
-            cost:
-              (id === "hull" ? B.hullUpgradeBase : B.gunUpgradeBase) *
-              (account[id] + 1),
+            cost: B.permanentCosts[id][account[id]],
           });
       for (const id of ["thrusters", "salvage", "plating"])
         if (account.engineering[id] < 6)
@@ -131,7 +129,7 @@ for (const old of [false, true]) {
 }
 report.perBranchTotal = B.engineering.costs.reduce((a, b) => a + b, 0);
 report.engineeringTotal = report.perBranchTotal * 3;
-assert.equal(report.engineeringTotal, 20400);
+assert.equal(report.engineeringTotal, 36450);
 fs.mkdirSync(path.dirname(output), { recursive: true });
 fs.writeFileSync(output, JSON.stringify(report, null, 2));
 console.log(

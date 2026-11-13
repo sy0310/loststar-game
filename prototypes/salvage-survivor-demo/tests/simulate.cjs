@@ -248,14 +248,19 @@ function select(g, policy) {
         bossKilled: rows.filter((row) => row.bossKilled).length,
       };
     }
+  const B = (await createModel()).SurvivorBalance;
   report.costs = {
-    hull: [70, 140, 210],
-    gun: [90, 180, 270],
-    total: 960,
+    hull: Array.from(B.permanentCosts.hull),
+    gun: Array.from(B.permanentCosts.gun),
+    total: [...B.permanentCosts.hull, ...B.permanentCosts.gun].reduce(
+      (a, b) => a + b,
+      0,
+    ),
     oldWalletConversion: false,
-    engineeringPerBranch: [300, 500, 800, 1200, 1700, 2300],
-    engineeringTotal: 20400,
-    launchPerRun: 200,
+    engineeringPerBranch: Array.from(B.engineering.costs),
+    engineeringTotal:
+      Array.from(B.engineering.costs).reduce((a, b) => a + b, 0) * 3,
+    launchPerRun: B.engineering.launchCost,
   };
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + "\n");

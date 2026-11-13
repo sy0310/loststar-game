@@ -22,7 +22,7 @@ def main():
     parser.add_argument('--freeze', action='store_true')
     args = parser.parse_args()
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    relevant = [str(HERE.relative_to(ROOT)), 'design/star-salvage/v06/BALANCE_V06.json', 'design/star-salvage/v06/production', 'design/star-salvage/v061', 'design/star-salvage/v062', 'design/star-salvage/v063', 'design/star-salvage/v064', 'design/star-salvage/v065', 'design/star-salvage/v066', 'design/star-salvage/v067']
+    relevant = [str(HERE.relative_to(ROOT)), 'design/star-salvage/v06/BALANCE_V06.json', 'design/star-salvage/v06/production', 'design/star-salvage/v061', 'design/star-salvage/v062', 'design/star-salvage/v063', 'design/star-salvage/v064', 'design/star-salvage/v065', 'design/star-salvage/v066', 'design/star-salvage/v067', 'design/star-salvage/v068']
     dirty_paths = subprocess.check_output(['git', 'status', '--porcelain', '--', *relevant], cwd=ROOT, text=True).strip()
     dirty = bool(dirty_paths)
     if args.freeze and dirty:
@@ -38,10 +38,10 @@ def main():
         raw = path.read_bytes()
         source_files.append({'path': path.relative_to(ROOT).as_posix(), 'bytes': len(raw), 'sha256': digest(raw)})
         if path.name == 'index.html':
-            stamp = {'version': '0.6.7', 'commit': commit, 'dirty': dirty}
+            stamp = {'version': '0.6.8', 'commit': commit, 'dirty': dirty}
             raw = re.sub(r'window.SurvivorBuild = \{.*?\};', 'window.SurvivorBuild = ' + json.dumps(stamp) + ';', raw.decode(), flags=re.S).encode()
         payload[path.relative_to(HERE).as_posix()] = raw
-    if len(payload) != 80 or sum(name.endswith('.png') for name in payload) != 70 or sum(name.endswith('.mp3') for name in payload) != 2:
+    if len(payload) != 84 or sum(name.endswith('.png') for name in payload) != 74 or sum(name.endswith('.mp3') for name in payload) != 2:
         raise RuntimeError('Unexpected runtime inventory')
     output = HERE / 'dist'
     output.mkdir(exist_ok=True)
@@ -59,7 +59,7 @@ def main():
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o644 << 16
             zipped.writestr(info, raw, compresslevel=9)
-    report = {'version': '0.6.7', 'sourceCommit': commit, 'dirty': dirty, 'archive': archive.name,
+    report = {'version': '0.6.8', 'sourceCommit': commit, 'dirty': dirty, 'archive': archive.name,
               'bytes': archive.stat().st_size, 'sha256': digest(archive.read_bytes()),
               'fileCount': len(payload), 'pngCount': sum(name.endswith('.png') for name in payload), 'uncompressedBytes': sum(map(len, payload.values())),
               'files': [{'path': name, 'bytes': len(raw), 'sha256': digest(raw)} for name, raw in sorted(payload.items())],

@@ -154,19 +154,35 @@
         <div class="engineering-grid" id="engineeringList"></div>
         <div class="launch-prep">
           <h3>下局起始武器</h3>
-          <button id="chooseLaunchBtn" class="launch-summary"><span id="launchSummary"></span></button>
+          <button id="chooseLaunchBtn" class="launch-summary">
+            <span id="launchSummary"></span>
+          </button>
         </div>
         <button id="closeDockBtn" class="primary">返回</button>
       </section>
-      <section class="overlay launch-overlay" id="launchPicker" aria-label="选择起始武器" hidden>
-        <header class="launch-heading"><div><span class="subtitle">下次出发</span><h2>选择起始武器</h2></div><span id="launchBalance"></span></header>
+      <section
+        class="overlay launch-overlay"
+        id="launchPicker"
+        aria-label="选择起始武器"
+        hidden
+      >
+        <header class="launch-heading">
+          <div>
+            <span class="subtitle">下次出发</span>
+            <h2>选择起始武器</h2>
+          </div>
+          <span id="launchBalance"></span>
+        </header>
         <div class="launch-portrait" id="launchPortrait"></div>
-        <input id="launchWeapon" type="hidden" value="drone">
+        <input id="launchWeapon" type="hidden" value="drone" />
         <div class="launch-cards" id="launchCards" aria-label="武器"></div>
+        <div id="launchRoute" class="launch-route"></div>
         <div class="launch-actions">
           <p id="launchStatus" role="status"></p>
           <button id="bookLaunchBtn" class="primary"></button>
-          <button id="cancelLaunchBtn" class="darkbtn" hidden>取消预约 · 全额退回</button>
+          <button id="cancelLaunchBtn" class="darkbtn" hidden>
+            取消预约 · 全额退回
+          </button>
           <button id="closeLaunchBtn" class="secondary">返回整备</button>
         </div>
       </section>

@@ -87,7 +87,11 @@ async function createModel(sourceFiles = {}) {
     scope,
   );
   for (const [id, entry] of Object.entries(scope.SurvivorArtCatalog))
-    if (entry.src.includes("/v065/") || entry.src.includes("/v067/") || entry.src.includes("/v068/"))
+    if (
+      entry.src.includes("/v065/") ||
+      entry.src.includes("/v067/") ||
+      entry.src.includes("/v068/")
+    )
       scope.SurvivorArt.catalog[id] = entry;
   for (const file of ["balance.js", "game.js"])
     vm.runInContext(

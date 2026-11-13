@@ -14,6 +14,7 @@ const { createModel } = require("./model-harness.cjs");
     : { passed: 0, cases: [], errors: [] };
   function start(perks = {}) {
     const g = Q.startModel(91, perks);
+    Q.legacyV067();
     g.spawnTime = 9999;
     g.p.inv = 9999;
     g.encounters.schedule = [];

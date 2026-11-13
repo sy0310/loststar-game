@@ -117,7 +117,7 @@ test("new decoded enemy bodies produce actual dash, beam, mine, curved and shock
       },
     );
   });
-  for (const row of rows) expect(row.art).toBe(70);
+  for (const row of rows) expect(row.art).toBe(74);
   expect(rows.find((r) => r.type === "lancer").charge).toBeGreaterThan(0);
   expect(rows.find((r) => r.type === "sentinel").hazards).toContain("beam");
   expect(rows.find((r) => r.type === "minelayer").hazards).toContain("mine");
@@ -358,7 +358,7 @@ test("galaxy raster and all five actor sources decode and reduced motion keeps m
   await page.touchscreen.tap(80, 450);
   await page.waitForTimeout(250);
   expect((await state(page)).time).toBeGreaterThan(0);
-  expect((await state(page)).rules.combatVersion).toBe(6);
+  expect((await state(page)).rules.combatVersion).toBe(7);
 });
 
 test("boss alternates actual fan, sweep and gap shock while hazard and bullet caps stay bounded", async ({

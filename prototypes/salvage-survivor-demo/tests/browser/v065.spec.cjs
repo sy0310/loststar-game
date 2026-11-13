@@ -111,7 +111,7 @@ test("v065 final fusion renders its own transparent mount and dedicated icon and
       assets: SurvivorArt.loaded(),
     };
   });
-  expect(result.assets).toBe(70);
+  expect(result.assets).toBe(74);
   expect(result.calls.find((c) => c.id === "bastion_mount").options.scale).toBe(
     1.6,
   );
@@ -214,7 +214,7 @@ test("v065 real pause reload keeps boss identity, finite escort budget and pince
   await page.waitForFunction(() => SurvivorDemo.state()?.mode === "play");
   await pause(page);
   const after = await state(page);
-  expect(after.rules.combatVersion).toBe(6);
+  expect(after.rules.combatVersion).toBe(7);
   expect(after.enemy.find((e) => e.t === "boss").bossProfile).toBe("judicator");
   expect(after.enemy.find((e) => e.eliteProfile === "hive").summonsLeft).toBe(
     2,

@@ -83,11 +83,11 @@ test("v067 engineering from27049 buys real speed and survives refresh with exact
   await dock(page);
   await page.locator('[data-engineering="thrusters"]').tap();
   await page.waitForFunction(() => !SurvivorDemo.saving());
-  expect((await stored(page)).profile.credits).toBe(26749);
+  expect((await stored(page)).profile.credits).toBe(26499);
   expect((await stored(page)).profile.engineering.thrusters).toBe(1);
   await page.reload();
   await page.waitForFunction(() => SurvivorDemo.ready());
-  expect((await stored(page)).profile.credits).toBe(26749);
+  expect((await stored(page)).profile.credits).toBe(26499);
   await page.locator("#retryBtn").tap();
   await page.waitForFunction(
     () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
@@ -110,7 +110,7 @@ test("v067 failed and concurrent engineering writes retain funds and accept only
     return { statuses: results.map((r) => r.status), profile: record.profile };
   });
   expect(r.statuses.sort()).toEqual(["fulfilled", "rejected"]);
-  expect(r.profile.credits).toBe(26749);
+  expect(r.profile.credits).toBe(26499);
   expect(r.profile.engineering.plating).toBe(1);
 });
 test("v067 launch reservation cancellation refunds once and successful launch consumes the chosen weapon once", async ({
@@ -118,7 +118,8 @@ test("v067 launch reservation cancellation refunds once and successful launch co
 }) => {
   await funded(page);
   await dock(page);
-  await page.locator("#launchWeapon").selectOption("prism");
+  await page.locator("#chooseLaunchBtn").tap();
+  await page.locator('[data-launch-weapon="prism"]').tap();
   await page.locator("#bookLaunchBtn").tap();
   await page.waitForFunction(() => !SurvivorDemo.saving());
   expect((await stored(page)).profile.credits).toBe(26849);

@@ -240,8 +240,7 @@
           )
             throw Error("强化已变化，请按当前界面重试");
           const level = record.profile[kind];
-          const cost =
-            B.permanentCosts[kind][level];
+          const cost = B.permanentCosts[kind][level];
           if (level >= B.permanentMaxLevel || record.profile.credits < cost)
             throw Error("当前零件不足或已满级");
           record.profile.credits -= cost;

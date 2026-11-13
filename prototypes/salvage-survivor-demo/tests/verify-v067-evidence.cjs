@@ -190,9 +190,21 @@ const current = JSON.parse(
 ).acceptance;
 assert.deepEqual(current.requirements.slice(0, 360), historical.requirements);
 assert.deepEqual(current.requiredIds.slice(0, 360), historical.requiredIds);
-assert.equal(current.requirements.length, 365);
-assert.equal(new Set(current.requiredIds).size, 365);
-for (const row of current.requirements.slice(360)) {
+const frozen067 = JSON.parse(
+  cp.execFileSync(
+    "git",
+    [
+      "show",
+      "9c82a78832de9d84d7b9a1c5da2a735b10f5aaca:design/visual-renewal/ASSET_REGISTRY.json",
+    ],
+    { cwd: root, encoding: "utf8", maxBuffer: 12 * 1024 * 1024 },
+  ),
+).acceptance;
+assert.deepEqual(current.requirements.slice(0, 365), frozen067.requirements);
+assert.deepEqual(current.requiredIds.slice(0, 365), frozen067.requiredIds);
+assert(current.requirements.length >= 365);
+assert.equal(new Set(current.requiredIds).size, current.requiredIds.length);
+for (const row of current.requirements.slice(360, 365)) {
   assert.equal(row.implementation, "IMPLEMENTED");
   assert.equal(row.phone, "NOT_TESTED");
   assert.equal(row.sandboxBinding.sourceCommit, b.sourceCommit);

@@ -346,7 +346,7 @@ test("v064900-second shots refractions and elite armor persist through an actual
   await page.waitForFunction(
     () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
   );
-  expect((await state(page)).rules.combatVersion).toBe(6);
+  expect((await state(page)).rules.combatVersion).toBe(7);
   expect((await state(page)).endTime).toBe(900);
 });
 
