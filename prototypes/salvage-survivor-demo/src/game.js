@@ -573,8 +573,11 @@
       )
         picks.push(option);
     }
-    if (runRules().runSeconds > 180 && g.p.hp / g.p.maxhp < 0.35)
+    if (runRules().runSeconds > 180 && g.p.hp / g.p.maxhp < 0.35) {
       add({ id: "repair", kind: "bonus", level: 0 });
+      if (engineeringCombat() && g.upgradeSource?.kind !== "boss")
+        add(available.find((option) => option.id === "repairpod"));
+    }
     if (recoveryCombat() && g.upgradeSource?.kind === "boss") {
       if (g.upgradeSource.loot.length)
         add({

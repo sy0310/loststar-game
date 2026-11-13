@@ -110,7 +110,16 @@ function select(g, policy) {
   for (const perks of [0, 3])
     for (const policy of policyIds)
       for (let seed = 1; seed <= seedCount; seed++) {
-        const g = Q.startModel(seed, { hull: perks, gun: perks });
+        const g = Q.startModel(seed, {
+          hull: perks,
+          gun: perks,
+          engineering: {
+            version: 1,
+            thrusters: perks ? 6 : 0,
+            salvage: perks ? 6 : 0,
+            plating: perks ? 6 : 0,
+          },
+        });
         const samples = [],
           choices = [];
         const thresholds = [
@@ -244,6 +253,9 @@ function select(g, policy) {
     gun: [90, 180, 270],
     total: 960,
     oldWalletConversion: false,
+    engineeringPerBranch: [300, 500, 800, 1200, 1700, 2300],
+    engineeringTotal: 20400,
+    launchPerRun: 200,
   };
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
