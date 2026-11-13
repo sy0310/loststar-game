@@ -1,5 +1,5 @@
 window.SurvivorBalance = {
-  "version": "0.6.9",
+  "version": "0.6.10",
   "runSeconds": 900,
   "eliteAt": 70,
   "bossAt": 130,
@@ -680,5 +680,9 @@ window.SurvivorBalance = {
   "selection": {
     "rerolls": 3,
     "focusWeight": 1.35
+  },
+  "upgradeRepair": {
+    "startRatio": 0.28,
+    "endRatio": 0.7
   }
 };

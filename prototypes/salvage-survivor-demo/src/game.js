@@ -165,6 +165,19 @@
   const polishedCombat = (game = g) =>
     [7, 8].includes(runRules(game).combatVersion);
   const selectionCombat = (game = g) => runRules(game).combatVersion === 8;
+  function upgradeRepairAmount(game = g) {
+    const rules = runRules(game);
+    let capacity = 28;
+    if (selectionCombat(game) && rules.repairScalingVersion === 1) {
+      const progress = Math.max(0, Math.min(1, game.time / rules.runSeconds));
+      const ratio =
+        B.upgradeRepair.startRatio +
+        (B.upgradeRepair.endRatio - B.upgradeRepair.startRatio) * progress;
+      capacity = Math.round(game.p.maxhp * ratio);
+    }
+    return Math.max(0, Math.min(capacity, game.p.maxhp - game.p.hp));
+  }
+  const repairLabel = (amount) => String(Math.round(amount * 10) / 10);
   const eliteSpec = (enemy, game = g) =>
     (showcaseCombat(game) ? B.showcase : B.assault).eliteProfiles[
       enemy.eliteProfile
@@ -276,6 +289,7 @@
         activeSlots: B.activeSlots,
         passiveSlots: B.passiveSlots,
         combatVersion: 8,
+        repairScalingVersion: 1,
         progressionVersion: 2,
       },
       time: 0,
@@ -755,7 +769,7 @@
             : null) ||
           DESCS[option.id] ||
           {
-            repair: "恢复28船体",
+            repair: "恢复" + repairLabel(upgradeRepairAmount()) + "船体",
             reserveShield: "立即获得一次护盾",
             salvage: "本局带回零件 +8",
           }[option.id];
@@ -770,6 +784,8 @@
           hint = newProgression()
             ? "两件已进化武器 · 合并空出1格"
             : "合并两件武器 · 空出1格";
+        else if (option.id === "repair" && g.rules.repairScalingVersion === 1)
+          hint = "消耗本次升级 · 随战斗时间与船体上限增加";
         else if (pair) {
           const weaponLevel =
             option.id === pair[0] ? option.level : g.active[pair[0]] || 0;
@@ -945,6 +961,7 @@
       notify("装置状态已更新 · 请重新选择");
       return false;
     }
+    const repaired = option.id === "repair" ? upgradeRepairAmount() : 0;
     if (option.kind === "cache") {
       for (const grant of option.grants) {
         applyEquipmentUpgrade(grant);
@@ -967,7 +984,7 @@
       });
       g.fused[option.id] = true;
     } else if (option.id === "repair")
-      g.p.hp = Math.min(g.p.maxhp, g.p.hp + 28);
+      g.p.hp = Math.min(g.p.maxhp, g.p.hp + repaired);
     else if (option.id === "reserveShield") g.p.shield = 1;
     else g.credits += 8;
     g.metrics.events.push({
@@ -1018,7 +1035,9 @@
           .map((grant) => NAMES[grant.id] + "＋" + (grant.level - grant.from))
           .join(" · "),
       );
-    } else notify(NAMES[option.id] || "补给已装载");
+    } else if (option.id === "repair")
+      notify("船体修复＋" + repairLabel(repaired));
+    else notify(NAMES[option.id] || "补给已装载");
     updateHud(true);
     void saveCheckpoint();
     return true;
@@ -5119,6 +5138,8 @@
       ![180, 600, 900].includes(rules.runSeconds) ||
       (rules.combatVersion !== undefined &&
         ![2, 3, 4, 5, 6, 7, 8].includes(rules.combatVersion)) ||
+      (rules.repairScalingVersion !== undefined &&
+        rules.repairScalingVersion !== 1) ||
       (rules.progressionVersion !== undefined &&
         rules.progressionVersion !== 2) ||
       (newProgression(game) &&

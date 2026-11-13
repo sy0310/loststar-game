@@ -48,7 +48,7 @@ async function stored(page) {
 (async () => {
   const report = {
     scope:
-      "Actual committed4ca726f and f9bf85c ZIPs served over same-origin HTTP before replacing the server with the current frozen v069 package. Original user profiles are separate.",
+      "Actual committed4ca726f and f9bf85c ZIPs served over same-origin HTTP before replacing the server with the current frozen v0610 package. Original user profiles are separate.",
     engines: [],
   };
   for (const baseline of [
@@ -101,6 +101,13 @@ async function stored(page) {
       activeMax: 5,
       passiveMax: 5,
     },
+    {
+      version: "0.6.9",
+      commit: "6bff9f11527d1aa231b328246abfe4235f002ff1",
+      archive: "artifacts/survivor-v069/loststar-survivor-6bff9f1.zip",
+      activeMax: 5,
+      passiveMax: 5,
+    },
   ]) {
     execFileSync("python3", [
       "-c",
@@ -132,7 +139,7 @@ async function stored(page) {
             SurvivorQA.state().credits = amount;
             await SurvivorQA.end(false);
           },
-          baseline.version === "0.6.8"
+          ["0.6.8", "0.6.9"].includes(baseline.version)
             ? 35699
             : baseline.version === "0.6.7"
               ? 28909
@@ -145,7 +152,7 @@ async function stored(page) {
             await page.waitForFunction(() => !SurvivorDemo.saving());
             await delay(600);
           }
-        if (["0.6.7", "0.6.8"].includes(baseline.version)) {
+        if (["0.6.7", "0.6.8", "0.6.9"].includes(baseline.version)) {
           await page.locator("#resultDockBtn").click();
           for (const id of ["thrusters", "salvage", "plating"]) {
             await delay(600);
@@ -190,7 +197,7 @@ async function stored(page) {
         assert.equal(before.profile.credits, 27049);
         assert.equal(before.profile.hull, 3);
         assert.equal(before.profile.gun, 3);
-        if (["0.6.7", "0.6.8"].includes(baseline.version))
+        if (["0.6.7", "0.6.8", "0.6.9"].includes(baseline.version))
           assert.deepEqual(before.profile.engineering, {
             version: 1,
             thrusters: 1,
@@ -207,7 +214,7 @@ async function stored(page) {
         await page.reload();
         await page.waitForFunction(() => SurvivorDemo.ready());
         const newBuild = await page.evaluate(() => SurvivorBuild);
-        assert.equal(newBuild.version, "0.6.9");
+        assert.equal(newBuild.version, "0.6.10");
         assert.deepEqual(await stored(page), before);
         await page.locator("#continueBtn").click();
         await page.waitForFunction(
@@ -219,7 +226,9 @@ async function stored(page) {
         assert.equal(oldRun.fused.thunderhive, true);
         assert.equal(
           oldRun.endTime,
-          ["0.6.4", "0.6.5", "0.6.6", "0.6.7", "0.6.8"].includes(baseline.version)
+          ["0.6.4", "0.6.5", "0.6.6", "0.6.7", "0.6.8", "0.6.9"].includes(
+            baseline.version,
+          )
             ? 900
             : 600,
         );
@@ -239,11 +248,12 @@ async function stored(page) {
         const next = await page.evaluate(() => SurvivorDemo.state());
         assert.equal(next.rules.progressionVersion, 2);
         assert.equal(next.rules.combatVersion, 8);
+        assert.equal(next.rules.repairScalingVersion, 1);
         assert.equal(next.rerollsRemaining, 3);
         assert.equal(next.endTime, 900);
         assert.equal((await stored(page)).profile.credits, 27049);
         assert.equal(next.p.maxhp, 148);
-        if (["0.6.7", "0.6.8"].includes(baseline.version)) {
+        if (["0.6.7", "0.6.8", "0.6.9"].includes(baseline.version)) {
           assert.deepEqual(next.engineering, before.profile.engineering);
           assert(Math.abs(next.p.speed - 178.5) < 0.001);
         }
@@ -270,7 +280,7 @@ async function stored(page) {
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
   console.log(
-    "PASS both engines actual v062/v063/v064/v065/v066/v067/v068 ZIP -> v069 HTTP, old27049/rights/EVO/fusion and new900-second run",
+    "PASS both engines actual v062/v063/v064/v065/v066/v067/v068/v069 ZIP -> v0610 HTTP, old27049/rights/EVO/fusion and new900-second run",
   );
 })()
   .catch((e) => {
