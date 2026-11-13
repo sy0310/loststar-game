@@ -53,7 +53,7 @@ const { createModel } = require("./model-harness.cjs");
     Q.reward(true);
     assert(Q.pick(id));
   }
-  await test("new runs save version7 while v067 snapshots remain valid", () => {
+  await test("saved v068 version7 and v067 snapshots remain valid", () => {
     const g = start();
     assert.equal(g.rules.combatVersion, 7);
     Q.validate(Q.snapshot());

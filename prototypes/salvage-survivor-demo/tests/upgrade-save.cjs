@@ -207,7 +207,7 @@ async function stored(page) {
         await page.reload();
         await page.waitForFunction(() => SurvivorDemo.ready());
         const newBuild = await page.evaluate(() => SurvivorBuild);
-        assert.equal(newBuild.version, "0.6.8");
+        assert.equal(newBuild.version, "0.6.9");
         assert.deepEqual(await stored(page), before);
         await page.locator("#continueBtn").click();
         await page.waitForFunction(

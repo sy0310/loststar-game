@@ -826,11 +826,12 @@
       (Object.keys(g.active).length + Object.keys(g.fused).length) +
       "/" +
       runRules().activeSlots +
+      (selectionCombat() ? "（" + ACTIVE.length + "种）" : "") +
       " · 增强 " +
       Object.keys(g.passive).length +
       "/" +
       runRules().passiveSlots +
-      (selectionCombat() ? " · 9种武装／8种增强可选" : "");
+      (selectionCombat() ? "（" + PASSIVE.length + "种）" : "");
     const bossReward = g.upgradeSource?.kind === "boss";
     const lottery = recoveryCombat() && bossReward;
     $("upgradeTitle").textContent = lottery
