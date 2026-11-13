@@ -143,9 +143,26 @@ const registry = JSON.parse(
 ).acceptance;
 assert.deepEqual(registry.requirements.slice(0, 354), oldRegistry.requirements);
 assert.deepEqual(registry.requiredIds.slice(0, 354), oldRegistry.requiredIds);
-assert.equal(registry.requirements.length, 360);
-assert.equal(new Set(registry.requiredIds).size, 360);
-for (const row of registry.requirements.slice(354)) {
+const publishedRegistry = JSON.parse(
+  cp.execFileSync(
+    "git",
+    [
+      "show",
+      "e3106495eeea25b5d1af56b9842b8b5e0f91a581:design/visual-renewal/ASSET_REGISTRY.json",
+    ],
+    { cwd: root, encoding: "utf8", maxBuffer: 12 * 1024 * 1024 },
+  ),
+).acceptance;
+assert.deepEqual(
+  registry.requirements.slice(0, 360),
+  publishedRegistry.requirements,
+);
+assert.deepEqual(
+  registry.requiredIds.slice(0, 360),
+  publishedRegistry.requiredIds,
+);
+assert.equal(new Set(registry.requiredIds).size, registry.requiredIds.length);
+for (const row of registry.requirements.slice(354, 360)) {
   assert.equal(row.implementation, "IMPLEMENTED");
   assert.equal(row.phone, "NOT_TESTED");
   assert.equal(row.sandboxBinding.sourceCommit, build.sourceCommit);
