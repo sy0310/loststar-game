@@ -11,6 +11,7 @@ const assert = require("node:assert/strict");
     for (const previous of [true, false]) {
       const game = Q.startModel(91);
       if (previous) Q.legacyV065();
+      else Q.legacyV066();
       game.spawnTime = 99999;
       game.p.inv = 9999;
       game.encounters.schedule = [];

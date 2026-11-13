@@ -143,3 +143,51 @@ test("v067 launch reservation cancellation refunds once and successful launch co
   await page.waitForFunction(() => SurvivorDemo.ready());
   expect(await stored(page)).toEqual(before);
 });
+
+test("v067 aborted engineering purchase and repeated cancellation retain an exact transaction ledger", async ({
+  page,
+}) => {
+  await funded(page);
+  await dock(page);
+  const result = await page.evaluate(async () => {
+    const s = await SurvivorPersistence.create({ qa: true }),
+      before = (await s.read()).record,
+      put = IDBObjectStore.prototype.put;
+    let rejected = false;
+    IDBObjectStore.prototype.put = function (value, key) {
+      if (key === "current")
+        throw new DOMException(
+          "QA engineering write failure",
+          "QuotaExceededError",
+        );
+      return put.apply(this, arguments);
+    };
+    try {
+      await s.buyEngineering("salvage", 0);
+    } catch {
+      rejected = true;
+    } finally {
+      IDBObjectStore.prototype.put = put;
+    }
+    const aborted = (await s.read()).record;
+    await s.bookLaunch("arc");
+    const cancellations = await Promise.allSettled([
+      s.cancelLaunch("arc"),
+      s.cancelLaunch("arc"),
+    ]);
+    const after = (await s.read()).record;
+    s.close();
+    return {
+      before,
+      aborted,
+      rejected,
+      statuses: cancellations.map((x) => x.status),
+      after,
+    };
+  });
+  expect(result.rejected).toBe(true);
+  expect(result.aborted).toEqual(result.before);
+  expect(result.statuses.sort()).toEqual(["fulfilled", "rejected"]);
+  expect(result.after.profile.credits).toBe(27049);
+  expect(result.after.profile.launchPlan).toBeUndefined();
+});

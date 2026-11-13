@@ -117,7 +117,7 @@ test("new decoded enemy bodies produce actual dash, beam, mine, curved and shock
       },
     );
   });
-  for (const row of rows) expect(row.art).toBe(68);
+  for (const row of rows) expect(row.art).toBe(70);
   expect(rows.find((r) => r.type === "lancer").charge).toBeGreaterThan(0);
   expect(rows.find((r) => r.type === "sentinel").hazards).toContain("beam");
   expect(rows.find((r) => r.type === "minelayer").hazards).toContain("mine");

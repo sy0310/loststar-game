@@ -43,13 +43,13 @@ for (const [active, passive, id, damageKind] of evolutions)
           if (!Q.pick(id)) throw Error("evolution rejected");
           Q.enemy(
             "skimmer",
-            active === "blade" ? 90 : 0,
+            active === "blade" ? Q.orbits().bladeRadius : 0,
             active === "blade" ? 0 : -100,
             100000,
           );
           Q.enemy(
             "skimmer",
-            active === "blade" ? 112 : 35,
+            active === "blade" ? Q.orbits().bladeRadius + 12 : 35,
             active === "blade" ? 0 : -130,
             100000,
           );
@@ -76,7 +76,7 @@ for (const [active, passive, id, damageKind] of evolutions)
       expect(result.id).toBe(id);
       expect(result.damage).toBeGreaterThan(0);
       expect(result.enemyHP.some((hp) => hp < 100000)).toBe(true);
-      expect(result.art).toBe(68);
+      expect(result.art).toBe(70);
       expect(result.slots).toBe(1);
       await info.attach("actual-evolution", {
         body: Buffer.from(JSON.stringify(result, null, 2)),
@@ -122,13 +122,13 @@ for (const [a, b, id] of [
           if (!Q.pick(id)) throw Error("fusion rejected");
           Q.enemy(
             "skimmer",
-            id === "blastwheel" ? 78 : 0,
+            id === "blastwheel" ? Q.orbits().bladeRadius : 0,
             id === "blastwheel" ? 0 : -75,
             100000,
           );
           Q.enemy(
             "skimmer",
-            id === "blastwheel" ? 112 : 40,
+            id === "blastwheel" ? Q.orbits().bladeRadius + 34 : 40,
             id === "blastwheel" ? 0 : -80,
             100000,
           );

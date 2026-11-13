@@ -111,7 +111,7 @@ test("v065 final fusion renders its own transparent mount and dedicated icon and
       assets: SurvivorArt.loaded(),
     };
   });
-  expect(result.assets).toBe(68);
+  expect(result.assets).toBe(70);
   expect(result.calls.find((c) => c.id === "bastion_mount").options.scale).toBe(
     1.6,
   );

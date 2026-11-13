@@ -157,6 +157,30 @@ const { createModel } = require("./model-harness.cjs");
     Q.step(4);
     assert(Math.abs(g.p.hp - 35) < 0.001);
   });
+  await test("all paid starting weapons deal damage and can reach the first upgrade", () => {
+    const rows = [];
+    for (const weapon of [
+      "drone",
+      "arc",
+      "missile",
+      "blade",
+      "prism",
+      "gravity",
+    ]) {
+      const g = start({ launchPlan: { weapon, paid: 200 } });
+      g.spawnTime = 0.25;
+      for (let frame = 0; frame < 90 * 60 && g.mode === "play"; frame++) {
+        const d = Math.floor(g.time / 1.5) % 4;
+        g.keys = { d: d === 0, s: d === 1, a: d === 2, w: d === 3 };
+        Q.step(1 / 60);
+      }
+      assert(g.kills > 0, weapon + " cannot attack");
+      assert(g.level > 1, weapon + " cannot progress");
+      rows.push({ weapon, kills: g.kills, time: g.time, level: g.level });
+      Q.validate(Q.snapshot());
+    }
+    return rows;
+  });
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(report, null, 2));
 })();
