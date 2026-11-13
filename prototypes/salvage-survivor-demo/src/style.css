@@ -949,3 +949,93 @@ h2 {
   height: 36px;
   image-rendering: pixelated;
 }
+
+.dock-overlay {
+  justify-content: flex-start;
+  gap: 10px;
+}
+.dock-overlay h2 {
+  font-size: 30px;
+  margin: 0;
+}
+.dock-overlay h3 {
+  font-size: 16px;
+  margin: 0 0 7px;
+}
+.dock-balance {
+  font-weight: 700;
+  color: var(--gold);
+  margin: 0;
+}
+.dock-base {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.dock-base button {
+  font-size: 12px;
+  min-height: 64px;
+}
+.dock-base img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 4px;
+  image-rendering: pixelated;
+}
+.engineering-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+.engineering-card {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  align-items: center;
+  gap: 3px 8px;
+  text-align: left;
+  padding: 9px;
+  background: #2c263e;
+  border: 1px solid #897391;
+  color: #e9ddf3;
+}
+.engineering-card img {
+  grid-row: 1/3;
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+}
+.engineering-card span {
+  font-size: 11px;
+  grid-column: 2;
+}
+.engineering-card b {
+  grid-column: 3;
+  grid-row: 1/3;
+  color: #f4d18b;
+  font-size: 12px;
+}
+.launch-prep {
+  padding: 10px;
+  border: 1px solid #897391;
+  background: #211d30;
+}
+.launch-prep p,
+.launch-prep label {
+  font-size: 12px;
+  margin: 6px 0;
+}
+.launch-prep select {
+  width: 100%;
+  padding: 8px;
+  background: #302941;
+  color: #f2e7d3;
+  border: 1px solid #897391;
+  font: inherit;
+}
+.launch-prep button {
+  margin-top: 6px;
+  width: 100%;
+  font-size: 12px;
+  min-height: 36px;
+}

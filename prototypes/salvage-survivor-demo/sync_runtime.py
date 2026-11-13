@@ -20,6 +20,7 @@ def generated():
     manifests.append(ROOT/'design/star-salvage/v064/production/actors/manifest.json')
     manifests.append(ROOT/'design/star-salvage/v064/production/weapons/manifest.json')
     manifests.extend(ROOT/'design/star-salvage/v065/production'/group/'manifest.json' for group in ('bosses', 'elites', 'weapons'))
+    manifests.append(ROOT/'design/star-salvage/v067/production/repair/manifest.json')
     for path in manifests:
         manifest = json.loads(path.read_text())
         for asset in manifest['assets']:

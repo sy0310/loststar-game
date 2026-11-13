@@ -25,6 +25,25 @@
         throw Error("强化档案字段无效，原始数据已保留");
       }
     }
+    if (
+      profile.engineering !== undefined &&
+      (!profile.engineering ||
+        profile.engineering.version !== 1 ||
+        ["thrusters", "salvage", "plating"].some(
+          (id) =>
+            !Number.isInteger(profile.engineering[id]) ||
+            profile.engineering[id] < 0 ||
+            profile.engineering[id] > B.engineering.maxLevel,
+        ))
+    )
+      throw Error("工程档案无效，原始数据保留");
+    if (
+      profile.launchPlan !== undefined &&
+      (!profile.launchPlan ||
+        !B.engineering.launchWeapons.includes(profile.launchPlan.weapon) ||
+        profile.launchPlan.paid !== B.engineering.launchCost)
+    )
+      throw Error("出战预约无效，原始数据保留");
     return profile;
   }
 
@@ -141,6 +160,23 @@
       begin(id, snapshot) {
         return transaction((record) => {
           if (record.active) throw Error("还有未结束的一局，请先继续或结算");
+          if (snapshot.game?.rules?.combatVersion === 6) {
+            const engineering = {
+              version: 1,
+              thrusters: 0,
+              salvage: 0,
+              plating: 0,
+              ...record.profile.engineering,
+            };
+            if (
+              JSON.stringify(snapshot.game.engineering) !==
+                JSON.stringify(engineering) ||
+              snapshot.game.launchWeapon !==
+                (record.profile.launchPlan?.weapon || "cannon")
+            )
+              throw Error("整备已变化，请重新开始本局");
+            delete record.profile.launchPlan;
+          }
           record.active = {
             id,
             revision: 0,
@@ -212,6 +248,56 @@
           record.profile.credits -= cost;
           record.profile[kind]++;
           return { write: true, cost };
+        });
+      },
+      buyEngineering(kind, expectedLevel) {
+        return transaction((record) => {
+          if (record.active) throw Error("请在本局结算后整备");
+          if (!["thrusters", "salvage", "plating"].includes(kind))
+            throw Error("工程项目无效");
+          const engineering = {
+            version: 1,
+            thrusters: 0,
+            salvage: 0,
+            plating: 0,
+            ...record.profile.engineering,
+          };
+          const level = engineering[kind];
+          if (level !== expectedLevel) throw Error("工程等级已变化，请重试");
+          const cost = B.engineering.costs[level];
+          if (level >= B.engineering.maxLevel || record.profile.credits < cost)
+            throw Error("当前零件不足或已满级");
+          record.profile.credits -= cost;
+          engineering[kind]++;
+          record.profile.engineering = engineering;
+          return { write: true, cost };
+        });
+      },
+      bookLaunch(weapon) {
+        return transaction((record) => {
+          if (record.active || record.profile.launchPlan)
+            throw Error("请先结束当前航次或取消已有预约");
+          if (!B.engineering.launchWeapons.includes(weapon))
+            throw Error("起始武器无效");
+          const cost = B.engineering.launchCost;
+          if (record.profile.credits < cost) throw Error("当前零件不足");
+          record.profile.credits -= cost;
+          record.profile.launchPlan = { weapon, paid: cost };
+          return { write: true, cost };
+        });
+      },
+      cancelLaunch(weapon) {
+        return transaction((record) => {
+          if (
+            record.active ||
+            !record.profile.launchPlan ||
+            record.profile.launchPlan.weapon !== weapon
+          )
+            throw Error("预约已变化，请按当前状态重试");
+          const refunded = record.profile.launchPlan.paid;
+          record.profile.credits += refunded;
+          delete record.profile.launchPlan;
+          return { write: true, refunded };
         });
       },
       close() {

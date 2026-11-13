@@ -7,7 +7,7 @@ const path = require("node:path");
 const assert = require("node:assert/strict");
 const here = path.resolve(__dirname, "..");
 const root = path.resolve(here, "../..");
-const temp = fs.mkdtempSync(path.join(os.tmpdir(), "loststar-v066-migration-"));
+const temp = fs.mkdtempSync(path.join(os.tmpdir(), "loststar-v067-migration-"));
 const oldRoot = path.join(temp, "old");
 const newRoot = process.env.SURVIVOR_CURRENT_ROOT || here;
 const output = path.resolve(
@@ -48,7 +48,7 @@ async function stored(page) {
 (async () => {
   const report = {
     scope:
-      "Actual committed4ca726f and f9bf85c ZIPs served over same-origin HTTP before replacing the server with the current frozen v066 package. Original user profiles are separate.",
+      "Actual committed4ca726f and f9bf85c ZIPs served over same-origin HTTP before replacing the server with the current frozen v067 package. Original user profiles are separate.",
     engines: [],
   };
   for (const baseline of [
@@ -63,6 +63,13 @@ async function stored(page) {
       version: "0.6.3",
       commit: "f9bf85c1ac9313d44edfc63403761a648cd9b2cb",
       archive: "artifacts/survivor-v063/loststar-survivor-f9bf85c.zip",
+      activeMax: 5,
+      passiveMax: 5,
+    },
+    {
+      version: "0.6.6",
+      commit: "dc04cab84b2c6e28d384e2bee9ece68bde0868ed",
+      archive: "artifacts/survivor-v066/loststar-survivor-dc04cab.zip",
       activeMax: 5,
       passiveMax: 5,
     },
@@ -163,7 +170,7 @@ async function stored(page) {
         await page.reload();
         await page.waitForFunction(() => SurvivorDemo.ready());
         const newBuild = await page.evaluate(() => SurvivorBuild);
-        assert.equal(newBuild.version, "0.6.6");
+        assert.equal(newBuild.version, "0.6.7");
         assert.deepEqual(await stored(page), before);
         await page.locator("#continueBtn").click();
         await page.waitForFunction(
@@ -175,7 +182,7 @@ async function stored(page) {
         assert.equal(oldRun.fused.thunderhive, true);
         assert.equal(
           oldRun.endTime,
-          ["0.6.4", "0.6.5"].includes(baseline.version) ? 900 : 600,
+          ["0.6.4", "0.6.5", "0.6.6"].includes(baseline.version) ? 900 : 600,
         );
         assert.equal(
           oldRun.rules.progressionVersion,
@@ -192,7 +199,7 @@ async function stored(page) {
         );
         const next = await page.evaluate(() => SurvivorDemo.state());
         assert.equal(next.rules.progressionVersion, 2);
-        assert.equal(next.rules.combatVersion, 5);
+        assert.equal(next.rules.combatVersion, 6);
         assert.equal(next.endTime, 900);
         assert.equal((await stored(page)).profile.credits, 27049);
         assert.equal(next.p.maxhp, 148);
@@ -219,7 +226,7 @@ async function stored(page) {
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
   console.log(
-    "PASS both engines actual v062/v063/v064/v065 ZIP -> v066 HTTP, old27049/rights/EVO/fusion and new900-second run",
+    "PASS both engines actual v062/v063/v064/v065/v066 ZIP -> v067 HTTP, old27049/rights/EVO/fusion and new900-second run",
   );
 })()
   .catch((e) => {

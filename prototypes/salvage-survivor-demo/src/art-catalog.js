@@ -3040,5 +3040,79 @@ window.SurvivorArtCatalog = {
         ]
       }
     ]
+  },
+  "repair_pod": {
+    "nativeSize": [
+      28,
+      24
+    ],
+    "center": [
+      14.0,
+      12.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "collisionRadius": 0,
+    "originAnchor": [
+      14,
+      13
+    ],
+    "launchAnchors": [
+      [
+        5,
+        5
+      ],
+      [
+        22,
+        5
+      ]
+    ],
+    "src": "./assets/v067/repair/repair_pod@2x.png",
+    "sha256": "1e9c74edc24c1d0a5e120b9218c869dc7fd63a79e4e5b3800657f618957fb2bf",
+    "kind": "sprite",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 28,
+        "height": 24,
+        "anchor": [
+          14.0,
+          12.0
+        ]
+      }
+    ]
+  },
+  "repairpod": {
+    "nativeSize": [
+      24,
+      24
+    ],
+    "center": [
+      12.0,
+      12.0
+    ],
+    "forward": [
+      0,
+      -1
+    ],
+    "collisionRadius": 0,
+    "src": "./assets/v067/repair/repairpod@2x.png",
+    "sha256": "54794c3228b3e8e323ac994d2338620999730a24d221a3f758e02be7490f1b6d",
+    "kind": "icon",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 24,
+        "height": 24,
+        "anchor": [
+          12.0,
+          12.0
+        ]
+      }
+    ]
   }
 };

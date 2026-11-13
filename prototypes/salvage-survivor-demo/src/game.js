@@ -222,7 +222,7 @@
   const fmt = (s) =>
     `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
   const hideAll = () =>
-    ["start", "upgrade", "pause", "results"].forEach(
+    ["start", "upgrade", "pause", "results", "dock"].forEach(
       (id) => ($(id).hidden = true),
     );
   function resize() {
@@ -2473,6 +2473,41 @@
       angle: g.facing,
       alpha: g.p.inv > 0 && Math.floor(g.time * 18) % 2 ? 0.6 : 1,
     });
+    if (engineeringCombat()) {
+      ctx.save();
+      ctx.translate(position.x, position.y);
+      ctx.rotate(g.facing);
+      ctx.fillStyle = "#d2ae70";
+      for (let i = 0; i < g.engineering.plating; i++)
+        ctx.fillRect(i % 2 ? 15 : -18, -7 + Math.floor(i / 2) * 6, 3, 3);
+      if (g.engineering.salvage) {
+        ctx.fillStyle = "#736383";
+        ctx.fillRect(17, -11, 3, 9);
+        ctx.fillStyle = "#a5edb8";
+        ctx.fillRect(16, -14, 5, 3);
+      }
+      if (g.active.repairpod) {
+        const pod = window.SurvivorArt.catalog.repair_pod;
+        window.SurvivorArt.draw(ctx, "repair_pod", -24, 15, { scale: 1 });
+        if (pod && g.p.hp < g.p.maxhp) {
+          ctx.strokeStyle = "#a5edb8";
+          ctx.lineWidth = 1;
+          ctx.globalAlpha = 0.45 + 0.25 * Math.sin(g.time * 8);
+          for (const [index, anchor] of pod.launchAnchors.entries()) {
+            const x = -24 + anchor[0] - pod.center[0],
+              y = 15 + anchor[1] - pod.center[1];
+            const tx = index ? 5 : -9,
+              ty = 12;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(tx, ty);
+            ctx.stroke();
+            ctx.fillRect(tx - 1, ty - 1, 2, 2);
+          }
+        }
+      }
+      ctx.restore();
+    }
     const bastion = showcaseCombat() && g.fused.ionbastion;
     window.SurvivorArt.draw(
       ctx,
@@ -3214,7 +3249,110 @@
         "/3 · " +
         (level >= 3 ? "已满级" : cost + "零件");
     }
+    $("dockHullBtn").innerHTML = $("upgradeHullBtn").innerHTML;
+    $("dockHullBtn").disabled = $("upgradeHullBtn").disabled;
+    $("dockGunBtn").innerHTML = $("upgradeGunBtn").innerHTML;
+    $("dockGunBtn").disabled = $("upgradeGunBtn").disabled;
     $("progressText").textContent = profile.credits + "零件";
+    renderEngineering();
+  }
+  let dockReturn = "start";
+  function showDock(from) {
+    dockReturn = from;
+    hideAll();
+    $("dock").hidden = false;
+    refreshPerks();
+  }
+  function renderEngineering() {
+    const specs = [
+      ["thrusters", "推进器", "player", (level) => "移速＋" + level * 2 + "%"],
+      ["salvage", "回收天线", "magnet", (level) => "拾取范围＋" + level * 8],
+      [
+        "plating",
+        "装甲衬层",
+        "armor",
+        (level) => "所受伤害－" + level * 2 + "%",
+      ],
+    ];
+    $("dockCredits").textContent = profile.credits + " 零件";
+    $("engineeringList").innerHTML = specs
+      .map(([id, name, icon, effect]) => {
+        const level = profile.engineering?.[id] || 0;
+        const max = level === B.engineering.maxLevel;
+        const cost = B.engineering.costs[level];
+        const disabled =
+          actionBusy || !!storeView?.active || max || profile.credits < cost;
+        return (
+          '<button class="engineering-card" data-engineering="' +
+          id +
+          '"' +
+          (disabled ? " disabled" : "") +
+          ">" +
+          pixelIcon(icon, 32) +
+          "<strong>" +
+          name +
+          " " +
+          level +
+          "/6</strong><span>" +
+          effect(level) +
+          (max ? "" : " → " + effect(level + 1)) +
+          "</span><b>" +
+          (max ? "已满级" : cost + "零件") +
+          "</b></button>"
+        );
+      })
+      .join("");
+    const plan = profile.launchPlan;
+    if (!$("launchWeapon").innerHTML)
+      $("launchWeapon").innerHTML = B.engineering.launchWeapons
+        .map((id) => '<option value="' + id + '">' + NAMES[id] + "</option>")
+        .join("");
+    if (plan) $("launchWeapon").value = plan.weapon;
+    $("launchWeapon").disabled = actionBusy || !!plan || !!storeView?.active;
+    $("bookLaunchBtn").textContent =
+      "预约下局 · " + B.engineering.launchCost + "零件";
+    $("bookLaunchBtn").disabled =
+      actionBusy ||
+      !!plan ||
+      !!storeView?.active ||
+      profile.credits < B.engineering.launchCost;
+    $("cancelLaunchBtn").hidden = !plan;
+    $("cancelLaunchBtn").disabled = actionBusy || !!storeView?.active;
+    $("launchStatus").textContent = plan
+      ? "下局以" + NAMES[plan.weapon] + "出发 · 已付" + plan.paid + "零件"
+      : "默认主炮免费 · 预约仅用于下一局";
+  }
+  async function engineeringAction(kind) {
+    if (
+      actionBusy ||
+      (kind !== "cancel" && performance.now() < purchaseLockedUntil) ||
+      !storage
+    )
+      return;
+    purchaseLockedUntil = performance.now() + 550;
+    actionBusy = true;
+    refreshPerks();
+    try {
+      const result = await enqueue(() =>
+        kind === "book"
+          ? storage.bookLaunch($("launchWeapon").value)
+          : kind === "cancel"
+            ? storage.cancelLaunch(profile.launchPlan?.weapon)
+            : storage.buyEngineering(kind, profile.engineering?.[kind] || 0),
+      );
+      applyStored(result.record);
+      savedMessage();
+      notify(
+        result.refunded
+          ? "退回" + result.refunded + "零件"
+          : "投入" + result.cost + "零件 · 下局生效",
+      );
+    } catch (error) {
+      storageWarning(error);
+    } finally {
+      actionBusy = false;
+      refreshPerks();
+    }
   }
   async function buy(kind) {
     if (
@@ -5023,7 +5161,9 @@
       ? assaultCombat(active.snapshot.game)
         ? "结算上局，开始15分钟"
         : "结算上局，开始新版"
-      : "开始一局";
+      : profile.launchPlan
+        ? "开始一局 · " + NAMES[profile.launchPlan.weapon]
+        : "开始一局";
     $("recordText").textContent =
       "完成 " + profile.runs + " 局 · 最佳 " + profile.best + " 击落";
     $("buildStamp").textContent =
@@ -5195,6 +5335,18 @@
   $("resumeBtn").onclick = unpause;
   $("leaveBtn").onclick = () => finish(false);
   $("pauseBtn").onclick = pause;
+  $("dockBtn").onclick = () => showDock("start");
+  $("resultDockBtn").onclick = () => showDock("results");
+  $("closeDockBtn").onclick = () =>
+    dockReturn === "results" ? showResults(storeView?.lastResult) : showStart();
+  $("dockHullBtn").onclick = () => buy("hull");
+  $("dockGunBtn").onclick = () => buy("gun");
+  $("engineeringList").onclick = (event) => {
+    const button = event.target.closest("[data-engineering]");
+    if (button) void engineeringAction(button.dataset.engineering);
+  };
+  $("bookLaunchBtn").onclick = () => engineeringAction("book");
+  $("cancelLaunchBtn").onclick = () => engineeringAction("cancel");
   $("upgradeHullBtn").onclick = () => buy("hull");
   $("upgradeGunBtn").onclick = () => buy("gun");
   $("retrySaveBtn").onclick = retrySaving;
