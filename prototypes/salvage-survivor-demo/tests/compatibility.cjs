@@ -9,12 +9,14 @@ const url = process.env.SURVIVOR_URL || "http://127.0.0.1:4397/";
 const output = path.resolve(
   process.env.SURVIVOR_COMPAT_OUT || "releases/survivor-compatibility.json",
 );
+let activeContext;
 async function open(type, folder) {
-  return type.launchPersistentContext(folder, {
+  activeContext = await type.launchPersistentContext(folder, {
     headless: true,
     viewport: { width: 390, height: 844 },
     hasTouch: true,
   });
+  return activeContext;
 }
 async function read(page) {
   return page.evaluate(async () => {
@@ -51,6 +53,7 @@ async function read(page) {
     await page.waitForFunction(() => !SurvivorDemo.saving());
     const before = await read(page);
     await context.close();
+    activeContext = null;
     context = await open(type, folder);
     page = await context.newPage();
     page.on("pageerror", (error) => errors.push(String(error)));
@@ -92,7 +95,6 @@ async function read(page) {
         if (!Q.pick(evolution))
           throw Error("Benchmark evolution rejected " + evolution);
       };
-      evolve("cannon", "lens", "piercebeam");
       evolve("drone", "lock", "hunterswarm");
       evolve("arc", "capacitor", "chainstorm");
       Q.reward(true);
@@ -101,15 +103,24 @@ async function read(page) {
       evolve("blade", "magnet", "spiralsaw");
       Q.reward(true);
       if (!Q.pick("blastwheel")) throw Error("Benchmark wheel rejected");
-      evolve("shield", "armor", "reactiveaegis");
-      equip("prism", 5);
-      equip("gravity", 5);
       if (includeRepair) {
-        delete g.active.gravity;
+        // Six legal support slots power three fusions, including the new layered singularity.
+        evolve("prism", "refraction", "kaleidoscope");
+        evolve("gravity", "singularity", "collapse");
+        Q.reward(true);
+        if (!Q.pick("eventhorizon"))
+          throw Error("Benchmark singularity rejected");
+        equip("cannon", 5);
+        equip("shield", 5);
         equip("repairpod", 5);
         g.engineering = { version: 1, thrusters: 6, salvage: 6, plating: 6 };
         g.p.hp = 40;
         g.p.speed = 196;
+      } else {
+        evolve("cannon", "lens", "piercebeam");
+        evolve("shield", "armor", "reactiveaegis");
+        equip("prism", 5);
+        equip("gravity", 5);
       }
       if (
         Object.keys(g.active).length + Object.keys(g.fused).length !== 6 ||
@@ -137,10 +148,12 @@ async function read(page) {
           vy: 0,
           t: 60,
         });
+      // Keep all140 objects outside the real attraction radius during frame sampling.
+      // New full-DPS attraction300 would collect a historical270-radius field and open upgrades.
       for (let i = 0; i < 140; i++)
         g.pickups.push({
-          x: Math.cos((i * Math.PI) / 70) * (includeRepair ? 360 : 270),
-          y: Math.sin((i * Math.PI) / 70) * (includeRepair ? 360 : 270),
+          x: Math.cos((i * Math.PI) / 70) * (includeRepair ? 360 : 310),
+          y: Math.sin((i * Math.PI) / 70) * (includeRepair ? 360 : 310),
           type: i % 4 ? "xp" : "scrap",
           value: 8,
           t: 60,
@@ -228,12 +241,14 @@ async function read(page) {
       variant: repairBenchmark ? "repair-pod-and-all-engineering" : "full-dps",
     });
     await context.close();
+    activeContext = null;
     fs.rmSync(folder, { recursive: true, force: true });
   }
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report.engines, null, 2));
-})().catch((error) => {
+})().catch(async (error) => {
+  await activeContext?.close();
   console.error(error);
   process.exitCode = 1;
 });

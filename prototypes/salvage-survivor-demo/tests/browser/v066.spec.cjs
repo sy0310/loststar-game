@@ -70,8 +70,12 @@ test("v066 elite repair is visible on the real field and touch claim and real co
     game.p.inv = 9999;
     game.encounters.schedule = [];
     game.p.hp = 50;
-    Q.enemy("elite", 0, -100, 1);
-    Q.step(0.7);
+    Q.enemy("elite", 0, -250, 1);
+    // Advance until the real kill opens its reward, independent of the first firing clock.
+    for (let frame = 0; frame < 180 && game.mode === "play"; frame++)
+      Q.step(1 / 60);
+    if (game.mode !== "upgrade")
+      throw Error("Actual elite reward did not open");
     // This is a labelled QA kill, not a natural-play claim.
     await Q.save();
     await Q.settled();
@@ -80,6 +84,8 @@ test("v066 elite repair is visible on the real field and touch claim and real co
   expect(source.loot.length).toBeGreaterThan(0);
   await page.locator(".loot-cache").tap();
   await page.waitForFunction(() => !SurvivorDemo.saving());
+  // Hold beyond the original race window. The drop stays outside the legacy150 pull radius.
+  await page.waitForTimeout(600);
   await page.locator("#pauseBtn").tap();
   await page.waitForFunction(() => !SurvivorDemo.saving());
   const result = await page.evaluate(() => {
