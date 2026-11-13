@@ -10,6 +10,7 @@ test("v065 actual basic and evolved bodies separate crystal and drone flight ban
       results = [];
     for (const evolved of [false, true]) {
       const game = Q.startModel(91);
+      Q.legacyV065();
       game.active = {};
       game.spawnTime = 9999;
       game.encounters.schedule = [];
@@ -73,6 +74,7 @@ test("v065 final fusion renders its own transparent mount and dedicated icon and
   const result = await page.evaluate(() => {
     const Q = SurvivorQA,
       g = Q.startModel(91);
+    Q.legacyV065();
     g.active = {};
     g.spawnTime = 9999;
     g.encounters.schedule = [];
@@ -132,6 +134,7 @@ test("v065 all new bosses and elites decode real distinct sprites and fire their
     ]) {
       const Q = SurvivorQA,
         g = Q.startModel(91);
+      Q.legacyV065();
       g.active = {};
       g.spawnTime = 9999;
       g.encounters.schedule = [];
@@ -211,7 +214,7 @@ test("v065 real pause reload keeps boss identity, finite escort budget and pince
   await page.waitForFunction(() => SurvivorDemo.state()?.mode === "play");
   await pause(page);
   const after = await state(page);
-  expect(after.rules.combatVersion).toBe(5);
+  expect(after.rules.combatVersion).toBe(6);
   expect(after.enemy.find((e) => e.t === "boss").bossProfile).toBe("judicator");
   expect(after.enemy.find((e) => e.eliteProfile === "hive").summonsLeft).toBe(
     2,
@@ -226,6 +229,7 @@ test("v065 natural milestones reveal four unique boss identities with no replace
   const result = await page.evaluate(() => {
     const Q = SurvivorQA,
       g = Q.startModel(91);
+    Q.legacyV065();
     g.active = {};
     g.spawnTime = 9999;
     g.encounters.schedule = [];

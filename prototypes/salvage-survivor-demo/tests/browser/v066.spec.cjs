@@ -9,6 +9,7 @@ test("v066 actual elite lottery persists its result and touch claims each level 
   await page.evaluate(async () => {
     const Q = SurvivorQA,
       game = Q.state();
+    Q.legacyV066();
     game.spawnTime = 9999;
     game.p.inv = 9999;
     game.encounters.schedule = [];
@@ -64,6 +65,7 @@ test("v066 elite repair is visible on the real field and touch claim and real co
   await page.evaluate(async () => {
     const Q = SurvivorQA,
       game = Q.state();
+    Q.legacyV066();
     game.spawnTime = 9999;
     game.p.inv = 9999;
     game.encounters.schedule = [];
@@ -83,6 +85,7 @@ test("v066 elite repair is visible on the real field and touch claim and real co
   const result = await page.evaluate(() => {
     const Q = SurvivorQA,
       game = Q.state();
+    Q.legacyV066();
     const pack = game.pickups.find((item) => item.type === "heal");
     if (!pack) throw Error("Repair pack missing");
     game.active = {};
@@ -127,6 +130,7 @@ test("v066 small drone ellipse uses the same rendered and firing positions", asy
   const result = await page.evaluate(() => {
     const Q = SurvivorQA,
       game = Q.startModel(91);
+    Q.legacyV066();
     game.active = { drone: 1, prism: 1 };
     game.spawnTime = 9999;
     game.p.inv = 9999;

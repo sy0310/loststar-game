@@ -1,5 +1,5 @@
 window.SurvivorBalance = {
-  "version": "0.6.6",
+  "version": "0.6.7",
   "runSeconds": 900,
   "eliteAt": 70,
   "bossAt": 130,
@@ -619,5 +619,45 @@ window.SurvivorBalance = {
       1,
       3
     ]
+  },
+  "engineering": {
+    "version": 1,
+    "maxLevel": 6,
+    "costs": [
+      300,
+      500,
+      800,
+      1200,
+      1700,
+      2300
+    ],
+    "speedPerLevel": 0.02,
+    "magnetPerLevel": 8,
+    "reductionPerLevel": 0.02,
+    "launchCost": 200,
+    "launchWeapons": [
+      "drone",
+      "arc",
+      "missile",
+      "blade",
+      "prism",
+      "gravity"
+    ]
+  },
+  "sustain": {
+    "repairPerSecond": [
+      0,
+      0.25,
+      0.4,
+      0.55,
+      0.7,
+      0.9
+    ],
+    "orbit": {
+      "drone": 56,
+      "prism": 108,
+      "blade": 152,
+      "evolvedBlade": 156
+    }
   }
 };

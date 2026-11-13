@@ -925,3 +925,27 @@ h2 {
   bottom: calc(var(--safe-bottom) + 48px);
   font-size: 15px;
 }
+
+/* Each earned lottery level remains individually visible, including repeats. */
+.loot-cache {
+  grid-template-columns: 1fr;
+}
+.loot-awards {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.loot-award {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  padding: 6px 10px;
+  background: #211d30;
+  border: 1px solid #897391;
+  color: #f4d18b;
+}
+.loot-award img {
+  width: 36px;
+  height: 36px;
+  image-rendering: pixelated;
+}

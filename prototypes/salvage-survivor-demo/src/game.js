@@ -15,6 +15,7 @@
       "shield",
       "prism",
       "gravity",
+      "repairpod",
     ],
     PASSIVE = [
       "lens",
@@ -27,6 +28,7 @@
       "singularity",
     ];
   const NAMES = {
+    repairpod: "自动维修舱",
     cannon: "脉冲主炮",
     drone: "护航无人机",
     arc: "电弧线圈",
@@ -58,6 +60,7 @@
   };
 
   const DESCS = {
+    repairpod: "占1武器槽，持续修复船体",
     cannon: "增强齐射火力，自动瞄准近敌",
     drone: "环绕副机，锁定位置后直射",
     arc: "连锁电击，扫开成群目标",
@@ -150,12 +153,14 @@
     );
   }
   const newCombat = (game = g) =>
-    [2, 3, 4, 5].includes(runRules(game).combatVersion);
+    [2, 3, 4, 5, 6].includes(runRules(game).combatVersion);
   const assaultCombat = (game = g) =>
-    [3, 4, 5].includes(runRules(game).combatVersion);
+    [3, 4, 5, 6].includes(runRules(game).combatVersion);
   const showcaseCombat = (game = g) =>
-    [4, 5].includes(runRules(game).combatVersion);
-  const recoveryCombat = (game = g) => runRules(game).combatVersion === 5;
+    [4, 5, 6].includes(runRules(game).combatVersion);
+  const recoveryCombat = (game = g) =>
+    [5, 6].includes(runRules(game).combatVersion);
+  const engineeringCombat = (game = g) => runRules(game).combatVersion === 6;
   const eliteSpec = (enemy, game = g) =>
     (showcaseCombat(game) ? B.showcase : B.assault).eliteProfiles[
       enemy.eliteProfile
@@ -265,7 +270,7 @@
         runSeconds: B.runSeconds,
         activeSlots: B.activeSlots,
         passiveSlots: B.passiveSlots,
-        combatVersion: 5,
+        combatVersion: 6,
         progressionVersion: 2,
       },
       time: 0,
@@ -351,6 +356,17 @@
         shieldsBlocked: 0,
       },
     });
+    g.engineering = {
+      version: 1,
+      thrusters: 0,
+      salvage: 0,
+      plating: 0,
+      ...profile.engineering,
+    };
+    g.launchWeapon = profile.launchPlan?.weapon || "cannon";
+    g.active = { [g.launchWeapon]: 1 };
+    g.p.speed *= 1 + g.engineering.thrusters * B.engineering.speedPerLevel;
+    g.repairShown = 0;
     hideAll();
     $("hud").hidden = false;
     $("pauseBtn").hidden = false;
@@ -404,6 +420,7 @@
     );
     for (const id of ACTIVE) {
       const level = game.active[id] || 0;
+      if (id === "repairpod" && !engineeringCombat(game)) continue;
       if (
         !consumed.includes(id) &&
         !game.evolved[id] &&
@@ -627,8 +644,22 @@
             '<button class="skill loot-cache" data-pick="' +
             index +
             '">' +
-            '<span class="ico">' +
-            pixelIcon(option.grants[0].id, 44) +
+            '<span class="loot-awards">' +
+            option.grants
+              .flatMap((grant) =>
+                Array.from(
+                  { length: grant.level - grant.from },
+                  () =>
+                    '<span class="loot-award" data-equipment="' +
+                    grant.id +
+                    '" aria-label="' +
+                    NAMES[grant.id] +
+                    ' 强化一级">' +
+                    pixelIcon(grant.id, 36) +
+                    "<span>＋1</span></span>",
+                ),
+              )
+              .join("") +
             "</span><div>" +
             '<span class="type-label">随机强化 · 已抽出</span><h3>装载全部强化</h3>' +
             option.grants
@@ -674,6 +705,11 @@
             salvage: "回收零件",
           }[option.id];
         const description =
+          (option.id === "repairpod"
+            ? "占1武器槽 · 每秒修复 " +
+              B.sustain.repairPerSecond[option.level] +
+              " 船体"
+            : null) ||
           (newProgression()
             ? {
                 armor: "船体＋5，碰撞减伤提高",
@@ -1309,7 +1345,11 @@
         t: 30,
       });
     }
-    if (runRules().runSeconds > 180 && ["boss", "elite"].includes(enemy.t)) {
+    if (
+      !engineeringCombat() &&
+      runRules().runSeconds > 180 &&
+      ["boss", "elite"].includes(enemy.t)
+    ) {
       // Reserve the repair pack even when the field is full. Merge the displaced
       // ordinary pickup's value into the same resource type without losing XP/cash.
       if (recoveryCombat() && g.pickups.length >= B.maxPickups) {
@@ -1428,7 +1468,12 @@
       g.p.inv = 0.5;
       return;
     }
-    const damage = amount * (1 - 0.08 * passivePower("armor"));
+    const damage =
+      amount *
+      (1 - 0.08 * passivePower("armor")) *
+      (engineeringCombat()
+        ? 1 - g.engineering.plating * B.engineering.reductionPerLevel
+        : 1);
     g.p.hp = Math.max(0, g.p.hp - damage);
     g.metrics.shipDamage += damage;
     playSound("hurt");
@@ -1494,13 +1539,15 @@
     if (!g.active.prism && !g.fused.eventhorizon) return [];
     const evolved = !!g.evolved.prism || !!g.fused.eventhorizon;
     const count = evolved ? 6 : Math.max(1, g.active.prism || 1);
-    const radius = showcaseCombat()
-      ? evolved
-        ? 51
-        : 40 + Math.min(5, g.passive.refraction || 0)
-      : evolved
-        ? 66
-        : 42 + (g.passive.refraction || 0) * 2;
+    const radius = engineeringCombat()
+      ? B.sustain.orbit.prism
+      : showcaseCombat()
+        ? evolved
+          ? 51
+          : 40 + Math.min(5, g.passive.refraction || 0)
+        : evolved
+          ? 66
+          : 42 + (g.passive.refraction || 0) * 2;
     return Array.from({ length: count }, (_, index) => {
       const heading = g.time * 0.65 + (index * T) / count;
       return {
@@ -1525,22 +1572,36 @@
         x:
           g.p.x +
           Math.cos(heading) *
-            (recoveryCombat()
-              ? B.recovery.droneOrbit[0]
-              : showcaseCombat()
-                ? 130
-                : 47),
+            (engineeringCombat()
+              ? B.sustain.orbit.drone
+              : recoveryCombat()
+                ? B.recovery.droneOrbit[0]
+                : showcaseCombat()
+                  ? 130
+                  : 47),
         y:
           g.p.y +
           Math.sin(heading) *
-            (recoveryCombat()
-              ? B.recovery.droneOrbit[1]
-              : showcaseCombat()
-                ? 114
-                : 47),
+            (engineeringCombat()
+              ? B.sustain.orbit.drone
+              : recoveryCombat()
+                ? B.recovery.droneOrbit[1]
+                : showcaseCombat()
+                  ? 114
+                  : 47),
         heading,
       };
     });
+  }
+  function bladeRadius() {
+    const evolved = g.evolved.blade || g.fused.blastwheel;
+    return engineeringCombat()
+      ? evolved
+        ? B.sustain.orbit.evolvedBlade
+        : B.sustain.orbit.blade
+      : evolved
+        ? 78
+        : 48;
   }
   function fireCrystal(origin, target, damage, source) {
     if (!target || g.shots.length >= B.maxFriendlyShots) return;
@@ -1925,7 +1986,7 @@
         : g.evolved.blade
           ? 5
           : Math.ceil(level + 1);
-      const radius = g.evolved.blade || g.fused.blastwheel ? 78 : 48;
+      const radius = bladeRadius();
       for (const enemy of g.enemy) {
         if (enemy.hp <= 0 || enemy.bladeAt > g.time) continue;
         for (let index = 0; index < count; index++) {
@@ -2135,6 +2196,26 @@
     }
     dt = Math.min(dt, runRules().runSeconds - g.time);
     g.time += dt;
+    if (engineeringCombat() && g.active.repairpod && g.p.hp < g.p.maxhp) {
+      const restored = Math.min(
+        g.p.maxhp - g.p.hp,
+        B.sustain.repairPerSecond[g.active.repairpod] * dt,
+      );
+      g.p.hp += restored;
+      g.metrics.repaired = (g.metrics.repaired || 0) + restored;
+      g.repairShown += restored;
+      if (g.repairShown >= 1) {
+        g.repairShown -= 1;
+        if (g.texts.length < B.maxDamageNumbers)
+          g.texts.push({
+            x: g.p.x - 24,
+            y: g.p.y - 22,
+            t: 0.8,
+            s: "+1 修复",
+            color: "#a5edb8",
+          });
+      }
+    }
     if (g.time >= runRules().runSeconds) {
       updateHud(true);
       void finish(true);
@@ -2238,7 +2319,12 @@
         });
     }
     const attraction =
-      150 + passivePower("magnet") * 55 + (g.evolved.blade ? 65 : 0);
+      150 +
+      passivePower("magnet") * 55 +
+      (g.evolved.blade ? 65 : 0) +
+      (engineeringCombat()
+        ? g.engineering.salvage * B.engineering.magnetPerLevel
+        : 0);
     for (const pickup of g.pickups) {
       if (pickup.t <= 0) continue;
       pickup.t -= dt;
@@ -2362,7 +2448,9 @@
     const position = toScreen(g.p.x, g.p.y);
     const actor = window.SurvivorArt.catalog.player;
     const frame = window.SurvivorArt.frameAt("thruster", g.time * 1000, true);
-    const flameScale = 0.32 + g.thrust * 0.3;
+    const flameScale =
+      (0.32 + g.thrust * 0.3) *
+      (engineeringCombat() ? 1 + g.engineering.thrusters * 0.035 : 1);
     ctx.save();
     ctx.translate(position.x, position.y);
     ctx.rotate(g.facing);
@@ -4339,7 +4427,7 @@
         : g.evolved.blade
           ? 5
           : Math.ceil(activePower("blade") + 1);
-      const radius = g.evolved.blade || g.fused.blastwheel ? 78 : 48;
+      const radius = bladeRadius();
       for (let index = 0; index < count; index++) {
         const heading = g.time * 2.7 + (index * T) / count;
         if (!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
@@ -4475,7 +4563,7 @@
     if (
       ![180, 600, 900].includes(rules.runSeconds) ||
       (rules.combatVersion !== undefined &&
-        ![2, 3, 4, 5].includes(rules.combatVersion)) ||
+        ![2, 3, 4, 5, 6].includes(rules.combatVersion)) ||
       (rules.progressionVersion !== undefined &&
         rules.progressionVersion !== 2) ||
       (newProgression(game) &&
@@ -4598,9 +4686,29 @@
           throw Error("晶体折射记录无效，原数据保留");
       }
     }
+    if (engineeringCombat(game)) {
+      if (
+        !game.engineering ||
+        game.engineering.version !== 1 ||
+        ["thrusters", "salvage", "plating"].some(
+          (id) =>
+            !Number.isInteger(game.engineering[id]) ||
+            game.engineering[id] < 0 ||
+            game.engineering[id] > B.engineering.maxLevel,
+        ) ||
+        !["cannon", ...B.engineering.launchWeapons].includes(
+          game.launchWeapon,
+        ) ||
+        !Number.isFinite(game.repairShown) ||
+        game.repairShown < 0 ||
+        game.repairShown >= 1
+      )
+        throw Error("工程快照无效，原数据保留");
+    }
     for (const [id, level] of Object.entries(game.active))
       if (
         !ACTIVE.includes(id) ||
+        (id === "repairpod" && !engineeringCombat(game)) ||
         !Number.isSafeInteger(level) ||
         level < 1 ||
         level > activeMaximum(game)
@@ -5122,6 +5230,20 @@
         delete g.rules.progressionVersion;
         return g;
       },
+      legacyV066: () => {
+        g.rules.version = "0.6.6";
+        g.rules.combatVersion = 5;
+        return g;
+      },
+      refreshUpgrades: () => {
+        g.mode = "upgrade";
+        renderUpgrades();
+      },
+      orbits: () => ({
+        drone: droneNodes(),
+        prism: prismNodes(),
+        bladeRadius: bladeRadius(),
+      }),
       legacyV065: () => {
         g.rules.version = "0.6.5";
         g.rules.combatVersion = 4;

@@ -13,6 +13,7 @@ const { createModel } = require("./model-harness.cjs");
     : { passed: 0, cases: [], errors: [] };
   function start(seed = 91) {
     const game = Q.startModel(seed);
+    Q.legacyV066();
     game.spawnTime = 9999;
     game.p.inv = 10000;
     game.encounters.schedule = [];
