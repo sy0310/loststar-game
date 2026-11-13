@@ -278,7 +278,7 @@ jobs:
         run: node prototypes/salvage-survivor-demo/tests/verify-v064-evidence.cjs
       - name: Verify evolved fleets and distinct Boss delivery when present
         if: hashFiles('artifacts/survivor-v065/verification.json') != ''
-        run: node prototypes/salvage-survivor-demo/tests/verify-v065-evidence.cjs
+        run: node prototypes/salvage-survivor-demo/tests/verify-v065-archive.cjs
       - name: Verify elite recovery and random reinforcement delivery when present
         if: hashFiles('artifacts/survivor-v066/verification.json') != ''
         run: node prototypes/salvage-survivor-demo/tests/verify-v066-evidence.cjs
