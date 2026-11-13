@@ -1,0 +1,584 @@
+{
+  "version": "0.6.7",
+  "scope": "Actual adaptive combat cash samples and exact configured purchase costs. Novice-income bound is used during intermediate growth, all-max samples only after all branches are full. Receipts settle on return. Unsettled loot is the latest observed sample. Optional starting weapon is reserved before a new voyage. No human or TapTap-income claim.",
+  "inputSha256": "61ce8870caadb38bd14bac60216453ee53b25258e88e7ba34f1803e020dc604a",
+  "scenarios": [
+    {
+      "name": "new wallet0",
+      "initial": 0,
+      "table": [
+        {
+          "minutes": 0,
+          "wallet": 0,
+          "settledIncome": 0,
+          "spent": 0,
+          "unsettled": 0,
+          "profile": {
+            "credits": 0,
+            "hull": 0,
+            "gun": 0,
+            "engineering": {
+              "thrusters": 0,
+              "salvage": 0,
+              "plating": 0
+            }
+          }
+        },
+        {
+          "minutes": 5,
+          "wallet": 0,
+          "settledIncome": 0,
+          "spent": 0,
+          "unsettled": 374,
+          "profile": {
+            "credits": 0,
+            "hull": 0,
+            "gun": 0,
+            "engineering": {
+              "thrusters": 0,
+              "salvage": 0,
+              "plating": 0
+            }
+          }
+        },
+        {
+          "minutes": 15,
+          "wallet": 18,
+          "settledIncome": 1878,
+          "spent": 1860,
+          "unsettled": 0,
+          "profile": {
+            "credits": 18,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 1,
+              "salvage": 1,
+              "plating": 1
+            }
+          }
+        },
+        {
+          "minutes": 30,
+          "wallet": 144,
+          "settledIncome": 3004,
+          "spent": 2860,
+          "unsettled": 266,
+          "profile": {
+            "credits": 144,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 2,
+              "salvage": 2,
+              "plating": 1
+            }
+          }
+        },
+        {
+          "minutes": 60,
+          "wallet": 250,
+          "settledIncome": 5410,
+          "spent": 5160,
+          "unsettled": 1398,
+          "profile": {
+            "credits": 250,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 3,
+              "salvage": 3,
+              "plating": 2
+            }
+          }
+        },
+        {
+          "minutes": 120,
+          "wallet": 611,
+          "settledIncome": 13071,
+          "spent": 12460,
+          "unsettled": 2,
+          "profile": {
+            "credits": 611,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 5,
+              "salvage": 4,
+              "plating": 4
+            }
+          }
+        }
+      ],
+      "ledger": [
+        {
+          "at": 900,
+          "kind": "return-income",
+          "income": 1878
+        },
+        {
+          "at": 900,
+          "kind": "hull",
+          "cost": 70
+        },
+        {
+          "at": 900,
+          "kind": "gun",
+          "cost": 90
+        },
+        {
+          "at": 900,
+          "kind": "hull",
+          "cost": 140
+        },
+        {
+          "at": 900,
+          "kind": "gun",
+          "cost": 180
+        },
+        {
+          "at": 900,
+          "kind": "hull",
+          "cost": 210
+        },
+        {
+          "at": 900,
+          "kind": "gun",
+          "cost": 270
+        },
+        {
+          "at": 900,
+          "kind": "thrusters",
+          "cost": 300
+        },
+        {
+          "at": 900,
+          "kind": "salvage",
+          "cost": 300
+        },
+        {
+          "at": 900,
+          "kind": "plating",
+          "cost": 300
+        },
+        {
+          "at": 1522.9166666664287,
+          "kind": "return-income",
+          "income": 1126
+        },
+        {
+          "at": 1522.9166666664287,
+          "kind": "thrusters",
+          "cost": 500
+        },
+        {
+          "at": 1522.9166666664287,
+          "kind": "salvage",
+          "cost": 500
+        },
+        {
+          "at": 2250.099999999429,
+          "kind": "return-income",
+          "income": 1167
+        },
+        {
+          "at": 2250.099999999429,
+          "kind": "plating",
+          "cost": 500
+        },
+        {
+          "at": 2250.099999999429,
+          "kind": "thrusters",
+          "cost": 800
+        },
+        {
+          "at": 2863.166666665867,
+          "kind": "return-income",
+          "income": 1239
+        },
+        {
+          "at": 2863.166666665867,
+          "kind": "salvage",
+          "cost": 800
+        },
+        {
+          "at": 2863.166666665867,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 3750.4833333320553,
+          "kind": "return-income",
+          "income": 2038
+        },
+        {
+          "at": 3750.4833333320553,
+          "kind": "plating",
+          "cost": 800
+        },
+        {
+          "at": 3750.4833333320553,
+          "kind": "thrusters",
+          "cost": 1200
+        },
+        {
+          "at": 3750.4833333320553,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 4300.333333331884,
+          "kind": "return-income",
+          "income": 213
+        },
+        {
+          "at": 4300.333333331884,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 5200.333333331884,
+          "kind": "return-income",
+          "income": 1878
+        },
+        {
+          "at": 5200.333333331884,
+          "kind": "salvage",
+          "cost": 1200
+        },
+        {
+          "at": 5200.333333331884,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 5823.249999998313,
+          "kind": "return-income",
+          "income": 1126
+        },
+        {
+          "at": 5823.249999998313,
+          "kind": "plating",
+          "cost": 1200
+        },
+        {
+          "at": 5823.249999998313,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 6550.433333331313,
+          "kind": "return-income",
+          "income": 1167
+        },
+        {
+          "at": 6550.433333331313,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 7163.499999997751,
+          "kind": "return-income",
+          "income": 1239
+        },
+        {
+          "at": 7163.499999997751,
+          "kind": "thrusters",
+          "cost": 1700
+        },
+        {
+          "at": 7163.499999997751,
+          "kind": "starting-weapon",
+          "cost": 200
+        }
+      ]
+    },
+    {
+      "name": "27049 old wallet with existing3plus3 rights",
+      "initial": 27049,
+      "table": [
+        {
+          "minutes": 0,
+          "wallet": 27049,
+          "settledIncome": 0,
+          "spent": 0,
+          "unsettled": 0,
+          "profile": {
+            "credits": 27049,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 0,
+              "salvage": 0,
+              "plating": 0
+            }
+          }
+        },
+        {
+          "minutes": 5,
+          "wallet": 6449,
+          "settledIncome": 0,
+          "spent": 20600,
+          "unsettled": 619,
+          "profile": {
+            "credits": 6449,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 6,
+              "salvage": 6,
+              "plating": 6
+            }
+          }
+        },
+        {
+          "minutes": 15,
+          "wallet": 8780,
+          "settledIncome": 2531,
+          "spent": 20800,
+          "unsettled": 0,
+          "profile": {
+            "credits": 8780,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 6,
+              "salvage": 6,
+              "plating": 6
+            }
+          }
+        },
+        {
+          "minutes": 30,
+          "wallet": 11199,
+          "settledIncome": 5150,
+          "spent": 21000,
+          "unsettled": 0,
+          "profile": {
+            "credits": 11199,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 6,
+              "salvage": 6,
+              "plating": 6
+            }
+          }
+        },
+        {
+          "minutes": 60,
+          "wallet": 16187,
+          "settledIncome": 10538,
+          "spent": 21400,
+          "unsettled": 0,
+          "profile": {
+            "credits": 16187,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 6,
+              "salvage": 6,
+              "plating": 6
+            }
+          }
+        },
+        {
+          "minutes": 120,
+          "wallet": 24501,
+          "settledIncome": 19652,
+          "spent": 22200,
+          "unsettled": 0,
+          "profile": {
+            "credits": 24501,
+            "hull": 3,
+            "gun": 3,
+            "engineering": {
+              "thrusters": 6,
+              "salvage": 6,
+              "plating": 6
+            }
+          }
+        }
+      ],
+      "ledger": [
+        {
+          "at": 0,
+          "kind": "thrusters",
+          "cost": 300
+        },
+        {
+          "at": 0,
+          "kind": "salvage",
+          "cost": 300
+        },
+        {
+          "at": 0,
+          "kind": "plating",
+          "cost": 300
+        },
+        {
+          "at": 0,
+          "kind": "thrusters",
+          "cost": 500
+        },
+        {
+          "at": 0,
+          "kind": "salvage",
+          "cost": 500
+        },
+        {
+          "at": 0,
+          "kind": "plating",
+          "cost": 500
+        },
+        {
+          "at": 0,
+          "kind": "thrusters",
+          "cost": 800
+        },
+        {
+          "at": 0,
+          "kind": "salvage",
+          "cost": 800
+        },
+        {
+          "at": 0,
+          "kind": "plating",
+          "cost": 800
+        },
+        {
+          "at": 0,
+          "kind": "thrusters",
+          "cost": 1200
+        },
+        {
+          "at": 0,
+          "kind": "salvage",
+          "cost": 1200
+        },
+        {
+          "at": 0,
+          "kind": "plating",
+          "cost": 1200
+        },
+        {
+          "at": 0,
+          "kind": "thrusters",
+          "cost": 1700
+        },
+        {
+          "at": 0,
+          "kind": "salvage",
+          "cost": 1700
+        },
+        {
+          "at": 0,
+          "kind": "plating",
+          "cost": 1700
+        },
+        {
+          "at": 0,
+          "kind": "thrusters",
+          "cost": 2300
+        },
+        {
+          "at": 0,
+          "kind": "salvage",
+          "cost": 2300
+        },
+        {
+          "at": 0,
+          "kind": "plating",
+          "cost": 2300
+        },
+        {
+          "at": 0,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 900,
+          "kind": "return-income",
+          "income": 2531
+        },
+        {
+          "at": 900,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 1800,
+          "kind": "return-income",
+          "income": 2619
+        },
+        {
+          "at": 1800,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 2700,
+          "kind": "return-income",
+          "income": 2482
+        },
+        {
+          "at": 2700,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 3600,
+          "kind": "return-income",
+          "income": 2906
+        },
+        {
+          "at": 3600,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 4500,
+          "kind": "return-income",
+          "income": 2666
+        },
+        {
+          "at": 4500,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 5400,
+          "kind": "return-income",
+          "income": 1298
+        },
+        {
+          "at": 5400,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 6300,
+          "kind": "return-income",
+          "income": 2531
+        },
+        {
+          "at": 6300,
+          "kind": "starting-weapon",
+          "cost": 200
+        },
+        {
+          "at": 7200,
+          "kind": "return-income",
+          "income": 2619
+        },
+        {
+          "at": 7200,
+          "kind": "starting-weapon",
+          "cost": 200
+        }
+      ]
+    }
+  ],
+  "perBranchTotal": 6800,
+  "engineeringTotal": 20400
+}

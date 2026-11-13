@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const assert = require("node:assert/strict");
+const repairBenchmark = process.env.SURVIVOR_REPAIR_BENCHMARK === "1";
 const url = process.env.SURVIVOR_URL || "http://127.0.0.1:4397/";
 const output = path.resolve(
   process.env.SURVIVOR_COMPAT_OUT || "releases/survivor-compatibility.json",
@@ -77,7 +78,7 @@ async function read(page) {
     await page.waitForFunction(
       () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
     );
-    await page.evaluate(() => {
+    await page.evaluate((includeRepair) => {
       const Q = SurvivorQA,
         g = Q.state();
       const equip = (id, n, passive = false) => {
@@ -103,6 +104,13 @@ async function read(page) {
       evolve("shield", "armor", "reactiveaegis");
       equip("prism", 5);
       equip("gravity", 5);
+      if (includeRepair) {
+        delete g.active.gravity;
+        equip("repairpod", 5);
+        g.engineering = { version: 1, thrusters: 6, salvage: 6, plating: 6 };
+        g.p.hp = 40;
+        g.p.speed = 196;
+      }
       if (
         Object.keys(g.active).length + Object.keys(g.fused).length !== 6 ||
         Object.keys(g.passive).length !== 6
@@ -131,8 +139,8 @@ async function read(page) {
         });
       for (let i = 0; i < 140; i++)
         g.pickups.push({
-          x: Math.cos((i * Math.PI) / 70) * 270,
-          y: Math.sin((i * Math.PI) / 70) * 270,
+          x: Math.cos((i * Math.PI) / 70) * (includeRepair ? 360 : 270),
+          y: Math.sin((i * Math.PI) / 70) * (includeRepair ? 360 : 270),
           type: i % 4 ? "xp" : "scrap",
           value: 8,
           t: 60,
@@ -148,7 +156,7 @@ async function read(page) {
           size: 3,
           c: "#f4c57a",
         });
-    });
+    }, repairBenchmark);
     const metrics = await page.evaluate(
       () =>
         new Promise((resolve) => {
@@ -217,6 +225,7 @@ async function read(page) {
       nextRun: "PASS",
       errors,
       syntheticMaximumLoad: metrics,
+      variant: repairBenchmark ? "repair-pod-and-all-engineering" : "full-dps",
     });
     await context.close();
     fs.rmSync(folder, { recursive: true, force: true });

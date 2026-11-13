@@ -282,6 +282,9 @@ jobs:
       - name: Verify elite recovery and random reinforcement delivery when present
         if: hashFiles('artifacts/survivor-v066/verification.json') != ''
         run: node prototypes/salvage-survivor-demo/tests/verify-v066-evidence.cjs
+      - name: Verify repair engineering frozen delivery when present
+        if: hashFiles('artifacts/survivor-v067/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v067-evidence.cjs
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'
@@ -302,6 +305,7 @@ jobs:
           SURVIVOR_ELITE_OUT="$PWD/releases/survivor-elite-balance.json" node prototypes/salvage-survivor-demo/tests/elite-balance.cjs
           SURVIVOR_SIM_OUT="$PWD/releases/survivor-simulation.json" npm --prefix prototypes/salvage-survivor-demo run simulate
           SURVIVOR_MOVEMENT=adaptive SURVIVOR_SEEDS=2 SURVIVOR_SIM_OUT="$PWD/releases/survivor-adaptive.json" npm --prefix prototypes/salvage-survivor-demo run simulate
+          SURVIVOR_ECONOMY_INPUT="$PWD/releases/survivor-adaptive.json" SURVIVOR_ECONOMY_OUT="$PWD/releases/survivor-engineering-economy.json" node prototypes/salvage-survivor-demo/tests/engineering-economy.cjs
           python3 prototypes/salvage-survivor-demo/build.py --freeze
           python3 prototypes/salvage-survivor-demo/verify_package.py releases/survivor-ci-extracted
       - name: Test extracted ZIP on real HTTP in both browser engines
@@ -313,6 +317,7 @@ jobs:
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_REPORT="$PWD/releases/survivor-browser.json" SURVIVOR_TEST_OUTPUT="$PWD/releases/survivor-browser-tests" npm --prefix prototypes/salvage-survivor-demo run test:browser
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_REPORT="$PWD/releases/survivor-claim-regression.json" SURVIVOR_TEST_OUTPUT="$PWD/releases/survivor-claim-regression-tests" npm --prefix prototypes/salvage-survivor-demo run test:browser -- storage.spec.cjs --grep 'a second tab claims' --repeat-each=10
           SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_COMPAT_OUT="$PWD/releases/survivor-compatibility.json" node prototypes/salvage-survivor-demo/tests/compatibility.cjs
+          SURVIVOR_REPAIR_BENCHMARK=1 SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_COMPAT_OUT="$PWD/releases/survivor-compatibility-repair.json" node prototypes/salvage-survivor-demo/tests/compatibility.cjs
           SURVIVOR_CURRENT_ROOT="$PWD/releases/survivor-ci-extracted" SURVIVOR_MIGRATION_OUT="$PWD/releases/survivor-migration.json" node prototypes/salvage-survivor-demo/tests/upgrade-save.cjs
       - uses: actions/upload-artifact@v4
         if: always()
@@ -325,6 +330,8 @@ jobs:
             releases/survivor-elite-balance.json
             releases/survivor-simulation.json
             releases/survivor-adaptive.json
+            releases/survivor-engineering-economy.json
+            releases/survivor-compatibility-repair.json
             releases/survivor-browser.json
             releases/survivor-claim-regression.json
             releases/survivor-claim-regression-tests/

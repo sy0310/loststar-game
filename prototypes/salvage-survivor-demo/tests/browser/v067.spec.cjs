@@ -22,6 +22,7 @@ test("v067 three lottery gains expose three real images and labels including rep
     g.spawnTime = 9999;
     g.p.inv = 9999;
     g.active = { cannon: 1 };
+    Q.reward(false);
     g.bossRewards.ids = [1];
     g.upgradeSource = {
       kind: "boss",
@@ -33,6 +34,7 @@ test("v067 three lottery gains expose three real images and labels including rep
     await Q.save();
     await Q.settled();
   });
+  await expect(page.locator("#upgrade")).toBeVisible();
   await expect(page.locator(".loot-award")).toHaveCount(3);
   await expect(page.locator(".loot-award img")).toHaveCount(3);
   expect(await page.locator(".loot-award").allTextContents()).toEqual([

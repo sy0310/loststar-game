@@ -11688,7 +11688,8 @@
         "design/star-salvage/v063/README.md",
         "design/star-salvage/v064/README.md",
         "design/star-salvage/v065/README.md",
-        "design/star-salvage/v066/README.md"
+        "design/star-salvage/v066/README.md",
+        "design/star-salvage/v067/README.md"
       ],
       "method": "Every effective requirement has exact normative sourceRefs; headers/blank lines/historical reports are informational. Superseded rules retain original and latest replacement spans below.",
       "independentAudit": "Preserve all prior231 requirements and immutable proofs; append11 PORT04 capability rows. User phone/art/enjoyment do not follow engineering passes. Preserve those242 rows/proofs; append9 PORT041 feedback rows, same-shape whole body and per-ship paid caps. Preserve251 rows and append7 POLISH042 review fixes; no old proof or phone status promoted. Preserve258 prior rows and append v05 exact normative clauses. Fixed842dc6a/465523 evidence is independently bound. Harbor sharpening is explicitly incomplete. Phone/user art remain pending. Preserve all298 earlier rows and historical hashes; append9 v051 repair capabilities. New68-file/236-case evidence is independent from old67-file/176-case proof. Original Mac schema7→8 verified; physical phone, user art and enjoyment pending. Initial349/468993 remains immutable historical candidate. Final066a657/469033 has240 browser checks plus24 real market UI traces after reserve-display rounding correction. Preserve all307 prior rows and immutable proof; append10 survivor requirements. Latest user-approved360-degree mode supersedes the earlier main-loop direction only. The old modes and paid archives remain available. Physical phone, user art and main4283/newTapTap gate remain pending. Preserve317 historical requirements/proofs and append6 SALVAGE061 rows. User approved469298 core and both MP3 originals. New600-second/6+6 runtime55610d6, TapTap469347, real HTTP288, audio32, model21, policies160 and natural600seconds are independent. Mac4283/4397 updated after engineering and prior core phone feedback; actual old UI export unchanged. New phone/audio/art/fun acceptance pending. New5934dae fixes delayed WebKit playback confirmation using actual playing events and token cancellation. Fresh34audio/288HTTP/160policies/21model/600second evidence replaces only SALVAGE061 current binding. Prior469347, Linux recorder failure and Mac timeout reports remain unchanged. Final media-clock ec58f9c confirms actual playback progress when both promises and playing events are absent. Mac and Linux34audio checks pass. Fresh natural600,HTTP288,model21,policy160,art50,oldUI-save equality and nativeSafari independently bound. No prior candidate proof or phone status overwritten. Preserve323 prior rows and all immutable proofs. Append7 SALVAGE062 clauses and bind only these to4ca726f/470518. All50 old runtime image entries/bytes and two music files remain unchanged. Actual actor/galaxy generation and review, model35/HTTP360/audio38/policy160/natural600/nativeSafari/QA9with10mine damage/old27049copy verified. Physical phone and userart/fun pending; original upgrade prices retained. Preserve330 historical rows and every immutable proof. Append8 SALVAGE063 clauses with exact single-line sources and independent f9bf85c/474099 binding. Final53model/440HTTP/38audio/160policy/natural600 actualionbastion/QA8/real old27049ZIPmigration/nativeSafari. New5+5 and old3+2 remain distinct. Existing56PNG and two MP3 source bytes identical. Phone/userfun/visual pending. Preserve338 prior rows and immutable proofs. Append8 SALVAGE064 clauses, bind only these to15f43c1/474770. New900-second rules preserve old180/600 and3+2/5+5 archives. All56 original PNG and two MP3 unchanged. Actual69-file packages,70model/520HTTP/audio38/160square+20adaptive/natural900/QA14/nativeSafari/oldZIPfour-row migration. Physicalphone/userart/fun pending. Preserve346 prior requirement rows and immutable evidence. Append8 SALVAGE065 clauses bound only to a44c635/474895. Actual current frozen78 files,80model,568HTTP,38audio,160square+20adaptive,ordinary900,QA27,6oldZIPmigration rows and nativeSafari. All59 prior PNG,2MP3 and persistence remain byte-identical. Physicalphone/userart/fun pending. Prior dedicated-ionbastion-icon gap is resolved by SALVAGE065-BASTION while historical rows retain their original context. Actual queued-IDB0/700ms ownership acknowledgement regression80 and fresh284x2HTTP after correcting the prior200ms fixture assumption.",
@@ -12140,7 +12141,12 @@
       "SALVAGE066-ELITE",
       "SALVAGE066-LOTTERY",
       "SALVAGE066-ADVANCE",
-      "SALVAGE066-COMPAT"
+      "SALVAGE066-COMPAT",
+      "SALVAGE067-LOOT",
+      "SALVAGE067-REPAIR",
+      "SALVAGE067-ORBIT",
+      "SALVAGE067-GROWTH",
+      "SALVAGE067-COMPAT"
     ],
     "requirements": [
       {
@@ -40820,6 +40826,291 @@
           "taptapVersion": 475539,
           "formalIntegration": false
         }
+      },
+      {
+        "id": "SALVAGE067-LOOT",
+        "parent": null,
+        "requirement": "精英随机强化总共1～3级，每一次＋1都有自己的图标。不同物品分别显示，同一物品连续升级也显示对应次数。实际等级结果、刷新保留和一次领取同时验证。",
+        "acceptanceCriteria": "精英随机强化总共1～3级，每一次＋1都有自己的图标。不同物品分别显示，同一物品连续升级也显示对应次数。实际等级结果、刷新保留和一次领取同时验证。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v067/README.md",
+            "startLine": 7,
+            "endLine": 7
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/src/persistence.js",
+          "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+          "prototypes/salvage-survivor-demo/tests/browser/v067.spec.cjs",
+          "prototypes/salvage-survivor-demo/tests/verify-v067-evidence.cjs"
+        ],
+        "assets": [
+          "design/star-salvage/v067/BALANCE_V067.json",
+          "design/star-salvage/v067/production/repair/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "规则6新局及飞船整备，旧局继续已存规则"
+          }
+        ],
+        "checks": [
+          "survivor-v067-model",
+          "survivor-v067-browser",
+          "survivor-v067-economy",
+          "survivor-v067-migration"
+        ],
+        "proofs": [
+          "artifacts/survivor-v067/verification.json",
+          "design/star-salvage/v067/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Max engineering still yields net cash accumulation. Forecast uses observed combat income and a novice bound for intermediate growth.",
+        "nextAction": "Scan TapTap476192 /7ecabf7 and start a new run to review combat6.",
+        "reviewBasis": "Frozen80 files,99model,640full HTTP plus24focused,80claim,38audio,180policies,10real ZIP migrations,ordinary809.7-second defeat with earned engineering and next voyage,QA animation and nativeSafari.",
+        "sandboxBinding": {
+          "sourceCommit": "7ecabf7c00f5b9fd6afcb7d6fa888a45d35c388d",
+          "zipSha256": "c437ef2223a336117ebd1aa7faddddab72ed2e77f856cbb51e356c895b17614d",
+          "previewZipSha256": "2eb429c107bdb5dc1b6910ac74c99e264645e6719147612c641caf545e2671c0",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 476192,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE067-REPAIR",
+        "parent": null,
+        "requirement": "新局采用两种主要修复取舍。低于35%船体时升级可选恢复28点，或获取／升级占1武器槽的自动维修舱。维修舱五级每秒修复0.25、0.4、0.55、0.7、0.9点，随有效战斗时间推进，暂停与后台停止，满船体封顶。新局精英与Boss沿用战利品升级，现场修理包交由旧规则保存局继续使用。",
+        "acceptanceCriteria": "新局采用两种主要修复取舍。低于35%船体时升级可选恢复28点，或获取／升级占1武器槽的自动维修舱。维修舱五级每秒修复0.25、0.4、0.55、0.7、0.9点，随有效战斗时间推进，暂停与后台停止，满船体封顶。新局精英与Boss沿用战利品升级，现场修理包交由旧规则保存局继续使用。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v067/README.md",
+            "startLine": 8,
+            "endLine": 8
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/src/persistence.js",
+          "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+          "prototypes/salvage-survivor-demo/tests/browser/v067.spec.cjs",
+          "prototypes/salvage-survivor-demo/tests/verify-v067-evidence.cjs"
+        ],
+        "assets": [
+          "design/star-salvage/v067/BALANCE_V067.json",
+          "design/star-salvage/v067/production/repair/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "规则6新局及飞船整备，旧局继续已存规则"
+          }
+        ],
+        "checks": [
+          "survivor-v067-model",
+          "survivor-v067-browser",
+          "survivor-v067-economy",
+          "survivor-v067-migration"
+        ],
+        "proofs": [
+          "artifacts/survivor-v067/verification.json",
+          "design/star-salvage/v067/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Max engineering still yields net cash accumulation. Forecast uses observed combat income and a novice bound for intermediate growth.",
+        "nextAction": "Scan TapTap476192 /7ecabf7 and start a new run to review combat6.",
+        "reviewBasis": "Frozen80 files,99model,640full HTTP plus24focused,80claim,38audio,180policies,10real ZIP migrations,ordinary809.7-second defeat with earned engineering and next voyage,QA animation and nativeSafari.",
+        "sandboxBinding": {
+          "sourceCommit": "7ecabf7c00f5b9fd6afcb7d6fa888a45d35c388d",
+          "zipSha256": "c437ef2223a336117ebd1aa7faddddab72ed2e77f856cbb51e356c895b17614d",
+          "previewZipSha256": "2eb429c107bdb5dc1b6910ac74c99e264645e6719147612c641caf545e2671c0",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 476192,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE067-ORBIT",
+        "parent": null,
+        "requirement": "无人机内圈56、棱镜中圈108、旋刃外圈152／进化156。基础、进化及融合共同遵循层次顺序。真实发射源、刀刃触碰与实际图像共享几何，保持认可的机体尺寸和各武装特性。",
+        "acceptanceCriteria": "无人机内圈56、棱镜中圈108、旋刃外圈152／进化156。基础、进化及融合共同遵循层次顺序。真实发射源、刀刃触碰与实际图像共享几何，保持认可的机体尺寸和各武装特性。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v067/README.md",
+            "startLine": 9,
+            "endLine": 9
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/src/persistence.js",
+          "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+          "prototypes/salvage-survivor-demo/tests/browser/v067.spec.cjs",
+          "prototypes/salvage-survivor-demo/tests/verify-v067-evidence.cjs"
+        ],
+        "assets": [
+          "design/star-salvage/v067/BALANCE_V067.json",
+          "design/star-salvage/v067/production/repair/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "规则6新局及飞船整备，旧局继续已存规则"
+          }
+        ],
+        "checks": [
+          "survivor-v067-model",
+          "survivor-v067-browser",
+          "survivor-v067-economy",
+          "survivor-v067-migration"
+        ],
+        "proofs": [
+          "artifacts/survivor-v067/verification.json",
+          "design/star-salvage/v067/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Max engineering still yields net cash accumulation. Forecast uses observed combat income and a novice bound for intermediate growth.",
+        "nextAction": "Scan TapTap476192 /7ecabf7 and start a new run to review combat6.",
+        "reviewBasis": "Frozen80 files,99model,640full HTTP plus24focused,80claim,38audio,180policies,10real ZIP migrations,ordinary809.7-second defeat with earned engineering and next voyage,QA animation and nativeSafari.",
+        "sandboxBinding": {
+          "sourceCommit": "7ecabf7c00f5b9fd6afcb7d6fa888a45d35c388d",
+          "zipSha256": "c437ef2223a336117ebd1aa7faddddab72ed2e77f856cbb51e356c895b17614d",
+          "previewZipSha256": "2eb429c107bdb5dc1b6910ac74c99e264645e6719147612c641caf545e2671c0",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 476192,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE067-GROWTH",
+        "parent": null,
+        "requirement": "增加推进器、回收天线、装甲衬层三条6级工程，每级分别提供2%移速、8拾取距离、2%减伤，并有尾焰、天线及装甲灯片反馈。每条费用300／500／800／1200／1700／2300，共6800零件，三条20400。原船体和主炮工程保留原价与已购权益。200零件预约下一局六种起始武器之一，正常出发占1武器槽，出发前可取消并全额退还，默认主炮免费。工程、预约在本局结算后操作。模型覆盖新手、27049旧钱包及0／5／15／30／60／120分钟收支，实际账本、取消、并发与写入失败单独验证。",
+        "acceptanceCriteria": "增加推进器、回收天线、装甲衬层三条6级工程，每级分别提供2%移速、8拾取距离、2%减伤，并有尾焰、天线及装甲灯片反馈。每条费用300／500／800／1200／1700／2300，共6800零件，三条20400。原船体和主炮工程保留原价与已购权益。200零件预约下一局六种起始武器之一，正常出发占1武器槽，出发前可取消并全额退还，默认主炮免费。工程、预约在本局结算后操作。模型覆盖新手、27049旧钱包及0／5／15／30／60／120分钟收支，实际账本、取消、并发与写入失败单独验证。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v067/README.md",
+            "startLine": 10,
+            "endLine": 10
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/src/persistence.js",
+          "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+          "prototypes/salvage-survivor-demo/tests/browser/v067.spec.cjs",
+          "prototypes/salvage-survivor-demo/tests/verify-v067-evidence.cjs"
+        ],
+        "assets": [
+          "design/star-salvage/v067/BALANCE_V067.json",
+          "design/star-salvage/v067/production/repair/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "规则6新局及飞船整备，旧局继续已存规则"
+          }
+        ],
+        "checks": [
+          "survivor-v067-model",
+          "survivor-v067-browser",
+          "survivor-v067-economy",
+          "survivor-v067-migration"
+        ],
+        "proofs": [
+          "artifacts/survivor-v067/verification.json",
+          "design/star-salvage/v067/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Max engineering still yields net cash accumulation. Forecast uses observed combat income and a novice bound for intermediate growth.",
+        "nextAction": "Scan TapTap476192 /7ecabf7 and start a new run to review combat6.",
+        "reviewBasis": "Frozen80 files,99model,640full HTTP plus24focused,80claim,38audio,180policies,10real ZIP migrations,ordinary809.7-second defeat with earned engineering and next voyage,QA animation and nativeSafari.",
+        "sandboxBinding": {
+          "sourceCommit": "7ecabf7c00f5b9fd6afcb7d6fa888a45d35c388d",
+          "zipSha256": "c437ef2223a336117ebd1aa7faddddab72ed2e77f856cbb51e356c895b17614d",
+          "previewZipSha256": "2eb429c107bdb5dc1b6910ac74c99e264645e6719147612c641caf545e2671c0",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 476192,
+          "formalIntegration": false
+        }
+      },
+      {
+        "id": "SALVAGE067-COMPAT",
+        "parent": null,
+        "requirement": "新局规则6，旧180／600／900秒规则2～5局保留其已存规则。工程使用可选增量字段，首次购买才写入。余额、旧收藏／航路／首章、船体与主炮等级、EVO、融合、存档及备份保留。真实旧包迁移、双引擎双尺寸、刷新续玩、原生Safari、固定ZIP和TapTap自测分别提供证据，用户视觉、趣味与手机验收单列。",
+        "acceptanceCriteria": "新局规则6，旧180／600／900秒规则2～5局保留其已存规则。工程使用可选增量字段，首次购买才写入。余额、旧收藏／航路／首章、船体与主炮等级、EVO、融合、存档及备份保留。真实旧包迁移、双引擎双尺寸、刷新续玩、原生Safari、固定ZIP和TapTap自测分别提供证据，用户视觉、趣味与手机验收单列。",
+        "sourceRefs": [
+          {
+            "path": "design/star-salvage/v067/README.md",
+            "startLine": 11,
+            "endLine": 11
+          }
+        ],
+        "scope": "IN_SCOPE",
+        "implementation": "IMPLEMENTED",
+        "evidence": "CURRENT_VERIFIED",
+        "visual": "INTERNAL_PASS",
+        "phone": "NOT_TESTED",
+        "code": [
+          "prototypes/salvage-survivor-demo/src/game.js",
+          "prototypes/salvage-survivor-demo/src/persistence.js",
+          "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+          "prototypes/salvage-survivor-demo/tests/browser/v067.spec.cjs",
+          "prototypes/salvage-survivor-demo/tests/verify-v067-evidence.cjs"
+        ],
+        "assets": [
+          "design/star-salvage/v067/BALANCE_V067.json",
+          "design/star-salvage/v067/production/repair/manifest.json"
+        ],
+        "entrypoints": [
+          {
+            "route": "/",
+            "label": "规则6新局及飞船整备，旧局继续已存规则"
+          }
+        ],
+        "checks": [
+          "survivor-v067-model",
+          "survivor-v067-browser",
+          "survivor-v067-economy",
+          "survivor-v067-migration"
+        ],
+        "proofs": [
+          "artifacts/survivor-v067/verification.json",
+          "design/star-salvage/v067/DELIVERY.md"
+        ],
+        "pendingProofs": [],
+        "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Max engineering still yields net cash accumulation. Forecast uses observed combat income and a novice bound for intermediate growth.",
+        "nextAction": "Scan TapTap476192 /7ecabf7 and start a new run to review combat6.",
+        "reviewBasis": "Frozen80 files,99model,640full HTTP plus24focused,80claim,38audio,180policies,10real ZIP migrations,ordinary809.7-second defeat with earned engineering and next voyage,QA animation and nativeSafari.",
+        "sandboxBinding": {
+          "sourceCommit": "7ecabf7c00f5b9fd6afcb7d6fa888a45d35c388d",
+          "zipSha256": "c437ef2223a336117ebd1aa7faddddab72ed2e77f856cbb51e356c895b17614d",
+          "previewZipSha256": "2eb429c107bdb5dc1b6910ac74c99e264645e6719147612c641caf545e2671c0",
+          "database": "loststar.survivor.demo.v06",
+          "taptapVersion": 476192,
+          "formalIntegration": false
+        }
       }
     ],
     "supersededRules": [
@@ -41334,6 +41625,25 @@
           }
         ],
         "rule": "User approved v0.6 core and asked longer rounds/more slots. Choose600seconds and6+6 for new runs, retain180seconds/4+3 for saved legacy runs. Preserve immutable v0.6 proofs."
+      },
+      {
+        "id": "SALVAGE067-HEALING-ORBIT",
+        "scope": "New rule6 survivor runs. Historical rule5 delivery remains preserved.",
+        "originalRefs": [
+          {
+            "path": "design/star-salvage/v066/README.md",
+            "startLine": 7,
+            "endLine": 8
+          }
+        ],
+        "replacementRefs": [
+          {
+            "path": "design/star-salvage/v067/README.md",
+            "startLine": 8,
+            "endLine": 9
+          }
+        ],
+        "rule": "Latest user feedback chooses upgrade repair plus an active-slot regeneration module and drone-inside-prism-inside-blade orbit order. Rule2–5 snapshots retain prior behavior."
       }
     ],
     "statusPolicy": {
@@ -41366,7 +41676,8 @@
       "design/star-salvage/v063/README.md",
       "design/star-salvage/v064/README.md",
       "design/star-salvage/v065/README.md",
-      "design/star-salvage/v066/README.md"
+      "design/star-salvage/v066/README.md",
+      "design/star-salvage/v067/README.md"
     ],
     "deliveryHistory": [
       {
@@ -41656,6 +41967,17 @@
       "newTapTapVersion": 475539,
       "survivorFallback": 474895,
       "routeFallback": 469033,
+      "phone": "NOT_TESTED"
+    },
+    "salvageSurvivorV067Delivery": {
+      "status": "DEVELOPMENT_SELF_TEST_UPLOADED_PENDING_USER_PHONE",
+      "sourceCommit": "7ecabf7c00f5b9fd6afcb7d6fa888a45d35c388d",
+      "proof": "artifacts/survivor-v067/verification.json",
+      "mainPort4283Changed": true,
+      "localPort": 4397,
+      "fallbackPort": 4434,
+      "newTapTapVersion": 476192,
+      "survivorFallback": 475539,
       "phone": "NOT_TESTED"
     }
   },
