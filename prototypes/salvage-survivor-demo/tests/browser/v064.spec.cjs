@@ -241,6 +241,7 @@ test("v064 actual canvas lightning strokes visibly use blue gold and violet", as
     return [1, 3, 5].map((rank) => {
       const Q = SurvivorQA;
       const game = Q.startModel(91);
+      Q.legacyV064();
       game.active = {};
       game.spawnTime = 999;
       game.p.inv = 999;
@@ -346,7 +347,7 @@ test("v064900-second shots refractions and elite armor persist through an actual
   await page.waitForFunction(
     () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
   );
-  expect((await state(page)).rules.combatVersion).toBe(7);
+  expect((await state(page)).rules.combatVersion).toBe(8);
   expect((await state(page)).endTime).toBe(900);
 });
 

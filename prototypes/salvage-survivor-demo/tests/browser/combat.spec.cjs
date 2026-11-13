@@ -333,7 +333,13 @@ test("three choices, icons and level changes fit synthetic phone safe areas with
   expect(boxes[1].y).toBeGreaterThan(boxes[0].bottom);
   expect(boxes[2].y).toBeGreaterThan(boxes[1].bottom);
   await page.locator(".skill").first().dblclick();
-  expect((await state(page)).active.cannon).toBe(2);
+  const loadout = await state(page);
+  expect(
+    [
+      ...Object.values(loadout.active),
+      ...Object.values(loadout.passive),
+    ].reduce((sum, level) => sum + level, 0),
+  ).toBe(2);
 });
 
 test("background, reduced motion and orientation pause the real timer and input", async ({

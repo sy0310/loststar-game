@@ -358,7 +358,7 @@ test("galaxy raster and all five actor sources decode and reduced motion keeps m
   await page.touchscreen.tap(80, 450);
   await page.waitForTimeout(250);
   expect((await state(page)).time).toBeGreaterThan(0);
-  expect((await state(page)).rules.combatVersion).toBe(7);
+  expect((await state(page)).rules.combatVersion).toBe(8);
 });
 
 test("boss alternates actual fan, sweep and gap shock while hazard and bullet caps stay bounded", async ({

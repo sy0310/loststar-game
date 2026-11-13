@@ -160,7 +160,7 @@
       begin(id, snapshot) {
         return transaction((record) => {
           if (record.active) throw Error("还有未结束的一局，请先继续或结算");
-          if ([6, 7].includes(snapshot.game?.rules?.combatVersion)) {
+          if ([6, 7, 8].includes(snapshot.game?.rules?.combatVersion)) {
             const engineering = {
               version: 1,
               thrusters: 0,

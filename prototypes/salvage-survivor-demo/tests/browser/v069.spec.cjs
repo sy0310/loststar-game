@@ -128,7 +128,30 @@ test("v069 UI states six slots and a wider equipment pool, with a genuinely smal
   expect(result).toEqual([false, true]);
 });
 
-test('v069 rule8 consumes a paid starting reservation exactly once at real launch',async({page})=>{
- await boot(page);await start(page);await page.evaluate(async()=>{SurvivorQA.state().credits=1000;await SurvivorQA.end(false);});await page.waitForFunction(()=>!SurvivorDemo.saving());await page.locator('#resultDockBtn').tap();await page.locator('#chooseLaunchBtn').tap();await page.locator('[data-launch-weapon="prism"]').tap();await page.locator('#bookLaunchBtn').tap();await page.waitForFunction(()=>!SurvivorDemo.saving());expect((await stored(page)).profile.credits).toBe(800);
- await page.reload();await page.waitForFunction(()=>SurvivorDemo.ready());await page.locator('#retryBtn').tap();await page.waitForFunction(()=>SurvivorDemo.state()?.mode==='play'&&!SurvivorDemo.saving());expect((await state(page)).rules.combatVersion).toBe(8);expect((await state(page)).active).toEqual({prism:1});expect((await stored(page)).profile.launchPlan).toBeUndefined();expect((await stored(page)).profile.credits).toBe(800);
+test("v069 rule8 consumes a paid starting reservation exactly once at real launch", async ({
+  page,
+}) => {
+  await boot(page);
+  await start(page);
+  await page.evaluate(async () => {
+    SurvivorQA.state().credits = 1000;
+    await SurvivorQA.end(false);
+  });
+  await page.waitForFunction(() => !SurvivorDemo.saving());
+  await page.locator("#resultDockBtn").tap();
+  await page.locator("#chooseLaunchBtn").tap();
+  await page.locator('[data-launch-weapon="prism"]').tap();
+  await page.locator("#bookLaunchBtn").tap();
+  await page.waitForFunction(() => !SurvivorDemo.saving());
+  expect((await stored(page)).profile.credits).toBe(800);
+  await page.reload();
+  await page.waitForFunction(() => SurvivorDemo.ready());
+  await page.locator("#retryBtn").tap();
+  await page.waitForFunction(
+    () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
+  );
+  expect((await state(page)).rules.combatVersion).toBe(8);
+  expect((await state(page)).active).toEqual({ prism: 1 });
+  expect((await stored(page)).profile.launchPlan).toBeUndefined();
+  expect((await stored(page)).profile.credits).toBe(800);
 });

@@ -219,7 +219,7 @@ async function stored(page) {
         assert.equal(oldRun.fused.thunderhive, true);
         assert.equal(
           oldRun.endTime,
-          ["0.6.4", "0.6.5", "0.6.6", "0.6.7"].includes(baseline.version)
+          ["0.6.4", "0.6.5", "0.6.6", "0.6.7", "0.6.8"].includes(baseline.version)
             ? 900
             : 600,
         );
