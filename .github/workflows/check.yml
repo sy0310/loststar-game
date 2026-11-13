@@ -291,6 +291,11 @@ jobs:
       - name: Verify random loadouts and purple-gold delivery when present
         if: hashFiles('artifacts/survivor-v069/verification.json') != ''
         run: node prototypes/salvage-survivor-demo/tests/verify-v069-evidence.cjs
+      - name: Verify scaled repair and prepared test materials when present
+        if: hashFiles('artifacts/survivor-v0610/verification.json') != ''
+        run: |
+          python3 design/star-salvage/v0610/test-materials/art/verify.py
+          node prototypes/salvage-survivor-demo/tests/verify-v0610-evidence.cjs
       - name: Use Ubuntu archive for browser dependencies
         run: |
           sudo python3 - <<'PY'

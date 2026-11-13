@@ -1,0 +1,117 @@
+{
+  "stage": "ai-image-validate",
+  "rule": {
+    "id": "screenshot",
+    "label": "gameplay screenshot",
+    "generation_mode": "source_edit_only",
+    "source_requirement": "actual game capture supplied by the user or captured from the running game",
+    "model_operations": [
+      "crop",
+      "resize",
+      "format_conversion",
+      "compression"
+    ],
+    "reference_rules": [
+      "use the supplied real game capture as the source image",
+      "do not use text-to-image or image-to-image generation to create new gameplay content"
+    ],
+    "formats": [
+      "jpg",
+      "png"
+    ],
+    "tolerance": 0.01,
+    "max_file_size": 4194304,
+    "count_range": {
+      "min": 3
+    },
+    "dimensions": [
+      {
+        "min_width": 1280,
+        "min_height": 720,
+        "aspect_range": [
+          1.6,
+          2.6666666667
+        ]
+      },
+      {
+        "min_width": 720,
+        "min_height": 1280,
+        "aspect_range": [
+          0.375,
+          0.625
+        ]
+      }
+    ],
+    "consistent_aspect_ratio": true,
+    "content_constraints": [
+      "all screenshots must use the same aspect ratio as the first screenshot",
+      "must originate from actual in-game screens",
+      "the model must not invent gameplay scenes, UI, levels, or game states",
+      "the model may only crop, resize, convert format, or compress the supplied game capture"
+    ],
+    "prompt_rules": [
+      "preserve the actual game screen and its real gameplay state",
+      "only perform the listed source-preserving operations"
+    ],
+    "forbidden_elements": [
+      "invented gameplay",
+      "invented UI, levels, characters, items, or game states",
+      "new scene redraw or visual repaint"
+    ],
+    "negative_terms": [
+      "watermark",
+      "blurry",
+      "empty scene",
+      "malformed UI text",
+      "invented gameplay",
+      "new game state"
+    ]
+  },
+  "input": "releases/survivor-v0610-private/selected-screenshots",
+  "valid": true,
+  "manual_checks": [
+    "all screenshots must use the same aspect ratio as the first screenshot",
+    "must originate from actual in-game screens",
+    "the model must not invent gameplay scenes, UI, levels, or game states",
+    "the model may only crop, resize, convert format, or compress the supplied game capture"
+  ],
+  "candidates": [
+    {
+      "path": "releases/survivor-v0610-private/selected-screenshots/01-opening.png",
+      "name": "01-opening.png",
+      "format": "png",
+      "width": 780,
+      "height": 1688,
+      "file_size": 294481,
+      "valid": true,
+      "upload_command": "taptap-cli upload 'releases/survivor-v0610-private/selected-screenshots/01-opening.png' --app-id \u003capp-id\u003e --dev-id \u003cdeveloper-id\u003e --idempotency-key \u003cstable-image-intent-key\u003e --yes"
+    },
+    {
+      "path": "releases/survivor-v0610-private/selected-screenshots/02-qa-fusion.png",
+      "name": "02-qa-fusion.png",
+      "format": "png",
+      "width": 780,
+      "height": 1688,
+      "file_size": 355343,
+      "valid": true,
+      "upload_command": "taptap-cli upload 'releases/survivor-v0610-private/selected-screenshots/02-qa-fusion.png' --app-id \u003capp-id\u003e --dev-id \u003cdeveloper-id\u003e --idempotency-key \u003cstable-image-intent-key\u003e --yes"
+    },
+    {
+      "path": "releases/survivor-v0610-private/selected-screenshots/03-qa-repair.png",
+      "name": "03-qa-repair.png",
+      "format": "png",
+      "width": 780,
+      "height": 1688,
+      "file_size": 183243,
+      "valid": true,
+      "upload_command": "taptap-cli upload 'releases/survivor-v0610-private/selected-screenshots/03-qa-repair.png' --app-id \u003capp-id\u003e --dev-id \u003cdeveloper-id\u003e --idempotency-key \u003cstable-image-intent-key\u003e --yes"
+    }
+  ],
+  "user_action_required": true,
+  "upload_pending": true,
+  "manifest_path": "artifacts/survivor-v0610/screenshots-validation.json",
+  "next_steps": [
+    "图片仅保存在本地，CLI 未上传或修改资料字段。",
+    "请先确认候选图；确认后再执行候选项中的 upload_command 上传到素材库。"
+  ]
+}
