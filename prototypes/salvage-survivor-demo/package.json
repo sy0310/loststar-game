@@ -9,6 +9,8 @@
     "simulate": "node tests/simulate.cjs",
     "check:art": "python3 ../../design/star-salvage/v06/production/actors/verify.py && python3 ../../design/star-salvage/v06/production/weapons/verify.py && python3 ../../design/star-salvage/v061/production/effects/verify.py && python3 ../../design/star-salvage/v062/production/actors/verify.py && python3 ../../design/star-salvage/v062/production/space/verify.py && python3 ../../design/star-salvage/v064/production/actors/verify.py && python3 ../../design/star-salvage/v064/production/weapons/verify.py && python3 ../../design/star-salvage/v065/production/bosses/verify.py && python3 ../../design/star-salvage/v065/production/elites/verify.py && python3 ../../design/star-salvage/v065/production/weapons/verify.py && python3 ../../design/star-salvage/v067/production/repair/verify.py && python3 ../../design/star-salvage/v068/production/fusion/verify.py",
     "build": "python3 build.py",
+    "build:wechat": "python3 wechat/build.py",
+    "test:wechat": "node wechat/test.cjs",
     "capture": "node tests/capture.cjs",
     "verify:evidence": "node tests/verify-evidence.cjs",
     "package:taptap": "python3 package_taptap.py",

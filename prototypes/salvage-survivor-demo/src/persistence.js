@@ -77,7 +77,8 @@
 
   async function create({ qa = false } = {}) {
     const name = B.database + (qa ? ".qa" : "");
-    const db = await new Promise((resolve, reject) => {
+    const nativeStore = root.SurvivorNativeStorage?.open(name);
+    const db = nativeStore ? null : await new Promise((resolve, reject) => {
       const request = indexedDB.open(name, 1);
       request.onupgradeneeded = () => request.result.createObjectStore("state");
       request.onsuccess = () => resolve(request.result);
@@ -93,6 +94,8 @@
     }
 
     function transaction(change) {
+      if (nativeStore)
+        return nativeStore.transaction(change, validateRecord, initialProfile);
       return new Promise((resolve, reject) => {
         const tx = db.transaction("state", "readwrite");
         const store = tx.objectStore("state");
@@ -300,7 +303,7 @@
       },
       close() {
         channel?.close();
-        db.close();
+        db?.close();
       },
     };
   }
