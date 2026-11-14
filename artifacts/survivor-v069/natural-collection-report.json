@@ -1,0 +1,299 @@
+{
+  "source": {
+    "version": "0.6.9",
+    "commit": "6bff9f11527d1aa231b328246abfe4235f002ff1",
+    "dirty": false
+  },
+  "qa": false,
+  "steering": "visible pickups plus threat avoidance",
+  "imports": false,
+  "timeOrSeedOverride": false,
+  "scope": "Ordinary HTTP new game, automated visible-threat keyboard steering and actual card clicks. No state writes. This is not a human or phone skill result.",
+  "samples": [
+    {
+      "at": 0.018499999952316274,
+      "hp": 100,
+      "kills": 0,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": []
+    },
+    {
+      "at": 30.017299999951877,
+      "hp": 82,
+      "kills": 20,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": []
+    },
+    {
+      "at": 60.09939999995356,
+      "hp": 82,
+      "kills": 40,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": []
+    },
+    {
+      "at": 90.13149999995932,
+      "hp": 82,
+      "kills": 61,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": []
+    },
+    {
+      "at": 120.09699999996599,
+      "hp": 70,
+      "kills": 73,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": []
+    },
+    {
+      "at": 150.1791999999714,
+      "hp": 64,
+      "kills": 84,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": []
+    },
+    {
+      "at": 180.11129999997823,
+      "hp": 58,
+      "kills": 85,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": []
+    },
+    {
+      "at": 210.04349999998507,
+      "hp": 20,
+      "kills": 91,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": []
+    },
+    {
+      "at": 240.09219999999192,
+      "hp": 2,
+      "kills": 94,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": []
+    },
+    {
+      "at": 270.11189999994565,
+      "hp": 30,
+      "kills": 97,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": [
+        319
+      ]
+    },
+    {
+      "at": 300.1106999999525,
+      "hp": 30,
+      "kills": 97,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": [
+        319
+      ]
+    },
+    {
+      "at": 330.12619999995934,
+      "hp": 5.8157526666672625,
+      "kills": 98,
+      "active": {
+        "cannon": 1
+      },
+      "passive": {},
+      "rewardIds": [
+        319
+      ]
+    }
+  ],
+  "choices": [
+    {
+      "at": 247.10859999999352,
+      "label": "应急补给船体修补恢复28船体应急补给",
+      "source": {
+        "kind": "boss",
+        "id": 319,
+        "advancedRoll": true,
+        "loot": [
+          {
+            "id": "cannon",
+            "kind": "active",
+            "from": 1,
+            "level": 4
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "liveMix": {
+    "source": "Actual battle canvas plus game output mix",
+    "playSegments": [
+      {
+        "start": 0,
+        "end": 247.241
+      },
+      {
+        "start": 247.486,
+        "end": 332.156
+      }
+    ],
+    "wallSeconds": 332.179
+  },
+  "last": {
+    "time": 331.79279999995975,
+    "mode": "results",
+    "hp": 0,
+    "kills": 98,
+    "metrics": {
+      "damage": {
+        "pulse": 12015.320000000074
+      },
+      "shots": {
+        "pulse": 599,
+        "hostile-ranger": 61,
+        "hostile-lancer": 38,
+        "hostile-wisp": 84,
+        "hostile-elite": 55,
+        "hostile-tank": 16,
+        "hostile-shock": 19,
+        "hostile-minelayer": 20,
+        "hostile-mine": 44,
+        "hostile-courier": 8,
+        "hostile-sentinel": 3,
+        "hostile-beam": 6,
+        "hostile-hook": 12,
+        "hostile-boss": 9
+      },
+      "spawned": {
+        "wisp": 81,
+        "ranger": 112,
+        "skimmer": 417,
+        "lancer": 70,
+        "tank": 80,
+        "elite": 2,
+        "minelayer": 44,
+        "courier": 1,
+        "sentinel": 13,
+        "boss": 1
+      },
+      "killed": {
+        "ranger": 6,
+        "skimmer": 77,
+        "wisp": 12,
+        "lancer": 2,
+        "elite": 1
+      },
+      "events": [
+        {
+          "kind": "elite",
+          "time": 140.01289999996908,
+          "tier": 1,
+          "identity": "hunter"
+        },
+        {
+          "kind": "encounterWarning",
+          "visitor": "courier",
+          "time": 166.011799999975
+        },
+        {
+          "kind": "encounterArrival",
+          "visitor": "courier",
+          "time": 168.22849999997553
+        },
+        {
+          "kind": "encounterResult",
+          "visitor": "courier",
+          "result": "departed",
+          "time": 210.24339999998512
+        },
+        {
+          "kind": "upgrade",
+          "time": 247.10859999999352,
+          "level": 2
+        },
+        {
+          "kind": "bonus",
+          "id": "repair",
+          "time": 247.10859999999352,
+          "rewardId": 319
+        },
+        {
+          "kind": "elite",
+          "time": 247.11289999994582,
+          "tier": 2,
+          "identity": "reaver"
+        },
+        {
+          "kind": "boss",
+          "time": 300.0107999999525,
+          "tier": 1,
+          "identity": "core"
+        }
+      ],
+      "collectedXP": 80,
+      "shipDamage": 128.29022333333262,
+      "shieldsBlocked": 0
+    }
+  },
+  "refreshPreserved": true,
+  "returnWallet": 101,
+  "preparedProfile": {
+    "credits": 101,
+    "best": 98,
+    "runs": 1,
+    "hull": 0,
+    "gun": 0
+  },
+  "nextRun": {
+    "active": {
+      "cannon": 1
+    },
+    "engineering": {
+      "version": 1,
+      "thrusters": 0,
+      "salvage": 0,
+      "plating": 0
+    },
+    "speed": 175,
+    "profile": {
+      "credits": 101,
+      "best": 98,
+      "runs": 1,
+      "hull": 0,
+      "gun": 0
+    }
+  },
+  "nextRunRefreshPreserved": true
+}

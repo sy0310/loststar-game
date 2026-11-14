@@ -1,0 +1,150 @@
+{
+  "sourceCommit": "7074cff043a239771acae1f0b7133db1225f797a",
+  "zipSha256": "0df17916b640f7e28226f61b40279efb313e05810a57565ef493e17d28fc9349",
+  "baselineSource": "ff917872227b0f28a452dee1642d9cc8606251db",
+  "host": {
+    "cpu": "Apple M2 Pro",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "method": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "dpr": 2,
+    "concurrency": 1,
+    "recording": false,
+    "warmupMs": 1500,
+    "sampleMs": 10000,
+    "heap": "Chromium coarse JS heap only; excludes texture, GPU and process memory."
+  },
+  "rows": [
+    {
+      "engine": "chromium",
+      "view": "collection",
+      "baselinePaintSamples": 595,
+      "baselineP95Ms": 17.400000035762787,
+      "currentPaintSamples": 600,
+      "currentP95Ms": 17.19999998807907,
+      "currentRafSamples": 600,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "chromium",
+      "view": "receipt",
+      "baselinePaintSamples": 600,
+      "baselineP95Ms": 16.700000000000728,
+      "currentPaintSamples": 600,
+      "currentP95Ms": 16.700000000000728,
+      "currentRafSamples": 600,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "chromium",
+      "view": "tape",
+      "baselinePaintSamples": 600,
+      "baselineP95Ms": 16.700000000000728,
+      "currentPaintSamples": 601,
+      "currentP95Ms": 16.700000000000728,
+      "currentRafSamples": 601,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "chromium",
+      "view": "bell",
+      "baselinePaintSamples": 601,
+      "baselineP95Ms": 16.700000000000728,
+      "currentPaintSamples": 600,
+      "currentP95Ms": 16.700000000000728,
+      "currentRafSamples": 600,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "chromium",
+      "view": "tape-ii",
+      "baselinePaintSamples": 600,
+      "baselineP95Ms": 16.700000000000728,
+      "currentPaintSamples": 600,
+      "currentP95Ms": 16.700000000000728,
+      "currentRafSamples": 599,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "chromium",
+      "view": "bell-active",
+      "baselinePaintSamples": 601,
+      "baselineP95Ms": 16.700000000000728,
+      "currentPaintSamples": 601,
+      "currentP95Ms": 16.799999999999272,
+      "currentRafSamples": 601,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "webkit",
+      "view": "collection",
+      "baselinePaintSamples": 417,
+      "baselineP95Ms": 34,
+      "currentPaintSamples": 600,
+      "currentP95Ms": 19,
+      "currentRafSamples": 600,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "webkit",
+      "view": "receipt",
+      "baselinePaintSamples": 600,
+      "baselineP95Ms": 18,
+      "currentPaintSamples": 600,
+      "currentP95Ms": 19,
+      "currentRafSamples": 600,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "webkit",
+      "view": "tape",
+      "baselinePaintSamples": 585,
+      "baselineP95Ms": 18,
+      "currentPaintSamples": 600,
+      "currentP95Ms": 19,
+      "currentRafSamples": 600,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "webkit",
+      "view": "bell",
+      "baselinePaintSamples": 600,
+      "baselineP95Ms": 18,
+      "currentPaintSamples": 599,
+      "currentP95Ms": 19,
+      "currentRafSamples": 600,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "webkit",
+      "view": "tape-ii",
+      "baselinePaintSamples": 591,
+      "baselineP95Ms": 18,
+      "currentPaintSamples": 600,
+      "currentP95Ms": 19,
+      "currentRafSamples": 600,
+      "currentOver100Ms": 0
+    },
+    {
+      "engine": "webkit",
+      "view": "bell-active",
+      "baselinePaintSamples": 594,
+      "baselineP95Ms": 18,
+      "currentPaintSamples": 599,
+      "currentP95Ms": 19,
+      "currentRafSamples": 600,
+      "currentOver100Ms": 0
+    }
+  ],
+  "limits": [
+    "One fresh 10s run per engine/view with one context, no recordings or other browser tests. Short samples are not sustained phone frame rates.",
+    "Baseline is variable: a repeated WebKit collection had 598 paints/P95 19ms; repeated receipt had 559 paints/P95 33ms despite normal rAF. Raw repeat traces retained.",
+    "Cadence change is based on observed skipped-paint timestamps. No unmeasured decoder or GPU root cause is asserted.",
+    "GPU memory, actual decoded residency, physical handset lockscreen/thermals and audible sound are not measured."
+  ]
+}

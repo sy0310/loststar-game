@@ -1,0 +1,357 @@
+{
+  "version": "0.4.3",
+  "runtimeSource": "ff917872227b0f28a452dee1642d9cc8606251db",
+  "zipSha256": "2c37adfcd286cf1b1ba8af05bb7b52127d5cdda126f0b3fa098e812d825893f1",
+  "package": {
+    "game": "失物星球",
+    "version": "0.4.3",
+    "sourceCommit": "ff917872227b0f28a452dee1642d9cc8606251db",
+    "archive": "releases/taptap/loststar-0.4.3-ff91787-fusion-h5.zip",
+    "bytes": 12006782,
+    "sha256": "2c37adfcd286cf1b1ba8af05bb7b52127d5cdda126f0b3fa098e812d825893f1",
+    "files": 189,
+    "uncompressedBytes": 12357729,
+    "entry": "loststar-fusion/index.html",
+    "orientation": "portrait",
+    "purpose": "First-planet playable journey with persistent surface fog, artifact restoration, collection, base and day/night; continues the existing v037 campaign and preserves prior source backups"
+  },
+  "database": "loststar.fusion.firstplanet.v037",
+  "scope": "Six curios, three complete images each; visual/interaction replacement only, original work clock, economy and save rights retained.",
+  "localFullCheck": {
+    "head": "ff917872227b0f28a452dee1642d9cc8606251db",
+    "version": "0.4.3",
+    "command": "npm run check",
+    "exitCode": 0,
+    "startedAt": "2026-11-06T03:03:50.568066+00:00",
+    "finishedAt": "2026-11-06T03:15:07.399263+00:00",
+    "designAssets": {
+      "verified": 20,
+      "total": 20
+    },
+    "unitTests": {
+      "filesPassed": 61,
+      "filesTotal": 61,
+      "testsPassed": 375,
+      "testsTotal": 375
+    },
+    "buildsPassed": [
+      "build",
+      "build:d1",
+      "build:v034",
+      "build:fusion",
+      "build:v036"
+    ],
+    "e2eStats": {
+      "startTime": "2026-11-06T03:03:58.150Z",
+      "duration": 669148.598,
+      "expected": 518,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "scopedReportSha256": "f176fa13096fea640c6228c03e35a32ae9ecdaa27cbddded3d4ba4139129baf7",
+    "restoredGlobalArtifactCount": 21,
+    "logSha256": "c9c0cdc7d48981b1fed844ee027b0ddfc2a669a7305e43e2701c60fcf911993b",
+    "physicalPhoneTested": false,
+    "rerunCount": 0
+  },
+  "fixedPackageSmoke": {
+    "report": "package-smoke.json",
+    "cases": 6,
+    "errors": 0,
+    "sourceCommit": "ff917872227b0f28a452dee1642d9cc8606251db",
+    "physicalPhone": false
+  },
+  "artwork": {
+    "formalStates": 18,
+    "newGeneratedOriginals": 13,
+    "reusedByteIdenticalC": 5,
+    "runtimeDimensions": [
+      384,
+      384
+    ],
+    "registry": "../../assets/runtime/visual-renewal/whole-states-v043/registration.json",
+    "method": "One complete uncropped drawImage from the actual persisted condition; no visual progression masks, slices, erasure or mosaic reconstruction."
+  },
+  "actualEvidence": {
+    "reports": [
+      "screens-whole-state-evidence.json",
+      "process-whole-state-evidence.json",
+      "museum-physical-evidence.json"
+    ],
+    "screenshots": 144,
+    "materialExports": 90,
+    "distinctFormalStates": 18,
+    "videos": 7,
+    "extractedFrames": 24,
+    "contactSheets": 7,
+    "galleryQA": "gallery-qa.json",
+    "clockOverrides": false,
+    "speed": 1,
+    "physicalPhone": false,
+    "internalReview": "review-status.json",
+    "userReview": "pending"
+  },
+  "businessInvariants": {
+    "report": "model-invariants.json",
+    "files": 15,
+    "baseline": "51d682c289dc786c43fbb51697bdf285b9044f66"
+  },
+  "existingRuntimeImages": {
+    "report": "runtime-image-invariants.json",
+    "oldImages": 395,
+    "preservedByteIdentical": 395,
+    "changed": [],
+    "newWholeImageFiles": 36
+  },
+  "economy": {
+    "report": "economy.json",
+    "rows": 48,
+    "offline": 12,
+    "checks": {
+      "negative": 0,
+      "accounting": 0,
+      "quotedPrice": 0,
+      "categoryTotal": 0,
+      "duplicateCharge": 0,
+      "falseSignature": 0,
+      "shuffledFog": 0,
+      "duplicateClaim": 0,
+      "archiveRights": 0,
+      "directTapIncome": 0,
+      "offlineCap": 0,
+      "completedStudies": 0
+    },
+    "naturalProcessQuotedTotals": {
+      "receipt": 160,
+      "tape": 130,
+      "nested": 190,
+      "stamp": 225,
+      "cosmic-parcel": 280,
+      "bell": 155
+    },
+    "newPrices": false,
+    "oldRightsPreserved": true
+  },
+  "performance": {
+    "report": "performance.json",
+    "host": {
+      "cpu": "Apple M2 Pro",
+      "platform": "darwin",
+      "architecture": "arm64"
+    },
+    "method": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "dpr": 2,
+      "concurrency": 1,
+      "recording": false,
+      "warmupMs": 1500,
+      "sampleMs": 10000,
+      "heap": "Chromium coarse JS heap only; excludes texture, GPU and process memory."
+    },
+    "cases": [
+      {
+        "engine": "chromium",
+        "view": "collection",
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.69999998807907,
+          "p95Ms": 17.5,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.5391014959173472,
+        "errors": []
+      },
+      {
+        "engine": "chromium",
+        "view": "receipt",
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.799999999999272,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.2151414312657818,
+        "errors": []
+      },
+      {
+        "engine": "chromium",
+        "view": "tape",
+        "actualPaint": {
+          "samples": 601,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.700000000000728,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.2878737552617475,
+        "errors": []
+      },
+      {
+        "engine": "chromium",
+        "view": "bell",
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.700000000000728,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.2777038263203499,
+        "errors": []
+      },
+      {
+        "engine": "chromium",
+        "view": "tape-ii",
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.700000000000728,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 3.0470881858800296,
+        "errors": []
+      },
+      {
+        "engine": "chromium",
+        "view": "bell-active",
+        "actualPaint": {
+          "samples": 601,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.700000000000728,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.38637873728409955,
+        "errors": []
+      },
+      {
+        "engine": "webkit",
+        "view": "collection",
+        "actualPaint": {
+          "samples": 599,
+          "medianMs": 17,
+          "p95Ms": 19,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 1.1133333333333333,
+        "errors": []
+      },
+      {
+        "engine": "webkit",
+        "view": "receipt",
+        "actualPaint": {
+          "samples": 565,
+          "medianMs": 17,
+          "p95Ms": 33,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.35335689045936397,
+        "errors": []
+      },
+      {
+        "engine": "webkit",
+        "view": "tape",
+        "actualPaint": {
+          "samples": 576,
+          "medianMs": 17,
+          "p95Ms": 19,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.41074523396880414,
+        "errors": []
+      },
+      {
+        "engine": "webkit",
+        "view": "bell",
+        "actualPaint": {
+          "samples": 569,
+          "medianMs": 17,
+          "p95Ms": 32,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.4245614035087719,
+        "errors": []
+      },
+      {
+        "engine": "webkit",
+        "view": "tape-ii",
+        "actualPaint": {
+          "samples": 568,
+          "medianMs": 17,
+          "p95Ms": 32,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 3.34622144112478,
+        "errors": []
+      },
+      {
+        "engine": "webkit",
+        "view": "bell-active",
+        "actualPaint": {
+          "samples": 593,
+          "medianMs": 17,
+          "p95Ms": 18,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.4074074074074074,
+        "errors": []
+      }
+    ],
+    "limitations": "Desktop mobile-size sampling, not physical-phone/thermal/GPU memory certification; WebKit receipt33ms, idle bell32ms and active tape32ms p95 remain intermittent missed paints."
+  },
+  "sourceCI": {
+    "status": "completed/success",
+    "pushRun": 42154063100,
+    "prRun": 42154073522,
+    "runtimeSource": "ff917872227b0f28a452dee1642d9cc8606251db",
+    "prCheckout": "9263ed8b0799a98b407c62269472ba5280c5d6bf",
+    "prParents": [
+      "bfe6ea184df51b46d82ce4abdb38df0a9e4cd44e",
+      "ff917872227b0f28a452dee1642d9cc8606251db"
+    ],
+    "attempt": 1,
+    "pushJob": 127683890462,
+    "prJob": 127683925090,
+    "pushURL": "https://github.com/sy0310/loststar-game/actions/runs/42154063100",
+    "prURL": "https://github.com/sy0310/loststar-game/actions/runs/42154073522",
+    "pushFinishedAt": "2026-11-06T03:20:57Z",
+    "prFinishedAt": "2026-11-06T03:20:27Z",
+    "unitFiles": 61,
+    "unitTests": 375,
+    "builds": 5,
+    "e2ePassed": 518,
+    "e2eSkipped": 0,
+    "e2eUnexpected": 0,
+    "e2eFlaky": 0,
+    "packageCases": 6,
+    "hitTargetsPerPackageCase": 7,
+    "actualComputedStyles": "borderImageSource none / border widths0 / transparent backgrounds / no boxShadow / all noPaintedHitFrames=true",
+    "pushPackage": {
+      "bytes": 12006782,
+      "sha256": "2c37adfcd286cf1b1ba8af05bb7b52127d5cdda126f0b3fa098e812d825893f1"
+    },
+    "prPackage": {
+      "bytes": 12006779,
+      "sha256": "b5ad26b1f459b36744e1d2b53e6dcc81897d5f9ac9e0cc6c99f5b29c7766d384"
+    },
+    "provenance": "Both CI artifacts independently built by their actual checkout. Matching source Push ZIP verified separately; PR synthetic merge has a different build identifier and ZIP, not the uploaded runtime."
+  },
+  "finalEvidenceCI": {
+    "url": "https://github.com/sy0310/loststar-game/pull/2/checks",
+    "note": "Current head evidence-only checks are a separate checkout/package from the frozen uploaded runtime; final terminal readback is in the PR body."
+  },
+  "taptap": "taptap-self-test.json",
+  "knownUnverified": [
+    "New version physical TapTap phone appearance and touch",
+    "Real system lockscreen and thermal stability",
+    "Low-end WebView and GPU/decoded texture residency",
+    "Final user art acceptance"
+  ],
+  "deliveryPolicy": {
+    "draftPR": 2,
+    "merged": false,
+    "productionPublished": false,
+    "secondPlanet": false
+  }
+}

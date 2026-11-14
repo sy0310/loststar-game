@@ -1,0 +1,98 @@
+{
+  "stage": "ai-image-validate",
+  "rule": {
+    "id": "header_banner",
+    "label": "game promotional banner",
+    "goal": "create a promotional image where the game title, a recognizable subject close-up, and one real gameplay moment form one coherent visual",
+    "reference_rules": [
+      "prefer a real gameplay screenshot as the reference",
+      "extract the representative gameplay symbol, environment tone, subject relationship, action, and result feedback from the screenshot",
+      "do not copy the complete screenshot, its temporary crop, UI layout, or screenshot-like presentation",
+      "use the reference to preserve real gameplay and visual identity, not to turn the image into unrelated concept art"
+    ],
+    "formats": [
+      "jpg",
+      "png"
+    ],
+    "tolerance": 0.01,
+    "max_file_size": 4194304,
+    "dimensions": [
+      {
+        "min_width": 1920,
+        "min_height": 1080,
+        "aspect_ratio": [
+          16,
+          9
+        ]
+      }
+    ],
+    "content_constraints": [
+      "landscape image (16:9)",
+      "the game title must be the exact title supplied in the game context when title text is requested",
+      "the visual must remain faithful to the game's real gameplay and visual identity"
+    ],
+    "prompt_rules": [
+      "use a wide composition with one clear hero subject and one concrete gameplay moment",
+      "make the subject, interaction, action, and direct result or feedback understandable at first glance",
+      "make the title and gameplay subject the two primary reading layers, with the title prominent but not covering the action",
+      "place the title and subject in separate, visually connected areas rather than as unrelated overlay layers",
+      "keep the title large, legible, and stylistically integrated with the game",
+      "remove HUD, buttons, health bars, progress bars, numbers, cards, minimaps, operation hints, and other game UI",
+      "use background and effects as support; do not let them overpower the subject or replace gameplay content",
+      "preserve the reference's art style, mood, visual complexity, and recognizable gameplay elements",
+      "allow artistic rearrangement of the screenshot content, but do not invent gameplay that is absent from the reference or context"
+    ],
+    "text_rules": [
+      "only the exact game title may appear as text",
+      "do not add genre words, tags, platform names, slogans, subtitles, labels, or promotional copy",
+      "if exact title rendering cannot be guaranteed, simplify decoration while keeping the title readable and accurate"
+    ],
+    "forbidden_elements": [
+      "complete gameplay screenshot used as a background with text pasted on top",
+      "pure title poster with no recognizable action or gameplay relationship",
+      "commercial UI such as purchase prompts, ads, top-up, draw, or promotion badges",
+      "unrelated characters, scenes, or exaggerated concept-art packaging",
+      "scattered gameplay elements without a clear focal subject and moment",
+      "title that is tiny, clipped, misspelled, or covering the main action"
+    ],
+    "negative_terms": [
+      "watermark",
+      "blurry",
+      "malformed text",
+      "wrong title",
+      "tiny title",
+      "full screenshot",
+      "HUD",
+      "game UI",
+      "commercial UI",
+      "unrelated character",
+      "generic poster layout"
+    ]
+  },
+  "input": "design/star-salvage/v068/store-media/exports/taptap-keyvisual-no-text-1920x1080.png",
+  "valid": true,
+  "manual_checks": [
+    "landscape image (16:9)",
+    "the game title must be the exact title supplied in the game context when title text is requested",
+    "the visual must remain faithful to the game's real gameplay and visual identity"
+  ],
+  "candidates": [
+    {
+      "path": "design/star-salvage/v068/store-media/exports/taptap-keyvisual-no-text-1920x1080.png",
+      "name": "taptap-keyvisual-no-text-1920x1080.png",
+      "format": "png",
+      "width": 1920,
+      "height": 1080,
+      "file_size": 2033021,
+      "valid": true,
+      "upload_command": "taptap-cli upload 'design/star-salvage/v068/store-media/exports/taptap-keyvisual-no-text-1920x1080.png' --app-id 1022667 --dev-id 512759 --idempotency-key \u003cstable-image-intent-key\u003e --yes"
+    }
+  ],
+  "user_action_required": true,
+  "upload_pending": true,
+  "manifest_path": "design/star-salvage/v0610/test-materials/art/taptap-local-hero-no-text.json",
+  "next_steps": [
+    "图片仅保存在本地，CLI 未上传或修改资料字段。",
+    "请先确认候选图；确认后再执行候选项中的 upload_command 上传到素材库。"
+  ]
+}

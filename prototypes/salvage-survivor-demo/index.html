@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#17172b" />
+    <title>失物号 · 星海生存</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <span id="qaWatermark" hidden>QA 演示</span>
+      <canvas
+        id="game"
+        role="application"
+        aria-label="拖动飞船躲避，武器自动攻击"
+        tabindex="0"
+      ></canvas>
+      <div id="hud" hidden>
+        <div class="hud-top">
+          <div class="ship-health">
+            <span class="mini-label">失物号</span
+            ><strong id="hpLabel">100/100</strong>
+            <div class="meter"><span id="hpFill"></span></div>
+          </div>
+          <div class="run-clock">
+            <span class="mini-label">航时</span
+            ><strong id="timeLabel">00:00</strong>
+          </div>
+          <div class="kill-count">
+            <span class="mini-label">击落</span
+            ><strong id="killsLabel">0</strong>
+          </div>
+          <button id="pauseBtn" aria-label="暂停游戏" hidden>Ⅱ</button>
+        </div>
+        <div id="xpWrap">
+          <div id="xpHead">
+            <span>等级 <b id="levelLabel">1</b></span
+            ><span>零件 <b id="scrapLabel">0</b></span>
+          </div>
+          <div class="meter xp"><span id="xpFill"></span></div>
+        </div>
+        <div id="loadout" aria-label="本局武装"></div>
+        <div class="flight-note">
+          <span id="waveTip">来敌接近</span><span id="shieldLabel"></span>
+        </div>
+      </div>
+      <div id="bossBar" hidden>
+        <div class="boss-heading">
+          <span id="bossName">星海守卫者</span><span id="bossHealth"></span>
+        </div>
+        <div class="meter"><span id="bossFill"></span></div>
+      </div>
+      <div id="encounterNotice" role="status" hidden>
+        <strong id="encounterTitle"></strong><span id="encounterText"></span>
+      </div>
+      <div id="toast" aria-live="polite"></div>
+      <div id="joystick" hidden><div id="stick"></div></div>
+      <div id="footHint" hidden>按住并拖动 · 自动攻击</div>
+      <div id="saveBar">
+        <span id="saveStatus" role="status">正在准备飞船</span
+        ><button id="retrySaveBtn" hidden>重试保存</button>
+      </div>
+
+      <section class="overlay" id="start" aria-label="开始挑战">
+        <div class="subtitle">失物号 · 开发自测</div>
+        <h1>星海生存</h1>
+        <div class="intro-art" aria-hidden="true">
+          <div class="intro-orbit"></div>
+          <img
+            src="./assets/actors/player@2x.png"
+            alt=""
+            width="120"
+            height="120"
+          /><span class="intro-star star-one">✧</span
+          ><span class="intro-star star-two">✦</span>
+        </div>
+        <p class="intro-copy">
+          拖动飞船躲避，武器自动开火。<br />武器与辅助各5级，击退精英抽取进化。
+        </p>
+        <div class="run-promise">
+          <span>360°星海</span><span>15分钟挑战</span
+          ><span>9种武装选6 · 8种增强选6</span>
+        </div>
+        <button id="continueBtn" class="primary" hidden>继续上次挑战</button>
+        <button id="startBtn" class="primary" disabled>准备中</button>
+        <button id="dockBtn" class="secondary">飞船整备</button>
+        <p class="small" id="recordText">独立试玩存档</p>
+        <span class="build-stamp" id="buildStamp">v0.6.10</span>
+      </section>
+
+      <section class="overlay" id="upgrade" aria-label="选择一项强化" hidden>
+        <div class="subtitle">武装补给</div>
+        <h2 class="up-title" id="upgradeTitle">等级提升</h2>
+        <p class="subline" id="upgradeHint">选一项，继续出击</p>
+        <div class="upgrade-list" id="upgradeList"></div>
+        <button
+          id="rerollBtn"
+          class="darkbtn reroll-button"
+          type="button"
+          hidden
+        >
+          刷新选项 · 剩余 3 次
+        </button>
+        <div class="build-footer" id="upgradeBuild"></div>
+        <p class="small" id="fusionGuide"></p>
+      </section>
+
+      <section class="overlay" id="pause" aria-label="暂停" hidden>
+        <div class="subtitle">失物号待命</div>
+        <h2>歇一会儿</h2>
+        <p>回来后，从这里继续。</p>
+        <div class="audio-settings" aria-label="声音设置">
+          <div class="audio-heading">
+            <span>声音</span
+            ><button id="audioMuteBtn" class="darkbtn">静音</button>
+          </div>
+          <label for="musicVolume"
+            >音乐
+            <input
+              id="musicVolume"
+              type="range"
+              min="0"
+              max="100"
+              step="5"
+              value="25"
+            /><output id="musicVolumeValue">25%</output></label
+          >
+          <label for="sfxVolume"
+            >音效
+            <input
+              id="sfxVolume"
+              type="range"
+              min="0"
+              max="100"
+              step="5"
+              value="55"
+            /><output id="sfxVolumeValue">55%</output></label
+          >
+          <span class="small" id="audioStatus" role="status"></span>
+        </div>
+        <button class="primary" id="resumeBtn">继续战斗</button>
+        <button class="secondary" id="leaveBtn">结束本局并结算</button>
+        <p class="small">切换应用或锁屏时自动暂停。</p>
+      </section>
+
+      <section
+        class="overlay dock-overlay"
+        id="dock"
+        aria-label="飞船整备"
+        hidden
+      >
+        <div class="subtitle">零件换来真实成长</div>
+        <h2>飞船整备</h2>
+        <p id="dockCredits" class="dock-balance"></p>
+        <div class="dock-base">
+          <button id="dockHullBtn" class="secondary"></button>
+          <button id="dockGunBtn" class="secondary"></button>
+        </div>
+        <div class="engineering-grid" id="engineeringList"></div>
+        <div class="launch-prep">
+          <h3>下局起始武器</h3>
+          <button id="chooseLaunchBtn" class="launch-summary">
+            <span id="launchSummary"></span>
+          </button>
+        </div>
+        <button id="closeDockBtn" class="primary">返回</button>
+      </section>
+      <section
+        class="overlay launch-overlay"
+        id="launchPicker"
+        aria-label="选择起始武器"
+        hidden
+      >
+        <header class="launch-heading">
+          <div>
+            <span class="subtitle">下次出发</span>
+            <h2>选择起始武器</h2>
+          </div>
+          <span id="launchBalance"></span>
+        </header>
+        <div class="launch-portrait" id="launchPortrait"></div>
+        <input id="launchWeapon" type="hidden" value="drone" />
+        <div class="launch-cards" id="launchCards" aria-label="武器"></div>
+        <div id="launchRoute" class="launch-route"></div>
+        <div class="launch-actions">
+          <p id="launchStatus" role="status"></p>
+          <button id="bookLaunchBtn" class="primary"></button>
+          <button id="cancelLaunchBtn" class="darkbtn" hidden>
+            取消预约 · 全额退回
+          </button>
+          <button id="closeLaunchBtn" class="secondary">返回整备</button>
+        </div>
+      </section>
+      <section class="overlay" id="results" aria-label="本局战绩" hidden>
+        <div class="subtitle" id="resultState">战绩回顾</div>
+        <h2 id="resultTitle">本局结束</h2>
+        <p id="resultDesc"></p>
+        <div class="result-grid">
+          <div>生存时间<b id="statTime">00:00</b></div>
+          <div>击落<b id="statKills">0</b></div>
+          <div>带回零件<b id="statScrap">0</b></div>
+          <div>到达等级<b id="statLevel">1</b></div>
+        </div>
+        <div class="build" id="resultBuild"></div>
+        <p class="small" id="resultEncounters" hidden></p>
+        <div class="ship-perks">
+          <div class="perks-heading">
+            <span>飞船整备</span><span id="progressText"></span>
+          </div>
+          <div class="perk-actions">
+            <button id="upgradeHullBtn" class="secondary"></button
+            ><button id="upgradeGunBtn" class="secondary"></button>
+          </div>
+        </div>
+        <button id="resultDockBtn" class="secondary">工程与起始武装</button>
+        <div class="actions">
+          <button id="retryBtn" class="primary">再挑战一次</button
+          ><button id="menuBtn" class="darkbtn">返回开始页</button>
+        </div>
+      </section>
+    </div>
+    <script>
+      window.SurvivorBuild = {
+        version: "0.6.10",
+        commit: "development",
+        dirty: true,
+      };
+    </script>
+    <script src="./src/balance.js"></script>
+    <script src="./src/art-catalog.js"></script>
+    <script src="./src/art.js"></script>
+    <script src="./src/persistence.js"></script>
+    <script src="./src/audio-engine.js"></script>
+    <script src="./src/game.js"></script>
+  </body>
+</html>

@@ -1,0 +1,183 @@
+{
+  "source": {
+    "version": "0.6.2",
+    "commit": "4ca726f6a18cc0b2e597379d68cf1df9e87b6c4b",
+    "dirty": false
+  },
+  "qa": true,
+  "captureSourceSha256": "fe8c7970f7b9487cd7b71e86ab99c5c7c3cd4fe3022a5800001f062c0888b7b0",
+  "scope": "Explicit threat fixtures, highHP and time/visitor schedule jumps. Real wall-clock attacks and final audio bus. Canvas recording includes music/SFX, whole-page recording is silent. No natural progress claim.",
+  "rows": [
+    {
+      "type": "lancer",
+      "damage": 24,
+      "shots": {
+        "hostile-lancer": 1
+      },
+      "hazards": [],
+      "enemyShots": []
+    },
+    {
+      "type": "sentinel",
+      "damage": 8,
+      "shots": {
+        "hostile-sentinel": 1,
+        "hostile-beam": 1
+      },
+      "hazards": [],
+      "enemyShots": []
+    },
+    {
+      "type": "minelayer",
+      "damage": 10,
+      "shots": {
+        "hostile-minelayer": 1,
+        "hostile-mine": 1
+      },
+      "hazards": [],
+      "enemyShots": []
+    },
+    {
+      "type": "wisp",
+      "damage": 0,
+      "shots": {
+        "hostile-wisp": 1
+      },
+      "hazards": [],
+      "enemyShots": []
+    },
+    {
+      "type": "ranger",
+      "damage": 6,
+      "shots": {
+        "hostile-ranger": 2
+      },
+      "hazards": [],
+      "enemyShots": [
+        {
+          "x": -14.339791831570194,
+          "y": -53.17321840366821,
+          "vx": 143.49319556729523,
+          "vy": 86.21173253035786,
+          "t": 3.0167000000000024,
+          "kind": "needle",
+          "turn": 0,
+          "damage": 6,
+          "radius": 3
+        },
+        {
+          "x": -31.785845712535867,
+          "y": -30.272234011938977,
+          "vx": 121.22068965517245,
+          "vy": 115.44827586206894,
+          "t": 3.0167000000000024,
+          "kind": "needle",
+          "turn": 0,
+          "damage": 6,
+          "radius": 3
+        },
+        {
+          "x": -53.8090783878428,
+          "y": -11.730467519582003,
+          "vx": 93.1047281138642,
+          "vy": 139.1196233564605,
+          "t": 3.0167000000000024,
+          "kind": "needle",
+          "turn": 0,
+          "damage": 6,
+          "radius": 3
+        }
+      ]
+    },
+    {
+      "type": "tank",
+      "damage": 8,
+      "shots": {
+        "hostile-tank": 1,
+        "hostile-shock": 1
+      },
+      "hazards": [],
+      "enemyShots": []
+    },
+    {
+      "type": "boss",
+      "damage": 38,
+      "shots": {
+        "hostile-boss": 2,
+        "hostile-beam": 1,
+        "hostile-shock": 1
+      },
+      "hazards": [],
+      "enemyShots": []
+    },
+    {
+      "type": "courier",
+      "log": [
+        {
+          "kind": "courier",
+          "result": "repelled",
+          "time": 7.384900000023874
+        }
+      ],
+      "events": [
+        {
+          "kind": "encounterWarning",
+          "visitor": "courier",
+          "time": 0.008800000023838947
+        },
+        {
+          "kind": "encounterArrival",
+          "visitor": "courier",
+          "time": 2.225400000023844
+        },
+        {
+          "kind": "active",
+          "id": "cannon",
+          "time": 7.325200000023877
+        },
+        {
+          "kind": "encounterResult",
+          "visitor": "courier",
+          "result": "repelled",
+          "time": 7.384900000023874
+        }
+      ],
+      "credits": 12
+    },
+    {
+      "type": "watcher",
+      "log": [
+        {
+          "kind": "watcher",
+          "result": "repelled",
+          "time": 7.368300000095395
+        }
+      ],
+      "events": [
+        {
+          "kind": "encounterWarning",
+          "visitor": "watcher",
+          "time": 0.0076000000715284845
+        },
+        {
+          "kind": "encounterArrival",
+          "visitor": "watcher",
+          "time": 2.2242000000715265
+        },
+        {
+          "kind": "active",
+          "id": "cannon",
+          "time": 7.324000000071556
+        },
+        {
+          "kind": "encounterResult",
+          "visitor": "watcher",
+          "result": "repelled",
+          "time": 7.368300000095395
+        }
+      ],
+      "credits": 15
+    }
+  ],
+  "errors": []
+}

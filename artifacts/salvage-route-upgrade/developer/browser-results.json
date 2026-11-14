@@ -1,0 +1,4050 @@
+{
+  "config": {
+    "configFile": "/workspace/scratch/eb065c2f88a9/loststar-game/prototypes/salvage-route-demo/playwright.config.cjs",
+    "rootDir": "/workspace/scratch/eb065c2f88a9/loststar-game/prototypes/salvage-route-demo/tests/browser",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/workspace/scratch/eb065c2f88a9/loststar-game/releases/salvage-browser-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/workspace/scratch/eb065c2f88a9/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium360",
+        "name": "chromium360",
+        "testDir": "/workspace/scratch/eb065c2f88a9/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/workspace/scratch/eb065c2f88a9/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium390",
+        "name": "chromium390",
+        "testDir": "/workspace/scratch/eb065c2f88a9/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/workspace/scratch/eb065c2f88a9/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit360",
+        "name": "webkit360",
+        "testDir": "/workspace/scratch/eb065c2f88a9/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/workspace/scratch/eb065c2f88a9/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit390",
+        "name": "webkit390",
+        "testDir": "/workspace/scratch/eb065c2f88a9/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.1",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "demo.spec.cjs",
+      "file": "demo.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "real URL, real art decode, persistent choices, refresh and close/reopen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3133,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:05.300Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-8c827e0cb3837163489c",
+          "file": "demo.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "ordinary fresh game completes two voyages with actual sales, services, repayments and continued state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16867,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 10
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 14
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 14
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 9
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 10
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:08.578Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-ff7d8ab9fc06d66bcbc8",
+          "file": "demo.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "route budgets match committed fuel and cannot be replaced by fixed return fuel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2037,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:25.458Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-f0667518f71ab7c904e2",
+          "file": "demo.spec.cjs",
+          "line": 34,
+          "column": 1
+        },
+        {
+          "title": "real IndexedDB serializes competing writers without Web Locks, including low-revision import",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 989,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:27.508Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-545286ac067ba0e96e5f",
+          "file": "demo.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "aborted storage write charges nothing, shows unsaved, exports current state, then recovers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1275,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 3
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:28.509Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-c3b3aea5dc1979cceaf0",
+          "file": "demo.spec.cjs",
+          "line": 42,
+          "column": 1
+        },
+        {
+          "title": "export/import is explicit, malformed input leaves actual old save and backups intact",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 903,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:29.799Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-50bc052274d76b4e2c84",
+          "file": "demo.spec.cjs",
+          "line": 46,
+          "column": 1
+        },
+        {
+          "title": "corrupt own archive is not reset and forbidden game saves are never accessed by startup",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 502,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:30.714Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-e2adb6db353de0213b9d",
+          "file": "demo.spec.cjs",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "large text/short screen, modal back and tapping outside cannot select a hidden action",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 611,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:31.232Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-44fde3ea1f40d90cc544",
+          "file": "demo.spec.cjs",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "real browser restart reopens the saved wallet and RNG from disk",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1662,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    },
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:31.859Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-3917c7ff1b4b55b671d3",
+          "file": "demo.spec.cjs",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "first own legacy save migrates atomically, unrelated game and backup bytes remain untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1085,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:33.532Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-8d1bdc5679c62644d67e",
+          "file": "demo.spec.cjs",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "real saved rescue keeps carried old goods and equipment, and refresh cannot repeat rescue fee",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1731,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:34.630Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-1ae3d521133fc9b10631",
+          "file": "demo.spec.cjs",
+          "line": 65,
+          "column": 1
+        },
+        {
+          "title": "denied database does not initialize a pretend saved game or expose fake exported progress",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 416,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:36.371Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-816f3068d82dfe063e17",
+          "file": "demo.spec.cjs",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "foreground return keeps the same choices without offline loss when BroadcastChannel is denied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1940,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 4
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:36.797Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-cb68649358ccf8b69ce6",
+          "file": "demo.spec.cjs",
+          "line": 72,
+          "column": 1
+        },
+        {
+          "title": "two real pages cannot commit the same choice, return fuel or contract reward twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 902,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:38.753Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-c58434749236de3743e3",
+          "file": "demo.spec.cjs",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "real URL, real art decode, persistent choices, refresh and close/reopen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3025,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:30.877Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-c376ff08fc80329719ea",
+          "file": "demo.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "ordinary fresh game completes two voyages with actual sales, services, repayments and continued state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 18662,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 11
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 13
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 16
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 14
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 39
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 12
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 20
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 12
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:34.010Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-fb717ee0ecaa0cef2dd8",
+          "file": "demo.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "route budgets match committed fuel and cannot be replaced by fixed return fuel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2036,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:52.688Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-d795788518ba5ef001a1",
+          "file": "demo.spec.cjs",
+          "line": 34,
+          "column": 1
+        },
+        {
+          "title": "real IndexedDB serializes competing writers without Web Locks, including low-revision import",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1888,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:54.739Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-9fc0dcc460a42ad9a600",
+          "file": "demo.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "aborted storage write charges nothing, shows unsaved, exports current state, then recovers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1311,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 13
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:56.646Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-27c85e22e52ef645e6ab",
+          "file": "demo.spec.cjs",
+          "line": 42,
+          "column": 1
+        },
+        {
+          "title": "export/import is explicit, malformed input leaves actual old save and backups intact",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 908,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:57.968Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-e1228e15074e91badba8",
+          "file": "demo.spec.cjs",
+          "line": 46,
+          "column": 1
+        },
+        {
+          "title": "corrupt own archive is not reset and forbidden game saves are never accessed by startup",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 508,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:58.890Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-326eae577961020ff1fb",
+          "file": "demo.spec.cjs",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "large text/short screen, modal back and tapping outside cannot select a hidden action",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 648,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:59.416Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-d92dbc89143a93de8eb9",
+          "file": "demo.spec.cjs",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "real browser restart reopens the saved wallet and RNG from disk",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2637,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    },
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:00.080Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-8bc9fdc4a975e63dacef",
+          "file": "demo.spec.cjs",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "first own legacy save migrates atomically, unrelated game and backup bytes remain untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1151,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:02.730Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-ed8b8ad9871abe7c784f",
+          "file": "demo.spec.cjs",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "real saved rescue keeps carried old goods and equipment, and refresh cannot repeat rescue fee",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1988,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:03.894Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-692df5a27db0a5dc9e47",
+          "file": "demo.spec.cjs",
+          "line": 65,
+          "column": 1
+        },
+        {
+          "title": "denied database does not initialize a pretend saved game or expose fake exported progress",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 581,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:05.896Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-2890ca87a3a094049947",
+          "file": "demo.spec.cjs",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "foreground return keeps the same choices without offline loss when BroadcastChannel is denied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2106,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 5
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:06.492Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-a593da0ccffe6077b078",
+          "file": "demo.spec.cjs",
+          "line": 72,
+          "column": 1
+        },
+        {
+          "title": "two real pages cannot commit the same choice, return fuel or contract reward twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1111,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:08.610Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-d585ee7a648ac8089fba",
+          "file": "demo.spec.cjs",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "real URL, real art decode, persistent choices, refresh and close/reopen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5184,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:09.516Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-5fe4d230843cb4f9d300",
+          "file": "demo.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "ordinary fresh game completes two voyages with actual sales, services, repayments and continued state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 20027,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 10
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 17
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 11
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 9
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 11
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 28
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 10
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 36
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 39
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 16
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 18
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 13
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 15
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 19
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:15.134Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-e08eb6dd719f540f4191",
+          "file": "demo.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "route budgets match committed fuel and cannot be replaced by fixed return fuel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2468,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:35.182Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-53a1ec7a73d518a39ee4",
+          "file": "demo.spec.cjs",
+          "line": 34,
+          "column": 1
+        },
+        {
+          "title": "real IndexedDB serializes competing writers without Web Locks, including low-revision import",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1818,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:37.664Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-2fd11e2ad4812c1cf3c1",
+          "file": "demo.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "aborted storage write charges nothing, shows unsaved, exports current state, then recovers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1647,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 114
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:39.502Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-0cd8042feea4d3a504a5",
+          "file": "demo.spec.cjs",
+          "line": 42,
+          "column": 1
+        },
+        {
+          "title": "export/import is explicit, malformed input leaves actual old save and backups intact",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1529,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:41.164Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-0a81292b6be361657f85",
+          "file": "demo.spec.cjs",
+          "line": 46,
+          "column": 1
+        },
+        {
+          "title": "corrupt own archive is not reset and forbidden game saves are never accessed by startup",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 914,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:42.712Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-a69aaa938f38a93d541a",
+          "file": "demo.spec.cjs",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "large text/short screen, modal back and tapping outside cannot select a hidden action",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1139,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:43.641Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-6d25c46b4570f8b4c5a8",
+          "file": "demo.spec.cjs",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "real browser restart reopens the saved wallet and RNG from disk",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3907,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    },
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:44.797Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-2e4a99d0c9b8443cb2f9",
+          "file": "demo.spec.cjs",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "first own legacy save migrates atomically, unrelated game and backup bytes remain untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1659,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:48.723Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-f386c58df1391906aa78",
+          "file": "demo.spec.cjs",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "real saved rescue keeps carried old goods and equipment, and refresh cannot repeat rescue fee",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3411,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:50.412Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-7cf9f272ac412a265c21",
+          "file": "demo.spec.cjs",
+          "line": 65,
+          "column": 1
+        },
+        {
+          "title": "denied database does not initialize a pretend saved game or expose fake exported progress",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 810,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:53.854Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-560af94d158c2d825a3d",
+          "file": "demo.spec.cjs",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "foreground return keeps the same choices without offline loss when BroadcastChannel is denied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2558,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 13
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:54.680Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-da90ab77df20fb52dbbe",
+          "file": "demo.spec.cjs",
+          "line": 72,
+          "column": 1
+        },
+        {
+          "title": "two real pages cannot commit the same choice, return fuel or contract reward twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1806,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:57.261Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-dcdef102af2bf44d6b36",
+          "file": "demo.spec.cjs",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "real URL, real art decode, persistent choices, refresh and close/reopen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4320,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:46.430Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-c9fcfa46dcc1bbc54094",
+          "file": "demo.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "ordinary fresh game completes two voyages with actual sales, services, repayments and continued state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 19808,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 9
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 12
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 19
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 15
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 9
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 19
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 10
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 12
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 9
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 12
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 17
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 9
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 11
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 17
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 11
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:50.921Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-497b1dc96d82c922d2cd",
+          "file": "demo.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "route budgets match committed fuel and cannot be replaced by fixed return fuel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2462,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:32:10.743Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-f6327f200860c9f420a2",
+          "file": "demo.spec.cjs",
+          "line": 34,
+          "column": 1
+        },
+        {
+          "title": "real IndexedDB serializes competing writers without Web Locks, including low-revision import",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2110,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:32:13.223Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-6cad5f053335935df126",
+          "file": "demo.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "aborted storage write charges nothing, shows unsaved, exports current state, then recovers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1881,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 114
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:15.369Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-c3f9b6e7bbf5ed48f3c9",
+          "file": "demo.spec.cjs",
+          "line": 42,
+          "column": 1
+        },
+        {
+          "title": "export/import is explicit, malformed input leaves actual old save and backups intact",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1301,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:17.271Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-d27030ab4e783a92aaae",
+          "file": "demo.spec.cjs",
+          "line": 46,
+          "column": 1
+        },
+        {
+          "title": "corrupt own archive is not reset and forbidden game saves are never accessed by startup",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 952,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:32:18.594Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-9bbe677d68424f2ef5c4",
+          "file": "demo.spec.cjs",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "large text/short screen, modal back and tapping outside cannot select a hidden action",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1317,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:32:19.558Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-f548177c74048736d477",
+          "file": "demo.spec.cjs",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "real browser restart reopens the saved wallet and RNG from disk",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3830,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    },
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:20.896Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-bfe451dd19f5cab5eadd",
+          "file": "demo.spec.cjs",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "first own legacy save migrates atomically, unrelated game and backup bytes remain untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1754,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:32:24.746Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-e04a77821a38a7a95dda",
+          "file": "demo.spec.cjs",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "real saved rescue keeps carried old goods and equipment, and refresh cannot repeat rescue fee",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2410,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:32:26.533Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-3ce079d98b2673891c21",
+          "file": "demo.spec.cjs",
+          "line": 65,
+          "column": 1
+        },
+        {
+          "title": "denied database does not initialize a pretend saved game or expose fake exported progress",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 972,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:32:28.960Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-50fa30261b44d4dcdbab",
+          "file": "demo.spec.cjs",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "foreground return keeps the same choices without offline loss when BroadcastChannel is denied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2865,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 16
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:29.957Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-5ebc9d1cc92e371c287e",
+          "file": "demo.spec.cjs",
+          "line": 72,
+          "column": 1
+        },
+        {
+          "title": "two real pages cannot commit the same choice, return fuel or contract reward twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1800,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:32:32.842Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c91e4f87bd878752f610-913058bd45bc18937a3a",
+          "file": "demo.spec.cjs",
+          "line": 75,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "upgrade.spec.cjs",
+      "file": "upgrade.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "independent route map projects the real branch and selection spends no fuel or RNG",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3377,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:05.738Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-3160ad72e1307aa6b06b",
+          "file": "upgrade.spec.cjs",
+          "line": 15,
+          "column": 1
+        },
+        {
+          "title": "tap rotation and placement save to the real archive; invalid and interrupted gestures do not move cargo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3092,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:09.285Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-507a9bb76045a0ca30f3",
+          "file": "upgrade.spec.cjs",
+          "line": 30,
+          "column": 1
+        },
+        {
+          "title": "cargo choice draft cancels without charging or rerolling; commit resolves the risk exactly once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3017,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 6
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:12.397Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-0c5a17e0ed896161c412",
+          "file": "upgrade.spec.cjs",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "full schema2 IndexedDB inventory is backed up and migrated once without changing owned goods or balances",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 608,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:15.428Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-dbd57b93f2b4e95c6ae8",
+          "file": "upgrade.spec.cjs",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "an aborted schema2 migration preserves the exact current envelope and exposes its original export",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 725,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 5
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:16.047Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-b69511955fcf3c0238fc",
+          "file": "upgrade.spec.cjs",
+          "line": 73,
+          "column": 1
+        },
+        {
+          "title": "a stale layout cannot restore a good sold by another real page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 933,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 10
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:16.782Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-4ed54600ddd23ee5f3bd",
+          "file": "upgrade.spec.cjs",
+          "line": 89,
+          "column": 1
+        },
+        {
+          "title": "an import with the same game revision invalidates another page acquisition draft through storage revision",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2677,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 4
+                    },
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 6
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:17.730Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-a34db2a3eae8bf38cf1e",
+          "file": "upgrade.spec.cjs",
+          "line": 99,
+          "column": 1
+        },
+        {
+          "title": "failed layout write preserves the old archive and an out-of-bounds import cannot replace it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2750,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 5
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:20.421Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-06718a971ce980834a83",
+          "file": "upgrade.spec.cjs",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "full cargo replacement requires explicit old-good consent and has no free staging capacity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3803,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 24
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:23.182Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-630ac0b3b958ce18c007",
+          "file": "upgrade.spec.cjs",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "icons and cargo touch targets stay readable at short screen and large text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2740,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:26.996Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-0eaddf759089893eb3f3",
+          "file": "upgrade.spec.cjs",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "independent route map projects the real branch and selection spends no fuel or RNG",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3364,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:40.468Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-567ad5b01e2688e58ae8",
+          "file": "upgrade.spec.cjs",
+          "line": 15,
+          "column": 1
+        },
+        {
+          "title": "tap rotation and placement save to the real archive; invalid and interrupted gestures do not move cargo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3428,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 5
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:43.931Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-ba18369b624a857323aa",
+          "file": "upgrade.spec.cjs",
+          "line": 30,
+          "column": 1
+        },
+        {
+          "title": "cargo choice draft cancels without charging or rerolling; commit resolves the risk exactly once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4423,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 90
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:47.390Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-111cbd11b1f6c5695933",
+          "file": "upgrade.spec.cjs",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "full schema2 IndexedDB inventory is backed up and migrated once without changing owned goods or balances",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 860,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:30:51.850Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-2159780fecf5d27448e7",
+          "file": "upgrade.spec.cjs",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "an aborted schema2 migration preserves the exact current envelope and exposes its original export",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 989,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:52.729Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-2599a21bd4f59d4af6e4",
+          "file": "upgrade.spec.cjs",
+          "line": 73,
+          "column": 1
+        },
+        {
+          "title": "a stale layout cannot restore a good sold by another real page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 977,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 5
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:53.739Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-38b51f139df9fb8352e6",
+          "file": "upgrade.spec.cjs",
+          "line": 89,
+          "column": 1
+        },
+        {
+          "title": "an import with the same game revision invalidates another page acquisition draft through storage revision",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3436,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 14
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:54.737Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-786647600d91188c4324",
+          "file": "upgrade.spec.cjs",
+          "line": 99,
+          "column": 1
+        },
+        {
+          "title": "failed layout write preserves the old archive and an out-of-bounds import cannot replace it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2932,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 5
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:30:58.208Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-4029929e6f8e45edeb71",
+          "file": "upgrade.spec.cjs",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "full cargo replacement requires explicit old-good consent and has no free staging capacity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3920,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 19
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:01.202Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-f481532e59e4ff3239b6",
+          "file": "upgrade.spec.cjs",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "icons and cargo touch targets stay readable at short screen and large text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2853,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 5
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:05.139Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-003ba9110e22dddb8ffc",
+          "file": "upgrade.spec.cjs",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "independent route map projects the real branch and selection spends no fuel or RNG",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4932,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 17
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:12.136Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-9cf8fc7bc4169c2c23f2",
+          "file": "upgrade.spec.cjs",
+          "line": 15,
+          "column": 1
+        },
+        {
+          "title": "tap rotation and placement save to the real archive; invalid and interrupted gestures do not move cargo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4041,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 12
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:17.352Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-49e6387608ec659e507d",
+          "file": "upgrade.spec.cjs",
+          "line": 30,
+          "column": 1
+        },
+        {
+          "title": "cargo choice draft cancels without charging or rerolling; commit resolves the risk exactly once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3597,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 15
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:21.420Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-4ef644c3f8e7425cb901",
+          "file": "upgrade.spec.cjs",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "full schema2 IndexedDB inventory is backed up and migrated once without changing owned goods or balances",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1183,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:31:25.061Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-ca75e8edba8161c82cd5",
+          "file": "upgrade.spec.cjs",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "an aborted schema2 migration preserves the exact current envelope and exposes its original export",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1543,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 142
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:26.267Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-23d5a5244012a2811448",
+          "file": "upgrade.spec.cjs",
+          "line": 73,
+          "column": 1
+        },
+        {
+          "title": "a stale layout cannot restore a good sold by another real page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2437,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 119
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:27.863Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-a2ad2a9113a27db80fac",
+          "file": "upgrade.spec.cjs",
+          "line": 89,
+          "column": 1
+        },
+        {
+          "title": "an import with the same game revision invalidates another page acquisition draft through storage revision",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3330,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 13
+                    },
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 128
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:30.315Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-b6b24d30b83b842f9cb7",
+          "file": "upgrade.spec.cjs",
+          "line": 99,
+          "column": 1
+        },
+        {
+          "title": "failed layout write preserves the old archive and an out-of-bounds import cannot replace it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3067,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 8
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:33.660Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-21ef96cd45677a748c95",
+          "file": "upgrade.spec.cjs",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "full cargo replacement requires explicit old-good consent and has no free staging capacity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4649,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 121
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:36.747Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-7702adbef7d4b786a8c8",
+          "file": "upgrade.spec.cjs",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "icons and cargo touch targets stay readable at short screen and large text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3554,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 9
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:31:41.418Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-16780f7a6b76e2426a0c",
+          "file": "upgrade.spec.cjs",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "independent route map projects the real branch and selection spends no fuel or RNG",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4255,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:00.070Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-fe09b1adc4a4725928ee",
+          "file": "upgrade.spec.cjs",
+          "line": 15,
+          "column": 1
+        },
+        {
+          "title": "tap rotation and placement save to the real archive; invalid and interrupted gestures do not move cargo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3901,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:04.561Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-c7385576e71b2ec4fa78",
+          "file": "upgrade.spec.cjs",
+          "line": 30,
+          "column": 1
+        },
+        {
+          "title": "cargo choice draft cancels without charging or rerolling; commit resolves the risk exactly once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4321,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 18
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:08.485Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-43430f9004a7add7ffdf",
+          "file": "upgrade.spec.cjs",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "full schema2 IndexedDB inventory is backed up and migrated once without changing owned goods or balances",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1386,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-08T22:32:12.834Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-3b0059ad5ad13ff59138",
+          "file": "upgrade.spec.cjs",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "an aborted schema2 migration preserves the exact current envelope and exposes its original export",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1454,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 28
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:14.234Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-3b90801506f5b2ad2096",
+          "file": "upgrade.spec.cjs",
+          "line": 73,
+          "column": 1
+        },
+        {
+          "title": "a stale layout cannot restore a good sold by another real page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1803,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 125
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:15.708Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-056b2b17f6baad8be6d4",
+          "file": "upgrade.spec.cjs",
+          "line": 89,
+          "column": 1
+        },
+        {
+          "title": "an import with the same game revision invalidates another page acquisition draft through storage revision",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3420,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 12
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:17.535Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-0d48a1d83824a4392220",
+          "file": "upgrade.spec.cjs",
+          "line": 99,
+          "column": 1
+        },
+        {
+          "title": "failed layout write preserves the old archive and an out-of-bounds import cannot replace it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3255,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:20.977Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-bbba6628a03fe115d370",
+          "file": "upgrade.spec.cjs",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "full cargo replacement requires explicit old-good consent and has no free staging capacity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5007,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 8
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:24.247Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-5b54f9a9bc568ca0b257",
+          "file": "upgrade.spec.cjs",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "icons and cargo touch targets stay readable at short screen and large text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3869,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 11
+                    }
+                  ],
+                  "startTime": "2026-11-08T22:32:29.277Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd610c8b87e9840f9066-4249cc3c251a79fcdc2c",
+          "file": "upgrade.spec.cjs",
+          "line": 131,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-08T22:30:04.322Z",
+    "duration": 150409.395,
+    "expected": 96,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

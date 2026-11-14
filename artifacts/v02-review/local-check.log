@@ -1,0 +1,218 @@
+
+> loststar-game@0.2.1 check
+> npm run check:assets && npm run test:coverage && npm run build && npm run test:e2e
+
+
+> loststar-game@0.2.1 check:assets
+> python3 scripts/validate_design_assets.py
+
+Design assets verified: 20/20
+
+> loststar-game@0.2.1 test:coverage
+> vitest run --coverage
+
+
+ RUN  v5.1.0 /Users/shuhuayu/loststar-game
+      Coverage enabled with v8
+
+
+ Test Files  9 passed (9)
+      Tests  56 passed (56)
+   Start at  00:45:15
+   Duration  567ms (tests 69%, import 11%, worker 11%, transform 9%)
+
+ % Coverage report from v8
+------------------|---------|----------|---------|---------|--------------------
+File              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s  
+------------------|---------|----------|---------|---------|--------------------
+All files         |   96.83 |    96.31 |     100 |     100 |                    
+ game             |   98.81 |    98.06 |     100 |     100 |                    
+  engine.ts       |   99.13 |    98.34 |     100 |     100 | 146,148            
+  growth.ts       |     100 |    97.67 |     100 |     100 | 29                 
+  radar.ts        |   92.85 |       95 |     100 |     100 | 7                  
+  star-chart.ts   |    98.3 |    98.55 |     100 |     100 | 12                 
+ prototype        |   94.14 |    94.05 |     100 |     100 |                    
+  guard-engine.ts |   93.93 |       93 |     100 |     100 | ...,65,72-75,77-78 
+  night-model.ts  |   94.38 |    96.61 |     100 |     100 | 38,51              
+------------------|---------|----------|---------|---------|--------------------
+
+=============================== Coverage summary ===============================
+Statements   : 96.83% ( 428/442 )
+Branches     : 96.31% ( 444/461 )
+Functions    : 100% ( 106/106 )
+Lines        : 100% ( 238/238 )
+================================================================================
+
+> loststar-game@0.2.1 build
+> tsc --noEmit && vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 75 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/night-lab.html                                   0.58 kB │ gzip:  0.38 kB
+dist/index.html                                       0.58 kB │ gzip:  0.37 kB
+dist/assets/tape-BVXV4CO3.webp                       17.40 kB
+dist/assets/signal-CKFeDa21.webp                     17.43 kB
+dist/assets/receipt-Cr27ZlRT.webp                    21.09 kB
+dist/assets/nested-CXGtS-u7.webp                     21.10 kB
+dist/assets/equipment-cargo-Cbg0zf1M.webp            21.93 kB
+dist/assets/equipment-scanner-C9JyJ4nf.webp          21.99 kB
+dist/assets/ship-BYx23I3Q.webp                       23.23 kB
+dist/assets/equipment-recycler-Dsxw2dQS.webp         27.61 kB
+dist/assets/case-tape-back-czNbXPTw.webp             28.75 kB
+dist/assets/equipment-radar-eR2OsVZy.webp            29.83 kB
+dist/assets/case-bell-back-DUDxHcM2.webp             31.90 kB
+dist/assets/case-stamp-back-r09PdRzu.webp            32.19 kB
+dist/assets/case-receipt-back-D3EuEsXZ.webp          32.35 kB
+dist/assets/warehouse-COJeeIwY.webp                  32.58 kB
+dist/assets/case-stamp-front-C2SeTdQi.webp           33.25 kB
+dist/assets/stamp-BLIvsDYK.webp                      34.69 kB
+dist/assets/bell-QDuCJmEB.webp                       34.98 kB
+dist/assets/case-bell-front-BDBK7qy2.webp            35.07 kB
+dist/assets/case-tape-front-DfX1uZ7x.webp            35.43 kB
+dist/assets/case-cosmic-parcel-front-s_iZTGIv.webp   36.01 kB
+dist/assets/sorter-pHS3f2Wr.webp                     36.88 kB
+dist/assets/blank-letter-Dl1uMM55.webp               36.97 kB
+dist/assets/tagbird-BTm9iFW-.webp                    37.25 kB
+dist/assets/case-receipt-front-DHTY9cwV.webp         38.18 kB
+dist/assets/case-cosmic-parcel-back-DTTi_052.webp    38.90 kB
+dist/assets/mouse-dxNNfrol.webp                      40.71 kB
+dist/assets/hermit-Dq2gwOrB.webp                     41.95 kB
+dist/assets/cosmic-parcel-CB9iTJM3.webp              43.19 kB
+dist/assets/case-nested-back-CbHftO0S.webp           44.78 kB
+dist/assets/robot-DeKHzAPp.webp                      45.55 kB
+dist/assets/case-nested-front-Doanw_7w.webp          48.03 kB
+dist/assets/night-clock-D5vrvwDv.webp                48.74 kB
+dist/assets/invader-v02-BvAs1-K9.webp                64.11 kB
+dist/assets/robot-empty-v3-Cz7AXchN.webp             76.36 kB
+dist/assets/robot-actions-v2-fF_3ek31.webp           78.93 kB
+dist/assets/ship-directions-v3-kWTeuqow.webp         89.24 kB
+dist/assets/habitat-mouse-v02-HP0-GlcU.webp         101.43 kB
+dist/assets/habitat-tagbird-v02-BniFsTTN.webp       106.36 kB
+dist/assets/habitat-hermit-v02-dRjUOBy2.webp        106.73 kB
+dist/assets/parcel-globe-DL04UUif.webp              242.38 kB
+dist/assets/museum-room-v02-SVKUl_P9.webp           312.12 kB
+dist/assets/station-CHW102oZ.webp                   324.39 kB
+dist/assets/night-DEJXktKX.css                        3.17 kB │ gzip:  1.09 kB
+dist/assets/game-436yix8E.css                         5.28 kB │ gzip:  1.79 kB
+dist/assets/scene-B_wTxlDF.css                       41.37 kB │ gzip: 10.37 kB
+dist/assets/night-BjXq3tJw.js                        20.76 kB │ gzip:  8.70 kB
+dist/assets/scene-DdSTkL1k.js                        35.97 kB │ gzip: 16.17 kB
+dist/assets/game-DoffHmvk.js                         59.69 kB │ gzip: 21.54 kB
+
+✓ built in 100ms
+
+> loststar-game@0.2.1 test:e2e
+> playwright test
+
+
+Running 80 tests using 2 workers
+
+(node:68662) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68661) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [mobile-360] › tests/e2e/exhibition.spec.ts:13:1 › 正式基地免费陈列可放大试验，成长购买保留存档，夜守可进入退出 (1.1s)
+  ✓   2 [mobile-360] › tests/e2e/exhibition.spec.ts:2:1 › 收藏室实景：六个独立玻璃展位与三个居民生态区有连续动画 (1.5s)
+  ✓   3 [mobile-360] › tests/e2e/exhibition.spec.ts:22:1 › 星际扫描持续经过异常与核对，弱信号自动重试，无提前星球或假远征入口 (573ms)
+  ✓   4 [mobile-360] › tests/e2e/exhibition.spec.ts:30:1 › 已有航路从另一标签恢复时图鉴即时同步，不给未完成内容伪造外形或远征 (465ms)
+  ✓   5 [mobile-360] › tests/e2e/game.spec.ts:15:1 › 首星雷达只勘测真实现场，不引向未开放星球 (685ms)
+  ✓   6 [mobile-360] › tests/e2e/game.spec.ts:32:1 › 新奇物和新居民有独立发现演出，不阻断导航、刷新不重放 (505ms)
+  ✓   7 [mobile-360] › tests/e2e/game.spec.ts:42:1 › 首星事件有像素现场演出，积累发现只展示最新一份 (611ms)
+  ✓   8 [mobile-360] › tests/e2e/game.spec.ts:50:1 › 完整首星图鉴生态、六个展柜与奇物互动真实联动 (1.1s)
+  ✓   9 [mobile-360] › tests/e2e/game.spec.ts:64:1 › 工坊真实升级反馈、保存与缺钱禁用 (721ms)
+  ✓  11 [mobile-360] › tests/e2e/game.spec.ts:81:1 › 旧切片进度迁移，已记录航路永久保留且未完成星球禁用远征 (455ms)
+  ✓  10 [mobile-360] › tests/e2e/game.spec.ts:72:1 › 离线归航清单只领取一次，旧标签页不重复发奖或轰炸演出 (827ms)
+  ✓  13 [mobile-360] › tests/e2e/review.spec.ts:2:1 › 冷首次访问基地：慢网期间不显示悬空角色，解码后才整体显现 (1.2s)
+  ✓  12 [mobile-360] › tests/e2e/game.spec.ts:86:1 › 所有页面触控、安全区和资源有效，导航处在滚动内容之外 (1.5s)
+  ✓  14 [mobile-360] › tests/e2e/review.spec.ts:18:1 › 基地图片失败有可操作重试，不把空房间当加载完成 (414ms)
+  ✓  15 [mobile-360] › tests/e2e/review.spec.ts:24:1 › 文字放大、首页偏好和静音可保存，音频只在明确开启后工作 (1.1s)
+(node:68768) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 [mobile-360] › tests/e2e/review.spec.ts:42:1 › 长期首星日记有居民联动、存档回看与独立星际连续探测频道 (1.2s)
+(node:68773) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  18 [mobile-390] › tests/e2e/exhibition.spec.ts:13:1 › 正式基地免费陈列可放大试验，成长购买保留存档，夜守可进入退出 (1.0s)
+  ✓  17 [mobile-390] › tests/e2e/exhibition.spec.ts:2:1 › 收藏室实景：六个独立玻璃展位与三个居民生态区有连续动画 (1.4s)
+  ✓  20 [mobile-390] › tests/e2e/exhibition.spec.ts:30:1 › 已有航路从另一标签恢复时图鉴即时同步，不给未完成内容伪造外形或远征 (497ms)
+  ✓  19 [mobile-390] › tests/e2e/exhibition.spec.ts:22:1 › 星际扫描持续经过异常与核对，弱信号自动重试，无提前星球或假远征入口 (615ms)
+  ✓  22 [mobile-390] › tests/e2e/game.spec.ts:32:1 › 新奇物和新居民有独立发现演出，不阻断导航、刷新不重放 (493ms)
+  ✓  21 [mobile-390] › tests/e2e/game.spec.ts:15:1 › 首星雷达只勘测真实现场，不引向未开放星球 (678ms)
+  ✓  23 [mobile-390] › tests/e2e/game.spec.ts:42:1 › 首星事件有像素现场演出，积累发现只展示最新一份 (610ms)
+  ✓  24 [mobile-390] › tests/e2e/game.spec.ts:50:1 › 完整首星图鉴生态、六个展柜与奇物互动真实联动 (1.1s)
+  ✓  25 [mobile-390] › tests/e2e/game.spec.ts:64:1 › 工坊真实升级反馈、保存与缺钱禁用 (710ms)
+  ✓  27 [mobile-390] › tests/e2e/game.spec.ts:81:1 › 旧切片进度迁移，已记录航路永久保留且未完成星球禁用远征 (470ms)
+  ✓  26 [mobile-390] › tests/e2e/game.spec.ts:72:1 › 离线归航清单只领取一次，旧标签页不重复发奖或轰炸演出 (839ms)
+  ✓  29 [mobile-390] › tests/e2e/review.spec.ts:2:1 › 冷首次访问基地：慢网期间不显示悬空角色，解码后才整体显现 (1.3s)
+  ✓  28 [mobile-390] › tests/e2e/game.spec.ts:86:1 › 所有页面触控、安全区和资源有效，导航处在滚动内容之外 (1.6s)
+  ✓  30 [mobile-390] › tests/e2e/review.spec.ts:18:1 › 基地图片失败有可操作重试，不把空房间当加载完成 (469ms)
+  ✓  31 [mobile-390] › tests/e2e/review.spec.ts:24:1 › 文字放大、首页偏好和静音可保存，音频只在明确开启后工作 (1.1s)
+(node:68821) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  32 [mobile-390] › tests/e2e/review.spec.ts:42:1 › 长期首星日记有居民联动、存档回看与独立星际连续探测频道 (1.2s)
+(node:68826) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  33 [desktop] › tests/e2e/exhibition.spec.ts:2:1 › 收藏室实景：六个独立玻璃展位与三个居民生态区有连续动画 (1.2s)
+  ✓  34 [desktop] › tests/e2e/exhibition.spec.ts:13:1 › 正式基地免费陈列可放大试验，成长购买保留存档，夜守可进入退出 (1.1s)
+  ✓  35 [desktop] › tests/e2e/exhibition.spec.ts:22:1 › 星际扫描持续经过异常与核对，弱信号自动重试，无提前星球或假远征入口 (656ms)
+  ✓  36 [desktop] › tests/e2e/exhibition.spec.ts:30:1 › 已有航路从另一标签恢复时图鉴即时同步，不给未完成内容伪造外形或远征 (506ms)
+  ✓  38 [desktop] › tests/e2e/game.spec.ts:32:1 › 新奇物和新居民有独立发现演出，不阻断导航、刷新不重放 (547ms)
+  ✓  37 [desktop] › tests/e2e/game.spec.ts:15:1 › 首星雷达只勘测真实现场，不引向未开放星球 (705ms)
+  ✓  39 [desktop] › tests/e2e/game.spec.ts:42:1 › 首星事件有像素现场演出，积累发现只展示最新一份 (660ms)
+  ✓  40 [desktop] › tests/e2e/game.spec.ts:50:1 › 完整首星图鉴生态、六个展柜与奇物互动真实联动 (1.1s)
+  ✓  41 [desktop] › tests/e2e/game.spec.ts:64:1 › 工坊真实升级反馈、保存与缺钱禁用 (692ms)
+  ✓  43 [desktop] › tests/e2e/game.spec.ts:81:1 › 旧切片进度迁移，已记录航路永久保留且未完成星球禁用远征 (523ms)
+  ✓  42 [desktop] › tests/e2e/game.spec.ts:72:1 › 离线归航清单只领取一次，旧标签页不重复发奖或轰炸演出 (922ms)
+  ✓  45 [desktop] › tests/e2e/review.spec.ts:2:1 › 冷首次访问基地：慢网期间不显示悬空角色，解码后才整体显现 (1.2s)
+  ✓  44 [desktop] › tests/e2e/game.spec.ts:86:1 › 所有页面触控、安全区和资源有效，导航处在滚动内容之外 (1.4s)
+  ✓  46 [desktop] › tests/e2e/review.spec.ts:18:1 › 基地图片失败有可操作重试，不把空房间当加载完成 (453ms)
+  ✓  47 [desktop] › tests/e2e/review.spec.ts:24:1 › 文字放大、首页偏好和静音可保存，音频只在明确开启后工作 (1.2s)
+(node:68860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  48 [desktop] › tests/e2e/review.spec.ts:42:1 › 长期首星日记有居民联动、存档回看与独立星际连续探测频道 (1.2s)
+(node:68870) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  50 [webkit-390] › tests/e2e/exhibition.spec.ts:13:1 › 正式基地免费陈列可放大试验，成长购买保留存档，夜守可进入退出 (1.2s)
+  ✓  49 [webkit-390] › tests/e2e/exhibition.spec.ts:2:1 › 收藏室实景：六个独立玻璃展位与三个居民生态区有连续动画 (1.9s)
+  ✓  51 [webkit-390] › tests/e2e/exhibition.spec.ts:22:1 › 星际扫描持续经过异常与核对，弱信号自动重试，无提前星球或假远征入口 (703ms)
+  ✓  52 [webkit-390] › tests/e2e/exhibition.spec.ts:30:1 › 已有航路从另一标签恢复时图鉴即时同步，不给未完成内容伪造外形或远征 (724ms)
+  ✓  53 [webkit-390] › tests/e2e/game.spec.ts:15:1 › 首星雷达只勘测真实现场，不引向未开放星球 (937ms)
+  ✓  54 [webkit-390] › tests/e2e/game.spec.ts:32:1 › 新奇物和新居民有独立发现演出，不阻断导航、刷新不重放 (650ms)
+  ✓  55 [webkit-390] › tests/e2e/game.spec.ts:42:1 › 首星事件有像素现场演出，积累发现只展示最新一份 (703ms)
+  ✓  56 [webkit-390] › tests/e2e/game.spec.ts:50:1 › 完整首星图鉴生态、六个展柜与奇物互动真实联动 (1.5s)
+  ✓  57 [webkit-390] › tests/e2e/game.spec.ts:64:1 › 工坊真实升级反馈、保存与缺钱禁用 (874ms)
+  ✓  59 [webkit-390] › tests/e2e/game.spec.ts:81:1 › 旧切片进度迁移，已记录航路永久保留且未完成星球禁用远征 (526ms)
+  ✓  58 [webkit-390] › tests/e2e/game.spec.ts:72:1 › 离线归航清单只领取一次，旧标签页不重复发奖或轰炸演出 (1.1s)
+  ✓  60 [webkit-390] › tests/e2e/game.spec.ts:86:1 › 所有页面触控、安全区和资源有效，导航处在滚动内容之外 (1.2s)
+  ✓  62 [webkit-390] › tests/e2e/review.spec.ts:18:1 › 基地图片失败有可操作重试，不把空房间当加载完成 (431ms)
+  ✓  61 [webkit-390] › tests/e2e/review.spec.ts:2:1 › 冷首次访问基地：慢网期间不显示悬空角色，解码后才整体显现 (1.3s)
+  ✓  63 [webkit-390] › tests/e2e/review.spec.ts:24:1 › 文字放大、首页偏好和静音可保存，音频只在明确开启后工作 (1.2s)
+(node:68931) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  64 [webkit-390] › tests/e2e/review.spec.ts:42:1 › 长期首星日记有居民联动、存档回看与独立星际连续探测频道 (1.9s)
+(node:68937) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  66 [touch-chromium] › tests/e2e/mobile-touch.spec.ts:31:1 › 雷达：减弱动态下仍有 Canvas 扫描，切页返回恢复，无未知节点 (1.2s)
+  ✓  67 [touch-chromium] › tests/e2e/mobile-touch.spec.ts:40:1 › 小屏150%文字时互动与关闭按钮仍在可触区域 (574ms)
+  ✓  68 [touch-chromium] › tests/e2e/mobile-touch.spec.ts:48:1 › 夜间实验独立入口、默认关闭，装备/离线/刷新不写正式存档 (424ms)
+  ✓  69 [touch-chromium] › tests/e2e/mobile-touch.spec.ts:59:1 › 正常入口不载入实验、不创建守护存档 (289ms)
+  ✓  70 [touch-chromium] › tests/e2e/mobile-touch.spec.ts:65:1 › 触控：从真实玻璃容器打开六件藏品并就地试验，生态区和夜守入口可返回 (2.0s)
+  ✓  65 [touch-chromium] › tests/e2e/mobile-touch.spec.ts:10:1 › 触控：六件奇物与居民有按钮旁的独立可见演出，重播不发奖 (5.8s)
+  ✓  71 [touch-chromium] › tests/e2e/mobile-touch.spec.ts:74:1 › 夜守同源：空槽/单槽/双槽真实结果不同，晨间逐个记录抵达与提前拦退 (664ms)
+(node:68954) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  72 [touch-chromium] › tests/e2e/mobile-touch.spec.ts:85:1 › 成长付款后展示真实近景前后对照，切换不再扣款，守护能力有具体数字 (977ms)
+(node:68968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  74 [touch-webkit] › tests/e2e/mobile-touch.spec.ts:31:1 › 雷达：减弱动态下仍有 Canvas 扫描，切页返回恢复，无未知节点 (1.4s)
+  ✓  75 [touch-webkit] › tests/e2e/mobile-touch.spec.ts:40:1 › 小屏150%文字时互动与关闭按钮仍在可触区域 (692ms)
+  ✓  76 [touch-webkit] › tests/e2e/mobile-touch.spec.ts:48:1 › 夜间实验独立入口、默认关闭，装备/离线/刷新不写正式存档 (511ms)
+  ✓  77 [touch-webkit] › tests/e2e/mobile-touch.spec.ts:59:1 › 正常入口不载入实验、不创建守护存档 (350ms)
+  ✓  78 [touch-webkit] › tests/e2e/mobile-touch.spec.ts:65:1 › 触控：从真实玻璃容器打开六件藏品并就地试验，生态区和夜守入口可返回 (1.9s)
+  ✓  73 [touch-webkit] › tests/e2e/mobile-touch.spec.ts:10:1 › 触控：六件奇物与居民有按钮旁的独立可见演出，重播不发奖 (6.4s)
+  ✓  79 [touch-webkit] › tests/e2e/mobile-touch.spec.ts:74:1 › 夜守同源：空槽/单槽/双槽真实结果不同，晨间逐个记录抵达与提前拦退 (721ms)
+  ✓  80 [touch-webkit] › tests/e2e/mobile-touch.spec.ts:85:1 › 成长付款后展示真实近景前后对照，切换不再扣款，守护能力有具体数字 (884ms)
+
+  80 passed (45.0s)

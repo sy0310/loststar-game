@@ -1,0 +1,1926 @@
+{
+  "sourceCommit": "ecdeecc81e3d4435d6ae82d87980f6ca562d2c6a",
+  "base": "http://127.0.0.1:4235/loststar-fusion/",
+  "physicalPhone": false,
+  "nativeTouchEmulation": true,
+  "clockOverrides": false,
+  "cases": [
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "kind": "new-player",
+      "build": "0.4.2 · ecdeecc",
+      "checks": {
+        "seed": true,
+        "siteConfiguration": true,
+        "collection": true,
+        "upgrades": true,
+        "paidSorting": true,
+        "noOverflow": true,
+        "noUnknownWorlds": true,
+        "oneRobot": true,
+        "noLegacySorter": true,
+        "singleSorter": true,
+        "noPaintedHitFrames": true
+      },
+      "balance": 75,
+      "collectionCount": 0,
+      "hitLayerStyles": [
+        {
+          "target": "location",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "receipt",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "tape",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "nested",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "stamp",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "cosmic-parcel",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "bell",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "kind": "existing-paid-archive",
+      "build": "0.4.2 · ecdeecc",
+      "checks": {
+        "seed": true,
+        "siteConfiguration": true,
+        "collection": true,
+        "upgrades": true,
+        "paidSorting": true,
+        "noOverflow": true,
+        "noUnknownWorlds": true,
+        "oneRobot": true,
+        "noLegacySorter": true,
+        "singleSorter": true,
+        "fullArchive": true,
+        "sourceBackup": true,
+        "originalLocalStorage": true,
+        "noPaintedHitFrames": true
+      },
+      "balance": 348,
+      "collectionCount": 12,
+      "fixtureAudit": {
+        "kind": "cleared",
+        "method": "real-model-review-fixture",
+        "startedAt": 1793922286405,
+        "endedAt": 1793922707405,
+        "worldMs": 2567514,
+        "initialParts": 120,
+        "initialFixture": {
+          "source": "accelerated-model-fixture",
+          "label": "加速真实模型夹具 · 发现与支出均由普通行动生成",
+          "seed": 317,
+          "startedAt": 1793920139891,
+          "endedAt": 1793922286405,
+          "simulatedMs": 2146514,
+          "advances": 21,
+          "offlineAdvances": 7,
+          "actionCount": 35,
+          "actionsByType": {
+            "upgrade": 10,
+            "claim": 7,
+            "paper": 4,
+            "curio": 10,
+            "ability": 4
+          },
+          "actions": [
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 0
+              },
+              "at": 1793920139891,
+              "balanceBefore": 120,
+              "balanceAfter": 75,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 0
+              },
+              "at": 1793920139891,
+              "balanceBefore": 75,
+              "balanceAfter": 30,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793920439891,
+              "balanceBefore": 30,
+              "balanceAfter": 294,
+              "paid": 0,
+              "claimed": 264
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 1
+              },
+              "at": 1793920439891,
+              "balanceBefore": 294,
+              "balanceAfter": 217,
+              "paid": 77,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 1
+              },
+              "at": 1793920439891,
+              "balanceBefore": 217,
+              "balanceAfter": 140,
+              "paid": 77,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 2
+              },
+              "at": 1793920439891,
+              "balanceBefore": 140,
+              "balanceAfter": 10,
+              "paid": 130,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793920739891,
+              "balanceBefore": 10,
+              "balanceAfter": 503,
+              "paid": 0,
+              "claimed": 493
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 2
+              },
+              "at": 1793920739891,
+              "balanceBefore": 503,
+              "balanceAfter": 373,
+              "paid": 130,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 3
+              },
+              "at": 1793920739891,
+              "balanceBefore": 373,
+              "balanceAfter": 152,
+              "paid": 221,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921039891,
+              "balanceBefore": 152,
+              "balanceAfter": 818,
+              "paid": 0,
+              "claimed": 666
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 3
+              },
+              "at": 1793921039891,
+              "balanceBefore": 818,
+              "balanceAfter": 597,
+              "paid": 221,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 4
+              },
+              "at": 1793921039891,
+              "balanceBefore": 597,
+              "balanceAfter": 221,
+              "paid": 376,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921339891,
+              "balanceBefore": 221,
+              "balanceAfter": 1095,
+              "paid": 0,
+              "claimed": 874
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 4
+              },
+              "at": 1793921339891,
+              "balanceBefore": 1095,
+              "balanceAfter": 719,
+              "paid": 376,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "excavate"
+              },
+              "at": 1793921339891,
+              "balanceBefore": 719,
+              "balanceAfter": 719,
+              "paid": 0,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "clean"
+              },
+              "at": 1793921346092,
+              "balanceBefore": 742,
+              "balanceAfter": 702,
+              "paid": 40,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "repair"
+              },
+              "at": 1793921349893,
+              "balanceBefore": 702,
+              "balanceAfter": 582,
+              "paid": 120,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "tape",
+                "kind": "clean"
+              },
+              "at": 1793921353794,
+              "balanceBefore": 605,
+              "balanceAfter": 575,
+              "paid": 30,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "tape",
+                "kind": "repair"
+              },
+              "at": 1793921356795,
+              "balanceBefore": 575,
+              "balanceAfter": 475,
+              "paid": 100,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "nested",
+                "kind": "clean"
+              },
+              "at": 1793921359796,
+              "balanceBefore": 498,
+              "balanceAfter": 448,
+              "paid": 50,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "nested",
+                "kind": "repair"
+              },
+              "at": 1793921362797,
+              "balanceBefore": 471,
+              "balanceAfter": 331,
+              "paid": 140,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "stamp",
+                "kind": "clean"
+              },
+              "at": 1793921365798,
+              "balanceBefore": 331,
+              "balanceAfter": 286,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "stamp",
+                "kind": "repair"
+              },
+              "at": 1793921368799,
+              "balanceBefore": 309,
+              "balanceAfter": 129,
+              "paid": 180,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "cosmic-parcel",
+                "kind": "clean"
+              },
+              "at": 1793921371800,
+              "balanceBefore": 129,
+              "balanceAfter": 69,
+              "paid": 60,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921674801,
+              "balanceBefore": 92,
+              "balanceAfter": 1064,
+              "paid": 0,
+              "claimed": 972
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "cosmic-parcel",
+                "kind": "repair"
+              },
+              "at": 1793921674801,
+              "balanceBefore": 1064,
+              "balanceAfter": 844,
+              "paid": 220,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "bell",
+                "kind": "clean"
+              },
+              "at": 1793921677802,
+              "balanceBefore": 844,
+              "balanceAfter": 809,
+              "paid": 35,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "bell",
+                "kind": "repair"
+              },
+              "at": 1793921680803,
+              "balanceBefore": 832,
+              "balanceAfter": 712,
+              "paid": 120,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "identify"
+              },
+              "at": 1793921683804,
+              "balanceBefore": 712,
+              "balanceAfter": 712,
+              "paid": 0,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "receipt",
+                "expected": 0
+              },
+              "at": 1793921686405,
+              "balanceBefore": 735,
+              "balanceAfter": 435,
+              "paid": 300,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921986405,
+              "balanceBefore": 435,
+              "balanceAfter": 1401,
+              "paid": 0,
+              "claimed": 966
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "receipt",
+                "expected": 1
+              },
+              "at": 1793921986405,
+              "balanceBefore": 1401,
+              "balanceAfter": 801,
+              "paid": 600,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "tape",
+                "expected": 0
+              },
+              "at": 1793921986405,
+              "balanceBefore": 801,
+              "balanceAfter": 561,
+              "paid": 240,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793922286405,
+              "balanceBefore": 561,
+              "balanceAfter": 1527,
+              "paid": 0,
+              "claimed": 966
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "tape",
+                "expected": 1
+              },
+              "at": 1793922286405,
+              "balanceBefore": 1527,
+              "balanceAfter": 807,
+              "paid": 720,
+              "claimed": 0
+            }
+          ],
+          "initialParts": 120,
+          "grossEarned": 5511,
+          "maintenancePaid": 126,
+          "actionPaid": 4698,
+          "claimedParts": 5201,
+          "endingParts": 807,
+          "collection": [
+            "receipt",
+            "mouse",
+            "tape",
+            "hermit",
+            "nested",
+            "night-shift",
+            "stamp",
+            "tagbird",
+            "cosmic-parcel",
+            "bell",
+            "return-request",
+            "last-recipient"
+          ],
+          "receiptEvidence": [
+            "field-pipe-scan"
+          ],
+          "verifiedEvidence": [
+            "field-pipe-scan"
+          ]
+        },
+        "balance": 348,
+        "sourceWork": 321,
+        "actions": [
+          {
+            "action": {
+              "type": "sorting",
+              "kind": "survey"
+            },
+            "at": 1793922286405,
+            "paid": 0
+          },
+          {
+            "action": {
+              "type": "sorting",
+              "kind": "build"
+            },
+            "at": 1793922626405,
+            "paid": 1920
+          },
+          {
+            "action": {
+              "type": "sorting",
+              "kind": "work"
+            },
+            "at": 1793922632405,
+            "paid": 0
+          }
+        ]
+      },
+      "hitLayerStyles": [
+        {
+          "target": "location",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "receipt",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "tape",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "nested",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "stamp",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "cosmic-parcel",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "bell",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "kind": "new-player",
+      "build": "0.4.2 · ecdeecc",
+      "checks": {
+        "seed": true,
+        "siteConfiguration": true,
+        "collection": true,
+        "upgrades": true,
+        "paidSorting": true,
+        "noOverflow": true,
+        "noUnknownWorlds": true,
+        "oneRobot": true,
+        "noLegacySorter": true,
+        "singleSorter": true,
+        "noPaintedHitFrames": true
+      },
+      "balance": 75,
+      "collectionCount": 0,
+      "hitLayerStyles": [
+        {
+          "target": "location",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "receipt",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "tape",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "nested",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "stamp",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "cosmic-parcel",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "bell",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "kind": "existing-paid-archive",
+      "build": "0.4.2 · ecdeecc",
+      "checks": {
+        "seed": true,
+        "siteConfiguration": true,
+        "collection": true,
+        "upgrades": true,
+        "paidSorting": true,
+        "noOverflow": true,
+        "noUnknownWorlds": true,
+        "oneRobot": true,
+        "noLegacySorter": true,
+        "singleSorter": true,
+        "fullArchive": true,
+        "sourceBackup": true,
+        "originalLocalStorage": true,
+        "noPaintedHitFrames": true
+      },
+      "balance": 348,
+      "collectionCount": 12,
+      "fixtureAudit": {
+        "kind": "cleared",
+        "method": "real-model-review-fixture",
+        "startedAt": 1793922289533,
+        "endedAt": 1793922710533,
+        "worldMs": 2567514,
+        "initialParts": 120,
+        "initialFixture": {
+          "source": "accelerated-model-fixture",
+          "label": "加速真实模型夹具 · 发现与支出均由普通行动生成",
+          "seed": 317,
+          "startedAt": 1793920143019,
+          "endedAt": 1793922289533,
+          "simulatedMs": 2146514,
+          "advances": 21,
+          "offlineAdvances": 7,
+          "actionCount": 35,
+          "actionsByType": {
+            "upgrade": 10,
+            "claim": 7,
+            "paper": 4,
+            "curio": 10,
+            "ability": 4
+          },
+          "actions": [
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 0
+              },
+              "at": 1793920143019,
+              "balanceBefore": 120,
+              "balanceAfter": 75,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 0
+              },
+              "at": 1793920143019,
+              "balanceBefore": 75,
+              "balanceAfter": 30,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793920443019,
+              "balanceBefore": 30,
+              "balanceAfter": 294,
+              "paid": 0,
+              "claimed": 264
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 1
+              },
+              "at": 1793920443019,
+              "balanceBefore": 294,
+              "balanceAfter": 217,
+              "paid": 77,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 1
+              },
+              "at": 1793920443019,
+              "balanceBefore": 217,
+              "balanceAfter": 140,
+              "paid": 77,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 2
+              },
+              "at": 1793920443019,
+              "balanceBefore": 140,
+              "balanceAfter": 10,
+              "paid": 130,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793920743019,
+              "balanceBefore": 10,
+              "balanceAfter": 503,
+              "paid": 0,
+              "claimed": 493
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 2
+              },
+              "at": 1793920743019,
+              "balanceBefore": 503,
+              "balanceAfter": 373,
+              "paid": 130,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 3
+              },
+              "at": 1793920743019,
+              "balanceBefore": 373,
+              "balanceAfter": 152,
+              "paid": 221,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921043019,
+              "balanceBefore": 152,
+              "balanceAfter": 818,
+              "paid": 0,
+              "claimed": 666
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 3
+              },
+              "at": 1793921043019,
+              "balanceBefore": 818,
+              "balanceAfter": 597,
+              "paid": 221,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 4
+              },
+              "at": 1793921043019,
+              "balanceBefore": 597,
+              "balanceAfter": 221,
+              "paid": 376,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921343019,
+              "balanceBefore": 221,
+              "balanceAfter": 1095,
+              "paid": 0,
+              "claimed": 874
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 4
+              },
+              "at": 1793921343019,
+              "balanceBefore": 1095,
+              "balanceAfter": 719,
+              "paid": 376,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "excavate"
+              },
+              "at": 1793921343019,
+              "balanceBefore": 719,
+              "balanceAfter": 719,
+              "paid": 0,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "clean"
+              },
+              "at": 1793921349220,
+              "balanceBefore": 742,
+              "balanceAfter": 702,
+              "paid": 40,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "repair"
+              },
+              "at": 1793921353021,
+              "balanceBefore": 702,
+              "balanceAfter": 582,
+              "paid": 120,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "tape",
+                "kind": "clean"
+              },
+              "at": 1793921356922,
+              "balanceBefore": 605,
+              "balanceAfter": 575,
+              "paid": 30,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "tape",
+                "kind": "repair"
+              },
+              "at": 1793921359923,
+              "balanceBefore": 575,
+              "balanceAfter": 475,
+              "paid": 100,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "nested",
+                "kind": "clean"
+              },
+              "at": 1793921362924,
+              "balanceBefore": 498,
+              "balanceAfter": 448,
+              "paid": 50,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "nested",
+                "kind": "repair"
+              },
+              "at": 1793921365925,
+              "balanceBefore": 471,
+              "balanceAfter": 331,
+              "paid": 140,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "stamp",
+                "kind": "clean"
+              },
+              "at": 1793921368926,
+              "balanceBefore": 331,
+              "balanceAfter": 286,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "stamp",
+                "kind": "repair"
+              },
+              "at": 1793921371927,
+              "balanceBefore": 309,
+              "balanceAfter": 129,
+              "paid": 180,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "cosmic-parcel",
+                "kind": "clean"
+              },
+              "at": 1793921374928,
+              "balanceBefore": 129,
+              "balanceAfter": 69,
+              "paid": 60,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921677929,
+              "balanceBefore": 92,
+              "balanceAfter": 1064,
+              "paid": 0,
+              "claimed": 972
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "cosmic-parcel",
+                "kind": "repair"
+              },
+              "at": 1793921677929,
+              "balanceBefore": 1064,
+              "balanceAfter": 844,
+              "paid": 220,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "bell",
+                "kind": "clean"
+              },
+              "at": 1793921680930,
+              "balanceBefore": 844,
+              "balanceAfter": 809,
+              "paid": 35,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "bell",
+                "kind": "repair"
+              },
+              "at": 1793921683931,
+              "balanceBefore": 832,
+              "balanceAfter": 712,
+              "paid": 120,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "identify"
+              },
+              "at": 1793921686932,
+              "balanceBefore": 712,
+              "balanceAfter": 712,
+              "paid": 0,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "receipt",
+                "expected": 0
+              },
+              "at": 1793921689533,
+              "balanceBefore": 735,
+              "balanceAfter": 435,
+              "paid": 300,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921989533,
+              "balanceBefore": 435,
+              "balanceAfter": 1401,
+              "paid": 0,
+              "claimed": 966
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "receipt",
+                "expected": 1
+              },
+              "at": 1793921989533,
+              "balanceBefore": 1401,
+              "balanceAfter": 801,
+              "paid": 600,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "tape",
+                "expected": 0
+              },
+              "at": 1793921989533,
+              "balanceBefore": 801,
+              "balanceAfter": 561,
+              "paid": 240,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793922289533,
+              "balanceBefore": 561,
+              "balanceAfter": 1527,
+              "paid": 0,
+              "claimed": 966
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "tape",
+                "expected": 1
+              },
+              "at": 1793922289533,
+              "balanceBefore": 1527,
+              "balanceAfter": 807,
+              "paid": 720,
+              "claimed": 0
+            }
+          ],
+          "initialParts": 120,
+          "grossEarned": 5511,
+          "maintenancePaid": 126,
+          "actionPaid": 4698,
+          "claimedParts": 5201,
+          "endingParts": 807,
+          "collection": [
+            "receipt",
+            "mouse",
+            "tape",
+            "hermit",
+            "nested",
+            "night-shift",
+            "stamp",
+            "tagbird",
+            "cosmic-parcel",
+            "bell",
+            "return-request",
+            "last-recipient"
+          ],
+          "receiptEvidence": [
+            "field-pipe-scan"
+          ],
+          "verifiedEvidence": [
+            "field-pipe-scan"
+          ]
+        },
+        "balance": 348,
+        "sourceWork": 321,
+        "actions": [
+          {
+            "action": {
+              "type": "sorting",
+              "kind": "survey"
+            },
+            "at": 1793922289533,
+            "paid": 0
+          },
+          {
+            "action": {
+              "type": "sorting",
+              "kind": "build"
+            },
+            "at": 1793922629533,
+            "paid": 1920
+          },
+          {
+            "action": {
+              "type": "sorting",
+              "kind": "work"
+            },
+            "at": 1793922635533,
+            "paid": 0
+          }
+        ]
+      },
+      "hitLayerStyles": [
+        {
+          "target": "location",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "receipt",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "tape",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "nested",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "stamp",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "cosmic-parcel",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "bell",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "kind": "new-player",
+      "build": "0.4.2 · ecdeecc",
+      "checks": {
+        "seed": true,
+        "siteConfiguration": true,
+        "collection": true,
+        "upgrades": true,
+        "paidSorting": true,
+        "noOverflow": true,
+        "noUnknownWorlds": true,
+        "oneRobot": true,
+        "noLegacySorter": true,
+        "singleSorter": true,
+        "noPaintedHitFrames": true
+      },
+      "balance": 75,
+      "collectionCount": 0,
+      "hitLayerStyles": [
+        {
+          "target": "location",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "receipt",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "tape",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "nested",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "stamp",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "cosmic-parcel",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "bell",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "kind": "existing-paid-archive",
+      "build": "0.4.2 · ecdeecc",
+      "checks": {
+        "seed": true,
+        "siteConfiguration": true,
+        "collection": true,
+        "upgrades": true,
+        "paidSorting": true,
+        "noOverflow": true,
+        "noUnknownWorlds": true,
+        "oneRobot": true,
+        "noLegacySorter": true,
+        "singleSorter": true,
+        "fullArchive": true,
+        "sourceBackup": true,
+        "originalLocalStorage": true,
+        "noPaintedHitFrames": true
+      },
+      "balance": 348,
+      "collectionCount": 12,
+      "fixtureAudit": {
+        "kind": "cleared",
+        "method": "real-model-review-fixture",
+        "startedAt": 1793922295141,
+        "endedAt": 1793922716141,
+        "worldMs": 2567514,
+        "initialParts": 120,
+        "initialFixture": {
+          "source": "accelerated-model-fixture",
+          "label": "加速真实模型夹具 · 发现与支出均由普通行动生成",
+          "seed": 317,
+          "startedAt": 1793920148627,
+          "endedAt": 1793922295141,
+          "simulatedMs": 2146514,
+          "advances": 21,
+          "offlineAdvances": 7,
+          "actionCount": 35,
+          "actionsByType": {
+            "upgrade": 10,
+            "claim": 7,
+            "paper": 4,
+            "curio": 10,
+            "ability": 4
+          },
+          "actions": [
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 0
+              },
+              "at": 1793920148627,
+              "balanceBefore": 120,
+              "balanceAfter": 75,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 0
+              },
+              "at": 1793920148627,
+              "balanceBefore": 75,
+              "balanceAfter": 30,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793920448627,
+              "balanceBefore": 30,
+              "balanceAfter": 294,
+              "paid": 0,
+              "claimed": 264
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 1
+              },
+              "at": 1793920448627,
+              "balanceBefore": 294,
+              "balanceAfter": 217,
+              "paid": 77,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 1
+              },
+              "at": 1793920448627,
+              "balanceBefore": 217,
+              "balanceAfter": 140,
+              "paid": 77,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 2
+              },
+              "at": 1793920448627,
+              "balanceBefore": 140,
+              "balanceAfter": 10,
+              "paid": 130,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793920748627,
+              "balanceBefore": 10,
+              "balanceAfter": 503,
+              "paid": 0,
+              "claimed": 493
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 2
+              },
+              "at": 1793920748627,
+              "balanceBefore": 503,
+              "balanceAfter": 373,
+              "paid": 130,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 3
+              },
+              "at": 1793920748627,
+              "balanceBefore": 373,
+              "balanceAfter": 152,
+              "paid": 221,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921048627,
+              "balanceBefore": 152,
+              "balanceAfter": 818,
+              "paid": 0,
+              "claimed": 666
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 3
+              },
+              "at": 1793921048627,
+              "balanceBefore": 818,
+              "balanceAfter": 597,
+              "paid": 221,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 4
+              },
+              "at": 1793921048627,
+              "balanceBefore": 597,
+              "balanceAfter": 221,
+              "paid": 376,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921348627,
+              "balanceBefore": 221,
+              "balanceAfter": 1095,
+              "paid": 0,
+              "claimed": 874
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 4
+              },
+              "at": 1793921348627,
+              "balanceBefore": 1095,
+              "balanceAfter": 719,
+              "paid": 376,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "excavate"
+              },
+              "at": 1793921348627,
+              "balanceBefore": 719,
+              "balanceAfter": 719,
+              "paid": 0,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "clean"
+              },
+              "at": 1793921354828,
+              "balanceBefore": 742,
+              "balanceAfter": 702,
+              "paid": 40,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "repair"
+              },
+              "at": 1793921358629,
+              "balanceBefore": 702,
+              "balanceAfter": 582,
+              "paid": 120,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "tape",
+                "kind": "clean"
+              },
+              "at": 1793921362530,
+              "balanceBefore": 605,
+              "balanceAfter": 575,
+              "paid": 30,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "tape",
+                "kind": "repair"
+              },
+              "at": 1793921365531,
+              "balanceBefore": 575,
+              "balanceAfter": 475,
+              "paid": 100,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "nested",
+                "kind": "clean"
+              },
+              "at": 1793921368532,
+              "balanceBefore": 498,
+              "balanceAfter": 448,
+              "paid": 50,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "nested",
+                "kind": "repair"
+              },
+              "at": 1793921371533,
+              "balanceBefore": 471,
+              "balanceAfter": 331,
+              "paid": 140,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "stamp",
+                "kind": "clean"
+              },
+              "at": 1793921374534,
+              "balanceBefore": 331,
+              "balanceAfter": 286,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "stamp",
+                "kind": "repair"
+              },
+              "at": 1793921377535,
+              "balanceBefore": 309,
+              "balanceAfter": 129,
+              "paid": 180,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "cosmic-parcel",
+                "kind": "clean"
+              },
+              "at": 1793921380536,
+              "balanceBefore": 129,
+              "balanceAfter": 69,
+              "paid": 60,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921683537,
+              "balanceBefore": 92,
+              "balanceAfter": 1064,
+              "paid": 0,
+              "claimed": 972
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "cosmic-parcel",
+                "kind": "repair"
+              },
+              "at": 1793921683537,
+              "balanceBefore": 1064,
+              "balanceAfter": 844,
+              "paid": 220,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "bell",
+                "kind": "clean"
+              },
+              "at": 1793921686538,
+              "balanceBefore": 844,
+              "balanceAfter": 809,
+              "paid": 35,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "bell",
+                "kind": "repair"
+              },
+              "at": 1793921689539,
+              "balanceBefore": 832,
+              "balanceAfter": 712,
+              "paid": 120,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "identify"
+              },
+              "at": 1793921692540,
+              "balanceBefore": 712,
+              "balanceAfter": 712,
+              "paid": 0,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "receipt",
+                "expected": 0
+              },
+              "at": 1793921695141,
+              "balanceBefore": 735,
+              "balanceAfter": 435,
+              "paid": 300,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793921995141,
+              "balanceBefore": 435,
+              "balanceAfter": 1401,
+              "paid": 0,
+              "claimed": 966
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "receipt",
+                "expected": 1
+              },
+              "at": 1793921995141,
+              "balanceBefore": 1401,
+              "balanceAfter": 801,
+              "paid": 600,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "tape",
+                "expected": 0
+              },
+              "at": 1793921995141,
+              "balanceBefore": 801,
+              "balanceAfter": 561,
+              "paid": 240,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793922295141,
+              "balanceBefore": 561,
+              "balanceAfter": 1527,
+              "paid": 0,
+              "claimed": 966
+            },
+            {
+              "action": {
+                "type": "ability",
+                "id": "tape",
+                "expected": 1
+              },
+              "at": 1793922295141,
+              "balanceBefore": 1527,
+              "balanceAfter": 807,
+              "paid": 720,
+              "claimed": 0
+            }
+          ],
+          "initialParts": 120,
+          "grossEarned": 5511,
+          "maintenancePaid": 126,
+          "actionPaid": 4698,
+          "claimedParts": 5201,
+          "endingParts": 807,
+          "collection": [
+            "receipt",
+            "mouse",
+            "tape",
+            "hermit",
+            "nested",
+            "night-shift",
+            "stamp",
+            "tagbird",
+            "cosmic-parcel",
+            "bell",
+            "return-request",
+            "last-recipient"
+          ],
+          "receiptEvidence": [
+            "field-pipe-scan"
+          ],
+          "verifiedEvidence": [
+            "field-pipe-scan"
+          ]
+        },
+        "balance": 348,
+        "sourceWork": 321,
+        "actions": [
+          {
+            "action": {
+              "type": "sorting",
+              "kind": "survey"
+            },
+            "at": 1793922295141,
+            "paid": 0
+          },
+          {
+            "action": {
+              "type": "sorting",
+              "kind": "build"
+            },
+            "at": 1793922635141,
+            "paid": 1920
+          },
+          {
+            "action": {
+              "type": "sorting",
+              "kind": "work"
+            },
+            "at": 1793922641141,
+            "paid": 0
+          }
+        ]
+      },
+      "hitLayerStyles": [
+        {
+          "target": "location",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "receipt",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "tape",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "nested",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "stamp",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "cosmic-parcel",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        },
+        {
+          "target": "bell",
+          "borderImageSource": "none",
+          "borderImageWidth": "0",
+          "background": "rgba(0, 0, 0, 0)",
+          "shadow": "none"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

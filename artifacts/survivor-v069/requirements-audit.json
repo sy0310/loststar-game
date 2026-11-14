@@ -1,0 +1,346 @@
+{
+  "preservedPrefix": 371,
+  "baseline": "6cd7bab2c485a136ae639807fba2b2005bd52848",
+  "added": 6,
+  "total": 377,
+  "rows": [
+    {
+      "id": "SALVAGE069-LIGHTNING",
+      "parent": null,
+      "requirement": "星链雷网与雷暴蜂群的实际命中电弧使用高饱和紫色主体、金色能量芯和暖白高亮，宽12像素，落点有明确像素火花。保留实际目标、范围、伤害、冷却、帧上限与减少动态支持，提供实际连续影片。",
+      "acceptanceCriteria": "星链雷网与雷暴蜂群的实际命中电弧使用高饱和紫色主体、金色能量芯和暖白高亮，宽12像素，落点有明确像素火花。保留实际目标、范围、伤害、冷却、帧上限与减少动态支持，提供实际连续影片。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v069/README.md",
+          "startLine": 7,
+          "endLine": 7
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/draft.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v069.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v069-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v069/BALANCE_V069.json",
+        "artifacts/survivor-v069/retained-assets.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "规则8新局、普通升级刷新、实际紫金电弧"
+        }
+      ],
+      "checks": [
+        "survivor-v069-model",
+        "survivor-v069-browser",
+        "survivor-v069-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v069/verification.json",
+        "design/star-salvage/v069/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User visual, physical phone, cross-package save, touch, lockscreen, heat and hearing pending. Early crystal collection and random-build pacing require human review; avoidance bots collected little XP.",
+      "nextAction": "Scan TapTap480314 /6bff9f1 and start a new rule8 run.",
+      "reviewBasis": "Frozen84files/74PNG,112model,720HTTP,80claims,60reroll repeats,38audio,180policies,14actual oldZIP migrations,real random losses and next-run refresh,QA live lightning and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "6bff9f11527d1aa231b328246abfe4235f002ff1",
+        "zipSha256": "77807721dd78ced5e81cc81d15fafa3ce43061bd112c3f1b0313e3daa38f79d4",
+        "previewZipSha256": "f24b1016fba09229ef3d34930d7ed3089ecd61bb7578ca925bc4aba6d1439b8b",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480314,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE069-DRAW",
+      "parent": null,
+      "requirement": "普通升级改为不放回加权随机。当前重点武器及其配件各1.35权重，其余合法项1，满槽不新增未装备项。取消它们的固定插卡，取得一项不能保证下一次出现对应配件。实际2000种子统计与自然游玩分别记录。",
+      "acceptanceCriteria": "普通升级改为不放回加权随机。当前重点武器及其配件各1.35权重，其余合法项1，满槽不新增未装备项。取消它们的固定插卡，取得一项不能保证下一次出现对应配件。实际2000种子统计与自然游玩分别记录。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v069/README.md",
+          "startLine": 8,
+          "endLine": 8
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/draft.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v069.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v069-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v069/BALANCE_V069.json",
+        "artifacts/survivor-v069/retained-assets.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "规则8新局、普通升级刷新、实际紫金电弧"
+        }
+      ],
+      "checks": [
+        "survivor-v069-model",
+        "survivor-v069-browser",
+        "survivor-v069-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v069/verification.json",
+        "design/star-salvage/v069/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User visual, physical phone, cross-package save, touch, lockscreen, heat and hearing pending. Early crystal collection and random-build pacing require human review; avoidance bots collected little XP.",
+      "nextAction": "Scan TapTap480314 /6bff9f1 and start a new rule8 run.",
+      "reviewBasis": "Frozen84files/74PNG,112model,720HTTP,80claims,60reroll repeats,38audio,180policies,14actual oldZIP migrations,real random losses and next-run refresh,QA live lightning and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "6bff9f11527d1aa231b328246abfe4235f002ff1",
+        "zipSha256": "77807721dd78ced5e81cc81d15fafa3ce43061bd112c3f1b0313e3daa38f79d4",
+        "previewZipSha256": "f24b1016fba09229ef3d34930d7ed3089ecd61bb7578ca925bc4aba6d1439b8b",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480314,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE069-REROLL",
+      "parent": null,
+      "requirement": "每局3次普通升级刷新，优先换出当前普通选项，次数跨升级保存。次数、随机种子与新选项同一存档事务提交，失败全部恢复，重复输入、刷新、重开与跨标签不能增加次数。精英战利品保留已抽结果及原75%进化机会，无其他合法强化时不消耗次数。",
+      "acceptanceCriteria": "每局3次普通升级刷新，优先换出当前普通选项，次数跨升级保存。次数、随机种子与新选项同一存档事务提交，失败全部恢复，重复输入、刷新、重开与跨标签不能增加次数。精英战利品保留已抽结果及原75%进化机会，无其他合法强化时不消耗次数。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v069/README.md",
+          "startLine": 9,
+          "endLine": 9
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/draft.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v069.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v069-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v069/BALANCE_V069.json",
+        "artifacts/survivor-v069/retained-assets.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "规则8新局、普通升级刷新、实际紫金电弧"
+        }
+      ],
+      "checks": [
+        "survivor-v069-model",
+        "survivor-v069-browser",
+        "survivor-v069-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v069/verification.json",
+        "design/star-salvage/v069/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User visual, physical phone, cross-package save, touch, lockscreen, heat and hearing pending. Early crystal collection and random-build pacing require human review; avoidance bots collected little XP.",
+      "nextAction": "Scan TapTap480314 /6bff9f1 and start a new rule8 run.",
+      "reviewBasis": "Frozen84files/74PNG,112model,720HTTP,80claims,60reroll repeats,38audio,180policies,14actual oldZIP migrations,real random losses and next-run refresh,QA live lightning and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "6bff9f11527d1aa231b328246abfe4235f002ff1",
+        "zipSha256": "77807721dd78ced5e81cc81d15fafa3ce43061bd112c3f1b0313e3daa38f79d4",
+        "previewZipSha256": "f24b1016fba09229ef3d34930d7ed3089ecd61bb7578ca925bc4aba6d1439b8b",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480314,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE069-LOADOUT",
+      "parent": null,
+      "requirement": "保留6武器槽和6辅助槽。实际池为9种主动装置、8种辅助，前者包括7种攻击武器及护盾、维修舱。首页与升级界面清楚显示池与槽位，所有实际武器图片、独立攻击、五级、进化与融合规则保留，超过槽位的取舍通过真实随机卡片发生。",
+      "acceptanceCriteria": "保留6武器槽和6辅助槽。实际池为9种主动装置、8种辅助，前者包括7种攻击武器及护盾、维修舱。首页与升级界面清楚显示池与槽位，所有实际武器图片、独立攻击、五级、进化与融合规则保留，超过槽位的取舍通过真实随机卡片发生。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v069/README.md",
+          "startLine": 10,
+          "endLine": 10
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/draft.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v069.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v069-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v069/BALANCE_V069.json",
+        "artifacts/survivor-v069/retained-assets.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "规则8新局、普通升级刷新、实际紫金电弧"
+        }
+      ],
+      "checks": [
+        "survivor-v069-model",
+        "survivor-v069-browser",
+        "survivor-v069-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v069/verification.json",
+        "design/star-salvage/v069/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User visual, physical phone, cross-package save, touch, lockscreen, heat and hearing pending. Early crystal collection and random-build pacing require human review; avoidance bots collected little XP.",
+      "nextAction": "Scan TapTap480314 /6bff9f1 and start a new rule8 run.",
+      "reviewBasis": "Frozen84files/74PNG,112model,720HTTP,80claims,60reroll repeats,38audio,180policies,14actual oldZIP migrations,real random losses and next-run refresh,QA live lightning and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "6bff9f11527d1aa231b328246abfe4235f002ff1",
+        "zipSha256": "77807721dd78ced5e81cc81d15fafa3ce43061bd112c3f1b0313e3daa38f79d4",
+        "previewZipSha256": "f24b1016fba09229ef3d34930d7ed3089ecd61bb7578ca925bc4aba6d1439b8b",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480314,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE069-PICKUP",
+      "parent": null,
+      "requirement": "新局零整备经验吸取半径36，接触领取19。局外天线每级加8、最高增加48，局内磁场保留其已有五级曲线，两条途径独立生效。零件基础150、旧规则2～6经验150、旧规则7经验190保留。开局范围提示使用实际范围，牵引与领取防重复保存继续有效。",
+      "acceptanceCriteria": "新局零整备经验吸取半径36，接触领取19。局外天线每级加8、最高增加48，局内磁场保留其已有五级曲线，两条途径独立生效。零件基础150、旧规则2～6经验150、旧规则7经验190保留。开局范围提示使用实际范围，牵引与领取防重复保存继续有效。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v069/README.md",
+          "startLine": 11,
+          "endLine": 11
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/draft.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v069.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v069-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v069/BALANCE_V069.json",
+        "artifacts/survivor-v069/retained-assets.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "规则8新局、普通升级刷新、实际紫金电弧"
+        }
+      ],
+      "checks": [
+        "survivor-v069-model",
+        "survivor-v069-browser",
+        "survivor-v069-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v069/verification.json",
+        "design/star-salvage/v069/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User visual, physical phone, cross-package save, touch, lockscreen, heat and hearing pending. Early crystal collection and random-build pacing require human review; avoidance bots collected little XP.",
+      "nextAction": "Scan TapTap480314 /6bff9f1 and start a new rule8 run.",
+      "reviewBasis": "Frozen84files/74PNG,112model,720HTTP,80claims,60reroll repeats,38audio,180policies,14actual oldZIP migrations,real random losses and next-run refresh,QA live lightning and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "6bff9f11527d1aa231b328246abfe4235f002ff1",
+        "zipSha256": "77807721dd78ced5e81cc81d15fafa3ce43061bd112c3f1b0313e3daa38f79d4",
+        "previewZipSha256": "f24b1016fba09229ef3d34930d7ed3089ecd61bb7578ca925bc4aba6d1439b8b",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480314,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE069-COMPAT",
+      "parent": null,
+      "requirement": "新局规则8，原规则2～7在途局继续原数据。原存档命名空间、余额、付费设备、工程与200零件预约不变。七份真实旧ZIP各测两引擎，固定包真实HTTP、360×800／390×844、关闭重开、存储失败和用户手机验收分开记录。",
+      "acceptanceCriteria": "新局规则8，原规则2～7在途局继续原数据。原存档命名空间、余额、付费设备、工程与200零件预约不变。七份真实旧ZIP各测两引擎，固定包真实HTTP、360×800／390×844、关闭重开、存储失败和用户手机验收分开记录。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v069/README.md",
+          "startLine": 12,
+          "endLine": 12
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/draft.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v069.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v069-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v069/BALANCE_V069.json",
+        "artifacts/survivor-v069/retained-assets.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "规则8新局、普通升级刷新、实际紫金电弧"
+        }
+      ],
+      "checks": [
+        "survivor-v069-model",
+        "survivor-v069-browser",
+        "survivor-v069-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v069/verification.json",
+        "design/star-salvage/v069/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User visual, physical phone, cross-package save, touch, lockscreen, heat and hearing pending. Early crystal collection and random-build pacing require human review; avoidance bots collected little XP.",
+      "nextAction": "Scan TapTap480314 /6bff9f1 and start a new rule8 run.",
+      "reviewBasis": "Frozen84files/74PNG,112model,720HTTP,80claims,60reroll repeats,38audio,180policies,14actual oldZIP migrations,real random losses and next-run refresh,QA live lightning and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "6bff9f11527d1aa231b328246abfe4235f002ff1",
+        "zipSha256": "77807721dd78ced5e81cc81d15fafa3ce43061bd112c3f1b0313e3daa38f79d4",
+        "previewZipSha256": "f24b1016fba09229ef3d34930d7ed3089ecd61bb7578ca925bc4aba6d1439b8b",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480314,
+        "formalIntegration": false
+      }
+    }
+  ],
+  "phone": "NOT_TESTED",
+  "userVisual": "PENDING"
+}

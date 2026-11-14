@@ -1,0 +1,3294 @@
+{
+  "schema": 1,
+  "mode": "cases",
+  "version": "0.4.5",
+  "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+  "zipSha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+  "package": {
+    "game": "失物星球",
+    "version": "0.4.5",
+    "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+    "archive": "releases/taptap/loststar-0.4.5-06cb11f-fusion-h5.zip",
+    "bytes": 11996580,
+    "sha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+    "files": 189,
+    "uncompressedBytes": 12364124,
+    "entry": "loststar-fusion/index.html",
+    "orientation": "portrait",
+    "purpose": "First-planet playable journey with persistent surface fog, artifact restoration, collection, base and day/night; continues the existing v037 campaign and preserves prior source backups"
+  },
+  "evidenceCheckoutCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+  "sourceClean": true,
+  "initialGuard": {
+    "at": 1793990946047,
+    "runtimeSourceSha": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+    "runtimeTreeHash": "e440db70456982657038d4135a7b7bc722348f1b06772fff2ffcac5e9c48e334",
+    "originalTrees": {
+      "src": "0ff6561127538c8cc4f86b79d7bc9b3623a522fd",
+      "assets/runtime": "3bef93a34127494e7501cc841b08913cc40c16ac",
+      "assets/source": "7cb3e75972ddc8c2ecf96ba696a43f035e11fcbd"
+    },
+    "zipSha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+    "zipBytes": 11996580
+  },
+  "base": "http://127.0.0.1:4248/loststar-fusion/",
+  "database": "loststar.fusion.firstplanet.v037",
+  "selectors": {
+    "home": "#fusion-explore",
+    "world": "#fusion-world canvas[data-ready=\"true\"]",
+    "nav": "#fusion-app > .fu-nav",
+    "flowEntry": "#fusion-observe",
+    "flow": "#fusion-field-drawer",
+    "flowClose": "#fusion-field-close",
+    "flowContent": "#fusion-flow-content",
+    "flowReplay": "#fusion-flow-content #fusion-replay-night",
+    "replayRegion": "#fusion-flow-replay",
+    "assist": "#fusion-assist",
+    "objective": "#fusion-objective",
+    "objectiveProgress": "#fusion-objective-progress",
+    "base": "#fusion-base",
+    "devices": "#fusion-base [data-drawer=\"upgrades\"]",
+    "facilities": "#fusion-base [data-drawer]",
+    "baseMore": "#fusion-base-more",
+    "collectionIndex": "#fusion-collection-index",
+    "management": [
+      "#fusion-map",
+      "#fusion-wallet",
+      "#fusion-settings"
+    ],
+    "returnClaim": "#fusion-flow-content #fusion-claim",
+    "list": "#fusion-collection-list",
+    "drawer": "#fusion-drawer",
+    "close": "#fusion-close",
+    "backToCollection": "#fusion-back-to-collection"
+  },
+  "startedAt": 1793990946326,
+  "collectorSha256": "72e2d87e04895f03eeee9266410607cc022e50b699c0fd642255381d9cdcbfb0",
+  "physicalPhone": false,
+  "touchEmulation": true,
+  "privateContexts": true,
+  "clockOverrides": false,
+  "speed": 1,
+  "audioRecorded": false,
+  "method": "A simplified exploration. Existing ordinary reducers produce fixtures and audited ownership; native wall clock after seeding. No personal profile, injected resources/condition, fabricated timer/reward, poster crop, or assembled video.",
+  "fixtureModules": {
+    "firstplanet-fixtures/firstplanet_fixtures.js": "7c79dc5605d8318d6a353ad961988501c7f3a5c0ef0074c5437990077976a036",
+    "feedback-fixtures/feedback_fixtures.js": "2517f53dd2f1bb93397d601a2da6fb2a09defc1d9ce148facbd23651c13ce823",
+    "renewal-fixtures/renewal_fixtures.js": "fe50e14421e4c97b3f26189f3ee056036ef9add2e0884ab5316bd2ec4368e64f",
+    "physical-fixtures/physical_review_fixtures.js": "c4d7de88f8c350228773e971725ea9e66c85e150a19911f563fbb2dfbc88c310"
+  },
+  "cases": [
+    {
+      "name": "case-0-to-3-natural-installation",
+      "kind": "paid-case-installation",
+      "id": "case-0",
+      "fixtureAudit": {
+        "kind": "funded",
+        "method": "ordinary-model-offline-earning",
+        "parent": {
+          "source": "accelerated-model-fixture",
+          "label": "加速真实模型夹具 · 发现与支出均由普通行动生成",
+          "seed": 317,
+          "startedAt": 1793987959912,
+          "endedAt": 1793989506426,
+          "simulatedMs": 1546514,
+          "advances": 19,
+          "offlineAdvances": 5,
+          "actionCount": 29,
+          "actionsByType": {
+            "upgrade": 10,
+            "claim": 5,
+            "paper": 4,
+            "curio": 10
+          },
+          "actions": [
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 0
+              },
+              "at": 1793987959912,
+              "balanceBefore": 120,
+              "balanceAfter": 75,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 0
+              },
+              "at": 1793987959912,
+              "balanceBefore": 75,
+              "balanceAfter": 30,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793988259912,
+              "balanceBefore": 30,
+              "balanceAfter": 294,
+              "paid": 0,
+              "claimed": 264
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 1
+              },
+              "at": 1793988259912,
+              "balanceBefore": 294,
+              "balanceAfter": 217,
+              "paid": 77,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 1
+              },
+              "at": 1793988259912,
+              "balanceBefore": 217,
+              "balanceAfter": 140,
+              "paid": 77,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 2
+              },
+              "at": 1793988259912,
+              "balanceBefore": 140,
+              "balanceAfter": 10,
+              "paid": 130,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793988559912,
+              "balanceBefore": 10,
+              "balanceAfter": 503,
+              "paid": 0,
+              "claimed": 493
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 2
+              },
+              "at": 1793988559912,
+              "balanceBefore": 503,
+              "balanceAfter": 373,
+              "paid": 130,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 3
+              },
+              "at": 1793988559912,
+              "balanceBefore": 373,
+              "balanceAfter": 152,
+              "paid": 221,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793988859912,
+              "balanceBefore": 152,
+              "balanceAfter": 818,
+              "paid": 0,
+              "claimed": 666
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 3
+              },
+              "at": 1793988859912,
+              "balanceBefore": 818,
+              "balanceAfter": 597,
+              "paid": 221,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "recycler",
+                "expected": 4
+              },
+              "at": 1793988859912,
+              "balanceBefore": 597,
+              "balanceAfter": 221,
+              "paid": 376,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793989159912,
+              "balanceBefore": 221,
+              "balanceAfter": 1095,
+              "paid": 0,
+              "claimed": 874
+            },
+            {
+              "action": {
+                "type": "upgrade",
+                "id": "scanner",
+                "expected": 4
+              },
+              "at": 1793989159912,
+              "balanceBefore": 1095,
+              "balanceAfter": 719,
+              "paid": 376,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "excavate"
+              },
+              "at": 1793989159912,
+              "balanceBefore": 719,
+              "balanceAfter": 719,
+              "paid": 0,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "clean"
+              },
+              "at": 1793989166113,
+              "balanceBefore": 742,
+              "balanceAfter": 702,
+              "paid": 40,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "repair"
+              },
+              "at": 1793989169914,
+              "balanceBefore": 702,
+              "balanceAfter": 582,
+              "paid": 120,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "tape",
+                "kind": "clean"
+              },
+              "at": 1793989173815,
+              "balanceBefore": 605,
+              "balanceAfter": 575,
+              "paid": 30,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "tape",
+                "kind": "repair"
+              },
+              "at": 1793989176816,
+              "balanceBefore": 575,
+              "balanceAfter": 475,
+              "paid": 100,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "nested",
+                "kind": "clean"
+              },
+              "at": 1793989179817,
+              "balanceBefore": 498,
+              "balanceAfter": 448,
+              "paid": 50,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "nested",
+                "kind": "repair"
+              },
+              "at": 1793989182818,
+              "balanceBefore": 471,
+              "balanceAfter": 331,
+              "paid": 140,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "stamp",
+                "kind": "clean"
+              },
+              "at": 1793989185819,
+              "balanceBefore": 331,
+              "balanceAfter": 286,
+              "paid": 45,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "stamp",
+                "kind": "repair"
+              },
+              "at": 1793989188820,
+              "balanceBefore": 309,
+              "balanceAfter": 129,
+              "paid": 180,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "cosmic-parcel",
+                "kind": "clean"
+              },
+              "at": 1793989191821,
+              "balanceBefore": 129,
+              "balanceAfter": 69,
+              "paid": 60,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "claim"
+              },
+              "at": 1793989494822,
+              "balanceBefore": 92,
+              "balanceAfter": 1064,
+              "paid": 0,
+              "claimed": 972
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "cosmic-parcel",
+                "kind": "repair"
+              },
+              "at": 1793989494822,
+              "balanceBefore": 1064,
+              "balanceAfter": 844,
+              "paid": 220,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "bell",
+                "kind": "clean"
+              },
+              "at": 1793989497823,
+              "balanceBefore": 844,
+              "balanceAfter": 809,
+              "paid": 35,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "curio",
+                "id": "bell",
+                "kind": "repair"
+              },
+              "at": 1793989500824,
+              "balanceBefore": 832,
+              "balanceAfter": 712,
+              "paid": 120,
+              "claimed": 0
+            },
+            {
+              "action": {
+                "type": "paper",
+                "kind": "identify"
+              },
+              "at": 1793989503825,
+              "balanceBefore": 712,
+              "balanceAfter": 712,
+              "paid": 0,
+              "claimed": 0
+            }
+          ],
+          "initialParts": 120,
+          "grossEarned": 3543,
+          "maintenancePaid": 90,
+          "actionPaid": 2838,
+          "claimedParts": 3269,
+          "endingParts": 735,
+          "collection": [
+            "receipt",
+            "mouse",
+            "tape",
+            "hermit",
+            "nested",
+            "night-shift",
+            "stamp",
+            "tagbird",
+            "cosmic-parcel",
+            "bell",
+            "return-request",
+            "last-recipient"
+          ],
+          "receiptEvidence": [
+            "field-pipe-scan"
+          ],
+          "verifiedEvidence": [
+            "field-pipe-scan"
+          ]
+        },
+        "elapsedMs": 1440000,
+        "pendingResources": 4670,
+        "claim": true,
+        "balance": 5405,
+        "worldMs": 2986514
+      },
+      "reviewStartedAt": 1793990946977,
+      "before": {
+        "savedAt": 1793990946953,
+        "worldMs": 2987041,
+        "balance": 5405,
+        "grossIncome": 8285,
+        "maintenancePaid": 162,
+        "rights": {
+          "collection": [
+            "receipt",
+            "mouse",
+            "tape",
+            "hermit",
+            "nested",
+            "night-shift",
+            "stamp",
+            "tagbird",
+            "cosmic-parcel",
+            "bell",
+            "return-request",
+            "last-recipient"
+          ],
+          "planets": [
+            "parcel"
+          ],
+          "upgrades": {
+            "radar": 0,
+            "scanner": 5,
+            "recycler": 5,
+            "cargo": 0
+          },
+          "growth": {},
+          "projects": [],
+          "abilities": {
+            "receipt": 0,
+            "tape": 0
+          },
+          "seed": 317
+        },
+        "receiptFacts": {
+          "specimenId": "receipt/RET-031",
+          "evidenceIds": [
+            "field-pipe-scan"
+          ],
+          "verifiedEvidenceIds": [
+            "field-pipe-scan"
+          ],
+          "observations": [
+            {
+              "actionId": "fusion/day-24/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793987973.88,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-1/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793988258.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-2/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793988558.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-3/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793988858.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-4/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793989158.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-5/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793989458.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-9/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793990658.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-10/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793990946.426,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            }
+          ],
+          "transactions": [
+            {
+              "actionId": "fusion/paper/2",
+              "kind": "clean",
+              "amount": 40
+            },
+            {
+              "actionId": "fusion/paper/3",
+              "kind": "repair",
+              "amount": 120
+            }
+          ]
+        },
+        "conditions": {
+          "receipt": "stabilized",
+          "tape": "stabilized",
+          "nested": "stabilized",
+          "stamp": "stabilized",
+          "cosmic-parcel": "stabilized",
+          "bell": "stabilized"
+        }
+      },
+      "upgrades": [
+        {
+          "expected": 0,
+          "level": 1,
+          "label": "升级 160",
+          "quoted": 160,
+          "before": {
+            "savedAt": 1793990947154,
+            "worldMs": 2987242,
+            "balance": 5405,
+            "grossIncome": 8285,
+            "maintenancePaid": 162,
+            "rights": {
+              "collection": [
+                "receipt",
+                "mouse",
+                "tape",
+                "hermit",
+                "nested",
+                "night-shift",
+                "stamp",
+                "tagbird",
+                "cosmic-parcel",
+                "bell",
+                "return-request",
+                "last-recipient"
+              ],
+              "planets": [
+                "parcel"
+              ],
+              "upgrades": {
+                "radar": 0,
+                "scanner": 5,
+                "recycler": 5,
+                "cargo": 0
+              },
+              "growth": {},
+              "projects": [],
+              "abilities": {
+                "receipt": 0,
+                "tape": 0
+              },
+              "seed": 317
+            },
+            "receiptFacts": {
+              "specimenId": "receipt/RET-031",
+              "evidenceIds": [
+                "field-pipe-scan"
+              ],
+              "verifiedEvidenceIds": [
+                "field-pipe-scan"
+              ],
+              "observations": [
+                {
+                  "actionId": "fusion/day-24/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793987973.88,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-1/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988258.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-2/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988558.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-3/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988858.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-4/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989158.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-5/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989458.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-9/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990658.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-10/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990946.426,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                }
+              ],
+              "transactions": [
+                {
+                  "actionId": "fusion/paper/2",
+                  "kind": "clean",
+                  "amount": 40
+                },
+                {
+                  "actionId": "fusion/paper/3",
+                  "kind": "repair",
+                  "amount": 120
+                }
+              ]
+            },
+            "conditions": {
+              "receipt": "stabilized",
+              "tape": "stabilized",
+              "nested": "stabilized",
+              "stamp": "stabilized",
+              "cosmic-parcel": "stabilized",
+              "bell": "stabilized"
+            }
+          },
+          "after": {
+            "savedAt": 1793990949654,
+            "worldMs": 2989742,
+            "balance": 5245,
+            "grossIncome": 8285,
+            "maintenancePaid": 162,
+            "rights": {
+              "collection": [
+                "receipt",
+                "mouse",
+                "tape",
+                "hermit",
+                "nested",
+                "night-shift",
+                "stamp",
+                "tagbird",
+                "cosmic-parcel",
+                "bell",
+                "return-request",
+                "last-recipient"
+              ],
+              "planets": [
+                "parcel"
+              ],
+              "upgrades": {
+                "radar": 0,
+                "scanner": 5,
+                "recycler": 5,
+                "cargo": 0
+              },
+              "growth": {
+                "case-0": 1
+              },
+              "projects": [],
+              "abilities": {
+                "receipt": 0,
+                "tape": 0
+              },
+              "seed": 317
+            },
+            "receiptFacts": {
+              "specimenId": "receipt/RET-031",
+              "evidenceIds": [
+                "field-pipe-scan"
+              ],
+              "verifiedEvidenceIds": [
+                "field-pipe-scan"
+              ],
+              "observations": [
+                {
+                  "actionId": "fusion/day-24/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793987973.88,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-1/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988258.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-2/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988558.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-3/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988858.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-4/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989158.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-5/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989458.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-9/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990658.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-10/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990946.426,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                }
+              ],
+              "transactions": [
+                {
+                  "actionId": "fusion/paper/2",
+                  "kind": "clean",
+                  "amount": 40
+                },
+                {
+                  "actionId": "fusion/paper/3",
+                  "kind": "repair",
+                  "amount": 120
+                }
+              ]
+            },
+            "conditions": {
+              "receipt": "stabilized",
+              "tape": "stabilized",
+              "nested": "stabilized",
+              "stamp": "stabilized",
+              "cosmic-parcel": "stabilized",
+              "bell": "stabilized"
+            }
+          },
+          "ledger": {
+            "balanceBefore": 5405,
+            "balanceAfter": 5245,
+            "grossDiff": 0,
+            "maintenanceDiff": 0,
+            "charged": 160
+          },
+          "otherRightsStable": true,
+          "naturalExpectedFacts": {
+            "specimenId": "receipt/RET-031",
+            "evidenceIds": [
+              "field-pipe-scan"
+            ],
+            "verifiedEvidenceIds": [
+              "field-pipe-scan"
+            ],
+            "observations": [
+              {
+                "actionId": "fusion/day-24/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793987973.88,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-1/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793988258.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-2/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793988558.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-3/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793988858.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-4/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793989158.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-5/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793989458.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-9/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793990658.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-10/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793990946.426,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              }
+            ],
+            "transactions": [
+              {
+                "actionId": "fusion/paper/2",
+                "kind": "clean",
+                "amount": 40
+              },
+              {
+                "actionId": "fusion/paper/3",
+                "kind": "repair",
+                "amount": 120
+              }
+            ]
+          },
+          "factsMatchNaturalAdvance": true,
+          "trace": [
+            {
+              "at": 1793990947386,
+              "frame": 12,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.001984415442778991
+            },
+            {
+              "at": 1793990947487,
+              "frame": 18,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.01884406324405083
+            },
+            {
+              "at": 1793990947587,
+              "frame": 24,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.05120371104581324
+            },
+            {
+              "at": 1793990947687,
+              "frame": 30,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.0970575887283791
+            },
+            {
+              "at": 1793990947787,
+              "frame": 36,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.15419255397591267
+            },
+            {
+              "at": 1793990947887,
+              "frame": 42,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.22070652276680114
+            },
+            {
+              "at": 1793990947986,
+              "frame": 48,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.29449003888328307
+            },
+            {
+              "at": 1793990948089,
+              "frame": 54,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.37348548915663415
+            },
+            {
+              "at": 1793990948187,
+              "frame": 60,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.45563526041813013
+            },
+            {
+              "at": 1793990948287,
+              "frame": 66,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.5388817394990467
+            },
+            {
+              "at": 1793990948388,
+              "frame": 72,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.6211673132306595
+            },
+            {
+              "at": 1793990948486,
+              "frame": 78,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.7004343684442447
+            },
+            {
+              "at": 1793990948587,
+              "frame": 84,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.7746252919710774
+            },
+            {
+              "at": 1793990948686,
+              "frame": 90,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.8416824706424338
+            },
+            {
+              "at": 1793990948787,
+              "frame": 96,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.8995482912895891
+            },
+            {
+              "at": 1793990948886,
+              "frame": 102,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.9461651407438196
+            },
+            {
+              "at": 1793990948987,
+              "frame": 108,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.9794754058364007
+            },
+            {
+              "at": 1793990949087,
+              "frame": 114,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 0.9974118865903048
+            },
+            {
+              "at": 1793990949186,
+              "frame": 120,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990949287,
+              "frame": 126,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990949388,
+              "frame": 132,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990949486,
+              "frame": 138,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990949588,
+              "frame": 141,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990949688,
+              "frame": 141,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990949794,
+              "frame": 141,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990949894,
+              "frame": 141,
+              "before": 0,
+              "after": 1,
+              "level": 1,
+              "installProgress": 1
+            }
+          ],
+          "file": "screens/case-0-to-3-natural-installation-level-1.png"
+        },
+        {
+          "expected": 1,
+          "level": 2,
+          "label": "升级 480",
+          "quoted": 480,
+          "before": {
+            "savedAt": 1793990949903,
+            "worldMs": 2989991,
+            "balance": 5245,
+            "grossIncome": 8285,
+            "maintenancePaid": 162,
+            "rights": {
+              "collection": [
+                "receipt",
+                "mouse",
+                "tape",
+                "hermit",
+                "nested",
+                "night-shift",
+                "stamp",
+                "tagbird",
+                "cosmic-parcel",
+                "bell",
+                "return-request",
+                "last-recipient"
+              ],
+              "planets": [
+                "parcel"
+              ],
+              "upgrades": {
+                "radar": 0,
+                "scanner": 5,
+                "recycler": 5,
+                "cargo": 0
+              },
+              "growth": {
+                "case-0": 1
+              },
+              "projects": [],
+              "abilities": {
+                "receipt": 0,
+                "tape": 0
+              },
+              "seed": 317
+            },
+            "receiptFacts": {
+              "specimenId": "receipt/RET-031",
+              "evidenceIds": [
+                "field-pipe-scan"
+              ],
+              "verifiedEvidenceIds": [
+                "field-pipe-scan"
+              ],
+              "observations": [
+                {
+                  "actionId": "fusion/day-24/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793987973.88,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-1/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988258.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-2/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988558.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-3/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988858.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-4/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989158.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-5/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989458.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-9/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990658.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-10/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990946.426,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                }
+              ],
+              "transactions": [
+                {
+                  "actionId": "fusion/paper/2",
+                  "kind": "clean",
+                  "amount": 40
+                },
+                {
+                  "actionId": "fusion/paper/3",
+                  "kind": "repair",
+                  "amount": 120
+                }
+              ]
+            },
+            "conditions": {
+              "receipt": "stabilized",
+              "tape": "stabilized",
+              "nested": "stabilized",
+              "stamp": "stabilized",
+              "cosmic-parcel": "stabilized",
+              "bell": "stabilized"
+            }
+          },
+          "after": {
+            "savedAt": 1793990952654,
+            "worldMs": 2992742,
+            "balance": 4765,
+            "grossIncome": 8285,
+            "maintenancePaid": 162,
+            "rights": {
+              "collection": [
+                "receipt",
+                "mouse",
+                "tape",
+                "hermit",
+                "nested",
+                "night-shift",
+                "stamp",
+                "tagbird",
+                "cosmic-parcel",
+                "bell",
+                "return-request",
+                "last-recipient"
+              ],
+              "planets": [
+                "parcel"
+              ],
+              "upgrades": {
+                "radar": 0,
+                "scanner": 5,
+                "recycler": 5,
+                "cargo": 0
+              },
+              "growth": {
+                "case-0": 2
+              },
+              "projects": [],
+              "abilities": {
+                "receipt": 0,
+                "tape": 0
+              },
+              "seed": 317
+            },
+            "receiptFacts": {
+              "specimenId": "receipt/RET-031",
+              "evidenceIds": [
+                "field-pipe-scan"
+              ],
+              "verifiedEvidenceIds": [
+                "field-pipe-scan"
+              ],
+              "observations": [
+                {
+                  "actionId": "fusion/day-24/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793987973.88,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-1/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988258.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-2/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988558.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-3/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988858.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-4/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989158.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-5/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989458.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-9/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990658.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-10/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990946.426,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                }
+              ],
+              "transactions": [
+                {
+                  "actionId": "fusion/paper/2",
+                  "kind": "clean",
+                  "amount": 40
+                },
+                {
+                  "actionId": "fusion/paper/3",
+                  "kind": "repair",
+                  "amount": 120
+                }
+              ]
+            },
+            "conditions": {
+              "receipt": "stabilized",
+              "tape": "stabilized",
+              "nested": "stabilized",
+              "stamp": "stabilized",
+              "cosmic-parcel": "stabilized",
+              "bell": "stabilized"
+            }
+          },
+          "ledger": {
+            "balanceBefore": 5245,
+            "balanceAfter": 4765,
+            "grossDiff": 0,
+            "maintenanceDiff": 0,
+            "charged": 480
+          },
+          "otherRightsStable": true,
+          "naturalExpectedFacts": {
+            "specimenId": "receipt/RET-031",
+            "evidenceIds": [
+              "field-pipe-scan"
+            ],
+            "verifiedEvidenceIds": [
+              "field-pipe-scan"
+            ],
+            "observations": [
+              {
+                "actionId": "fusion/day-24/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793987973.88,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-1/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793988258.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-2/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793988558.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-3/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793988858.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-4/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793989158.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-5/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793989458.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-9/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793990658.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-10/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793990946.426,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              }
+            ],
+            "transactions": [
+              {
+                "actionId": "fusion/paper/2",
+                "kind": "clean",
+                "amount": 40
+              },
+              {
+                "actionId": "fusion/paper/3",
+                "kind": "repair",
+                "amount": 120
+              }
+            ]
+          },
+          "factsMatchNaturalAdvance": true,
+          "trace": [
+            {
+              "at": 1793990950202,
+              "frame": 144,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.0019676030062592493
+            },
+            {
+              "at": 1793990950303,
+              "frame": 150,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.0187692752503522
+            },
+            {
+              "at": 1793990950404,
+              "frame": 156,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.051124890375142444
+            },
+            {
+              "at": 1793990950502,
+              "frame": 162,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.09690209373146971
+            },
+            {
+              "at": 1793990950603,
+              "frame": 168,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.15406818597742175
+            },
+            {
+              "at": 1793990950703,
+              "frame": 174,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.2205655539442742
+            },
+            {
+              "at": 1793990950803,
+              "frame": 180,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.2942598650809317
+            },
+            {
+              "at": 1793990950902,
+              "frame": 186,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.3733236643657831
+            },
+            {
+              "at": 1793990951003,
+              "frame": 192,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.45546918048299123
+            },
+            {
+              "at": 1793990951102,
+              "frame": 198,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.5386324082885213
+            },
+            {
+              "at": 1793990951203,
+              "frame": 204,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.6209239418969124
+            },
+            {
+              "at": 1793990951302,
+              "frame": 210,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.7002031298270268
+            },
+            {
+              "at": 1793990951402,
+              "frame": 216,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.7744123589101408
+            },
+            {
+              "at": 1793990951503,
+              "frame": 222,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.8414940159775297
+            },
+            {
+              "at": 1793990951603,
+              "frame": 228,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.8994431002469613
+            },
+            {
+              "at": 1793990951703,
+              "frame": 234,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.9460441613902351
+            },
+            {
+              "at": 1793990951804,
+              "frame": 240,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.9794234329039383
+            },
+            {
+              "at": 1793990951905,
+              "frame": 246,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 0.9973926607153488
+            },
+            {
+              "at": 1793990952003,
+              "frame": 252,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990952122,
+              "frame": 259,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990952202,
+              "frame": 264,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990952303,
+              "frame": 270,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990952404,
+              "frame": 273,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990952505,
+              "frame": 273,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990952606,
+              "frame": 273,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990952705,
+              "frame": 273,
+              "before": 1,
+              "after": 2,
+              "level": 2,
+              "installProgress": 1
+            }
+          ],
+          "file": "screens/case-0-to-3-natural-installation-level-2.png"
+        },
+        {
+          "expected": 2,
+          "level": 3,
+          "label": "升级 1100",
+          "quoted": 1100,
+          "before": {
+            "savedAt": 1793990952654,
+            "worldMs": 2992742,
+            "balance": 4765,
+            "grossIncome": 8285,
+            "maintenancePaid": 162,
+            "rights": {
+              "collection": [
+                "receipt",
+                "mouse",
+                "tape",
+                "hermit",
+                "nested",
+                "night-shift",
+                "stamp",
+                "tagbird",
+                "cosmic-parcel",
+                "bell",
+                "return-request",
+                "last-recipient"
+              ],
+              "planets": [
+                "parcel"
+              ],
+              "upgrades": {
+                "radar": 0,
+                "scanner": 5,
+                "recycler": 5,
+                "cargo": 0
+              },
+              "growth": {
+                "case-0": 2
+              },
+              "projects": [],
+              "abilities": {
+                "receipt": 0,
+                "tape": 0
+              },
+              "seed": 317
+            },
+            "receiptFacts": {
+              "specimenId": "receipt/RET-031",
+              "evidenceIds": [
+                "field-pipe-scan"
+              ],
+              "verifiedEvidenceIds": [
+                "field-pipe-scan"
+              ],
+              "observations": [
+                {
+                  "actionId": "fusion/day-24/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793987973.88,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-1/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988258.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-2/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988558.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-3/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988858.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-4/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989158.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-5/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989458.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-9/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990658.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-10/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990946.426,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                }
+              ],
+              "transactions": [
+                {
+                  "actionId": "fusion/paper/2",
+                  "kind": "clean",
+                  "amount": 40
+                },
+                {
+                  "actionId": "fusion/paper/3",
+                  "kind": "repair",
+                  "amount": 120
+                }
+              ]
+            },
+            "conditions": {
+              "receipt": "stabilized",
+              "tape": "stabilized",
+              "nested": "stabilized",
+              "stamp": "stabilized",
+              "cosmic-parcel": "stabilized",
+              "bell": "stabilized"
+            }
+          },
+          "after": {
+            "savedAt": 1793990955405,
+            "worldMs": 2995493,
+            "balance": 3665,
+            "grossIncome": 8285,
+            "maintenancePaid": 162,
+            "rights": {
+              "collection": [
+                "receipt",
+                "mouse",
+                "tape",
+                "hermit",
+                "nested",
+                "night-shift",
+                "stamp",
+                "tagbird",
+                "cosmic-parcel",
+                "bell",
+                "return-request",
+                "last-recipient"
+              ],
+              "planets": [
+                "parcel"
+              ],
+              "upgrades": {
+                "radar": 0,
+                "scanner": 5,
+                "recycler": 5,
+                "cargo": 0
+              },
+              "growth": {
+                "case-0": 3
+              },
+              "projects": [],
+              "abilities": {
+                "receipt": 0,
+                "tape": 0
+              },
+              "seed": 317
+            },
+            "receiptFacts": {
+              "specimenId": "receipt/RET-031",
+              "evidenceIds": [
+                "field-pipe-scan"
+              ],
+              "verifiedEvidenceIds": [
+                "field-pipe-scan"
+              ],
+              "observations": [
+                {
+                  "actionId": "fusion/day-24/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793987973.88,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-1/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988258.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-2/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988558.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-3/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793988858.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-4/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989158.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-5/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793989458.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-9/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990658.912,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                },
+                {
+                  "actionId": "fusion/night-10/field-pipe-scan",
+                  "evidenceId": "field-pipe-scan",
+                  "observedAtSeconds": 1793990946.426,
+                  "source": "parcel/returns-plain/night-review",
+                  "metadata": {
+                    "artifactCode": "RET-031",
+                    "boxCode": "P03",
+                    "nodeId": "pipe-marker-p03",
+                    "eventKind": "marker-scan",
+                    "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                  }
+                }
+              ],
+              "transactions": [
+                {
+                  "actionId": "fusion/paper/2",
+                  "kind": "clean",
+                  "amount": 40
+                },
+                {
+                  "actionId": "fusion/paper/3",
+                  "kind": "repair",
+                  "amount": 120
+                }
+              ]
+            },
+            "conditions": {
+              "receipt": "stabilized",
+              "tape": "stabilized",
+              "nested": "stabilized",
+              "stamp": "stabilized",
+              "cosmic-parcel": "stabilized",
+              "bell": "stabilized"
+            }
+          },
+          "ledger": {
+            "balanceBefore": 4765,
+            "balanceAfter": 3665,
+            "grossDiff": 0,
+            "maintenanceDiff": 0,
+            "charged": 1100
+          },
+          "otherRightsStable": true,
+          "naturalExpectedFacts": {
+            "specimenId": "receipt/RET-031",
+            "evidenceIds": [
+              "field-pipe-scan"
+            ],
+            "verifiedEvidenceIds": [
+              "field-pipe-scan"
+            ],
+            "observations": [
+              {
+                "actionId": "fusion/day-24/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793987973.88,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-1/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793988258.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-2/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793988558.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-3/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793988858.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-4/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793989158.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-5/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793989458.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-9/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793990658.912,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              },
+              {
+                "actionId": "fusion/night-10/field-pipe-scan",
+                "evidenceId": "field-pipe-scan",
+                "observedAtSeconds": 1793990946.426,
+                "source": "parcel/returns-plain/night-review",
+                "metadata": {
+                  "artifactCode": "RET-031",
+                  "boxCode": "P03",
+                  "nodeId": "pipe-marker-p03",
+                  "eventKind": "marker-scan",
+                  "actualSource": "parcel/returns-plain/pipe-marker-p03"
+                }
+              }
+            ],
+            "transactions": [
+              {
+                "actionId": "fusion/paper/2",
+                "kind": "clean",
+                "amount": 40
+              },
+              {
+                "actionId": "fusion/paper/3",
+                "kind": "repair",
+                "amount": 120
+              }
+            ]
+          },
+          "factsMatchNaturalAdvance": true,
+          "trace": [
+            {
+              "at": 1793990953001,
+              "frame": 276,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.002104068022281465
+            },
+            {
+              "at": 1793990953102,
+              "frame": 282,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.019194917469650682
+            },
+            {
+              "at": 1793990953202,
+              "frame": 288,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.05175696033314834
+            },
+            {
+              "at": 1793990953302,
+              "frame": 294,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.0977845856638693
+            },
+            {
+              "at": 1793990953402,
+              "frame": 300,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.15512650198513878
+            },
+            {
+              "at": 1793990953502,
+              "frame": 306,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.22169411773316913
+            },
+            {
+              "at": 1793990953601,
+              "frame": 312,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.29564161034931397
+            },
+            {
+              "at": 1793990953701,
+              "frame": 318,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.3746186149872133
+            },
+            {
+              "at": 1793990953801,
+              "frame": 324,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.4567979418042718
+            },
+            {
+              "at": 1793990953901,
+              "frame": 330,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.5400451698563887
+            },
+            {
+              "at": 1793990954002,
+              "frame": 336,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.6223026859748397
+            },
+            {
+              "at": 1793990954102,
+              "frame": 342,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.7015128769909007
+            },
+            {
+              "at": 1793990954202,
+              "frame": 348,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.7756181297358473
+            },
+            {
+              "at": 1793990954302,
+              "frame": 354,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.8426235019850593
+            },
+            {
+              "at": 1793990954402,
+              "frame": 360,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.9002833677375005
+            },
+            {
+              "at": 1793990954502,
+              "frame": 366,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.9467281266567582
+            },
+            {
+              "at": 1793990954601,
+              "frame": 372,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.9798632427346039
+            },
+            {
+              "at": 1793990954701,
+              "frame": 378,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 0.9975631837536088
+            },
+            {
+              "at": 1793990954802,
+              "frame": 384,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990954902,
+              "frame": 390,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990955001,
+              "frame": 396,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990955101,
+              "frame": 402,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990955202,
+              "frame": 405,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990955304,
+              "frame": 405,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990955412,
+              "frame": 405,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 1
+            },
+            {
+              "at": 1793990955504,
+              "frame": 405,
+              "before": 2,
+              "after": 3,
+              "level": 3,
+              "installProgress": 1
+            }
+          ],
+          "file": "screens/case-0-to-3-natural-installation-level-3.png"
+        }
+      ],
+      "complete": true,
+      "after": {
+        "savedAt": 1793990955405,
+        "worldMs": 2995493,
+        "balance": 3665,
+        "grossIncome": 8285,
+        "maintenancePaid": 162,
+        "rights": {
+          "collection": [
+            "receipt",
+            "mouse",
+            "tape",
+            "hermit",
+            "nested",
+            "night-shift",
+            "stamp",
+            "tagbird",
+            "cosmic-parcel",
+            "bell",
+            "return-request",
+            "last-recipient"
+          ],
+          "planets": [
+            "parcel"
+          ],
+          "upgrades": {
+            "radar": 0,
+            "scanner": 5,
+            "recycler": 5,
+            "cargo": 0
+          },
+          "growth": {
+            "case-0": 3
+          },
+          "projects": [],
+          "abilities": {
+            "receipt": 0,
+            "tape": 0
+          },
+          "seed": 317
+        },
+        "receiptFacts": {
+          "specimenId": "receipt/RET-031",
+          "evidenceIds": [
+            "field-pipe-scan"
+          ],
+          "verifiedEvidenceIds": [
+            "field-pipe-scan"
+          ],
+          "observations": [
+            {
+              "actionId": "fusion/day-24/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793987973.88,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-1/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793988258.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-2/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793988558.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-3/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793988858.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-4/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793989158.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-5/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793989458.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-9/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793990658.912,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            },
+            {
+              "actionId": "fusion/night-10/field-pipe-scan",
+              "evidenceId": "field-pipe-scan",
+              "observedAtSeconds": 1793990946.426,
+              "source": "parcel/returns-plain/night-review",
+              "metadata": {
+                "artifactCode": "RET-031",
+                "boxCode": "P03",
+                "nodeId": "pipe-marker-p03",
+                "eventKind": "marker-scan",
+                "actualSource": "parcel/returns-plain/pipe-marker-p03"
+              }
+            }
+          ],
+          "transactions": [
+            {
+              "actionId": "fusion/paper/2",
+              "kind": "clean",
+              "amount": 40
+            },
+            {
+              "actionId": "fusion/paper/3",
+              "kind": "repair",
+              "amount": 120
+            }
+          ]
+        },
+        "conditions": {
+          "receipt": "stabilized",
+          "tape": "stabilized",
+          "nested": "stabilized",
+          "stamp": "stabilized",
+          "cosmic-parcel": "stabilized",
+          "bell": "stabilized"
+        }
+      },
+      "totalQuoted": 1740,
+      "ledger": {
+        "balanceBefore": 5405,
+        "balanceAfter": 3665,
+        "grossDiff": 0,
+        "maintenanceDiff": 0,
+        "charged": 1740
+      },
+      "errors": [],
+      "reviewEndedAt": 1793990955634,
+      "video": {
+        "file": "videos/case-0-to-3-natural-installation.mp4",
+        "kind": "paid-case-installation",
+        "id": "case-0",
+        "durationSeconds": 8.68,
+        "reviewElapsedSeconds": 8.657,
+        "speed": 1,
+        "sha256": "0cc0f429f92686b2c45cda81ca2ca4496291b92b671cca44722300267cef9d24",
+        "bytes": 390554,
+        "probe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "mime_codec_string": "avc1.64001e",
+              "width": 390,
+              "height": 844,
+              "coded_width": 390,
+              "coded_height": 844,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "195:422",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "chroma_location": "center",
+              "field_order": "progressive",
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "25/1",
+              "avg_frame_rate": "25/1",
+              "time_base": "1/12800",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 111104,
+              "duration": "8.680000",
+              "bit_rate": "356823",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "217",
+              "extradata_size": 48,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0,
+                "multilayer": 0
+              },
+              "tags": {
+                "language": "eng",
+                "handler_name": "VideoHandler",
+                "encoder": "Lavc62.28.100 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "/Users/shuhuayu/loststar-game/artifacts/v045-a-exploration/videos/case-0-to-3-natural-installation.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "nb_stream_groups": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "8.680000",
+            "size": "390554",
+            "bit_rate": "359957",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf62.12.100"
+            }
+          }
+        },
+        "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+        "zipSha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+        "audioRecorded": false,
+        "raw": {
+          "file": "raw/page@549ffb8248be42cb8e4fa00a170ec33f.webm",
+          "bytes": 1093659,
+          "sha256": "ee8fc3ac7c561a5222b9995798cf70bce1a2f4145fcf26384d20852025109035"
+        },
+        "alignment": {
+          "createdBefore": 1793990946589,
+          "createdAfter": 1793990946621,
+          "reviewStartedAt": 1793990946977,
+          "reviewEndedAt": 1793990955634,
+          "leadInSeconds": 0.356
+        },
+        "source": "Native 1x viewport WebM, one MP4 transcode; only loading/end trim. No spliced frames or accelerated action time."
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "case-0-to-3-natural-installation-level-1",
+      "file": "screens/case-0-to-3-natural-installation-level-1.png",
+      "kind": "actual-case-installation",
+      "engine": "chromium",
+      "width": 390,
+      "height": 844,
+      "at": 1793990949910,
+      "build": "0.4.5 · 06cb11f",
+      "sha256": "5cb06383b8161a115ef64d3e430f88de880a43711ad88cf101e78c1bd3fad299",
+      "bytes": 176296,
+      "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+      "zipSha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+      "layout": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "noOverflow": true,
+        "world": null,
+        "flow": null,
+        "controls": null,
+        "treatment": null,
+        "navigation": {
+          "x": 1,
+          "y": 771,
+          "width": 388,
+          "height": 73,
+          "right": 389,
+          "bottom": 844
+        }
+      },
+      "source": "Unmodified native CSS-pixel production-page screenshot; desktop emulation, not physical phone"
+    },
+    {
+      "name": "case-0-to-3-natural-installation-level-2",
+      "file": "screens/case-0-to-3-natural-installation-level-2.png",
+      "kind": "actual-case-installation",
+      "engine": "chromium",
+      "width": 390,
+      "height": 844,
+      "at": 1793990952710,
+      "build": "0.4.5 · 06cb11f",
+      "sha256": "da9638936798419d0bc489bec6930f1f720fd7789be02f3412f1b91b90d49a7b",
+      "bytes": 178521,
+      "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+      "zipSha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+      "layout": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "noOverflow": true,
+        "world": null,
+        "flow": null,
+        "controls": null,
+        "treatment": null,
+        "navigation": {
+          "x": 1,
+          "y": 771,
+          "width": 388,
+          "height": 73,
+          "right": 389,
+          "bottom": 844
+        }
+      },
+      "source": "Unmodified native CSS-pixel production-page screenshot; desktop emulation, not physical phone"
+    },
+    {
+      "name": "case-0-to-3-natural-installation-level-3",
+      "file": "screens/case-0-to-3-natural-installation-level-3.png",
+      "kind": "actual-case-installation",
+      "engine": "chromium",
+      "width": 390,
+      "height": 844,
+      "at": 1793990955510,
+      "build": "0.4.5 · 06cb11f",
+      "sha256": "14eed74b04e592f3c3d97de07b1d6a2d2330eb17f1f8d23acd564f10464493fb",
+      "bytes": 188733,
+      "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+      "zipSha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+      "layout": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "noOverflow": true,
+        "world": null,
+        "flow": null,
+        "controls": null,
+        "treatment": null,
+        "navigation": {
+          "x": 1,
+          "y": 771,
+          "width": 388,
+          "height": 73,
+          "right": 389,
+          "bottom": 844
+        }
+      },
+      "source": "Unmodified native CSS-pixel production-page screenshot; desktop emulation, not physical phone"
+    }
+  ],
+  "materials": [],
+  "videos": [
+    {
+      "file": "videos/case-0-to-3-natural-installation.mp4",
+      "kind": "paid-case-installation",
+      "id": "case-0",
+      "durationSeconds": 8.68,
+      "reviewElapsedSeconds": 8.657,
+      "speed": 1,
+      "sha256": "0cc0f429f92686b2c45cda81ca2ca4496291b92b671cca44722300267cef9d24",
+      "bytes": 390554,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64001e",
+            "width": 390,
+            "height": 844,
+            "coded_width": 390,
+            "coded_height": 844,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "195:422",
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "25/1",
+            "avg_frame_rate": "25/1",
+            "time_base": "1/12800",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 111104,
+            "duration": "8.680000",
+            "bit_rate": "356823",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "217",
+            "extradata_size": 48,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "eng",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.100 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/shuhuayu/loststar-game/artifacts/v045-a-exploration/videos/case-0-to-3-natural-installation.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.680000",
+          "size": "390554",
+          "bit_rate": "359957",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.100"
+          }
+        }
+      },
+      "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+      "zipSha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+      "audioRecorded": false,
+      "raw": {
+        "file": "raw/page@549ffb8248be42cb8e4fa00a170ec33f.webm",
+        "bytes": 1093659,
+        "sha256": "ee8fc3ac7c561a5222b9995798cf70bce1a2f4145fcf26384d20852025109035"
+      },
+      "alignment": {
+        "createdBefore": 1793990946589,
+        "createdAfter": 1793990946621,
+        "reviewStartedAt": 1793990946977,
+        "reviewEndedAt": 1793990955634,
+        "leadInSeconds": 0.356
+      },
+      "source": "Native 1x viewport WebM, one MP4 transcode; only loading/end trim. No spliced frames or accelerated action time."
+    }
+  ],
+  "errors": [],
+  "finalGuard": {
+    "at": 1793990956078,
+    "runtimeSourceSha": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+    "runtimeTreeHash": "e440db70456982657038d4135a7b7bc722348f1b06772fff2ffcac5e9c48e334",
+    "originalTrees": {
+      "src": "0ff6561127538c8cc4f86b79d7bc9b3623a522fd",
+      "assets/runtime": "3bef93a34127494e7501cc841b08913cc40c16ac",
+      "assets/source": "7cb3e75972ddc8c2ecf96ba696a43f035e11fcbd"
+    },
+    "zipSha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+    "zipBytes": 11996580
+  },
+  "endedAt": 1793990956326,
+  "complete": true
+}

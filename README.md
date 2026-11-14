@@ -1,40 +1,364 @@
-# 失物星球 · Lost Planet
+# 失物星球 · LOSTSTAR
 
-**竖屏 H5 高精细像素风 / 2.5D 微缩球体 / 放置探索与怪诞收藏**
+## 当前开发自测 · 失物号 v0.6.10
 
-> **特色钩子（确认版）**：“你的飞船会自动探索怪诞星球，每次回来都带回一些完全搞不懂用途的宇宙奇物。”
+TapTap480638，运行ea26e29。升级修补按战斗时间及船体上限增长，基础船体0／5／10／15分钟恢复28／42／56／70。新开一局启用，旧局续玩保持原规则。名称、Logo、横方宣传图、实际截图与介绍已组成待审测试资料，Mac4283／4397已更新，480314回退4455。
 
-## 当前状态
+[交付与测试](design/star-salvage/v0610/DELIVERY.md) · [五项测试资料](design/star-salvage/v0610/test-materials/README.md)。118模型、752实包HTTP、16真实旧包迁移及80并发回归通过，用户视觉、真机和数日体验待审。
 
-- 已确认：设计方向、首页视觉、球体远征演出方向、未知星域雷达不剧透机制。
-- 已有：全部产品/美术/动画/内容设计文档及 Codex 实施任务书。
-- **尚未导入仓库**：原始 ZIP 内的 16 张 PNG 设计稿 + 3 张参考 PNG + 1 段 MP4 动画（请按 design/README.md 导入并校验）。
-- 尚未完成：可发布游戏源码和正式游戏精灵素材。
+## 上版开发自测 · 失物号 v0.6.9
 
-## 核心体验
-未知星域雷达扫描 → 发现异常 → 揭晓星球 → 飞船巡航 / 机器人自动探索 → 带回奇物与古怪生物 → 基地展示与设备升级 → 探索更多未知星域。
+TapTap480314，运行6bff9f1。紫金12像素星链电弧，普通升级轻度加权随机与每局3次刷新，6＋6槽位对应9种主动／8种辅助，新局经验基础36，天线与磁场提供独立成长。新局规则8，旧档权益通过14次真实旧包迁移；Mac4283／4397已更新，479820回退4452。
 
-**不能剧透**：内部规划的六个星球只有经过雷达发现后才可在玩家星图显示；未发现星球的数量、位置、剪影、名字都不可先露出。
+[交付与连续录像](design/star-salvage/v069/DELIVERY.md)。112模型、720全量HTTP、80并发和60刷新重复通过。自然自动避险样本前期升级偏慢，主动收集与随机搭配的真人节奏待复测；用户画面、手机、听感待审。
 
-## 文档入口
+## 上版开发自测 · 失物号 v0.6.8
 
-- [已确认决策](docs/00_DECISIONS.md)
-- [游戏设计总纲](docs/01_GAME_DESIGN.md)
-- [UI 页面与流程](docs/02_UI_FLOW.md)
-- [高品质像素 / 2.5D 美术规范](docs/03_ART_DIRECTION.md)
-- [六星球内部内容规划](docs/04_PLANETS.md)
-- [动画与遮挡要求](docs/05_ANIMATION.md)
-- [验收标准](docs/06_ACCEPTANCE.md)
-- [技术与阶段交付](docs/07_TECH_AND_DELIVERY.md)
-- [所需生产素材清单](docs/08_ASSET_CHECKLIST.md)
-- [原始设计稿索引及导入说明](design/README.md)
-- [Codex 实施总指令](codex/IMPLEMENTATION_BRIEF.md)
+TapTap479820，运行5066bd0。六张真实图片起始武器选择、分层星环奇点等四融合、初始经验吸附190及按真实收入调整的有限整备成长。旧余额和已购等级保留，新局规则7。Mac4283／4397已更新，476192原包回退4445。
 
-## 项目范围
-- 首个优先完成高完成度“退货箱星 / 退件平原”可玩切片。
-- 内部六颗主题星球以模块化数据扩张；不同主题要有真实生态/物品/故事差异。
-- 不做复杂战斗、大地图自由移动、社交联机或强制广告。
-- 开发过程使用 Draft PR；用户复审后再决定合并、部署。
+[交付、连续录像与待审](design/star-salvage/v068/DELIVERY.md) · [费用及0～120分钟账本](design/star-salvage/v068/BALANCE_REPORT.md) · [首版图标和宣传候选](design/star-salvage/v068/store-media/README.md)。105模型、672全量HTTP、12旧包迁移通过；实际普通一局1472零件，买工程和下局预约后722。手机、画面、听感与成长节奏待用户审核。
 
-## 素材状态说明
-现有 PNG 是高品质概念稿，不是可直接导入引擎的独立动画精灵、透明图层或 3D 模型；需要重新拆分与制作。轻量化只约束复杂度，不降低目标美术品质。
+## 上版开发自测 · 失物号 v0.6.7
+
+TapTap476192，运行7ecabf7。强化逐级显示图标，占武器槽的五级维修舱、无人机／棱镜／旋刃三层轨道、三条6级局外工程及200零件下局武器预约。Mac4283／4397已更新，475539与4434保留。新局规则6。
+
+[交付、连续录像与待审](design/star-salvage/v067/DELIVERY.md) · [费用与0～120分钟账本](design/star-salvage/v067/BALANCE_REPORT.md)。99模型、640全量HTTP＋24专项、10旧包迁移，普通809.7秒战败后用真实收入购买工程并开始下一局。手机、画面和趣味待用户审核。
+
+## 上版开发自测 · 失物号 v0.6.6
+
+TapTap475539，运行dc04cab。精英船体3倍、24点精英修理包、32点Boss修理包、保存的1～3级随机强化与约缩小一成的副机轨道。低船体可选修补继续，进化仍要求5＋5。Mac原4283／4397已更新，474895原包在4430保留。
+
+[交付、连续录像和待审事项](design/star-salvage/v066/DELIVERY.md) · [精英与奖励实测](design/star-salvage/v066/BALANCE_REPORT.md)。89模型、592实包HTTP、80并发、四旧ZIP×两引擎迁移及普通11分15秒战败局已记录。手机、画面与趣味待用户审核。
+
+## 上版开发自测 · 失物号 v0.6.5
+
+TapTap开发自测474895，运行a44c635。放大进化武装，分离晶体与副机轨道，星舰壁垒独立挂载和光束，五类精英／四型Boss及实际攻击阶段。原4283／4397已更新，474770回退4431，在途规则、永久权益和余额保留。新一局使用规则4。
+
+[本轮交付与连续录像](design/star-salvage/v065/DELIVERY.md) · [经济与策略实测](design/star-salvage/v065/BALANCE_REPORT.md)。80模型、568HTTP、38音频、160＋20策略、普通900秒与三版旧ZIP×双引擎迁移分别验证。手机、画面与趣味待用户审核。
+
+## 上版开发自测 · 失物号 v0.6.4
+
+新局十五分钟。恢复敌机体量，晶体环绕和真实折射，蓝／金／紫雷电，普通蜂机弹与导弹直射，5＋5进化后追踪。三类实体精英与后期交叉火力继续同场生存。TapTap开发自测474770，运行15f43c1，原4283与4397已更新，旧在途局和永久权益保留，474099回退4428。
+
+[本轮交付与连续录像](design/star-salvage/v064/DELIVERY.md) · [经验、策略和经济实测](design/star-salvage/v064/BALANCE_REPORT.md)。70模型、520实包HTTP、38音频、160＋20策略、普通900秒与27049旧档迁移分别验证。手机、视觉与趣味待用户审核。
+
+## 上版开发自测 · 失物号 v0.6.3
+
+TapTap474099，运行f9bf85c，五级武装、75%随机高级卡、四条双进化融合和十分钟生存原包继续保留。旧证据见[v063交付](design/star-salvage/v063/DELIVERY.md)。
+
+## 上版开发自测 · 失物号 v0.6.2
+
+当前主玩法为360°星际生存，十分钟、6武器＋6增强、自动攻击与双满级进化。本版增加敌机能力、原创途中奇遇和银河背景，TapTap开发自测470518，运行4ca726f。Mac原4283与独立4397提供同一固定版本。
+
+[新版交付与连续录像](design/star-salvage/v062/DELIVERY.md) · [难度／经济对照](design/star-salvage/v062/BALANCE_REPORT.md)。新包视觉、手机与趣味待审，PR #2保持Draft。原首星和旧航路的全部资料、包与存档权益继续保留，以下记录早期首星阶段。
+
+竖屏 H5 · 精细像素 / 分层 2.5D 微缩球体 / 放置探索与怪诞收藏。
+
+> 你的飞船会自动探索怪诞星球，每次回来都带回一些完全搞不懂用途的宇宙奇物。
+
+**当前只做第一阶段：退货箱星 / 退件平原质量基准打磨。** 6 件奇物、3 种居民、3 个事件，连续绕轨与自主探索，三类发现演出，图鉴、基地、工坊和离线归航。后续星球完整远征冻结，先由用户审核首星。
+
+工作分支 `codex/v0.1-vertical-slice`，[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。不合并、不发布正式版。2026-11-02 用户授权的 TapTap 开发自测上传见 [实机试玩记录](docs/13_TAPTAP_SELF_TEST.md)。原始设计 PNG/MP4 20/20 已真实导入并校验；运行时素材均独立制作。
+
+## 首章手机反馈：图文连接与像素爱心（新版待审）
+
+开发自测 **452765 / 0.4.6-chapter.2 / 43acfc5**。收据清理后的“明天”直接印在票面，票角旧退件印记与邮戳试印纸相同；邮戳、包裹有指向物件的阅读标注。三居民打招呼立即冒像素爱心，减少动态时仍有静态回应，无收费或奖励。
+
+继续同一个剧情测试档，保留452593的进度结构；原18整图、原价/耗时/550ms保护、全部首章内容和正式v037隔离边界不变。新版普通966.72秒、实际离开32.016秒后回归，空档无消费走完原12条与首章，错误0；另有48实际QA截图和12段标明起点的影片。
+
+[本轮交付与实际未测项](design/first-planet-story/PHONE_FOLLOWUP.md) · [新包画面与连续影片](artifacts/chapter-one-followup/index.html) · [195项唯一对照](design/visual-renewal/VISUAL_COVERAGE.md)。452593当前文字已获用户认可；新包图文与爱心、跨包/锁屏和手机体验仍待审核，不宣称整体美术通过。继续Draft，不合并、不提审、不正式发布。
+
+## 首章：比寄出更早的退件（可保存开发自测，待用户/真机审核）
+
+继承已确认的sample.6界面与即时清理，接入六件三态短句、六个免费互动、收据/邮戳/包裹关联、同球合法夜班揭晓，以及原last-recipient的温柔结尾。不购买整理或升级也可完成主章。归航用一张真实成果卡，优先看新发现。
+
+本轮独立剧情档 `loststar.review.parcel-story.v1` 首次才初始化120零件/空收藏，刷新与重开续玩；不自动读取或修改正式v037及原备份。QA显式导入用另一隔离档，不覆盖自然试玩进度。
+
+[可玩入口、包与六物接入](design/first-planet-story/DELIVERY.md) · [实际连续影片与固定包审核页](artifacts/chapter-one/index.html) · [唯一193项要求表](design/visual-renewal/VISUAL_COVERAGE.md)。开发自测452593 / 0.4.6-chapter.1 / 运行源码8dfdd06；ZIP与回读见审核页平台回执。继续Draft PR #2，不合并、不提审、不正式发布。
+
+## 手机反馈三项调整（sample.6历史，用户已确认）
+
+收藏页新增“居民观察”，可看已发现居民的原生态动作并打招呼；六件奇物清理点击即完成，仍按原价一次扣费；默认详情移除顶部三态对照，只留当前中央整图。升级原价与耗时、六物18图、原主动互动均保留。
+
+开发自测 **448541 / sample.6 / bb4b221**，固定ZIP12,004,918B/190文件；432单测、80样板浏览器流程通过，41张实际截图/8段自然影片。[新包审核页](artifacts/ref-ui-followup/index.html) · [短交付与待测](design/v045_a_simplified_exploration/UI_PHONE_FOLLOWUP_DELIVERY.md)。上版448481方向基本获认可，不等于本版真机通过。
+
+仍为内存隔离样板，刷新重建示例；正式v037存档不读写，444057玩家基线不变。用户已确认此三项完成；当前授权只推进首章，不开启第二星球。
+
+## 上版448481：全可达同主题与整图轻整理（历史）
+
+按[最新返修任务](design/v045_a_simplified_exploration/TIANDAO_UI_REFERENCE_ADAPTATION.md)统一隔离样板所有可达页面的低饱和紫灰主题；整理取消强制取出/工具模拟，原图保持到原业务真实完成，再换B/C、短句和550ms落稳。保留六件18完整图与认可免费互动、世界/居民/房间动作。原价、时长、权益不变。
+
+[运行与隔离边界](prototypes/ref-ui/README.md) · [新版固定包审核页](artifacts/ref-ui-unified/index.html)。当前开发自测448481 / sample.5 / 35b3e46；163张实际截图、六物处理/跨页/夜访共8片，422单测与72样板流程通过。[本轮短交付](design/v045_a_simplified_exploration/UI_UNIFIED_DELIVERY.md)。不能沿用退修448028成绩；181项原ID与历史证据保留，最新5条旧工作台替代口径及REFUI正式集成均IN_PROGRESS。
+
+正式玩家基线仍为444057/06cb11f。新样板只用内存副本，不读写正式IDB/偏好，不清档；刷新仅重建样例。用户视觉/真实手机确认后才接正式持久入口，不合并、不正式发布。
+
+## V0.4.5 A方案：简单探索、新奇发现、温柔回归（待用户/真机验收）
+
+四张批准原图已真实推送于`8514cf9`并远端原字节回读4/4。首页收敛为一个调查、一条探索手记和明确助力；观察、夜间特别发现、清晨成果、归航及已购回看合为同一探索流。收藏突出六柜和三态，基地保留一个成长主入口及可选设施；原18整图、v037全部权益和费用不变。
+
+TapTap开发自测 **444057 / v0.4.5 / 06cb11f**，11,996,580B/189文件已上传回读，主包前后相同、未绑定/提审/发布。同包本机预览`http://127.0.0.1:4248/loststar-fusion/`。20/20原件+4/4新PNG、407单测、五构建、578端到端、6组实包检查通过；48在线/12离线模拟0异常，12场桌面性能P95 Chromium16.7–17.5ms、WebKit17–18ms。**不代表手机或用户美术验收。**
+
+[当前交付与真实未测项](design/v045_a_simplified_exploration/DELIVERY.md) · [审核页：三屏前后/18态/连续影片](artifacts/v045-a-exploration/index.html) · [保留/合并/移除入口](design/v045_a_simplified_exploration/IMPLEMENTATION.md) · [174条四维要求](design/visual-renewal/VISUAL_COVERAGE.md)。夜间灰纸影和晨修细节手机可辨性、真实锁屏/发热/可听音效待测。以下V044及更早结果为历史，不是V045通过证据。
+
+## V0.4.4 执行补齐与美术精修（历史，用户/真机未签收）
+
+保留V0.4.3六件18张完整三态、原费用和v037全部权益；只新绘邮戳A/B以统一既有C的身份与材质，减轻玻璃反射遮挡。六类正式入口统一读真实状态，主动表演反转短句与物件同屏；修正WebKit正常节拍漏绘制。其余已认可场景、柜体锚点、铃等互动与经济模型保留。
+
+TapTap开发自测 **441208 / v0.4.4 / 7074cff**，11,991,420B实际上传并回读，前后主包模块一致，未绑定/提审/发布。运行源码`7074cff043a239771acae1f0b7133db1225f797a`；本机固定包`http://127.0.0.1:4239/loststar-fusion/`。
+
+本地20/20原件、3/3批准图、397单测、五构建、546端到端流程、6组实包检查通过；48经济时点/12离线案例0异常。源码两路CI同样通过，最终证据提交CI另看PR当前Checks。331实际截图记录、90整图导出、18段自然连续影片绑定同一固定包；12场桌面短测绘制P95 Chromium16.7–17.2ms、WebKit19ms。**仍待用户视觉和真实手机验收，不称整体最终完成。**
+
+[逐项161条要求及未完成/待审](design/visual-renewal/VISUAL_COVERAGE.md) · [精修、保留与验证边界](design/visual-renewal/V044_EXECUTION_ART_REVIEW.md) · [三态总览/三屏对照/代表影片](artifacts/v044-execution-art/index.html) · [完整验证](artifacts/v044-execution-art/verification.json)。可执行防漏检查：`npm run check:execution`；有本地固定ZIP与真实证据时运行`npm run check:delivery`。两者都不替代美术/手机签收。
+
+## V0.4.3 六件奇物改用三张完整图片（历史，方向获认可）
+
+按照439499最新反馈，六件奇物统一改为 **刚获得 → 清理后 → 零件升级**，每态一张完整图片，共18态。处理期间保留当前图，真实完成后换图；不再通过切片、拼纸、擦污层或扭曲动画拼出下一态。工作台顶部三张缩略图可只读放大，旧档已升级也能查看前态，不降级或重复收费。铃等已确认的主动展示动作保留。
+
+TapTap开发自测 **440114 / v0.4.3 / ff91787**，12,006,782B实际上传并回读，竖屏、未发布、主包未绑定且前后模块相同。运行源码 **v0.4.3 / ff91787**。继续v037当前档、零件、整理/研究/展柜和全部已购权益；原费用与业务模型不变。本地20/20原件、3/3批准图、375单测、五构建、518浏览器流程、6组实际压缩包检查通过；固定包144项截图记录、90次整图导出、7段自然连续录像已内部抽帧复核。真实手机及用户三态视觉复审待440114新码。
+
+[本轮三态、来源与验证边界](design/visual-renewal/V043_COMPLETE_IMAGE_STATES.md) · [六件完整三态与连续处理实录](artifacts/v043-whole-state-review/index.html) · [完整验证](artifacts/v043-whole-state-review/verification.json)。固定包本机：`http://127.0.0.1:4236/loststar-fusion/`。
+
+## V0.4.2 展柜空间与物件机制返修（历史）
+
+**439499用户手机反馈：铃等主动动画已无问题，主要要求重做三态为三张不同完整图，不要像素拼片。** 此反馈只覆盖其明确确认的表现，真实锁屏/发热仍未确认。三态修正在V0.4.3完成待复审。
+
+TapTap开发自测 **439499 / v0.4.2 / ecdeecc**，实际上传并远端回读11,488,029B；主包模块不变，未绑定、提审或发布。运行源码 **v0.4.2 / ecdeecc**。针对439336反馈重构完整身体通道、分层开柜取放、单一连续胶带和铃的按压/触发/回弹机构，并修正生产包透明按钮多画框及WebView绘制节拍。继续当前v037档及全部已购权益。
+
+本地372单测、五构建、502浏览器流程、6组实际压缩包检查通过；13段同源码/ZIP的自然影片及301项图像记录已内部审核。两引擎18项绘制采样多数P95为16.7～19ms，WebKit静置胶带32ms仍保留为限制；439499手机已部分反馈，三态未通过并由上方V0.4.3返修；锁屏与长时性能仍待测。
+
+[本轮修正与验证边界](design/visual-renewal/V042_PHYSICAL_REVIEW.md) · [实际390画面、连续录像与旧版对照](artifacts/v042-physical-review/index.html) · [完整检查/CI来源](artifacts/v042-physical-review/verification.json)。固定包本机：`http://127.0.0.1:4235/loststar-fusion/`。
+
+## V0.4.1 收据按原图重画与控件返修（历史）
+
+**439336实机仍要求返修：** 展柜与机器人穿遮、胶带旧杂块残留、铃的切图式动作。当前正补空间和物件机制约束；以下保留439336工程记录，不代表美术通过。[本次实机问题与制作约束](design/visual-renewal/USER_REVIEW_V041.md)。
+
+TapTap开发自测 **439336 / v0.4.1 / 240e067**。收据改成同一张现代纸票，真实清污、紫夹承托、两次局部压平与已有玻璃柜陈列；Ⅰ/Ⅱ不再拼纸翼，原缺签和实际核验效用保留。展示动作改为“读出票面”等六个具体入口，并说明“不耗零件”；按钮、选项、开关和15个图标提高像素密度。
+
+继续当前v037档，不重开、不重买。351单测、五类构建、474浏览器流程、6组固定包检查通过；222项实际图像记录、54份透明导出、11段自然连续录像绑定运行源码240e067。CI、内部复审与真实手机状态分别登记，不以本地测试代替用户认可。
+
+[本次交付与边界](design/visual-renewal/V041_RECEIPT_REVIEW.md) · [三态与旧版实际对照／全部影片](artifacts/v041-receipt-review/index.html) · [验证与CI](artifacts/v041-receipt-review/verification.json)。固定包本机预览：`http://127.0.0.1:4231/loststar-fusion/`。
+
+## V0.4.0 首星整体美术与交互翻新（历史）
+
+**439256用户实机要求返修：** 收据三态需按批准原图重画，“试一试·免费”改为明确的展示互动，按钮/选项/图标增加像素细节。其他UI结构保留。[本次返修合同](design/visual-renewal/USER_REVIEW_V040.md)。以下保留原交付记录，不表示收据已经通过用户美术审核。
+
+TapTap开发自测 **439256 / v0.4.0 / f1397e2**，继续当前v037存档，不重开。三张批准原图在48efa52真实入Git并远端回读3/3；完整球体、机器人/飞船/星雾、六物18态与连续工具处理、六柜及取放、同屏昼夜、全部可达页面使用统一新美术。
+
+本轮本地20/20原件、3/3原图、344单测、五构建、454浏览器流程、6组最终子目录包检查通过；48经济时点/12离线情形账本0异常。源码PR/Push CI成功。实际交付223项图像记录、54份透明导出及11段自然连续录像，已内部复审；真实手机、用户视觉验收仍待新码，不以测试绿灯代签。
+
+[完整交付、版本与已知事项](design/visual-renewal/DELIVERY.md) · [设计/旧版/新版与所有影片](artifacts/visual-renewal/index.html) · [六物18态](artifacts/visual-renewal/materials-overview.html) · [全页覆盖表](design/visual-renewal/VISUAL_COVERAGE.md)
+
+固定包本机预览：`http://127.0.0.1:4227/loststar-fusion/`。只更新Draft PR #2，不合并、不提审、不正式发布。
+
+## V0.3.9 三档助力与三态实物样板（历史）
+
+连续有效点击形成低／中／高三档动作，停点后平滑回落，实际工作与收益规则沿用。观察和巡逻使用底部独立布局抽屉，奇物处理使用同一H5内的独立全屏工作台。
+
+本轮先交收据、胶带、无人签收铃三件的发现／整理／展示完成态，分别处理纸污与纸角、胶面粘灰与断头、铜锈与卡滞机构。保留当前周目、余额、收藏、设备、研究、展柜与备份，不重开。
+
+TapTap开发自测 **436783 / v0.3.9 / 51d682c**，本机固定包 `http://127.0.0.1:4225/`。20/20原件、309单测、426浏览器流程、五类构建和6组最终包检查通过；真实手机与用户视觉审核继续待确认。
+
+[本轮设计与验证](docs/35_V039_INTERACTION_LAYERS.md) · [实际截图、透明材质与连续录像](artifacts/v039-feedback/index.html) · [三件三态合页](artifacts/v039-feedback/materials-overview.png)
+
+## V0.3.8 远征反馈返修（历史）
+
+按PR最新实机意见，机器人步态、扫描和路径改为共同跟随真实探索工作，接受助力时增加短促动作应答；三处星雾扩大为区域尺度；重复旧分拣机替换为独立安保灯架，真实任务继续使用同一台分拣机。
+
+TapTap开发自测 **435972 / v0.3.8 / 2fdbebe**，本机已上传包预览为 `http://127.0.0.1:4224/`。本轮沿用当前V0.3.7周目，不再次清档。20/20原件、298项单测、五类构建和394项浏览器流程通过，另有6组最终包新／旧档烟测。真实手机仍待新码复测。
+
+[本轮修订与验证](docs/34_V038_EXPEDITION_FEEDBACK_REPAIR.md) · [79张截图与5段连续动画](artifacts/v038-feedback/index.html) · [同档输入与入账对照](artifacts/v038-feedback/comparison-summary.json)
+
+## V0.3.7 首星游玩接入（历史）
+
+两项认可样板已接入实际首星探索、六件奇物整理、收藏与基地。此次用户授权重新开始，首次开局采用120零件、初始设备、空收藏与白天。旧源保留并归档备份，刷新继续同一周目。
+
+当前开发入口为 `http://127.0.0.1:5173/?sample=first-planet`。当前玩家包由 `npm run package:fusion` 生成，生产预览使用 `npm run build:fusion` 与 `npx vite preview --config vite.fusion.config.ts --port 4220`。
+
+当时TapTap开发自测 **435439 / v0.3.7 / b7f7326**。本轮新版入口见上方V0.3.8。
+
+[本轮交付与验证](docs/33_V037_FIRST_PLANET_DELIVERY.md) · [实际截图与连续动画](artifacts/first-planet/index.html) · [首星经济模拟](artifacts/first-planet/economy.md)
+
+## V0.3.6 两个美术动作样板
+
+按最新PR，已导入两张新认可概念原图，制作一处真实地表星雾和一件收据的隔离Canvas样板。星雾分层扫描揭露已有分拣区，收据经历松土承托、逐道刷洗、双处纤维压补、玻璃陈列与免费打印演出。
+
+TapTap开发自测 **435106 / v0.3.6 / 26521b4**。本机打包预览为 `http://127.0.0.1:4217/`，开发入口为 `/?sample=art-v036`。样板状态驻留内存，正式存档权益由原游戏入口承接。
+
+[实施、验证与边界](docs/31_V036_ISOLATED_VISUAL_SAMPLES.md) · [原图与实际连续画面对照](artifacts/v036/index.html) · [认可概念原图](design/v036/reference/manifest.json)
+
+## V0.3.5 首批返修
+
+收据与胶带获得独立本体能力，旧分拣区卡纸支线已有实际施工、清障和三项实地观察。点击反馈、收藏室绘制和跨柜取放已返修，零件余额入口提供当前可执行目标。
+
+开发审阅入口为 `http://127.0.0.1:5173/?sample=refinement`。生产审阅包由 `npm run package:fusion` 生成，使用独立档案承接同源旧档副本。浏览器与经济验证、连续视频、性能方法和实机待审项见交付记录。
+
+[V0.3.5交付与经济表](docs/30_FIRST_PLANET_REFINEMENT_DELIVERY.md) · [112图／14段连续视频](artifacts/refinement/index.html)
+
+## 本地运行
+
+需要 Node.js 22.12+、npm、Python 3；录屏/媒体核验另需 ffmpeg/ffprobe。
+
+```bash
+npm ci
+npm run dev
+# http://127.0.0.1:5173/?sample=first-planet
+```
+
+生产预览：
+
+```bash
+npm run build:fusion
+npx vite preview --config vite.fusion.config.ts --port 4220
+# http://127.0.0.1:4220
+```
+
+无需后端、账号、密钥或广告。角色自动探索，页面切换不中断模拟。初次奇物约 12 秒、首位新居民约 36 秒、夜班事件约 3 分钟；不升级时首轮完整档案约 15.4 分钟（4分钟探索/1分钟守护）。雷达勘测首星真实现场，不快速弹出不能前往的世界。货舱初始离线上限 2 小时。
+
+使用当前浏览器 localStorage。旧切片存档会迁移，保留资金、升级、收藏与历史坐标；已发现航路永久保留；未完成内容禁用远征，不伪造外形。存储写满时保留已读进度并提示，不能把失败的写入当作已持久保存。
+
+## 432215实机反馈与下一轮升级计划
+
+用户认可简洁方向，提出点击反馈、收藏流畅性、本体能力、区域层级、地名冷笑话和零件用途的改进。[升级计划](docs/29_FIRST_PLANET_FEEDBACK_UPGRADE_PLAN.md)已整理为待实施批次，首批包含收据、胶带和一个旧分拣区节点。
+
+现状审计测得收藏室约19fps，五件奇物尚缺能力成长层。新预算采用现有引擎收入与维修作投影，新增区域与能力效果进入可玩样板后验证。[动画采样](artifacts/fusion-feedback/animation-audit.json) · [消费与预算审计](artifacts/fusion-feedback/spending-audit.json)
+
+## V0.3.4 简洁探索融合版（开发自测）
+
+TapTap开发自测 **432215 / 0.3.4 / 59670a6**，4097743字节包体已上传并读回，主包体未绑定。新二维码在本机会话交付；真实手机审核待扫码。
+
+运行源码 **59670a6**。探索／收藏／基地三个入口，轻点助力真实工作，六件奇物整理与分层展柜、三居民作息、同球昼夜安保与晨修、三个真实建设工程和定向调查已经接成可玩的首星循环。
+
+```bash
+npm run dev
+# http://127.0.0.1:5173/?sample=fusion
+npm run build:fusion
+npx vite preview --config vite.fusion.config.ts --port 4207
+npm run package:fusion
+npm run simulate:fusion
+npm run capture:fusion
+npm run capture:fusion:compare
+```
+
+- [交付与存档边界](docs/28_V034_FUSION_DELIVERY.md) · [实际截图与连续动画](artifacts/fusion/index.html) · [完整融合计划](docs/27_V034_SIMPLIFIED_EXPLORATION_FUSION_PLAN.md)。
+- 独立IndexedDB档案导入同源旧档的只读副本，保留原余额、升级和收藏；原localStorage档不回写。不同TapTap版本的来源隔离可能影响旧档可见性，当前没有云档。
+- 有效点击600ms、滚动12秒最多5次、平滑消费队列；夜间只聚焦事件。新调查提供真实10%增效与实际记录，收据辨识依赖真实现场，支付不填造缺失记录。
+- 本地20/20原件、221单元、230浏览器流程、四种构建通过；160组／1440行实际引擎模拟覆盖27,049旧档与长离线，费用与工作无重复。
+- 1倍生产包录像、挂机／主动同档对照、正式相对子目录包与桌面性能数值在审核页分别登记；真实TapTap手机与用户视觉审核继续待验。
+- 普通入口保留原版本，融合包独立开发自测。首周2026年11月4日至10日按用户审核结果冻结设计。[此前返修证据](artifacts/v034-refine/index.html)对应历史源码8ffad81。
+
+## V0.3.3 居民作息与收据能力（上一轮审核）
+
+- 三居民白天觅纸/搬壳/巡飞，黄昏归巢，夜间蜷睡/缩壳/收翼，清晨苏醒。普通远征作息使用同一持久4/1昼夜时钟。
+- 收据研究独立于柜体，可回应好奇心、读取折层、展开三条事项与地址、核对未发生清单。输入增补签收后，实际结果从2项变为1项，纸面展开、印字、折回和出票随结果变化。
+- [实际截图与三段录像](artifacts/v033/index.html)、[范围、数据与限制](docs/23_D1_MOTION_REVIEW.md)。源码和包体对应 **0.3.3 / dcf7e64**，保持[Draft PR #2](https://github.com/sy0310/loststar-game/pull/2)。
+- **20/20原件、106单元、142浏览器流程及两份构建通过**。收据能力目前为D1样例回执验证，正式研究成长存档接入待样板审核。真实TapTap手机观感待新码复审，展开折痕仍保留为当前候选。
+
+## V0.3.2 D1 本体与动作精修（历史）
+
+按最新Review和手机视觉反馈继续精修收据与夜间处置。美术子智能体负责原图和分层导出，主线程独立审核实际纸面、抓握、光照、门洞和连续动画。
+
+- 收据本体四档材料、压印与金属墨，新增“观察收据”近景。等比纸卷、共享边界的轻弯曲、显影、柜内反光与真实托盘投影共同构成展品。
+- 夜巡采用真实手位、三层透明收容匣、独立翼片折叠和原仓库门洞接收，实体共享环境调色和局部灯光。
+- [三段新录像、四档近景及原始采样](artifacts/d1-refinement/index.html)、[逐项精修说明与限制](docs/23_D1_MOTION_REVIEW.md)。源码与包体对应 **0.3.2 / e407d31**，旧版对照保留在[0.3.1审核页](artifacts/d1/index.html)。
+- **20/20原件、96单元、126浏览器流程、普通版与D1构建通过**。两引擎移动触控仿真和子目录包已验证，真实TapTap手机表现待新码复审。
+
+本地内部样板为 `/?sample=night-d1` 与 `/?sample=receipt-d1`。生产运行 `npm run build:d1` 后使用 `npx vite preview --config vite.d1.config.ts --port 4187`。`npm run package:d1` 生成只读开发自测包，运行时无需读取真实存档。当前Lv0到Lv1纸张差异较克制，姿态过渡仍有细化空间。
+
+## 原 V0.3 可玩样板（普通游戏继续保留）
+
+- [单页规则与方案比较](docs/21_V03_RULES.md)、[完整交付/经济/限制](docs/22_V03_DELIVERY.md)、[实际运行审核页](artifacts/v03/index.html)。
+- 原远征4/1昼夜继续；警戒灯、隔离门、咔哒和飞船负责安保，奇物留在收藏柜、用于互动与启发科研。旧守护等级等值转为安保设备，不清零。
+- 新增0–100完整度，真正抵站才损伤；清晨按实修点付费，自动默认开、可关闭/手动，余额不足部分修。0完整度仍有80%探索速度，不丢收藏或已购设备。离线按货舱封顶，超时护站不加账单。
+- 零件只有真实维修、有限永久工程、自愿定向调查/科研三类用途。计划90/1200/4800固定预算，实际加速探索/采样并带回本地发现或观察，不自动续费，不虚构新星。
+- [86秒完整夜防/损伤/修复](artifacts/v03/security-night-damage-repair-86s.mp4)、[24秒关键段](artifacts/v03/impact-dawn-repair-24s.mp4)、[7零件部分维修](artifacts/v03/manual-partial-repair-live.mp4)、[27049旧档科研投入](artifacts/v03/legacy-research-investment-live.mp4)。全部桌面移动触控仿真，真实墙钟视频；不冒充手机。
+- [72组真实引擎经济表](artifacts/v03/economy.md)：120/5000/27049/50000，基础/强安保/重损、自动开关、积累/建设/科研、8/24小时离线封顶。新手基础安保首小时毛2160/维修216/净增1944；余额不强制花到零。
+- **82单元＋104浏览器流程、20/20原件与源码CI通过**。TapTap开发自测 **428060 / v0.3.0 / 88e2e6b**。真实手机与长期节奏待扫码；保持Draft，不正式发行、不制作其他星球。
+
+## V0.2.3 历史手机反馈修订
+
+
+- 用户在424659实机确认机器人走动，指出玻璃框与台架未对齐。已逐件注册实际基座/台面/内腔，前反光不再带第二个底座，取放共用同一坐标，前排不遮后排名牌。
+- [最新实际审核页](artifacts/p0-alignment/index.html)、[手机反馈逐项响应](docs/20_PHONE_CASE_ALIGNMENT.md)、[32秒真实整理](artifacts/p0-alignment/home-aligned-robot-32s.mp4)、[六件近景与空柜/升级状态](artifacts/p0-alignment/index.html)。截图/录像来自桌面移动触控仿真，校准版尚待新码手机验收。
+- 开发自测 **424769 / v0.2.3 / 2d70b6d**，65单元＋94浏览器流程通过。昼夜逻辑不变，[完整310秒原远征实录](artifacts/p0-main/expedition-full-cycle-310s.mp4)明确来自0.2.2，用户仍在挂机观察；没有把旧包反馈当作整体验收。
+
+## V0.2.2 P0重构记录
+
+
+- [首页/昼夜审核页](artifacts/p0-main/index.html)、[逐项说明与真实手机验收状态](docs/19_P0_HOME_WORLD_REVIEW.md)。
+- 首页直接使用同一个分层 `MuseumScene`，六件实际奇物在玻璃内循环，机器人每14秒走向不同展柜观察、取放和整理；进入近景移动同一Canvas，不维护两套首页。
+- 原远征自动经历4分钟白天（末12秒黄昏）＋1分钟夜晚＋清晨。双守护槽在远征白天配置，同一球体/机器人/飞船自动守护；无独立夜守入口，旧实验数据不导入正式收藏。
+- [首页整理连续30秒](artifacts/p0-main/home-robot-30s.mp4)、[原远征完整310秒](artifacts/p0-main/expedition-full-cycle-310s.mp4)、[六件触控试验](artifacts/p0-main/home-six-experiments.mp4)、[重算经济](artifacts/p0-main/economy-final.md)。录屏按真实墙钟，来自桌面移动触控仿真，不是手机录像。
+- 开发自测 **424659 / v0.2.2 / 14cc368**，包体2,230,063字节。61单元＋94浏览器流程通过，运行代码PR/push CI成功；用户新包手机扫码验收仍待反馈。旧收藏、零件、升级与图鉴保留，不合并、不正式发行。
+
+## V0.2.1 历史复审修订
+
+
+- [夜守复审审核页](artifacts/v02-review/index.html)、[逐项修订/测试/限制](docs/18_PR2_NIGHT_MODEL_REVIEW.md)。
+- 同一份确定性模型驱动动画、在线/离线和晨间：空槽/单件/双件/满级分别提前核验0/1/2/3位，全部安全送回，不损失正式收藏。
+- [四配置65秒连续对照](artifacts/v02-review/strategy-comparison-live-65s.mp4)、[14组策略表](artifacts/v02-review/strategy-results.md)、[展柜付款后真实近景切换](artifacts/v02-review/growth-closeup-live.mp4)。
+- 新开发自测 **424300 / v0.2.1 / e9c5ce6**，56项单元+80项浏览器流程通过；保持夜守独立可选，等待用户扫码复审。
+
+## V0.2 历史交付
+
+- [统一审核页](artifacts/v02/index.html)：实际玻璃收藏室、三个生态区、星际监听、夜守与成长工坊。
+- [完整交付及已知限制](docs/17_V02_DELIVERY.md)、[经济模拟与有限成本](docs/16_V02_ECONOMY.md)、[可进出的夜守原型](docs/15_NIGHT_GUARD_PROTOTYPE.md)。
+- [收藏室21秒](artifacts/v02/museum-live.mp4)、[旧/新动画对照](artifacts/v02/museum-before-after-8s.mp4)、[完整夜守80秒](artifacts/v02/night-watch-live-80s.mp4)、[真实星际采样106秒](artifacts/v02/stellar-listening-live-106s.mp4)。
+- TapTap开发自测 **424044 / v0.2.0 / eee74ae**；旧存档沿用原键，基础展示免费，夜守默认独立可选。新版本仍待用户实机审核。
+
+## Phase 1 历史交付
+
+- [本轮审核页](artifacts/phase1/index.html)：开发服务器下打开 `http://127.0.0.1:5173/artifacts/phase1/index.html`。
+- [42 秒真实连续运行](artifacts/phase1/expedition-42s.mp4)，含三轮轨道与两次实际发现；[12 秒同源节选](artifacts/phase1/expedition-12s.mp4)。
+- 精确 390×844：[远征](artifacts/phase1/390-expedition.png)、[雷达](artifacts/phase1/390-radar.png)、[图鉴](artifacts/phase1/390-collection.png)、[基地](artifacts/phase1/390-base.png)、[工坊](artifacts/phase1/390-workshop.png)，另有对应 @2x 版本。
+- [内容、演出与已知优化项](docs/11_FIRST_PLANET_POLISH.md)、[验收状态](docs/06_ACCEPTANCE.md)、[视觉差异](docs/09_VISUAL_REVIEW.md)。
+- [实测性能与资源](docs/10_PERFORMANCE.md)、[原始 JSON](artifacts/phase1/performance.json)。**桌面浏览器测量，不代表手机真机认证。**
+- [运行时美术源与内置 image_gen 提示词](assets/README.md)。没有从概念拼版硬抠角色，也不把 AI 图集称为手工逐帧定稿。
+
+Phase 1.5 按 PR #2 审核意见修订：[意见逐项对照与 15/30/60 分钟节奏](docs/12_PR2_REVIEW_RESPONSE.md)、[冷加载/字号/动作放大/音效审核页](artifacts/phase1-5/index.html)。首次默认基地，设置可改为远征；首轮之后自动收录居民联动日记，V0.2 已接通星际连续采样；无可靠定位不会生成新航路。
+
+Phase 1历史五页和连续视频保留在 `artifacts/phase1/`，当前V0.3安保/维修证据以 `artifacts/v03/` 为准；此前基地对齐证据保留在 `artifacts/p0-alignment/`，旧昼夜在 `artifacts/p0-main/`，根目录原来的中文页面图和 12 秒视频为上一轮历史版本。
+
+## 验证与复现
+
+```bash
+python3 scripts/validate_design_assets.py
+npx playwright install chromium webkit
+npm run check
+```
+
+106 项引擎/运动/存储/成长/星图/安保维修与科研测试、142 项浏览器流程。覆盖 360×800、390×844、1440×1000 Chromium 与 390×844 WebKit，包括真实发现演出、首星完整图鉴、展柜、升级、迁移、存储故障、离线上限/防双领、导航安全区及D1只读/安装/触控。
+
+生产预览启动后，另一个终端重新录制、截图和实测：
+
+```bash
+npm run capture
+npm run capture:review
+npm run report
+```
+
+连续录屏使用真实墙钟，无时间跳转、无种存档、无冻结。后期流程截图使用加速测试时钟，遮挡帧只冻结视觉和 HUD；二者均明确标注，不冒充新玩家初始画面。
+
+## 源码结构
+
+```text
+src/content/           首星生态、现场信号、可扩展 Planet/Region/Discovery 配置
+src/game/engine.ts     自动探索、里程碑、演出消费、雷达、升级、离线、迁移与校验
+src/game/persistence.ts 读写分离，存储故障时只执行一次消费
+src/render/            地表曲线路径、连续切线轨道、八姿势角色、深度与灯光
+src/ui/                像素素材映射、非阻塞发现演出、独立音效事件接口
+src/main.ts            页面、图鉴、展柜、工坊、归航、保存锁与标签页同步
+assets/src/            透明原始 PNG 与完整内置 image_gen 提示词
+assets/runtime/        导出的 WebP 与对齐的角色动作图集
+scripts/               导入/校验、生产素材导出、录屏/测量、报告
+tests/                 引擎、路径/轨道、存储故障与 Playwright 用户流程
+artifacts/phase1/      当前五页截图、连续录屏、演出/遮挡帧和原始测量
+design/reference/      真实原始设计 PNG/MP4、README/HTML，不进入构建
+```
+
+`npm run assets:export` 从已提交源图确定性导出。当前源为透明 PNG、提示词及动画代码，没有手工 Aseprite 工程。发现音效通过 `loststar:sound-cue` 接入原创 Web Audio 短音效，默认静音，可在设置显式开启；不接外部音频 SDK。
+
+最终主观视觉、手部接触、最小辅助文字、真实手机性能与长期节奏仍待审核。阶段二只有在用户确认首星标准后开始。
+
+## TapTap 开发测试包
+
+`npm run package:taptap` 构建可部署在子目录的 H5 ZIP，输出在忽略提交的 `releases/taptap/`。当前首星开发测试包已上传 TapTap，自测二维码通过会话交付；不是公开商店发布，PR 仍为 Draft。详见 [上传结果与实机试玩](docs/13_TAPTAP_SELF_TEST.md)。

@@ -1,0 +1,85 @@
+{
+  "stage": "ai-image-validate",
+  "rule": {
+    "id": "square_promo_image",
+    "label": "square promotional image",
+    "goal": "adapt the existing promotional banner into a coherent 1:1 promotional image without redesigning the game visual",
+    "reference_rules": [
+      "use an existing header banner as the preferred and authoritative mother image",
+      "if no header banner exists, use a real gameplay screenshot only as an upstream source for creating the header banner first",
+      "preserve the mother image's subject, camera direction, scene meaning, lighting, atmosphere, and main colors"
+    ],
+    "formats": [
+      "jpg",
+      "png"
+    ],
+    "tolerance": 0.01,
+    "max_file_size": 4194304,
+    "dimensions": [
+      {
+        "min_width": 1440,
+        "min_height": 1440,
+        "aspect_ratio": [
+          1,
+          1
+        ]
+      }
+    ],
+    "content_constraints": [
+      "square image (1:1)",
+      "the result must look like a natural square adaptation of the existing promotional image"
+    ],
+    "prompt_rules": [
+      "treat the reference banner as the only mother image",
+      "adapt the canvas through edge extension, local continuation, scaling, and minor movement of secondary edge content",
+      "keep the central subject and main narrative unchanged",
+      "keep existing title or logo content unchanged when retained",
+      "make the square composition balanced while keeping the original focal subject in the safe area"
+    ],
+    "text_rules": [
+      "do not rewrite or generate new title text, slogans, labels, or promotional copy"
+    ],
+    "forbidden_elements": [
+      "new composition, camera, subject, scene, props, effects, background, text, or decoration",
+      "new social-media poster layout or a newly designed concept image",
+      "stretched or visibly patched subject",
+      "UI, HUD, buttons, badges, or watermarks"
+    ],
+    "negative_terms": [
+      "new composition",
+      "new subject",
+      "new scene",
+      "wrong text",
+      "extra logo",
+      "subject deformation",
+      "bad edge extension",
+      "HUD",
+      "watermark"
+    ]
+  },
+  "input": "design/star-salvage/v068/store-media/exports/taptap-square-promo-1440.png",
+  "valid": true,
+  "manual_checks": [
+    "square image (1:1)",
+    "the result must look like a natural square adaptation of the existing promotional image"
+  ],
+  "candidates": [
+    {
+      "path": "design/star-salvage/v068/store-media/exports/taptap-square-promo-1440.png",
+      "name": "taptap-square-promo-1440.png",
+      "format": "png",
+      "width": 1440,
+      "height": 1440,
+      "file_size": 2185005,
+      "valid": true,
+      "upload_command": "taptap-cli upload 'design/star-salvage/v068/store-media/exports/taptap-square-promo-1440.png' --app-id 1022667 --dev-id 512759 --idempotency-key \u003cstable-image-intent-key\u003e --yes"
+    }
+  ],
+  "user_action_required": true,
+  "upload_pending": true,
+  "manifest_path": "design/star-salvage/v0610/test-materials/art/taptap-local-square.json",
+  "next_steps": [
+    "图片仅保存在本地，CLI 未上传或修改资料字段。",
+    "请先确认候选图；确认后再执行候选项中的 upload_command 上传到素材库。"
+  ]
+}

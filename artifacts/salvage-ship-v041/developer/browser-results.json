@@ -1,0 +1,3941 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+      "/Users/shuhuayu/loststar-game/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.config.cjs"
+    ],
+    "configFile": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/playwright.config.cjs",
+    "rootDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium360",
+        "name": "chromium360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "port*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium390",
+        "name": "chromium390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "port*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit360",
+        "name": "webkit360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "port*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit390",
+        "name": "webkit390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "port*.spec.cjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "chromium360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "port*.spec.cjs"
+        ],
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4293/loststar-salvage/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "chromium390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "port*.spec.cjs"
+        ],
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4293/loststar-salvage/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium390"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "webkit360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "port*.spec.cjs"
+        ],
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4293/loststar-salvage/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "webkit",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "webkit360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/salvage-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "webkit390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-route-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "port*.spec.cjs"
+        ],
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4293/loststar-salvage/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "webkit",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "webkit390"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Users/shuhuayu/loststar-game/releases/salvage-v041-fixed-browser.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "port-v041.spec.cjs",
+      "file": "port-v041.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "fuel and hull upgrades are visible immediately, show plain caps, cost once and survive reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3723,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:47:48.524Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-a081156e7315f748ec1e",
+          "file": "port-v041.spec.cjs",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "each ship has its own caps and saved tank/hull, equipping never refills or discards the former stock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4274,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:47:52.507Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-a470daba485b02e819a0",
+          "file": "port-v041.spec.cjs",
+          "line": 21,
+          "column": 1
+        },
+        {
+          "title": "actual schema5 migrates once with all purchased rights, existing backup and wallet unchanged",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 231,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:47:56.786Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-9262f3d88515fb48bc18",
+          "file": "port-v041.spec.cjs",
+          "line": 25,
+          "column": 1
+        },
+        {
+          "title": "event narrative is visible in full immediately without an extra disclosure or repeated intro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1652,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:47:57.022Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-7c307a9c7e673567d21c",
+          "file": "port-v041.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "whole physical cargo fills every actual occupied cell, empty cutouts stay transparent and CSS boxes align",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 520,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:47:58.680Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-96e454fd8efb0295be86",
+          "file": "port-v041.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "rotating cargo rotates the whole physical image with its mask and saves only on confirmation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1215,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:47:59.205Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-018db546109169c1a073",
+          "file": "port-v041.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "every registered current and legacy footprint is read through the actual cargo entry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5935,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:00.428Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-df90e94ed503945e94e4",
+          "file": "port-v041.spec.cjs",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "two real pages cannot pay for the same next ship upgrade twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 453,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:06.368Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-00fb2e5ffe36791dd7ef",
+          "file": "port-v041.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "an aborted upgrade write never charges or shows a fictional cap increase",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1337,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:06.826Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-d2337d099048c2ae54d1",
+          "file": "port-v041.spec.cjs",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "fuel and hull upgrades are visible immediately, show plain caps, cost once and survive reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2871,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:08.479Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-c367f5a5f99c31938fcc",
+          "file": "port-v041.spec.cjs",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "each ship has its own caps and saved tank/hull, equipping never refills or discards the former stock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4258,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:11.451Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-743ab453753894478d92",
+          "file": "port-v041.spec.cjs",
+          "line": 21,
+          "column": 1
+        },
+        {
+          "title": "actual schema5 migrates once with all purchased rights, existing backup and wallet unchanged",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 217,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:15.718Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-85bfd86a57f4740aebcf",
+          "file": "port-v041.spec.cjs",
+          "line": 25,
+          "column": 1
+        },
+        {
+          "title": "event narrative is visible in full immediately without an extra disclosure or repeated intro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1640,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:15.939Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-7a44b98e322fb89ba925",
+          "file": "port-v041.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "whole physical cargo fills every actual occupied cell, empty cutouts stay transparent and CSS boxes align",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 508,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:17.589Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-edf04ea9e393e8161890",
+          "file": "port-v041.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "rotating cargo rotates the whole physical image with its mask and saves only on confirmation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1191,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:18.102Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-f4e5106d3155211c235b",
+          "file": "port-v041.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "every registered current and legacy footprint is read through the actual cargo entry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5993,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:19.298Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-bab43bdbf2a249d9e2b3",
+          "file": "port-v041.spec.cjs",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "two real pages cannot pay for the same next ship upgrade twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 438,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:25.295Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-162325f1b6a3d13b28d3",
+          "file": "port-v041.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "an aborted upgrade write never charges or shows a fictional cap increase",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1310,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:25.739Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-30a57ffede9376f72b23",
+          "file": "port-v041.spec.cjs",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "fuel and hull upgrades are visible immediately, show plain caps, cost once and survive reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4677,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:42.956Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-9779f717720508e4cdc6",
+          "file": "port-v041.spec.cjs",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "each ship has its own caps and saved tank/hull, equipping never refills or discards the former stock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4008,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:48.414Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-d29b9a0f506f85e476ff",
+          "file": "port-v041.spec.cjs",
+          "line": 21,
+          "column": 1
+        },
+        {
+          "title": "actual schema5 migrates once with all purchased rights, existing backup and wallet unchanged",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 433,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:52.427Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-2aacf3c45f6530e532f8",
+          "file": "port-v041.spec.cjs",
+          "line": 25,
+          "column": 1
+        },
+        {
+          "title": "event narrative is visible in full immediately without an extra disclosure or repeated intro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1703,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:52.876Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-1812b131af8f5a984f2a",
+          "file": "port-v041.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "whole physical cargo fills every actual occupied cell, empty cutouts stay transparent and CSS boxes align",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 461,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:54.584Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-54c85f40d604d61440ed",
+          "file": "port-v041.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "rotating cargo rotates the whole physical image with its mask and saves only on confirmation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1181,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:55.050Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-116ba6d98e1d997c06e1",
+          "file": "port-v041.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "every registered current and legacy footprint is read through the actual cargo entry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3395,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:56.238Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-def8e894ebfb92457534",
+          "file": "port-v041.spec.cjs",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "two real pages cannot pay for the same next ship upgrade twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 625,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:59.638Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-0ee740f383110cb0dace",
+          "file": "port-v041.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "an aborted upgrade write never charges or shows a fictional cap increase",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1976,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:00.269Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-efa04050265664b1b9fb",
+          "file": "port-v041.spec.cjs",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "fuel and hull upgrades are visible immediately, show plain caps, cost once and survive reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3460,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:19.669Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-dfe6b3656fe0552ed338",
+          "file": "port-v041.spec.cjs",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "each ship has its own caps and saved tank/hull, equipping never refills or discards the former stock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3983,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:23.321Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-799e3679134f1b80d934",
+          "file": "port-v041.spec.cjs",
+          "line": 21,
+          "column": 1
+        },
+        {
+          "title": "actual schema5 migrates once with all purchased rights, existing backup and wallet unchanged",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 355,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:27.312Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-a299a9e6c10b042c20b2",
+          "file": "port-v041.spec.cjs",
+          "line": 25,
+          "column": 1
+        },
+        {
+          "title": "event narrative is visible in full immediately without an extra disclosure or repeated intro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1681,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:27.673Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-a6c355f07b246ebc27a1",
+          "file": "port-v041.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "whole physical cargo fills every actual occupied cell, empty cutouts stay transparent and CSS boxes align",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 467,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:29.362Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-c19c6283555ab3188572",
+          "file": "port-v041.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "rotating cargo rotates the whole physical image with its mask and saves only on confirmation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:29.835Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-b109f77dbb2814740eea",
+          "file": "port-v041.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "every registered current and legacy footprint is read through the actual cargo entry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3486,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:31.008Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-3ae0e4cddbcdaeaa3293",
+          "file": "port-v041.spec.cjs",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "two real pages cannot pay for the same next ship upgrade twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 636,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:34.502Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-5840741603b7e2a05529",
+          "file": "port-v041.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "an aborted upgrade write never charges or shows a fictional cap increase",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1842,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:35.143Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3866d2b190716a502d50-7fc38f487c4f491d42d1",
+          "file": "port-v041.spec.cjs",
+          "line": 57,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "port.spec.cjs",
+      "file": "port.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "one real port HOME, four reachable circles, one launch, actual layered PNG decoding and no dock tabs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 966,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:47:48.516Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-d0b177c04dad115ab08c",
+          "file": "port.spec.cjs",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "no automatic commission, one-click legal loading and fresh natural two voyages with explicit second-trip mission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 22740,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:47:49.750Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-179057b8470a248c5aa8",
+          "file": "port.spec.cjs",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "full supply quotes exact total, confirms once and keeps the current shop scroll position",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2576,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:12.495Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-21f4484eaf664a7584c3",
+          "file": "port.spec.cjs",
+          "line": 23,
+          "column": 1
+        },
+        {
+          "title": "insufficient funds never execute a false full supply; explicit partial quantity is truthful",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1232,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:15.076Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-7992829cf20ed9cff49d",
+          "file": "port.spec.cjs",
+          "line": 25,
+          "column": 1
+        },
+        {
+          "title": "four owned ships are real distinct images and free equip changes the actual HOME and route economics",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 8345,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:16.314Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-71e98f2eef587625d462",
+          "file": "port.spec.cjs",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "cargo expansion is paid once, visibly adds cells and stores real placements beyond the original board",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2634,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:24.665Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-18bbc5eb7e599cc397d2",
+          "file": "port.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "switching to an incompatible smaller hold refuses without deleting any good or taking money",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:27.307Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-bb47bc9447832a9314ee",
+          "file": "port.spec.cjs",
+          "line": 31,
+          "column": 1
+        },
+        {
+          "title": "task acceptance and abandonment are explicit, can be cancelled, and do not revive after refresh",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1806,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:28.563Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-a968a43cb1a376f2fd1f",
+          "file": "port.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "recorded schema4 in-flight and 27049 old wallet migrate once while protecting all earlier backup bytes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 224,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:30.377Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-bbb3fbdc9905b732c03f",
+          "file": "port.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "an aborted schema4 migration leaves its original envelope intact and can be safely retried",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 301,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:30.606Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-49a42aa021fdb45de52e",
+          "file": "port.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "two live pages cannot duplicate ship purchase, mission acceptance, claim or a full refill",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 624,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:30.911Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-9d3c1b7d1cba171a56c4",
+          "file": "port.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "failed purchase transaction leaves money, ship ownership, RNG and goods unchanged",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1262,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:31.540Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-0482270f4543ddf5b429",
+          "file": "port.spec.cjs",
+          "line": 41,
+          "column": 1
+        },
+        {
+          "title": "each cargo renders one whole physical body following its footprint; draft survives view round trips",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2924,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:32.813Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-c3e9bd06834b0e885537",
+          "file": "port.spec.cjs",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "touch cancellation, occupied selection and keyboard rotation save only the confirmed geometry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1069,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:35.744Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-9456cd1fe9328d477ba5",
+          "file": "port.spec.cjs",
+          "line": 45,
+          "column": 1
+        },
+        {
+          "title": "real browser close and persistent-profile restart retain fleet, upgrades, tasks and wallet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4128,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:36.820Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-deb7102125be836fc3e7",
+          "file": "port.spec.cjs",
+          "line": 47,
+          "column": 1
+        },
+        {
+          "title": "18px text, synthetic safe spaces, short screen and keyboard keep the four actions and launch usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 245,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:40.952Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-e4f97b2ec9027321b1e5",
+          "file": "port.spec.cjs",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "export/import stays explicit, malformed data never changes saved rights or other game namespaces",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 367,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:41.203Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-352e2fd55badce3b59a1",
+          "file": "port.spec.cjs",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "route preview, reload and secondary history preserve the true quotation and never reveal future signals",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 969,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:41.574Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-eb617716fdec3fae0a93",
+          "file": "port.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "one real port HOME, four reachable circles, one launch, actual layered PNG decoding and no dock tabs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 610,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:27.141Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-0575af356c0d2ffa8f7f",
+          "file": "port.spec.cjs",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "no automatic commission, one-click legal loading and fresh natural two voyages with explicit second-trip mission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 22735,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:27.756Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-a0bd014c71dd66a53952",
+          "file": "port.spec.cjs",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "full supply quotes exact total, confirms once and keeps the current shop scroll position",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2420,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:50.496Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-4fcb8d381a61a58ab0b9",
+          "file": "port.spec.cjs",
+          "line": 23,
+          "column": 1
+        },
+        {
+          "title": "insufficient funds never execute a false full supply; explicit partial quantity is truthful",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:52.920Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-676bda335d7d5fb205de",
+          "file": "port.spec.cjs",
+          "line": 25,
+          "column": 1
+        },
+        {
+          "title": "four owned ships are real distinct images and free equip changes the actual HOME and route economics",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8273,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:48:54.178Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-fd8e60dea03f40c1c950",
+          "file": "port.spec.cjs",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "cargo expansion is paid once, visibly adds cells and stores real placements beyond the original board",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:02.459Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-570330ebd0d6d65f29bd",
+          "file": "port.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "switching to an incompatible smaller hold refuses without deleting any good or taking money",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1246,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:04.718Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-e8e616fd69e8e7156cda",
+          "file": "port.spec.cjs",
+          "line": 31,
+          "column": 1
+        },
+        {
+          "title": "task acceptance and abandonment are explicit, can be cancelled, and do not revive after refresh",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1807,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:05.968Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-e8e960220002e644715b",
+          "file": "port.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "recorded schema4 in-flight and 27049 old wallet migrate once while protecting all earlier backup bytes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 222,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:07.780Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-ede200cf3ffc558df2f3",
+          "file": "port.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "an aborted schema4 migration leaves its original envelope intact and can be safely retried",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 307,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:08.009Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-b8b02287554be173392a",
+          "file": "port.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "two live pages cannot duplicate ship purchase, mission acceptance, claim or a full refill",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 626,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:08.320Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-0f541bf4ab6b06c5a5da",
+          "file": "port.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "failed purchase transaction leaves money, ship ownership, RNG and goods unchanged",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1207,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:08.953Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-66b5c138acb4c0050a5f",
+          "file": "port.spec.cjs",
+          "line": 41,
+          "column": 1
+        },
+        {
+          "title": "each cargo renders one whole physical body following its footprint; draft survives view round trips",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2801,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:10.167Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-11d2fbb0dc1dcda33afc",
+          "file": "port.spec.cjs",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "touch cancellation, occupied selection and keyboard rotation save only the confirmed geometry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 989,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:12.973Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-537e7d94e624ce1b16d2",
+          "file": "port.spec.cjs",
+          "line": 45,
+          "column": 1
+        },
+        {
+          "title": "real browser close and persistent-profile restart retain fleet, upgrades, tasks and wallet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3773,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:13.969Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-77fbb728ce8ae56b3e50",
+          "file": "port.spec.cjs",
+          "line": 47,
+          "column": 1
+        },
+        {
+          "title": "18px text, synthetic safe spaces, short screen and keyboard keep the four actions and launch usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 236,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:17.747Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-452ee92a157312098643",
+          "file": "port.spec.cjs",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "export/import stays explicit, malformed data never changes saved rights or other game namespaces",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 376,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:17.988Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-8d85a814377a701783a8",
+          "file": "port.spec.cjs",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "route preview, reload and secondary history preserve the true quotation and never reveal future signals",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 984,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:18.368Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-f611d96d8e1a6b4efd7f",
+          "file": "port.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "one real port HOME, four reachable circles, one launch, actual layered PNG decoding and no dock tabs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 977,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:02.455Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-b681a35b250d64ae48c9",
+          "file": "port.spec.cjs",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "no automatic commission, one-click legal loading and fresh natural two voyages with explicit second-trip mission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 21258,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:03.442Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-069f42404e4df91992b3",
+          "file": "port.spec.cjs",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "full supply quotes exact total, confirms once and keeps the current shop scroll position",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2407,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:24.706Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-113a0f892cbdb7757511",
+          "file": "port.spec.cjs",
+          "line": 23,
+          "column": 1
+        },
+        {
+          "title": "insufficient funds never execute a false full supply; explicit partial quantity is truthful",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1793,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:27.118Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-747a3b1853cb8d337c3e",
+          "file": "port.spec.cjs",
+          "line": 25,
+          "column": 1
+        },
+        {
+          "title": "four owned ships are real distinct images and free equip changes the actual HOME and route economics",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 7673,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:28.917Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-89d7bb35f4967e6c8831",
+          "file": "port.spec.cjs",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "cargo expansion is paid once, visibly adds cells and stores real placements beyond the original board",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2026,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:36.596Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-4ac2eb07e2e85319cada",
+          "file": "port.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "switching to an incompatible smaller hold refuses without deleting any good or taking money",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1258,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:38.628Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-2bdce3f823aa3a5993b2",
+          "file": "port.spec.cjs",
+          "line": 31,
+          "column": 1
+        },
+        {
+          "title": "task acceptance and abandonment are explicit, can be cancelled, and do not revive after refresh",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1715,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:39.892Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-226b4d9674dc6a05961f",
+          "file": "port.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "recorded schema4 in-flight and 27049 old wallet migrate once while protecting all earlier backup bytes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 365,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:41.612Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-1f29adf40db10acb6287",
+          "file": "port.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "an aborted schema4 migration leaves its original envelope intact and can be safely retried",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 387,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:41.982Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-c722d930abe52c973541",
+          "file": "port.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "two live pages cannot duplicate ship purchase, mission acceptance, claim or a full refill",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 911,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:42.373Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-1f887f440aba3f45725d",
+          "file": "port.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "failed purchase transaction leaves money, ship ownership, RNG and goods unchanged",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1240,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:43.289Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-d163096eba7e9f3855dd",
+          "file": "port.spec.cjs",
+          "line": 41,
+          "column": 1
+        },
+        {
+          "title": "each cargo renders one whole physical body following its footprint; draft survives view round trips",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2718,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:44.534Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-d8568c8336a74e5caf02",
+          "file": "port.spec.cjs",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "touch cancellation, occupied selection and keyboard rotation save only the confirmed geometry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1123,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:47.258Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-a18e0221ef58d34dcec3",
+          "file": "port.spec.cjs",
+          "line": 45,
+          "column": 1
+        },
+        {
+          "title": "real browser close and persistent-profile restart retain fleet, upgrades, tasks and wallet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4655,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:48.387Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-7f577b73448f28ccdcbd",
+          "file": "port.spec.cjs",
+          "line": 47,
+          "column": 1
+        },
+        {
+          "title": "18px text, synthetic safe spaces, short screen and keyboard keep the four actions and launch usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 356,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:53.046Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-23b1c00437e033149404",
+          "file": "port.spec.cjs",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "export/import stays explicit, malformed data never changes saved rights or other game namespaces",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 414,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:53.407Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-69baf2e3d3a49b837c3f",
+          "file": "port.spec.cjs",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "route preview, reload and secondary history preserve the true quotation and never reveal future signals",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1027,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:53.826Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-ecbc210758d4240c22f0",
+          "file": "port.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "one real port HOME, four reachable circles, one launch, actual layered PNG decoding and no dock tabs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 601,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:37.043Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-d7e46b98f2766956aee7",
+          "file": "port.spec.cjs",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "no automatic commission, one-click legal loading and fresh natural two voyages with explicit second-trip mission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 21777,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:37.649Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-bf3842ae2a78fb73f47e",
+          "file": "port.spec.cjs",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "full supply quotes exact total, confirms once and keeps the current shop scroll position",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2398,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:49:59.430Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-e191d50d19c371a3f6f1",
+          "file": "port.spec.cjs",
+          "line": 23,
+          "column": 1
+        },
+        {
+          "title": "insufficient funds never execute a false full supply; explicit partial quantity is truthful",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1815,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:01.833Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-05e55db6217a2ae23561",
+          "file": "port.spec.cjs",
+          "line": 25,
+          "column": 1
+        },
+        {
+          "title": "four owned ships are real distinct images and free equip changes the actual HOME and route economics",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7744,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:03.655Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-245499a04b504ad642ec",
+          "file": "port.spec.cjs",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "cargo expansion is paid once, visibly adds cells and stores real placements beyond the original board",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2223,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:11.412Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-62e1b2407f6ac21cc5bb",
+          "file": "port.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "switching to an incompatible smaller hold refuses without deleting any good or taking money",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1370,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:13.640Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-311f7ef01e50735d7e67",
+          "file": "port.spec.cjs",
+          "line": 31,
+          "column": 1
+        },
+        {
+          "title": "task acceptance and abandonment are explicit, can be cancelled, and do not revive after refresh",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1737,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:15.016Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-48b49b355f47c61736b9",
+          "file": "port.spec.cjs",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "recorded schema4 in-flight and 27049 old wallet migrate once while protecting all earlier backup bytes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 350,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:16.760Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-ff53c5c1e92db0f1a151",
+          "file": "port.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "an aborted schema4 migration leaves its original envelope intact and can be safely retried",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 371,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:17.115Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-ef1555d795236f66f033",
+          "file": "port.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "two live pages cannot duplicate ship purchase, mission acceptance, claim or a full refill",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 751,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:17.491Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-c014dee848d12b6b7348",
+          "file": "port.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "failed purchase transaction leaves money, ship ownership, RNG and goods unchanged",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1360,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:18.246Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-29c8bc93193050a224b8",
+          "file": "port.spec.cjs",
+          "line": 41,
+          "column": 1
+        },
+        {
+          "title": "each cargo renders one whole physical body following its footprint; draft survives view round trips",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2726,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:19.611Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-cfee294ec80aa64cd58e",
+          "file": "port.spec.cjs",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "touch cancellation, occupied selection and keyboard rotation save only the confirmed geometry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1044,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:22.343Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-cbbddfc67d025db67f83",
+          "file": "port.spec.cjs",
+          "line": 45,
+          "column": 1
+        },
+        {
+          "title": "real browser close and persistent-profile restart retain fleet, upgrades, tasks and wallet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4638,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:23.393Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-23ec2316caa8dadb666c",
+          "file": "port.spec.cjs",
+          "line": 47,
+          "column": 1
+        },
+        {
+          "title": "18px text, synthetic safe spaces, short screen and keyboard keep the four actions and launch usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 345,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:28.036Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-6e1823332f6381156223",
+          "file": "port.spec.cjs",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "export/import stays explicit, malformed data never changes saved rights or other game namespaces",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 401,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:28.386Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-5246ef90d35f38e7058d",
+          "file": "port.spec.cjs",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "route preview, reload and secondary history preserve the true quotation and never reveal future signals",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1012,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:50:28.792Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c2d19bfb6027c6ef6db7-61deda3b36a3e9b426f9",
+          "file": "port.spec.cjs",
+          "line": 53,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-09T16:47:48.139Z",
+    "duration": 161695.93,
+    "expected": 108,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

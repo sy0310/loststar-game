@@ -1,0 +1,969 @@
+{
+  "schema": 1,
+  "style": "Additive v061 purple-grey, warm-gold and ice-blue native pixel effects. Accepted v06 images remain byte-identical.",
+  "sourceInputs": [
+    {
+      "path": "design/star-salvage/v061/production/effects/export.py",
+      "bytes": 13265,
+      "sha256": "77f6338a8821b6b5c60dcc067b4e9c3d94c4759a7645817cddbc02d6095a544b"
+    },
+    {
+      "path": "design/star-salvage/v061/production/effects/legacy-baseline.json",
+      "bytes": 25580,
+      "sha256": "050303ee92cac4d5aee9adb182eb85f58ee3d8d7775bb01904c11686ef8cf4cd"
+    },
+    {
+      "path": "design/star-salvage/v06/production/weapons/palette.json",
+      "bytes": 599,
+      "sha256": "ae2f4ac3ac2dd75f0d6b8208e3ef4e6466b9e11cf948a3c9a12a6100eb778b38"
+    },
+    {
+      "path": "design/star-salvage/v061/production/effects/generated/rail_muzzle-source.png",
+      "bytes": 1093461,
+      "sha256": "3c0d0fcffa964b1028563baea7b1b30c9a30d0c175bdaba2a3232146ae1575d0"
+    },
+    {
+      "path": "design/star-salvage/v061/production/effects/generated/rail_muzzle-prompt.json",
+      "bytes": 1421,
+      "sha256": "75165704b07ab40884a08287673f71440ff240aa3abc7fe9182927f2418953ba"
+    },
+    {
+      "path": "design/star-salvage/v061/production/effects/generated/gravity_burst-source.png",
+      "bytes": 1447036,
+      "sha256": "8a9ff55220ba547dff49dc656798f013ca75b467e6243a75e4aabdcb5b7efab0"
+    },
+    {
+      "path": "design/star-salvage/v061/production/effects/generated/gravity_burst-prompt.json",
+      "bytes": 1484,
+      "sha256": "86251f1392fb83b7185fa40adecf99d48bca6b668e4d35db213e2a9d8e1274ac"
+    },
+    {
+      "path": "design/star-salvage/v061/production/effects/generated/evolution_corona-source.png",
+      "bytes": 1393477,
+      "sha256": "6a6c20328e806bb1d290de0b871a9835879b1357e45d3f71280eedba0beceba4"
+    },
+    {
+      "path": "design/star-salvage/v061/production/effects/generated/evolution_corona-prompt.json",
+      "bytes": 1500,
+      "sha256": "f53cda82fbfce5ef3dc50986ae7f004d85c8cd5665a5c16f9a2b447d9cba68f6"
+    },
+    {
+      "path": "design/star-salvage/v061/production/effects/generated/fusion_nova-source.png",
+      "bytes": 1436988,
+      "sha256": "0b74ade7c91f29d2051afd7be9b9e213d6291cc073c0374a442f3f6a2c94821e"
+    },
+    {
+      "path": "design/star-salvage/v061/production/effects/generated/fusion_nova-prompt.json",
+      "bytes": 1568,
+      "sha256": "3501831e60fc30d0463d1e77972abeaa02846a6b7abbe20f0c2c323555cf0fa9"
+    }
+  ],
+  "assets": [
+    {
+      "id": "prism",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            1,
+            22,
+            23
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/prism@1x.png",
+          "bytes": 411,
+          "sha256": "993c7f54b007e958398e99dad570ae8f2db464249bc68ffaca80b856602c2e4d"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/prism.ora",
+          "bytes": 2326,
+          "sha256": "cb7487d18671b99ce243ebf73b2ed0e877190ab8340131b5f1f116ca5bd388e5"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/prism@2x.png",
+          "bytes": 528,
+          "sha256": "ae41ffea148790f58dbee44ac08cf05a17387114ed3d55c816f52d050abcaa26"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/prism@4x.png",
+          "bytes": 684,
+          "sha256": "7cb79fe1de7571ec4b9f8337a589ce5f1c29f16f41dab5a15ac5922b4ea4179b"
+        }
+      ]
+    },
+    {
+      "id": "gravity",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            2,
+            23,
+            23
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/gravity@1x.png",
+          "bytes": 448,
+          "sha256": "28591fd73c3565cd0fd8283aa4c48637d62c72b8507e468eb087b7826667db9e"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/gravity.ora",
+          "bytes": 2371,
+          "sha256": "e487427eaa45ccef368157d4a1835630a74d4cee618c40a5e0971eda83d6e954"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/gravity@2x.png",
+          "bytes": 502,
+          "sha256": "f5c6e77b56e53f1920960e5266f0fbbb62610cc176af1d8029dcb114a70328b8"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/gravity@4x.png",
+          "bytes": 653,
+          "sha256": "684aceb86e3050e8ee86f033d4d44b4997bd1f7c24c958c49442b7c98a5fc87c"
+        }
+      ]
+    },
+    {
+      "id": "refraction",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            2,
+            22,
+            22
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/refraction@1x.png",
+          "bytes": 467,
+          "sha256": "b4ef1566706460c0c3122d274e17e22e1509c6d1ae00bb9a09ad817d2d4da13c"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/refraction.ora",
+          "bytes": 2465,
+          "sha256": "ac5446bf79550b5eb7a8d203a2925f4cde3b8bb7986deb9c798e381b39466071"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/refraction@2x.png",
+          "bytes": 548,
+          "sha256": "bde465db80f5b3cc8b1c7a1184786195e5231b5eda05bec11ef48c1be1e5dea0"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/refraction@4x.png",
+          "bytes": 706,
+          "sha256": "24c83ab72ceddacf626e47dce211b959db060e0704f0987a3487fd3c4d3ff205"
+        }
+      ]
+    },
+    {
+      "id": "singularity",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            3,
+            23,
+            22
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/singularity@1x.png",
+          "bytes": 317,
+          "sha256": "18fbf42f746fc4457cfc15a406c18d99ac33c0ead8e441ec9aecd60bc06502dc"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/singularity.ora",
+          "bytes": 1989,
+          "sha256": "8fedf3231528391072c012b176d26e36398f35afd83baa123ca2d59872495671"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/singularity@2x.png",
+          "bytes": 392,
+          "sha256": "188adcf805877d80f33aec0015e2031308df33a27365da6a0843d4d73ef581be"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/singularity@4x.png",
+          "bytes": 529,
+          "sha256": "3ef055582862a3dd2f51f0a68d1c9ea22e04ec932ef8b4eacf9ab49cce23441d"
+        }
+      ]
+    },
+    {
+      "id": "kaleidoscope",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            1,
+            23,
+            24
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/kaleidoscope@1x.png",
+          "bytes": 489,
+          "sha256": "8d75f782781faad371e54682972ef1186e76c487d3c5cbe50f97b085dbe837d5"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/kaleidoscope.ora",
+          "bytes": 2552,
+          "sha256": "87144ee27c5c7e7b6aecc7bb9f1a86156bda7e39bb0a76ef1ab498118d56ca17"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/kaleidoscope@2x.png",
+          "bytes": 560,
+          "sha256": "ba8c7e1781a8eadad3ed55c0748184f9c12b8c5659c93c5c2cda284c7c37c075"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/kaleidoscope@4x.png",
+          "bytes": 747,
+          "sha256": "506cc480a0cc3e77cf41646ef9fc3a2b776abd202302a5b3bba260b444c876ec"
+        }
+      ]
+    },
+    {
+      "id": "collapse",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            2,
+            22,
+            23
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/collapse@1x.png",
+          "bytes": 496,
+          "sha256": "660f70254c050ee6a9f37a95238b502e98572b1a62c86fba25265a34a7526cf8"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/collapse.ora",
+          "bytes": 2512,
+          "sha256": "cc8fe1923a2208bd8e341b621bc339cc36437e8a42da4af971a990e37dc21956"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/collapse@2x.png",
+          "bytes": 538,
+          "sha256": "9f3b73fdfc00e9bdc1266ac9d0fafbba77bdae0a683cc7bf8d275feddca84148"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/collapse@4x.png",
+          "bytes": 697,
+          "sha256": "a6684c1d5828ea85526cb93532b0a7802c39c95400e5884680517f14f7e1d81f"
+        }
+      ]
+    },
+    {
+      "id": "eventhorizon",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            1,
+            23,
+            23
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/eventhorizon@1x.png",
+          "bytes": 599,
+          "sha256": "9f55e76bd74a8e020ca0442663b52088f04a4661ac39970a876c1cb661dd37dc"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/eventhorizon.ora",
+          "bytes": 2887,
+          "sha256": "ddef33986014bd11b513cc777490f0aa217b80fefcbf5ed806c5c760045471e0"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/eventhorizon@2x.png",
+          "bytes": 674,
+          "sha256": "aae96d0f8555c52fd5c4248b6eba1a9ef89314fb696d99ecedae4b39c8e2c3e9"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/eventhorizon@4x.png",
+          "bytes": 862,
+          "sha256": "8afd25e25da1919c62aa3377bd3bf3e0837d962006c5ea0cd859134a868cf9e1"
+        }
+      ]
+    },
+    {
+      "id": "rail_muzzle",
+      "kind": "atlas",
+      "nativeSize": [
+        144,
+        24
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            17
+          ],
+          "bounds": [
+            10,
+            15,
+            14,
+            18
+          ],
+          "durationMs": 28
+        },
+        {
+          "x": 24,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            17
+          ],
+          "bounds": [
+            8,
+            8,
+            15,
+            18
+          ],
+          "durationMs": 35
+        },
+        {
+          "x": 48,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            17
+          ],
+          "bounds": [
+            6,
+            4,
+            18,
+            18
+          ],
+          "durationMs": 45
+        },
+        {
+          "x": 72,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            17
+          ],
+          "bounds": [
+            5,
+            4,
+            19,
+            18
+          ],
+          "durationMs": 30
+        },
+        {
+          "x": 96,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            17
+          ],
+          "bounds": [
+            7,
+            6,
+            16,
+            18
+          ],
+          "durationMs": 22
+        },
+        {
+          "x": 120,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            17
+          ],
+          "bounds": [
+            10,
+            12,
+            14,
+            18
+          ],
+          "durationMs": 20
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/rail_muzzle@1x.png",
+          "bytes": 541,
+          "sha256": "7c87d6944908e57b26ed7b80daf30a1e0b5607d388a04efc648db65c280bb7ea"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/rail_muzzle.ora",
+          "bytes": 5689,
+          "sha256": "7e3cbd39db50f879255b3f366c5b421390241b84b9e8e077d180a1af6ffc00f6"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/rail_muzzle@2x.png",
+          "bytes": 732,
+          "sha256": "86ce889ee304b35c701919caa201200365c5331414780d6f20bc580377717cd5"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/rail_muzzle@4x.png",
+          "bytes": 1004,
+          "sha256": "f3ac5aa22a64349fdaa6024b38a355c29d1534570658a833124e7f1f2caeb5a9"
+        }
+      ],
+      "durationMs": 180,
+      "originAnchor": [
+        12,
+        17
+      ],
+      "emissionDirection": [
+        0,
+        -1
+      ]
+    },
+    {
+      "id": "gravity_burst",
+      "kind": "atlas",
+      "nativeSize": [
+        288,
+        48
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            19,
+            19,
+            29,
+            28
+          ],
+          "durationMs": 55
+        },
+        {
+          "x": 48,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            11,
+            11,
+            37,
+            37
+          ],
+          "durationMs": 80
+        },
+        {
+          "x": 96,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            3,
+            3,
+            46,
+            44
+          ],
+          "durationMs": 95
+        },
+        {
+          "x": 144,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            8,
+            8,
+            41,
+            40
+          ],
+          "durationMs": 100
+        },
+        {
+          "x": 192,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            15,
+            14,
+            33,
+            34
+          ],
+          "durationMs": 85
+        },
+        {
+          "x": 240,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            16,
+            19,
+            30,
+            29
+          ],
+          "durationMs": 65
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/gravity_burst@1x.png",
+          "bytes": 4624,
+          "sha256": "079bec4c2b11153092aae21b404fe3ec640e4f895238e88c793f489c3f5d1ed5"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/gravity_burst.ora",
+          "bytes": 20445,
+          "sha256": "cc0d8083456b8a9a91dca85fe569ae6a2394f86a484b26e56fc9586922b10294"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/gravity_burst@2x.png",
+          "bytes": 5496,
+          "sha256": "80f5144f345d80b927e8dce17556adee3472d2f33463aa18491b60ab93d9ad1c"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/gravity_burst@4x.png",
+          "bytes": 7465,
+          "sha256": "f21e8fb52e8bfd98a16ca8445972c8fc79be2cce439904ca9142254d2cd76b4c"
+        }
+      ],
+      "durationMs": 480
+    },
+    {
+      "id": "evolution_corona",
+      "kind": "atlas",
+      "nativeSize": [
+        288,
+        48
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            16,
+            17,
+            32,
+            32
+          ],
+          "durationMs": 70
+        },
+        {
+          "x": 48,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            12,
+            11,
+            36,
+            36
+          ],
+          "durationMs": 95
+        },
+        {
+          "x": 96,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            5,
+            5,
+            43,
+            42
+          ],
+          "durationMs": 130
+        },
+        {
+          "x": 144,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            6,
+            6,
+            42,
+            39
+          ],
+          "durationMs": 110
+        },
+        {
+          "x": 192,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            11,
+            10,
+            36,
+            36
+          ],
+          "durationMs": 95
+        },
+        {
+          "x": 240,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            17,
+            16,
+            31,
+            30
+          ],
+          "durationMs": 80
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/evolution_corona@1x.png",
+          "bytes": 3284,
+          "sha256": "49861e59625e3404e76ff19600ea1e0bca588ba9cfcb501148db980fb3d4f088"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/evolution_corona.ora",
+          "bytes": 17357,
+          "sha256": "f66cd0187d3fdc50f498784b8d595fcb025ec8162e4a41dee894dbae91d35d08"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/evolution_corona@2x.png",
+          "bytes": 4012,
+          "sha256": "80ede63e36084a291a0763cc5b740ed84030ba5917289c6a01f05b0574df4a78"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/evolution_corona@4x.png",
+          "bytes": 5695,
+          "sha256": "5f8b58548eed6153e7524bec5409268030a51d1f779920759eecfd276b1bf6fe"
+        }
+      ],
+      "durationMs": 580
+    },
+    {
+      "id": "fusion_nova",
+      "kind": "atlas",
+      "nativeSize": [
+        288,
+        48
+      ],
+      "runtimeScale": 2,
+      "alpha": "binary",
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            11,
+            17,
+            38,
+            30
+          ],
+          "durationMs": 70
+        },
+        {
+          "x": 48,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            9,
+            15,
+            38,
+            33
+          ],
+          "durationMs": 95
+        },
+        {
+          "x": 96,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            10,
+            12,
+            37,
+            34
+          ],
+          "durationMs": 135
+        },
+        {
+          "x": 144,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            5,
+            4,
+            44,
+            39
+          ],
+          "durationMs": 115
+        },
+        {
+          "x": 192,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            10,
+            9,
+            38,
+            34
+          ],
+          "durationMs": 95
+        },
+        {
+          "x": 240,
+          "y": 0,
+          "width": 48,
+          "height": 48,
+          "anchor": [
+            24,
+            24
+          ],
+          "bounds": [
+            15,
+            14,
+            32,
+            30
+          ],
+          "durationMs": 90
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v061/production/effects/source/fusion_nova@1x.png",
+          "bytes": 3939,
+          "sha256": "9caa03da870ea0748f4a3a6334646dde8b6f90ff7cba3d8f36addd63a7a3b61c"
+        },
+        {
+          "path": "design/star-salvage/v061/production/effects/source/fusion_nova.ora",
+          "bytes": 19955,
+          "sha256": "3165eaf580904094276bebddd467e69f24e88ad299bdb20a3cbb36af2e26b93b"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/fusion_nova@2x.png",
+          "bytes": 4741,
+          "sha256": "df4f1bc89a22c29ebf3283607d26dda0c022f07a54b6e2e5e30075997e11a18f"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v061/fusion_nova@4x.png",
+          "bytes": 6774,
+          "sha256": "2a5cde346be3c9c7cc0814ddbc7fb06d3c24d42271a3dd4a9b37e676752c1ec0"
+        }
+      ],
+      "durationMs": 600
+    }
+  ]
+}

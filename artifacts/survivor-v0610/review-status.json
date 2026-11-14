@@ -1,0 +1,150 @@
+{
+  "checkedAtUtc": "2026-11-13T23:20:36.725531+00:00",
+  "gameName": "失物号：星海突进",
+  "appId": 1022667,
+  "developerId": 512759,
+  "identity": "upgraded",
+  "version": "V-20261103",
+  "versionId": "1199309",
+  "auditId": "1199309",
+  "reviewStatus": "online",
+  "sourceCommit": "ea26e29d3061542913e7a587a1fe6cc889250d33",
+  "h5Version": 480638,
+  "fileName": "loststar-survivor-ea26e29-taptap.zip",
+  "bytes": 5074428,
+  "sha256": "fb155e467a7812192a2af470d54879475de280e34632fe46a103c56bfdb78fd0",
+  "releaseSchedule": {
+    "kind": "immediate"
+  },
+  "distribution": {
+    "region_flag_android": "提供游玩",
+    "region_flag_ios": "提供游玩"
+  },
+  "precheck": {
+    "versionId": "1199309",
+    "revision": 1199309,
+    "contentResult": "passed",
+    "blockers": [],
+    "warnings": [
+      {
+        "code": "QUALIFICATION_INCOMPLETE",
+        "field_ids": [],
+        "message": "仍有资质待完成：AI 接入声明（审核中）、隐私合规（审核中）。继续提审可能被驳回。"
+      },
+      {
+        "code": "AGE_GRADE_REQUIRED",
+        "field_ids": [
+          "age_grade"
+        ],
+        "message": "游戏适龄分级（审核中）"
+      }
+    ]
+  },
+  "qualifications": {
+    "auditId": "491661",
+    "ageGrade": 12,
+    "ageGradeChosenBy": "agent, based on pixel sci-fi combat content",
+    "required": [
+      {
+        "subject": "privacy-compliance",
+        "status": "reviewing",
+        "effectiveApproved": false
+      },
+      {
+        "subject": "ai-declaration",
+        "status": "approved",
+        "effectiveApproved": true
+      },
+      {
+        "subject": "age_grade",
+        "status": "approved",
+        "effectiveApproved": true
+      }
+    ],
+    "privacy": {
+      "auditId": 13971,
+      "noProcessing": true,
+      "reviewState": "reviewing",
+      "effectiveState": "unknown",
+      "userExplicitlyConfirmed": true,
+      "submissionChannel": "developer backend UI",
+      "cliReportState": "state_partial"
+    }
+  },
+  "knownIssues": [
+    "Resume from saved upgrade menu may leave reroll button temporarily disabled; choosing a card continues the run."
+  ],
+  "phonePending": [
+    "lockscreen",
+    "long-session heat",
+    "battery use",
+    "sound quality"
+  ],
+  "evidenceScreenshot": {
+    "path": "artifacts/survivor-v0610/taptap-review-submitted.jpg",
+    "bytes": 117832,
+    "sha256": "83bcb3ff8baf508de5e30fbd0dbbe4c58c3fbeb0acf70900ff3538460fa86ece"
+  },
+  "ciCorrection": {
+    "failedDocumentationCommit": "4c9deef2b0625e983012fa98db886eae6730d995",
+    "restoredDocumentationCommit": "238b2b800aa318f253f234f22e53de45d8eacbf0",
+    "localEvidenceCheck": "passed",
+    "latestStatusReference": "PR #2 Checks, final receipts do not modify runtime inputs"
+  },
+  "submittedAtEvidenceCheckedUtc": "2026-11-13T22:52:12.025619+00:00",
+  "versionLogs": [
+    {
+      "action": 0,
+      "entry_type": 0,
+      "event": "draft_created",
+      "post_audit_status": 0,
+      "updated_time": 1793662919,
+      "version_code": 0
+    },
+    {
+      "action": 1,
+      "entry_type": 0,
+      "event": "review_submitted",
+      "post_audit_status": 0,
+      "updated_time": 1794610177,
+      "version_code": 0
+    },
+    {
+      "action": 4,
+      "entry_type": 0,
+      "event": "review_approved",
+      "post_audit_status": 0,
+      "updated_time": 1794610767,
+      "version_code": 0
+    },
+    {
+      "action": 8,
+      "entry_type": 2,
+      "event": "published",
+      "post_audit_status": 0,
+      "updated_time": 1794610767,
+      "version_code": 0
+    }
+  ],
+  "publicEntry": {
+    "android": "https://www.taptap.cn/app/1022667",
+    "ios": "https://www.taptap.cn/app/1022667?os=ios",
+    "visibleLabel": "测试",
+    "playButton": "打开 APP 试玩",
+    "qrDialogObserved": true,
+    "checkedIn": "desktop Brave browser",
+    "phonePlayTest": "pending",
+    "screenshots": [
+      {
+        "path": "artifacts/survivor-v0610/taptap-public-test-android.jpg",
+        "bytes": 98208,
+        "sha256": "281ae89ec11da7606a18b15f379fb149367d794317f74094537b119cf3fa0990"
+      },
+      {
+        "path": "artifacts/survivor-v0610/taptap-public-test-ios.jpg",
+        "bytes": 105699,
+        "sha256": "8dd96d7fed7d951164e48dd3406c22b58e78a1790f623f42d31e253f2cbcf764"
+      }
+    ]
+  }
+}

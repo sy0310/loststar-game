@@ -1,0 +1,736 @@
+{
+  "scope": "UNFROZEN_DEVELOPMENT_SAMPLE on4286; isolated Chromium fresh contexts,360x800/390x844,touch emulation; view-only art audit, not user/physical-phone acceptance.",
+  "url": "http://127.0.0.1:4286/loststar-salvage/",
+  "reference": "design/star-salvage/v04/concepts/salvage_v04_approved_full.png",
+  "views": [
+    {
+      "width": 360,
+      "height": 800,
+      "build": {
+        "version": "0.4.0",
+        "commit": "8a80700d8e32d91f1cd8d141ee0d5cb94e2fc60f",
+        "dirty": true,
+        "blindTest": true
+      },
+      "home": {
+        "images": [
+          {
+            "src": "./assets/v04/harbor_bg@2x.png",
+            "class": "harbor-bg",
+            "alt": "",
+            "natural": [
+              384,
+              640
+            ],
+            "bounds": {
+              "x": -12,
+              "y": 148,
+              "width": 384,
+              "height": 640,
+              "bottom": 788
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_starter@2x.png",
+            "class": "ship-sprite",
+            "alt": "轻型拾荒船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 32,
+              "y": 592,
+              "width": 192,
+              "height": 96,
+              "bottom": 688
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/harbor_front@2x.png",
+            "class": "harbor-front",
+            "alt": "",
+            "natural": [
+              384,
+              640
+            ],
+            "bounds": {
+              "x": -12,
+              "y": 148,
+              "width": 384,
+              "height": 640,
+              "bottom": 788
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/item_metal_crate@2x.png",
+            "class": "item-sprite",
+            "alt": "",
+            "natural": [
+              48,
+              48
+            ],
+            "bounds": {
+              "x": 24,
+              "y": 312,
+              "width": 48,
+              "height": 48,
+              "bottom": 360
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_starter@2x.png",
+            "class": "shortcut-ship",
+            "alt": "轻型拾荒船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 16,
+              "y": 480,
+              "width": 64,
+              "height": 48,
+              "bottom": 528
+            },
+            "rendering": "pixelated"
+          }
+        ],
+        "buttons": [
+          {
+            "text": "规则 / 存档",
+            "aria": "打开规则与存档",
+            "bounds": {
+              "x": 269.875,
+              "y": 37,
+              "width": 76.125,
+              "height": 44,
+              "bottom": 81
+            }
+          },
+          {
+            "text": "货舱",
+            "aria": "打开货舱",
+            "bounds": {
+              "x": 10,
+              "y": 302,
+              "width": 76,
+              "height": 98,
+              "bottom": 400
+            }
+          },
+          {
+            "text": "商店",
+            "aria": "打开商店",
+            "bounds": {
+              "x": 274,
+              "y": 302,
+              "width": 76,
+              "height": 98,
+              "bottom": 400
+            }
+          },
+          {
+            "text": "飞船",
+            "aria": "打开飞船",
+            "bounds": {
+              "x": 10,
+              "y": 470,
+              "width": 76,
+              "height": 98,
+              "bottom": 568
+            }
+          },
+          {
+            "text": "任务",
+            "aria": "打开任务",
+            "bounds": {
+              "x": 274,
+              "y": 470,
+              "width": 76,
+              "height": 98,
+              "bottom": 568
+            }
+          },
+          {
+            "text": "出发",
+            "aria": null,
+            "bounds": {
+              "x": 18,
+              "y": 724,
+              "width": 324,
+              "height": 60,
+              "bottom": 784
+            }
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "document": {
+          "width": 360,
+          "height": 800,
+          "scrollY": 0
+        }
+      },
+      "fleet": {
+        "images": [
+          {
+            "src": "./assets/v04/ship_starter@2x.png",
+            "class": "ship-sprite",
+            "alt": "轻型拾荒船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 84,
+              "y": 250.484375,
+              "width": 192,
+              "height": 96,
+              "bottom": 346.484375
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_starter@2x.png",
+            "class": "ship-sprite",
+            "alt": "轻型拾荒船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 84,
+              "y": 656.015625,
+              "width": 192,
+              "height": 96,
+              "bottom": 752.015625
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_cargo@2x.png",
+            "class": "ship-sprite",
+            "alt": "中型货船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 84,
+              "y": 959.40625,
+              "width": 192,
+              "height": 96,
+              "bottom": 1055.40625
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_scout@2x.png",
+            "class": "ship-sprite",
+            "alt": "深航探测船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 84,
+              "y": 1262.796875,
+              "width": 192,
+              "height": 96,
+              "bottom": 1358.796875
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_heavy@2x.png",
+            "class": "ship-sprite",
+            "alt": "重型工程船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 84,
+              "y": 1566.1875,
+              "width": 192,
+              "height": 96,
+              "bottom": 1662.1875
+            },
+            "rendering": "pixelated"
+          }
+        ],
+        "buttons": [
+          {
+            "text": "‹ 返回",
+            "aria": "返回主场景",
+            "bounds": {
+              "x": 14,
+              "y": 37,
+              "width": 50.625,
+              "height": 44,
+              "bottom": 81
+            }
+          },
+          {
+            "text": "规则 / 存档",
+            "aria": "打开规则与存档",
+            "bounds": {
+              "x": 269.875,
+              "y": 37,
+              "width": 76.125,
+              "height": 44,
+              "bottom": 81
+            }
+          },
+          {
+            "text": "扩容 · 600零件",
+            "aria": null,
+            "bounds": {
+              "x": 26,
+              "y": 467.265625,
+              "width": 308,
+              "height": 46,
+              "bottom": 513.265625
+            }
+          },
+          {
+            "text": "永久工具",
+            "aria": null,
+            "bounds": {
+              "x": 26,
+              "y": 525.265625,
+              "width": 308,
+              "height": 46,
+              "bottom": 571.265625
+            }
+          },
+          {
+            "text": "使用中",
+            "aria": null,
+            "bounds": {
+              "x": 26,
+              "y": 867.40625,
+              "width": 308,
+              "height": 46,
+              "bottom": 913.40625
+            }
+          },
+          {
+            "text": "购买 · 1800零件",
+            "aria": null,
+            "bounds": {
+              "x": 26,
+              "y": 1170.796875,
+              "width": 308,
+              "height": 46,
+              "bottom": 1216.796875
+            }
+          },
+          {
+            "text": "购买 · 2400零件",
+            "aria": null,
+            "bounds": {
+              "x": 26,
+              "y": 1474.1875,
+              "width": 308,
+              "height": 46,
+              "bottom": 1520.1875
+            }
+          },
+          {
+            "text": "购买 · 3400零件",
+            "aria": null,
+            "bounds": {
+              "x": 26,
+              "y": 1777.578125,
+              "width": 308,
+              "height": 46,
+              "bottom": 1823.578125
+            }
+          }
+        ],
+        "text": "飞船与改装\n余额 120\n现役 · 轻型拾荒船\n4×4 / 16格\n前进基值×100%\n损伤×100%\n货舱结构扩容 0/2\n\n4×4 → 4×5，新增一整排真实格子\n\n扩容 · 600零件\n永久工具\n船坞库存\n轻型拾荒船\n16格\n耗油基值×100%\n损伤×100%\n\n原始船与既有工具权益保留。\n\n使用中\n中型货船\n20格\n耗油基值×100%\n损伤×90%\n\n标准化运输舱，加宽一列；护板降低损伤。\n\n购买 · 1800零件\n深航探测船\n16格\n耗油基值×80%\n损伤×100%\n\n引擎改变实际前进与返航预算，仍按真实距离留油。\n\n购买 · 2400零件\n重型工程船\n25格\n耗油基值×110%\n损伤×80%\n\n工程舱与加强护板，航行消耗略高。\n\n购买 · 3400零件\n开发自测 0.4.0 · 8a80700 · 已保存\n没有广告 · 没有真实支付",
+        "document": {
+          "width": 360,
+          "height": 1936,
+          "scrollY": 0
+        }
+      },
+      "gameStateUnchanged": true,
+      "beforeStateSha256": "b4c4adf0a7308605782e4cb4dcd732c66045a33eb847f2e545132438d6c00fa2",
+      "afterStateSha256": "b4c4adf0a7308605782e4cb4dcd732c66045a33eb847f2e545132438d6c00fa2"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "build": {
+        "version": "0.4.0",
+        "commit": "8a80700d8e32d91f1cd8d141ee0d5cb94e2fc60f",
+        "dirty": true,
+        "blindTest": true
+      },
+      "home": {
+        "images": [
+          {
+            "src": "./assets/v04/harbor_bg@2x.png",
+            "class": "harbor-bg",
+            "alt": "",
+            "natural": [
+              384,
+              640
+            ],
+            "bounds": {
+              "x": 3,
+              "y": 148,
+              "width": 384,
+              "height": 640,
+              "bottom": 788
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_starter@2x.png",
+            "class": "ship-sprite",
+            "alt": "轻型拾荒船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 47,
+              "y": 592,
+              "width": 192,
+              "height": 96,
+              "bottom": 688
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/harbor_front@2x.png",
+            "class": "harbor-front",
+            "alt": "",
+            "natural": [
+              384,
+              640
+            ],
+            "bounds": {
+              "x": 3,
+              "y": 148,
+              "width": 384,
+              "height": 640,
+              "bottom": 788
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/item_metal_crate@2x.png",
+            "class": "item-sprite",
+            "alt": "",
+            "natural": [
+              48,
+              48
+            ],
+            "bounds": {
+              "x": 27,
+              "y": 312,
+              "width": 48,
+              "height": 48,
+              "bottom": 360
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_starter@2x.png",
+            "class": "shortcut-ship",
+            "alt": "轻型拾荒船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 19,
+              "y": 480,
+              "width": 64,
+              "height": 48,
+              "bottom": 528
+            },
+            "rendering": "pixelated"
+          }
+        ],
+        "buttons": [
+          {
+            "text": "规则 / 存档",
+            "aria": "打开规则与存档",
+            "bounds": {
+              "x": 299.875,
+              "y": 37,
+              "width": 76.125,
+              "height": 44,
+              "bottom": 81
+            }
+          },
+          {
+            "text": "货舱",
+            "aria": "打开货舱",
+            "bounds": {
+              "x": 13,
+              "y": 302,
+              "width": 76,
+              "height": 98,
+              "bottom": 400
+            }
+          },
+          {
+            "text": "商店",
+            "aria": "打开商店",
+            "bounds": {
+              "x": 301,
+              "y": 302,
+              "width": 76,
+              "height": 98,
+              "bottom": 400
+            }
+          },
+          {
+            "text": "飞船",
+            "aria": "打开飞船",
+            "bounds": {
+              "x": 13,
+              "y": 470,
+              "width": 76,
+              "height": 98,
+              "bottom": 568
+            }
+          },
+          {
+            "text": "任务",
+            "aria": "打开任务",
+            "bounds": {
+              "x": 301,
+              "y": 470,
+              "width": 76,
+              "height": 98,
+              "bottom": 568
+            }
+          },
+          {
+            "text": "出发",
+            "aria": null,
+            "bounds": {
+              "x": 22,
+              "y": 768,
+              "width": 346,
+              "height": 60,
+              "bottom": 828
+            }
+          }
+        ],
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "document": {
+          "width": 390,
+          "height": 844,
+          "scrollY": 0
+        }
+      },
+      "fleet": {
+        "images": [
+          {
+            "src": "./assets/v04/ship_starter@2x.png",
+            "class": "ship-sprite",
+            "alt": "轻型拾荒船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 99,
+              "y": 255.484375,
+              "width": 192,
+              "height": 96,
+              "bottom": 351.484375
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_starter@2x.png",
+            "class": "ship-sprite",
+            "alt": "轻型拾荒船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 99,
+              "y": 665.015625,
+              "width": 192,
+              "height": 96,
+              "bottom": 761.015625
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_cargo@2x.png",
+            "class": "ship-sprite",
+            "alt": "中型货船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 99,
+              "y": 972.40625,
+              "width": 192,
+              "height": 96,
+              "bottom": 1068.40625
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_scout@2x.png",
+            "class": "ship-sprite",
+            "alt": "深航探测船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 99,
+              "y": 1279.796875,
+              "width": 192,
+              "height": 96,
+              "bottom": 1375.796875
+            },
+            "rendering": "pixelated"
+          },
+          {
+            "src": "./assets/v04/ship_heavy@2x.png",
+            "class": "ship-sprite",
+            "alt": "重型工程船",
+            "natural": [
+              192,
+              96
+            ],
+            "bounds": {
+              "x": 99,
+              "y": 1587.1875,
+              "width": 192,
+              "height": 96,
+              "bottom": 1683.1875
+            },
+            "rendering": "pixelated"
+          }
+        ],
+        "buttons": [
+          {
+            "text": "‹ 返回",
+            "aria": "返回主场景",
+            "bounds": {
+              "x": 14,
+              "y": 37,
+              "width": 50.625,
+              "height": 44,
+              "bottom": 81
+            }
+          },
+          {
+            "text": "规则 / 存档",
+            "aria": "打开规则与存档",
+            "bounds": {
+              "x": 299.875,
+              "y": 37,
+              "width": 76.125,
+              "height": 44,
+              "bottom": 81
+            }
+          },
+          {
+            "text": "扩容 · 600零件",
+            "aria": null,
+            "bounds": {
+              "x": 32,
+              "y": 472.265625,
+              "width": 326,
+              "height": 46,
+              "bottom": 518.265625
+            }
+          },
+          {
+            "text": "永久工具",
+            "aria": null,
+            "bounds": {
+              "x": 32,
+              "y": 530.265625,
+              "width": 326,
+              "height": 46,
+              "bottom": 576.265625
+            }
+          },
+          {
+            "text": "使用中",
+            "aria": null,
+            "bounds": {
+              "x": 32,
+              "y": 876.40625,
+              "width": 326,
+              "height": 46,
+              "bottom": 922.40625
+            }
+          },
+          {
+            "text": "购买 · 1800零件",
+            "aria": null,
+            "bounds": {
+              "x": 32,
+              "y": 1183.796875,
+              "width": 326,
+              "height": 46,
+              "bottom": 1229.796875
+            }
+          },
+          {
+            "text": "购买 · 2400零件",
+            "aria": null,
+            "bounds": {
+              "x": 32,
+              "y": 1491.1875,
+              "width": 326,
+              "height": 46,
+              "bottom": 1537.1875
+            }
+          },
+          {
+            "text": "购买 · 3400零件",
+            "aria": null,
+            "bounds": {
+              "x": 32,
+              "y": 1798.578125,
+              "width": 326,
+              "height": 46,
+              "bottom": 1844.578125
+            }
+          }
+        ],
+        "text": "飞船与改装\n余额 120\n现役 · 轻型拾荒船\n4×4 / 16格\n前进基值×100%\n损伤×100%\n货舱结构扩容 0/2\n\n4×4 → 4×5，新增一整排真实格子\n\n扩容 · 600零件\n永久工具\n船坞库存\n轻型拾荒船\n16格\n耗油基值×100%\n损伤×100%\n\n原始船与既有工具权益保留。\n\n使用中\n中型货船\n20格\n耗油基值×100%\n损伤×90%\n\n标准化运输舱，加宽一列；护板降低损伤。\n\n购买 · 1800零件\n深航探测船\n16格\n耗油基值×80%\n损伤×100%\n\n引擎改变实际前进与返航预算，仍按真实距离留油。\n\n购买 · 2400零件\n重型工程船\n25格\n耗油基值×110%\n损伤×80%\n\n工程舱与加强护板，航行消耗略高。\n\n购买 · 3400零件\n开发自测 0.4.0 · 8a80700 · 已保存\n没有广告 · 没有真实支付",
+        "document": {
+          "width": 390,
+          "height": 1959,
+          "scrollY": 0
+        }
+      },
+      "gameStateUnchanged": true,
+      "beforeStateSha256": "ed41b87c1fd8b708ae52557a82c55ef190b53e8f348c597cc94ff22e7597fc0a",
+      "afterStateSha256": "ed41b87c1fd8b708ae52557a82c55ef190b53e8f348c597cc94ff22e7597fc0a"
+    }
+  ],
+  "errors": []
+}

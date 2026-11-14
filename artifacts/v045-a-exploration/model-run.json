@@ -1,0 +1,31 @@
+{
+  "simulator": "scripts/simulate_visual_renewal.ts",
+  "simulatorSha256": "2d099243705b87f74fd53ae1523103a686b23bd4770f18d11c6ad343b803b8d1",
+  "bundleSha256": "1826836986f46a2cf7acb1a76fe261dbf8ee1fb9241cb8cd5bc8c71c086d2eb7",
+  "commands": [
+    {
+      "file": "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+      "args": [
+        "/Users/shuhuayu/loststar-game/node_modules/vite/bin/vite.js",
+        "build",
+        "--ssr",
+        "scripts/simulate_visual_renewal.ts",
+        "--outDir",
+        "releases/v045-models-1radGl/bundle"
+      ]
+    },
+    {
+      "file": "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+      "args": [
+        "/Users/shuhuayu/loststar-game/releases/v045-models-1radGl/bundle/simulate_visual_renewal.js"
+      ]
+    }
+  ],
+  "rawReport": "artifacts/v045-a-exploration/model-economy-raw.json",
+  "rawReportSha256": "ec667f47e36a88c4da490df9a6315fc5c6a43fe9cef4ef048f25d10323ed3184",
+  "evidenceCheckoutCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+  "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+  "startedAt": "2026-11-06T18:35:54.719Z",
+  "finishedAt": "2026-11-06T18:36:07.845Z",
+  "exitCode": 0
+}

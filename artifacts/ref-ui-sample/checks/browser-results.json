@@ -1,0 +1,1622 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+      "/Users/shuhuayu/loststar-game/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "prototypes/ref-ui/playwright.config.ts"
+    ],
+    "configFile": "/Users/shuhuayu/loststar-game/prototypes/ref-ui/playwright.config.ts",
+    "rootDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/ref-ui-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "ref-360",
+        "name": "ref-360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "testIgnore": [],
+        "testMatch": [
+          "reference.spec.ts"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/ref-ui-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "ref-390",
+        "name": "ref-390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "testIgnore": [],
+        "testMatch": [
+          "reference.spec.ts"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/ref-ui-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "ref-webkit",
+        "name": "ref-webkit",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "testIgnore": [],
+        "testMatch": [
+          "reference.spec.ts"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/ref-ui-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "ref-desktop",
+        "name": "ref-desktop",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "testIgnore": [],
+        "testMatch": [
+          "reference.spec.ts"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/ref-ui-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "ref-360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "testIgnore": [],
+        "testMatch": "reference.spec.ts",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4256",
+          "hasTouch": true,
+          "deviceScaleFactor": 2,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "ref-360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/ref-ui-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "ref-390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "testIgnore": [],
+        "testMatch": "reference.spec.ts",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4256",
+          "hasTouch": true,
+          "deviceScaleFactor": 2,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "ref-390"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/ref-ui-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "ref-webkit",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "testIgnore": [],
+        "testMatch": "reference.spec.ts",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4256",
+          "hasTouch": true,
+          "deviceScaleFactor": 2,
+          "screenshot": "only-on-failure",
+          "browserName": "webkit",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "ref-webkit"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/ref-ui-test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "ref-desktop",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/ref-ui",
+        "testIgnore": [],
+        "testMatch": "reference.spec.ts",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4256",
+          "hasTouch": true,
+          "deviceScaleFactor": 2,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "ref-desktop"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Users/shuhuayu/loststar-game/releases/ref-ui-e2e-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 2,
+    "webServer": {
+      "cwd": "/Users/shuhuayu/loststar-game/",
+      "command": "npx vite --config prototypes/ref-ui/vite.config.ts --port 4256 --strictPort",
+      "url": "http://127.0.0.1:4256",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "reference.spec.ts",
+      "file": "reference.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "one tap opens the current event, one close returns to unchanged full globe; no assist or storage write",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2493,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:14.559Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-9a55b8d066abd548a0b5",
+          "file": "reference.spec.ts",
+          "line": 8,
+          "column": 1
+        },
+        {
+          "title": "repeated visitors are daily records, fees are shown and the goal has an evidenced limited conclusion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2754,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:17.434Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-7df25a56bb698284232b",
+          "file": "reference.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "real fresh discovery enters shared treatment, completes cleaning and returns with original price",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 23083,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:20.204Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-77aecc6663039881a9a4",
+          "file": "reference.spec.ts",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "earned archive completes both paid states and free trials without inventing resources or signature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15324,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:43.294Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-3af3ffd9c5e0706feb37",
+          "file": "reference.spec.ts",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "large text, reduced motion, low height, resize and background recovery preserve one readable layer",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2244,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:58.623Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-a413cc32b55aae3a2645",
+          "file": "reference.spec.ts",
+          "line": 34,
+          "column": 1
+        },
+        {
+          "title": "daytime event gestures never become assist; real assist keeps its original queue and rate limit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3598,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:00.871Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-11712c1001ba91e0a825",
+          "file": "reference.spec.ts",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "night assist, planet touch and keyboard inspect the same short card without opening legacy observation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1301,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:04.477Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-f1160e9652c6979953f9",
+          "file": "reference.spec.ts",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "browser Back closes read-only state preview and shared workbench while paid cleaning continues once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5044,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:05.783Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-b251fac8929b37bc4700",
+          "file": "reference.spec.ts",
+          "line": 56,
+          "column": 1
+        },
+        {
+          "title": "temporary settings preserves original inline paper-route expansion and scroll using original close/open",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 751,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:10.832Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-764a89d549e61fab8385",
+          "file": "reference.spec.ts",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "owned archive and night-shift record use the same short card; return-to-now exits real read-only replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-360",
+              "projectName": "ref-360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2527,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:11.588Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-77f18ce4d626fadf8d17",
+          "file": "reference.spec.ts",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "one tap opens the current event, one close returns to unchanged full globe; no assist or storage write",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2715,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:14.552Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-34fa08843c252c6f8a9a",
+          "file": "reference.spec.ts",
+          "line": 8,
+          "column": 1
+        },
+        {
+          "title": "repeated visitors are daily records, fees are shown and the goal has an evidenced limited conclusion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2834,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:17.632Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-9fe463c2a1e28f64df50",
+          "file": "reference.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "real fresh discovery enters shared treatment, completes cleaning and returns with original price",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 23175,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:20.478Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-9fcb82e32f37447b2538",
+          "file": "reference.spec.ts",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "earned archive completes both paid states and free trials without inventing resources or signature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 15373,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:43.668Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-898259687ab2e0140a5c",
+          "file": "reference.spec.ts",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "large text, reduced motion, low height, resize and background recovery preserve one readable layer",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2304,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T15:59:59.047Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-2046da18c82046e6170c",
+          "file": "reference.spec.ts",
+          "line": 34,
+          "column": 1
+        },
+        {
+          "title": "daytime event gestures never become assist; real assist keeps its original queue and rate limit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3650,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:01.360Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-01c7912752281f6c83d7",
+          "file": "reference.spec.ts",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "night assist, planet touch and keyboard inspect the same short card without opening legacy observation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1327,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:05.016Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-bdb71334a7cff74b212c",
+          "file": "reference.spec.ts",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "browser Back closes read-only state preview and shared workbench while paid cleaning continues once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 5061,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:06.347Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-6244ca9f3879312f1635",
+          "file": "reference.spec.ts",
+          "line": 56,
+          "column": 1
+        },
+        {
+          "title": "temporary settings preserves original inline paper-route expansion and scroll using original close/open",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 856,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:11.412Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-e612bbd469580ea407ca",
+          "file": "reference.spec.ts",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "owned archive and night-shift record use the same short card; return-to-now exits real read-only replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-390",
+              "projectName": "ref-390",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2674,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:12.273Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-75a2e04a99022d804c8d",
+          "file": "reference.spec.ts",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "one tap opens the current event, one close returns to unchanged full globe; no assist or storage write",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6302,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:14.399Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-bdde7bd08774cadf4171",
+          "file": "reference.spec.ts",
+          "line": 8,
+          "column": 1
+        },
+        {
+          "title": "repeated visitors are daily records, fees are shown and the goal has an evidenced limited conclusion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2012,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:20.933Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-8f447b227a68bb6235ec",
+          "file": "reference.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "real fresh discovery enters shared treatment, completes cleaning and returns with original price",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 23233,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:22.956Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-8949a3ad381badce32a2",
+          "file": "reference.spec.ts",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "earned archive completes both paid states and free trials without inventing resources or signature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15491,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:46.196Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-2f45a90f058a1245ed90",
+          "file": "reference.spec.ts",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "large text, reduced motion, low height, resize and background recovery preserve one readable layer",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2420,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:01.696Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-cf2e0423f8a1f4897887",
+          "file": "reference.spec.ts",
+          "line": 34,
+          "column": 1
+        },
+        {
+          "title": "daytime event gestures never become assist; real assist keeps its original queue and rate limit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3660,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:04.123Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-4807b1e7012f8814e9e4",
+          "file": "reference.spec.ts",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "night assist, planet touch and keyboard inspect the same short card without opening legacy observation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1464,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:07.796Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-5ed969ff14e1ea2c1c09",
+          "file": "reference.spec.ts",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "browser Back closes read-only state preview and shared workbench while paid cleaning continues once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5133,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:09.271Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-d6b02bf1b93548748d4a",
+          "file": "reference.spec.ts",
+          "line": 56,
+          "column": 1
+        },
+        {
+          "title": "temporary settings preserves original inline paper-route expansion and scroll using original close/open",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1041,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:14.417Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-509b90de9916f33a5150",
+          "file": "reference.spec.ts",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "owned archive and night-shift record use the same short card; return-to-now exits real read-only replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-webkit",
+              "projectName": "ref-webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2378,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:15.464Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-55376a31969c1cb82c30",
+          "file": "reference.spec.ts",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "one tap opens the current event, one close returns to unchanged full globe; no assist or storage write",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 6178,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:15.251Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-324c53fbdfed54c739fc",
+          "file": "reference.spec.ts",
+          "line": 8,
+          "column": 1
+        },
+        {
+          "title": "repeated visitors are daily records, fees are shown and the goal has an evidenced limited conclusion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2150,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:21.540Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-53133b26b9237ab32b82",
+          "file": "reference.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "real fresh discovery enters shared treatment, completes cleaning and returns with original price",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 23028,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:23.695Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-a7cae5223c5e37ab1674",
+          "file": "reference.spec.ts",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "earned archive completes both paid states and free trials without inventing resources or signature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 15394,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:00:46.727Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-3c3a6d4f5b4691e8bc2f",
+          "file": "reference.spec.ts",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "large text, reduced motion, low height, resize and background recovery preserve one readable layer",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2302,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:02.131Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-07827de49b13c62b2311",
+          "file": "reference.spec.ts",
+          "line": 34,
+          "column": 1
+        },
+        {
+          "title": "daytime event gestures never become assist; real assist keeps its original queue and rate limit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3760,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:04.439Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-ba711f3bae19588c6bc1",
+          "file": "reference.spec.ts",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "night assist, planet touch and keyboard inspect the same short card without opening legacy observation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1494,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:08.209Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-de21215e77b574e43ec6",
+          "file": "reference.spec.ts",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "browser Back closes read-only state preview and shared workbench while paid cleaning continues once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 5195,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:09.713Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-4324810edeba78c3d284",
+          "file": "reference.spec.ts",
+          "line": 56,
+          "column": 1
+        },
+        {
+          "title": "temporary settings preserves original inline paper-route expansion and scroll using original close/open",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 885,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:14.918Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-688cdfa9a7056608c2e9",
+          "file": "reference.spec.ts",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "owned archive and night-shift record use the same short card; return-to-now exits real read-only replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ref-desktop",
+              "projectName": "ref-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2729,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T16:01:15.811Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3de41faf189c1fc07e7d-32c7f6b5aa4fd59cf038",
+          "file": "reference.spec.ts",
+          "line": 69,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-07T15:59:13.200Z",
+    "duration": 125381.384,
+    "expected": 40,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

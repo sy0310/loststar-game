@@ -1,0 +1,204 @@
+{
+  "schema": 1,
+  "status": "BC_MECHANISM_APPROVED_OLD_MASKS_AUDIT_ONLY",
+  "baseline": "0.4.2/94e606f/TapTap458870",
+  "shipHoldTopologies": {
+    "description": "Historical unvalidated sample masks kept for audit only. NOT APPROVED, DO NOT COPY to runtime. See referenceResearch. Preserve legacy4x4 packing and mobile usability.",
+    "starter": {
+      "baseRows": [
+        "####",
+        "####",
+        "####",
+        "####"
+      ],
+      "baseCells": 16,
+      "upgradeTotalCells": [
+        20,
+        24
+      ],
+      "style": "simple beginner deck"
+    },
+    "scout": {
+      "baseRows": [
+        ".###.",
+        "#####",
+        "#####",
+        ".###."
+      ],
+      "baseCells": 16,
+      "upgradeTotalCells": [
+        20,
+        24
+      ],
+      "style": "narrow prow and rear, wide midbody"
+    },
+    "cargo": {
+      "baseRows": [
+        ".###.",
+        "####.",
+        "#####",
+        "#####",
+        ".###."
+      ],
+      "baseCells": 20,
+      "upgradeTotalCells": [
+        25,
+        30
+      ],
+      "style": "asymmetric freighter with side racks"
+    },
+    "heavy": {
+      "baseRows": [
+        "..##.",
+        "#####",
+        "#####",
+        "#####",
+        "#####",
+        ".###."
+      ],
+      "baseCells": 25,
+      "upgradeTotalCells": [
+        30
+      ],
+      "style": "thick industrial hold and tapered foredeck"
+    }
+  },
+  "geometry": {
+    "modelAuthoritative": true,
+    "mandatoryMasks": true,
+    "maskOrigin": "trusted shipId+level config",
+    "maxViewportCandidate": "6x6",
+    "expandByUnlockingRealCells": true,
+    "monotoneMasks": true,
+    "legacySchema6": "legacyRectHold until same-cargo safe repack; preserve in-progress voyage and current UID/placements; never force discard",
+    "swapPolicy": "atomic repack or refuse with original still intact"
+  },
+  "market": {
+    "type": "local fictional NPC market; not online marketplace",
+    "location": "existing shop secondary view and return shortcut",
+    "currency": "parts",
+    "baseSale": "item.value unchanged",
+    "pricingState": "candidate_only_economy_review_required",
+    "negotiate": {
+      "enabled": true,
+      "maxRoundsPerItemPerReturn": 1,
+      "styles": [
+        "cautious",
+        "bold"
+      ],
+      "candidatePremiumPercent": [
+        10,
+        25
+      ],
+      "onRefusal": "counteroffer or retain cargo",
+      "noRerollByReload": true
+    },
+    "auction": {
+      "enabled": true,
+      "simulation": "immediate 3-NPC-bid reveal, skippable, not real people",
+      "maxLotPerReturnCandidate": 1,
+      "candidateGrossSaleMultiplier": [
+        0.9,
+        1.4
+      ],
+      "candidateFeeRule": "min(5,ceil(item.value*0.05)); charge once at confirmed listing",
+      "reservePriceOption": true,
+      "onNoSale": "item unchanged, fee retained"
+    },
+    "transactionalPolicy": "persist quote Id, uid, runNo and nonce once; no RNG in render; final accept removes cargo once and credits parts once; cancellation does not force selling"
+  },
+  "curios": {
+    "productionPriorityCount": 4,
+    "items": [
+      {
+        "id": "echo_brood_capsule",
+        "name": "回声孵囊",
+        "cells": 4,
+        "shapeId": "square4",
+        "visual": "mineral translucent ovoid with light ring pores; no signature four-petal movie creature egg",
+        "marketCategory": "research_anomaly"
+      },
+      {
+        "id": "hull_clinger",
+        "name": "吸舱幼体",
+        "cells": 3,
+        "shapeId": "ell3",
+        "visual": "original six-limbed vacuum clinger, rounded suction disc and reflective scales, no movie long-tail face-attacker silhouette",
+        "marketCategory": "bio_specimen"
+      },
+      {
+        "id": "time_measure",
+        "name": "折时计量盒",
+        "cells": 2,
+        "shapeId": "line2",
+        "visual": "off-axis chronometer with readable glass dial",
+        "marketCategory": "navigation_relic"
+      },
+      {
+        "id": "gravity_faceter",
+        "name": "引力折面器",
+        "cells": 4,
+        "shapeId": "tee4",
+        "visual": "magnetic frame and offset levitating prism",
+        "marketCategory": "anomaly_device"
+      }
+    ],
+    "laterOptional": [
+      {
+        "id": "cryo_case",
+        "name": "冰封休眠罐",
+        "cells": 6,
+        "shapeId": "rect6"
+      },
+      {
+        "id": "echo_recorder",
+        "name": "深空回声盒",
+        "cells": 1,
+        "shapeId": "point1"
+      }
+    ],
+    "origin": "Original space horror/sci-fi motifs only, no replicated Alien eggs/facehuggers or other franchise logos/characters"
+  },
+  "scope": {
+    "existingEvents": 14,
+    "additionalEncounters": 12,
+    "additionalLightEggs": 6,
+    "heavyStoryChapters": 0,
+    "gateImplementation": false,
+    "newHomeButtons": 0,
+    "extraAuctionCurrency": false,
+    "networkMultiplayer": false,
+    "formalPublish": false
+  },
+  "referenceResearch": {
+    "uri": "design/star-salvage/v05/CARGO_REFERENCE_RESEARCH.md",
+    "approvedGeometry": false,
+    "oldMasks": "AUDIT_ONLY_UNVALIDATED",
+    "blockingExamples": [
+      "scout 5x4 effective16 lacks any contiguous 4x4 for legacy16",
+      "cargo 5x5 effective20 lacks any contiguous 4x4 for legacy16"
+    ],
+    "establishedPrinciples": [
+      "DREDGE contiguous hull with limited inaccessible edges and upgrades",
+      "Backpack Brawl modular containers and mobile snap/rotation",
+      "RE4 easy rectangular starter packing"
+    ],
+    "nextStep": "Implement B+C per approved spec, compare against A only as measured baseline, iterate tested masks autonomously, no more product selection approval needed. Do not deploy until legacy+model+mobile checks pass.",
+    "approvedMechanism": "B_PLUS_C"
+  },
+  "approvedCargoDesign": {
+    "selection": "B_PLUS_C",
+    "approvedAt": "2026-11-11",
+    "status": "MECHANISM_APPROVED_EXACT_MASKS_TO_BE_TESTED",
+    "specPath": "design/star-salvage/v05/CARGO_BC_APPROVED_SPEC.md",
+    "mechanics": [
+      "contiguous main hold",
+      "fixed edge or tail tray modules",
+      "monotone usable-cell unlocks on upgrade",
+      "same 0.4.2 paid capacity and UID"
+    ],
+    "noExtraFreeStorage": true,
+    "oldBaseRowsStatus": "HISTORICAL_REJECTED_DO_NOT_IMPLEMENT",
+    "doesNotAuthorize": "copying exact old baseRows"
+  }
+}

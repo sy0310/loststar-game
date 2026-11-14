@@ -1,0 +1,2977 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+      "/Users/shuhuayu/loststar-game/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.config.cjs",
+      "storage.spec.cjs",
+      "--grep",
+      "a second tab claims",
+      "--repeat-each=10"
+    ],
+    "configFile": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/playwright.config.cjs",
+    "rootDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/claim-regression",
+        "repeatEach": 10,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium360",
+        "name": "chromium360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/claim-regression",
+        "repeatEach": 10,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium390",
+        "name": "chromium390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/claim-regression",
+        "repeatEach": 10,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit360",
+        "name": "webkit360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/claim-regression",
+        "repeatEach": 10,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit390",
+        "name": "webkit390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/claim-regression",
+        "repeatEach": 10,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "chromium360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4442/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/claim-regression",
+        "repeatEach": 10,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "chromium390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4442/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium390"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/claim-regression",
+        "repeatEach": 10,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "webkit360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4442/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "webkit",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "webkit360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/claim-regression",
+        "repeatEach": 10,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "webkit390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4442/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "webkit",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "webkit390"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Users/shuhuayu/loststar-game/releases/survivor-v068-private/claim-regression.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "storage.spec.cjs",
+      "file": "storage.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2735,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:09.692Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-af5339f0b86fe787d189",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3517,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:12.994Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-98249b98c27cc328beb8",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3058,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:09.936Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-6102887fcb1047d088a6",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3522,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:13.523Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-c192ea1c566dd45b2276",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3536,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:18.781Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-08d4aa13edac471e300b",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3925,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:23.268Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-6d40fb4e17948dac58d5",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4340,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:19.139Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-e354526f38d63922f8cd",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3797,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:24.507Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-4d72de982004520290c6",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3475,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:29.863Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-bd686bc52d60588e796b",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2428,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:33.768Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-5f81cab918c9e3f6fcd8",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3467,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:29.914Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-92b24209c4ecb5a272f0",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2485,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:33.820Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-7a9077a08c4f3cfda2b8",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3092,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:37.006Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-5f6d30bc933516328f7c",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2336,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:40.677Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-0a7023b5bd49860a024a",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3187,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:37.278Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-c1246baa5825904ff640",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2687,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:41.001Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-df83c7a7d6789fcf9cc1",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2563,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:44.743Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-6f2f7098f58ebb004ffc",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2585,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:47.693Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-35098edf66360e9b1874",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2700,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:44.780Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-6378661781ad105ac545",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3022,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:48.061Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-3de71658bcaa0d6e4185",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3175,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:53.676Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-d0f89ecff94e5bf629ce",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3083,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:57.326Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-809aa00bbec4d648545c",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3618,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:53.710Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-f4ee0f28e60420a4837d",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3359,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T14:59:57.905Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-b5d9344786196ae213d5",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2504,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:02.857Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-940c05959d2879bd14eb",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2418,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:05.914Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-3c50c0902db8f77b8409",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2842,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:03.559Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-0ddd7a4a34a3603446a5",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2464,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:06.987Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-a0829ddeb7075fc5a3e7",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 14,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1671,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:10.565Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-cd1604712b67f77cfba2",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 14,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1982,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:12.540Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-fcb3764015340b08ae75",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 15,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2462,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:14.654Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-46f78e54633577fd24ec",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 15,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2651,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:17.438Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-cec5fdd875d485e056c2",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 16,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2768,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:17.178Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-f8ff520c5e856662b452",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 16,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2362,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:20.685Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-0a2b2d8d6a3262dd5275",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 17,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2130,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:22.940Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-8b1df9f1b0f42f5cb751",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 17,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2163,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:25.649Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-907d206872e7d23ebae7",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 18,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2804,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:24.672Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-a1addaee6c60da3983fb",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 18,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2370,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:28.475Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-0a4e68fd1095b29572cf",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2122,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:30.100Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-e17452d190def2bbc568",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2398,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:33.201Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-2ec821943d2dd9072d82",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 20,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2541,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:34.633Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-3f8880a3883006b431d1",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 20,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3826,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:38.158Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-5481474fa64a81f78ea8",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 21,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3149,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:38.734Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-1f1486d7669346cee0f8",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 21,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2933,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:43.002Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-e617fd6539f64124088b",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 22,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2077,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:43.809Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-27f3eafd98ce7799234c",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 22,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3163,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:47.286Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-bf874a46c1259ba296c0",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3425,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:47.190Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-e17a480578e4bae80e63",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3169,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:51.236Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-8acb04cb8f8d596a1a2b",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 24,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3166,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:51.764Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-8be904c6e2dcf2b44f6b",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 24,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2864,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:55.701Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-edc6f91bdc67bc716091",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 25,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2531,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:56.365Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-4e4fc5296dbbea264a45",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 25,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2737,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:00:59.654Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-66b94164bb61b8a924bd",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 26,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2670,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:01.540Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-5dfed62ce0422797df95",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 26,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3412,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:05.319Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-9e256696a0effd955162",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 27,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3310,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:04.859Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-4c14e7363521fd072cf0",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 27,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3250,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:08.921Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-12f0299d5d10d0613f71",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 28,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2728,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:10.892Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-50eb71c3241bd7aa9e73",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 28,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2691,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:14.321Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-61d6e2dc8c16b372d50a",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 29,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2609,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:14.886Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-66186f2836dca466f225",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 29,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2821,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:18.043Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-465361240675d00888a8",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 30,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2631,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:19.102Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-4be23a84361e66f01fa7",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 30,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3008,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:22.454Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-98d83712f9e6c4e7f783",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 31,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2370,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:23.004Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-cd85748a88d20b77a530",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 31,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2976,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:26.104Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-c38e66a18d3b81c78a2c",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2653,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:27.441Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-225a495a1a4bbf98d176",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3131,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:30.921Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-dc47c397967121b2d324",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 33,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2866,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:31.495Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-5fe7273b21146e17f4c4",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 33,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2523,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:35.095Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-e9772071b4e23830cdec",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 34,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2846,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:36.310Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-961eef552b4e186bd78f",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 34,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3256,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:39.827Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-859e9d66221e5025caec",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 35,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3188,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:39.274Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-9dfb8d6c65def93ab3ee",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 35,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2625,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:43.208Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-bf456bcf7720c50bd37b",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 36,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:45.296Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-ce331b2bb05938d29420",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 36,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3116,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:48.237Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-0b6bb23ca0002b3d2d79",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 37,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2766,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:47.990Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-411ee46ffad81cc378c0",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 37,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2311,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:51.531Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-9db73520cf75e5e21dd8",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 38,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1635,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:52.565Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-01efa4e9f186ec5d6258",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 38,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2081,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:54.983Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-9e9d1db8b4e5b954e69f",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 0ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 39,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1623,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:54.702Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-bb440fdcf8f6dc97b75e",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it (storage delay 700ms)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 39,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1648,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T15:01:56.796Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-242aa89aae33c002eeb6",
+          "file": "storage.spec.cjs",
+          "line": 148,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-13T14:59:08.147Z",
+    "duration": 170389.676,
+    "expected": 80,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

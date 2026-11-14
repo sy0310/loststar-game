@@ -1,0 +1,63 @@
+{
+  "sourceCommit": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+  "entryUrl": "http://127.0.0.1:4283/loststar-salvage/",
+  "resolvedUrl": "http://127.0.0.1:4283/loststar-salvage/b26455a/",
+  "browser": "Existing ChatGPT in-app browser profile on user Mac",
+  "originalAmbientTabExposedToAutomation": false,
+  "procedure": "Reopened same origin in existing browser profile, exported actual played schema2 save, then refreshed that same controlled tab after service change. No fresh-profile substitute or imported player save.",
+  "observedVersionBefore": "0.1.1 · b317c8a",
+  "observedVersionAfter": "0.2.0 · b26455a",
+  "schemaBefore": 2,
+  "schemaAfter": 3,
+  "actualUserProgress": {
+    "money": 724,
+    "debt": 12000,
+    "fuel": 40,
+    "hull": 62,
+    "completedVoyages": 1,
+    "phase": "port",
+    "visitedPoints": 4,
+    "cargoCount": 0
+  },
+  "allFieldsEqualExpectedMigration": true,
+  "fullExportUnchangedAfterSecondRefresh": true,
+  "unchangedFields": [
+    "money",
+    "debt",
+    "fuel",
+    "hull",
+    "runNo",
+    "phase",
+    "depth",
+    "distance",
+    "lastLeg",
+    "revision",
+    "rng",
+    "seq",
+    "nextUid",
+    "tools",
+    "history",
+    "legs",
+    "flags",
+    "run",
+    "ledger"
+  ],
+  "exportSha256": {
+    "before": "e1fa7cfcd0e6b966ce43c9379708287ced02facf90f2a227d6ed43623b8c4a29",
+    "after": "3adbbf803e071ae51ebed26134d9ab733c86f9eeb9a9980e80f952e69b838137",
+    "afterRefresh": "3adbbf803e071ae51ebed26134d9ab733c86f9eeb9a9980e80f952e69b838137"
+  },
+  "privateExportsCommitted": false,
+  "playerActionsPerformed": false,
+  "viewsOnly": [
+    "port",
+    "cargo",
+    "route",
+    "settings export"
+  ],
+  "actualUserGridCells": 16,
+  "actualUserResourceSvgIcons": 4,
+  "rawMigrationEnvelopeInUserProfileReadDirectly": false,
+  "migrationBackupValidation": "Separate real IndexedDB schema2 migration and abort tests passed; player before/after exports exactly equal the same frozen migration model. No direct hidden IDB read of the user profile.",
+  "physicalPhoneTested": false
+}

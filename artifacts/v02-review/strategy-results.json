@@ -1,0 +1,654 @@
+{
+  "method": "Deterministic 100ms ticks across one 60-second night; same model as live and offline; 3 visitors, no collection loss",
+  "benchmark": {
+    "host": "local Node.js CPU only; not phone",
+    "plans": 100,
+    "coldMs": 6.302292000000001
+  },
+  "rows": [
+    {
+      "name": "空槽 · 基础巡守",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          null,
+          null
+        ],
+        "strengths": [
+          0,
+          0
+        ]
+      },
+      "intercepted": 0,
+      "arrived": 3,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 1,
+      "quality": "基础巡守",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "arrived",
+          "atMs": 19200,
+          "slowMs": 0,
+          "stunMs": 0,
+          "verificationMs": 10100
+        },
+        {
+          "id": 1,
+          "outcome": "arrived",
+          "atMs": 34300,
+          "slowMs": 0,
+          "stunMs": 0,
+          "verificationMs": 8200
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 49900,
+          "slowMs": 0,
+          "stunMs": 0,
+          "verificationMs": 6600
+        }
+      ]
+    },
+    {
+      "name": "单胶带 Lv.0",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          "tape",
+          null
+        ],
+        "strengths": [
+          0,
+          0
+        ]
+      },
+      "intercepted": 1,
+      "arrived": 2,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 2,
+      "quality": "零散线索",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 6300,
+          "stunMs": 0,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "arrived",
+          "atMs": 36500,
+          "slowMs": 5200,
+          "stunMs": 0,
+          "verificationMs": 10400
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 51700,
+          "slowMs": 4100,
+          "stunMs": 0,
+          "verificationMs": 8400
+        }
+      ]
+    },
+    {
+      "name": "单胶带 Lv.1",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          "tape",
+          null
+        ],
+        "strengths": [
+          1,
+          0
+        ]
+      },
+      "intercepted": 2,
+      "arrived": 1,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 3,
+      "quality": "清晰记录",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 7100,
+          "stunMs": 0,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "intercepted",
+          "atMs": 36600,
+          "slowMs": 5800,
+          "stunMs": 0,
+          "verificationMs": 10500
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 52200,
+          "slowMs": 4600,
+          "stunMs": 0,
+          "verificationMs": 8900
+        }
+      ]
+    },
+    {
+      "name": "单胶带 Lv.2",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          "tape",
+          null
+        ],
+        "strengths": [
+          2,
+          0
+        ]
+      },
+      "intercepted": 2,
+      "arrived": 1,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 3,
+      "quality": "清晰记录",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 8000,
+          "stunMs": 0,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "intercepted",
+          "atMs": 36600,
+          "slowMs": 6500,
+          "stunMs": 0,
+          "verificationMs": 10500
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 52800,
+          "slowMs": 5200,
+          "stunMs": 0,
+          "verificationMs": 9500
+        }
+      ]
+    },
+    {
+      "name": "单胶带 Lv.3",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          "tape",
+          null
+        ],
+        "strengths": [
+          3,
+          0
+        ]
+      },
+      "intercepted": 2,
+      "arrived": 1,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 3,
+      "quality": "清晰记录",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 9300,
+          "stunMs": 0,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "intercepted",
+          "atMs": 36600,
+          "slowMs": 7600,
+          "stunMs": 0,
+          "verificationMs": 10500
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 53600,
+          "slowMs": 6000,
+          "stunMs": 0,
+          "verificationMs": 10300
+        }
+      ]
+    },
+    {
+      "name": "单签收铃 Lv.0",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          null,
+          "bell"
+        ],
+        "strengths": [
+          0,
+          0
+        ]
+      },
+      "intercepted": 1,
+      "arrived": 2,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 2,
+      "quality": "零散线索",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 0,
+          "stunMs": 2200,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "arrived",
+          "atMs": 35400,
+          "slowMs": 0,
+          "stunMs": 1100,
+          "verificationMs": 9300
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 51000,
+          "slowMs": 0,
+          "stunMs": 1100,
+          "verificationMs": 7700
+        }
+      ]
+    },
+    {
+      "name": "单签收铃 Lv.1",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          null,
+          "bell"
+        ],
+        "strengths": [
+          0,
+          1
+        ]
+      },
+      "intercepted": 1,
+      "arrived": 2,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 2,
+      "quality": "零散线索",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 0,
+          "stunMs": 2600,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "arrived",
+          "atMs": 35600,
+          "slowMs": 0,
+          "stunMs": 1300,
+          "verificationMs": 9500
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 51200,
+          "slowMs": 0,
+          "stunMs": 1300,
+          "verificationMs": 7900
+        }
+      ]
+    },
+    {
+      "name": "单签收铃 Lv.2",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          null,
+          "bell"
+        ],
+        "strengths": [
+          0,
+          2
+        ]
+      },
+      "intercepted": 1,
+      "arrived": 2,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 2,
+      "quality": "零散线索",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 0,
+          "stunMs": 3000,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "arrived",
+          "atMs": 35800,
+          "slowMs": 0,
+          "stunMs": 1500,
+          "verificationMs": 9700
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 51400,
+          "slowMs": 0,
+          "stunMs": 1500,
+          "verificationMs": 8100
+        }
+      ]
+    },
+    {
+      "name": "单签收铃 Lv.3",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          null,
+          "bell"
+        ],
+        "strengths": [
+          0,
+          3
+        ]
+      },
+      "intercepted": 2,
+      "arrived": 1,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 3,
+      "quality": "清晰记录",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 0,
+          "stunMs": 3400,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "intercepted",
+          "atMs": 36600,
+          "slowMs": 0,
+          "stunMs": 2400,
+          "verificationMs": 10500
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 51600,
+          "slowMs": 0,
+          "stunMs": 1700,
+          "verificationMs": 8300
+        }
+      ]
+    },
+    {
+      "name": "胶带+铃 Lv.0",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          "tape",
+          "bell"
+        ],
+        "strengths": [
+          0,
+          0
+        ]
+      },
+      "intercepted": 2,
+      "arrived": 1,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 3,
+      "quality": "清晰记录",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 6300,
+          "stunMs": 1100,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "intercepted",
+          "atMs": 36600,
+          "slowMs": 6300,
+          "stunMs": 1800,
+          "verificationMs": 10500
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 52800,
+          "slowMs": 4100,
+          "stunMs": 1100,
+          "verificationMs": 9500
+        }
+      ]
+    },
+    {
+      "name": "胶带+铃 Lv.1",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          "tape",
+          "bell"
+        ],
+        "strengths": [
+          1,
+          1
+        ]
+      },
+      "intercepted": 2,
+      "arrived": 1,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 3,
+      "quality": "清晰记录",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 7100,
+          "stunMs": 1300,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "intercepted",
+          "atMs": 36600,
+          "slowMs": 5800,
+          "stunMs": 700,
+          "verificationMs": 10500
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 53500,
+          "slowMs": 5900,
+          "stunMs": 1300,
+          "verificationMs": 10200
+        }
+      ]
+    },
+    {
+      "name": "胶带+铃 Lv.2",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          "tape",
+          "bell"
+        ],
+        "strengths": [
+          2,
+          2
+        ]
+      },
+      "intercepted": 3,
+      "arrived": 0,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 4,
+      "quality": "完整封条档案",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 8000,
+          "stunMs": 1500,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "intercepted",
+          "atMs": 36600,
+          "slowMs": 6500,
+          "stunMs": 700,
+          "verificationMs": 10500
+        },
+        {
+          "id": 2,
+          "outcome": "intercepted",
+          "atMs": 53800,
+          "slowMs": 6700,
+          "stunMs": 1500,
+          "verificationMs": 10500
+        }
+      ]
+    },
+    {
+      "name": "胶带+铃 Lv.3",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          "tape",
+          "bell"
+        ],
+        "strengths": [
+          3,
+          3
+        ]
+      },
+      "intercepted": 3,
+      "arrived": 0,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 4,
+      "quality": "完整封条档案",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 10200,
+          "stunMs": 1700,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "intercepted",
+          "atMs": 36600,
+          "slowMs": 7600,
+          "stunMs": 700,
+          "verificationMs": 10500
+        },
+        {
+          "id": 2,
+          "outcome": "intercepted",
+          "atMs": 53800,
+          "slowMs": 7700,
+          "stunMs": 1700,
+          "verificationMs": 10500
+        }
+      ]
+    },
+    {
+      "name": "交换位置 · 铃A/胶带B",
+      "model": 2,
+      "configuration": {
+        "slots": [
+          "bell",
+          "tape"
+        ],
+        "strengths": [
+          0,
+          0
+        ]
+      },
+      "intercepted": 2,
+      "arrived": 1,
+      "escorted": 0,
+      "safeReturned": 3,
+      "clues": 3,
+      "quality": "清晰记录",
+      "actors": [
+        {
+          "id": 0,
+          "outcome": "intercepted",
+          "atMs": 19600,
+          "slowMs": 4700,
+          "stunMs": 2200,
+          "verificationMs": 10500
+        },
+        {
+          "id": 1,
+          "outcome": "intercepted",
+          "atMs": 36600,
+          "slowMs": 6300,
+          "stunMs": 1100,
+          "verificationMs": 10500
+        },
+        {
+          "id": 2,
+          "outcome": "arrived",
+          "atMs": 52800,
+          "slowMs": 5200,
+          "stunMs": 1100,
+          "verificationMs": 9500
+        }
+      ]
+    }
+  ]
+}

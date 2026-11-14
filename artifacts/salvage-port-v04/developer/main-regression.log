@@ -1,0 +1,348 @@
+
+> loststar-game@0.4.5 test:coverage
+> vitest run --coverage
+
+
+ RUN  v5.1.0 /Users/shuhuayu/loststar-game
+      Coverage enabled with v8
+
+
+ Test Files  68 passed (68)
+      Tests  442 passed (442)
+   Start at  09:30:36
+   Duration  15.54s (tests 86%, import 6%, transform 5%, worker 3%)
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   97.05 |    95.81 |   99.11 |   99.43 |                   
+ game              |   97.58 |    95.81 |   98.44 |     100 |                   
+  assist.ts        |   96.87 |     97.4 |     100 |     100 | 99,101            
+  engine.ts        |   98.78 |    98.11 |     100 |     100 | 121,123           
+  growth.ts        |     100 |    97.95 |     100 |     100 | 30                
+  radar.ts         |   92.85 |       95 |     100 |     100 | 7                 
+  star-chart.ts    |    98.3 |    98.55 |     100 |     100 | 12                
+  station.ts       |   96.24 |    92.01 |   94.11 |     100 | ...44-45,55-59,70 
+ prototype         |   94.32 |    95.39 |     100 |     100 |                   
+  guard-engine.ts  |   94.17 |     94.8 |     100 |     100 | 32,64,71-74,76-77 
+  night-model.ts   |    94.5 |    96.82 |     100 |     100 | 38,51             
+ review            |    97.1 |    95.66 |     100 |   98.74 |                   
+  ...estoration.ts |     100 |    99.09 |     100 |     100 | 280               
+  ...dent-daily.ts |   90.54 |     92.1 |     100 |   93.18 | 28,45-46          
+  v034-budget.ts   |   96.87 |    97.43 |     100 |     100 | 77                
+  ...ight-model.ts |   98.02 |    93.38 |     100 |    99.4 | 143               
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 97.05% ( 1188/1224 )
+Branches     : 95.81% ( 1100/1148 )
+Functions    : 99.11% ( 225/227 )
+Lines        : 99.43% ( 698/702 )
+================================================================================
+
+> loststar-game@0.4.5 build
+> tsc --noEmit && vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 162 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                         0.90 kB │ gzip:  0.65 kB
+dist/assets/receipt-soil-back-BpuKeOdZ.webp             6.24 kB
+dist/assets/pane-reflections-DAPJXGk7.webp              8.50 kB
+dist/assets/restoration-brush-bristles-BlvUvXFT.webp   10.07 kB
+dist/assets/restoration-brush-handle-BmhBwXa9.webp     11.00 kB
+dist/assets/memorial-plaque-byJVbvVx.webp              15.20 kB
+dist/assets/string-lights-DHJWceIQ.webp                17.13 kB
+dist/assets/tape-BVXV4CO3.webp                         17.40 kB
+dist/assets/signal-CKFeDa21.webp                       17.43 kB
+dist/assets/receipt-Cr27ZlRT.webp                      21.09 kB
+dist/assets/restoration-spatula-BDBkrmMB.webp          21.09 kB
+dist/assets/nested-CXGtS-u7.webp                       21.10 kB
+dist/assets/equipment-cargo-Cbg0zf1M.webp              21.93 kB
+dist/assets/equipment-scanner-C9JyJ4nf.webp            21.99 kB
+dist/assets/ship-BYx23I3Q.webp                         23.23 kB
+dist/assets/armillary-BQLdncJG.webp                    24.39 kB
+dist/assets/paper-garden-7Y-lT_G1.webp                 24.61 kB
+dist/assets/equipment-recycler-Dsxw2dQS.webp           27.61 kB
+dist/assets/case-tape-back-czNbXPTw.webp               28.75 kB
+dist/assets/equipment-radar-eR2OsVZy.webp              29.83 kB
+dist/assets/case-bell-back-DUDxHcM2.webp               31.90 kB
+dist/assets/case-stamp-back-r09PdRzu.webp              32.19 kB
+dist/assets/case-receipt-back-D3EuEsXZ.webp            32.35 kB
+dist/assets/case-stamp-front-C2SeTdQi.webp             33.25 kB
+dist/assets/stamp-BLIvsDYK.webp                        34.69 kB
+dist/assets/bell-QDuCJmEB.webp                         34.98 kB
+dist/assets/case-bell-front-BDBK7qy2.webp              35.07 kB
+dist/assets/case-tape-front-DfX1uZ7x.webp              35.43 kB
+dist/assets/case-cosmic-parcel-front-s_iZTGIv.webp     36.01 kB
+dist/assets/sorter-pHS3f2Wr.webp                       36.88 kB
+dist/assets/blank-letter-Dl1uMM55.webp                 36.97 kB
+dist/assets/tagbird-BTm9iFW-.webp                      37.25 kB
+dist/assets/case-receipt-front-DHTY9cwV.webp           38.18 kB
+dist/assets/case-cosmic-parcel-back-DTTi_052.webp      38.90 kB
+dist/assets/mouse-dxNNfrol.webp                        40.71 kB
+dist/assets/hermit-Dq2gwOrB.webp                       41.95 kB
+dist/assets/receipt-mud-D3V91-Bu.webp                  42.46 kB
+dist/assets/receipt-paper-damaged-DjjnMgLl.webp        42.48 kB
+dist/assets/cosmic-parcel-CB9iTJM3.webp                43.19 kB
+dist/assets/receipt-inner-blank-DyK01WsA.webp          43.41 kB
+dist/assets/case-nested-back-CbHftO0S.webp             44.78 kB
+dist/assets/robot-DeKHzAPp.webp                        45.55 kB
+dist/assets/case-nested-front-Doanw_7w.webp            48.03 kB
+dist/assets/night-clock-D5vrvwDv.webp                  48.74 kB
+dist/assets/restoration-tray-PZxe8Qde.webp             49.27 kB
+dist/assets/receipt-soil-front-AjB9Bfw7.webp           52.51 kB
+dist/assets/case-0-back-B-FtkQYX.webp                  55.00 kB
+dist/assets/mouse-rest-0-CE_QKb5Q.webp                 55.27 kB
+dist/assets/receipt-tier-0--w-9GSmq.webp               55.50 kB
+dist/assets/robot-atlas-B2N2n52M.webp                  55.64 kB
+dist/assets/tagbird-flight-0-Bcpqz9ER.webp             55.72 kB
+dist/assets/receipt-tier-1-I31E6bPx.webp               56.36 kB
+dist/assets/receipt-tier-2-CUYi6a9e.webp               56.56 kB
+dist/assets/mouse-rest-1-BQzOUUvH.webp                 56.62 kB
+dist/assets/receipt-tier-3-CLGiXTDf.webp               58.81 kB
+dist/assets/robot-leg-right-CA_-04EB.webp              60.17 kB
+dist/assets/robot-leg-left-CE8xOn38.webp               60.41 kB
+dist/assets/tagbird-flight-1-CTvqqzvF.webp             60.68 kB
+dist/assets/tagbird-rest-0-DlfOsSAP.webp               60.72 kB
+dist/assets/tagbird-rest-1-CpvrnnXM.webp               61.91 kB
+dist/assets/invader-v02-BvAs1-K9.webp                  64.11 kB
+dist/assets/hermit-rest-0-CnxcyVAx.webp                66.48 kB
+dist/assets/hermit-rest-1-CDnwc8YE.webp                66.76 kB
+dist/assets/robot-grip-hand-BrnRLkjd.webp              67.05 kB
+dist/assets/robot-empty-v3-Cz7AXchN.webp               76.36 kB
+dist/assets/receipt-mechanism-l2-Dxfe0SkH.webp         80.06 kB
+dist/assets/robot-scanner-hand-Dl-gHJyX.webp           81.28 kB
+dist/assets/robot-torso-CHoL6eWp.webp                  85.34 kB
+dist/assets/robot-head-D9JK3wrc.webp                   85.73 kB
+dist/assets/station-CSWXvJq_.webp                      87.24 kB
+dist/assets/case-1-back-CkWQDWD6.webp                  88.42 kB
+dist/assets/habitat-mouse-v02-HP0-GlcU.webp           101.43 kB
+dist/assets/habitat-tagbird-v02-BniFsTTN.webp         106.36 kB
+dist/assets/habitat-hermit-v02-dRjUOBy2.webp          106.73 kB
+dist/assets/case-2-back-CQ4nY5ds.webp                 109.67 kB
+dist/assets/receipt-base-l1-z92JiMDY.webp             133.57 kB
+dist/assets/case-3-back-DIijNiwL.webp                 147.72 kB
+dist/assets/ship-atlas-CnTzm5wd.webp                  174.28 kB
+dist/assets/receipt-vault-l3-BBeyXTsX.webp            222.68 kB
+dist/assets/parcel-globe-DL04UUif.webp                242.38 kB
+dist/assets/museum-room-v02-SVKUl_P9.webp             312.12 kB
+dist/assets/space-VvHLTHVF.webp                       371.23 kB
+dist/assets/globe-Ix6JMnqD.webp                       676.75 kB
+dist/assets/room-Rl_7eYGB.webp                        884.92 kB
+dist/assets/game-DkFJODIt.css                          48.19 kB │ gzip: 11.87 kB
+dist/assets/receipt-study-kKeyeCpp.js                  20.55 kB │ gzip:  7.89 kB
+dist/assets/receipt-specimen-5eZ5loNH.js               23.28 kB │ gzip:  8.15 kB
+dist/assets/receipt-restoration-BzeNSU3I.js            55.64 kB │ gzip: 26.58 kB
+dist/assets/game-C6Sqlz4D.js                          210.59 kB │ gzip: 84.47 kB
+
+✓ built in 111ms
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - import "./prototypes/ref-ui/vite.config" without a file extension (vite.chapter.config.ts:2:23). Add the file extension
+  - import "../../vite.config" without a file extension (prototypes/ref-ui/vite.config.ts:3:18). Add the file extension
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 332 modules transformed.
+rendering chunks...
+computing gzip size...
+releases/chapter-dist/index.html                                         0.90 kB │ gzip:   0.65 kB
+releases/chapter-dist/assets/receipt-rig-joint0-hzcw_IsM.webp            4.85 kB
+releases/chapter-dist/assets/cosmic-parcel-rig-deposits-CsiDCdNI.webp    4.92 kB
+releases/chapter-dist/assets/tape-deposits-CkAN5Tz9.webp                 5.60 kB
+releases/chapter-dist/assets/stamp-rig-joint1-C1edFlVi.webp              6.12 kB
+releases/chapter-dist/assets/bell-rig-joint1-5Qwk0i1X.webp               6.21 kB
+releases/chapter-dist/assets/cosmic-parcel-rig-joint1-BUmuxkvf.webp      6.22 kB
+releases/chapter-dist/assets/receipt-soil-back-BpuKeOdZ.webp             6.24 kB
+releases/chapter-dist/assets/tape-rig-joint1-DZbnLu4u.webp               6.38 kB
+releases/chapter-dist/assets/stamp-rig-deposits-DOgksz79.webp            6.74 kB
+releases/chapter-dist/assets/security-mast-BTRHi579.webp                 8.46 kB
+releases/chapter-dist/assets/pane-reflections-DAPJXGk7.webp              8.50 kB
+releases/chapter-dist/assets/nested-rig-deposits-DdyPE7VA.webp           8.57 kB
+releases/chapter-dist/assets/sorter-front-D0AK9QDI.webp                  8.74 kB
+releases/chapter-dist/assets/bell-rig-deposits-RNeuJA7S.webp             9.67 kB
+releases/chapter-dist/assets/restoration-brush-bristles-BlvUvXFT.webp   10.07 kB
+releases/chapter-dist/assets/nested-rig-front-BpypT3zx.webp             10.82 kB
+releases/chapter-dist/assets/cosmic-parcel-rig-joint0-B88Q3ILc.webp     10.85 kB
+releases/chapter-dist/assets/restoration-brush-handle-BmhBwXa9.webp     11.00 kB
+releases/chapter-dist/assets/receipt-rig-deposits-CXmoL9tL.webp         11.03 kB
+releases/chapter-dist/assets/fog-back-WR4KWw5n.webp                     12.69 kB
+releases/chapter-dist/assets/receipt-holder-front-DrqAjUaO.webp         12.80 kB
+releases/chapter-dist/assets/fog-rim--Qft29J1.webp                      13.36 kB
+releases/chapter-dist/assets/field-case-front-BtCSaJfr.webp             13.81 kB
+releases/chapter-dist/assets/tape-rig-joint0-Blq0rooM.webp              14.38 kB
+releases/chapter-dist/assets/tape-rig-deposits-D_26eBmb.webp            14.72 kB
+releases/chapter-dist/assets/tape-rig-front-BoAi2U5Q.webp               14.90 kB
+releases/chapter-dist/assets/tool-screwdriver-CYfMukyU.webp             15.09 kB
+releases/chapter-dist/assets/memorial-plaque-byJVbvVx.webp              15.20 kB
+releases/chapter-dist/assets/bell-screw-thread-B4oaUJCd.webp            15.85 kB
+releases/chapter-dist/assets/fog-body-CCavytbS.webp                     15.94 kB
+releases/chapter-dist/assets/tool-spatula-D6G5GwxT.webp                 16.51 kB
+releases/chapter-dist/assets/visitor-moth-folded-NaFsmM57.webp          16.58 kB
+releases/chapter-dist/assets/string-lights-DHJWceIQ.webp                17.13 kB
+releases/chapter-dist/assets/excavation-front-8ri33su9.webp             17.35 kB
+releases/chapter-dist/assets/tape-BVXV4CO3.webp                         17.40 kB
+releases/chapter-dist/assets/signal-CKFeDa21.webp                       17.43 kB
+releases/chapter-dist/assets/stamp-rig-joint0-5iQlGLYy.webp             17.84 kB
+releases/chapter-dist/assets/sorter-paper-jam-CD9vrkS6.webp             19.30 kB
+releases/chapter-dist/assets/visitor-moth-awake-B5Dxdn7H.webp           19.47 kB
+releases/chapter-dist/assets/nested-rig-joint0-BsLLPeiJ.webp            20.87 kB
+releases/chapter-dist/assets/excavation-rear-VGayyi9z.webp              20.88 kB
+releases/chapter-dist/assets/receipt-Cr27ZlRT.webp                      21.09 kB
+releases/chapter-dist/assets/restoration-spatula-BDBkrmMB.webp          21.09 kB
+releases/chapter-dist/assets/nested-CXGtS-u7.webp                       21.10 kB
+releases/chapter-dist/assets/equipment-cargo-Cbg0zf1M.webp              21.93 kB
+releases/chapter-dist/assets/equipment-scanner-C9JyJ4nf.webp            21.99 kB
+releases/chapter-dist/assets/bell-deposits-jyClRt8G.webp                22.27 kB
+releases/chapter-dist/assets/tool-tweezers-DfKP9UAq.webp                23.32 kB
+releases/chapter-dist/assets/hermit-2-DEUwEk4a.webp                     24.38 kB
+releases/chapter-dist/assets/armillary-BQLdncJG.webp                    24.39 kB
+releases/chapter-dist/assets/paper-garden-7Y-lT_G1.webp                 24.61 kB
+releases/chapter-dist/assets/tagbird-1-DyhRdAr1.webp                    25.41 kB
+releases/chapter-dist/assets/engineering-dock-CISWEhqo.webp             25.44 kB
+releases/chapter-dist/assets/tagbird-0-C4xd3yb2.webp                    25.48 kB
+releases/chapter-dist/assets/tagbird-2-DA9EfDy5.webp                    25.59 kB
+releases/chapter-dist/assets/stamp-rig-fixed-CIAGZU6D.webp              25.79 kB
+releases/chapter-dist/assets/hermit-1-PRW7JcgQ.webp                     25.87 kB
+releases/chapter-dist/assets/visitor-paper-awake-hnojVBzm.webp          26.37 kB
+releases/chapter-dist/assets/field-case-lid-y12MfVJL.webp               27.23 kB
+releases/chapter-dist/assets/equipment-recycler-Dsxw2dQS.webp           27.61 kB
+releases/chapter-dist/assets/mouse-2-DG4YEcBW.webp                      27.92 kB
+releases/chapter-dist/assets/visitor-box-awake-B-36_LX1.webp            28.09 kB
+releases/chapter-dist/assets/hermit-0-QjYG_niM.webp                     28.37 kB
+releases/chapter-dist/assets/mouse-0-BUFiTkKD.webp                      28.66 kB
+releases/chapter-dist/assets/case-tape-back-czNbXPTw.webp               28.75 kB
+releases/chapter-dist/assets/tool-brush-CVHsTK4z.webp                   28.88 kB
+releases/chapter-dist/assets/tape-rig-fixed-CUmJWDjY.webp               29.57 kB
+releases/chapter-dist/assets/bell-collar-back-DJJWYObQ.webp             29.79 kB
+releases/chapter-dist/assets/equipment-radar-eR2OsVZy.webp              29.83 kB
+releases/chapter-dist/assets/mouse-1-B9BwObgM.webp                      30.45 kB
+releases/chapter-dist/assets/engineering-receiver-mN_R41dW.webp         31.07 kB
+releases/chapter-dist/assets/bell-rig-fixed-CZL9SINI.webp               31.61 kB
+releases/chapter-dist/assets/engineering-drive-DAOnhMeN.webp            31.89 kB
+releases/chapter-dist/assets/nested-rig-fixed-D3YPfCiO.webp             31.90 kB
+releases/chapter-dist/assets/case-bell-back-DUDxHcM2.webp               31.90 kB
+releases/chapter-dist/assets/case-stamp-back-r09PdRzu.webp              32.19 kB
+releases/chapter-dist/assets/case-receipt-back-D3EuEsXZ.webp            32.35 kB
+releases/chapter-dist/assets/visitor-box-folded-CA76mA6D.webp           33.15 kB
+releases/chapter-dist/assets/case-stamp-front-C2SeTdQi.webp             33.25 kB
+releases/chapter-dist/assets/stamp-BLIvsDYK.webp                        34.69 kB
+releases/chapter-dist/assets/bell-QDuCJmEB.webp                         34.98 kB
+releases/chapter-dist/assets/case-bell-front-BDBK7qy2.webp              35.07 kB
+releases/chapter-dist/assets/bell-collar-front-DaoCkfIB.webp            35.11 kB
+releases/chapter-dist/assets/case-tape-front-DfX1uZ7x.webp              35.43 kB
+releases/chapter-dist/assets/case-cosmic-parcel-front-s_iZTGIv.webp     36.01 kB
+releases/chapter-dist/assets/sorter-pHS3f2Wr.webp                       36.88 kB
+releases/chapter-dist/assets/blank-letter-Dl1uMM55.webp                 36.97 kB
+releases/chapter-dist/assets/tagbird-BTm9iFW-.webp                      37.25 kB
+releases/chapter-dist/assets/bell-screw-head-B7oql4Or.webp              37.68 kB
+releases/chapter-dist/assets/tool-gripper-DDLYlaPY.webp                 37.83 kB
+releases/chapter-dist/assets/engineering-repair-bay-BixaCDP1.webp       38.00 kB
+releases/chapter-dist/assets/case-receipt-front-DHTY9cwV.webp           38.18 kB
+releases/chapter-dist/assets/nested-rig-inner-D6Pq21vO.webp             38.46 kB
+releases/chapter-dist/assets/tape-spindle-Bjp142a0.webp                 38.68 kB
+releases/chapter-dist/assets/case-cosmic-parcel-back-DTTi_052.webp      38.90 kB
+releases/chapter-dist/assets/tool-forearm-BlKBdIbL.webp                 39.57 kB
+releases/chapter-dist/assets/receipt-rig-fixed-Dx6zu4A0.webp            39.88 kB
+releases/chapter-dist/assets/mouse-dxNNfrol.webp                        40.71 kB
+releases/chapter-dist/assets/field-case-back-q9mXr7jJ.webp              40.80 kB
+releases/chapter-dist/assets/hermit-Dq2gwOrB.webp                       41.95 kB
+releases/chapter-dist/assets/receipt-mud-D3V91-Bu.webp                  42.46 kB
+releases/chapter-dist/assets/receipt-paper-damaged-DjjnMgLl.webp        42.48 kB
+releases/chapter-dist/assets/cosmic-parcel-CB9iTJM3.webp                43.19 kB
+releases/chapter-dist/assets/receipt-inner-blank-DyK01WsA.webp          43.41 kB
+releases/chapter-dist/assets/case-nested-back-CbHftO0S.webp             44.78 kB
+releases/chapter-dist/assets/case-nested-front-Doanw_7w.webp            48.03 kB
+releases/chapter-dist/assets/night-clock-D5vrvwDv.webp                  48.74 kB
+releases/chapter-dist/assets/restoration-tray-PZxe8Qde.webp             49.27 kB
+releases/chapter-dist/assets/bell-screw-D_vxEz4u.webp                   50.76 kB
+releases/chapter-dist/assets/receipt-soil-front-AjB9Bfw7.webp           52.51 kB
+releases/chapter-dist/assets/case-0-back-B-FtkQYX.webp                  55.00 kB
+releases/chapter-dist/assets/mouse-rest-0-CE_QKb5Q.webp                 55.27 kB
+releases/chapter-dist/assets/receipt-tier-0--w-9GSmq.webp               55.50 kB
+releases/chapter-dist/assets/robot-atlas-B2N2n52M.webp                  55.64 kB
+releases/chapter-dist/assets/tagbird-flight-0-Bcpqz9ER.webp             55.72 kB
+releases/chapter-dist/assets/cosmic-parcel-rig-fixed-BC01V20L.webp      56.35 kB
+releases/chapter-dist/assets/receipt-tier-1-I31E6bPx.webp               56.36 kB
+releases/chapter-dist/assets/receipt-tier-2-CUYi6a9e.webp               56.56 kB
+releases/chapter-dist/assets/mouse-rest-1-BQzOUUvH.webp                 56.62 kB
+releases/chapter-dist/assets/receipt-tier-3-CLGiXTDf.webp               58.81 kB
+releases/chapter-dist/assets/robot-leg-right-CA_-04EB.webp              60.17 kB
+releases/chapter-dist/assets/tape-band-tip-DuGVgOWd.webp                60.31 kB
+releases/chapter-dist/assets/robot-leg-left-CE8xOn38.webp               60.41 kB
+releases/chapter-dist/assets/tagbird-flight-1-CTvqqzvF.webp             60.68 kB
+releases/chapter-dist/assets/tagbird-rest-0-DlfOsSAP.webp               60.72 kB
+releases/chapter-dist/assets/tagbird-rest-1-CpvrnnXM.webp               61.91 kB
+releases/chapter-dist/assets/bell-plunger-S5ZTgqBC.webp                 62.73 kB
+releases/chapter-dist/assets/tape-spindle-cap-DIGrDXYM.webp             62.73 kB
+releases/chapter-dist/assets/invader-v02-BvAs1-K9.webp                  64.11 kB
+releases/chapter-dist/assets/hermit-rest-0-CnxcyVAx.webp                66.48 kB
+releases/chapter-dist/assets/hermit-rest-1-CDnwc8YE.webp                66.76 kB
+releases/chapter-dist/assets/robot-grip-hand-BrnRLkjd.webp              67.05 kB
+releases/chapter-dist/assets/tape-band-back-DPoCY1yc.webp               70.07 kB
+releases/chapter-dist/assets/tape-band-face-hXHYA6xt.webp               70.50 kB
+releases/chapter-dist/assets/robot-empty-v3-Cz7AXchN.webp               76.36 kB
+releases/chapter-dist/assets/receipt-mechanism-l2-Dxfe0SkH.webp         80.06 kB
+releases/chapter-dist/assets/robot-scanner-hand-Dl-gHJyX.webp           81.28 kB
+releases/chapter-dist/assets/receipt-stabilized-DCECmFnc.webp           81.43 kB
+releases/chapter-dist/assets/mechanism-press-pad-lp3AEsql.webp          84.46 kB
+releases/chapter-dist/assets/robot-torso-CHoL6eWp.webp                  85.34 kB
+releases/chapter-dist/assets/robot-head-D9JK3wrc.webp                   85.73 kB
+releases/chapter-dist/assets/receipt-clean-BFs7mtep.webp                86.63 kB
+releases/chapter-dist/assets/bell-clean-DUETta5L.webp                   87.13 kB
+releases/chapter-dist/assets/station-CSWXvJq_.webp                      87.24 kB
+releases/chapter-dist/assets/case-1-back-CkWQDWD6.webp                  88.42 kB
+releases/chapter-dist/assets/bell-stabilized-y6tyO3Yh.webp              92.82 kB
+releases/chapter-dist/assets/sorter-back-DqvV3Qhu.webp                  95.13 kB
+releases/chapter-dist/assets/tape-frame-front-BE_JFP7D.webp             97.36 kB
+releases/chapter-dist/assets/habitat-mouse-v02-HP0-GlcU.webp           101.43 kB
+releases/chapter-dist/assets/bell-found-9HNBSW61.webp                  101.76 kB
+releases/chapter-dist/assets/stamp-found-B1ZExNXq.webp                 104.25 kB
+releases/chapter-dist/assets/stamp-clean-COa_pZzm.webp                 104.62 kB
+releases/chapter-dist/assets/habitat-tagbird-v02-BniFsTTN.webp         106.36 kB
+releases/chapter-dist/assets/habitat-hermit-v02-dRjUOBy2.webp          106.73 kB
+releases/chapter-dist/assets/tape-clean-D7StLXmC.webp                  108.84 kB
+releases/chapter-dist/assets/stamp-stabilized-C0_5CIuP.webp            109.15 kB
+releases/chapter-dist/assets/tape-found-DAVI2rt6.webp                  109.41 kB
+releases/chapter-dist/assets/case-2-back-CQ4nY5ds.webp                 109.67 kB
+releases/chapter-dist/assets/receipt-found-uWaqwTLZ.webp               111.36 kB
+releases/chapter-dist/assets/receipt-holder-back-D0a03V75.webp         112.33 kB
+releases/chapter-dist/assets/tape-stabilized-Cmm7lMB-.webp             112.63 kB
+releases/chapter-dist/assets/nested-stabilized-Pjxxj0eg.webp           112.85 kB
+releases/chapter-dist/assets/tape-frame-back-DG-8er-A.webp             116.23 kB
+releases/chapter-dist/assets/nested-clean-CC-T6l2w.webp                125.98 kB
+releases/chapter-dist/assets/nested-found-D0RQDaqz.webp                128.69 kB
+releases/chapter-dist/assets/receipt-base-l1-z92JiMDY.webp             133.57 kB
+releases/chapter-dist/assets/bell-shell-DY8R2dL6.webp                  144.19 kB
+releases/chapter-dist/assets/tape-roll-43IzEfG0.webp                   146.13 kB
+releases/chapter-dist/assets/case-3-back-DIijNiwL.webp                 147.72 kB
+releases/chapter-dist/assets/cosmic-parcel-clean-p39_tYz8.webp         150.84 kB
+releases/chapter-dist/assets/cosmic-parcel-stabilized-D9WL-rnz.webp    152.24 kB
+releases/chapter-dist/assets/cosmic-parcel-found-ChuL8igE.webp         160.31 kB
+releases/chapter-dist/assets/habitat-hermit-C1tay-ya.webp              163.70 kB
+releases/chapter-dist/assets/habitat-tagbird-C5-ylrEm.webp             169.69 kB
+releases/chapter-dist/assets/ship-atlas-CnTzm5wd.webp                  174.28 kB
+releases/chapter-dist/assets/habitat-mouse-D8M-TH8R.webp               176.43 kB
+releases/chapter-dist/assets/restoration-workbench-CV-Opl1h.webp       176.52 kB
+releases/chapter-dist/assets/receipt-vault-l3-BBeyXTsX.webp            222.68 kB
+releases/chapter-dist/assets/museum-room-v02-SVKUl_P9.webp             312.12 kB
+releases/chapter-dist/assets/space-VvHLTHVF.webp                       371.23 kB
+releases/chapter-dist/assets/globe-Ix6JMnqD.webp                       676.75 kB
+releases/chapter-dist/assets/room-Rl_7eYGB.webp                        884.92 kB
+releases/chapter-dist/assets/style-DNOwP4Aw.css                         12.79 kB │ gzip:   3.38 kB
+releases/chapter-dist/assets/game-Aw192h58.css                          32.19 kB │ gzip:   7.12 kB
+releases/chapter-dist/assets/surface-fog-CnrVSO2-.js                     4.58 kB │ gzip:   2.15 kB
+releases/chapter-dist/assets/receipt-study-Bhf2kTKb.js                  20.36 kB │ gzip:   7.84 kB
+releases/chapter-dist/assets/receipt-specimen-pI03IC79.js               23.39 kB │ gzip:   8.18 kB
+releases/chapter-dist/assets/receipt-restoration-D7gVn41h.js            55.64 kB │ gzip:  26.55 kB
+releases/chapter-dist/assets/game-C-p0Zbj3.js                          545.30 kB │ gzip: 209.02 kB
+
+✓ built in 298ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

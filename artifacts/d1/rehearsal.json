@@ -1,0 +1,200 @@
+{
+  "at": "2026-11-03T17:33:02.243Z",
+  "sourceCommit": "c5a3c4e2006daf82aede663605dd8f8788cd9bc2",
+  "build": "0.3.1 · c5a3c4e",
+  "base": "http://127.0.0.1:4187",
+  "passed": true,
+  "mode": "Discover + native-touch rehearse only; no formal videos.",
+  "dirtySource": [],
+  "discovery": {
+    "night": [
+      {
+        "tag": "BUTTON",
+        "id": "d1-replay",
+        "text": "↻ 重看 30 秒",
+        "study": null,
+        "tier": null
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "01 球面夜巡",
+        "study": "night",
+        "tier": null
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "02 收据展柜",
+        "study": "receipt",
+        "tier": null
+      }
+    ],
+    "receipt": [
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Lv0基础玻璃罩",
+        "study": null,
+        "tier": "0"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Lv1黄铜灯座",
+        "study": null,
+        "tier": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Lv2邮政微景观",
+        "study": null,
+        "tier": "2"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Lv3典藏封存舱",
+        "study": null,
+        "tier": "3"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "receipt-install",
+        "text": "▶ 播放 0→3 安装",
+        "study": null,
+        "tier": null
+      },
+      {
+        "tag": "BUTTON",
+        "id": "receipt-view",
+        "text": "切至房间视角",
+        "study": null,
+        "tier": null
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "01 球面夜巡",
+        "study": "night",
+        "tier": null
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "02 收据展柜",
+        "study": "receipt",
+        "tier": null
+      }
+    ]
+  },
+  "installation": {
+    "tier": 1,
+    "install": 0.192,
+    "view": "focus",
+    "camera": "65,290,220,310",
+    "anchor": {
+      "x": 175,
+      "y": 526
+    },
+    "item": {
+      "x": 175,
+      "y": 445.9268292682927,
+      "size": 66.92682926829268
+    }
+  },
+  "saveAudit": {
+    "label": "rehearsal",
+    "fixture": "Synthetic existing save/preferences strings in a fresh browser context; not a real player save.",
+    "unchanged": true,
+    "calls": [],
+    "strings": {
+      "save": "D1-PRESERVE-EXISTING-SAVE-STRING",
+      "preferences": "D1-PRESERVE-EXISTING-PREFERENCES-STRING"
+    }
+  },
+  "clicks": [
+    {
+      "label": "Replay night",
+      "selector": "#d1-replay",
+      "x": 302,
+      "y": 666.875,
+      "wallAt": "2026-11-03T17:32:58.854Z",
+      "input": "Playwright native touchscreen.tap"
+    },
+    {
+      "label": "Open receipt study",
+      "selector": "button[data-study=receipt]",
+      "x": 288.5,
+      "y": 779.875,
+      "wallAt": "2026-11-03T17:32:59.048Z",
+      "input": "Playwright native touchscreen.tap"
+    },
+    {
+      "label": "Receipt tier 0",
+      "selector": "button[data-tier=\"0\"]",
+      "x": 55.875,
+      "y": 578,
+      "wallAt": "2026-11-03T17:32:59.276Z",
+      "input": "Playwright native touchscreen.tap"
+    },
+    {
+      "label": "Receipt tier 1",
+      "selector": "button[data-tier=\"1\"]",
+      "x": 148.625,
+      "y": 578,
+      "wallAt": "2026-11-03T17:32:59.326Z",
+      "input": "Playwright native touchscreen.tap"
+    },
+    {
+      "label": "Receipt tier 2",
+      "selector": "button[data-tier=\"2\"]",
+      "x": 241.375,
+      "y": 578,
+      "wallAt": "2026-11-03T17:32:59.426Z",
+      "input": "Playwright native touchscreen.tap"
+    },
+    {
+      "label": "Receipt tier 3",
+      "selector": "button[data-tier=\"3\"]",
+      "x": 334.125,
+      "y": 578,
+      "wallAt": "2026-11-03T17:32:59.527Z",
+      "input": "Playwright native touchscreen.tap"
+    },
+    {
+      "label": "Play 0→3 installation",
+      "selector": "#receipt-install",
+      "x": 101.5,
+      "y": 693,
+      "wallAt": "2026-11-03T17:32:59.642Z",
+      "input": "Playwright native touchscreen.tap"
+    },
+    {
+      "label": "Switch to room camera",
+      "selector": "#receipt-view",
+      "x": 288.5,
+      "y": 693,
+      "wallAt": "2026-11-03T17:33:01.992Z",
+      "input": "Playwright native touchscreen.tap"
+    },
+    {
+      "label": "Return to night study",
+      "selector": "button[data-study=night]",
+      "x": 101.5,
+      "y": 789,
+      "wallAt": "2026-11-03T17:33:02.077Z",
+      "input": "Playwright native touchscreen.tap"
+    },
+    {
+      "label": "Replay after tab return",
+      "selector": "#d1-replay",
+      "x": 302,
+      "y": 666.875,
+      "wallAt": "2026-11-03T17:33:02.129Z",
+      "input": "Playwright native touchscreen.tap"
+    }
+  ],
+  "errors": []
+}

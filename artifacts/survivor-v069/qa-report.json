@@ -1,0 +1,310 @@
+{
+  "source": {
+    "version": "0.6.9",
+    "commit": "6bff9f11527d1aa231b328246abfe4235f002ff1",
+    "dirty": false
+  },
+  "qa": true,
+  "scope": "QA-prepared equipment and targets. Actual UI clicks, persistent rerolls, real clock, damage, pickup geometry and game audio. Natural input separate.",
+  "rerolls": [
+    {
+      "before": [
+        {
+          "id": "missile",
+          "kind": "active",
+          "level": 1
+        },
+        {
+          "id": "gravity",
+          "kind": "active",
+          "level": 1
+        },
+        {
+          "id": "drone",
+          "kind": "active",
+          "level": 1
+        }
+      ],
+      "choices": [
+        {
+          "id": "lock",
+          "kind": "passive",
+          "level": 1
+        },
+        {
+          "id": "cooler",
+          "kind": "passive",
+          "level": 1
+        },
+        {
+          "id": "magnet",
+          "kind": "passive",
+          "level": 1
+        }
+      ],
+      "remaining": 2
+    },
+    {
+      "before": [
+        {
+          "id": "lock",
+          "kind": "passive",
+          "level": 1
+        },
+        {
+          "id": "cooler",
+          "kind": "passive",
+          "level": 1
+        },
+        {
+          "id": "magnet",
+          "kind": "passive",
+          "level": 1
+        }
+      ],
+      "choices": [
+        {
+          "id": "gravity",
+          "kind": "active",
+          "level": 1
+        },
+        {
+          "id": "prism",
+          "kind": "active",
+          "level": 1
+        },
+        {
+          "id": "lens",
+          "kind": "passive",
+          "level": 1
+        }
+      ],
+      "remaining": 1
+    },
+    {
+      "before": [
+        {
+          "id": "gravity",
+          "kind": "active",
+          "level": 1
+        },
+        {
+          "id": "prism",
+          "kind": "active",
+          "level": 1
+        },
+        {
+          "id": "lens",
+          "kind": "passive",
+          "level": 1
+        }
+      ],
+      "choices": [
+        {
+          "id": "repairpod",
+          "kind": "active",
+          "level": 1
+        },
+        {
+          "id": "arc",
+          "kind": "active",
+          "level": 1
+        },
+        {
+          "id": "drone",
+          "kind": "active",
+          "level": 1
+        }
+      ],
+      "remaining": 0
+    }
+  ],
+  "scenes": [
+    {
+      "stage": "basic",
+      "seconds": 2.989599999952312,
+      "damage": {
+        "arc": 93
+      },
+      "arcs": [
+        {
+          "x1": 0,
+          "y1": 0,
+          "x2": 130,
+          "y2": 30,
+          "t": 0.08659999999999987,
+          "color": "#73d9e8",
+          "core": "#fff0ce"
+        }
+      ],
+      "art": 74
+    },
+    {
+      "stage": "gold",
+      "seconds": 3.7853999999523125,
+      "damage": {
+        "arc": 523.2
+      },
+      "arcs": [
+        {
+          "x1": 0,
+          "y1": 0,
+          "x2": 130,
+          "y2": 30,
+          "t": 0.01999999999999994,
+          "color": "#f4c57a",
+          "core": "#fff0ce"
+        },
+        {
+          "x1": 130,
+          "y1": 30,
+          "x2": 100,
+          "y2": -120,
+          "t": 0.01999999999999994,
+          "color": "#f4c57a",
+          "core": "#fff0ce"
+        },
+        {
+          "x1": 100,
+          "y1": -120,
+          "x2": -50,
+          "y2": -140,
+          "t": 0.01999999999999994,
+          "color": "#f4c57a",
+          "core": "#fff0ce"
+        }
+      ],
+      "art": 74
+    },
+    {
+      "stage": "evolved",
+      "seconds": 5.390799999904644,
+      "damage": {
+        "chainstorm": 2004.4800000000007
+      },
+      "arcs": [
+        {
+          "x1": 0,
+          "y1": 0,
+          "x2": 130,
+          "y2": 30,
+          "t": 0.020000000000000004,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        },
+        {
+          "x1": 130,
+          "y1": 30,
+          "x2": 100,
+          "y2": -120,
+          "t": 0.020000000000000004,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        },
+        {
+          "x1": 100,
+          "y1": -120,
+          "x2": -50,
+          "y2": -140,
+          "t": 0.020000000000000004,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        },
+        {
+          "x1": -50,
+          "y1": -140,
+          "x2": -120,
+          "y2": -65,
+          "t": 0.020000000000000004,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        }
+      ],
+      "art": 74
+    },
+    {
+      "stage": "fusion",
+      "seconds": 5.13320000000001,
+      "damage": {
+        "hive": 7125.300000000011,
+        "thunderhive": 7336
+      },
+      "arcs": [
+        {
+          "x1": 130,
+          "y1": 30,
+          "x2": 100,
+          "y2": -120,
+          "t": 0.05340000000000146,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        },
+        {
+          "x1": 100,
+          "y1": -120,
+          "x2": -50,
+          "y2": -140,
+          "t": 0.05340000000000146,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        },
+        {
+          "x1": -50,
+          "y1": -140,
+          "x2": -120,
+          "y2": -65,
+          "t": 0.05340000000000146,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        },
+        {
+          "x1": 130,
+          "y1": 30,
+          "x2": 100,
+          "y2": -120,
+          "t": 0.20340000000000147,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        },
+        {
+          "x1": 100,
+          "y1": -120,
+          "x2": -50,
+          "y2": -140,
+          "t": 0.20340000000000147,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        },
+        {
+          "x1": -50,
+          "y1": -140,
+          "x2": -120,
+          "y2": -65,
+          "t": 0.20340000000000147,
+          "color": "#b14cff",
+          "core": "#ffcf58",
+          "width": 12
+        }
+      ],
+      "art": 74
+    }
+  ],
+  "errors": [],
+  "rerollsReloadExact": true,
+  "pickup": {
+    "base": 36,
+    "antenna6": 84,
+    "magnet1": 71.75,
+    "both": 119.75,
+    "actualCollectedEach": 7
+  }
+}

@@ -1,0 +1,868 @@
+{
+  "baseline": "0.5.0/842dc6a",
+  "seedCount": 24,
+  "voyagesPerSeed": 16,
+  "scope": "Actual dispatch and cash ledger. Fixed synthetic policies evaluate current options without inspecting future RNG. Automated action counts are separate from recorded browser taps. No player-time or enjoyment claim.",
+  "oldWallet": {
+    "opening": 27049,
+    "afterMigration": 27049,
+    "debt": 12000,
+    "paidRightsPreserved": true,
+    "ledgerPreserved": true
+  },
+  "config": {
+    "version": "0.5.1",
+    "status": "FROZEN_FOR_DEVELOPMENT_SELF_TEST",
+    "gate": {
+      "depths": [
+        3,
+        5
+      ],
+      "fuel": 8,
+      "candidateFuels": [
+        8,
+        10,
+        12
+      ]
+    },
+    "discovery": {
+      "initialEligibleVoyages": 2,
+      "drySafeReturns": 3
+    },
+    "preservedPrices": "../v041/BALANCE_V041.json",
+    "preservedMarket": "../v05/BALANCE_V05.json"
+  },
+  "inputFiles": [
+    {
+      "path": "prototypes/salvage-route-demo/src/engine.js",
+      "bytes": 72022,
+      "sha256": "de0a8b4f7126364e860f6379c3cf8741467c015a3e4bf78124a9a0cea0ac985c"
+    },
+    {
+      "path": "prototypes/salvage-route-demo/src/market-v05.js",
+      "bytes": 8750,
+      "sha256": "0b506ebb5279d2fd513800defe4ec65a484745bb034381247081f4de931a6563"
+    },
+    {
+      "path": "prototypes/salvage-route-demo/src/encounters-v05.js",
+      "bytes": 10119,
+      "sha256": "eaadfd64b8d6b32c9cb14393b07261a5b00d112600d91ebe38a18799827d0153"
+    },
+    {
+      "path": "prototypes/salvage-route-demo/src/cargo-layout.js",
+      "bytes": 10090,
+      "sha256": "9184fdb52b0086606eed772fe39e3236797923bf0918d92b1eeba1ba0e3b56d7"
+    },
+    {
+      "path": "prototypes/salvage-route-demo/src/ship-holds.js",
+      "bytes": 1526,
+      "sha256": "e13c01eb71ecaff77849da44cef97683fd3b188c1cb29b20d06009b74af1f5fe"
+    },
+    {
+      "path": "prototypes/salvage-route-demo/tests/v051-economy.cjs",
+      "bytes": 9163,
+      "sha256": "af564ecfa79091dc55d29cad9707ecdbd0544e1b13a427c3d4044fabd062df15"
+    },
+    {
+      "path": "prototypes/salvage-route-demo/tests/v051-fixtures.cjs",
+      "bytes": 876,
+      "sha256": "8d0098464f772a5d21fa5c8aabb5a8e8be30801ef1b714428c6fb9d94b9ea39b"
+    },
+    {
+      "path": "prototypes/salvage-route-demo/tests/port-economy.cjs",
+      "bytes": 7863,
+      "sha256": "a1b1fe240c9f8857ff0df3ea569b0587673a7a69d176ae2f1da6fa75765bd576"
+    },
+    {
+      "path": "design/star-salvage/v051/BALANCE_V051.json",
+      "bytes": 380,
+      "sha256": "8b8c7397d048eb0b0ef2c741e3d0f3db36220f3bbc7c36ab8183736f814fa0a5"
+    },
+    {
+      "path": "design/star-salvage/v05/BALANCE_V05.json",
+      "bytes": 822,
+      "sha256": "57ea69ec0becc85e5107ba9c4c2c42ce751d58c48b50f14a6a8bc5085433f6cc"
+    },
+    {
+      "path": "design/star-salvage/v041/BALANCE_V041.json",
+      "bytes": 4202,
+      "sha256": "150c2db6e0535b8caa1b237cffa77b7e4b03124a8dde436d740b341b0440b7eb"
+    },
+    {
+      "path": "design/star-salvage/BALANCE_V01.json",
+      "bytes": 2146,
+      "sha256": "d5fa31f78d33c2dd233d72326964805e084b3048f11fea7c23a8ebde500d6d46"
+    }
+  ],
+  "comparisons": {
+    "noMission": {
+      "v050": {
+        "voyages": 384,
+        "meanNetCash": 183.161,
+        "meanGoods": 3.096,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 14,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 49.392
+      },
+      "v051NoGate": {
+        "voyages": 384,
+        "meanNetCash": 183.557,
+        "meanGoods": 3.102,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 14,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 50.087
+      },
+      "gate8": {
+        "voyages": 384,
+        "meanNetCash": 195.367,
+        "meanGoods": 3.102,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 8,
+        "gate3": 384,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 50.087
+      },
+      "gate10": {
+        "voyages": 384,
+        "meanNetCash": 191.253,
+        "meanGoods": 3.102,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 10,
+        "gate3": 384,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 50.087
+      },
+      "gate12": {
+        "voyages": 384,
+        "meanNetCash": 187.43,
+        "meanGoods": 3.102,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 12,
+        "gate3": 384,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 50.087
+      }
+    },
+    "manualSurvey": {
+      "v050": {
+        "voyages": 384,
+        "meanNetCash": 363.161,
+        "meanGoods": 3.096,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 14,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 49.392
+      },
+      "v051NoGate": {
+        "voyages": 384,
+        "meanNetCash": 363.557,
+        "meanGoods": 3.102,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 14,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 50.087
+      },
+      "gate8": {
+        "voyages": 384,
+        "meanNetCash": 375.367,
+        "meanGoods": 3.102,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 8,
+        "gate3": 384,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 50.087
+      },
+      "gate10": {
+        "voyages": 384,
+        "meanNetCash": 371.253,
+        "meanGoods": 3.102,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 10,
+        "gate3": 384,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 50.087
+      },
+      "gate12": {
+        "voyages": 384,
+        "meanNetCash": 367.43,
+        "meanGoods": 3.102,
+        "meanDepth": 3,
+        "meanActualReturnFuel": 12,
+        "gate3": 384,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 50.087
+      }
+    },
+    "cargoGrowth": {
+      "v050": {
+        "voyages": 384,
+        "meanNetCash": 206.758,
+        "meanGoods": 4.081,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.378
+      },
+      "v051NoGate": {
+        "voyages": 384,
+        "meanNetCash": 209.302,
+        "meanGoods": 4.081,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.768
+      },
+      "gate8": {
+        "voyages": 384,
+        "meanNetCash": 209.302,
+        "meanGoods": 4.081,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.768
+      },
+      "gate10": {
+        "voyages": 384,
+        "meanNetCash": 209.302,
+        "meanGoods": 4.081,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.768
+      },
+      "gate12": {
+        "voyages": 384,
+        "meanNetCash": 209.302,
+        "meanGoods": 4.081,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.768
+      }
+    },
+    "scoutGrowth": {
+      "v050": {
+        "voyages": 384,
+        "meanNetCash": 332.81,
+        "meanGoods": 4.737,
+        "meanDepth": 5,
+        "meanActualReturnFuel": 22.271,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 44.063
+      },
+      "v051NoGate": {
+        "voyages": 384,
+        "meanNetCash": 333.888,
+        "meanGoods": 4.76,
+        "meanDepth": 5,
+        "meanActualReturnFuel": 22.281,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.365
+      },
+      "gate8": {
+        "voyages": 384,
+        "meanNetCash": 363.206,
+        "meanGoods": 4.76,
+        "meanDepth": 5,
+        "meanActualReturnFuel": 8,
+        "gate3": 0,
+        "gate5": 384,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.365
+      },
+      "gate10": {
+        "voyages": 384,
+        "meanNetCash": 358.807,
+        "meanGoods": 4.758,
+        "meanDepth": 5,
+        "meanActualReturnFuel": 10,
+        "gate3": 0,
+        "gate5": 384,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.365
+      },
+      "gate12": {
+        "voyages": 384,
+        "meanNetCash": 354.547,
+        "meanGoods": 4.758,
+        "meanDepth": 5,
+        "meanActualReturnFuel": 12,
+        "gate3": 0,
+        "gate5": 384,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.365
+      }
+    },
+    "heavyGrowth": {
+      "v050": {
+        "voyages": 384,
+        "meanNetCash": 135.589,
+        "meanGoods": 4.023,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19.948,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.508
+      },
+      "v051NoGate": {
+        "voyages": 384,
+        "meanNetCash": 136.216,
+        "meanGoods": 4.008,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19.948,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.703
+      },
+      "gate8": {
+        "voyages": 384,
+        "meanNetCash": 136.216,
+        "meanGoods": 4.008,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19.948,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.703
+      },
+      "gate10": {
+        "voyages": 384,
+        "meanNetCash": 136.216,
+        "meanGoods": 4.008,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19.948,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.703
+      },
+      "gate12": {
+        "voyages": 384,
+        "meanNetCash": 136.216,
+        "meanGoods": 4.008,
+        "meanDepth": 4,
+        "meanActualReturnFuel": 19.948,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 45.703
+      }
+    },
+    "starterEngineering": {
+      "v050": {
+        "voyages": 384,
+        "meanNetCash": 493.638,
+        "meanGoods": 4.984,
+        "meanDepth": 5.995,
+        "meanActualReturnFuel": 31.964,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 42.659
+      },
+      "v051NoGate": {
+        "voyages": 384,
+        "meanNetCash": 482.326,
+        "meanGoods": 5.044,
+        "meanDepth": 5.995,
+        "meanActualReturnFuel": 31.964,
+        "gate3": 0,
+        "gate5": 0,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 44.874
+      },
+      "gate8": {
+        "voyages": 384,
+        "meanNetCash": 482.503,
+        "meanGoods": 5.044,
+        "meanDepth": 5.995,
+        "meanActualReturnFuel": 31.875,
+        "gate3": 0,
+        "gate5": 2,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 44.874
+      },
+      "gate10": {
+        "voyages": 384,
+        "meanNetCash": 482.482,
+        "meanGoods": 5.044,
+        "meanDepth": 5.995,
+        "meanActualReturnFuel": 31.885,
+        "gate3": 0,
+        "gate5": 2,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 44.874
+      },
+      "gate12": {
+        "voyages": 384,
+        "meanNetCash": 482.461,
+        "meanGoods": 5.044,
+        "meanDepth": 5.995,
+        "meanActualReturnFuel": 31.896,
+        "gate3": 0,
+        "gate5": 2,
+        "rescues": 0,
+        "aid": 0,
+        "newEventVisitPercent": 44.874
+      }
+    }
+  },
+  "marketLots": {
+    "v050-ordinary": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 438,
+      "variance": 0,
+      "minimumCash": 438,
+      "maximumCash": 438,
+      "meanQuotes": 0,
+      "meanEconomicCommands": 1,
+      "meanFees": 0,
+      "meanQuotedAmount": 0,
+      "accepted": 0,
+      "kept": 0,
+      "noSale": 0,
+      "ordinaryFallbackItems": 5
+    },
+    "v050-cautious": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 453.484,
+      "variance": 39.984,
+      "minimumCash": 439,
+      "maximumCash": 469,
+      "meanQuotes": 5,
+      "meanEconomicCommands": 10.82421875,
+      "meanFees": 0,
+      "meanQuotedAmount": 89.748,
+      "accepted": 1792,
+      "kept": 768,
+      "noSale": 0,
+      "ordinaryFallbackItems": 1.5
+    },
+    "v050-bold": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 458.463,
+      "variance": 109.92,
+      "minimumCash": 438,
+      "maximumCash": 486,
+      "meanQuotes": 5,
+      "meanEconomicCommands": 10.96875,
+      "meanFees": 0,
+      "meanQuotedAmount": 85.791,
+      "accepted": 1278,
+      "kept": 1282,
+      "noSale": 0,
+      "ordinaryFallbackItems": 2.50390625
+    },
+    "v050-auction": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 445.604,
+      "variance": 238.626,
+      "minimumCash": 416,
+      "maximumCash": 497,
+      "meanQuotes": 5,
+      "meanEconomicCommands": 10.943359375,
+      "meanFees": 22,
+      "meanQuotedAmount": 89.798,
+      "accepted": 1459,
+      "kept": 1101,
+      "noSale": 1013,
+      "ordinaryFallbackItems": 2.150390625
+    },
+    "v050-keep": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 0,
+      "variance": 0,
+      "minimumCash": 0,
+      "maximumCash": 0,
+      "meanQuotes": 0,
+      "meanEconomicCommands": 0,
+      "meanFees": 0,
+      "meanQuotedAmount": 0,
+      "accepted": 0,
+      "kept": 0,
+      "noSale": 0,
+      "ordinaryFallbackItems": 0
+    },
+    "v051-ordinary": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 438,
+      "variance": 0,
+      "minimumCash": 438,
+      "maximumCash": 438,
+      "meanQuotes": 0,
+      "meanEconomicCommands": 1,
+      "meanFees": 0,
+      "meanQuotedAmount": 0,
+      "accepted": 0,
+      "kept": 0,
+      "noSale": 0,
+      "ordinaryFallbackItems": 5
+    },
+    "v051-cautious": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 442.5,
+      "variance": 13.25,
+      "minimumCash": 438,
+      "maximumCash": 447,
+      "meanQuotes": 1,
+      "meanEconomicCommands": 3,
+      "meanFees": 0,
+      "meanQuotedAmount": 122.25,
+      "accepted": 384,
+      "kept": 128,
+      "noSale": 0,
+      "ordinaryFallbackItems": 4.25
+    },
+    "v051-bold": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 443.75,
+      "variance": 36.188,
+      "minimumCash": 438,
+      "maximumCash": 452,
+      "meanQuotes": 1,
+      "meanEconomicCommands": 3,
+      "meanFees": 0,
+      "meanQuotedAmount": 116.75,
+      "accepted": 256,
+      "kept": 256,
+      "noSale": 0,
+      "ordinaryFallbackItems": 4.5
+    },
+    "v051-auction": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 441.135,
+      "variance": 74.527,
+      "minimumCash": 433,
+      "maximumCash": 456,
+      "meanQuotes": 1,
+      "meanEconomicCommands": 3,
+      "meanFees": 5,
+      "meanQuotedAmount": 122.504,
+      "accepted": 318,
+      "kept": 194,
+      "noSale": 194,
+      "ordinaryFallbackItems": 4.37890625
+    },
+    "v051-keep": {
+      "seeds": 512,
+      "itemsPerLot": 5,
+      "ordinaryValue": 438,
+      "meanActualCash": 0,
+      "variance": 0,
+      "minimumCash": 0,
+      "maximumCash": 0,
+      "meanQuotes": 0,
+      "meanEconomicCommands": 0,
+      "meanFees": 0,
+      "meanQuotedAmount": 0,
+      "accepted": 0,
+      "kept": 0,
+      "noSale": 0,
+      "ordinaryFallbackItems": 0
+    }
+  },
+  "debtRepayment": {
+    "noMission": [
+      {
+        "seed": 1,
+        "firstPaidOff": 58,
+        "debtAfter80": 0,
+        "cashAfter80": 4615
+      },
+      {
+        "seed": 2,
+        "firstPaidOff": 63,
+        "debtAfter80": 0,
+        "cashAfter80": 3347
+      },
+      {
+        "seed": 3,
+        "firstPaidOff": 64,
+        "debtAfter80": 0,
+        "cashAfter80": 3697
+      },
+      {
+        "seed": 4,
+        "firstPaidOff": 61,
+        "debtAfter80": 0,
+        "cashAfter80": 4225
+      },
+      {
+        "seed": 5,
+        "firstPaidOff": 60,
+        "debtAfter80": 0,
+        "cashAfter80": 4170
+      },
+      {
+        "seed": 6,
+        "firstPaidOff": 59,
+        "debtAfter80": 0,
+        "cashAfter80": 4955
+      },
+      {
+        "seed": 7,
+        "firstPaidOff": 63,
+        "debtAfter80": 0,
+        "cashAfter80": 3749
+      },
+      {
+        "seed": 8,
+        "firstPaidOff": 61,
+        "debtAfter80": 0,
+        "cashAfter80": 3816
+      }
+    ],
+    "manualSurvey": [
+      {
+        "seed": 1,
+        "firstPaidOff": 33,
+        "debtAfter80": 0,
+        "cashAfter80": 19015
+      },
+      {
+        "seed": 2,
+        "firstPaidOff": 33,
+        "debtAfter80": 0,
+        "cashAfter80": 17747
+      },
+      {
+        "seed": 3,
+        "firstPaidOff": 33,
+        "debtAfter80": 0,
+        "cashAfter80": 18097
+      },
+      {
+        "seed": 4,
+        "firstPaidOff": 33,
+        "debtAfter80": 0,
+        "cashAfter80": 18625
+      },
+      {
+        "seed": 5,
+        "firstPaidOff": 31,
+        "debtAfter80": 0,
+        "cashAfter80": 18570
+      },
+      {
+        "seed": 6,
+        "firstPaidOff": 34,
+        "debtAfter80": 0,
+        "cashAfter80": 19355
+      },
+      {
+        "seed": 7,
+        "firstPaidOff": 34,
+        "debtAfter80": 0,
+        "cashAfter80": 18149
+      },
+      {
+        "seed": 8,
+        "firstPaidOff": 32,
+        "debtAfter80": 0,
+        "cashAfter80": 18216
+      }
+    ],
+    "cargoGrowth": [
+      {
+        "seed": 1,
+        "firstPaidOff": 27,
+        "debtAfter80": 0,
+        "cashAfter80": 21926
+      },
+      {
+        "seed": 2,
+        "firstPaidOff": 26,
+        "debtAfter80": 0,
+        "cashAfter80": 21264
+      },
+      {
+        "seed": 3,
+        "firstPaidOff": 28,
+        "debtAfter80": 0,
+        "cashAfter80": 21814
+      },
+      {
+        "seed": 4,
+        "firstPaidOff": 27,
+        "debtAfter80": 0,
+        "cashAfter80": 21238
+      },
+      {
+        "seed": 5,
+        "firstPaidOff": 28,
+        "debtAfter80": 0,
+        "cashAfter80": 20773
+      },
+      {
+        "seed": 6,
+        "firstPaidOff": 30,
+        "debtAfter80": 0,
+        "cashAfter80": 19924
+      },
+      {
+        "seed": 7,
+        "firstPaidOff": 26,
+        "debtAfter80": 0,
+        "cashAfter80": 23521
+      },
+      {
+        "seed": 8,
+        "firstPaidOff": 26,
+        "debtAfter80": 0,
+        "cashAfter80": 23263
+      }
+    ],
+    "scoutGrowth": [
+      {
+        "seed": 1,
+        "firstPaidOff": 20,
+        "debtAfter80": 0,
+        "cashAfter80": 36984
+      },
+      {
+        "seed": 2,
+        "firstPaidOff": 22,
+        "debtAfter80": 0,
+        "cashAfter80": 34557
+      },
+      {
+        "seed": 3,
+        "firstPaidOff": 20,
+        "debtAfter80": 0,
+        "cashAfter80": 36911
+      },
+      {
+        "seed": 4,
+        "firstPaidOff": 20,
+        "debtAfter80": 0,
+        "cashAfter80": 36225
+      },
+      {
+        "seed": 5,
+        "firstPaidOff": 20,
+        "debtAfter80": 0,
+        "cashAfter80": 37847
+      },
+      {
+        "seed": 6,
+        "firstPaidOff": 20,
+        "debtAfter80": 0,
+        "cashAfter80": 38372
+      },
+      {
+        "seed": 7,
+        "firstPaidOff": 20,
+        "debtAfter80": 0,
+        "cashAfter80": 37569
+      },
+      {
+        "seed": 8,
+        "firstPaidOff": 22,
+        "debtAfter80": 0,
+        "cashAfter80": 33531
+      }
+    ]
+  },
+  "marketVoyages": {
+    "cautious": {
+      "voyages": 864,
+      "meanNetCash": 261.212,
+      "meanQuotes": 0.99,
+      "meanFees": 0,
+      "meanEconomicCommands": 1.979
+    },
+    "bold": {
+      "voyages": 864,
+      "meanNetCash": 263.145,
+      "meanQuotes": 0.99,
+      "meanFees": 0,
+      "meanEconomicCommands": 1.979
+    },
+    "auction": {
+      "voyages": 864,
+      "meanNetCash": 258.223,
+      "meanQuotes": 0.99,
+      "meanFees": 4.787,
+      "meanEconomicCommands": 1.979
+    }
+  }
+}
