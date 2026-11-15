@@ -1,0 +1,41 @@
+{
+  "errors": 0,
+  "warnings": 7,
+  "issues": [
+    {
+      "id": "UnusedAttribute",
+      "severity": "Warning",
+      "message": "Attribute `enableOnBackInvokedCallback` is only used in API level 33 and higher (current min is 26)"
+    },
+    {
+      "id": "GradleDependency",
+      "severity": "Warning",
+      "message": "A newer version of androidx.webkit:webkit than 1.12.1 is available: 1.18.0"
+    },
+    {
+      "id": "GradleDependency",
+      "severity": "Warning",
+      "message": "A newer version of androidx.test:runner than 1.6.2 is available: 1.7.0"
+    },
+    {
+      "id": "LockedOrientationActivity",
+      "severity": "Warning",
+      "message": "Expecting `android:screenOrientation=\"unspecified\"` or `\"fullSensor\"` for this activity so the user can use the application in any orientation and provide a great experience on Chrome OS devices"
+    },
+    {
+      "id": "DiscouragedApi",
+      "severity": "Warning",
+      "message": "Should not restrict activity to fixed orientation. This may not be suitable for different form factors, causing the app to be letterboxed."
+    },
+    {
+      "id": "SetJavaScriptEnabled",
+      "severity": "Warning",
+      "message": "Using `setJavaScriptEnabled` can introduce XSS vulnerabilities into your application, review carefully"
+    },
+    {
+      "id": "IconLauncherShape",
+      "severity": "Warning",
+      "message": "Launcher icons should not fill every pixel of their square region; see the design guide for details"
+    }
+  ]
+}

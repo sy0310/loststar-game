@@ -28,3 +28,15 @@
 - 本次使用最近邻技术导出；非整数缩放可能使个别像素阶梯宽度不均。
 - 双行排版省略了可见冒号。
 - 主智能体内部审核已通过英文标题、构图与主体，并决定保留本张；用户视觉验收待完成。
+
+## 运行画面与视频
+
+运行源码为 `daf3c44076567b5e0b3e9313ac49f8b67536ff52`。
+
+- `screenshots/` 保存六张 780×1688 英文运行截图，展示敌群、雷网、Boss、引力融合、武器选择与精英融合选择。
+- `active-english-combat-30s.mp4` 为三十秒连续战斗，包含真实指针操作和游戏输出音轨。录像从合法的中后期准备配置进入，浏览器捕获来源记录在同名 JSON。
+- `video-cover-900x600.png` 将英文海报最近邻导出为 900×506，并以原紫灰背景补齐到 900×600。
+- `app-icon-512.png` 是已认可 Logo 的原样副本。
+- `other-platform-china-proof.jpg` 是已有中国版 TapTap 公开测试页面的截图。
+
+截图的准备配置和实际运行状态见 `artifacts/survivor-global/gallery-capture.json`。Android 原生功能截图位于 `artifacts/survivor-global/android/`。

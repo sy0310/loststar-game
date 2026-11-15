@@ -47,7 +47,7 @@ public final class NativeFlowTest {
         }
         SystemClock.sleep(300);
         visualReady();
-        eval("document.addEventListener('click',function(e){window.nativeTestLastClick={id:e.target.id,text:e.target.textContent.slice(0,70),x:e.clientX,y:e.clientY};},true)");
+        eval("window.nativeTestClickCount=0;document.addEventListener('click',function(e){window.nativeTestClickCount++;window.nativeTestLastClick={id:e.target.closest('button')?.id,text:e.target.textContent.slice(0,70),x:e.clientX,y:e.clientY};},true)");
     }
 
     private String eval(String expression) throws Exception {
@@ -101,13 +101,24 @@ public final class NativeFlowTest {
     }
 
     private void tap(String selector) throws Exception {
-        float[] p = point(selector, 0.5);
-        long down = SystemClock.uptimeMillis();
-        send(MotionEvent.ACTION_DOWN, down, p[0], p[1]);
-        SystemClock.sleep(80);
-        send(MotionEvent.ACTION_UP, down, p[0], p[1]);
-        SystemClock.sleep(300);
-        android.util.Log.i("NativeFlow", selector + " " + p[0] + "," + p[1] + " -> " + eval("window.nativeTestLastClick || null"));
+        int previous = Integer.parseInt(eval("nativeTestClickCount"));
+        for (int attempt = 0; attempt < 3; attempt++) {
+            float[] p = point(selector, 0.5);
+            long down = SystemClock.uptimeMillis();
+            send(MotionEvent.ACTION_DOWN, down, p[0], p[1]);
+            SystemClock.sleep(80);
+            send(MotionEvent.ACTION_UP, down, p[0], p[1]);
+            long deadline = SystemClock.uptimeMillis() + 2500;
+            while (SystemClock.uptimeMillis() < deadline) {
+                if (Integer.parseInt(eval("nativeTestClickCount")) > previous) {
+                    android.util.Log.i("NativeFlow", selector + " -> " + eval("nativeTestLastClick"));
+                    return;
+                }
+                SystemClock.sleep(100);
+            }
+            android.util.Log.i("NativeFlow", "No click delivered; rechecking visible target " + selector);
+        }
+        fail("Native touch did not reach " + selector);
     }
 
     private File directory() {
@@ -136,6 +147,14 @@ public final class NativeFlowTest {
     @Test
     public void prepareAndPause() throws Exception {
         launch();
+        if ("false".equals(eval("document.getElementById('continueBtn').hidden"))) {
+            tap("#continueBtn");
+            waitFor("SurvivorDemo.state()?.mode==='play' && !SurvivorDemo.saving()");
+            instrument.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
+            waitFor("SurvivorDemo.state().mode==='pause' && !SurvivorDemo.saving()");
+            tap("#leaveBtn");
+            waitFor("!document.getElementById('results').hidden && !SurvivorDemo.saving()");
+        }
         if ("false".equals(eval("document.getElementById('results').hidden"))) {
             tap("#menuBtn");
             waitFor("!document.getElementById('start').hidden");
@@ -181,7 +200,9 @@ public final class NativeFlowTest {
         screenshot("05-pause-audio");
         JSONObject paused = new JSONObject(eval("SurvivorDemo.store()"));
         tap("#pause [data-language-toggle]");
+        waitFor("SurvivorI18n.getLocale()==='zh-CN'");
         tap("#pause [data-language-toggle]");
+        waitFor("SurvivorI18n.getLocale()==='en'");
         assertEquals(paused.toString(), new JSONObject(eval("SurvivorDemo.store()")).toString());
         JSONObject result = new JSONObject().put("nativeDragWorldPixels", distance)
             .put("pauseViaAndroidBack", true).put("localeKeepsStore", true)
