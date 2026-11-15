@@ -9,6 +9,7 @@ const rehearsal = process.argv.includes('--rehearse');
 const seconds = rehearsal ? 15 : 60;
 const output = path.resolve(process.env.ACTIVE_VIDEO_OUT || path.join(root, 'releases/survivor-v0610-private/active-video', rehearsal ? 'rehearsal' : 'recording'));
 const url = process.env.SURVIVOR_URL || 'http://127.0.0.1:4283/';
+const expectedSource = process.env.ACTIVE_VIDEO_EXPECTED_SOURCE || 'ea26e29d3061542913e7a587a1fe6cc889250d33';
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 (async () => {
@@ -28,7 +29,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await setup.goto(url + '?qa=1');
     await setup.waitForFunction(() => SurvivorDemo.ready());
     report.source = await setup.evaluate(() => SurvivorBuild);
-    assert.equal(report.source.commit, 'ea26e29d3061542913e7a587a1fe6cc889250d33');
+    assert.equal(report.source.commit, expectedSource);
+    report.language = await setup.evaluate(() => window.SurvivorI18n?.getLocale() || 'zh-CN');
     const snapshot = await setup.evaluate(() => {
       const Q = SurvivorQA;
       const g = Q.startModel(87);
