@@ -10,7 +10,8 @@ const exportsDirectory = path.join(directory, 'exports');
 await mkdir(exportsDirectory, {recursive: true});
 
 const files = [];
-async function exportJPEG(name, image, width, height, maximumBytes = 1024 * 1024) {
+const detailFiles = [];
+async function exportJPEG(name, image, width, height, maximumBytes = 1024 * 1024, records = files) {
   let result;
   let quality;
   for (quality of [94, 90, 86, 82, 78, 74, 68]) {
@@ -21,8 +22,9 @@ async function exportJPEG(name, image, width, height, maximumBytes = 1024 * 1024
   const metadata = await sharp(result).metadata();
   if (metadata.width !== width || metadata.height !== height) throw Error('Invalid dimensions ' + name);
   const destination = path.join(exportsDirectory, name);
+  await mkdir(path.dirname(destination), {recursive: true});
   await writeFile(destination, result);
-  files.push({path: path.relative(root, destination), width, height, bytes: result.length, format: 'JPEG', quality, maximumBytes, sha256: createHash('sha256').update(result).digest('hex')});
+  records.push({path: path.relative(root, destination), width, height, bytes: result.length, format: 'JPEG', quality, maximumBytes, sha256: createHash('sha256').update(result).digest('hex')});
 }
 
 const cover = await sharp(path.join(directory, 'originals/cover-generated.png')).resize(650, 250, {fit: 'cover'}).png().toBuffer();
@@ -79,6 +81,8 @@ for (const story of stories) {
     {input: typography, top: 0, left: 0},
   ]).png().toBuffer();
   await exportJPEG(story.name, image, 1080, 1920);
+  const detailImage = await sharp(image).resize(720, 1280).png().toBuffer();
+  await exportJPEG('wechat-detail-720x1280/' + story.name.replace('1080x1920', '720x1280'), detailImage, 720, 1280, 200000, detailFiles);
 }
 
 const sources = [
@@ -96,8 +100,9 @@ for (const source of sources) {
 const manifest = {
   date: '2026-11-15', project: '失物号·星海突进', tool: 'built-in image_gen with original project references',
   platformCoverRequirement: {source: 'User-supplied WeChat promotion-page screenshot', width: 650, height: 250, format: 'JPG/JPEG', maximumBytes: 80000},
+  platformDetailRequirement: {source: 'User-supplied detailed portrait promotion screenshot, 2026-11-15', width: 720, height: 1280, formats: ['JPEG', 'JPG', 'PNG'], maximumBytes: 200000, count: 3},
   otherDimensions: {source: 'Chosen portrait and landscape exports, pending platform-specific validation', landscape: [1920,1080], portrait: [1080,1920]},
-  sources: sourceRecords, screenshots: stories, files,
+  sources: sourceRecords, screenshots: stories, files, detailFiles,
   illustrativeArt: ['01-cover-650x250.jpg', '02-landscape-1920x1080.jpg', '03-portrait-1080x1920.jpg'],
   review: {manualReviewRecord: 'README.md', physicalPhoneScreenshots: false, webpageUploaded: false, webpageBlock: 'Prior site-safety denial for mp.weixin.qq.com'},
 };
@@ -109,4 +114,9 @@ for (const [index, file] of files.entries()) {
   tiles.push({input: image, left: 20 + index % 3 * 450, top: 20 + Math.floor(index / 3) * 770});
 }
 await sharp({create: {width: 1370, height: 1560, channels: 3, background: '#0c081d'}}).composite(tiles).jpeg({quality:90}).toFile(path.join(directory, 'review.jpg'));
-console.log(JSON.stringify(files, null, 2));
+const detailTiles = await Promise.all(detailFiles.map(async (file, index) => ({
+  input: await sharp(path.join(root, file.path)).resize(360, 640).png().toBuffer(),
+  left: 20 + index * 380, top: 20,
+})));
+await sharp({create: {width: 1160, height: 680, channels: 3, background: '#0c081d'}}).composite(detailTiles).jpeg({quality:90}).toFile(path.join(directory, 'review-details.jpg'));
+console.log(JSON.stringify({files, detailFiles}, null, 2));
