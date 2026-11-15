@@ -82,6 +82,7 @@ fs.mkdirSync(out, { recursive: true });
       await page.reload();await page.waitForFunction(()=>SurvivorDemo.ready());
       await page.locator('#continueBtn').tap();
       if(scene.endsWith('choice')){
+        await page.waitForFunction(() => !SurvivorDemo.saving());
         await page.waitForTimeout(250);
         await page.screenshot({path:path.join(out,scene+'.png')});
         report.scenes.push({scene,file:scene+'.png',fixture,actual:await page.evaluate(()=>SurvivorDemo.state())});

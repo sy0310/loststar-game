@@ -42,6 +42,7 @@ public final class NativeFlowTest {
             }
         }
         SystemClock.sleep(300);
+        visualReady();
         eval("document.addEventListener('click',function(e){window.nativeTestLastClick={id:e.target.id,text:e.target.textContent.slice(0,70),x:e.clientX,y:e.clientY};},true)");
     }
 
@@ -56,6 +57,14 @@ public final class NativeFlowTest {
         return result.get();
     }
 
+    private void visualReady() throws Exception {
+        CountDownLatch rendered = new CountDownLatch(1);
+        instrument.runOnMainSync(() -> web.postVisualStateCallback(1, new WebView.VisualStateCallback() {
+            @Override public void onComplete(long requestId) { rendered.countDown(); }
+        }));
+        assertTrue("WebView visual state timed out", rendered.await(20, TimeUnit.SECONDS));
+    }
+
     private void waitFor(String expression) throws Exception {
         long deadline = SystemClock.uptimeMillis() + 20000;
         while (SystemClock.uptimeMillis() < deadline) {
@@ -67,7 +76,7 @@ public final class NativeFlowTest {
 
     private float[] point(String selector, double fraction) throws Exception {
         eval("document.querySelector(" + JSONObject.quote(selector) + ").scrollIntoView({block:'center'})");
-        SystemClock.sleep(150);
+        visualReady();
         JSONObject box = new JSONObject(eval("(function(){var r=document.querySelector("
             + JSONObject.quote(selector) + ").getBoundingClientRect();return {x:r.left+r.width*"
             + fraction + ",y:r.top+r.height/2,w:r.width,vw:innerWidth};})()"));
@@ -177,6 +186,7 @@ public final class NativeFlowTest {
     @Test
     public void resumeAfterProcessRestart() throws Exception {
         launch();
+        screenshot("00-resume-start");
         waitFor("!document.getElementById('continueBtn').hidden");
         assertEquals("\"en\"", eval("SurvivorI18n.getLocale()"));
         JSONObject saved = new JSONObject(eval("SurvivorDemo.store()"));

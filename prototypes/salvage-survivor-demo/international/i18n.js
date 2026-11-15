@@ -30,6 +30,7 @@
       "8种增强选6": "6 of 8 supports",
       "360°星海": "360° Space",
       "15分钟挑战": "15-minute runs",
+      "融合": "FUSE",
       "默认主炮免费 · 预约替换起始武器，占1武器槽": "Default cannon is free. A reserved starter uses one weapon slot.",
       "两件已进化武器 · 合并空出1格": "Fuse two evolved weapons to free one slot",
       "合并两件武器 · 空出1格": "Combine two weapons to free one slot",
