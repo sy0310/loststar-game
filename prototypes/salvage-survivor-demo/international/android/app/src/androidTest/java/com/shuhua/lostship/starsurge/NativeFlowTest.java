@@ -30,7 +30,11 @@ public final class NativeFlowTest {
         Intent intent = instrument.getTargetContext().getPackageManager()
             .getLaunchIntentForPackage("com.shuhua.lostship.starsurge");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity = instrument.startActivitySync(intent);
+        Instrumentation.ActivityMonitor launched = instrument.addMonitor(MainActivity.class.getName(), null, false);
+        instrument.getTargetContext().startActivity(intent);
+        activity = launched.waitForActivityWithTimeout(20000);
+        instrument.removeMonitor(launched);
+        assertNotNull("Release activity did not launch", activity);
         FrameLayout content = activity.findViewById(android.R.id.content);
         web = (WebView) ((FrameLayout) content.getChildAt(0)).getChildAt(0);
         waitFor("!!window.SurvivorDemo && SurvivorDemo.ready()");
@@ -132,6 +136,10 @@ public final class NativeFlowTest {
     @Test
     public void prepareAndPause() throws Exception {
         launch();
+        if ("false".equals(eval("document.getElementById('results').hidden"))) {
+            tap("#menuBtn");
+            waitFor("!document.getElementById('start').hidden");
+        }
         if ("\"zh-CN\"".equals(eval("SurvivorI18n.getLocale()"))) tap("#start [data-language-toggle]");
         screenshot("01-start");
         JSONObject before = new JSONObject(eval("SurvivorDemo.profile()"));

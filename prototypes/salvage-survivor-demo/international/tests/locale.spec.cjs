@@ -102,6 +102,11 @@ test('Saved upgrade cards and rerolls keep canonical IDs across languages', asyn
   await page.locator('#continueBtn').tap();
   await page.waitForFunction(() => SurvivorDemo.state()?.mode === 'upgrade' && !SurvivorDemo.saving());
   expect((await state(page)).presented).toEqual(choices);
+  await expect(page.locator('#rerollBtn')).toBeEnabled();
+  await expect(page.locator('#rerollBtn')).toContainText('2');
+  await page.locator('#rerollBtn').tap();
+  await page.waitForFunction(() => !SurvivorDemo.saving());
+  expect((await state(page)).rerollsRemaining).toBe(1);
   await audit(page);
   await page.locator('[data-pick="0"]').tap();
   await page.waitForFunction(() => SurvivorDemo.state()?.mode === 'play' && !SurvivorDemo.saving());

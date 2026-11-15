@@ -5536,6 +5536,7 @@
       storageWarning(error);
     } finally {
       actionBusy = false;
+      if (g?.mode === "upgrade") updateRerollButton();
       if (g?.mode === "results") refreshPerks();
     }
   }
