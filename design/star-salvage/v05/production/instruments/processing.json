@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "tool": "builtin image_gen",
+  "generationCalls": 2,
+  "generationMode": "one independent original study per instrument, with transparent background requested",
+  "referenceRole": "approved v04 material, pixel-density, proportion and lighting reference",
+  "productionSteps": [
+    "Preserve the original generated high-resolution PNG and full prompt",
+    "Register each entire instrument to its frozen bounding box",
+    "Reconstruct the physical footprint using one outer safety pixel",
+    "Quantize opaque pixels to the shared 37-color palette",
+    "Set alpha to 0 or 255 and clear all nonoccupied pixels",
+    "Apply explicitly recorded native short-hand and prism-face cleanup",
+    "Export editable material layers to ORA",
+    "Export exact nearest-neighbor 2x and 4x PNGs",
+    "Validate all four rotations and byte-identical repeated exports"
+  ],
+  "nativeSourcePolicy": "The generated study and the reconstructed native production image use distinct files",
+  "time_measure_line2": {
+    "logicalCells": 2,
+    "nativeSize": [
+      48,
+      24
+    ],
+    "nativeCleanup": "Two offset short hands use warm gold and cyan at the common gyro center"
+  },
+  "gravity_faceter_tee4": {
+    "logicalCells": 4,
+    "nativeSize": [
+      72,
+      48
+    ],
+    "mask": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "nativeCleanup": "Clarify the central prism faces and its small shadow over the continuous base plate"
+  },
+  "reviewLimit": "Root visual, user visual, live browser and phone checks require actual integrated display",
+  "review": {
+    "rootVisual": "APPROVED_INTERNAL_AFTER_ACTUAL_OVERVIEW",
+    "userVisual": "PENDING",
+    "phone": "NOT_TESTED_BY_ART_AGENT"
+  }
+}

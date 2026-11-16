@@ -1,0 +1,62 @@
+{
+  "asset": "TapTap international English landscape key visual",
+  "title": "Lostship: Star Surge",
+  "visibleLines": [
+    "Lostship",
+    "Star Surge"
+  ],
+  "status": "review-candidate",
+  "generation": {
+    "method": "Built-in image_gen image edit",
+    "count": 1,
+    "useCase": "text-localization",
+    "originalToolPath": "/Users/shuhuayu/.codex/generated_images/01a1dc70-7394-79e1-932e-6b1f0ae0bca8/exec-aaf3afef-d1d2-4122-a746-82b77dcfb2a8.png",
+    "promptFile": "prompt.txt",
+    "rawFile": "generated/taptap-banner-lostship-star-surge-original.png",
+    "width": 1672,
+    "height": 941,
+    "bytes": 2040634,
+    "sha256": "7e344601d6c044ac92912643869c53739bb56dac854d818a93e3e9e61d0ce456"
+  },
+  "sourceImages": [
+    {
+      "role": "edit target, existing Chinese title layout",
+      "path": "design/star-salvage/v0610/test-materials/art/exports/taptap-banner-title-only-1920x1080.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 2088056,
+      "sha256": "b1606bc6e965cf6156ace62d0554bd15e875cc581af6d0b40fe0129ba2d88724"
+    },
+    {
+      "role": "approved no-text background reference",
+      "path": "design/star-salvage/v068/store-media/exports/taptap-keyvisual-no-text-1920x1080.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 2033021,
+      "sha256": "190acd68bd1b542a80418313434d35be0fc2b2f7810a7d22c2ecd132ad11da3d"
+    }
+  ],
+  "export": {
+    "file": "taptap-banner-lostship-star-surge-1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "bytes": 2187971,
+    "sha256": "49879bd93b907ec9f713098b20fc6f8b54d78c904c8a25a6bc685263f8a23cd5",
+    "method": "ffmpeg full-frame nearest-neighbor resample",
+    "command": "ffmpeg -hide_banner -loglevel error -y -i design/star-salvage/international/media/generated/taptap-banner-lostship-star-surge-original.png -vf scale=1920:1080:flags=neighbor -frames:v 1 design/star-salvage/international/media/taptap-banner-lostship-star-surge-1920x1080.png",
+    "nativeAspectRatioCorrectionPercent": 0.05316
+  },
+  "checks": {
+    "finalPngDimensions": "1920×1080",
+    "spellingVisualReview": "Lostship / Star Surge readable and correct",
+    "compositionVisualReview": "Foreground ship, upper-right crystal Boss, ring, and purple-gold palette retained",
+    "forbiddenContentVisualReview": "No additional text, badge, tagline, interface or new gameplay element observed",
+    "mainAgentReview": "English title, composition and main subjects approved for this retained candidate before nearest-neighbor technical re-export."
+  },
+  "knownLimitations": [
+    "Image generation slightly redrew details outside the title, including ship panels, cockpit, star positions and ring texture.",
+    "Nearest-neighbor enlargement can create uneven pixel-step widths at this non-integer scale.",
+    "The two-line title layout omits a visible colon.",
+    "Main-agent internal visual review approved this candidate. User visual acceptance remains pending."
+  ]
+}

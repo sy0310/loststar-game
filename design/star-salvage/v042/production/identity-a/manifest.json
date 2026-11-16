@@ -1,0 +1,847 @@
+{
+  "schema": 1,
+  "kind": "v042_identity_specific_whole_cargo_bodies",
+  "cellPixels": 24,
+  "palette": "design/star-salvage/v04/production/palette.json",
+  "paletteSha256": "90091af10bfd6f075c649874be3bbe4c32e453b0ee1c328dfdd0b97f8d1d3912",
+  "internalVisualReview": "design/star-salvage/v042/production/identity-a/review.json",
+  "scope": "six existing itemId x shapeId combinations only; no new shapes or gameplay",
+  "provenance": "Six independent built-in image_gen candidates; genuine native-grid regrid/material cleanup with fixed existing silhouette alpha; no concept cropping or repeated mini-icons.",
+  "license": "Original project artwork, generated and native-cleaned for Lost Star Salvage. No third-party game assets.",
+  "items": [
+    {
+      "id": "broken_engine_line2",
+      "itemId": "broken_engine",
+      "shapeId": "line2",
+      "source": "design/star-salvage/v042/production/identity-a/native1x/cargo_broken_engine_line2@1x.png",
+      "sourceSha256": "3d5f3f372833eee1bd492b243284129dd7c434816d6fb157583660e9c0d98187",
+      "editableSource": "design/star-salvage/v042/production/identity-a/editable/cargo_broken_engine_line2.ora",
+      "editableSourceSha256": "eba618dd10a3c8ee1b3046624a9055b4a38f2336c9cf123969ba7a21b05d9c07",
+      "candidate": "design/star-salvage/v042/production/identity-a/raw/cargo_broken_engine_line2_generated.png",
+      "candidateSha256": "b811ec6869cc6b2fddebacbb70c7d998f2e665ec1ba0c8485f81c092a6a1d3e3",
+      "prompt": "Use case: stylized-concept. Production sprite for original Lost Star Salvage H5. Input image 1 is a strict footprint outline and pixel grain reference ONLY; image 2 is item identity and palette reference ONLY. Create ONE new complete functional physical object in the SAME occupied footprint as image 1, not an icon placed in a frame. Strict orthographic top-down, no visible side faces, upper-left light. Shared purple-gray steel, warm copper/amber, pale highlights, small cyan lights. Medium-density square pixel clusters readable at 24 native pixels per cell. Continuous opaque structural shell bridges touching cells: no internal cell grid/seams, no repeated mini-icons or boxes. Transparent pixels outside occupied silhouette only, genuine alpha, no scene/shadow/UI/text/watermark. Body must fill at least 70% of EACH occupied cell, with 1 native pixel outer safety border. Preserve silhouette and area exactly, not a rectangular background tile. One long compact damaged spaceship INLINE ENGINE MODULE. A broad cast-steel engine block, a visible compact turbine rotor off-center and a continuous copper coolant pipe, four black cooling slots, slightly battered but intact. NOT an electrical connector: recognizable engine machinery, rotor plus pipe across entire two-cell body. Fill 2:1 horizontal rectangle. Native production canvas 48x24 pixels.",
+      "references": [
+        "design/star-salvage/v041/production/footprints-rect/native1x/cargo_line2@1x.png",
+        "design/star-salvage/v04/production/items/item_broken_engine@1x.png"
+      ],
+      "referenceRole": "first: immutable footprint and pixel style; second: identity and material only; neither cropped into final",
+      "generationTool": "built-in image_gen",
+      "processLog": "design/star-salvage/v042/production/identity-a/processing/cargo_broken_engine_line2.json",
+      "processLogSha256": "0469156319a62e81cbf4b18471480b19e8d586e7ba39d6b43b5a4fea2272a81a",
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_broken_engine_line2@2x.png",
+          "scale": 2,
+          "width": 96,
+          "height": 48,
+          "bytes": 2358,
+          "sha256": "00498efae6174bbc63774fb0d67277b03f2c8850cd77087c13475228970c4586"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_broken_engine_line2@4x.png",
+          "scale": 4,
+          "width": 192,
+          "height": 96,
+          "bytes": 2766,
+          "sha256": "7e5030de6ebd0d3c88522c86d472aecc63ffb57947b4ce95304fac296d94d227"
+        }
+      ],
+      "validation": {
+        "id": "broken_engine_line2",
+        "nativeSize": [
+          48,
+          24
+        ],
+        "cellPixels": 24,
+        "occupiedCells": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "paletteOnly37": true,
+        "alphaBinary": true,
+        "nonOccupiedAlphaPixels": 0,
+        "opaquePixels": 980,
+        "connectedComponents4": 1,
+        "cellCoverage": [
+          {
+            "cell": [
+              0,
+              0
+            ],
+            "opaquePixels": 490,
+            "coverage": 0.850694
+          },
+          {
+            "cell": [
+              1,
+              0
+            ],
+            "opaquePixels": 490,
+            "coverage": 0.850694
+          }
+        ],
+        "canonicalAlphaExact": true,
+        "rotations": [
+          {
+            "degreesClockwise": 0,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              24
+            ]
+          },
+          {
+            "degreesClockwise": 90,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              24,
+              48
+            ]
+          },
+          {
+            "degreesClockwise": 180,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              24
+            ]
+          },
+          {
+            "degreesClockwise": 270,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              24,
+              48
+            ]
+          }
+        ]
+      },
+      "internalVisual": "INTERNAL_PASS",
+      "userArtAccepted": false,
+      "physicalPhoneTested": false
+    },
+    {
+      "id": "broken_engine_rect8",
+      "itemId": "broken_engine",
+      "shapeId": "rect8",
+      "source": "design/star-salvage/v042/production/identity-a/native1x/cargo_broken_engine_rect8@1x.png",
+      "sourceSha256": "54917697c23cffe9fb096ff9b09197defc2a8325c383765916e7967b80960a66",
+      "editableSource": "design/star-salvage/v042/production/identity-a/editable/cargo_broken_engine_rect8.ora",
+      "editableSourceSha256": "8429eb5bae45c58c7b60513431d0fb9c1bde2ea3aff63467cbb0dbc1d2ef3531",
+      "candidate": "design/star-salvage/v042/production/identity-a/raw/cargo_broken_engine_rect8_generated.png",
+      "candidateSha256": "84c5a574ab35d4b507bf5f7482707070911ae0dd40d9e26ed768033817a708a1",
+      "prompt": "Use case: stylized-concept. Production sprite for original Lost Star Salvage H5. Input image 1 is a strict footprint outline and pixel grain reference ONLY; image 2 is item identity and palette reference ONLY. Create ONE new complete functional physical object in the SAME occupied footprint as image 1, not an icon placed in a frame. Strict orthographic top-down, no visible side faces, upper-left light. Shared purple-gray steel, warm copper/amber, pale highlights, small cyan lights. Medium-density square pixel clusters readable at 24 native pixels per cell. Continuous opaque structural shell bridges touching cells: no internal cell grid/seams, no repeated mini-icons or boxes. Transparent pixels outside occupied silhouette only, genuine alpha, no scene/shadow/UI/text/watermark. Body must fill at least 70% of EACH occupied cell, with 1 native pixel outer safety border. Preserve silhouette and area exactly, not a rectangular background tile. One large four-cell-wide spaceship POWERTRAIN ASSEMBLY. Single continuous cast-steel rectangular chassis, two sizable recessed mechanical rotor/fan cores at left and center-right, distinct copper coolant pipes wrapping around them, wide dark radiator at far right, small cracked edge and unplugged coupling flush in silhouette. This is an entire salvaged engine, not a collection of small engines or crates. Broad 2:1 rectangular physical body. Native production canvas 96x48 pixels.",
+      "references": [
+        "design/star-salvage/v041/production/footprints-rect/native1x/cargo_rect8@1x.png",
+        "design/star-salvage/v04/production/items/item_broken_engine@1x.png"
+      ],
+      "referenceRole": "first: immutable footprint and pixel style; second: identity and material only; neither cropped into final",
+      "generationTool": "built-in image_gen",
+      "processLog": "design/star-salvage/v042/production/identity-a/processing/cargo_broken_engine_rect8.json",
+      "processLogSha256": "08516a15ee7482d507741d4beadb880acfd0d9e58f572a919d87c93fe355fd52",
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_broken_engine_rect8@2x.png",
+          "scale": 2,
+          "width": 192,
+          "height": 96,
+          "bytes": 8080,
+          "sha256": "3197301a505b9d3c35e3dd2fd2f5755a18c7aaade401f4d2440c0d6003c3f79d"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_broken_engine_rect8@4x.png",
+          "scale": 4,
+          "width": 384,
+          "height": 192,
+          "bytes": 10110,
+          "sha256": "8b47072e632b31d376f1e7b1544e581185047adbd26c74699950a20b4f22d611"
+        }
+      ],
+      "validation": {
+        "id": "broken_engine_rect8",
+        "nativeSize": [
+          96,
+          48
+        ],
+        "cellPixels": 24,
+        "occupiedCells": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "paletteOnly37": true,
+        "alphaBinary": true,
+        "nonOccupiedAlphaPixels": 0,
+        "opaquePixels": 4074,
+        "connectedComponents4": 1,
+        "cellCoverage": [
+          {
+            "cell": [
+              0,
+              0
+            ],
+            "opaquePixels": 499,
+            "coverage": 0.866319
+          },
+          {
+            "cell": [
+              1,
+              0
+            ],
+            "opaquePixels": 504,
+            "coverage": 0.875
+          },
+          {
+            "cell": [
+              2,
+              0
+            ],
+            "opaquePixels": 504,
+            "coverage": 0.875
+          },
+          {
+            "cell": [
+              3,
+              0
+            ],
+            "opaquePixels": 480,
+            "coverage": 0.833333
+          },
+          {
+            "cell": [
+              0,
+              1
+            ],
+            "opaquePixels": 497,
+            "coverage": 0.862847
+          },
+          {
+            "cell": [
+              1,
+              1
+            ],
+            "opaquePixels": 538,
+            "coverage": 0.934028
+          },
+          {
+            "cell": [
+              2,
+              1
+            ],
+            "opaquePixels": 546,
+            "coverage": 0.947917
+          },
+          {
+            "cell": [
+              3,
+              1
+            ],
+            "opaquePixels": 506,
+            "coverage": 0.878472
+          }
+        ],
+        "canonicalAlphaExact": true,
+        "rotations": [
+          {
+            "degreesClockwise": 0,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              96,
+              48
+            ]
+          },
+          {
+            "degreesClockwise": 90,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              96
+            ]
+          },
+          {
+            "degreesClockwise": 180,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              96,
+              48
+            ]
+          },
+          {
+            "degreesClockwise": 270,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              96
+            ]
+          }
+        ]
+      },
+      "internalVisual": "INTERNAL_PASS",
+      "userArtAccepted": false,
+      "physicalPhoneTested": false
+    },
+    {
+      "id": "broken_engine_tee4",
+      "itemId": "broken_engine",
+      "shapeId": "tee4",
+      "source": "design/star-salvage/v042/production/identity-a/native1x/cargo_broken_engine_tee4@1x.png",
+      "sourceSha256": "5c3645afed26777f9288e63f2ca246876d4f49c83463bd7b10151435c83b167a",
+      "editableSource": "design/star-salvage/v042/production/identity-a/editable/cargo_broken_engine_tee4.ora",
+      "editableSourceSha256": "3ebadb60a7caca8886382a8fb622f48c26440a46dc9065f666247fbe2b53625f",
+      "candidate": "design/star-salvage/v042/production/identity-a/raw/cargo_broken_engine_tee4_generated.png",
+      "candidateSha256": "7c92e57ff17bd56e7b567adc3c5663e1aaba0fc892b59f9e3a8235139dd9cf65",
+      "prompt": "Use case: stylized-concept. Production sprite for original Lost Star Salvage H5. Input image 1 is a strict footprint outline and pixel grain reference ONLY; image 2 is item identity and palette reference ONLY. Create ONE new complete functional physical object in the SAME occupied footprint as image 1, not an icon placed in a frame. Strict orthographic top-down, no visible side faces, upper-left light. Shared purple-gray steel, warm copper/amber, pale highlights, small cyan lights. Medium-density square pixel clusters readable at 24 native pixels per cell. Continuous opaque structural shell bridges touching cells: no internal cell grid/seams, no repeated mini-icons or boxes. Transparent pixels outside occupied silhouette only, genuine alpha, no scene/shadow/UI/text/watermark. Body must fill at least 70% of EACH occupied cell, with 1 native pixel outer safety border. Preserve silhouette and area exactly, not a rectangular background tile. One T-SHAPED spaceship COOLANT ENGINE JUNCTION, not a box. Exact silhouette: three touching full cells across TOP row, one full center cell below, bottom-left and bottom-right cells COMPLETELY TRANSPARENT. Continuous broad engine block across top, cooling fins at the two arms, central round rotor, heavy copper pipe curves into the broad lower-middle exhaust housing. Every occupied cell filled by real hardware, no holes inside, no extra pipes in empty corners. Native production canvas 72x48 pixels.",
+      "references": [
+        "design/star-salvage/v041/production/footprints-shaped/cargo_tee4@1x.png",
+        "design/star-salvage/v04/production/items/item_broken_engine@1x.png"
+      ],
+      "referenceRole": "first: immutable footprint and pixel style; second: identity and material only; neither cropped into final",
+      "generationTool": "built-in image_gen",
+      "processLog": "design/star-salvage/v042/production/identity-a/processing/cargo_broken_engine_tee4.json",
+      "processLogSha256": "3bf8eb7d2cb76fca089cd56ab62d399577f9fb6aaf6ea48e3d59fde00d0cc646",
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_broken_engine_tee4@2x.png",
+          "scale": 2,
+          "width": 144,
+          "height": 96,
+          "bytes": 4796,
+          "sha256": "c17e561800df29ce1a8adc5bbf25721fe6037397dac06cc6e2ef10fd5a8020aa"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_broken_engine_tee4@4x.png",
+          "scale": 4,
+          "width": 288,
+          "height": 192,
+          "bytes": 5999,
+          "sha256": "1e31fbeab98fead726e0c089c88840293d444228899d02cb0b247f7dca5c92c5"
+        }
+      ],
+      "validation": {
+        "id": "broken_engine_tee4",
+        "nativeSize": [
+          72,
+          48
+        ],
+        "cellPixels": 24,
+        "occupiedCells": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "paletteOnly37": true,
+        "alphaBinary": true,
+        "nonOccupiedAlphaPixels": 0,
+        "opaquePixels": 2070,
+        "connectedComponents4": 1,
+        "cellCoverage": [
+          {
+            "cell": [
+              0,
+              0
+            ],
+            "opaquePixels": 506,
+            "coverage": 0.878472
+          },
+          {
+            "cell": [
+              1,
+              0
+            ],
+            "opaquePixels": 552,
+            "coverage": 0.958333
+          },
+          {
+            "cell": [
+              2,
+              0
+            ],
+            "opaquePixels": 506,
+            "coverage": 0.878472
+          },
+          {
+            "cell": [
+              1,
+              1
+            ],
+            "opaquePixels": 506,
+            "coverage": 0.878472
+          }
+        ],
+        "canonicalAlphaExact": true,
+        "rotations": [
+          {
+            "degreesClockwise": 0,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              72,
+              48
+            ]
+          },
+          {
+            "degreesClockwise": 90,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              72
+            ]
+          },
+          {
+            "degreesClockwise": 180,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              72,
+              48
+            ]
+          },
+          {
+            "degreesClockwise": 270,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              72
+            ]
+          }
+        ]
+      },
+      "internalVisual": "INTERNAL_PASS",
+      "userArtAccepted": false,
+      "physicalPhoneTested": false
+    },
+    {
+      "id": "nav_chip_line2",
+      "itemId": "nav_chip",
+      "shapeId": "line2",
+      "source": "design/star-salvage/v042/production/identity-a/native1x/cargo_nav_chip_line2@1x.png",
+      "sourceSha256": "924c61b75db2a1b94d18b56de9e84b2defa3e8dd46981e711209c702505540ac",
+      "editableSource": "design/star-salvage/v042/production/identity-a/editable/cargo_nav_chip_line2.ora",
+      "editableSourceSha256": "475f238f5c18de11cdaa567e5465685992204226f306a6448e0b6ca3e8b1c77b",
+      "candidate": "design/star-salvage/v042/production/identity-a/raw/cargo_nav_chip_line2_generated.png",
+      "candidateSha256": "e833e623ef60d6ded282671ff7af49a6bfdb9dcd8708bc376e8b3d7e1a837f65",
+      "prompt": "Use case: stylized-concept. Production sprite for original Lost Star Salvage H5. Input image 1 is a strict footprint outline and pixel grain reference ONLY; image 2 is item identity and palette reference ONLY. Create ONE new complete functional physical object in the SAME occupied footprint as image 1, not an icon placed in a frame. Strict orthographic top-down, no visible side faces, upper-left light. Shared purple-gray steel, warm copper/amber, pale highlights, small cyan lights. Medium-density square pixel clusters readable at 24 native pixels per cell. Continuous opaque structural shell bridges touching cells: no internal cell grid/seams, no repeated mini-icons or boxes. Transparent pixels outside occupied silhouette only, genuine alpha, no scene/shadow/UI/text/watermark. Body must fill at least 70% of EACH occupied cell, with 1 native pixel outer safety border. Preserve silhouette and area exactly, not a rectangular background tile. One flat horizontal NAVIGATION CIRCUIT BOARD, a complete two-cell-wide emerald/teal circuit plate with purple-gray beveled protective corners, one square gold-edged violet processor die toward left, readable sparse cyan-green traces across whole surface, gold edge contacts integrated at right. NOT a generic steel connector, no copper bar. Board itself is the full 2:1 rectangle, no floating chip icon on a frame. Native production canvas 48x24 pixels.",
+      "references": [
+        "design/star-salvage/v041/production/footprints-rect/native1x/cargo_line2@1x.png",
+        "design/star-salvage/v04/production/items/item_nav_chip@1x.png"
+      ],
+      "referenceRole": "first: immutable footprint and pixel style; second: identity and material only; neither cropped into final",
+      "generationTool": "built-in image_gen",
+      "processLog": "design/star-salvage/v042/production/identity-a/processing/cargo_nav_chip_line2.json",
+      "processLogSha256": "1e8e0c0e7cdd9261ffa8a38e7b8b1e3a0d9269e3dce0783db0269af36ec64903",
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_nav_chip_line2@2x.png",
+          "scale": 2,
+          "width": 96,
+          "height": 48,
+          "bytes": 1910,
+          "sha256": "e8678d1d4e77ad7d4b34cffc224e33ec9cf028e46b21e8421eff70e9d760f6ac"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_nav_chip_line2@4x.png",
+          "scale": 4,
+          "width": 192,
+          "height": 96,
+          "bytes": 2293,
+          "sha256": "8ed7a0418eee8717383002613f36ec59847f2018fca41022332701be22ff9b6c"
+        }
+      ],
+      "validation": {
+        "id": "nav_chip_line2",
+        "nativeSize": [
+          48,
+          24
+        ],
+        "cellPixels": 24,
+        "occupiedCells": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "paletteOnly37": true,
+        "alphaBinary": true,
+        "nonOccupiedAlphaPixels": 0,
+        "opaquePixels": 980,
+        "connectedComponents4": 1,
+        "cellCoverage": [
+          {
+            "cell": [
+              0,
+              0
+            ],
+            "opaquePixels": 490,
+            "coverage": 0.850694
+          },
+          {
+            "cell": [
+              1,
+              0
+            ],
+            "opaquePixels": 490,
+            "coverage": 0.850694
+          }
+        ],
+        "canonicalAlphaExact": true,
+        "rotations": [
+          {
+            "degreesClockwise": 0,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              24
+            ]
+          },
+          {
+            "degreesClockwise": 90,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              24,
+              48
+            ]
+          },
+          {
+            "degreesClockwise": 180,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              24
+            ]
+          },
+          {
+            "degreesClockwise": 270,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              24,
+              48
+            ]
+          }
+        ]
+      },
+      "internalVisual": "INTERNAL_PASS",
+      "userArtAccepted": false,
+      "physicalPhoneTested": false
+    },
+    {
+      "id": "nav_chip_ell5",
+      "itemId": "nav_chip",
+      "shapeId": "ell5",
+      "source": "design/star-salvage/v042/production/identity-a/native1x/cargo_nav_chip_ell5@1x.png",
+      "sourceSha256": "727fde5adf1409c5057d183577a66834ca9efb795cb2ec0807a81f9c4925f2fc",
+      "editableSource": "design/star-salvage/v042/production/identity-a/editable/cargo_nav_chip_ell5.ora",
+      "editableSourceSha256": "6bc9dae50d442fb7880039c0d6a7915107f791c49f959cd54bb07a8b60c92154",
+      "candidate": "design/star-salvage/v042/production/identity-a/raw/cargo_nav_chip_ell5_generated.png",
+      "candidateSha256": "3a12f55f7082af0b5ce59bb6e94ba59ecacd66d0463f5edcb5951bbd3aa3532b",
+      "prompt": "Use case: stylized-concept. Production sprite for original Lost Star Salvage H5. Input image 1 is a strict footprint outline and pixel grain reference ONLY; image 2 is item identity and palette reference ONLY. Create ONE new complete functional physical object in the SAME occupied footprint as image 1, not an icon placed in a frame. Strict orthographic top-down, no visible side faces, upper-left light. Shared purple-gray steel, warm copper/amber, pale highlights, small cyan lights. Medium-density square pixel clusters readable at 24 native pixels per cell. Continuous opaque structural shell bridges touching cells: no internal cell grid/seams, no repeated mini-icons or boxes. Transparent pixels outside occupied silhouette only, genuine alpha, no scene/shadow/UI/text/watermark. Body must fill at least 70% of EACH occupied cell, with 1 native pixel outer safety border. Preserve silhouette and area exactly, not a rectangular background tile. One L-SHAPED NAVIGATION ANTENNA CIRCUIT ASSEMBLY, the actual green circuit board and metal support form the full thick L. Exact silhouette: LEFT column of three touching full cells plus BOTTOM row of three full cells; the TOP-RIGHT 2x2 cells COMPLETELY TRANSPARENT. One continuous broad emerald/teal circuit board with purple-gray protective edge. A navigation processor near lower-left corner, sparse cyan-green traces run up full left arm and along full bottom arm, flush copper/gold antenna traces/contacts, one small violet receiver inset. No aerial rods outside L. No mini-icons or repeated processors per cell. Native production canvas 72x72 pixels.",
+      "references": [
+        "design/star-salvage/v041/production/footprints-shaped/cargo_ell5@1x.png",
+        "design/star-salvage/v04/production/items/item_nav_chip@1x.png"
+      ],
+      "referenceRole": "first: immutable footprint and pixel style; second: identity and material only; neither cropped into final",
+      "generationTool": "built-in image_gen",
+      "processLog": "design/star-salvage/v042/production/identity-a/processing/cargo_nav_chip_ell5.json",
+      "processLogSha256": "4ccdec379e3a5e2ea868aa9e886d918c4ad5e721f53a7f13e2557b361cd6cb1c",
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_nav_chip_ell5@2x.png",
+          "scale": 2,
+          "width": 144,
+          "height": 144,
+          "bytes": 4941,
+          "sha256": "f185b8f4d0ad974bbd4676a46edcf0a1299788e05b964d6536bf66afcbb2e671"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_nav_chip_ell5@4x.png",
+          "scale": 4,
+          "width": 288,
+          "height": 288,
+          "bytes": 6336,
+          "sha256": "982cf99ca5ebee70d503c5d50764c36f0426d5d2ce11a706e69825020f8ffe77"
+        }
+      ],
+      "validation": {
+        "id": "nav_chip_ell5",
+        "nativeSize": [
+          72,
+          72
+        ],
+        "cellPixels": 24,
+        "occupiedCells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "paletteOnly37": true,
+        "alphaBinary": true,
+        "nonOccupiedAlphaPixels": 0,
+        "opaquePixels": 2597,
+        "connectedComponents4": 1,
+        "cellCoverage": [
+          {
+            "cell": [
+              0,
+              0
+            ],
+            "opaquePixels": 506,
+            "coverage": 0.878472
+          },
+          {
+            "cell": [
+              0,
+              1
+            ],
+            "opaquePixels": 528,
+            "coverage": 0.916667
+          },
+          {
+            "cell": [
+              0,
+              2
+            ],
+            "opaquePixels": 529,
+            "coverage": 0.918403
+          },
+          {
+            "cell": [
+              1,
+              2
+            ],
+            "opaquePixels": 528,
+            "coverage": 0.916667
+          },
+          {
+            "cell": [
+              2,
+              2
+            ],
+            "opaquePixels": 506,
+            "coverage": 0.878472
+          }
+        ],
+        "canonicalAlphaExact": true,
+        "rotations": [
+          {
+            "degreesClockwise": 0,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              72,
+              72
+            ]
+          },
+          {
+            "degreesClockwise": 90,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              72,
+              72
+            ]
+          },
+          {
+            "degreesClockwise": 180,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              72,
+              72
+            ]
+          },
+          {
+            "degreesClockwise": 270,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              72,
+              72
+            ]
+          }
+        ]
+      },
+      "internalVisual": "INTERNAL_PASS",
+      "userArtAccepted": false,
+      "physicalPhoneTested": false
+    },
+    {
+      "id": "medkit_line2",
+      "itemId": "medkit",
+      "shapeId": "line2",
+      "source": "design/star-salvage/v042/production/identity-a/native1x/cargo_medkit_line2@1x.png",
+      "sourceSha256": "78ac90f1f56a956b0401e746a294a72991b77cf11e22c19966534f08d99d7b8a",
+      "editableSource": "design/star-salvage/v042/production/identity-a/editable/cargo_medkit_line2.ora",
+      "editableSourceSha256": "5effe8f867f4f7a3076994eab9352ed87ab5b6f4940b8fcc4abe130bce1b1a9c",
+      "candidate": "design/star-salvage/v042/production/identity-a/raw/cargo_medkit_line2_generated.png",
+      "candidateSha256": "04afa8decc9f5a9d26d0f1dbc2bf338fb7f206964d957db68f98a0c4a780fe69",
+      "prompt": "Use case: stylized-concept. Production sprite for original Lost Star Salvage H5. Input image 1 is a strict footprint outline and pixel grain reference ONLY; image 2 is item identity and palette reference ONLY. Create ONE new complete functional physical object in the SAME occupied footprint as image 1, not an icon placed in a frame. Strict orthographic top-down, no visible side faces, upper-left light. Shared purple-gray steel, warm copper/amber, pale highlights, small cyan lights. Medium-density square pixel clusters readable at 24 native pixels per cell. Continuous opaque structural shell bridges touching cells: no internal cell grid/seams, no repeated mini-icons or boxes. Transparent pixels outside occupied silhouette only, genuine alpha, no scene/shadow/UI/text/watermark. Body must fill at least 70% of EACH occupied cell, with 1 native pixel outer safety border. Preserve silhouette and area exactly, not a rectangular background tile. One complete broad MEDICAL SUPPLY CASE viewed straight from above. Pale warm gray/ivory shell with muted violet-gray edge, two copper latches and a dark inset handle flush inside the top edge. Large clear muted coral RED MEDICAL PLUS CROSS embossed across the center of the lid, visible at low resolution. One continuous case body, 2:1 horizontal rectangle, no small bag centered on a tile. Minimal wear, no text. Native production canvas 48x24 pixels.",
+      "references": [
+        "design/star-salvage/v041/production/footprints-rect/native1x/cargo_line2@1x.png",
+        "design/star-salvage/v04/production/items/item_medkit@1x.png"
+      ],
+      "referenceRole": "first: immutable footprint and pixel style; second: identity and material only; neither cropped into final",
+      "generationTool": "built-in image_gen",
+      "processLog": "design/star-salvage/v042/production/identity-a/processing/cargo_medkit_line2.json",
+      "processLogSha256": "5c5326f65913d19b87865c1078d62c1f842ad0dd377f93ca9b2eaa1930c0fa5e",
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_medkit_line2@2x.png",
+          "scale": 2,
+          "width": 96,
+          "height": 48,
+          "bytes": 1510,
+          "sha256": "8fb3e67037e51ffc08f11cba1ec0665336dcb6942abed2003ee74870dfd7dc48"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v042/cargo_medkit_line2@4x.png",
+          "scale": 4,
+          "width": 192,
+          "height": 96,
+          "bytes": 1837,
+          "sha256": "28d39d35f382f5090406fdd711b7ffaee262a07811372c024f41914d06d79f4f"
+        }
+      ],
+      "validation": {
+        "id": "medkit_line2",
+        "nativeSize": [
+          48,
+          24
+        ],
+        "cellPixels": 24,
+        "occupiedCells": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "paletteOnly37": true,
+        "alphaBinary": true,
+        "nonOccupiedAlphaPixels": 0,
+        "opaquePixels": 980,
+        "connectedComponents4": 1,
+        "cellCoverage": [
+          {
+            "cell": [
+              0,
+              0
+            ],
+            "opaquePixels": 490,
+            "coverage": 0.850694
+          },
+          {
+            "cell": [
+              1,
+              0
+            ],
+            "opaquePixels": 490,
+            "coverage": 0.850694
+          }
+        ],
+        "canonicalAlphaExact": true,
+        "rotations": [
+          {
+            "degreesClockwise": 0,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              24
+            ]
+          },
+          {
+            "degreesClockwise": 90,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              24,
+              48
+            ]
+          },
+          {
+            "degreesClockwise": 180,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              48,
+              24
+            ]
+          },
+          {
+            "degreesClockwise": 270,
+            "nonOccupiedAlphaPixels": 0,
+            "nativeSize": [
+              24,
+              48
+            ]
+          }
+        ]
+      },
+      "internalVisual": "INTERNAL_PASS",
+      "userArtAccepted": false,
+      "physicalPhoneTested": false
+    }
+  ]
+}

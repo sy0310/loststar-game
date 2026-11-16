@@ -1,0 +1,253 @@
+{
+  "at": "2026-11-04T03:06:48.236450+00:00",
+  "status": "Week-one design candidate, awaiting user visual and price review",
+  "week": [
+    "2026-11-04",
+    "2026-11-10"
+  ],
+  "sourceCommit": "95d4609cd0852c549eb348096c2ee9300d5b7506",
+  "build": "0.3.4 · 95d4609",
+  "formalGameEngineChanged": false,
+  "sourceCI": [
+    {
+      "event": "pull_request",
+      "runId": 41763509790,
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/41763509790"
+    },
+    {
+      "event": "push",
+      "runId": 41763503494,
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/41763503494"
+    }
+  ],
+  "localCheck": {
+    "command": "npm run check",
+    "originalAssets": {
+      "passed": 20,
+      "total": 20
+    },
+    "unit": {
+      "passed": 151,
+      "files": 26
+    },
+    "browser": {
+      "startTime": "2026-11-04T02:47:13.540Z",
+      "duration": 106114.29800000001,
+      "expected": 164,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "builds": [
+      "normal",
+      "d1",
+      "v034"
+    ],
+    "coverage": {
+      "scope": "Selected pure game, layout and V034 models from vitest.config.ts, excluding full Canvas/UI",
+      "statements": 96.73,
+      "branches": 94.65,
+      "functions": 98.12,
+      "lines": 99.33
+    }
+  },
+  "reviewIsolation": {
+    "recordingContexts": 9,
+    "packageContexts": 3,
+    "drawerContexts": 2,
+    "storageCalls": 0,
+    "existingSaveSentinelsUnchanged": true,
+    "formalConditionEvidenceMigration": "Pending user visual approval",
+    "sampleBudgets": "Separate in-memory restoration and night ledgers, labeled in UI",
+    "residentVisualSetup": "All three existing residents seeded for review only"
+  },
+  "screenshots": {
+    "dimensionsAndCount": {
+      "390×844": 48,
+      "360×800": 8
+    },
+    "drawerSettlingMs": 500,
+    "drawerProvenance": "drawer-capture.json"
+  },
+  "videos": [
+    {
+      "file": "receipt-lifecycle-and-proof-live.mp4",
+      "seconds": 37.966667,
+      "bytes": 1378886,
+      "playbackRate": 1
+    },
+    {
+      "file": "night-basic-36s-live.mp4",
+      "seconds": 37.066667,
+      "bytes": 1555541,
+      "playbackRate": 1
+    },
+    {
+      "file": "night-complete-36s-live.mp4",
+      "seconds": 37.4,
+      "bytes": 1605817,
+      "playbackRate": 1
+    },
+    {
+      "file": "resident-daily-15s-live.mp4",
+      "seconds": 16.433333,
+      "bytes": 863643,
+      "playbackRate": 1
+    },
+    {
+      "file": "day-night-cycle-308s-live.mp4",
+      "seconds": 309.033333,
+      "bytes": 14396683,
+      "playbackRate": 1
+    }
+  ],
+  "recordingMethod": "Actual wall-clock continuous mobile touch emulation. No injected player save, simulation clock, money, or evidence. The 30-second event deliberately observes source night 40.2–60 seconds through the documented piecewise mapping, followed by six-second dawn. The complete cycle uses real 240-second day and 60-second night.",
+  "economy": {
+    "report": "economy.json",
+    "candidateSourceSha256": "98a3da91f4224f74f9ade2940c31a95655a4cec83641ae1191397466e3ac658c",
+    "checks": {
+      "profiles": 192,
+      "rows": 1344,
+      "negativeBalances": 0,
+      "accountingErrors": 0,
+      "duplicateCharges": 0,
+      "maintenanceOverIncomeBudget": 0,
+      "firstHourAccumulationDeficits": 0,
+      "legacyRestorationCharges": 0,
+      "floorEfficiency": 0.8
+    },
+    "legacyBalanceIncluded": 27049,
+    "candidateOnly": true
+  },
+  "package": {
+    "version": "0.3.4",
+    "sourceCommit": "95d4609cd0852c549eb348096c2ee9300d5b7506",
+    "archive": "releases/taptap/loststar-0.3.4-95d4609-week1-h5.zip",
+    "bytes": 4034693,
+    "sha256": "8047489a9b0adc51b91ee19fda567be87371b3af41e6f0b2d8e30d771a745226",
+    "files": 75,
+    "uncompressedBytes": 4156027,
+    "entry": "loststar-week1/index.html"
+  },
+  "packageValidation": {
+    "resultsFile": "package-smoke.json",
+    "relativeSubdirectory": "/loststar-week1/",
+    "nativeTouchEngines": [
+      {
+        "engine": "chromium",
+        "viewport": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      {
+        "engine": "chromium",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      {
+        "engine": "webkit",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      }
+    ],
+    "pageAndHTTPErrors": 0
+  },
+  "assets": {
+    "runtimeFiles": 17,
+    "runtimeBytes": 680863,
+    "residentFrames": 6,
+    "residentBytes": 378660,
+    "mainSourcePngFiles": 12,
+    "mainSourcePngBytes": 12404733,
+    "independentReexportHashesMatch": true,
+    "provenance": "assets/src/generated/v034/README.md"
+  },
+  "performance": {
+    "host": {
+      "cpu": "Apple M2 Pro",
+      "platform": "darwin"
+    },
+    "scope": "Desktop separate six-second sampling after all video recording, no simultaneous recording. Paper includes the real 4.5-second excavation and idle remainder. Canvas CPU calls exclude GPU completion. WebKit short samples may be quantized.",
+    "raw": "recordings.json",
+    "results": [
+      {
+        "engine": "chromium",
+        "world": {
+          "windowMs": 6013.800000011921,
+          "p95RafMs": 16.700000000000728,
+          "over50ms": 0,
+          "scene": {
+            "frames": 360,
+            "medianFrameMs": 16.69999998807907,
+            "p95FrameMs": 18,
+            "meanDrawMs": 1.690858726686388,
+            "canvasPixels": 615680,
+            "canvasSize": {
+              "width": 832,
+              "height": 740
+            },
+            "renderer": "Canvas2D / independent 2.5D layers"
+          }
+        },
+        "paper": {
+          "windowMs": 6007.699999988079,
+          "uniqueFrames": 113,
+          "actualHz": 18.8091948666252,
+          "meanDrawMs": 3.5938053097345133,
+          "p95DrawMs": 4.8,
+          "maxDrawMs": 5.3
+        }
+      },
+      {
+        "engine": "webkit",
+        "world": {
+          "windowMs": 6008,
+          "p95RafMs": 18,
+          "over50ms": 0,
+          "scene": {
+            "frames": 361,
+            "medianFrameMs": 17,
+            "p95FrameMs": 19,
+            "meanDrawMs": 0.7928176795580111,
+            "canvasPixels": 615680,
+            "canvasSize": {
+              "width": 832,
+              "height": 740
+            },
+            "renderer": "Canvas2D / independent 2.5D layers"
+          }
+        },
+        "paper": {
+          "windowMs": 6016,
+          "uniqueFrames": 107,
+          "actualHz": 17.78590425531915,
+          "meanDrawMs": 1.7850467289719627,
+          "p95DrawMs": 3,
+          "maxDrawMs": 3
+        }
+      }
+    ]
+  },
+  "rootVisualReview": {
+    "method": "Original PNG and native-scale audits, actual UI screenshots, repeated sampled strips from final continuous recordings including the patrol handoff",
+    "candidateVisualIssues": [
+      "Amber patch edge slightly bright",
+      "New bird pose approximately 14 percent taller than old standing pose",
+      "Paper-ghost design final fold remains restrained",
+      "First two cycle incidents retain existing patrol choreography"
+    ]
+  },
+  "pending": [
+    "User review and November 10 freeze decision",
+    "Physical TapTap phone appearance, lock-screen recovery, heat and long sessions",
+    "Formal condition/evidence/currency integration and concurrent-save migration tests after visual approval",
+    "Other five restoration sequences and two additional anomaly animations after quality approval"
+  ]
+}

@@ -1,0 +1,84 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>失物星球 V0.3.6 动作样板审核</title>
+<style>body{margin:0;background:#171324;color:#efdfc9;font:15px/1.7 system-ui,sans-serif}main{max-width:1120px;margin:auto;padding:28px 20px}h1{font-size:26px}h2{margin-top:38px;color:#e0b37f}a{color:#d7beec}p{max-width:850px}.concepts{display:grid;grid-template-columns:1fr 1fr;gap:18px}.concepts img{width:100%;height:auto}.media{display:flex;overflow-x:auto;gap:14px;padding:10px 0}.media figure{margin:0;flex:0 0 260px}.media img,.media video{display:block;width:260px;height:auto;border:1px solid #745558}.media figcaption{font-size:12px;margin-top:7px;color:#b8a6be}code{color:#ebc28c}@media(max-width:700px){.concepts{grid-template-columns:1fr}.media figure{flex-basis:230px}.media img,.media video{width:230px}}</style>
+<main><h1>失物星球 · V0.3.6 动作样板</h1>
+<p>本轮按最新PR收敛为一处星雾和一件收据。概念原图与实际Canvas画面分别展示，动作样板使用隔离内存数据。手机亮度、触感和锁屏恢复由TapTap扫码复核。</p>
+<p>运行源码 <code>26521b4b3de1e606baa14a7d77b5f44379c2e8b8</code>。全部视频使用正常时间，来自桌面浏览器原生触控仿真。</p>
+<h2>已认可概念原图</h2><div class="concepts">
+<a href="../../design/v036/reference/失物星球探索流程概念图.png"><img src="../../design/v036/reference/失物星球探索流程概念图.png" alt="已认可的探索流程概念原图"></a>
+<a href="../../design/v036/reference/失物星球_奇物修复展陈方案.png"><img src="../../design/v036/reference/失物星球_奇物修复展陈方案.png" alt="已认可的奇物修复展陈概念原图"></a></div>
+<p>保留紫蓝与暖金、紫粉圆卷雾、原物材质、局部扫描与真实工具接触。球体沿用现有完整退货箱星，收据保留原卷纸身份、RET-031与空签栏，周边装饰和演出数量作了收敛。</p>
+<h2>chromium-360-fog</h2><div class="media">
+<figure><video controls playsinline preload="metadata" src="chromium-360-fog-live.mp4"></video><figcaption>连续实录 22.24 秒</figcaption></figure>
+<figure><a href="chromium-360-fog-00-undetected.png"><img loading="lazy" src="chromium-360-fog-00-undetected.png" alt="chromium-360-fog undetected"></a><figcaption>undetected · 工作时间 1.02 秒</figcaption></figure>
+<figure><a href="chromium-360-fog-01-scanning.png"><img loading="lazy" src="chromium-360-fog-01-scanning.png" alt="chromium-360-fog scanning"></a><figcaption>scanning · 工作时间 7.60 秒</figcaption></figure>
+<figure><a href="chromium-360-fog-02-clearing.png"><img loading="lazy" src="chromium-360-fog-02-clearing.png" alt="chromium-360-fog clearing"></a><figcaption>clearing · 工作时间 11.52 秒</figcaption></figure>
+<figure><a href="chromium-360-fog-03-approaching.png"><img loading="lazy" src="chromium-360-fog-03-approaching.png" alt="chromium-360-fog approaching"></a><figcaption>approaching · 工作时间 15.08 秒</figcaption></figure>
+<figure><a href="chromium-360-fog-04-revealed.png"><img loading="lazy" src="chromium-360-fog-04-revealed.png" alt="chromium-360-fog revealed"></a><figcaption>revealed · 工作时间 18.00 秒</figcaption></figure>
+<figure><a href="chromium-360-fog-video-final.png"><img loading="lazy" src="chromium-360-fog-video-final.png" alt="chromium-360-fog revealed"></a><figcaption>revealed · 工作时间 18.00 秒</figcaption></figure>
+</div>
+<h2>chromium-360-receipt</h2><div class="media">
+<figure><video controls playsinline preload="metadata" src="chromium-360-receipt-live.mp4"></video><figcaption>连续实录 36.20 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-00-soil.png"><img loading="lazy" src="chromium-360-receipt-00-soil.png" alt="chromium-360-receipt soil"></a><figcaption>soil · 工作时间 1.01 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-01-release.png"><img loading="lazy" src="chromium-360-receipt-01-release.png" alt="chromium-360-receipt release"></a><figcaption>release · 工作时间 3.01 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-02-support.png"><img loading="lazy" src="chromium-360-receipt-02-support.png" alt="chromium-360-receipt support"></a><figcaption>support · 工作时间 5.56 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-03-dirty.png"><img loading="lazy" src="chromium-360-receipt-03-dirty.png" alt="chromium-360-receipt dirty"></a><figcaption>dirty · 工作时间 7.06 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-04-cleaning.png"><img loading="lazy" src="chromium-360-receipt-04-cleaning.png" alt="chromium-360-receipt cleaning"></a><figcaption>cleaning · 工作时间 10.84 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-05-clean.png"><img loading="lazy" src="chromium-360-receipt-05-clean.png" alt="chromium-360-receipt clean"></a><figcaption>clean · 工作时间 14.61 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-06-repairing.png"><img loading="lazy" src="chromium-360-receipt-06-repairing.png" alt="chromium-360-receipt repairing"></a><figcaption>repairing · 工作时间 16.84 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-07-repairing.png"><img loading="lazy" src="chromium-360-receipt-07-repairing.png" alt="chromium-360-receipt repairing"></a><figcaption>repairing · 工作时间 19.01 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-08-display.png"><img loading="lazy" src="chromium-360-receipt-08-display.png" alt="chromium-360-receipt display"></a><figcaption>display · 工作时间 23.04 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-09-trying.png"><img loading="lazy" src="chromium-360-receipt-09-trying.png" alt="chromium-360-receipt trying"></a><figcaption>trying · 工作时间 26.11 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-10-complete.png"><img loading="lazy" src="chromium-360-receipt-10-complete.png" alt="chromium-360-receipt complete"></a><figcaption>complete · 工作时间 28.00 秒</figcaption></figure>
+<figure><a href="chromium-360-receipt-video-final.png"><img loading="lazy" src="chromium-360-receipt-video-final.png" alt="chromium-360-receipt complete"></a><figcaption>complete · 工作时间 28.00 秒</figcaption></figure>
+</div>
+<h2>chromium-390-fog</h2><div class="media">
+<figure><video controls playsinline preload="metadata" src="chromium-390-fog-live.mp4"></video><figcaption>连续实录 22.28 秒</figcaption></figure>
+<figure><a href="chromium-390-fog-00-undetected.png"><img loading="lazy" src="chromium-390-fog-00-undetected.png" alt="chromium-390-fog undetected"></a><figcaption>undetected · 工作时间 1.02 秒</figcaption></figure>
+<figure><a href="chromium-390-fog-01-scanning.png"><img loading="lazy" src="chromium-390-fog-01-scanning.png" alt="chromium-390-fog scanning"></a><figcaption>scanning · 工作时间 7.56 秒</figcaption></figure>
+<figure><a href="chromium-390-fog-02-clearing.png"><img loading="lazy" src="chromium-390-fog-02-clearing.png" alt="chromium-390-fog clearing"></a><figcaption>clearing · 工作时间 11.55 秒</figcaption></figure>
+<figure><a href="chromium-390-fog-03-approaching.png"><img loading="lazy" src="chromium-390-fog-03-approaching.png" alt="chromium-390-fog approaching"></a><figcaption>approaching · 工作时间 15.03 秒</figcaption></figure>
+<figure><a href="chromium-390-fog-04-revealed.png"><img loading="lazy" src="chromium-390-fog-04-revealed.png" alt="chromium-390-fog revealed"></a><figcaption>revealed · 工作时间 18.00 秒</figcaption></figure>
+<figure><a href="chromium-390-fog-video-final.png"><img loading="lazy" src="chromium-390-fog-video-final.png" alt="chromium-390-fog revealed"></a><figcaption>revealed · 工作时间 18.00 秒</figcaption></figure>
+</div>
+<h2>chromium-390-receipt</h2><div class="media">
+<figure><video controls playsinline preload="metadata" src="chromium-390-receipt-live.mp4"></video><figcaption>连续实录 36.20 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-00-soil.png"><img loading="lazy" src="chromium-390-receipt-00-soil.png" alt="chromium-390-receipt soil"></a><figcaption>soil · 工作时间 1.01 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-01-release.png"><img loading="lazy" src="chromium-390-receipt-01-release.png" alt="chromium-390-receipt release"></a><figcaption>release · 工作时间 3.11 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-02-support.png"><img loading="lazy" src="chromium-390-receipt-02-support.png" alt="chromium-390-receipt support"></a><figcaption>support · 工作时间 5.51 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-03-dirty.png"><img loading="lazy" src="chromium-390-receipt-03-dirty.png" alt="chromium-390-receipt dirty"></a><figcaption>dirty · 工作时间 7.09 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-04-cleaning.png"><img loading="lazy" src="chromium-390-receipt-04-cleaning.png" alt="chromium-390-receipt cleaning"></a><figcaption>cleaning · 工作时间 10.88 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-05-clean.png"><img loading="lazy" src="chromium-390-receipt-05-clean.png" alt="chromium-390-receipt clean"></a><figcaption>clean · 工作时间 14.56 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-06-repairing.png"><img loading="lazy" src="chromium-390-receipt-06-repairing.png" alt="chromium-390-receipt repairing"></a><figcaption>repairing · 工作时间 16.91 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-07-repairing.png"><img loading="lazy" src="chromium-390-receipt-07-repairing.png" alt="chromium-390-receipt repairing"></a><figcaption>repairing · 工作时间 18.98 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-08-display.png"><img loading="lazy" src="chromium-390-receipt-08-display.png" alt="chromium-390-receipt display"></a><figcaption>display · 工作时间 23.09 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-09-trying.png"><img loading="lazy" src="chromium-390-receipt-09-trying.png" alt="chromium-390-receipt trying"></a><figcaption>trying · 工作时间 26.08 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-10-complete.png"><img loading="lazy" src="chromium-390-receipt-10-complete.png" alt="chromium-390-receipt complete"></a><figcaption>complete · 工作时间 28.00 秒</figcaption></figure>
+<figure><a href="chromium-390-receipt-video-final.png"><img loading="lazy" src="chromium-390-receipt-video-final.png" alt="chromium-390-receipt complete"></a><figcaption>complete · 工作时间 28.00 秒</figcaption></figure>
+</div>
+<h2>webkit-390-fog</h2><div class="media">
+<figure><video controls playsinline preload="metadata" src="webkit-390-fog-live.mp4"></video><figcaption>连续实录 22.84 秒</figcaption></figure>
+<figure><a href="webkit-390-fog-00-undetected.png"><img loading="lazy" src="webkit-390-fog-00-undetected.png" alt="webkit-390-fog undetected"></a><figcaption>undetected · 工作时间 1.02 秒</figcaption></figure>
+<figure><a href="webkit-390-fog-01-scanning.png"><img loading="lazy" src="webkit-390-fog-01-scanning.png" alt="webkit-390-fog scanning"></a><figcaption>scanning · 工作时间 7.62 秒</figcaption></figure>
+<figure><a href="webkit-390-fog-02-clearing.png"><img loading="lazy" src="webkit-390-fog-02-clearing.png" alt="webkit-390-fog clearing"></a><figcaption>clearing · 工作时间 11.59 秒</figcaption></figure>
+<figure><a href="webkit-390-fog-03-approaching.png"><img loading="lazy" src="webkit-390-fog-03-approaching.png" alt="webkit-390-fog approaching"></a><figcaption>approaching · 工作时间 15.01 秒</figcaption></figure>
+<figure><a href="webkit-390-fog-04-revealed.png"><img loading="lazy" src="webkit-390-fog-04-revealed.png" alt="webkit-390-fog revealed"></a><figcaption>revealed · 工作时间 18.00 秒</figcaption></figure>
+<figure><a href="webkit-390-fog-video-final.png"><img loading="lazy" src="webkit-390-fog-video-final.png" alt="webkit-390-fog revealed"></a><figcaption>revealed · 工作时间 18.00 秒</figcaption></figure>
+</div>
+<h2>webkit-390-receipt</h2><div class="media">
+<figure><video controls playsinline preload="metadata" src="webkit-390-receipt-live.mp4"></video><figcaption>连续实录 36.40 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-00-soil.png"><img loading="lazy" src="webkit-390-receipt-00-soil.png" alt="webkit-390-receipt soil"></a><figcaption>soil · 工作时间 1.01 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-01-release.png"><img loading="lazy" src="webkit-390-receipt-01-release.png" alt="webkit-390-receipt release"></a><figcaption>release · 工作时间 3.01 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-02-support.png"><img loading="lazy" src="webkit-390-receipt-02-support.png" alt="webkit-390-receipt support"></a><figcaption>support · 工作时间 5.53 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-03-dirty.png"><img loading="lazy" src="webkit-390-receipt-03-dirty.png" alt="webkit-390-receipt dirty"></a><figcaption>dirty · 工作时间 7.10 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-04-cleaning.png"><img loading="lazy" src="webkit-390-receipt-04-cleaning.png" alt="webkit-390-receipt cleaning"></a><figcaption>cleaning · 工作时间 10.85 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-05-clean.png"><img loading="lazy" src="webkit-390-receipt-05-clean.png" alt="webkit-390-receipt clean"></a><figcaption>clean · 工作时间 14.58 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-06-repairing.png"><img loading="lazy" src="webkit-390-receipt-06-repairing.png" alt="webkit-390-receipt repairing"></a><figcaption>repairing · 工作时间 16.90 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-07-repairing.png"><img loading="lazy" src="webkit-390-receipt-07-repairing.png" alt="webkit-390-receipt repairing"></a><figcaption>repairing · 工作时间 18.93 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-08-display.png"><img loading="lazy" src="webkit-390-receipt-08-display.png" alt="webkit-390-receipt display"></a><figcaption>display · 工作时间 23.10 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-09-trying.png"><img loading="lazy" src="webkit-390-receipt-09-trying.png" alt="webkit-390-receipt trying"></a><figcaption>trying · 工作时间 26.09 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-10-complete.png"><img loading="lazy" src="webkit-390-receipt-10-complete.png" alt="webkit-390-receipt complete"></a><figcaption>complete · 工作时间 28.00 秒</figcaption></figure>
+<figure><a href="webkit-390-receipt-video-final.png"><img loading="lazy" src="webkit-390-receipt-video-final.png" alt="webkit-390-receipt complete"></a><figcaption>complete · 工作时间 28.00 秒</figcaption></figure>
+</div>
+<h2>复现与审核记录</h2><p><a href="evidence.json">完整阶段、触控和存档访问记录</a> · <a href="performance.json">独占绘制采样</a> · <a href="../../docs/31_V036_ISOLATED_VISUAL_SAMPLES.md">实施、验收与待审范围</a></p></main></html>

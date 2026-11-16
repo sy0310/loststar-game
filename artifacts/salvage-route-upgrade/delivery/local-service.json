@@ -1,0 +1,32 @@
+{
+  "oldPid": 94978,
+  "oldCommand": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -m http.server 4283 --bind 127.0.0.1 --directory releases/salvage-fixed",
+  "oldDirectory": "/Users/shuhuayu/loststar-game/releases/salvage-fixed",
+  "oldFilesUnmodified": true,
+  "fallback": {
+    "pid": 5713,
+    "port": 4284,
+    "directory": "/Users/shuhuayu/loststar-game/releases/salvage-fixed",
+    "source": "b317c8a",
+    "purpose": "Read-only old-code standby; rollback must restore port4283 to reuse original browser origin."
+  },
+  "current": {
+    "pid": 6720,
+    "port": 4283,
+    "directory": "/Users/shuhuayu/loststar-game/releases/salvage-v02-b26455a",
+    "source": "b26455ada31fe1ab780905cdb1c26f1387c082bb",
+    "url": "http://127.0.0.1:4283/loststar-salvage/",
+    "detached": true,
+    "command": [
+      "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "/Users/shuhuayu/loststar-game/releases/salvage-v02-serve.py"
+    ],
+    "cacheControl": "no-cache, no-store, must-revalidate",
+    "packageBytesTransformed": false,
+    "resolvedUrl": "http://127.0.0.1:4283/loststar-salvage/b26455a/",
+    "redirectReason": "Immutable same-origin asset URLs avoid stale WebView cache without clearing storage or rewriting ZIP bytes"
+  },
+  "rollbackCommand": "python3 -m http.server 4283 --bind 127.0.0.1 --directory /Users/shuhuayu/loststar-game/releases/salvage-fixed",
+  "privateSaveBackups": "Retained locally; actual files and contents not committed",
+  "rollbackNote": "Stop only the recorded current preview PID, restore old directory on4283, and explicitly restore the retained schema2 export if rolling back code. The4284 standby uses another origin and is not the player save."
+}

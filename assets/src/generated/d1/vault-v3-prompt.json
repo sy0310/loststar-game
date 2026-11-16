@@ -1,0 +1,10 @@
+{
+  "tool": "image_gen.imagegen built-in",
+  "date": "2026-11-03",
+  "target": "receipt-vault-l3-v2.png",
+  "prompt": "Use case: background-extraction / precise-object-edit. This is the existing isolated brass display frame sprite to edit. Make ONE surgical correction only: REMOVE THE ENTIRE WHITE PANEL INSIDE THE ARCH and make that inside opening a completely EMPTY HOLE with alpha exactly zero, just like the transparent corners around the object. The viewer must be able to see a separately drawn museum wall through the hole. NO GLASS WHATSOEVER, no white glass, no purple glass, no fog, no translucent fill, no reflections inside the opening, no gradient, no replacement background, no placeholder white or checkerboard pixels. An EMPTY DOORWAY through a metal frame, not a window material. Preserve the detailed brass and purple metal frame, its silhouette, proportions, crown, side joints, lamps, teal instruments and oval foot EXACTLY. Preserve all metal colour and intricate pixel clusters. Also ensure all pixels outside the metal silhouette have truly zero alpha, with no outer drop shadow or glow. The final image is the standalone metal outer frame only with a large clean alpha-zero hole, no specimen or paper. Keep the whole object in frame and the existing transparent margins.",
+  "reason": "V2 window incorrectly had white fill alpha235–237, rejected. V3 explicitly requests no glass and a fully empty opening.",
+  "output": "receipt-vault-l3-v3.png",
+  "generatedPath": "/Users/shuhuayu/.codex/generated_images/01a1a256-4740-7b02-bc7d-0c792f0f41e1/exec-bea38360-eabb-47a7-8e6c-681268732b12.png",
+  "review": "D1 candidate only. Runtime export fixed-receipt envelope has zero pixels at alpha>=16; use independent runtime glass. User visual acceptance remains pending."
+}

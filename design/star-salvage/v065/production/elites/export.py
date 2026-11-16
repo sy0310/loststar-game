@@ -1,0 +1,191 @@
+"""Export reviewed v065 elite bodies as native pixels and editable material layers.
+
+Generated originals remain unchanged. Production geometry keeps the original
+aspect ratio, and runtime exports use nearest-neighbour integer scaling.
+"""
+from pathlib import Path
+from PIL import Image, ImageDraw, ImageFont
+import hashlib
+import io
+import json
+import xml.etree.ElementTree as ET
+import zipfile
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[4]
+RUNTIME = ROOT / 'prototypes/salvage-survivor-demo/assets/v065/elites'
+COLORS = json.loads((HERE / 'palette.json').read_text())['colors']
+RGB = [tuple(bytes.fromhex(color[1:])) for color in COLORS]
+BODY_COLORS = RGB[:28]
+GOLD_COLORS = set(RGB[10:15])
+ENERGY_COLORS = set(RGB[15:25] + RGB[28:])
+
+
+def png_bytes(image):
+    stream = io.BytesIO()
+    image.save(stream, format='PNG')
+    return stream.getvalue()
+
+
+def record(path):
+    return {'path': path.relative_to(ROOT).as_posix(),
+            'bytes': path.stat().st_size,
+            'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
+def write_archive(archive, name, data, stored=False):
+    entry = zipfile.ZipInfo(name, (2026, 11, 12, 0, 0, 0))
+    entry.compress_type = zipfile.ZIP_STORED if stored else zipfile.ZIP_DEFLATED
+    archive.writestr(entry, data)
+
+
+def normalize(path, size):
+    image = Image.open(path).convert('RGBA')
+    # Keep the solid generated hull and remove low-opacity exterior fringe.
+    alpha = image.getchannel('A').point(lambda value: 255 if value >= 200 else 0)
+    image.putalpha(alpha)
+    crop = image.getbbox()
+    if not crop:
+        raise ValueError(f'No solid body in {path}')
+    image = image.crop(crop)
+    scale = min((size[0] - 2) / image.width, (size[1] - 2) / image.height)
+    width = max(1, round(image.width * scale))
+    height = max(1, round(image.height * scale))
+    reduced = image.resize((width, height), Image.Resampling.BOX)
+    native = Image.new('RGBA', size)
+    offset_x = (size[0] - width) // 2
+    offset_y = (size[1] - height) // 2
+    for y in range(height):
+        for x in range(width):
+            red, green, blue, opacity = reduced.getpixel((x, y))
+            if opacity < 110:
+                continue
+            # Existing weapon/effect violets are reserved for the physical
+            # core. Metal stays on the shared actor palette.
+            purple_energy = red - green > 30 and blue - green > 45
+            candidates = RGB if purple_energy else BODY_COLORS
+            color = min(candidates, key=lambda candidate:
+                        (candidate[0] - red) ** 2 +
+                        (candidate[1] - green) ** 2 +
+                        (candidate[2] - blue) ** 2)
+            native.putpixel((x + offset_x, y + offset_y), (*color, 255))
+    return native, list(crop)
+
+
+def save_openraster(path, image):
+    layers = {name: Image.new('RGBA', image.size) for name in ['armor', 'gold', 'energy']}
+    for y in range(image.height):
+        for x in range(image.width):
+            pixel = image.getpixel((x, y))
+            if not pixel[3]:
+                continue
+            if pixel[:3] in GOLD_COLORS:
+                material = 'gold'
+            elif pixel[:3] in ENERGY_COLORS:
+                material = 'energy'
+            else:
+                material = 'armor'
+            layers[material].putpixel((x, y), pixel)
+    merged = Image.new('RGBA', image.size)
+    for layer in layers.values():
+        merged = Image.alpha_composite(merged, layer)
+    assert merged.tobytes() == image.tobytes()
+    tree = ET.Element('image', {'w': str(image.width), 'h': str(image.height),
+                              'name': path.stem, 'version': '0.0.3'})
+    stack = ET.SubElement(tree, 'stack')
+    with zipfile.ZipFile(path, 'w', zipfile.ZIP_DEFLATED) as archive:
+        write_archive(archive, 'mimetype', 'image/openraster', stored=True)
+        for name in reversed(layers):
+            source = f'data/{name}.png'
+            ET.SubElement(stack, 'layer', {'name': name, 'src': source, 'x': '0', 'y': '0',
+                                         'opacity': '1.0', 'visibility': 'visible',
+                                         'composite-op': 'svg:src-over'})
+            write_archive(archive, source, png_bytes(layers[name]))
+        write_archive(archive, 'stack.xml', ET.tostring(tree, encoding='utf-8', xml_declaration=True))
+        write_archive(archive, 'mergedimage.png', png_bytes(image))
+
+
+def contact(rows):
+    sheet = Image.new('RGB', (800, 470), '#17172b')
+    draw = ImageDraw.Draw(sheet)
+    try:
+        font = ImageFont.truetype('/System/Library/Fonts/Menlo.ttc', 14)
+    except OSError:
+        font = ImageFont.load_default()
+    for index, row in enumerate(rows):
+        left = index * 400
+        draw.rectangle((left + 8, 8, left + 392, 462), fill='#242036', outline='#534b65')
+        draw.text((left + 24, 28), row['id'].upper(), font=font, fill='#f4c57a')
+        image = Image.open(HERE / 'native' / f"{row['id']}@1x.png").convert('RGBA')
+        width, height = row['nativeSize']
+        large = image.resize((width * 5, height * 5), Image.Resampling.NEAREST)
+        sheet.paste(large, (left + (400 - large.width) // 2, 74), large)
+        actual = image.resize((width * 2, height * 2), Image.Resampling.NEAREST)
+        sheet.paste(actual, (left + 38, 338), actual)
+        draw.text((left + 164, 359), f'{width}x{height} native / 2x', font=font, fill='#73d9e8')
+    sheet.save(HERE / 'contact-sheet.png')
+
+
+def main():
+    RUNTIME.mkdir(parents=True, exist_ok=True)
+    (HERE / 'native').mkdir(exist_ok=True)
+    edits = json.loads((HERE / 'native-edits.json').read_text())['actors']
+    geometry = {
+        'elite_reaver': {
+            'nozzleCenters': [[17.5, 29.5], [22.5, 29.5]],
+            'exhaustAnchors': [[17.5, 31], [22.5, 31]],
+            'weaponAnchors': [[6.5, 7.5], [33.5, 7.5]],
+        },
+        'elite_hive': {
+            'nozzleCenters': [[19.5, 37.5], [27.5, 37.5]],
+            'exhaustAnchors': [[19.5, 39], [27.5, 39]],
+            'weaponAnchors': [[8, 14], [39, 14]],
+            'launchAnchors': [[8, 15.5], [39, 15.5], [8, 23.5], [39, 23.5]],
+        },
+    }
+    rows = []
+    for prompt in json.loads((HERE / 'prompts.json').read_text()):
+        actor_id, size = prompt['id'], tuple(prompt['nativeSize'])
+        original = HERE / 'originals' / f'{actor_id}-generated.png'
+        image, crop = normalize(original, size)
+        for edit in edits.get(actor_id, []):
+            color = tuple(bytes.fromhex(edit['color'][1:]))
+            assert color in RGB
+            assert image.getpixel((edit['x'], edit['y']))[3]
+            image.putpixel((edit['x'], edit['y']), (*color, 255))
+        native = HERE / 'native' / f'{actor_id}@1x.png'
+        image.save(native)
+        ora = HERE / 'native' / f'{actor_id}.ora'
+        save_openraster(ora, image)
+        paths = [native, ora, original]
+        for scale in [2, 4]:
+            path = RUNTIME / f'{actor_id}@{scale}x.png'
+            image.resize((size[0] * scale, size[1] * scale), Image.Resampling.NEAREST).save(path)
+            paths.append(path)
+        rows.append({
+            'id': actor_id, 'kind': 'actor', 'nativeSize': list(size),
+            'displaySize': [size[0] * 2, size[1] * 2],
+            'center': [size[0] / 2, size[1] / 2], 'forward': [0, -1],
+            'collisionCenter': [size[0] / 2, size[1] / 2], 'collisionRadius': prompt['radius'],
+            **geometry[actor_id], 'exhaustDirection': [0, 1],
+            'weaponDirection': [0, -1],
+            'contentBBox': list(image.getbbox()), 'originalCrop': crop,
+            'frames': [{'x': 0, 'y': 0, 'width': size[0], 'height': size[1],
+                        'anchor': [size[0] / 2, size[1] / 2]}],
+            'files': [record(path) for path in paths],
+        })
+    source_names = ['export.py', 'verify.py', 'README.md', 'prompts.json',
+                    'palette.json', 'native-edits.json']
+    manifest = {
+        'source': 'Built-in imagegen originals, native palette/grid conversion, material-separated editable ORA',
+        'palette': 'palette.json', 'runtimeScale': 2, 'assets': rows,
+        'sourceInputs': [record(HERE / name) for name in source_names],
+        'userVisualApproval': 'PENDING', 'physicalPhoneTested': False,
+    }
+    (HERE / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+    contact(rows)
+    print('Exported two elite bodies, 1x PNG / editable ORA / exact 2x and 4x')
+
+
+if __name__ == '__main__':
+    main()

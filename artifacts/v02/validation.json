@@ -1,0 +1,72 @@
+{
+  "version": "0.2.0",
+  "sourceCommit": "eee74ae685d683be79aad2630a519827f5983f39",
+  "designAssets": "20/20 verified",
+  "unitTests": {
+    "passed": 41,
+    "failed": 0,
+    "scope": [
+      "game engine",
+      "persistence",
+      "motion",
+      "growth",
+      "star-chart",
+      "guard model"
+    ],
+    "coverage": {
+      "lines": 100,
+      "functions": 100,
+      "statements": 97.91,
+      "branches": 96.83,
+      "include": [
+        "src/game/**",
+        "src/prototype/guard-engine.ts"
+      ]
+    }
+  },
+  "browserTests": {
+    "passed": 76,
+    "failed": 0,
+    "projects": [
+      "mobile-360",
+      "mobile-390",
+      "desktop",
+      "webkit-390",
+      "touch-chromium",
+      "touch-webkit"
+    ]
+  },
+  "ci": [
+    {
+      "id": 41581512675,
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/41581512675"
+    },
+    {
+      "id": 41581505200,
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/41581505200"
+    }
+  ],
+  "package": {
+    "game": "失物星球",
+    "version": "0.2.0",
+    "sourceCommit": "eee74ae685d683be79aad2630a519827f5983f39",
+    "archive": "releases/taptap/loststar-0.2.0-eee74ae-h5.zip",
+    "bytes": 2636121,
+    "sha256": "1e9bbaec66b58591fe8423cbed51bfae3d18691803f2ae482ff14196660e0d59",
+    "files": 50,
+    "uncompressedBytes": 2730379,
+    "entry": "loststar/index.html",
+    "orientation": "portrait",
+    "purpose": "V0.2 first-planet game with opt-in, independently saved night mode"
+  },
+  "physicalPhone": {
+    "p0Version": 423778,
+    "p0Feedback": "三项目前都正常",
+    "v02Version": 424044,
+    "v02Status": "Pending user QR playtest; no connected physical device; do not infer phone performance from desktop emulation"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "checkedDate": "2026-11-13",
+  "source": "TapTap CLI read-only app get-app-module",
+  "developerId": 512759,
+  "appId": 1022667,
+  "revision": 1199309,
+  "moduleIds": ["basic-info", "assets-upload"],
+  "catalogSourceVersion": "1.0.77",
+  "cliVersion": "2026.11.12",
+  "fields": {
+    "icon": {
+      "minimumSize": [512, 512],
+      "aspectRatio": [1, 1],
+      "formats": ["PNG", "JPEG"],
+      "contentNote": "必须为方图，禁止自行切圆角"
+    },
+    "banner_4": {
+      "minimumSize": [1920, 1080],
+      "aspectRatio": [16, 9],
+      "formats": ["PNG", "JPEG"],
+      "maximumFileSizeMb": 4
+    },
+    "square_promo_image": {
+      "minimumSize": [1440, 1440],
+      "aspectRatio": [1, 1],
+      "formats": ["PNG", "JPEG"],
+      "maximumFileSizeMb": 4
+    },
+    "screenshots": {
+      "minimumItems": 3,
+      "maximumItems": 10
+    },
+    "gameplay_demo_video": {
+      "minimumSize": [540, 540],
+      "minimumSeconds": 15,
+      "maximumSeconds": 1800,
+      "formats": ["mp4", "mov"],
+      "requirements": [
+        "需充分演示核心玩法",
+        "前5秒内展示核心玩法，核心玩法展示至少持续10秒",
+        "请勿使用额外人声配音及字幕",
+        "请勿使用画中画或露出手机等设备UI"
+      ]
+    }
+  },
+  "localContentGuide": {
+    "header_banner": "当前本地生成指南建议横图仅使用准确游戏标题，因此保留旧有口号版并另备仅标题版本。",
+    "square_promo_image": "方图沿用同一飞船、Boss、星环、标题和光源。",
+    "status": "Local technical validation is independent of visual review and platform moderation."
+  },
+  "conservativeMaximumFileSizeBytes": 4000000
+}

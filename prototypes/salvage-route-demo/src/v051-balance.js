@@ -1,0 +1,1 @@
+globalThis.LostCargoV051Balance={"version":"0.5.1","status":"FROZEN_FOR_DEVELOPMENT_SELF_TEST","gate":{"depths":[3,5],"fuel":8,"candidateFuels":[8,10,12]},"discovery":{"initialEligibleVoyages":2,"drySafeReturns":3},"preservedPrices":"../v041/BALANCE_V041.json","preservedMarket":"../v05/BALANCE_V05.json"};

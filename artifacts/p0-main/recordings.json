@@ -1,0 +1,1228 @@
+{
+  "at": "2026-11-03T06:49:14.791Z",
+  "build": "0.2.2 · 14cc368",
+  "sourceCommit": "14cc368e563b311c61b5fb4b2fa076fd85dfb2a7",
+  "fixture": "Accelerated engine setup only to obtain the existing full collection; real-time recordings after context initialization. No user browser or save touched.",
+  "host": {
+    "cpu": "Apple M2 Pro",
+    "platform": "darwin",
+    "release": "25.5.0"
+  },
+  "records": [
+    {
+      "name": "home-six-experiments",
+      "seconds": 15.807,
+      "fixture": "Same six containers on the actual base; independent visible experiments triggered with native touchscreen input.",
+      "method": "Production build, real wall-clock Chromium, native touch emulation, 390×844. No fake animation clock. NOT a physical phone."
+    },
+    {
+      "name": "home-robot-30s",
+      "seconds": 30.643,
+      "timeline": [
+        {
+          "wallMs": 1001,
+          "ready": "true",
+          "robotX": "334",
+          "robotY": "918",
+          "robotAction": "walk",
+          "robotTarget": "stamp",
+          "frame": "17"
+        },
+        {
+          "wallMs": 4502,
+          "ready": "true",
+          "robotX": "270",
+          "robotY": "830",
+          "robotAction": "observe",
+          "robotTarget": "stamp",
+          "frame": "83"
+        },
+        {
+          "wallMs": 7501,
+          "ready": "true",
+          "robotX": "270",
+          "robotY": "830",
+          "robotAction": "inspect",
+          "robotTarget": "stamp",
+          "frame": "141"
+        },
+        {
+          "wallMs": 10501,
+          "ready": "true",
+          "robotX": "293",
+          "robotY": "830",
+          "robotAction": "return",
+          "robotTarget": "stamp",
+          "frame": "198"
+        },
+        {
+          "wallMs": 14502,
+          "ready": "true",
+          "robotX": "434",
+          "robotY": "918",
+          "robotAction": "walk",
+          "robotTarget": "tape",
+          "frame": "273"
+        },
+        {
+          "wallMs": 18502,
+          "ready": "true",
+          "robotX": "500",
+          "robotY": "575",
+          "robotAction": "observe",
+          "robotTarget": "tape",
+          "frame": "349"
+        },
+        {
+          "wallMs": 21500,
+          "ready": "true",
+          "robotX": "500",
+          "robotY": "575",
+          "robotAction": "inspect",
+          "robotTarget": "tape",
+          "frame": "406"
+        },
+        {
+          "wallMs": 24501,
+          "ready": "true",
+          "robotX": "448",
+          "robotY": "575",
+          "robotAction": "return",
+          "robotTarget": "tape",
+          "frame": "462"
+        },
+        {
+          "wallMs": 28501,
+          "ready": "true",
+          "robotX": "408",
+          "robotY": "918",
+          "robotAction": "walk",
+          "robotTarget": "bell",
+          "frame": "537"
+        },
+        {
+          "wallMs": 30501,
+          "ready": "true",
+          "robotX": "500",
+          "robotY": "907",
+          "robotAction": "walk",
+          "robotTarget": "bell",
+          "frame": "575"
+        }
+      ],
+      "method": "Production build, real wall-clock Chromium, native touch emulation, 390×844. No fake animation clock. NOT a physical phone."
+    },
+    {
+      "name": "expedition-full-cycle-310s",
+      "seconds": 310.579,
+      "timeline": [
+        {
+          "wallMs": 10067,
+          "worldMs": 10049,
+          "phase": "day",
+          "cycles": 69,
+          "report": null
+        },
+        {
+          "wallMs": 230572,
+          "worldMs": 230524,
+          "phase": "dusk",
+          "cycles": 87,
+          "report": null
+        },
+        {
+          "wallMs": 246072,
+          "worldMs": 246026,
+          "phase": "night",
+          "cycles": 88,
+          "report": null
+        },
+        {
+          "wallMs": 254073,
+          "worldMs": 254024,
+          "phase": "night",
+          "cycles": 88,
+          "report": null
+        },
+        {
+          "wallMs": 266572,
+          "worldMs": 266525,
+          "phase": "night",
+          "cycles": 88,
+          "report": null
+        },
+        {
+          "wallMs": 291071,
+          "worldMs": 291026,
+          "phase": "night",
+          "cycles": 88,
+          "report": null
+        },
+        {
+          "wallMs": 301569,
+          "worldMs": 301526,
+          "phase": "dawn",
+          "cycles": 88,
+          "report": {
+            "number": 1,
+            "clues": 3,
+            "intercepted": 2,
+            "arrived": 1,
+            "summary": "2 位在抵站前完成核对，1 位抵站后由咔哒安全送回。收藏完好，留下清晰记录。",
+            "result": {
+              "model": 2,
+              "configuration": {
+                "slots": [
+                  "tape",
+                  "bell"
+                ],
+                "strengths": [
+                  0,
+                  0
+                ]
+              },
+              "intercepted": 2,
+              "arrived": 1,
+              "escorted": 0,
+              "safeReturned": 3,
+              "clues": 3,
+              "quality": "清晰记录",
+              "actors": [
+                {
+                  "id": 0,
+                  "outcome": "intercepted",
+                  "atMs": 19600,
+                  "slowMs": 6300,
+                  "stunMs": 1100,
+                  "verificationMs": 10500
+                },
+                {
+                  "id": 1,
+                  "outcome": "intercepted",
+                  "atMs": 36600,
+                  "slowMs": 6300,
+                  "stunMs": 1800,
+                  "verificationMs": 10500
+                },
+                {
+                  "id": 2,
+                  "outcome": "arrived",
+                  "atMs": 52800,
+                  "slowMs": 4100,
+                  "stunMs": 1100,
+                  "verificationMs": 9500
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "fixture": "Existing full collection, day starts at zero in a disposable context; entire 240s day + 60s night + dawn runs in real time on one original expedition Canvas.",
+      "method": "Production build, real wall-clock Chromium, native touch emulation, 390×844. No fake animation clock. NOT a physical phone."
+    }
+  ],
+  "performanceSamples": [
+    {
+      "engine": "chromium",
+      "view": "home",
+      "windowMs": 6013.5,
+      "rafSamples": 361,
+      "medianMs": 16.699999999999818,
+      "p95Ms": 16.700000000000728,
+      "museumDraws": 114,
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4173/assets/game-XnzVvnnl.js",
+          "bytes": 42531
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/game-Bh2dwyuo.css",
+          "bytes": 11478
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/robot-DeKHzAPp.webp",
+          "bytes": 45550
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/invader-v02-BvAs1-K9.webp",
+          "bytes": 64110
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/tape-BVXV4CO3.webp",
+          "bytes": 17408
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/bell-QDuCJmEB.webp",
+          "bytes": 34982
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/parcel-globe-DL04UUif.webp",
+          "bytes": 242382
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/robot-empty-v3-Cz7AXchN.webp",
+          "bytes": 76364
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/museum-room-v02-SVKUl_P9.webp",
+          "bytes": 312122
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/receipt-Cr27ZlRT.webp",
+          "bytes": 21090
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/nested-CXGtS-u7.webp",
+          "bytes": 21102
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/stamp-BLIvsDYK.webp",
+          "bytes": 34698
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/cosmic-parcel-CB9iTJM3.webp",
+          "bytes": 43194
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-receipt-front-DHTY9cwV.webp",
+          "bytes": 38186
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-receipt-back-D3EuEsXZ.webp",
+          "bytes": 32356
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-tape-back-czNbXPTw.webp",
+          "bytes": 28758
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-tape-front-DfX1uZ7x.webp",
+          "bytes": 35438
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-nested-back-CbHftO0S.webp",
+          "bytes": 44780
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-nested-front-Doanw_7w.webp",
+          "bytes": 48030
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-stamp-back-r09PdRzu.webp",
+          "bytes": 32196
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-cosmic-parcel-back-DTTi_052.webp",
+          "bytes": 38908
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-stamp-front-C2SeTdQi.webp",
+          "bytes": 33250
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-cosmic-parcel-front-s_iZTGIv.webp",
+          "bytes": 36010
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-bell-back-DUDxHcM2.webp",
+          "bytes": 31908
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-bell-front-BDBK7qy2.webp",
+          "bytes": 35078
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/blank-letter-Dl1uMM55.webp",
+          "bytes": 36976
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/mouse-dxNNfrol.webp",
+          "bytes": 40718
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/hermit-Dq2gwOrB.webp",
+          "bytes": 41952
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/night-clock-D5vrvwDv.webp",
+          "bytes": 48742
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/tagbird-BTm9iFW-.webp",
+          "bytes": 37250
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/signal-CKFeDa21.webp",
+          "bytes": 17436
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "view": "expedition",
+      "windowMs": 6006.300000011921,
+      "rafSamples": 361,
+      "medianMs": 16.699999999999818,
+      "p95Ms": 16.799999999999272,
+      "museumDraws": null,
+      "expedition": {
+        "frames": 360,
+        "medianFrameMs": 16.69999998807907,
+        "p95FrameMs": 17.299999982118607,
+        "meanDrawMs": 0.24792243800334984,
+        "canvasPixels": 615680,
+        "canvasSize": {
+          "width": 832,
+          "height": 740
+        },
+        "renderer": "Canvas2D / independent 2.5D layers"
+      },
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4173/assets/game-XnzVvnnl.js",
+          "bytes": 42531
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/game-Bh2dwyuo.css",
+          "bytes": 11478
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/robot-DeKHzAPp.webp",
+          "bytes": 45550
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/invader-v02-BvAs1-K9.webp",
+          "bytes": 64110
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/tape-BVXV4CO3.webp",
+          "bytes": 17408
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/bell-QDuCJmEB.webp",
+          "bytes": 34982
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/museum-room-v02-SVKUl_P9.webp",
+          "bytes": 312122
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/parcel-globe-DL04UUif.webp",
+          "bytes": 242382
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/robot-empty-v3-Cz7AXchN.webp",
+          "bytes": 76364
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/receipt-Cr27ZlRT.webp",
+          "bytes": 21090
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/nested-CXGtS-u7.webp",
+          "bytes": 21102
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/stamp-BLIvsDYK.webp",
+          "bytes": 34698
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/cosmic-parcel-CB9iTJM3.webp",
+          "bytes": 43194
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-receipt-back-D3EuEsXZ.webp",
+          "bytes": 32356
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-receipt-front-DHTY9cwV.webp",
+          "bytes": 38186
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-tape-back-czNbXPTw.webp",
+          "bytes": 28758
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-tape-front-DfX1uZ7x.webp",
+          "bytes": 35438
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-nested-back-CbHftO0S.webp",
+          "bytes": 44780
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-nested-front-Doanw_7w.webp",
+          "bytes": 48030
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-stamp-back-r09PdRzu.webp",
+          "bytes": 32196
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-stamp-front-C2SeTdQi.webp",
+          "bytes": 33250
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-cosmic-parcel-back-DTTi_052.webp",
+          "bytes": 38908
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-cosmic-parcel-front-s_iZTGIv.webp",
+          "bytes": 36010
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-bell-back-DUDxHcM2.webp",
+          "bytes": 31908
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-bell-front-BDBK7qy2.webp",
+          "bytes": 35078
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/blank-letter-Dl1uMM55.webp",
+          "bytes": 36976
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/mouse-dxNNfrol.webp",
+          "bytes": 40718
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/hermit-Dq2gwOrB.webp",
+          "bytes": 41952
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/night-clock-D5vrvwDv.webp",
+          "bytes": 48742
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/tagbird-BTm9iFW-.webp",
+          "bytes": 37250
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/signal-CKFeDa21.webp",
+          "bytes": 17436
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/ship-directions-v3-kWTeuqow.webp",
+          "bytes": 89244
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/warehouse-COJeeIwY.webp",
+          "bytes": 32584
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/sorter-pHS3f2Wr.webp",
+          "bytes": 36882
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "view": "home",
+      "windowMs": 6007,
+      "rafSamples": 361,
+      "medianMs": 17,
+      "p95Ms": 19,
+      "museumDraws": 112,
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4173/assets/game-XnzVvnnl.js",
+          "bytes": 42568
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/game-Bh2dwyuo.css",
+          "bytes": 11496
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/robot-DeKHzAPp.webp",
+          "bytes": 45550
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/invader-v02-BvAs1-K9.webp",
+          "bytes": 64110
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/tape-BVXV4CO3.webp",
+          "bytes": 17408
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/bell-QDuCJmEB.webp",
+          "bytes": 34982
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/parcel-globe-DL04UUif.webp",
+          "bytes": 0
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/stamp-BLIvsDYK.webp",
+          "bytes": 34698
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/museum-room-v02-SVKUl_P9.webp",
+          "bytes": 312122
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/cosmic-parcel-CB9iTJM3.webp",
+          "bytes": 43194
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-receipt-back-D3EuEsXZ.webp",
+          "bytes": 32356
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-receipt-front-DHTY9cwV.webp",
+          "bytes": 38186
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/robot-empty-v3-Cz7AXchN.webp",
+          "bytes": 76364
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/receipt-Cr27ZlRT.webp",
+          "bytes": 21090
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/nested-CXGtS-u7.webp",
+          "bytes": 21102
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-tape-back-czNbXPTw.webp",
+          "bytes": 28758
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-tape-front-DfX1uZ7x.webp",
+          "bytes": 35438
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-stamp-back-r09PdRzu.webp",
+          "bytes": 32196
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-nested-back-CbHftO0S.webp",
+          "bytes": 44780
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-nested-front-Doanw_7w.webp",
+          "bytes": 48030
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-stamp-front-C2SeTdQi.webp",
+          "bytes": 33250
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-cosmic-parcel-back-DTTi_052.webp",
+          "bytes": 38908
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-cosmic-parcel-front-s_iZTGIv.webp",
+          "bytes": 36010
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-bell-back-DUDxHcM2.webp",
+          "bytes": 31908
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-bell-front-BDBK7qy2.webp",
+          "bytes": 35078
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/blank-letter-Dl1uMM55.webp",
+          "bytes": 36976
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/mouse-dxNNfrol.webp",
+          "bytes": 40718
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/hermit-Dq2gwOrB.webp",
+          "bytes": 41952
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/night-clock-D5vrvwDv.webp",
+          "bytes": 48742
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/tagbird-BTm9iFW-.webp",
+          "bytes": 37250
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/signal-CKFeDa21.webp",
+          "bytes": 17436
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "view": "expedition",
+      "windowMs": 6010,
+      "rafSamples": 362,
+      "medianMs": 17,
+      "p95Ms": 19,
+      "museumDraws": null,
+      "expedition": {
+        "frames": 361,
+        "medianFrameMs": 17,
+        "p95FrameMs": 19,
+        "meanDrawMs": 0.27348066298342544,
+        "canvasPixels": 615680,
+        "canvasSize": {
+          "width": 832,
+          "height": 740
+        },
+        "renderer": "Canvas2D / independent 2.5D layers"
+      },
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4173/assets/game-XnzVvnnl.js",
+          "bytes": 42568
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/game-Bh2dwyuo.css",
+          "bytes": 11496
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/robot-DeKHzAPp.webp",
+          "bytes": 45550
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/parcel-globe-DL04UUif.webp",
+          "bytes": 0
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/invader-v02-BvAs1-K9.webp",
+          "bytes": 64110
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/tape-BVXV4CO3.webp",
+          "bytes": 17408
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/bell-QDuCJmEB.webp",
+          "bytes": 34982
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/robot-empty-v3-Cz7AXchN.webp",
+          "bytes": 76364
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/receipt-Cr27ZlRT.webp",
+          "bytes": 21090
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/museum-room-v02-SVKUl_P9.webp",
+          "bytes": 312122
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/nested-CXGtS-u7.webp",
+          "bytes": 21102
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/stamp-BLIvsDYK.webp",
+          "bytes": 34698
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/cosmic-parcel-CB9iTJM3.webp",
+          "bytes": 43194
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-receipt-back-D3EuEsXZ.webp",
+          "bytes": 32356
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-receipt-front-DHTY9cwV.webp",
+          "bytes": 38186
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-tape-back-czNbXPTw.webp",
+          "bytes": 28758
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-tape-front-DfX1uZ7x.webp",
+          "bytes": 35438
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-nested-back-CbHftO0S.webp",
+          "bytes": 44780
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-nested-front-Doanw_7w.webp",
+          "bytes": 48030
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-stamp-back-r09PdRzu.webp",
+          "bytes": 32196
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-stamp-front-C2SeTdQi.webp",
+          "bytes": 33250
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-cosmic-parcel-back-DTTi_052.webp",
+          "bytes": 38908
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-cosmic-parcel-front-s_iZTGIv.webp",
+          "bytes": 36010
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-bell-back-DUDxHcM2.webp",
+          "bytes": 31908
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/case-bell-front-BDBK7qy2.webp",
+          "bytes": 35078
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/blank-letter-Dl1uMM55.webp",
+          "bytes": 36976
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/mouse-dxNNfrol.webp",
+          "bytes": 40718
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/hermit-Dq2gwOrB.webp",
+          "bytes": 41952
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/night-clock-D5vrvwDv.webp",
+          "bytes": 48742
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/tagbird-BTm9iFW-.webp",
+          "bytes": 37250
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/signal-CKFeDa21.webp",
+          "bytes": 17436
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/ship-directions-v3-kWTeuqow.webp",
+          "bytes": 89244
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/warehouse-COJeeIwY.webp",
+          "bytes": 32584
+        },
+        {
+          "url": "http://127.0.0.1:4173/assets/sorter-pHS3f2Wr.webp",
+          "bytes": 36882
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "name": "bell-QDuCJmEB.webp",
+      "bytes": 34982
+    },
+    {
+      "name": "blank-letter-Dl1uMM55.webp",
+      "bytes": 36976
+    },
+    {
+      "name": "case-bell-back-DUDxHcM2.webp",
+      "bytes": 31908
+    },
+    {
+      "name": "case-bell-front-BDBK7qy2.webp",
+      "bytes": 35078
+    },
+    {
+      "name": "case-cosmic-parcel-back-DTTi_052.webp",
+      "bytes": 38908
+    },
+    {
+      "name": "case-cosmic-parcel-front-s_iZTGIv.webp",
+      "bytes": 36010
+    },
+    {
+      "name": "case-nested-back-CbHftO0S.webp",
+      "bytes": 44780
+    },
+    {
+      "name": "case-nested-front-Doanw_7w.webp",
+      "bytes": 48030
+    },
+    {
+      "name": "case-receipt-back-D3EuEsXZ.webp",
+      "bytes": 32356
+    },
+    {
+      "name": "case-receipt-front-DHTY9cwV.webp",
+      "bytes": 38186
+    },
+    {
+      "name": "case-stamp-back-r09PdRzu.webp",
+      "bytes": 32196
+    },
+    {
+      "name": "case-stamp-front-C2SeTdQi.webp",
+      "bytes": 33250
+    },
+    {
+      "name": "case-tape-back-czNbXPTw.webp",
+      "bytes": 28758
+    },
+    {
+      "name": "case-tape-front-DfX1uZ7x.webp",
+      "bytes": 35438
+    },
+    {
+      "name": "cosmic-parcel-CB9iTJM3.webp",
+      "bytes": 43194
+    },
+    {
+      "name": "equipment-cargo-Cbg0zf1M.webp",
+      "bytes": 21932
+    },
+    {
+      "name": "equipment-radar-eR2OsVZy.webp",
+      "bytes": 29838
+    },
+    {
+      "name": "equipment-recycler-Dsxw2dQS.webp",
+      "bytes": 27612
+    },
+    {
+      "name": "equipment-scanner-C9JyJ4nf.webp",
+      "bytes": 21990
+    },
+    {
+      "name": "game-Bh2dwyuo.css",
+      "bytes": 46554
+    },
+    {
+      "name": "game-XnzVvnnl.js",
+      "bytes": 113006
+    },
+    {
+      "name": "habitat-hermit-v02-dRjUOBy2.webp",
+      "bytes": 106732
+    },
+    {
+      "name": "habitat-mouse-v02-HP0-GlcU.webp",
+      "bytes": 101438
+    },
+    {
+      "name": "habitat-tagbird-v02-BniFsTTN.webp",
+      "bytes": 106362
+    },
+    {
+      "name": "hermit-Dq2gwOrB.webp",
+      "bytes": 41952
+    },
+    {
+      "name": "invader-v02-BvAs1-K9.webp",
+      "bytes": 64110
+    },
+    {
+      "name": "mouse-dxNNfrol.webp",
+      "bytes": 40718
+    },
+    {
+      "name": "museum-room-v02-SVKUl_P9.webp",
+      "bytes": 312122
+    },
+    {
+      "name": "nested-CXGtS-u7.webp",
+      "bytes": 21102
+    },
+    {
+      "name": "night-clock-D5vrvwDv.webp",
+      "bytes": 48742
+    },
+    {
+      "name": "parcel-globe-DL04UUif.webp",
+      "bytes": 242382
+    },
+    {
+      "name": "receipt-Cr27ZlRT.webp",
+      "bytes": 21090
+    },
+    {
+      "name": "robot-DeKHzAPp.webp",
+      "bytes": 45550
+    },
+    {
+      "name": "robot-empty-v3-Cz7AXchN.webp",
+      "bytes": 76364
+    },
+    {
+      "name": "ship-BYx23I3Q.webp",
+      "bytes": 23232
+    },
+    {
+      "name": "ship-directions-v3-kWTeuqow.webp",
+      "bytes": 89244
+    },
+    {
+      "name": "signal-CKFeDa21.webp",
+      "bytes": 17436
+    },
+    {
+      "name": "sorter-pHS3f2Wr.webp",
+      "bytes": 36882
+    },
+    {
+      "name": "stamp-BLIvsDYK.webp",
+      "bytes": 34698
+    },
+    {
+      "name": "tagbird-BTm9iFW-.webp",
+      "bytes": 37250
+    },
+    {
+      "name": "tape-BVXV4CO3.webp",
+      "bytes": 17408
+    },
+    {
+      "name": "warehouse-COJeeIwY.webp",
+      "bytes": 32584
+    }
+  ],
+  "rgba": [
+    {
+      "name": "bell-QDuCJmEB.webp",
+      "width": 256,
+      "height": 241,
+      "rgbaBytes": 246784
+    },
+    {
+      "name": "blank-letter-Dl1uMM55.webp",
+      "width": 256,
+      "height": 243,
+      "rgbaBytes": 248832
+    },
+    {
+      "name": "case-bell-back-DUDxHcM2.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-bell-front-BDBK7qy2.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-cosmic-parcel-back-DTTi_052.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-cosmic-parcel-front-s_iZTGIv.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-nested-back-CbHftO0S.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-nested-front-Doanw_7w.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-receipt-back-D3EuEsXZ.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-receipt-front-DHTY9cwV.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-stamp-back-r09PdRzu.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-stamp-front-C2SeTdQi.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-tape-back-czNbXPTw.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "case-tape-front-DfX1uZ7x.webp",
+      "width": 320,
+      "height": 320,
+      "rgbaBytes": 409600
+    },
+    {
+      "name": "cosmic-parcel-CB9iTJM3.webp",
+      "width": 256,
+      "height": 263,
+      "rgbaBytes": 269312
+    },
+    {
+      "name": "equipment-cargo-Cbg0zf1M.webp",
+      "width": 192,
+      "height": 161,
+      "rgbaBytes": 123648
+    },
+    {
+      "name": "equipment-radar-eR2OsVZy.webp",
+      "width": 192,
+      "height": 253,
+      "rgbaBytes": 194304
+    },
+    {
+      "name": "equipment-recycler-Dsxw2dQS.webp",
+      "width": 192,
+      "height": 221,
+      "rgbaBytes": 169728
+    },
+    {
+      "name": "equipment-scanner-C9JyJ4nf.webp",
+      "width": 192,
+      "height": 204,
+      "rgbaBytes": 156672
+    },
+    {
+      "name": "habitat-hermit-v02-dRjUOBy2.webp",
+      "width": 720,
+      "height": 240,
+      "rgbaBytes": 691200
+    },
+    {
+      "name": "habitat-mouse-v02-HP0-GlcU.webp",
+      "width": 720,
+      "height": 240,
+      "rgbaBytes": 691200
+    },
+    {
+      "name": "habitat-tagbird-v02-BniFsTTN.webp",
+      "width": 720,
+      "height": 240,
+      "rgbaBytes": 691200
+    },
+    {
+      "name": "hermit-Dq2gwOrB.webp",
+      "width": 256,
+      "height": 258,
+      "rgbaBytes": 264192
+    },
+    {
+      "name": "invader-v02-BvAs1-K9.webp",
+      "width": 384,
+      "height": 384,
+      "rgbaBytes": 589824
+    },
+    {
+      "name": "mouse-dxNNfrol.webp",
+      "width": 256,
+      "height": 276,
+      "rgbaBytes": 282624
+    },
+    {
+      "name": "museum-room-v02-SVKUl_P9.webp",
+      "width": 768,
+      "height": 960,
+      "rgbaBytes": 2949120
+    },
+    {
+      "name": "nested-CXGtS-u7.webp",
+      "width": 192,
+      "height": 187,
+      "rgbaBytes": 143616
+    },
+    {
+      "name": "night-clock-D5vrvwDv.webp",
+      "width": 256,
+      "height": 317,
+      "rgbaBytes": 324608
+    },
+    {
+      "name": "parcel-globe-DL04UUif.webp",
+      "width": 768,
+      "height": 768,
+      "rgbaBytes": 2359296
+    },
+    {
+      "name": "receipt-Cr27ZlRT.webp",
+      "width": 192,
+      "height": 241,
+      "rgbaBytes": 185088
+    },
+    {
+      "name": "robot-DeKHzAPp.webp",
+      "width": 256,
+      "height": 366,
+      "rgbaBytes": 374784
+    },
+    {
+      "name": "robot-empty-v3-Cz7AXchN.webp",
+      "width": 640,
+      "height": 320,
+      "rgbaBytes": 819200
+    },
+    {
+      "name": "ship-BYx23I3Q.webp",
+      "width": 256,
+      "height": 186,
+      "rgbaBytes": 190464
+    },
+    {
+      "name": "ship-directions-v3-kWTeuqow.webp",
+      "width": 512,
+      "height": 512,
+      "rgbaBytes": 1048576
+    },
+    {
+      "name": "signal-CKFeDa21.webp",
+      "width": 192,
+      "height": 159,
+      "rgbaBytes": 122112
+    },
+    {
+      "name": "sorter-pHS3f2Wr.webp",
+      "width": 256,
+      "height": 286,
+      "rgbaBytes": 292864
+    },
+    {
+      "name": "stamp-BLIvsDYK.webp",
+      "width": 256,
+      "height": 278,
+      "rgbaBytes": 284672
+    },
+    {
+      "name": "tagbird-BTm9iFW-.webp",
+      "width": 256,
+      "height": 238,
+      "rgbaBytes": 243712
+    },
+    {
+      "name": "tape-BVXV4CO3.webp",
+      "width": 192,
+      "height": 169,
+      "rgbaBytes": 129792
+    },
+    {
+      "name": "warehouse-COJeeIwY.webp",
+      "width": 256,
+      "height": 235,
+      "rgbaBytes": 240640
+    }
+  ],
+  "errors": [],
+  "phone": "User tested TapTap424659: robot walks; reported case/plinth misalignment. Corrected in v0.2.3/2d70b6d. Day/night, reduced motion and lock-screen resume remain pending; not certified by browser emulation."
+}

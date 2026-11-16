@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-11-07T16:01:47.913720+00:00",
+  "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
+  "samplePackage": {
+    "version": "0.4.5-ui-sample.3",
+    "sourceCommit": "72374bc2445008bf0a09e346e7f994c61f687d66",
+    "archive": "releases/taptap/loststar-ui-review-72374bc.zip",
+    "sha256": "87c99d800beeed62b4b8cf3adb0de43f03df18a63dfd8e6f8960eb7f627340dc",
+    "bytes": 12005489,
+    "files": 190,
+    "buildCommand": "python3 scripts/package_ref_ui.py",
+    "isolated": true,
+    "formalSave": false
+  },
+  "sameSnapshotPairs": 12,
+  "actualScreenshots": 31,
+  "nativeFrames": 11,
+  "originalRuntimeTrees": {
+    "src": {
+      "baseline": "0ff6561127538c8cc4f86b79d7bc9b3623a522fd",
+      "candidate": "0ff6561127538c8cc4f86b79d7bc9b3623a522fd",
+      "same": true
+    },
+    "assets/runtime": {
+      "baseline": "3bef93a34127494e7501cc841b08913cc40c16ac",
+      "candidate": "3bef93a34127494e7501cc841b08913cc40c16ac",
+      "same": true
+    },
+    "assets/source": {
+      "baseline": "7cb3e75972ddc8c2ecf96ba696a43f035e11fcbd",
+      "candidate": "7cb3e75972ddc8c2ecf96ba696a43f035e11fcbd",
+      "same": true
+    }
+  },
+  "sampleTree": "ae1fb8b02ba5d0aab88c733798350f26b6b9231f",
+  "unit": {
+    "files": 65,
+    "passed": 416,
+    "sourceLog": "checks/unit-coverage.log"
+  },
+  "browser": {
+    "passed": 40,
+    "unexpected": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "sourceLog": "checks/browser-results.json"
+  },
+  "storage": {
+    "idbOpens": 0,
+    "localStorageUnchanged": true,
+    "scope": "31 actual pages + 3 films; four-context automated probes"
+  },
+  "visualReview": "PENDING_USER",
+  "formalIntegration": false,
+  "phone": "NOT_TESTED",
+  "audio": "NOT_TESTED",
+  "performance": "No new exclusive benchmark; not inferred from concurrent media/tests or old source measurements",
+  "errors": [],
+  "ci": {
+    "sourcePush": "https://github.com/sy0310/loststar-game/actions/runs/42388980543",
+    "sourcePR": "https://github.com/sy0310/loststar-game/actions/runs/42388988635",
+    "statusPolicy": "Terminal results are read from linked Actions and current PR Checks; do not premark success from this pointer.",
+    "sourcePRInitialResult": "FAILED attempt1: 577 passed / 1 failed, paused-clock museum first-frame polling; retained as historical failure, no rerun",
+    "followup": "CI_FOLLOWUP.md; test-only virtual-clock barrier correction, current full results in PR Checks; package/runtime unchanged"
+  }
+}

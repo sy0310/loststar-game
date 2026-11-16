@@ -1,0 +1,88 @@
+{
+  "stage": "ai-image-validate",
+  "rule": {
+    "id": "icon",
+    "label": "game icon",
+    "goal": "create a purpose-designed icon that communicates the game's identity at small size",
+    "reference_rules": [
+      "prefer a representative character, creature, vehicle, core symbol, or existing icon as the reference",
+      "if the reference is a gameplay screenshot, extract the most recognizable subject or gameplay symbol instead of copying the screenshot layout",
+      "inherit the subject's identity, silhouette, key structure, and signature colors, but do not inherit UI, HUD, buttons, prices, cards, or text"
+    ],
+    "formats": [
+      "jpg",
+      "png"
+    ],
+    "tolerance": 0.01,
+    "dimensions": [
+      {
+        "min_width": 512,
+        "min_height": 512,
+        "aspect_ratio": [
+          1,
+          1
+        ]
+      }
+    ],
+    "content_constraints": [
+      "complete square image (1:1)",
+      "do not add rounded corners, an app-icon frame, button shell, sticker shell, or base plate"
+    ],
+    "prompt_rules": [
+      "use one unique focal subject or one core symbol",
+      "make the subject dominate the frame and remain immediately recognizable at small size",
+      "use a centered, near-centered, close-up, or compact symmetrical composition",
+      "use clean continuous shapes and remove unstable tiny details, jagged edges, and irrelevant background clutter",
+      "keep the game's native visual language, including pixel or strongly stylized treatment when present",
+      "let the background support the subject without becoming the primary focus"
+    ],
+    "text_rules": [
+      "do not include the game title, letters, words, labels, or other text"
+    ],
+    "forbidden_elements": [
+      "multiple parallel small subjects",
+      "full screenshot layout",
+      "HUD, buttons, health bars, numbers, price labels, cards, grid UI, or other interface fragments",
+      "subject that is too small to identify",
+      "generic flat UI icon treatment unrelated to the game's native style"
+    ],
+    "negative_terms": [
+      "watermark",
+      "blurry",
+      "malformed text",
+      "rounded corners",
+      "app icon frame",
+      "button shell",
+      "sticker shell",
+      "small subject",
+      "multiple small subjects",
+      "HUD",
+      "game UI"
+    ]
+  },
+  "input": "design/star-salvage/v068/store-media/exports/taptap-icon-1024.png",
+  "valid": true,
+  "manual_checks": [
+    "complete square image (1:1)",
+    "do not add rounded corners, an app-icon frame, button shell, sticker shell, or base plate"
+  ],
+  "candidates": [
+    {
+      "path": "design/star-salvage/v068/store-media/exports/taptap-icon-1024.png",
+      "name": "taptap-icon-1024.png",
+      "format": "png",
+      "width": 1024,
+      "height": 1024,
+      "file_size": 1216774,
+      "valid": true,
+      "upload_command": "taptap-cli upload 'design/star-salvage/v068/store-media/exports/taptap-icon-1024.png' --app-id 1022667 --dev-id 512759 --idempotency-key \u003cstable-image-intent-key\u003e --yes"
+    }
+  ],
+  "user_action_required": true,
+  "upload_pending": true,
+  "manifest_path": "design/star-salvage/v0610/test-materials/art/taptap-local-icon-1024.json",
+  "next_steps": [
+    "图片仅保存在本地，CLI 未上传或修改资料字段。",
+    "请先确认候选图；确认后再执行候选项中的 upload_command 上传到素材库。"
+  ]
+}

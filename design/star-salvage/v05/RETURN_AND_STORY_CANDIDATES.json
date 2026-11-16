@@ -1,0 +1,156 @@
+{
+  "status": "DESIGN_CANDIDATE_NOT_RUNTIME",
+  "version": "v0.5 proposal",
+  "baseline": {
+    "runtime": "0.4.2",
+    "sourceSha": "94e606fc773d1dc37341d29923e39e7ec7c3863b",
+    "taptapSelfTest": 458870
+  },
+  "existing": {
+    "forwardBase": [
+      6,
+      7,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18
+    ],
+    "normalReturnFormula": "distance <= 0 ? 0 : 3 + ceil(distance / 2)",
+    "initialStarterFuel": 60,
+    "ordinaryMissions": [
+      "survey",
+      "recovery",
+      "deep"
+    ],
+    "portSceneNative": [
+      192,
+      320
+    ],
+    "sceneExport2x": [
+      384,
+      640
+    ]
+  },
+  "story": {
+    "name": "没有寄出的归航信",
+    "core": "温柔怪诞的原创太空悬疑：一份已经归航的信号，却来自尚未出港的旧飞船",
+    "schemaCandidate": 7,
+    "firstPlaythroughChapters": [
+      {
+        "id": "prologue",
+        "title": "一封先到的回信",
+        "manualAccept": true,
+        "goal": "完成一次合法调查，取得首份记录",
+        "gateUnlock": false
+      },
+      {
+        "id": "unsigned_cargo",
+        "title": "未签收的货箱",
+        "manualAccept": true,
+        "goal": "得到两类不同线索并返港复核，保底进度而非纯RNG",
+        "gateUnlock": false
+      },
+      {
+        "id": "return_lighthouse",
+        "title": "折返灯塔",
+        "manualAccept": true,
+        "goal": "完成一趟至少3站且含中继检查的安全返港",
+        "gateUnlock": "stable_gate"
+      }
+    ],
+    "laterBlueprintOnly": [
+      "门背后的回声",
+      "最后的收件人"
+    ],
+    "ordinaryMissionsPolicy": "Keep one existing normal commission active; allow one manually accepted story chapter tracked separately. Neither may auto-claim the other's rewards."
+  },
+  "gates": {
+    "normal": {
+      "enabled": true,
+      "type": "distance_based",
+      "formula": "3 + ceil(distance/2)",
+      "unchanged": true
+    },
+    "stable_gate": {
+      "firstReleaseCandidate": true,
+      "unlock": "story.return_lighthouse.completed",
+      "minDepth": 3,
+      "returnCostFuel": 8,
+      "oneUsePerVoyage": true,
+      "persistentAcrossVoyages": true,
+      "fuelReserveRule": "Use min actual reliable available return cost only; never count a future undiscovered gate",
+      "riskHull": 0,
+      "extraCashCost": 0,
+      "reliability": "guaranteed once eligible",
+      "oldActionBehavior": "return without method remains normal"
+    },
+    "unstable_gate": {
+      "firstReleaseCandidate": false,
+      "prototypeOnly": true,
+      "afterDepth": 5,
+      "fuelCost": 5,
+      "hullRiskRange": [
+        6,
+        12
+      ],
+      "requiresHullAtLeast": 20,
+      "noAutomaticUnlock": true,
+      "testBeforeDecision": [
+        "rescue_rate",
+        "net_income",
+        "clarity",
+        "ship_value"
+      ]
+    }
+  },
+  "minimumCostExamples": [
+    {
+      "depth": 3,
+      "forwardDistance": 21,
+      "normalReturn": 14,
+      "normalTotal": 35,
+      "stableReturn": 8,
+      "stableTotal": 29
+    },
+    {
+      "depth": 4,
+      "forwardDistance": 31,
+      "normalReturn": 19,
+      "normalTotal": 50,
+      "stableReturn": 8,
+      "stableTotal": 39
+    },
+    {
+      "depth": 5,
+      "forwardDistance": 43,
+      "normalReturn": 25,
+      "normalTotal": 68,
+      "stableReturn": 8,
+      "stableTotal": 51
+    },
+    {
+      "depth": 6,
+      "forwardDistance": 57,
+      "normalReturn": 32,
+      "normalTotal": 89,
+      "stableReturn": 8,
+      "stableTotal": 65
+    }
+  ],
+  "art": {
+    "preferredFirstPass": "A: improve 192x320 native pixel-art and CSS alignment, same approved composition",
+    "optionalPrototypeB": "Native reauthor 240x400, integer2x->480x800; consistent ship source 144x72 rendered2x to 288x144; center crop for phone",
+    "never": "Smooth-upscale existing PNG and claim it has more hand-authored detail"
+  },
+  "excluded": [
+    "new planet",
+    "combat",
+    "multiplayer",
+    "forced ads",
+    "new monetization",
+    "automatic user save overwrite",
+    "production release"
+  ]
+}

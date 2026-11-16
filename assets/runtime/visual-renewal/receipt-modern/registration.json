@@ -1,0 +1,360 @@
+{
+  "schema": 1,
+  "approvedReference": "design/visual-renewal/approved/03_curio_restoration_and_collection.png",
+  "logicalSize": 192,
+  "paperBounds": {
+    "x": 39,
+    "y": 13,
+    "width": 115,
+    "height": 153
+  },
+  "support": {
+    "x": 96,
+    "y": 195
+  },
+  "sourceProposalApproved": true,
+  "motionSource": "src/fusion/receipt-paper-model.ts",
+  "exportCommand": "node scripts/export_modern_receipt.mjs",
+  "originalFacts": {
+    "artifactCode": "RET-031",
+    "boxCode": "P03",
+    "signature": null
+  },
+  "retiredSourceBackup": "releases/receipt-rejected-439256/manifest.json",
+  "assets": [
+    {
+      "id": "receipt-paper-master",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-paper-master.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-paper-master.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/paper-atlas-v2.png",
+      "sha256": "0f1e66f1b384e6bd910af7ce8e20fda2da95e963fb5c08425ba98a366e133f12",
+      "layer": "single printed rectangular paper; all facts immutable",
+      "bounds": {
+        "x": 39,
+        "y": 13,
+        "width": 115,
+        "height": 153
+      }
+    },
+    {
+      "id": "receipt-paper-deposits",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-paper-deposits.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-paper-deposits.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/paper-atlas-v2.png",
+      "sha256": "b1557377d55063ef625fa74a98bc8ff9b8e3c5b99d13bde19908057302e4a130",
+      "layer": "localized original contact soil only; never original ink"
+    },
+    {
+      "id": "receipt-paper-creases",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-paper-creases.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-paper-creases.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/paper-atlas-v2.png",
+      "sha256": "948fa1a0a350f9a4a1d86c0834e8f79dcdbc9ed8e63d14d597d8efecd8ae4468",
+      "layer": "crease ridge shadow/highlight, no extra paper pieces"
+    },
+    {
+      "id": "receipt-clamp-tl-back",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-tl-back.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-tl-back.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+      "sha256": "d486e359d6553cfb97984cf3f7991366e8ec391c2de4c8e0f773931092873318",
+      "layer": "independent clamp back",
+      "registration": {
+        "id": "clamp-tl-back",
+        "path": "assets/runtime/visual-renewal/receipt-proposal/clamp-tl-back.png",
+        "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+        "sourceRect": [
+          204,
+          190,
+          296,
+          263
+        ],
+        "contact": [
+          111,
+          120
+        ],
+        "target": [
+          117,
+          35
+        ],
+        "displayWidth": 32,
+        "layer": "behind paper",
+        "sha256": "d486e359d6553cfb97984cf3f7991366e8ec391c2de4c8e0f773931092873318"
+      }
+    },
+    {
+      "id": "receipt-clamp-tl-front",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-tl-front.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-tl-front.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+      "sha256": "49b705cbff9eacea3ca7dded88433b283488a0a57f8ae9d6c643ff51e0f238c2",
+      "layer": "independent clamp front",
+      "registration": {
+        "id": "clamp-tl-front",
+        "path": "assets/runtime/visual-renewal/receipt-proposal/clamp-tl-front.png",
+        "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+        "sourceRect": [
+          204,
+          190,
+          296,
+          263
+        ],
+        "contact": [
+          111,
+          120
+        ],
+        "target": [
+          117,
+          35
+        ],
+        "displayWidth": 32,
+        "layer": "in front of paper edge",
+        "sha256": "49b705cbff9eacea3ca7dded88433b283488a0a57f8ae9d6c643ff51e0f238c2"
+      }
+    },
+    {
+      "id": "receipt-clamp-tr-back",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-tr-back.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-tr-back.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+      "sha256": "9a79e0bd3472c6d8b06d7fcbbd60597b8c33e93758c8fc9fc04d79132a8e29bf",
+      "layer": "independent clamp back",
+      "registration": {
+        "id": "clamp-tr-back",
+        "path": "assets/runtime/visual-renewal/receipt-proposal/clamp-tr-back.png",
+        "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+        "sourceRect": [
+          780,
+          190,
+          286,
+          263
+        ],
+        "contact": [
+          166,
+          120
+        ],
+        "target": [
+          305,
+          43
+        ],
+        "displayWidth": 32,
+        "layer": "behind paper",
+        "sha256": "9a79e0bd3472c6d8b06d7fcbbd60597b8c33e93758c8fc9fc04d79132a8e29bf"
+      }
+    },
+    {
+      "id": "receipt-clamp-tr-front",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-tr-front.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-tr-front.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+      "sha256": "af7bea0268c32aca7cdac47483f1e0e1e74c4a1329893c25447c7358e3c74b09",
+      "layer": "independent clamp front",
+      "registration": {
+        "id": "clamp-tr-front",
+        "path": "assets/runtime/visual-renewal/receipt-proposal/clamp-tr-front.png",
+        "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+        "sourceRect": [
+          780,
+          190,
+          286,
+          263
+        ],
+        "contact": [
+          166,
+          120
+        ],
+        "target": [
+          305,
+          43
+        ],
+        "displayWidth": 32,
+        "layer": "in front of paper edge",
+        "sha256": "af7bea0268c32aca7cdac47483f1e0e1e74c4a1329893c25447c7358e3c74b09"
+      }
+    },
+    {
+      "id": "receipt-clamp-bl-back",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-bl-back.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-bl-back.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+      "sha256": "5d95ee950705aedd8c744d85cfcc9c7ce53459ad3e44e2e24fa4fb20dca6c2a0",
+      "layer": "independent clamp back",
+      "registration": {
+        "id": "clamp-bl-back",
+        "path": "assets/runtime/visual-renewal/receipt-proposal/clamp-bl-back.png",
+        "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+        "sourceRect": [
+          199,
+          790,
+          287,
+          254
+        ],
+        "contact": [
+          111,
+          157
+        ],
+        "target": [
+          78,
+          318
+        ],
+        "displayWidth": 32,
+        "layer": "behind paper",
+        "sha256": "5d95ee950705aedd8c744d85cfcc9c7ce53459ad3e44e2e24fa4fb20dca6c2a0"
+      }
+    },
+    {
+      "id": "receipt-clamp-bl-front",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-bl-front.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-bl-front.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+      "sha256": "ad97eb0a013c5c1069e76f1b0487e3db22a887f66af01c9d65be8fab15ac8434",
+      "layer": "independent clamp front",
+      "registration": {
+        "id": "clamp-bl-front",
+        "path": "assets/runtime/visual-renewal/receipt-proposal/clamp-bl-front.png",
+        "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+        "sourceRect": [
+          199,
+          790,
+          287,
+          254
+        ],
+        "contact": [
+          111,
+          157
+        ],
+        "target": [
+          78,
+          318
+        ],
+        "displayWidth": 32,
+        "layer": "in front of paper edge",
+        "sha256": "ad97eb0a013c5c1069e76f1b0487e3db22a887f66af01c9d65be8fab15ac8434"
+      }
+    },
+    {
+      "id": "receipt-clamp-br-back",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-br-back.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-br-back.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+      "sha256": "cd180379ce1cf0296b572aebf68b85e48446e9f3dad6c31d02ab5cb8833e2fd9",
+      "layer": "independent clamp back",
+      "registration": {
+        "id": "clamp-br-back",
+        "path": "assets/runtime/visual-renewal/receipt-proposal/clamp-br-back.png",
+        "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+        "sourceRect": [
+          780,
+          790,
+          289,
+          254
+        ],
+        "contact": [
+          166,
+          156
+        ],
+        "target": [
+          270,
+          322
+        ],
+        "displayWidth": 32,
+        "layer": "behind paper",
+        "sha256": "cd180379ce1cf0296b572aebf68b85e48446e9f3dad6c31d02ab5cb8833e2fd9"
+      }
+    },
+    {
+      "id": "receipt-clamp-br-front",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-br-front.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-clamp-br-front.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+      "sha256": "ebe3d028d151f5e14f325120970f5e45af0e073d3635c08166e2396fdf8c8a22",
+      "layer": "independent clamp front",
+      "registration": {
+        "id": "clamp-br-front",
+        "path": "assets/runtime/visual-renewal/receipt-proposal/clamp-br-front.png",
+        "source": "assets/source/visual-renewal/receipt-proposal/purple-clamps-atlas.png",
+        "sourceRect": [
+          780,
+          790,
+          289,
+          254
+        ],
+        "contact": [
+          166,
+          156
+        ],
+        "target": [
+          270,
+          322
+        ],
+        "displayWidth": 32,
+        "layer": "in front of paper edge",
+        "sha256": "ebe3d028d151f5e14f325120970f5e45af0e073d3635c08166e2396fdf8c8a22"
+      }
+    },
+    {
+      "id": "receipt-holder-back",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-holder-back.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-holder-back.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/archive-holder.png",
+      "sha256": "cb544640078b19eae0a0431e7aaa7c944a3a85df08845a23564b9ebb7d39ea22",
+      "layer": "independent archival support back",
+      "width": 384,
+      "height": 432,
+      "sole": [
+        192,
+        390
+      ]
+    },
+    {
+      "id": "receipt-holder-front",
+      "runtime": "assets/runtime/visual-renewal/receipt-modern/receipt-holder-front.png",
+      "webp": "assets/runtime/visual-renewal/receipt-modern/receipt-holder-front.webp",
+      "source": "assets/source/visual-renewal/receipt-proposal/archive-holder.png",
+      "sha256": "7adb25eb8cdfe85ded917892d68e9c355d68554a0c071b64d01b81791e246d05",
+      "layer": "independent archival support front",
+      "width": 384,
+      "height": 432,
+      "sole": [
+        192,
+        390
+      ]
+    },
+    {
+      "id": "receipt-found",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-found.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-found.webp",
+      "width": 384,
+      "height": 384,
+      "source": "assets/source/visual-renewal/receipt-proposal/paper-atlas-v2.png",
+      "layer": "canonical-single-sheet-state",
+      "condition": "found",
+      "composition": "One modern printed master, connected row field, independent crease/soil. No crossfade or paper wings.",
+      "sha256": "e324bc37b838486b57b95e3450cd50272a076ff8490a7c881a465877d12f8021"
+    },
+    {
+      "id": "receipt-clean",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-clean.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-clean.webp",
+      "width": 384,
+      "height": 384,
+      "source": "assets/source/visual-renewal/receipt-proposal/paper-atlas-v2.png",
+      "layer": "canonical-single-sheet-state",
+      "condition": "clean",
+      "composition": "One modern printed master, connected row field, independent crease/soil. No crossfade or paper wings.",
+      "sha256": "f0dee3b2b963e38d504c13acb6f10dcba97597c6d7638afe0896f4e7ce40e2d0"
+    },
+    {
+      "id": "receipt-stabilized",
+      "runtime": "assets/runtime/visual-renewal/curios/receipt-stabilized.png",
+      "webp": "assets/runtime/visual-renewal/curios/receipt-stabilized.webp",
+      "width": 384,
+      "height": 384,
+      "source": "assets/source/visual-renewal/receipt-proposal/paper-atlas-v2.png",
+      "layer": "canonical-single-sheet-state",
+      "condition": "stabilized",
+      "composition": "One modern printed master, connected row field, independent crease/soil. No crossfade or paper wings.",
+      "sha256": "0f1e66f1b384e6bd910af7ce8e20fda2da95e963fb5c08425ba98a366e133f12"
+    }
+  ]
+}

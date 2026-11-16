@@ -1,0 +1,147 @@
+
+> loststar-salvage-route-demo@0.4.0 test
+> node tests/engine.test.js && node tests/regression.test.js && node tests/cargo-layout.test.js && node tests/mobile-model.test.cjs && node tests/port-model.test.cjs
+
+PASS initial state and independent key
+PASS base leg grows strictly
+PASS return fuel increases with route distance
+PASS refuel never reduces home cost
+PASS persist and reload identical routes
+PASS first action costs exactly once
+PASS stale revision cannot act
+PASS no route can spend home reserve
+PASS event fuel cannot consume reserve
+PASS full cargo blocks rather than drops loot
+PASS explicitly accepted mission departs once without consuming the hold
+PASS early return allowed, not forced loss
+PASS accepted contract reward after three safe points and explicit claim, once
+PASS contract discarded means no fee or reward
+PASS return does not sell or repay automatically
+PASS sale can occur once only
+PASS sell stale station option rejects missing cargo
+PASS debt payment leaves supply reserve
+PASS repair and fuel price matches actual amount
+PASS partial port service does not overfill
+PASS tool purchase permanent, never duplicate
+PASS deterministic seeded danger across restore
+PASS hull zero rescues, old debt unchanged
+PASS port aid prevents zero-cash soft lock
+PASS corrupt save rejected instead of reset
+PASS start new voyage keeps cash fuel hull
+PASS capped eight nodes, never infinite mode
+PASS engine never advances because wall-clock passed
+PASS even detours never make the next leg cheaper
+PASS 600 deterministic runs: ledgers, reserve and no deadlock
+{
+  "passed": 30,
+  "sim": {
+    "runs": 600,
+    "actions": 6270,
+    "rescues": 0,
+    "depths": {
+      "3": 517,
+      "4": 76,
+      "5": 7
+    },
+    "policies": {
+      "cautious": {
+        "runs": 300,
+        "depth": 900,
+        "cashChange": 11668,
+        "unsoldValue": 60600,
+        "avgDepth": 3,
+        "avgActualCashChange": 38.89,
+        "avgUnsoldValue": 202
+      },
+      "deep": {
+        "runs": 300,
+        "depth": 990,
+        "cashChange": 7529,
+        "unsoldValue": 124388,
+        "avgDepth": 3.3,
+        "avgActualCashChange": 25.1,
+        "avgUnsoldValue": 414.63
+      }
+    }
+  }
+}
+PASS configuration is one source and starting contract is absent
+PASS forged event effects rejected and trusted factories own action prices
+PASS event context cannot override depth or inject arbitrary state
+PASS forged cheap route and distance rejected
+PASS ordinary save contains only encountered descriptor, not unchosen outcome text
+PASS rescue protects cross-voyage cargo, tools, discoveries and debt
+PASS healthy voluntary rescue cannot exchange free fuel or hull
+PASS discarded or sold story trigger cannot drive a later followup
+PASS losing the actual carried trigger during its followup leaves a lawful no-reward exit
+PASS aid recovers combined shortages with more than40 cash when minimum preparation is unaffordable
+PASS aid and immediate abort never mint money or repeat resources
+PASS affordable partial services use exact price not a full40 quote
+PASS carried sale is cash but not this voyage new-goods income
+PASS post-return supplies, equipment and repayment reconcile without phantom cash
+PASS port inventory sale cannot be repeated by stale revisions
+PASS legacy schema migration preserves balance, route, RNG and protects unknown old stock
+PASS second voyage keeps real state and permanent equipment
+PASS strict shape and bounds reject unknown tools, corrupt nested data and invalid RNG
+PASS every registered shape has a connected, unique, in-bounds mask and four rotations preserve area
+PASS nonrectangular empty corners stay available; adjacent cells do not collide
+PASS out-of-bounds, overlap, missing, duplicate and foreign placements are rejected
+PASS registered shape area cannot be forged with masks, an unknown ID or an incompatible size
+PASS free area can need repacking, while the complete solver finds a real layout
+PASS the solver proves a full-area impossible tiling, rather than trusting area alone
+PASS partial placements support a temporary tray; illegal placement leaves the old layout unchanged
+PASS all legacy full-capacity size combinations migrate without losing goods or financial data
+PASS legacy ongoing event snapshot keeps its abandoned record independently from the live slot
+PASS invalid legacy saves are rejected in place; malformed current geometry is never auto repaired
+PASS a malformed live cargo layout cannot be laundered through a sale or another gameplay action
+PASS opening and cancelling acquisition drafts leave cash, RNG, nonce, sequence and UID untouched
+PASS invalid acquisition layout fails before payment, damage, RNG, rewards or UID generation
+PASS loot action with an explicit complete layout commits exactly once and reloads identically
+PASS geometry-only edits preserve economic, event and route state and stale drafts cannot overwrite them
+PASS full cargo may open a draft and atomically replace explicitly discarded old goods
+PASS same-area zero-cost cargo exchange records both items despite zero net resource delta
+PASS cargo replacement cannot silently discard an accepted task-slot entitlement
+PASS depart preserves fragmented ordinary cargo exactly while the task occupies its independent slot
+PASS use, sale, discard, contract delivery, abort and rescue release only the removed cells
+PASS structured result deltas reflect actual capped changes, not advertised maxima
+PASS route projection contains only actual past nodes and current saved signals without RNG changes
+{"passed":22,"scope":"Actual geometry, migration and atomic model operations; no phone claims."}
+PASS registered masks cover every area1 through8 and preserve connected area through four rotations
+PASS canonical cells cannot be forged or confused with old volume
+PASS sixteen one-cell objects fit but overlap, outside, missing and duplicate UIDs fail
+PASS fragmented free cells require real rearrangement; geometric impossibility still fails
+PASS empty or full ordinary hold departs with an independent record slot and no grid loss
+PASS record abandonment is explicit, single-use and cannot reappear or earn a commission
+PASS legal three-point return pays original180 once and releases only mission slot
+PASS first visible recovery actually yields1/2/3-cell goods in multiple fixed seeds
+PASS multi-item actual costs/value remain original totals before geometry decisions
+PASS auto and manual loading share the same atomic model and committed risk sequence
+PASS an invalid multi-piece layout commits no payment, hull, RNG or UID
+PASS overflow draft preserves full old cargo until explicitly choosing discarded UIDs
+PASS rescue loses only current voyage loot and mission, retaining carried cargo/tools/archive
+PASS actual schema2 empty/full legacy packaging retains areas, money and all old rights
+PASS actual schema3 empty/full legacy packaging retains areas, money and all old rights
+PASS actual live schema3 box transfers once; its event snapshot stays separate from current cargo
+PASS abandoned schema3 mission never resurrects from an earlier event snapshot
+PASS finished legacy commission stays historical, no fresh award or billing after migration
+PASS schema2→schema3→schema4 equals direct preservation of areas and route/account facts
+PASS current malformed shapes and task UID collisions are rejected rather than repaired
+PASS moving or rotating cargo never alters actual route quotes, reserve or RNG
+PASS schema5 empty start preserves initial four resources and has no automatic mission
+PASS manual survey completes only after three safe stations and pays only on explicit once-only claim
+PASS incomplete and aborted tasks retain a real box for a later voyage without paying
+PASS abandoned and completed missions never resurrect or award on view/refresh
+PASS recovery and deep commissions are actually completable with explicit claim
+PASS unclaimed completed task does not prohibit another trip or duplicate its outcome
+PASS full fuel and hull use exact totals, insufficient balance never masquerades as partial fill
+PASS each purchased ship is owned once, freely equipped, and uses actual independent cargo geometry
+PASS real per-ship cargo expansion unlocks cells beyond the original16 and is capped
+PASS down-capacity equip rejects safely without loss, charge or hidden stash
+PASS scout forward quote and actual fuel agree; cargo protection changes real damage
+PASS port products have stable item sprites, no instant-sale profit and consumed fuel never reduces distance
+PASS invalid cargo/fees, stale revisions and duplicate commands are atomic
+PASS genuine legacy schema2 retains area, cash, equipment, archive and financial history
+PASS genuine legacy schema3 retains area, cash, equipment, archive and financial history
+PASS genuine legacy schema4 retains area, cash, equipment, archive and financial history
+PASS genuine in-flight schema4 survey keeps its original automatic-settlement right once
+PASS legacy already-paid and abandoned tasks are not newly payable

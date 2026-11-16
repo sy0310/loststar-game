@@ -1,0 +1,43 @@
+{
+  "eventhorizon_core": {
+    "rotationPivot": [32, 32],
+    "collisionRadius": 0,
+    "transparentCircle": {"center": [32, 32], "radius": 8},
+    "layerRole": "Gold-white accretion disc and dark-violet event-horizon rim",
+    "compatibleLayer": "eventhorizon_ring",
+    "suggestedRelativeSpin": 1
+  },
+  "eventhorizon_ring": {
+    "rotationPivot": [32, 32],
+    "collisionRadius": 0,
+    "transparentCircle": {"center": [32, 32], "radius": 19},
+    "layerRole": "Six segmented violet crystal-mechanical plates and brass clamps",
+    "compatibleLayer": "eventhorizon_core",
+    "suggestedRelativeSpin": -1,
+    "segmentAnchors": [[32, 6], [54, 20], [54, 44], [32, 57], [9, 44], [9, 20]]
+  },
+  "thunder_relay": {
+    "rotationPivot": [20, 20],
+    "originAnchor": [20, 20],
+    "collisionRadius": 0,
+    "clearanceRect": [18, 18, 22, 22],
+    "conductionAnchors": [[17.5, 2.5], [36.5, 17.5], [21.5, 36.5], [2.5, 21.5]],
+    "contactPairs": [
+      [[17.5, 2.5], [21.5, 2.5]],
+      [[36.5, 17.5], [36.5, 21.5]],
+      [[17.5, 36.5], [21.5, 36.5]],
+      [[2.5, 17.5], [2.5, 21.5]]
+    ],
+    "conductionDirections": [[0, -1], [1, 0], [0, 1], [-1, 0]],
+    "layerRole": "Independent four-direction gold-white conduction attachment for swarm links"
+  },
+  "blastwheel_hub": {
+    "rotationPivot": [24, 24],
+    "originAnchor": [24, 24],
+    "collisionRadius": 0,
+    "reactorCenter": [24, 24],
+    "socketAnchors": [[23.5, 4.5], [40.5, 14.5], [40.5, 33.5], [23.5, 43.5], [6.5, 33.5], [6.5, 14.5]],
+    "socketDirections": [[0, -1], [0.8660254, -0.5], [0.8660254, 0.5], [0, 1], [-0.8660254, 0.5], [-0.8660254, -0.5]],
+    "layerRole": "Hexagonal six-socket housing and gold-orange reactor, orbital blades use runtime trajectories"
+  }
+}

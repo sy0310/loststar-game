@@ -1,0 +1,42 @@
+[WebServer] (node:88418) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:88472) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [mobile-390] › tests/e2e/v039-ui.spec.ts:258:3 › tape真实发现、整理、展示三态各有独立物理像素和阶段状态 (4.7s)
+
+
+  1) [mobile-390] › tests/e2e/v039-ui.spec.ts:258:3 › tape真实发现、整理、展示三态各有独立物理像素和阶段状态 ────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 50
+    Received:   10
+
+      321 |         if (difference > 15) changed++;
+      322 |       }
+    > 323 |       expect(changed).toBeGreaterThan(50);
+          |                       ^
+      324 |     }
+      325 |   });
+      326 | }
+        at /Users/shuhuayu/loststar-game/tests/e2e/v039-ui.spec.ts:323:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/v039-ui-tape真实发现、整理、展示三态各有独立物理像素和阶段状态-mobile-390/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/v039-ui-tape真实发现、整理、展示三态各有独立物理像素和阶段状态-mobile-390/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/v039-ui-tape真实发现、整理、展示三态各有独立物理像素和阶段状态-mobile-390/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/v039-ui-tape真实发现、整理、展示三态各有独立物理像素和阶段状态-mobile-390/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [mobile-390] › tests/e2e/v039-ui.spec.ts:258:3 › tape真实发现、整理、展示三态各有独立物理像素和阶段状态 ─────────────────

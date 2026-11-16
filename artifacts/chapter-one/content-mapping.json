@@ -1,0 +1,180 @@
+{
+  "sourceCommit": "8dfdd06d2c9744b872effb17ad970d8586f3738e",
+  "originalImages": "Retained unchanged from user-approved bb4b221",
+  "rows": [
+    {
+      "id": "receipt",
+      "states": [
+        {
+          "stage": "found",
+          "text": "订单还没下，退货先到了。",
+          "screenshot": "screens/qa-receipt-found.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/receipt-found.webp",
+          "actualRendered": "receipt/found"
+        },
+        {
+          "stage": "clean",
+          "text": "泥点擦掉了。购买日期写着：明天。",
+          "screenshot": "screens/qa-receipt-clean.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/receipt-clean.webp",
+          "actualRendered": "receipt/clean"
+        },
+        {
+          "stage": "stabilized",
+          "text": "纸压平了。时间没理顺。",
+          "screenshot": "screens/qa-receipt-stabilized.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/receipt-stabilized.webp",
+          "actualRendered": "receipt/stabilized"
+        }
+      ],
+      "action": "读出票面",
+      "reply": "请提前后悔。",
+      "video": "videos/qa-curio-receipt.mp4"
+    },
+    {
+      "id": "stamp",
+      "states": [
+        {
+          "stage": "found",
+          "text": "无论哪天盖，都是昨天。",
+          "screenshot": "screens/qa-stamp-found.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/stamp-found.webp",
+          "actualRendered": "stamp/found"
+        },
+        {
+          "stage": "clean",
+          "text": "锈去掉了。昨天还在。",
+          "screenshot": "screens/qa-stamp-clean.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/stamp-clean.webp",
+          "actualRendered": "stamp/clean"
+        },
+        {
+          "stage": "stabilized",
+          "text": "弹簧修好了，昨天回来得更快了。",
+          "screenshot": "screens/qa-stamp-stabilized.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/stamp-stabilized.webp",
+          "actualRendered": "stamp/stabilized"
+        }
+      ],
+      "action": "盖个邮戳",
+      "reply": "今天的事，昨天再办。",
+      "video": "videos/qa-curio-stamp.mp4"
+    },
+    {
+      "id": "cosmic-parcel",
+      "states": [
+        {
+          "stage": "found",
+          "text": "箱子里装着一小片夜空。",
+          "screenshot": "screens/qa-cosmic-parcel-found.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/cosmic-parcel-found.webp",
+          "actualRendered": "cosmic-parcel/found"
+        },
+        {
+          "stage": "clean",
+          "text": "封签背面写着：明日寄出。",
+          "screenshot": "screens/qa-cosmic-parcel-clean.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/cosmic-parcel-clean.webp",
+          "actualRendered": "cosmic-parcel/clean"
+        },
+        {
+          "stage": "stabilized",
+          "text": "封带拉紧了，星光没关住。",
+          "screenshot": "screens/qa-cosmic-parcel-stabilized.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/cosmic-parcel-stabilized.webp",
+          "actualRendered": "cosmic-parcel/stabilized"
+        }
+      ],
+      "action": "敲敲箱盖",
+      "reply": "宇宙在家，但不方便签收。",
+      "video": "videos/qa-curio-cosmic-parcel.mp4"
+    },
+    {
+      "id": "tape",
+      "states": [
+        {
+          "stage": "found",
+          "text": "还没撕开，它先说了对不起。",
+          "screenshot": "screens/qa-tape-found.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/tape-found.webp",
+          "actualRendered": "tape/found"
+        },
+        {
+          "stage": "clean",
+          "text": "灰清掉了，道歉没有减少。",
+          "screenshot": "screens/qa-tape-clean.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/tape-clean.webp",
+          "actualRendered": "tape/clean"
+        },
+        {
+          "stage": "stabilized",
+          "text": "这次粘稳了。它还是不放心。",
+          "screenshot": "screens/qa-tape-stabilized.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/tape-stabilized.webp",
+          "actualRendered": "tape/stabilized"
+        }
+      ],
+      "action": "拉出一截",
+      "reply": "对不起，刚才又粘人了。",
+      "video": "videos/qa-curio-tape.mp4"
+    },
+    {
+      "id": "nested",
+      "states": [
+        {
+          "stage": "found",
+          "text": "小箱子里面，装着一个更大的箱子。",
+          "screenshot": "screens/qa-nested-found.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/nested-found.webp",
+          "actualRendered": "nested/found"
+        },
+        {
+          "stage": "clean",
+          "text": "看得更清楚了，也更不明白了。",
+          "screenshot": "screens/qa-nested-clean.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/nested-clean.webp",
+          "actualRendered": "nested/clean"
+        },
+        {
+          "stage": "stabilized",
+          "text": "箱盖合得上，大小关系合不上。",
+          "screenshot": "screens/qa-nested-stabilized.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/nested-stabilized.webp",
+          "actualRendered": "nested/stabilized"
+        }
+      ],
+      "action": "打开一层",
+      "reply": "拆到最后，还是第一层。",
+      "video": "videos/qa-curio-nested.mp4"
+    },
+    {
+      "id": "bell",
+      "states": [
+        {
+          "stage": "found",
+          "text": "你转过身，它响了。",
+          "screenshot": "screens/qa-bell-found.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/bell-found.webp",
+          "actualRendered": "bell/found"
+        },
+        {
+          "stage": "clean",
+          "text": "铜锈没了，它继续装哑巴。",
+          "screenshot": "screens/qa-bell-clean.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/bell-clean.webp",
+          "actualRendered": "bell/clean"
+        },
+        {
+          "stage": "stabilized",
+          "text": "机构修好了，脾气一点没改。",
+          "screenshot": "screens/qa-bell-stabilized.png",
+          "image": "assets/runtime/visual-renewal/whole-states-v043/bell-stabilized.webp",
+          "actualRendered": "bell/stabilized"
+        }
+      ],
+      "action": "轻按铃铛",
+      "reply": "叮。还是没人签收。",
+      "video": "videos/qa-curio-bell.mp4"
+    }
+  ]
+}

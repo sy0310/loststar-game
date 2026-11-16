@@ -1,0 +1,103 @@
+{
+  "records": [
+    {
+      "asset": "cosmic-parcel",
+      "state": "stabilized",
+      "method": "canonicalReuse; whole PNG byte copy, no compositing",
+      "source": "assets/runtime/visual-renewal/curios/cosmic-parcel-stabilized.png",
+      "sourceCommit": "d97ca2a6a81732ca7d65e682e5f28ea88123f22e",
+      "prompt": null,
+      "status": "preserved-canonical-C"
+    },
+    {
+      "asset": "cosmic-parcel",
+      "state": "clean",
+      "file": "cosmic-parcel-clean.png",
+      "method": "built-in image_gen; whole-image edit, no code compositing",
+      "source": "/Users/shuhuayu/.codex/generated_images/01a1ae96-7ec9-7d21-ae57-d3685fb915d1/exec-b2b1dcbe-c6a3-4465-8526-e21ea024b424.png",
+      "prompt": "Edit this COMPLETE orange cardboard parcel sprite into cleaned state B, before parts-funded structural upgrade. Preserve this exact same box identity and three-quarter camera view, proportions, apparent scale and lighting. Same orange corrugated cardboard, purple cross straps, brass rectangular buckle, cream hanging label with the same original printed marks, purple planet emblem and two purple bands on the right face.\nB is surface-clean but visibly not repaired yet: the purple cross straps are slack and sag loosely, one strap end curls upward near the buckle; the top lid is slightly misaligned with one corner raised and a noticeable uneven seam; one front corner remains softly crushed, and one corner of the original hanging paper tag curls up. Keep the box fully assembled as ONE coherent physical object, never exploded, disassembled or separated into parts. The structural problems must be obvious without text but not destroy the original parcel silhouette. No dirt or grime remains in B.\nRefined high-detail2.5D pixel game illustration, dense fine pixel edges, warm upper-left light and restrained purple shadows matching the reference. Transparent background, centered single item with comfortable empty margin. No scene, surface, tools, hands, loose objects, debris, extra stickers, new text, new contents, ribbons/bows, jewels, glow or special effects. No glass case or display base. Produce a finished whole-state PNG, not pieces, collage, patch layers or a comparison sheet.",
+      "references": [
+        "cosmic-parcel-stabilized.png"
+      ],
+      "status": "root-review-pending"
+    },
+    {
+      "asset": "cosmic-parcel",
+      "state": "found",
+      "file": "cosmic-parcel-found.png",
+      "method": "built-in image_gen; whole-image edit, no code compositing",
+      "source": "/Users/shuhuayu/.codex/generated_images/01a1ae96-7ec9-7d21-ae57-d3685fb915d1/exec-1497915e-1a54-4722-a272-20bdde28ab1e.png",
+      "prompt": "Turn the COMPLETE parcel in image1 into its JUST DISCOVERED state A. Image1 is the exact cleaned-but-unrepaired B identity and silhouette; image2 is upgraded C only for original identity/color reference. Keep the same camera, apparent size and one fully assembled orange corrugated box, same purple cross straps, brass buckle, same cream hanging label and purple planet print. Keep B's sagging loose straps, slightly crooked lid/uneven seam, compressed lower-front corner and curled tag edge; these structural defects will remain until upgrade C.\nA is visibly neglected and newly recovered: dusty gray/brown abrasion and cardboard-fiber wear along lid seams and lower corners, a few cohesive scuffed stains across the original cardboard front and purple strap, some dirty fibers caught beneath the loose strap, weathered paper tag with original printed marks still belonging to the same tag. Dirt should be real material texture on the one object, not separate rectangular overlays, random pixel blocks or extra scrap piles. Do NOT add more labels, patches, loose objects, new contents, bow, jewels, symbols, text or facts. The box must stay intact and recognizable, not exploded/disassembled.\nRefined high-detail2.5D pixel-art sprite, dense small pixels, matching warm-orange/purple palette and upper-left light; genuinely transparent background, generous margin, no floor, shadows cloud, tools, hands, glass, pedestal, UI, glow, particles or captions. One final whole-picture stateA PNG, not a sprite kit/collage.",
+      "references": [
+        "cosmic-parcel-stabilized.png",
+        "cosmic-parcel-clean.png"
+      ],
+      "status": "root-review-pending"
+    }
+  ],
+  "canonical": {
+    "found": {
+      "file": "cosmic-parcel-found.png",
+      "bytes": 2092853,
+      "sha256": "bc06cf711e463961ce604900e0d0d2361ba4d3f90bd0f5c28931396ae7ccb7ee",
+      "width": 1254,
+      "height": 1254,
+      "wholeImage": true,
+      "composited": false
+    },
+    "clean": {
+      "file": "cosmic-parcel-clean.png",
+      "bytes": 1872362,
+      "sha256": "a3ceec440ca54fcf657758c61dbb465309b70bb15c5b66a13142363b92f2aede",
+      "width": 1254,
+      "height": 1254,
+      "wholeImage": true,
+      "composited": false
+    },
+    "stabilized": {
+      "file": "cosmic-parcel-stabilized.png",
+      "bytes": 243731,
+      "sha256": "4bd783214a71966348b8d5967271bad77f4e2e309a916fe4c20615d65cf9c8cc",
+      "width": 384,
+      "height": 384,
+      "wholeImage": true,
+      "composited": false
+    }
+  },
+  "rootSelection": {
+    "status": "internal_static_reviewed_user_pending",
+    "method": "Whole images viewed side by side at native384 scale composited on actual#29183c bench colour. Transparent alpha<=8 RGB is not mistaken for visible fringe. No internal pixel edits.",
+    "selected": [
+      {
+        "file": "cosmic-parcel-found.png",
+        "state": "found",
+        "bytes": 2092853,
+        "width": 1254,
+        "height": 1254,
+        "sha256": "bc06cf711e463961ce604900e0d0d2361ba4d3f90bd0f5c28931396ae7ccb7ee",
+        "canonicalReuse": false
+      },
+      {
+        "file": "cosmic-parcel-clean.png",
+        "state": "clean",
+        "bytes": 1872362,
+        "width": 1254,
+        "height": 1254,
+        "sha256": "a3ceec440ca54fcf657758c61dbb465309b70bb15c5b66a13142363b92f2aede",
+        "canonicalReuse": false
+      },
+      {
+        "file": "cosmic-parcel-stabilized.png",
+        "state": "stabilized",
+        "bytes": 243731,
+        "width": 384,
+        "height": 384,
+        "sha256": "4bd783214a71966348b8d5967271bad77f4e2e309a916fe4c20615d65cf9c8cc",
+        "canonicalReuse": true
+      }
+    ],
+    "revisions": "A/B preserve loose strap/curled tag/corner; C taut original case",
+    "physicalPhone": false,
+    "userVisualApproval": false
+  }
+}

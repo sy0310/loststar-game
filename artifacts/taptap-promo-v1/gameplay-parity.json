@@ -1,0 +1,40 @@
+{
+  "captureCommit": "4ba48981fa2b63ed6e26ebc5f658a92cc643a9a5",
+  "publishedBaseline": "ea26e29d3061542913e7a587a1fe6cc889250d33",
+  "files": [
+    {
+      "path": "src/game.js",
+      "currentSha256": "86c71c4f6164be9fb0583d319a85e5c4c69cfcab3e7967d1a04300c2fee05b36",
+      "releaseSha256": "9bfb3b6f776213a47b027018c428471755f3c4dfa0ed0f17899f6d87978ba520",
+      "equalToTapTap480638": false
+    },
+    {
+      "path": "src/balance.js",
+      "currentSha256": "fcd0322cb243a9a14cb8e4a6b26e2fd4aef8c258fd5d00c490ccc2c1b4b210c2",
+      "releaseSha256": "fcd0322cb243a9a14cb8e4a6b26e2fd4aef8c258fd5d00c490ccc2c1b4b210c2",
+      "equalToTapTap480638": true
+    },
+    {
+      "path": "src/persistence.js",
+      "currentSha256": "d5335fc39157d36824e15c7d52660b1dd7b0d04484855389b010180f82c4e118",
+      "releaseSha256": "d4b107ca7aad3cc18470dbcc1ca1eedb047b5c6c299ba097ce406c25590ebb33",
+      "equalToTapTap480638": false
+    },
+    {
+      "path": "src/audio-engine.js",
+      "currentSha256": "70d13d4a2e593efa977a5a683cc3add57215b002c678c47e64c85fb6527b9e3e",
+      "releaseSha256": "70d13d4a2e593efa977a5a683cc3add57215b002c678c47e64c85fb6527b9e3e",
+      "equalToTapTap480638": true
+    },
+    {
+      "path": "index.html",
+      "currentSha256": "74a19db6b9b01abc46b157c3a34f5ea1bfdc35890c6a248421d5eb945d91beef",
+      "releaseSha256": "74a19db6b9b01abc46b157c3a34f5ea1bfdc35890c6a248421d5eb945d91beef",
+      "equalToTapTap480638": true
+    }
+  ],
+  "controllerDiff": "diff --git a/prototypes/salvage-survivor-demo/src/game.js b/prototypes/salvage-survivor-demo/src/game.js\nindex daf3d7c..e9564ac 100644\n--- a/prototypes/salvage-survivor-demo/src/game.js\n+++ b/prototypes/salvage-survivor-demo/src/game.js\n@@ -1152,7 +1152,7 @@\n     if (!type && newCombat()) {\n       const pool = (assaultCombat() ? B.assault.waves : B.combat.waves)\n         .filter((entry) => g.time >= entry.from)\n-        .at(-1).pool;\n+        .slice(-1)[0].pool;\n       type = pool[Math.floor(rand() * pool.length)];\n       const cap = B.combat.populationCaps[type];\n       if (\n@@ -3320,7 +3320,7 @@\n           : \"精英追猎 · 侧向避让\"\n         : (assaultCombat() ? B.assault.waves : B.combat.waves)\n             .filter((entry) => g.time >= entry.from)\n-            .at(-1).hint;\n+            .slice(-1)[0].hint;\n     $(\"bossBar\").hidden = !special || g.mode === \"results\";\n     if (special) {\n       $(\"bossName\").textContent =\n@@ -5536,6 +5536,7 @@\n       storageWarning(error);\n     } finally {\n       actionBusy = false;\n+      if (g?.mode === \"upgrade\") updateRerollButton();\n       if (g?.mode === \"results\") refreshPerks();\n     }\n   }\n",
+  "runtimeTaskEdits": [],
+  "Pillow": "9.5.0",
+  "numpy": "2.0.2"
+}

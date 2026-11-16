@@ -1,0 +1,30 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>失物星球 · 控件精度对照</title>
+<link rel="stylesheet" href="../../src/fusion/style.css"><link rel="stylesheet" href="./control-candidate.css">
+<style>
+body{background:#211330}.review-shell{width:min(390px,100%);margin:0 auto;padding:14px 12px 28px;color:#f5dfc0}.review-shell h1{font-size:18px;letter-spacing:1px;margin:0 0 6px}.review-note{font-size:11px;line-height:1.65;color:#c9b1d4;margin:0 0 15px}.review-columns,.review-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.review-columns{font-size:12px;color:#d7bc94;margin-bottom:9px}.review-pair{margin-bottom:12px}.review-pair button:not(.fu-wallet){width:100%}.review-pair small{display:block;font-size:10px;color:#bcabc8;margin:5px 0 0}.review-pair .icon{width:22px;height:22px;margin-right:5px}.review-pair .fu-wallet .icon{width:17px;height:17px;margin:0}.review-pair .fu-wallet{width:100%;min-height:47px}.review-pair .fu-switch{min-height:46px;font-size:12px;gap:6px}.review-pair .fu-switch input{margin-right:2px}.review-pair .fu-mode-buttons{margin:0;gap:5px}.review-pair .fu-mode-buttons button{padding-inline:4px;font-size:12px}.review-shell h2{font-size:13px;font-weight:500;margin:18px 0 10px;color:#e6c393}.review-nav .fu-nav{padding-inline:3px;padding-bottom:6px;border:0;background:#30203f}.review-nav .fu-nav button{min-height:63px}.review-nav .fu-nav .icon{margin-right:auto;margin-left:auto;width:23px;height:23px}.review-nav>small{font-size:10px;color:#b9a6c6;display:block;margin:5px 0 7px}.review-icons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.review-icon{border:1px solid #815b76;background:#2d1b3e;padding:9px 6px 7px;text-align:center}.review-icon>div{display:flex;align-items:center;justify-content:center;gap:9px;height:35px}.review-icon .before,.review-icon .after{width:24px;height:24px;display:flex;align-items:center;justify-content:center}.review-icon .icon{width:24px;height:24px}.review-icon small{display:block;margin-top:5px;font-size:10px;color:#c9b1d4}.review-focus{outline:2px solid #9fe2d9!important;outline-offset:3px!important}.review-pressed{transform:translateY(1px);border-image-source:url('../../assets/runtime/visual-renewal/ui/control-primary-pressed.svg')!important;background:linear-gradient(#cf945c,#e3ad67)!important;box-shadow:inset 0 2px #713f4c88,inset 0 -1px #ffe0a055!important}.review-foot{font-size:11px;line-height:1.7;color:#bfa9ce;margin-top:16px;border-top:1px solid #74536d;padding-top:12px}.review-foot code{font-size:10px;color:#d2c3da}
+</style>
+<main class="review-shell" id="control-review"><h1>控件精修 · 等尺寸对照</h1><p class="review-note">只读美术检查，不读写游戏档案。左右触区、字号与控件尺寸相同；右侧仅增加内部结构与铜边细节。</p><div class="review-columns"><span>当前 · 24格单色</span><span>候选 · 48格分层</span></div><section id="review-pairs"></section><h2>主导航 · 保留原三个入口</h2><section id="review-nav" class="review-nav"></section><h2>图标细节 · 均为实际24 CSS px</h2><div class="review-icons" id="review-icons"></div><p class="review-foot">上左暖光、右下遮光；铜边、铆钉与凹槽有实际结构位置，不叠噪点。键盘焦点仍保留2px青色外轮廓。<br><code>样板不含星球、奇物、经济或存档代码。</code></p></main>
+<script type="module">
+import {controlIcon,controlGlyphIds} from '../../src/fusion/control-icons.ts';
+const old=await(await fetch('./control-before-icons.json')).json();
+const legacy=id=>`<svg class="icon fu-pixel-icon" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" shape-rendering="crispEdges" aria-hidden="true"><path d="${old[id]??old.planet}"/></svg>`;
+const button=(art,kind,label,mark,attrs='')=>`<button class="${kind}" ${attrs}>${mark?art(mark):''}${label}</button>`;
+const variants=[
+ ['主操作',art=>button(art,'fu-primary','升级 96','bolt')],
+ ['次操作',art=>button(art,'','现场观察','radar')],
+ ['已选中',art=>button(art,'','自动维修','gear','aria-pressed="true"')],
+ ['未满足条件',art=>button(art,'','零件不足','cube','disabled')],
+ ['按下反馈',art=>button(art,'fu-primary','升级 96','bolt')],
+ ['键盘焦点',art=>button(art,'review-focus','查看图鉴','book')],
+ ['零件余额',art=>`<button class="fu-wallet">${art('cube')}<b>27,049</b><small>零件</small></button>`],
+ ['设置选项',art=>`<div class="fu-mode-buttons"><button aria-pressed="true">标准</button><button aria-pressed="false">大字</button></div>`],
+ ['自动维修',art=>`<label class="fu-switch">自动维修<input type="checkbox" checked aria-label="自动维修样式"></label>`],
+];
+document.querySelector('#review-pairs').innerHTML=variants.map(([name,render],index)=>`<div class="review-pair"><div>${render(legacy)}<small>${name}</small></div><div class="refined">${render(controlIcon)}<small>${name}</small></div></div>`).join('');
+const press=document.querySelectorAll('.review-pair')[4];press.firstElementChild.querySelector('button').style.transform='translateY(1px)';press.lastElementChild.querySelector('button').classList.add('review-pressed');
+const nav=art=>`<nav class="fu-nav" aria-label="只读主导航样式"><button aria-current="page">${art('planet')}探索</button><button aria-current="false">${art('book')}收藏</button><button aria-current="false">${art('base')}基地</button></nav>`;
+document.querySelector('#review-nav').innerHTML=`<div>${nav(legacy)}</div><small>当前</small><div class="refined">${nav(controlIcon)}</div><small>候选</small>`;
+const labels={planet:'探索',rocket:'归航',radar:'雷达',book:'图鉴',base:'基地',bolt:'升级',cube:'零件',gear:'设备',arrow:'进入',close:'关闭',receipt:'纸类',tape:'胶带',nested:'包裹',mouse:'居民',signal:'异常'};
+document.querySelector('#review-icons').innerHTML=controlGlyphIds.map(id=>`<div class="review-icon"><div><span class="before">${legacy(id)}</span><span class="after">${controlIcon(id)}</span></div><small>${labels[id]}</small></div>`).join('');
+document.querySelector('#control-review').dataset.ready='true';
+</script></html>

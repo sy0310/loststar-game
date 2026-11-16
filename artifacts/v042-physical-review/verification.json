@@ -1,0 +1,208 @@
+{
+  "sourceCommit": "ecdeecc81e3d4435d6ae82d87980f6ca562d2c6a",
+  "version": "0.4.2",
+  "database": "loststar.fusion.firstplanet.v037",
+  "physicalPhone": false,
+  "userVisualApproval": false,
+  "package": {
+    "game": "失物星球",
+    "version": "0.4.2",
+    "sourceCommit": "ecdeecc81e3d4435d6ae82d87980f6ca562d2c6a",
+    "archive": "releases/taptap/loststar-0.4.2-ecdeecc-fusion-h5.zip",
+    "bytes": 11488029,
+    "sha256": "3878080b8ceb2b7335623b6d98a3ed1e02eaaf67a129fa89fa4206a74a19ee89",
+    "files": 199,
+    "uncompressedBytes": 11842699,
+    "entry": "loststar-fusion/index.html",
+    "orientation": "portrait",
+    "purpose": "First-planet playable journey with persistent surface fog, artifact restoration, collection, base and day/night; continues the existing v037 campaign and preserves prior source backups"
+  },
+  "localCheck": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "designAssets": {
+      "passed": 20,
+      "total": 20
+    },
+    "approvedPngs": {
+      "passed": 3,
+      "total": 3
+    },
+    "unitFiles": 60,
+    "unitTests": 372,
+    "builds": [
+      "main",
+      "d1",
+      "v034",
+      "fusion",
+      "v036"
+    ],
+    "e2e": {
+      "startTime": "2026-11-05T23:49:25.744Z",
+      "duration": 645823.4539999999,
+      "expected": 502,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "compressedPackageCases": 6
+  },
+  "preservation": {
+    "businessModulesByteIdentical": 15,
+    "businessBaseline": "51d682c",
+    "originalImageBaseline": "240e067fd43fcec201de0ec889e739dd7e8ab684",
+    "originalImagesUnchanged": 250,
+    "intentionalOriginalImageChanges": 12,
+    "saveReset": false,
+    "newCharges": false,
+    "oldOwnershipPreserved": true,
+    "imageCheckScope": "262 original PNG/WebP files under assets/runtime only; source-art directory is separate."
+  },
+  "economy": {
+    "rows": 48,
+    "cohorts": [
+      "fresh",
+      "legacy-27049",
+      "legacy-50000",
+      "restart-27049"
+    ],
+    "minutes": [
+      0,
+      5,
+      15,
+      30,
+      60,
+      120
+    ],
+    "offlineCases": 12,
+    "offlineHours": [
+      8,
+      24,
+      72
+    ],
+    "anomalies": 0,
+    "restartCaseIsExplicitReadOnlySimulation": true,
+    "currentPlayerArchiveNeverOpenedOrReset": true
+  },
+  "media": {
+    "sourceAndZipBound": true,
+    "screenshots": 301,
+    "transparentMaterialExports": 54,
+    "stateMaterials": 18,
+    "naturalVideos": 13,
+    "videoSpeed": 1,
+    "nativeExtractedReviewFrames": 140,
+    "contactSheets": 19,
+    "clockOverridesInNaturalMovies": false,
+    "staticScreensMayUseDisclosedHeldFutureFixtures": true,
+    "recordedAudio": false
+  },
+  "review": "review-status.json; internal reviewed, user pending",
+  "attempts": [
+    "attempt-a51.json",
+    "attempt-ca.json"
+  ],
+  "ciSnapshot": {
+    "sourcePush": {
+      "runId": 42132289393,
+      "jobId": 127611621489,
+      "status": "completed",
+      "conclusion": "success",
+      "checkoutSha": "ecdeecc81e3d4435d6ae82d87980f6ca562d2c6a",
+      "unitTests": 372,
+      "builds": 5,
+      "e2ePassed": 502,
+      "e2eMinutes": 16.4,
+      "compressedPackageCases": 6,
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/42132289393",
+      "artifactId": 13464074712,
+      "actualSixCompressedContextChecks": true,
+      "actualSevenComputedTargetsEach": true
+    },
+    "sourcePr": {
+      "runId": 42132302924,
+      "jobId": 127611664901,
+      "status": "completed",
+      "conclusion": "success",
+      "checkoutSha": "48f5b4f3cc990d9ed36f05d2d6c8a9d595be9998",
+      "checkoutKind": "GitHub synthetic PR merge; not the uploaded runtime ZIP source SHA",
+      "unitTests": 372,
+      "builds": 5,
+      "e2ePassed": 502,
+      "e2eMinutes": 17.1,
+      "compressedPackageCases": 6,
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/42132302924",
+      "artifactId": 13464843741,
+      "mergeParents": [
+        "bfe6ea184df51b46d82ce4abdb38df0a9e4cd44e",
+        "ecdeecc81e3d4435d6ae82d87980f6ca562d2c6a"
+      ],
+      "actualSixCompressedContextChecks": true,
+      "actualSevenComputedTargetsEach": true
+    },
+    "finalEvidenceHead": "See final PR checks. Evidence-only commit must not change source/runtime bytes."
+  },
+  "notClaimed": [
+    "Physical TapTap phone or lockscreen test",
+    "Low-end thermal/GPU/texture residency",
+    "Subjective final art approval",
+    "Formal publication, merge or second planet",
+    "Recorded audible bell sound; these movies are visual-only."
+  ],
+  "evidenceSha256": {
+    "full-check.log": "a6def118796df7a96d5a814bf5266c42b96562eb677127edb480d178932ebd3b",
+    "e2e-results.json": "87ce9c974cae3b331f2f65f559f512144e2b41dd801e02b0b2ac4f6e1d5c74a9",
+    "package-smoke.json": "01625a5cf07c8713ada6631a29cd9f70147c1c72c34fd1ef13e2a84a263e7e13",
+    "economy.json": "bdd735d2f85dad0d631fcb2575661ddb013f6f2c49404a153840fe881c403e66",
+    "model-invariants.json": "4044d2f21555ab2b412800a99882be891123f31733d6226d166e7f745b13ec86",
+    "asset-preservation.json": "c7c80347263e3ebc8dcebe9a4df0474cc834d1fb15eb2b3eea878635eeb1cbba",
+    "screens-evidence.json": "b98ac40f77ad3c682b7f692f8594cf809be2434e2066c78d150d10ec31332b34",
+    "pages-evidence.json": "44a57aed256965b7e6dac28704887c6a89b3e01561e912798c0f892bb9d7611b",
+    "treatment-evidence.json": "2d4b5d37c94a5697e91bd899ac66bd177da084f4f7073a8f65af06ad43f97dfd",
+    "museum-physical-evidence.json": "a68bdf24bdae44fc3e3eed3129e1ac46be5a926cbc73d0577cf846d92f448d77",
+    "mechanisms-physical-evidence.json": "92933ef7b3e320c101c684c0a57ca962fe378fe858ac0218bff7b592f2550391",
+    "review-status.json": "446ed842b9322c3f678d6a18124315f647c7772fff7a310f5c363dc5fc9a91ec",
+    "review-frames/index.json": "f46705a99f132b039a034c15977dca2f84a9e8fbc08c801ca1dc8b5323f17da2",
+    "performance.json": "c5bfbd5f4e1c22ce664ec7848663d763531f708468d020f8c6aefbd2bacd9097",
+    "gallery-qa.json": "c65c47d0d40bdbcf42c0a80254a534644f138e99e8933b9ca3b05304944823c2",
+    "taptap-self-test.json": "e7b9bb518e072f0be4d69e07361a385d9a5c60cdcce7362e4ea148f1f18e3e73"
+  },
+  "performance": {
+    "sourceCommit": "ecdeecc81e3d4435d6ae82d87980f6ca562d2c6a",
+    "cases": 18,
+    "host": {
+      "cpu": "Apple M2 Pro",
+      "platform": "darwin",
+      "architecture": "arm64"
+    },
+    "sampleMsEach": 10000,
+    "recording": false,
+    "concurrency": 1,
+    "actualPaintP95MsRange": [
+      16.700000000000728,
+      32
+    ],
+    "exception": "WebKit idle tape 563 actual paints/10s, P95 32ms. WebKit base590/P9519, active tape596/P9518, active bell593/P9519. Not a claim of universal60fps.",
+    "gpuMemory": "not measured",
+    "physicalPhone": false
+  },
+  "galleryQA": {
+    "engines": 2,
+    "viewport": [
+      390,
+      844
+    ],
+    "allImagesLoaded": true,
+    "all13MoviesPlayed": true,
+    "noOverflow": true,
+    "loadedImagesEach": 322
+  },
+  "tapTap": {
+    "versionId": 439499,
+    "sourceCommit": "ecdeecc81e3d4435d6ae82d87980f6ca562d2c6a",
+    "remoteFileNameBytesOrientationVerified": true,
+    "mainModuleUnchanged": true,
+    "formalPublication": false,
+    "physicalPhone": false
+  }
+}

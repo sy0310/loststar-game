@@ -1,0 +1,74 @@
+{
+  "sourceCommit": "dcf7e64ea935d9b30fe4a14d14807e8efbd66eb5",
+  "version": "0.3.3",
+  "at": "2026-11-03T20:56:42.031485+00:00",
+  "command": "npm run check",
+  "result": "passed",
+  "designAssets": {
+    "verified": 20,
+    "total": 20
+  },
+  "unitTests": 106,
+  "browserTests": {
+    "startTime": "2026-11-03T20:46:34.486Z",
+    "duration": 148459.07,
+    "expected": 142,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "builds": [
+    "normal static game entry",
+    "D1 read-only review entry"
+  ],
+  "coveragePercent": {
+    "statements": 96.38,
+    "branches": 94.06,
+    "functions": 97.4,
+    "lines": 100
+  },
+  "coverageScope": "Pure game/guard models and selected movement/layout helpers. Canvas/UI coverage is outside these percentages.",
+  "newRegressionScope": [
+    "resident day/dusk/night/dawn routine",
+    "refresh and persistent world clock",
+    "real resting/flying texture selection",
+    "night shading beyond the globe silhouette",
+    "receipt capabilities independent of cabinet level",
+    "record de-duplication and missing-step order",
+    "A/B input changes actual result from 2 to 1",
+    "invalid research level normalization",
+    "fixed paper hinge and floor clearance",
+    "visible paper and action button in the same viewport",
+    "native Chromium/WebKit touchscreen trial"
+  ],
+  "package": {
+    "game": "失物星球",
+    "version": "0.3.3",
+    "sourceCommit": "dcf7e64ea935d9b30fe4a14d14807e8efbd66eb5",
+    "archive": "releases/taptap/loststar-0.3.3-dcf7e64-d1-h5.zip",
+    "bytes": 3406640,
+    "sha256": "c2b688e10e8b9fc7146d3fd0bf36f4916f3c237e948c8131cae6dc1184952c42",
+    "files": 61,
+    "uncompressedBytes": 3484724,
+    "entry": "loststar-d1/index.html",
+    "orientation": "portrait",
+    "purpose": "D1 read-only 30s spherical night operations and four-tier receipt installation review; no save access or payment"
+  },
+  "phoneReview": "New version awaits TapTap scan review. These screenshots and videos use desktop mobile touch emulation.",
+  "CI": "Verified final run URLs are recorded in Draft PR #2 after the evidence commit completes CI.",
+  "finalFullCheck": {
+    "at": "2026-11-03T21:20:17.397930+00:00",
+    "command": "npm run check",
+    "result": "passed",
+    "browserTests": {
+      "startTime": "2026-11-03T21:17:52.162Z",
+      "duration": 94259.85100000001,
+      "expected": 142,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "followUp": "Night checkpoints preserve their original cumulative simulation times. Fast-forward between checkpoints, then execute 100ms of render callbacks. The original continuous wall-clock media and frozen runtime/package source remain dcf7e64.",
+    "runtimeSourceDiffEmpty": true
+  }
+}

@@ -1,0 +1,354 @@
+name: Vertical slice checks
+on: [push, pull_request]
+jobs:
+  verify:
+    # Pin a supported LTS image: the moving latest image's Ubuntu 26.04 package
+    # mirror stalled this PR's browser dependency install for over 16 minutes.
+    runs-on: ubuntu-24.04
+    # The full six-project browser suite can exceed 20 minutes on a slower runner.
+    # Keep every test and its own timeout; only the whole-job budget changes.
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Evidence-only commits must verify the frozen runtime's ancestry and
+          # original source/asset trees, not substitute the current checkout SHA.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: python3 scripts/validate_design_assets.py
+      - run: python3 design/visual-renewal/import_reference_pngs.py
+      - name: Verify four approved A045 original PNGs
+        run: python3 design/v045_a_simplified_exploration/validate_reference_pngs.py
+      - name: Verify current asset and execution mappings
+        run: npm run check:execution -- --report artifacts/execution-ci.json
+      - run: npm run test:coverage
+      - run: npm run build
+      - run: npm run build:d1
+      - run: npm run build:v034
+      - run: npm run build:fusion
+      - run: npm run build:v036
+      - name: Use Ubuntu archive for browser dependencies
+        run: |
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          mirrorlist = Path('/etc/apt/apt-mirrors.txt')
+          paths = [Path('/etc/apt/sources.list'), mirrorlist, *Path('/etc/apt/sources.list.d').glob('*')]
+          checked = 0
+          for path in paths:
+              if not path.is_file() or (path != mirrorlist and path.suffix not in ('.list', '.sources')):
+                  continue
+              checked += 1
+              original = path.read_text()
+              updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+              if updated != original:
+                  path.write_text(updated)
+                  print(f'Using Ubuntu archive in {path.name}')
+              if 'azure.archive.ubuntu.com/ubuntu' in path.read_text():
+                  raise RuntimeError(f'Azure Ubuntu mirror remains in {path.name}')
+          if not checked:
+              raise RuntimeError('No Ubuntu APT source files found')
+          PY
+      - run: npx playwright install --with-deps chromium webkit
+        timeout-minutes: 5
+      - run: npm run test:e2e
+      - name: Verify the compressed H5 package
+        run: |
+          npm run package:fusion
+          npx vite build --ssr scripts/feedback_fixtures.ts --outDir releases/feedback-fixtures
+          mkdir -p artifacts/ci-package
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory releases/taptap > /tmp/loststar-ci-package-server.log 2>&1 &
+          task_pkg_pid=$!
+          trap 'kill "$task_pkg_pid"' EXIT
+          curl --fail --retry 10 --retry-delay 1 --retry-connrefused --silent http://127.0.0.1:8765/loststar-fusion/ > /dev/null
+          RENEWAL_URL=http://127.0.0.1:8765/loststar-fusion/ RENEWAL_OUTPUT=artifacts/ci-package node scripts/smoke_visual_renewal_package.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: |
+            artifacts/e2e-results.json
+            artifacts/mobile-*.png
+            artifacts/desktop-*.png
+            artifacts/webkit-*.png
+            test-results/
+            coverage/
+            artifacts/ci-package/package-smoke.json
+            artifacts/execution-ci.json
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always() && (hashFiles('artifacts/v045-a-exploration/screens-evidence.json') != '' || hashFiles('artifacts/v044-execution-art/proof.json') != '' || hashFiles('artifacts/v042-physical-review/museum-physical-evidence.json') != '' || hashFiles('artifacts/v041-receipt-review/screens-evidence.json') != '' || hashFiles('artifacts/visual-renewal/screens-evidence.json') != '')
+        with:
+          name: visual-renewal-review
+          path: |
+            artifacts/visual-renewal/
+            artifacts/v041-receipt-review/
+            artifacts/v042-physical-review/
+            artifacts/v043-whole-state-review/
+            artifacts/v044-execution-art/
+            artifacts/v045-a-exploration/
+            !artifacts/visual-renewal/raw/
+            !artifacts/visual-renewal/internal/
+            !artifacts/v041-receipt-review/raw/
+            !artifacts/v042-physical-review/raw/
+            !artifacts/v043-whole-state-review/raw/
+            !artifacts/v044-execution-art/raw/
+            !artifacts/v045-a-exploration/raw/
+            !artifacts/v045-a-exploration/**/*.webm
+          retention-days: 14
+  reference-ui-sample:
+    name: Isolated reference UI sample
+    runs-on: ubuntu-24.04
+    # 72 natural-time flows take about six minutes; retain every assertion and
+    # zero retries while allowing checkout/browser-install and media-upload time.
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck isolated sample
+        run: npx tsc --noEmit -p prototypes/ref-ui/tsconfig.json
+      - name: Build isolated sample (formal entry unchanged)
+        run: npx vite build --config prototypes/ref-ui/vite.config.ts
+      - name: Use Ubuntu archive for browser dependencies
+        run: |
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          paths = [Path('/etc/apt/sources.list'), Path('/etc/apt/apt-mirrors.txt'), *Path('/etc/apt/sources.list.d').glob('*')]
+          for path in paths:
+              if path.is_file() and (path.name == 'apt-mirrors.txt' or path.suffix in ('.list', '.sources')):
+                  text = path.read_text().replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+                  path.write_text(text)
+          PY
+      - run: npx playwright install --with-deps chromium webkit
+        timeout-minutes: 5
+      - name: Validate sample input, original costs, storage isolation and responsive layout
+        run: npx playwright test --config prototypes/ref-ui/playwright.config.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: isolated-reference-ui
+          path: |
+            releases/ref-ui-e2e-results.json
+            releases/ref-ui-test-results/
+            artifacts/ref-ui-sample/
+            artifacts/ref-ui-unified/
+          retention-days: 14
+  chapter-one:
+    name: Persistent first-planet chapter
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npx vite build --config vite.chapter.config.ts --base ./
+      - name: Use Ubuntu archive for browser dependencies
+        run: |
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          for path in [Path('/etc/apt/sources.list'), Path('/etc/apt/apt-mirrors.txt'), *Path('/etc/apt/sources.list.d').glob('*')]:
+              if path.is_file() and (path.name == 'apt-mirrors.txt' or path.suffix in ('.list', '.sources')):
+                  path.write_text(path.read_text().replace('http://azure.archive.ubuntu.com/ubuntu','https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu','https://archive.ubuntu.com/ubuntu'))
+          PY
+      - run: npx playwright install --with-deps chromium webkit
+        timeout-minutes: 5
+      - name: Persistent chapter, offline, original fees, legacy copy and repeat protection
+        run: npx playwright test --config src/chapter/playwright.config.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chapter-one-evidence
+          path: |
+            releases/chapter-e2e-results.json
+            releases/chapter-test-results/
+          retention-days: 14
+  salvage-route:
+    name: Salvage route real HTTP and persistence
+    runs-on: ubuntu-24.04
+    # v0.5.1 compares five return variants,512-seed markets and paid policy
+    # replay before240 browser cases and24 UI tap traces. Preserve zero retries.
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Verify committed fixed-package evidence when present
+        if: hashFiles('artifacts/salvage-route/verification.json') != ''
+        run: node prototypes/salvage-route-demo/tests/verify-evidence.cjs
+      - name: Install declared pixel-asset verification dependency
+        run: python3 -m pip install -r prototypes/salvage-route-demo/tests/requirements-port-art.txt
+      - name: Current salvage rules and actual paid policy simulation
+        run: |
+          npm --prefix prototypes/salvage-route-demo test
+          npm --prefix prototypes/salvage-route-demo run simulate
+          npm --prefix prototypes/salvage-route-demo run simulate:compare
+          npm --prefix prototypes/salvage-route-demo run simulate:v051
+          npm --prefix prototypes/salvage-route-demo run check:art
+      - name: Build and extract this exact isolated H5 ZIP
+        run: |
+          python3 prototypes/salvage-route-demo/build.py --freeze
+          python3 prototypes/salvage-route-demo/verify_package.py releases/salvage-ci-extracted
+      - name: Use Ubuntu archive for browser dependencies
+        run: |
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          for path in [Path('/etc/apt/sources.list'),Path('/etc/apt/apt-mirrors.txt'),*Path('/etc/apt/sources.list.d').glob('*')]:
+              if path.is_file() and (path.name=='apt-mirrors.txt' or path.suffix in ('.list','.sources')):
+                  path.write_text(path.read_text().replace('http://azure.archive.ubuntu.com/ubuntu','https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu','https://archive.ubuntu.com/ubuntu'))
+          PY
+      - run: npx playwright install --with-deps chromium webkit
+        timeout-minutes: 5
+      - name: Two real voyages, persistence, concurrency, failures, import and old save isolation
+        run: |
+          python3 -m http.server 4283 --bind 127.0.0.1 --directory releases/salvage-ci-extracted > /tmp/salvage-http.log 2>&1 &
+          task_salvage_pid=$!
+          trap 'kill "$task_salvage_pid"' EXIT
+          curl --fail --retry 10 --retry-delay 1 --retry-connrefused --silent http://127.0.0.1:4283/loststar-salvage/ > /dev/null
+          SALVAGE_URL=http://127.0.0.1:4283/loststar-salvage/ npx playwright test --config prototypes/salvage-route-demo/playwright.config.cjs
+          SALVAGE_URL=http://127.0.0.1:4283/loststar-salvage/ node prototypes/salvage-route-demo/tests/port-compatibility.cjs
+          SALVAGE_URL=http://127.0.0.1:4283/loststar-salvage/ node prototypes/salvage-route-demo/tests/v051-market-ui.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: salvage-development-evidence-spoilers
+          path: |
+            releases/salvage-browser-results.json
+            releases/v051-economy.json
+            releases/v051-model-results.json
+            releases/v051-market-ui.json
+            releases/v05-isolated-geometry.json
+            releases/v05-model-results.json
+            releases/salvage-test-results/
+            prototypes/salvage-route-demo/verification/
+            prototypes/salvage-route-demo/dist/build-info.json
+            prototypes/salvage-route-demo/dist/loststar-salvage-*.zip
+          retention-days: 14
+  survivor:
+    name: Survivor actual combat, art and persistence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: python3 -m pip install -r prototypes/salvage-route-demo/tests/requirements-port-art.txt
+      - name: Verify committed survivor package and immutable evidence
+        if: hashFiles('artifacts/survivor-v06/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-evidence.cjs
+      - name: Verify v0.6.1 frozen delivery independently
+        if: hashFiles('artifacts/survivor-v061/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v061-evidence.cjs
+      - name: Verify playback-recovery frozen delivery when present
+        if: hashFiles('artifacts/survivor-v061/recovery/verification.json') != ''
+        run: SURVIVOR_EVIDENCE_FOLDER=artifacts/survivor-v061/recovery node prototypes/salvage-survivor-demo/tests/verify-v061-evidence.cjs
+      - name: Verify media-clock recovery delivery when present
+        if: hashFiles('artifacts/survivor-v061/clock-recovery/verification.json') != ''
+        run: SURVIVOR_EVIDENCE_FOLDER=artifacts/survivor-v061/clock-recovery node prototypes/salvage-survivor-demo/tests/verify-v061-evidence.cjs
+      - name: Verify deep-space encounter delivery when present
+        if: hashFiles('artifacts/survivor-v062/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v062-evidence.cjs
+      - name: Verify five-level progression frozen delivery when present
+        if: hashFiles('artifacts/survivor-v063/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v063-evidence.cjs
+      - name: Verify fifteen-minute combat delivery when present
+        if: hashFiles('artifacts/survivor-v064/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v064-evidence.cjs
+      - name: Verify evolved fleets and distinct Boss delivery when present
+        if: hashFiles('artifacts/survivor-v065/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v065-archive.cjs
+      - name: Verify elite recovery and random reinforcement delivery when present
+        if: hashFiles('artifacts/survivor-v066/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v066-evidence.cjs
+      - name: Verify repair engineering frozen delivery when present
+        if: hashFiles('artifacts/survivor-v067/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v067-evidence.cjs
+      - name: Verify first-release polish delivery when present
+        if: hashFiles('artifacts/survivor-v068/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v068-evidence.cjs
+      - name: Verify random loadouts and purple-gold delivery when present
+        if: hashFiles('artifacts/survivor-v069/verification.json') != ''
+        run: node prototypes/salvage-survivor-demo/tests/verify-v069-evidence.cjs
+      - name: Verify scaled repair and prepared test materials when present
+        if: hashFiles('artifacts/survivor-v0610/verification.json') != ''
+        run: |
+          python3 design/star-salvage/v0610/test-materials/art/verify.py
+          node prototypes/salvage-survivor-demo/tests/verify-v0610-evidence.cjs
+      - name: Use Ubuntu archive for browser dependencies
+        run: |
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          for path in [Path('/etc/apt/sources.list'),Path('/etc/apt/apt-mirrors.txt'),*Path('/etc/apt/sources.list.d').glob('*')]:
+              if path.is_file() and (path.name=='apt-mirrors.txt' or path.suffix in ('.list','.sources')):
+                  path.write_text(path.read_text().replace('http://azure.archive.ubuntu.com/ubuntu','https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu','https://archive.ubuntu.com/ubuntu'))
+          PY
+      - run: npx playwright install --with-deps chromium webkit
+        timeout-minutes: 5
+      - name: Audio streaming, transitions, mix and bounded voices
+        run: SURVIVOR_AUDIO_REPORT="$PWD/releases/survivor-audio.json" npm --prefix prototypes/salvage-survivor-demo run test:audio
+      - name: Verify native pixels, actual combat and fixed-seed policies
+        run: |
+          npm --prefix prototypes/salvage-survivor-demo run check:art
+          python3 prototypes/salvage-survivor-demo/sync_runtime.py --check
+          SURVIVOR_MODEL_OUT="$PWD/releases/survivor-model.json" npm --prefix prototypes/salvage-survivor-demo test
+          SURVIVOR_ELITE_OUT="$PWD/releases/survivor-elite-balance.json" node prototypes/salvage-survivor-demo/tests/elite-balance.cjs
+          SURVIVOR_SIM_OUT="$PWD/releases/survivor-simulation.json" npm --prefix prototypes/salvage-survivor-demo run simulate
+          SURVIVOR_MOVEMENT=adaptive SURVIVOR_SEEDS=2 SURVIVOR_SIM_OUT="$PWD/releases/survivor-adaptive.json" npm --prefix prototypes/salvage-survivor-demo run simulate
+          SURVIVOR_ECONOMY_INPUT="$PWD/releases/survivor-adaptive.json" SURVIVOR_ECONOMY_OUT="$PWD/releases/survivor-engineering-economy.json" node prototypes/salvage-survivor-demo/tests/engineering-economy.cjs
+          python3 prototypes/salvage-survivor-demo/build.py --freeze
+          python3 prototypes/salvage-survivor-demo/verify_package.py releases/survivor-ci-extracted
+      - name: Test extracted ZIP on real HTTP in both browser engines
+        run: |
+          node prototypes/salvage-survivor-demo/serve.cjs --port 4397 --root releases/survivor-ci-extracted > /tmp/survivor-http.log 2>&1 &
+          task_survivor_pid=$!
+          trap 'kill "$task_survivor_pid"' EXIT
+          curl --fail --retry 10 --retry-delay 1 --retry-connrefused --silent http://127.0.0.1:4397/ > /dev/null
+          SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_REPORT="$PWD/releases/survivor-browser.json" SURVIVOR_TEST_OUTPUT="$PWD/releases/survivor-browser-tests" npm --prefix prototypes/salvage-survivor-demo run test:browser
+          SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_REPORT="$PWD/releases/survivor-claim-regression.json" SURVIVOR_TEST_OUTPUT="$PWD/releases/survivor-claim-regression-tests" npm --prefix prototypes/salvage-survivor-demo run test:browser -- storage.spec.cjs --grep 'a second tab claims' --repeat-each=10
+          SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_COMPAT_OUT="$PWD/releases/survivor-compatibility.json" node prototypes/salvage-survivor-demo/tests/compatibility.cjs
+          SURVIVOR_REPAIR_BENCHMARK=1 SURVIVOR_URL=http://127.0.0.1:4397/ SURVIVOR_COMPAT_OUT="$PWD/releases/survivor-compatibility-repair.json" node prototypes/salvage-survivor-demo/tests/compatibility.cjs
+          SURVIVOR_CURRENT_ROOT="$PWD/releases/survivor-ci-extracted" SURVIVOR_MIGRATION_OUT="$PWD/releases/survivor-migration.json" node prototypes/salvage-survivor-demo/tests/upgrade-save.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: survivor-development-evidence
+          path: |
+            releases/survivor-audio.json
+            releases/audio-recordings/
+            releases/survivor-model.json
+            releases/survivor-elite-balance.json
+            releases/survivor-simulation.json
+            releases/survivor-adaptive.json
+            releases/survivor-engineering-economy.json
+            releases/survivor-compatibility-repair.json
+            releases/survivor-browser.json
+            releases/survivor-claim-regression.json
+            releases/survivor-claim-regression-tests/
+            releases/survivor-compatibility.json
+            releases/survivor-migration.json
+            releases/survivor-browser-tests/
+            prototypes/salvage-survivor-demo/dist/build-info.json
+            prototypes/salvage-survivor-demo/dist/loststar-survivor-*.zip
+          retention-days: 14

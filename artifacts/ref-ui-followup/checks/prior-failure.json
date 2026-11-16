@@ -1,0 +1,26 @@
+{
+  "sourceCommit": "2453aab11718a8b2a585aace35c8f93b0318d1ee",
+  "stats": {
+    "startTime": "2026-11-07T20:10:30.135Z",
+    "duration": 212341.15,
+    "expected": 79,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "failures": [
+    {
+      "project": "ref-webkit",
+      "status": "unexpected",
+      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"clean\"\u001b[39m\nReceived: \u001b[31m\"found\"\u001b[39m",
+      "location": {
+        "file": "/Users/shuhuayu/loststar-game/prototypes/ref-ui/light-treatment.spec.ts",
+        "column": 113,
+        "line": 16
+      }
+    }
+  ],
+  "fixCommit": "bb4b22116e13706203b920c3f5202bed3e087fda",
+  "reason": "Seconds→milliseconds→seconds rounded below actual completion threshold in 8/1000 millisecond phases. Use original seconds threshold, retain assertions and zero retries.",
+  "regression": "tests/ref-ui-instant-clean.test.ts"
+}

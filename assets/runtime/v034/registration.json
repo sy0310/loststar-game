@@ -1,0 +1,928 @@
+{
+  "schema": 1,
+  "status": "V0.3.4 material candidates awaiting actual composition and user review",
+  "generator": "OpenAI image_gen built-in",
+  "receipt": {
+    "canvas": {
+      "width": 256,
+      "height": 256
+    },
+    "center": {
+      "x": 128,
+      "y": 128
+    },
+    "hinge": {
+      "x": 186,
+      "y": 48
+    },
+    "unfoldCutY": 190,
+    "alphaBounds": {
+      "visible16": {
+        "x": 35,
+        "y": 9,
+        "width": 187,
+        "height": 239,
+        "count": 27809
+      }
+    },
+    "paperFace": {
+      "x": 50,
+      "y": 23,
+      "width": 158,
+      "height": 188
+    },
+    "lowerCurl": {
+      "x": 138,
+      "y": 199,
+      "width": 69,
+      "height": 49
+    },
+    "layers": {
+      "paper": {
+        "file": "receipt-paper-damaged.webp",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "bytes": 42486,
+        "alphaBounds": {
+          "visible16": {
+            "x": 35,
+            "y": 9,
+            "width": 187,
+            "height": 239,
+            "count": 27809
+          },
+          "solid240": {
+            "x": 35,
+            "y": 9,
+            "width": 187,
+            "height": 239,
+            "count": 27552
+          }
+        },
+        "source": "receipt-paper-damaged-v1.png",
+        "sourceSha256": "1c83b3fd609ffba9ecdd8dcadfce07f5393c2e5b0c16bdf8260317853f7b167b"
+      },
+      "mud": {
+        "file": "receipt-mud.webp",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "bytes": 42464,
+        "alphaBounds": {
+          "visible16": {
+            "x": 35,
+            "y": 10,
+            "width": 168,
+            "height": 233,
+            "count": 18024
+          },
+          "solid240": {
+            "x": 35,
+            "y": 12,
+            "width": 165,
+            "height": 230,
+            "count": 16237
+          }
+        },
+        "source": "receipt-mud-layer-v2.png",
+        "sourceSha256": "43933d09b715bd085c1ef30d2e98f2ad7434546ffda0b9edc195cc15508cd0fc"
+      },
+      "patchBack": {
+        "file": "receipt-patch-back.webp",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "bytes": 1696,
+        "alphaBounds": {
+          "visible16": {
+            "x": 34,
+            "y": 60,
+            "width": 55,
+            "height": 129,
+            "count": 181
+          },
+          "solid240": {
+            "x": 35,
+            "y": 61,
+            "width": 53,
+            "height": 123,
+            "count": 69
+          }
+        },
+        "opacity": 0.75,
+        "source": "receipt-tissue-layer-v3.png",
+        "sourceSha256": "175d8f4fca603437a5c8a68743cce29b6fb37e7cebdd7b1c35545ca6d6781823"
+      },
+      "patchFront": {
+        "file": "receipt-patch-front.webp",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "bytes": 1606,
+        "alphaBounds": {
+          "visible16": {
+            "x": 36,
+            "y": 58,
+            "width": 59,
+            "height": 132,
+            "count": 321
+          },
+          "solid240": {
+            "x": 36,
+            "y": 59,
+            "width": 59,
+            "height": 130,
+            "count": 125
+          }
+        },
+        "opacity": 0.75,
+        "source": "receipt-tissue-layer-v3.png",
+        "sourceSha256": "175d8f4fca603437a5c8a68743cce29b6fb37e7cebdd7b1c35545ca6d6781823"
+      },
+      "survivingMask": {
+        "file": "receipt-surviving-paper-mask.webp",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "bytes": 2508,
+        "alphaBounds": {
+          "visible16": {
+            "x": 35,
+            "y": 9,
+            "width": 187,
+            "height": 239,
+            "count": 27809
+          },
+          "solid240": {
+            "x": 35,
+            "y": 9,
+            "width": 187,
+            "height": 239,
+            "count": 27552
+          }
+        },
+        "derivedFrom": "receipt-paper-damaged.webp"
+      }
+    },
+    "patchTargets": {
+      "upper": {
+        "srcRect": {
+          "x": 75,
+          "y": 58,
+          "width": 20,
+          "height": 34
+        },
+        "contact": {
+          "x": 86.63117198812802,
+          "y": 77.13061807156481
+        },
+        "bridgeCenter": {
+          "x": 84.56179793951479,
+          "y": 74.57617148554337
+        },
+        "contactRule": "Alpha-weighted tissue position on surviving paper support."
+      },
+      "lower": {
+        "srcRect": {
+          "x": 34,
+          "y": 178,
+          "width": 26,
+          "height": 12
+        },
+        "contact": {
+          "x": 48.79074283043153,
+          "y": 183.65338006799638
+        },
+        "bridgeCenter": {
+          "x": 46.6379986565256,
+          "y": 183.6069037248911
+        },
+        "contactRule": "Alpha-weighted tissue position on surviving paper support."
+      }
+    },
+    "patchPieces": [
+      {
+        "id": "upper",
+        "sourceRegion": {
+          "left": 300,
+          "top": 250,
+          "width": 300,
+          "height": 400
+        },
+        "sourceCenter": {
+          "x": 455.92577239123557,
+          "y": 443.42252198345255
+        },
+        "targetCenter": {
+          "x": 85,
+          "y": 75
+        },
+        "sourcePrincipalSize": {
+          "length": 284.2022092263387,
+          "width": 66.15178153918643
+        },
+        "encodedPrincipalSize": {
+          "length": 35,
+          "width": 8.146707797150196
+        },
+        "sourceToTextureScale": 0.12315175204048463,
+        "visibleBounds": {
+          "x": 75,
+          "y": 58,
+          "width": 20,
+          "height": 34,
+          "count": 267
+        }
+      },
+      {
+        "id": "lower",
+        "sourceRegion": {
+          "left": 100,
+          "top": 850,
+          "width": 200,
+          "height": 130
+        },
+        "sourceCenter": {
+          "x": 197.17610695559813,
+          "y": 919.9498531231109
+        },
+        "targetCenter": {
+          "x": 47,
+          "y": 184
+        },
+        "sourcePrincipalSize": {
+          "length": 134.51872377500598,
+          "width": 45.86752515241949
+        },
+        "encodedPrincipalSize": {
+          "length": 26,
+          "width": 8.865350640387858
+        },
+        "sourceToTextureScale": 0.19328164340517542,
+        "visibleBounds": {
+          "x": 34,
+          "y": 178,
+          "width": 26,
+          "height": 12,
+          "count": 208
+        }
+      }
+    ],
+    "fixedMarks": [
+      "RET-031",
+      "P03",
+      "blank signature line"
+    ],
+    "printRule": "All stages use the same original ink coordinates and survivingMask. Repair support carries no recovered missing ink.",
+    "stages": {
+      "S0": [
+        "paper",
+        "originalInk",
+        "mud"
+      ],
+      "S1": [
+        "paper",
+        "originalInk"
+      ],
+      "S2": [
+        "patchBack",
+        "paper",
+        "originalInk",
+        "patchFront"
+      ]
+    },
+    "sourceTransform": {
+      "file": "assets/src/generated/d1-refinement/receipt-inner-blank-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "crop": {
+        "x": 159,
+        "y": 35,
+        "width": 941,
+        "height": 1203
+      },
+      "target": {
+        "x": 35,
+        "y": 9,
+        "height": 239
+      }
+    }
+  },
+  "soil": {
+    "back": {
+      "file": "receipt-soil-back.webp",
+      "size": {
+        "width": 512,
+        "height": 99
+      },
+      "bytes": 6248,
+      "alphaBounds": {
+        "visible16": {
+          "x": 144,
+          "y": 27,
+          "width": 225,
+          "height": 28,
+          "count": 2456
+        },
+        "solid240": {
+          "x": 144,
+          "y": 27,
+          "width": 225,
+          "height": 28,
+          "count": 2312
+        }
+      },
+      "paperRelative": {
+        "x": 18,
+        "y": 214,
+        "width": 220,
+        "height": 42.5390625
+      }
+    },
+    "front": {
+      "file": "receipt-soil-front.webp",
+      "size": {
+        "width": 512,
+        "height": 99
+      },
+      "bytes": 52510,
+      "alphaBounds": {
+        "visible16": {
+          "x": 1,
+          "y": 1,
+          "width": 511,
+          "height": 97,
+          "count": 24359
+        },
+        "solid240": {
+          "x": 1,
+          "y": 1,
+          "width": 510,
+          "height": 97,
+          "count": 23504
+        }
+      },
+      "paperRelative": {
+        "x": 18,
+        "y": 214,
+        "width": 220,
+        "height": 42.5390625
+      }
+    },
+    "complete": {
+      "file": "receipt-soil-complete.webp",
+      "size": {
+        "width": 512,
+        "height": 99
+      },
+      "bytes": 58070,
+      "alphaBounds": {
+        "visible16": {
+          "x": 1,
+          "y": 1,
+          "width": 511,
+          "height": 97,
+          "count": 26815
+        },
+        "solid240": {
+          "x": 1,
+          "y": 1,
+          "width": 510,
+          "height": 97,
+          "count": 25816
+        }
+      },
+      "source": "receipt-excavation-soil-v1.png",
+      "sourceSha256": "16e2e32aa0abb1afed9cef734db3b52ab9348d685b6124aee6b8380e19bac2db",
+      "sourceRect": {
+        "left": 55,
+        "top": 179,
+        "width": 2069,
+        "height": 400
+      }
+    }
+  },
+  "tools": {
+    "tray": {
+      "file": "restoration-tray.webp",
+      "size": {
+        "width": 384,
+        "height": 108
+      },
+      "bytes": 49278,
+      "alphaBounds": {
+        "visible16": {
+          "x": 1,
+          "y": 1,
+          "width": 382,
+          "height": 106,
+          "count": 37968
+        },
+        "solid240": {
+          "x": 1,
+          "y": 2,
+          "width": 381,
+          "height": 104,
+          "count": 37017
+        }
+      },
+      "source": "restoration-tools-v1.png",
+      "sourceSha256": "931de70e3aa8cc35bd8f9f4eae0f5d13c85cfb731227dd0af553ed894e53cdb2",
+      "sourceRect": {
+        "left": 55,
+        "top": 359,
+        "width": 816,
+        "height": 230
+      },
+      "contact": {
+        "x": 190.58823529411765,
+        "y": 53.530434782608694
+      },
+      "contactRole": "receiver",
+      "placementRule": "Live renderer anchors contact to the actual cabinet receiver plane. paperRelative is a local registration audit example.",
+      "frontLipY": 77.00869565217391,
+      "paperRelative": {
+        "x": 18.808823529411768,
+        "y": 217.33152173913044,
+        "width": 220,
+        "height": 61.875
+      }
+    },
+    "brush": {
+      "file": "restoration-brush.webp",
+      "size": {
+        "width": 192,
+        "height": 163
+      },
+      "bytes": 22842,
+      "alphaBounds": {
+        "visible16": {
+          "x": 1,
+          "y": 0,
+          "width": 190,
+          "height": 162,
+          "count": 9722
+        },
+        "solid240": {
+          "x": 1,
+          "y": 1,
+          "width": 190,
+          "height": 160,
+          "count": 9223
+        }
+      },
+      "source": "restoration-tools-v1.png",
+      "sourceSha256": "931de70e3aa8cc35bd8f9f4eae0f5d13c85cfb731227dd0af553ed894e53cdb2",
+      "sourceRect": {
+        "left": 1061,
+        "top": 190,
+        "width": 611,
+        "height": 520
+      },
+      "contact": {
+        "x": 34.252045826513914,
+        "y": 144.81923076923076
+      },
+      "pivot": {
+        "x": 159.94762684124387,
+        "y": 31.346153846153847
+      },
+      "suggestedPaperWidth": 64.28,
+      "suggestedWorldWidth": 18
+    }
+  },
+  "residents": {
+    "mouse": {
+      "source": "assets/src/generated/v034/resident-mouse-day-v1.png",
+      "sourceSha256": "e186aa04509e8dafd0b828d2bd41f6457bed35a3ce7380f9d10db425f2fa9d94",
+      "sourceSize": {
+        "width": 1774,
+        "height": 887
+      },
+      "daySource": "assets/runtime/mouse.webp",
+      "dayContact": {
+        "x": 120,
+        "y": 276
+      },
+      "dayLogicalSize": {
+        "width": 83,
+        "height": 89.484375
+      },
+      "dayDisplayScale": 0.32421875,
+      "contactDefinition": "Supporting paw baseline. The loose floor scrap extends slightly below the paw contact.",
+      "alphaRule": "Source alpha below16 is cleared. Visible source colours and alpha16+ are retained.",
+      "frames": [
+        {
+          "file": "resident-mouse-0.webp",
+          "size": {
+            "width": 256,
+            "height": 256
+          },
+          "bytes": 48636,
+          "alphaBounds": {
+            "visible16": {
+              "x": 12,
+              "y": 66,
+              "width": 239,
+              "height": 184,
+              "count": 29242
+            },
+            "solid240": {
+              "x": 13,
+              "y": 67,
+              "width": 238,
+              "height": 182,
+              "count": 28469
+            }
+          },
+          "index": 0,
+          "action": "crouch-sniff",
+          "contact": {
+            "x": 128,
+            "y": 244
+          },
+          "displayScale": 0.34765625,
+          "visibleBounds": {
+            "x": 12,
+            "y": 66,
+            "width": 239,
+            "height": 184,
+            "count": 29242
+          },
+          "encodedVisibleLogicalSize": {
+            "width": 83.08984375,
+            "height": 63.96875
+          },
+          "sourceCell": {
+            "left": 0,
+            "top": 0,
+            "width": 887,
+            "height": 887
+          },
+          "sourceContact": {
+            "x": 430,
+            "y": 782
+          },
+          "sourceVisibleBounds": {
+            "x": 40,
+            "y": 183,
+            "width": 804,
+            "height": 618,
+            "count": 332068
+          },
+          "sourceToTextureScale": 0.2966507177033493
+        },
+        {
+          "file": "resident-mouse-1.webp",
+          "size": {
+            "width": 256,
+            "height": 256
+          },
+          "bytes": 53210,
+          "alphaBounds": {
+            "visible16": {
+              "x": 19,
+              "y": 34,
+              "width": 233,
+              "height": 210,
+              "count": 31835
+            },
+            "solid240": {
+              "x": 20,
+              "y": 35,
+              "width": 232,
+              "height": 209,
+              "count": 31004
+            }
+          },
+          "index": 1,
+          "action": "sit-nibble",
+          "contact": {
+            "x": 128,
+            "y": 244
+          },
+          "displayScale": 0.34765625,
+          "visibleBounds": {
+            "x": 19,
+            "y": 34,
+            "width": 233,
+            "height": 210,
+            "count": 31835
+          },
+          "encodedVisibleLogicalSize": {
+            "width": 81.00390625,
+            "height": 73.0078125
+          },
+          "sourceCell": {
+            "left": 887,
+            "top": 0,
+            "width": 887,
+            "height": 887
+          },
+          "sourceContact": {
+            "x": 430,
+            "y": 790
+          },
+          "sourceVisibleBounds": {
+            "x": 61,
+            "y": 83,
+            "width": 787,
+            "height": 708,
+            "count": 361769
+          },
+          "sourceToTextureScale": 0.2966507177033493
+        }
+      ]
+    },
+    "hermit": {
+      "source": "assets/src/generated/v034/resident-hermit-day-v1.png",
+      "sourceSha256": "34ee1aff43d85276abc93e62981ce6d40f67b1d231e68c5847a98f2b36cc2165",
+      "sourceSize": {
+        "width": 1774,
+        "height": 887
+      },
+      "daySource": "assets/runtime/hermit.webp",
+      "dayContact": {
+        "x": 116,
+        "y": 257
+      },
+      "dayLogicalSize": {
+        "width": 66,
+        "height": 66.515625
+      },
+      "dayDisplayScale": 0.2578125,
+      "contactDefinition": "Supporting near claw and leg tips. Box shell, eyes and paper retain the source pose proportions.",
+      "alphaRule": "Source alpha below16 is cleared. Visible source colours and alpha16+ are retained.",
+      "frames": [
+        {
+          "file": "resident-hermit-0.webp",
+          "size": {
+            "width": 256,
+            "height": 256
+          },
+          "bytes": 78102,
+          "alphaBounds": {
+            "visible16": {
+              "x": 16,
+              "y": 4,
+              "width": 232,
+              "height": 241,
+              "count": 37154
+            },
+            "solid240": {
+              "x": 17,
+              "y": 5,
+              "width": 230,
+              "height": 240,
+              "count": 36158
+            }
+          },
+          "index": 0,
+          "action": "peek-and-shake",
+          "contact": {
+            "x": 128,
+            "y": 244
+          },
+          "displayScale": 0.25982666015625,
+          "visibleBounds": {
+            "x": 16,
+            "y": 4,
+            "width": 232,
+            "height": 241,
+            "count": 37154
+          },
+          "encodedVisibleLogicalSize": {
+            "width": 60.27978515625,
+            "height": 62.61822509765625
+          },
+          "sourceCell": {
+            "left": 0,
+            "top": 0,
+            "width": 887,
+            "height": 887
+          },
+          "sourceContact": {
+            "x": 440,
+            "y": 806
+          },
+          "sourceVisibleBounds": {
+            "x": 83,
+            "y": 41,
+            "width": 738,
+            "height": 768,
+            "count": 377158
+          },
+          "sourceToTextureScale": 0.3137254901960784
+        },
+        {
+          "file": "resident-hermit-1.webp",
+          "size": {
+            "width": 256,
+            "height": 256
+          },
+          "bytes": 75262,
+          "alphaBounds": {
+            "visible16": {
+              "x": 20,
+              "y": 13,
+              "width": 228,
+              "height": 232,
+              "count": 35823
+            },
+            "solid240": {
+              "x": 20,
+              "y": 13,
+              "width": 228,
+              "height": 231,
+              "count": 34947
+            }
+          },
+          "index": 1,
+          "action": "pull-paper",
+          "contact": {
+            "x": 128,
+            "y": 244
+          },
+          "displayScale": 0.25982666015625,
+          "visibleBounds": {
+            "x": 20,
+            "y": 13,
+            "width": 228,
+            "height": 232,
+            "count": 35823
+          },
+          "encodedVisibleLogicalSize": {
+            "width": 59.240478515625,
+            "height": 60.27978515625
+          },
+          "sourceCell": {
+            "left": 887,
+            "top": 0,
+            "width": 887,
+            "height": 887
+          },
+          "sourceContact": {
+            "x": 440,
+            "y": 802
+          },
+          "sourceVisibleBounds": {
+            "x": 95,
+            "y": 66,
+            "width": 729,
+            "height": 738,
+            "count": 364108
+          },
+          "sourceToTextureScale": 0.3137254901960784
+        }
+      ]
+    },
+    "tagbird": {
+      "source": "assets/src/generated/v034/resident-tagbird-day-v1.png",
+      "sourceSha256": "a436137d82182f05f63a917b37c22d527539d03f3fcd76c83da45aba0c8cc4df",
+      "sourceSize": {
+        "width": 1774,
+        "height": 887
+      },
+      "daySource": "assets/runtime/tagbird.webp",
+      "dayContact": {
+        "x": 116,
+        "y": 238
+      },
+      "dayLogicalSize": {
+        "width": 47,
+        "height": 43.6953125
+      },
+      "dayDisplayScale": 0.18359375,
+      "contactDefinition": "Forward claw tip gripping the implied perch. The real scene supplies the lamp perch.",
+      "alphaRule": "Source alpha below16 is cleared. Visible source colours and alpha16+ are retained.",
+      "frames": [
+        {
+          "file": "resident-tagbird-0.webp",
+          "size": {
+            "width": 256,
+            "height": 256
+          },
+          "bytes": 63324,
+          "alphaBounds": {
+            "visible16": {
+              "x": 34,
+              "y": 12,
+              "width": 218,
+              "height": 232,
+              "count": 28614
+            },
+            "solid240": {
+              "x": 35,
+              "y": 12,
+              "width": 216,
+              "height": 229,
+              "count": 26239
+            }
+          },
+          "index": 0,
+          "action": "look-at-label",
+          "contact": {
+            "x": 128,
+            "y": 244
+          },
+          "displayScale": 0.2140625,
+          "visibleBounds": {
+            "x": 34,
+            "y": 12,
+            "width": 218,
+            "height": 232,
+            "count": 28614
+          },
+          "encodedVisibleLogicalSize": {
+            "width": 46.665625,
+            "height": 49.662499999999994
+          },
+          "sourceCell": {
+            "left": 0,
+            "top": 0,
+            "width": 887,
+            "height": 887
+          },
+          "sourceContact": {
+            "x": 414,
+            "y": 854
+          },
+          "sourceVisibleBounds": {
+            "x": 80,
+            "y": 33,
+            "width": 772,
+            "height": 821,
+            "count": 358643
+          },
+          "sourceToTextureScale": 0.2824601366742597
+        },
+        {
+          "file": "resident-tagbird-1.webp",
+          "size": {
+            "width": 256,
+            "height": 256
+          },
+          "bytes": 60126,
+          "alphaBounds": {
+            "visible16": {
+              "x": 34,
+              "y": 27,
+              "width": 218,
+              "height": 217,
+              "count": 27105
+            },
+            "solid240": {
+              "x": 35,
+              "y": 30,
+              "width": 216,
+              "height": 212,
+              "count": 24881
+            }
+          },
+          "index": 1,
+          "action": "peck-label",
+          "contact": {
+            "x": 128,
+            "y": 244
+          },
+          "displayScale": 0.2140625,
+          "visibleBounds": {
+            "x": 34,
+            "y": 27,
+            "width": 218,
+            "height": 217,
+            "count": 27105
+          },
+          "encodedVisibleLogicalSize": {
+            "width": 46.665625,
+            "height": 46.451562499999994
+          },
+          "sourceCell": {
+            "left": 887,
+            "top": 0,
+            "width": 887,
+            "height": 887
+          },
+          "sourceContact": {
+            "x": 414,
+            "y": 854
+          },
+          "sourceVisibleBounds": {
+            "x": 80,
+            "y": 87,
+            "width": 773,
+            "height": 767,
+            "count": 339515
+          },
+          "sourceToTextureScale": 0.2824601366742597
+        }
+      ]
+    }
+  }
+}

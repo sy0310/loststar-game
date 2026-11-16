@@ -1,0 +1,27 @@
+{
+  "generator": "OpenAI image_gen built-in",
+  "date": "2026-11-03",
+  "status": "D1 refinement candidates awaiting parent and user visual review",
+  "outputs": [
+    {
+      "id": "receipt-tiers",
+      "version": 1,
+      "mode": "identity-preserve",
+      "sourceReference": "assets/runtime/receipt.webp",
+      "styleReference": "assets/runtime/museum-room-v02.webp",
+      "prompt": "Use case: identity-preserve. Edit the receipt in Image 1 into a production-quality 2x2 transparent sprite atlas containing FOUR finish stages of THE SAME mysterious unpurchased return receipt. Image 1 locks the identity, silhouette and pose; Image 2 is only a high-density pixel-art material/style reference, never copy the room. Every cell has the same camera, same scale, same centre, same longest visible edge and same slanted upright paper-scroll pose. Preserve warm ivory receipt paper, mauve/umber postal ink, a curled upper-right lip, and the unmistakable spiral curl at lower right. The face has original short horizontal dash strokes and a distinctive circular return postal stamp with three wavy cancellation lines. No readable letters, numbers, UI words, tier labels or grid lines. Keep the scroll naturally tall and dimensional, and all four silhouettes closely aligned. Top-left stage0 is already exquisite paper with precise soft wear, clean ink layers, rich 2.5D volume. Top-right stage1 adds clearly visible luminous edge fibres, worn/scalloped paper edge and finely crosshatched translucent pulp. Bottom-left stage2 adds crisp crease ridges, a layered spiral curl, richer subtly offset multi-tone postal printing and tiny patinated ink breaks. Bottom-right stage3 adds elegant faint postal-route dotted filigree WITHIN the paper, selective understated bronze-metallic ink on some original printed lines and the postal stamp, fine visible fibre strands and layered curled-paper depth. All stages remain the identical receipt rather than new objects. At a 67px drawing size the main folds, stamp and curl must read clearly; use crisp deliberate pixel clusters and dithered hue steps, never blur, tiny meaningless noise or a smooth vector. No aura, magic particles, highlights outside the paper, glass, pedestal, hand, props, border or shadow on a floor. The four cells are equal squares in an exact 2x2 grid with generous identical transparent margins. Entire outside of every paper has true transparent alpha. Keep all paper silhouettes within their cells. Do not include any background.",
+      "output": "receipt-tiers-v1.png",
+      "generatedPath": "/Users/shuhuayu/.codex/generated_images/01a1a256-4740-7b02-bc7d-0c792f0f41e1/exec-6f3925c6-676a-4e3a-a592-5507181fc563.png",
+      "review": "Rejected after native67px audit because tier progression emphasized frayed edges and wrinkles. V2 selected for runtime composition review."
+    },
+    {
+      "id": "carry-case",
+      "version": 1,
+      "mode": "stylized-concept",
+      "prompt": "Use case: stylized-concept. Asset type: one ORIGINAL transparent runtime sprite for a precise pixel-art 2.5D miniature postal exploration game. Draw ONE complete empty portable GLASS POSTAL CONTAINMENT CARRY CASE in an elevated front three-quarter side view. This is a tangible little object held by a friendly cream/orange explorer robot, with a cream-orange parcel warehouse in its world. Palette: warm light brass/copper frame with ivory enamel corners, dark purple joint shadows, one tiny turquoise indicator, clear glass edges. Crisp refined pixel clusters with dithered metal volume, meaningful readable shapes at only 54x40 game pixels, no soft vector rendering or blurry 3D. The entire object width:height should be about 54:40 including the handle. Body is a short broad rectangular chamber with shallow visible right side, a thin real floor tray and a distinct front lip. The central front OPENING is completely empty transparent alpha, as clear as the empty corners; draw only a few thin pale edge glints to imply glass. No white, cyan, purple or milky fill inside the opening. No creature, paper, parcel or other contents. A distinct thin top hinged lid is closed flat over the chamber, and carries one broad articulated brass loop HANDLE. The handle's left and right graspable bar ends are clearly visible, diagonal in perspective, separated by about44% of the object's full width; right grasp end sits lower by about13% of full height. Two small hinge pins visibly mark the rear lid edge. Make the top lid+handle, rear body/floor, and front edge frame physically separable in the illustration, so a developer can mask each from this same original sprite and articulate the lid around the rear hinge; do not draw separate copies. Keep the closed case body symmetrical in its own perspective and with a level resting foot. Frame thickness about3% of total width, enough to read. Practical miniature postal equipment with a small blank latch plate and robust carry grip, not a grand ornate display cabinet. Complete object centred with generous fully transparent margins on all sides. No background, no external glow, no floating particle effects, no text, no lettering, no labels, no border, no ground shadow.",
+      "output": "carry-case-v1.png",
+      "generatedPath": "/Users/shuhuayu/.codex/generated_images/01a1a256-4740-7b02-bc7d-0c792f0f41e1/exec-479ec764-75b6-41a7-8330-24655cad0c10.png",
+      "review": "Rejected because front safe cavity was32x10.67px at40px overall visible height. V2 selects a larger safe front opening with lower handle and thinner lid/tray."
+    }
+  ]
+}

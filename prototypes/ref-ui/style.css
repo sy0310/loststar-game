@@ -1,0 +1,86 @@
+@import './theme.css';
+/* Legacy CSS is reduced to layout in the sample's Vite pipeline. This is the one skin,
+   scoped to the sample; no production or historical-page CSS is rewritten on disk. */
+body[data-reference-ui=candidate] #app{color:var(--ui-text);font:14px/1.6 "PingFang SC","Microsoft YaHei",sans-serif}
+#app :where(button,select,input){font:inherit;color:inherit;border-radius:var(--ui-radius)}
+#app :where(button){min-height:44px;padding:10px 12px;background:var(--ui-surface-raised);border:1px solid var(--ui-border);color:var(--ui-text);box-shadow:none;text-shadow:none;cursor:pointer;touch-action:manipulation}
+#app button:disabled{opacity:.48;cursor:default}#app button:active:not(:disabled){transform:translateY(1px)}
+#app :where(button,summary,[tabindex],input):focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
+#app :where(button,.fu-chapter,.fu-explore-controls,.fu-collection-item,.fu-nav,.fu-wallet)::before,#app :where(button,.fu-chapter,.fu-explore-controls,.fu-collection-item,.fu-nav,.fu-wallet)::after{content:none}
+#app :where(h1,h2,h3,strong,label,summary){color:var(--ui-text)}#app h1{font-size:21px}#app h2{font-size:19px}#app h3{font-size:16px}#app p{font-size:14px;color:var(--ui-text);line-height:1.75}#app small{font-size:12px;color:var(--ui-muted)}
+#app :where(.ui-muted,.ref-muted,.fu-muted,.fu-robot-status,.fu-base-note,.fu-curio-message small,.fu-page-heading>span,.fu-record>small){color:var(--ui-muted)}
+#app :where(.ui-primary,.ref-primary,.fu-primary,.fu-base-grow,#fusion-assist){background:var(--ui-accent);color:var(--ui-on-accent);border:1px solid var(--ui-accent);font-weight:600}
+#app button :where(span,strong,small,.icon){color:inherit}
+#app :where(.ui-wide,.ref-wide){display:block;width:100%}#app .icon{width:20px;height:20px;flex-shrink:0}
+#app :where(.ui-icon-button,.ref-icon-button,#fusion-close){width:44px;min-width:44px;height:44px;min-height:44px;padding:11px;display:grid;place-items:center;background:transparent;border:0;color:var(--ui-muted)}
+#app :where(.ui-icon-button,.ref-icon-button,#fusion-close) .icon{width:22px;height:22px}
+#fusion-app{background:var(--ui-bg);border:0}#app .fu-safe-sky{background:var(--ui-bg)}
+#app .fu-header{background:var(--ui-surface);border-bottom:1px solid var(--ui-border);padding:7px 14px;min-height:54px;gap:10px}
+#app .fu-location{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;flex:1;gap:1px;background:transparent;border:0;padding:0}
+#app .fu-location>span{font-size:16px;letter-spacing:0}#app .fu-location small{margin:0;font-size:12px}#app .fu-location-emblem{display:none}
+#app .fu-parts-readout{gap:5px;color:var(--ui-text)}#app .fu-header .ref-icon-button{margin-right:-9px}
+#app #fusion-scroll{scrollbar-color:var(--ui-border) var(--ui-bg);background:var(--ui-bg)}
+#app #fusion-explore{padding:5px 0 9px;background:var(--ui-bg)}#app :where(.fu-objective,#fusion-observe,#fusion-tap-hint){display:none}
+#app .ref-goal{flex:0 0 auto;display:flex;align-items:center;gap:10px;margin:0 14px 3px;min-height:44px;padding:6px 0;border:0;background:transparent;text-align:left}
+.ref-goal>span{font-size:12px;color:var(--ui-muted)}.ref-goal strong{flex:1;font-size:14px;font-weight:500}.ref-goal>.icon{width:15px;height:15px}
+#app .fu-world-shell{flex:1;min-height:180px;margin:0;background:var(--ui-bg)}#app .fu-period{top:8px;right:14px;background:var(--ui-surface);color:var(--ui-muted);font-size:12px;padding:4px 7px;border:0}
+#app .ref-marker{position:absolute;z-index:3;display:flex;align-items:center;gap:7px;max-width:155px;min-height:44px;padding:7px 10px;background:var(--ui-surface);border:1px solid var(--ui-border)}
+.ref-marker strong{font-size:12px;font-weight:500}.ref-marker .icon{width:18px;height:18px}
+.ref-source{position:absolute;width:18px;height:8px;border:1px solid var(--ui-accent);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:2}
+#app .ref-event{flex:0 0 auto;display:flex;align-items:center;gap:11px;min-height:60px;margin:4px 14px 8px;width:calc(100% - 28px);padding:9px 12px;background:var(--ui-surface);border:1px solid var(--ui-border);text-align:left}
+.ref-event-icon{display:grid;place-items:center;width:28px;height:28px}.ref-event>span:nth-child(2){flex:1;min-width:0}.ref-event small{display:block;margin-bottom:3px}.ref-event strong{font-size:14px;font-weight:500}.ref-event>.icon{width:15px;height:15px}
+#app .fu-explore-controls{margin:0 14px;padding:0;background:transparent;border:0}#app .fu-action-line{font-size:12px;margin-bottom:5px}#app .fu-action-line strong{font-size:12px;color:var(--ui-muted)}
+#app :where(.fu-progress,.ui-progress){height:5px;position:relative;overflow:hidden;background:var(--ui-surface-raised);border:0;border-radius:2px}
+#app :where(.fu-progress,.ui-progress)>i{position:absolute;inset:0 auto 0 0;background:var(--ui-accent)}#app .fu-action-bottom{padding-top:8px;margin-top:0;gap:10px}
+#app #fusion-assist{min-height:49px;min-width:126px;font-size:15px;padding:9px 15px;letter-spacing:0}#app :where(#fusion-auto,#fusion-assist-note){font-size:12px;color:var(--ui-muted)}
+#app .fu-nav{padding:4px 12px max(5px,env(safe-area-inset-bottom));gap:6px;background:var(--ui-surface);border-top:1px solid var(--ui-border)}
+#app .fu-nav button{min-height:52px;background:transparent;border:0;color:var(--ui-muted);font-size:12px}
+#app .fu-nav button[aria-current=page]{background:var(--ui-surface-raised);color:var(--ui-accent);border:0;border-bottom:2px solid var(--ui-accent)}
+#app :where(.ref-card,#fusion-drawer,.lt-dialog){position:fixed;inset:auto 0 0;margin:0 auto;width:min(100%,480px);max-width:480px;max-height:85dvh;box-sizing:border-box;background:var(--ui-surface);color:var(--ui-text);border:1px solid var(--ui-border);border-radius:10px 10px 0 0;box-shadow:none;overflow:auto;overscroll-behavior:contain;font:inherit}
+#app .ref-card{max-width:440px;max-height:70dvh;padding:0 18px max(19px,env(safe-area-inset-bottom))}
+#app :where(.ref-card,#fusion-drawer,.lt-dialog)::backdrop{background:#100c1c88}
+#app :where(.ref-card>header,.fu-drawer-heading,.ui-dialog-heading){display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:2;min-height:64px;padding:12px 0;background:var(--ui-surface);border-bottom:1px solid var(--ui-border)}
+#app :where(.fu-drawer-heading,.ui-dialog-heading){padding:12px 16px}#app :where(.ref-card h2,.fu-drawer-heading h2,.ui-dialog-heading h2){margin:0;font-size:19px;font-weight:600;line-height:1.4}
+#app :where(.ref-card>header small,.ui-dialog-heading small){display:block;margin-bottom:3px}#app .ref-card p{margin:13px 0}
+.ref-subject{display:flex;align-items:center;gap:15px;margin:15px 0}.ref-subject img{width:80px;height:80px;object-fit:contain;image-rendering:pixelated}.ref-curio img{width:112px;height:112px}.ref-subject strong{font-size:16px}.ref-subject p{font-size:13px;color:var(--ui-muted);margin:5px 0}
+.ref-unknown{width:68px;height:68px;display:grid;place-items:center;background:var(--ui-surface-raised);border-radius:var(--ui-radius)}.ref-unknown>.icon{width:34px;height:34px}
+#app :where(.ref-evidence,.fu-result,.fu-active-task,.fu-spend-goal,.fu-return-summary){padding:12px;background:var(--ui-surface-raised);border:1px solid var(--ui-border);border-radius:var(--ui-radius)}
+#app :where(.ref-records,.ui-records,.fu-details,.fu-collection-index,.fu-base-more){border:0;border-top:1px solid var(--ui-border);margin-top:14px;background:transparent}
+#app :where(details summary){display:flex;align-items:center;min-height:44px;padding:12px 0;font-size:14px;color:var(--ui-muted);cursor:pointer}
+#app :where(.ref-records,.ui-records,.fu-details) p{font-size:13px;color:var(--ui-muted)}#app .fu-details summary::after{color:var(--ui-muted)}
+#app .ref-morning{padding-top:12px;margin-top:15px;border-top:1px solid var(--ui-border)}.ref-morning p{margin:7px 0}
+#app :where(.ref-setting-row,.fu-setting-row){display:flex;align-items:center;gap:8px}.ref-setting-row>span{flex:1}
+#app .ref-profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ref-profile-grid button{font-size:13px}
+#app :where(.fu-collection-item,.fu-upgrade,.fu-growth,.fu-project,.fu-record,.fu-case-row){background:var(--ui-surface);border:1px solid var(--ui-border);border-radius:var(--ui-radius);padding:12px;margin:10px 0}
+#app :where(.fu-filters button,.fu-mode-buttons button,.fu-setting-buttons button){background:var(--ui-surface-raised);border:1px solid var(--ui-border)}
+#app [aria-pressed=true]{color:var(--ui-accent);border-color:var(--ui-accent)}
+#app :where(.fu-chapter,.fu-page-heading,.fu-collection-next){background:var(--ui-surface);padding:12px;border:1px solid var(--ui-border);border-radius:var(--ui-radius);margin-bottom:12px}
+#app :where(.fu-chapter>span,.fu-equipment-glyph){background:var(--ui-surface-raised);border:1px solid var(--ui-border);color:var(--ui-muted);box-shadow:none}
+#app :where(.fu-chapter p,.fu-upgrade p,.fu-growth p,.fu-project p){font-size:13px;color:var(--ui-muted)}#app :where(.fu-upgrade strong,.fu-integrity b,.fu-record strong){color:var(--ui-text);font-size:14px}
+#app :where(.fu-switch input,.fu-setting-row input){accent-color:var(--ui-accent)}#app .fu-field-drawer{background:var(--ui-surface);border:1px solid var(--ui-border)}#app .fu-field-drawer>header{background:var(--ui-surface)}
+#app .fu-build{font-size:10px;color:var(--ui-muted)}#app .fu-curio-message{border-left:2px solid var(--ui-border);padding-left:10px}
+#app .lt-dialog{inset:0;margin:0 auto;max-height:100dvh;height:100dvh;border-radius:0;padding:env(safe-area-inset-top,0px) 0 max(10px,env(safe-area-inset-bottom))}
+.lt-body{padding:14px 18px 24px}.ui-stages{display:grid;grid-template-columns:repeat(3,1fr);list-style:none;padding:0;margin:0 0 12px;gap:8px}
+#app .ui-stages button{display:block;width:100%;padding:6px 3px;background:var(--ui-surface-raised);font-size:12px}.ui-stages img{display:block;width:48px;height:48px;object-fit:contain;margin:auto;image-rendering:pixelated}
+#app .ui-stages [aria-current=step]{border-color:var(--ui-accent);color:var(--ui-accent)}
+.lt-picture{position:relative;display:grid;place-items:center;aspect-ratio:1;width:100%;max-height:330px;background:var(--ui-bg);border:1px solid var(--ui-border);border-radius:var(--ui-radius);overflow:hidden}
+.lt-picture>img,.lt-picture>canvas{width:100%;height:100%;max-height:330px;object-fit:contain;image-rendering:pixelated}
+#app #lt-condition{font-size:13px;color:var(--ui-muted);margin:8px 0}.ui-result{min-height:22px;margin:10px 0;color:var(--ui-text)}#app #lt-result:not(:empty){border-left:2px solid var(--ui-accent);padding-left:9px}
+#app #lt-status{font-size:13px;margin:8px 0;color:var(--ui-muted)}#lt-main,#lt-free,#lt-retry,#lt-collection{margin-top:10px}
+#lt-preview{text-align:center}#lt-preview img{display:block;width:100%;aspect-ratio:1;object-fit:contain;image-rendering:pixelated}
+#app #lt-progress{margin-top:7px}#app .lt-body .ui-records p{font-size:13px}
+html[data-text-size=large] #app :where(p,.ref-goal strong,.ref-event strong,button,summary){font-size:16px}
+@media(max-height:700px){#app .ref-goal{min-height:38px}#app .ref-event{min-height:52px;margin-bottom:6px}#app .fu-world-shell{min-height:130px}#app .ref-card{max-height:85dvh}.lt-picture,.lt-picture>img,.lt-picture>canvas{max-height:260px}}
+#app [hidden]{display:none}
+#app .exhibit-hits button{background:transparent;border:0;padding:0;box-shadow:none}
+#app .exhibit-hits button:focus-visible{outline-offset:-2px}
+#app .lt-dialog[open]{display:flex;flex-direction:column;overflow:hidden}
+#app .lt-dialog .ui-dialog-heading{position:static;flex:0 0 auto}
+#app .lt-dialog .lt-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
+#app #fusion-collection .fu-page-heading{flex-wrap:wrap}
+#app #refui-residents{display:flex;align-items:center;gap:6px;font-size:13px}
+.ref-residents{display:grid;gap:10px;margin:12px 0}
+#app .ref-resident-row{display:flex;align-items:center;text-align:left;gap:14px;width:100%}
+.ref-resident-row>img{width:58px;height:58px;object-fit:contain;image-rendering:pixelated}
+.ref-resident-row>span{flex:1}.ref-resident-row strong{display:block;font-size:15px}.ref-resident-row small{display:flex;align-items:center;gap:8px;margin-top:4px}
+#app .lt-dialog{padding-top:max(36px,env(safe-area-inset-top,0px))}#app input:where([type=checkbox],[type=radio]){appearance:auto;width:24px;height:24px;accent-color:var(--ui-accent)}#app select{background:var(--ui-surface-raised);border:1px solid var(--ui-border);min-height:44px;padding:8px}

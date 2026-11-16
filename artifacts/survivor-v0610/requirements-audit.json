@@ -1,0 +1,425 @@
+{
+  "preservedPrefix": 377,
+  "baseline": "abc454799e1c5dc54baaab982bb083913a550f3c",
+  "added": 7,
+  "total": 384,
+  "rows": [
+    {
+      "id": "SALVAGE0610-REPAIR",
+      "parent": null,
+      "requirement": "消耗一次升级机会的修补，按本局战斗时间与船体上限增长，卡片显示实际恢复值，暂停时间不增加恢复量，重复输入只生效一次。",
+      "acceptanceCriteria": "消耗一次升级机会的修补，按本局战斗时间与船体上限增长，卡片显示实际恢复值，暂停时间不增加恢复量，重复输入只生效一次。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 7,
+          "endLine": 7
+        },
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 17,
+          "endLine": 28
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/tests/scaled-repair.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v0610.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v0610-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v0610/BALANCE_V0610.json",
+        "artifacts/survivor-v0610/test-materials.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "新局→升级选择→船体修补；测试资料README"
+        }
+      ],
+      "checks": [
+        "survivor-v0610-model",
+        "survivor-v0610-browser",
+        "survivor-v0610-migration",
+        "survivor-v0610-materials"
+      ],
+      "proofs": [
+        "artifacts/survivor-v0610/verification.json",
+        "design/star-salvage/v0610/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User title/art approval, physical phone touch, cross-package save, lockscreen, heat, hearing and several-day pacing remain pending. Ordinary opening and prepared QA combat are labelled.",
+      "nextAction": "Scan TapTap480638 /ea26e29 and start a new run for scaled repair; review the five prepared materials.",
+      "reviewBasis": "Frozen84files/74PNG/2MP3,118models,752HTTP,80claims,38audio,180policy samples,16real oldZIP migrations, current runtime screenshots and six art technical validations.",
+      "sandboxBinding": {
+        "sourceCommit": "ea26e29d3061542913e7a587a1fe6cc889250d33",
+        "zipSha256": "fb155e467a7812192a2af470d54879475de280e34632fe46a103c56bfdb78fd0",
+        "previewZipSha256": "53099369372e9888286dbcf3c32d205ba4b18cae4da2d5846f8234c0c1e36cd7",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480638,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE0610-COMPAT",
+      "parent": null,
+      "requirement": "旧对局保持原恢复规则，新局启用repairScalingVersion1；余额、设备、工程、预约、原有存档与历史备份保留，双引擎两竖屏与真实旧包迁移单独验证。",
+      "acceptanceCriteria": "旧对局保持原恢复规则，新局启用repairScalingVersion1；余额、设备、工程、预约、原有存档与历史备份保留，双引擎两竖屏与真实旧包迁移单独验证。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 8,
+          "endLine": 8
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/tests/scaled-repair.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v0610.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v0610-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v0610/BALANCE_V0610.json",
+        "artifacts/survivor-v0610/test-materials.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "新局→升级选择→船体修补；测试资料README"
+        }
+      ],
+      "checks": [
+        "survivor-v0610-model",
+        "survivor-v0610-browser",
+        "survivor-v0610-migration",
+        "survivor-v0610-materials"
+      ],
+      "proofs": [
+        "artifacts/survivor-v0610/verification.json",
+        "design/star-salvage/v0610/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User title/art approval, physical phone touch, cross-package save, lockscreen, heat, hearing and several-day pacing remain pending. Ordinary opening and prepared QA combat are labelled.",
+      "nextAction": "Scan TapTap480638 /ea26e29 and start a new run for scaled repair; review the five prepared materials.",
+      "reviewBasis": "Frozen84files/74PNG/2MP3,118models,752HTTP,80claims,38audio,180policy samples,16real oldZIP migrations, current runtime screenshots and six art technical validations.",
+      "sandboxBinding": {
+        "sourceCommit": "ea26e29d3061542913e7a587a1fe6cc889250d33",
+        "zipSha256": "fb155e467a7812192a2af470d54879475de280e34632fe46a103c56bfdb78fd0",
+        "previewZipSha256": "53099369372e9888286dbcf3c32d205ba4b18cae4da2d5846f8234c0c1e36cd7",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480638,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE0610-NAME",
+      "parent": null,
+      "requirement": "测试名称使用《失物号：星海突进》，与已存在宣传标题一致，记录后台旧名与待用户审核状态。",
+      "acceptanceCriteria": "测试名称使用《失物号：星海突进》，与已存在宣传标题一致，记录后台旧名与待用户审核状态。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 9,
+          "endLine": 9
+        },
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 31,
+          "endLine": 31
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/tests/scaled-repair.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v0610.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v0610-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v0610/BALANCE_V0610.json",
+        "artifacts/survivor-v0610/test-materials.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "新局→升级选择→船体修补；测试资料README"
+        }
+      ],
+      "checks": [
+        "survivor-v0610-model",
+        "survivor-v0610-browser",
+        "survivor-v0610-migration",
+        "survivor-v0610-materials"
+      ],
+      "proofs": [
+        "artifacts/survivor-v0610/verification.json",
+        "design/star-salvage/v0610/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User title/art approval, physical phone touch, cross-package save, lockscreen, heat, hearing and several-day pacing remain pending. Ordinary opening and prepared QA combat are labelled.",
+      "nextAction": "Scan TapTap480638 /ea26e29 and start a new run for scaled repair; review the five prepared materials.",
+      "reviewBasis": "Frozen84files/74PNG/2MP3,118models,752HTTP,80claims,38audio,180policy samples,16real oldZIP migrations, current runtime screenshots and six art technical validations.",
+      "sandboxBinding": {
+        "sourceCommit": "ea26e29d3061542913e7a587a1fe6cc889250d33",
+        "zipSha256": "fb155e467a7812192a2af470d54879475de280e34632fe46a103c56bfdb78fd0",
+        "previewZipSha256": "53099369372e9888286dbcf3c32d205ba4b18cae4da2d5846f8234c0c1e36cd7",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480638,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE0610-ICON",
+      "parent": null,
+      "requirement": "提供独立方形游戏Logo，保留原图与提示，检查1024、512及实际小尺寸辨识度。",
+      "acceptanceCriteria": "提供独立方形游戏Logo，保留原图与提示，检查1024、512及实际小尺寸辨识度。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 10,
+          "endLine": 10
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/tests/scaled-repair.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v0610.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v0610-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v0610/BALANCE_V0610.json",
+        "artifacts/survivor-v0610/test-materials.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "新局→升级选择→船体修补；测试资料README"
+        }
+      ],
+      "checks": [
+        "survivor-v0610-model",
+        "survivor-v0610-browser",
+        "survivor-v0610-migration",
+        "survivor-v0610-materials"
+      ],
+      "proofs": [
+        "artifacts/survivor-v0610/verification.json",
+        "design/star-salvage/v0610/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User title/art approval, physical phone touch, cross-package save, lockscreen, heat, hearing and several-day pacing remain pending. Ordinary opening and prepared QA combat are labelled.",
+      "nextAction": "Scan TapTap480638 /ea26e29 and start a new run for scaled repair; review the five prepared materials.",
+      "reviewBasis": "Frozen84files/74PNG/2MP3,118models,752HTTP,80claims,38audio,180policy samples,16real oldZIP migrations, current runtime screenshots and six art technical validations.",
+      "sandboxBinding": {
+        "sourceCommit": "ea26e29d3061542913e7a587a1fe6cc889250d33",
+        "zipSha256": "fb155e467a7812192a2af470d54879475de280e34632fe46a103c56bfdb78fd0",
+        "previewZipSha256": "53099369372e9888286dbcf3c32d205ba4b18cae4da2d5846f8234c0c1e36cd7",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480638,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE0610-PROMO",
+      "parent": null,
+      "requirement": "提供1920×1080横图和1440×1440方图，统一紫灰、紫金和青色飞船身份，逐张审图与平台规格检查。",
+      "acceptanceCriteria": "提供1920×1080横图和1440×1440方图，统一紫灰、紫金和青色飞船身份，逐张审图与平台规格检查。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 11,
+          "endLine": 11
+        },
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 33,
+          "endLine": 33
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/tests/scaled-repair.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v0610.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v0610-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v0610/BALANCE_V0610.json",
+        "artifacts/survivor-v0610/test-materials.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "新局→升级选择→船体修补；测试资料README"
+        }
+      ],
+      "checks": [
+        "survivor-v0610-model",
+        "survivor-v0610-browser",
+        "survivor-v0610-migration",
+        "survivor-v0610-materials"
+      ],
+      "proofs": [
+        "artifacts/survivor-v0610/verification.json",
+        "design/star-salvage/v0610/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User title/art approval, physical phone touch, cross-package save, lockscreen, heat, hearing and several-day pacing remain pending. Ordinary opening and prepared QA combat are labelled.",
+      "nextAction": "Scan TapTap480638 /ea26e29 and start a new run for scaled repair; review the five prepared materials.",
+      "reviewBasis": "Frozen84files/74PNG/2MP3,118models,752HTTP,80claims,38audio,180policy samples,16real oldZIP migrations, current runtime screenshots and six art technical validations.",
+      "sandboxBinding": {
+        "sourceCommit": "ea26e29d3061542913e7a587a1fe6cc889250d33",
+        "zipSha256": "fb155e467a7812192a2af470d54879475de280e34632fe46a103c56bfdb78fd0",
+        "previewZipSha256": "53099369372e9888286dbcf3c32d205ba4b18cae4da2d5846f8234c0c1e36cd7",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480638,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE0610-SCREENS",
+      "parent": null,
+      "requirement": "提供当前冻结包的真实运行截图与连续录像，标明普通开局和QA预设装备来源，记录源码SHA，真机验收单列。",
+      "acceptanceCriteria": "提供当前冻结包的真实运行截图与连续录像，标明普通开局和QA预设装备来源，记录源码SHA，真机验收单列。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 12,
+          "endLine": 12
+        },
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 34,
+          "endLine": 34
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/tests/scaled-repair.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v0610.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v0610-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v0610/BALANCE_V0610.json",
+        "artifacts/survivor-v0610/test-materials.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "新局→升级选择→船体修补；测试资料README"
+        }
+      ],
+      "checks": [
+        "survivor-v0610-model",
+        "survivor-v0610-browser",
+        "survivor-v0610-migration",
+        "survivor-v0610-materials"
+      ],
+      "proofs": [
+        "artifacts/survivor-v0610/verification.json",
+        "design/star-salvage/v0610/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User title/art approval, physical phone touch, cross-package save, lockscreen, heat, hearing and several-day pacing remain pending. Ordinary opening and prepared QA combat are labelled.",
+      "nextAction": "Scan TapTap480638 /ea26e29 and start a new run for scaled repair; review the five prepared materials.",
+      "reviewBasis": "Frozen84files/74PNG/2MP3,118models,752HTTP,80claims,38audio,180policy samples,16real oldZIP migrations, current runtime screenshots and six art technical validations.",
+      "sandboxBinding": {
+        "sourceCommit": "ea26e29d3061542913e7a587a1fe6cc889250d33",
+        "zipSha256": "fb155e467a7812192a2af470d54879475de280e34632fe46a103c56bfdb78fd0",
+        "previewZipSha256": "53099369372e9888286dbcf3c32d205ba4b18cae4da2d5846f8234c0c1e36cd7",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480638,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE0610-INTRO",
+      "parent": null,
+      "requirement": "提供可直接使用的简短介绍、卖点和基础操作，描述已实现玩法，组成完整可审核资料包。",
+      "acceptanceCriteria": "提供可直接使用的简短介绍、卖点和基础操作，描述已实现玩法，组成完整可审核资料包。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 13,
+          "endLine": 13
+        },
+        {
+          "path": "design/star-salvage/v0610/README.md",
+          "startLine": 32,
+          "endLine": 32
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/tests/scaled-repair.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v0610.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v0610-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v0610/BALANCE_V0610.json",
+        "artifacts/survivor-v0610/test-materials.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "新局→升级选择→船体修补；测试资料README"
+        }
+      ],
+      "checks": [
+        "survivor-v0610-model",
+        "survivor-v0610-browser",
+        "survivor-v0610-migration",
+        "survivor-v0610-materials"
+      ],
+      "proofs": [
+        "artifacts/survivor-v0610/verification.json",
+        "design/star-salvage/v0610/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "User title/art approval, physical phone touch, cross-package save, lockscreen, heat, hearing and several-day pacing remain pending. Ordinary opening and prepared QA combat are labelled.",
+      "nextAction": "Scan TapTap480638 /ea26e29 and start a new run for scaled repair; review the five prepared materials.",
+      "reviewBasis": "Frozen84files/74PNG/2MP3,118models,752HTTP,80claims,38audio,180policy samples,16real oldZIP migrations, current runtime screenshots and six art technical validations.",
+      "sandboxBinding": {
+        "sourceCommit": "ea26e29d3061542913e7a587a1fe6cc889250d33",
+        "zipSha256": "fb155e467a7812192a2af470d54879475de280e34632fe46a103c56bfdb78fd0",
+        "previewZipSha256": "53099369372e9888286dbcf3c32d205ba4b18cae4da2d5846f8234c0c1e36cd7",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 480638,
+        "formalIntegration": false
+      }
+    }
+  ]
+}

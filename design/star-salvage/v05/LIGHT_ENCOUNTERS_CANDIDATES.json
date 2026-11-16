@@ -1,0 +1,257 @@
+{
+  "schema": 1,
+  "status": "DESIGN_PROPOSAL_FOR_V05_ENCOUNTERS_NOT_RUNTIME",
+  "baseline": {
+    "version": "0.4.2",
+    "runtime": "94e606f",
+    "taptap": 458870,
+    "existingEventFactories": 14,
+    "existingSelectableTypes": 13,
+    "forcedEarlyRoutes": [
+      "tank;plates",
+      "station;random"
+    ]
+  },
+  "target": {
+    "additionalEventTemplates": 12,
+    "additionalLightEasterEggs": 6,
+    "newObjectArtCount": 4,
+    "allowedMiniScenes": 2,
+    "heavyStoryChapters": 0
+  },
+  "events": [
+    {
+      "id": "comet_label",
+      "title": "彗星快递标签",
+      "kind": "wreck",
+      "depth": [
+        1,
+        4
+      ],
+      "risk": "low",
+      "optionConcepts": [
+        "回收1格标签",
+        "直接换少量零件",
+        "离开"
+      ],
+      "mechanicalNotes": "small item, no forced upgrade"
+    },
+    {
+      "id": "ring_sampler",
+      "title": "行星环采样器",
+      "kind": "wreck",
+      "depth": [
+        1,
+        5
+      ],
+      "risk": "low_medium",
+      "optionConcepts": [
+        "消耗少量探索油取两件小样",
+        "留下样本节油",
+        "离开"
+      ],
+      "mechanicalNotes": "2 items atomic"
+    },
+    {
+      "id": "silent_fuel",
+      "title": "无声补给机",
+      "kind": "station",
+      "depth": [
+        1,
+        6
+      ],
+      "risk": "low",
+      "optionConcepts": [
+        "付费补油",
+        "付费小修",
+        "离开"
+      ],
+      "mechanicalNotes": "actual quote, no free fuel"
+    },
+    {
+      "id": "drifting_cup",
+      "title": "漂流咖啡杯",
+      "kind": "cabin",
+      "depth": [
+        1,
+        4
+      ],
+      "risk": "low",
+      "optionConcepts": [
+        "取1格异物",
+        "只记录并离开"
+      ],
+      "mechanicalNotes": "flavor with sellable collectible"
+    },
+    {
+      "id": "frozen_freight",
+      "title": "冰封转运柜",
+      "kind": "wreck",
+      "depth": [
+        2,
+        7
+      ],
+      "risk": "medium",
+      "optionConcepts": [
+        "安全取2件小货",
+        "冒耐久风险回收大件",
+        "离开"
+      ],
+      "mechanicalNotes": "compare old net claims"
+    },
+    {
+      "id": "reverse_beacon",
+      "title": "反向航标",
+      "kind": "anomaly",
+      "depth": [
+        2,
+        6
+      ],
+      "risk": "medium",
+      "optionConcepts": [
+        "消耗探索油回收模块",
+        "标记异常",
+        "离开"
+      ],
+      "mechanicalNotes": "no guaranteed gate"
+    },
+    {
+      "id": "lost_probe",
+      "title": "失联探测球",
+      "kind": "cabin",
+      "depth": [
+        2,
+        7
+      ],
+      "risk": "low_medium",
+      "optionConcepts": [
+        "取2格电路模块",
+        "出售已读记录",
+        "离开"
+      ],
+      "mechanicalNotes": "same event effects"
+    },
+    {
+      "id": "magnetic_blind",
+      "title": "磁暴盲区",
+      "kind": "anomaly",
+      "depth": [
+        2,
+        7
+      ],
+      "risk": "medium",
+      "optionConcepts": [
+        "花探索油绕开",
+        "冒已标明耐久风险取样",
+        "离开"
+      ],
+      "mechanicalNotes": "always preserve return reserve"
+    },
+    {
+      "id": "backwards_clock",
+      "title": "倒走的时钟",
+      "kind": "anomaly",
+      "depth": [
+        2,
+        8
+      ],
+      "risk": "low",
+      "optionConcepts": [
+        "回收短时差组件",
+        "归档且离开"
+      ],
+      "mechanicalNotes": "can record only seen detail"
+    },
+    {
+      "id": "orbital_archive_vendor",
+      "title": "轨道档案售货员",
+      "kind": "station",
+      "depth": [
+        2,
+        8
+      ],
+      "risk": "low",
+      "optionConcepts": [
+        "付费买已定义物资",
+        "出卖一件已有旧货",
+        "离开"
+      ],
+      "mechanicalNotes": "no hidden shop duplication"
+    },
+    {
+      "id": "darkside_signal",
+      "title": "背光信标",
+      "kind": "anomaly",
+      "depth": [
+        3,
+        8
+      ],
+      "risk": "medium",
+      "rare": true,
+      "optionConcepts": [
+        "归档信号",
+        "回收中型物件",
+        "离开"
+      ],
+      "mechanicalNotes": "no reveal unknown star"
+    },
+    {
+      "id": "foldback_marker",
+      "title": "折返标记",
+      "kind": "anomaly",
+      "depth": [
+        3,
+        8
+      ],
+      "risk": "low_medium",
+      "rare": true,
+      "optionConcepts": [
+        "仅记录模糊折返坐标",
+        "不调查离开"
+      ],
+      "mechanicalNotes": "first release: no actual gate or fuel discount"
+    }
+  ],
+  "eggs": [
+    {
+      "id": "early_signal",
+      "theme": "早到七分钟的通信",
+      "kind": "flavor"
+    },
+    {
+      "id": "unmapped_blank",
+      "theme": "星图上无法对应的空白",
+      "kind": "log_only"
+    },
+    {
+      "id": "reverse_droplet",
+      "theme": "杯中液体反向漂移",
+      "kind": "flavor"
+    },
+    {
+      "id": "empty_passenger",
+      "theme": "提前预留的空座",
+      "kind": "log_only"
+    },
+    {
+      "id": "following_light",
+      "theme": "远方跟随船影/灯光",
+      "kind": "flavor"
+    },
+    {
+      "id": "shifting_coordinates",
+      "theme": "漂移的返航坐标",
+      "kind": "one_time_optional_single_cell_memento",
+      "moneyExploitProtection": true
+    }
+  ],
+  "releasePolicy": {
+    "allowDesignAndIsolatedImplementation": true,
+    "holdHeavyStory": true,
+    "holdStableGateUntilReviewed": true,
+    "doNotAutoDeployBeforeQA": true,
+    "retainDraft": true,
+    "preserveSchema6UserSave": true,
+    "noSpoilersInPlayerUI": true
+  }
+}

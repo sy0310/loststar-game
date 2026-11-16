@@ -1,0 +1,605 @@
+{
+  "source": "Built-in imagegen originals, native palette/grid conversion, material-separated editable ORA",
+  "palette": "palette.json",
+  "runtimeScale": 2,
+  "assets": [
+    {
+      "id": "boss_weaver",
+      "kind": "actor",
+      "nativeSize": [
+        64,
+        64
+      ],
+      "displaySize": [
+        128,
+        128
+      ],
+      "center": [
+        32.0,
+        32.0
+      ],
+      "forward": [
+        0,
+        -1
+      ],
+      "collisionCenter": [
+        32.0,
+        32.0
+      ],
+      "collisionRadius": 7,
+      "collisionBasis": "Fallback circle covers the exposed central refractive core only. Use the listed separate hull circles to keep crescent interior empty.",
+      "nozzleCenters": [
+        [
+          25,
+          53
+        ],
+        [
+          39,
+          53
+        ]
+      ],
+      "exhaustAnchors": [
+        [
+          25,
+          57
+        ],
+        [
+          39,
+          57
+        ]
+      ],
+      "collisionCircles": [
+        {
+          "part": "core",
+          "x": 32,
+          "y": 30,
+          "r": 6
+        },
+        {
+          "part": "left_emitter",
+          "x": 18,
+          "y": 11,
+          "r": 4
+        },
+        {
+          "part": "left_upper_arm",
+          "x": 12,
+          "y": 22,
+          "r": 5
+        },
+        {
+          "part": "left_lower_arm",
+          "x": 13,
+          "y": 37,
+          "r": 5
+        },
+        {
+          "part": "left_joint",
+          "x": 20,
+          "y": 46,
+          "r": 5
+        },
+        {
+          "part": "right_emitter",
+          "x": 46,
+          "y": 11,
+          "r": 4
+        },
+        {
+          "part": "right_upper_arm",
+          "x": 52,
+          "y": 22,
+          "r": 5
+        },
+        {
+          "part": "right_lower_arm",
+          "x": 51,
+          "y": 37,
+          "r": 5
+        },
+        {
+          "part": "right_joint",
+          "x": 44,
+          "y": 46,
+          "r": 5
+        },
+        {
+          "part": "lower_bridge",
+          "x": 32,
+          "y": 48,
+          "r": 6
+        }
+      ],
+      "shotNozzles": [
+        [
+          18,
+          8
+        ],
+        [
+          46,
+          8
+        ]
+      ],
+      "openSpaceSamples": [
+        [
+          32,
+          14
+        ],
+        [
+          23,
+          29
+        ],
+        [
+          41,
+          29
+        ],
+        [
+          32,
+          40
+        ]
+      ],
+      "exhaustDirection": [
+        0,
+        1
+      ],
+      "contentBBox": [
+        4,
+        7,
+        60,
+        56
+      ],
+      "originalCrop": [
+        59,
+        98,
+        1236,
+        1133
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 64,
+          "height": 64,
+          "anchor": [
+            32.0,
+            32.0
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v065/production/bosses/native/boss_weaver@1x.png",
+          "bytes": 3193,
+          "sha256": "5c2252bbaa46fc5f63ffb65ad97655364b77fba65bbb0d846ed3056b1d7cc02e"
+        },
+        {
+          "path": "design/star-salvage/v065/production/bosses/native/boss_weaver.ora",
+          "bytes": 7558,
+          "sha256": "4d41b30b409deeb93019656ac11c22c97e02b944b682ef90c7f61e86c0d13410"
+        },
+        {
+          "path": "design/star-salvage/v065/production/bosses/originals/boss_weaver-generated.png",
+          "bytes": 1020545,
+          "sha256": "db63de935042186b0181306a05851f260f19cdea9b51ea5ccf84544dd0d192bb"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v065/bosses/boss_weaver@2x.png",
+          "bytes": 3612,
+          "sha256": "2fea428b0bbd8880f0d88a3726a4a74af24229e4755bb6ebd08964b285913566"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v065/bosses/boss_weaver@4x.png",
+          "bytes": 4697,
+          "sha256": "0548648c17f87e7c967a71a904dcad7e410efaf273be97aa681b2b21c1b61bdb"
+        }
+      ]
+    },
+    {
+      "id": "boss_ark",
+      "kind": "actor",
+      "nativeSize": [
+        64,
+        64
+      ],
+      "displaySize": [
+        128,
+        128
+      ],
+      "center": [
+        32.0,
+        32.0
+      ],
+      "forward": [
+        0,
+        -1
+      ],
+      "collisionCenter": [
+        32.0,
+        32.0
+      ],
+      "collisionRadius": 8,
+      "collisionBasis": "Fallback circle covers the central command deck. Separate deck, bay, bow and rear-engine circles preserve the open forward dock.",
+      "nozzleCenters": [
+        [
+          18,
+          48
+        ],
+        [
+          46,
+          48
+        ]
+      ],
+      "exhaustAnchors": [
+        [
+          18,
+          52
+        ],
+        [
+          46,
+          52
+        ]
+      ],
+      "launcherAnchors": [
+        [
+          10,
+          32
+        ],
+        [
+          17,
+          32
+        ],
+        [
+          24,
+          32
+        ],
+        [
+          40,
+          32
+        ],
+        [
+          47,
+          32
+        ],
+        [
+          54,
+          32
+        ]
+      ],
+      "collisionCircles": [
+        {
+          "part": "command_deck",
+          "x": 32,
+          "y": 34,
+          "r": 8
+        },
+        {
+          "part": "left_magazines",
+          "x": 17,
+          "y": 34,
+          "r": 9
+        },
+        {
+          "part": "right_magazines",
+          "x": 47,
+          "y": 34,
+          "r": 9
+        },
+        {
+          "part": "left_bow",
+          "x": 23,
+          "y": 21,
+          "r": 5
+        },
+        {
+          "part": "right_bow",
+          "x": 41,
+          "y": 21,
+          "r": 5
+        },
+        {
+          "part": "left_engine",
+          "x": 18,
+          "y": 45,
+          "r": 5
+        },
+        {
+          "part": "right_engine",
+          "x": 46,
+          "y": 45,
+          "r": 5
+        }
+      ],
+      "shotNozzles": [
+        [
+          32,
+          24
+        ]
+      ],
+      "openSpaceSamples": [
+        [
+          32,
+          17
+        ]
+      ],
+      "exhaustDirection": [
+        0,
+        1
+      ],
+      "contentBBox": [
+        4,
+        13,
+        60,
+        51
+      ],
+      "originalCrop": [
+        11,
+        170,
+        1301,
+        1035
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 64,
+          "height": 64,
+          "anchor": [
+            32.0,
+            32.0
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v065/production/bosses/native/boss_ark@1x.png",
+          "bytes": 2211,
+          "sha256": "f537460a65d3b9435986693d156da392eb46ed59c421d55fa40087094bd4b145"
+        },
+        {
+          "path": "design/star-salvage/v065/production/bosses/native/boss_ark.ora",
+          "bytes": 5560,
+          "sha256": "222778b86c75ca984955a5977b0714789820bc7f82e42662b4047ac8b75ff5bf"
+        },
+        {
+          "path": "design/star-salvage/v065/production/bosses/originals/boss_ark-generated.png",
+          "bytes": 1279139,
+          "sha256": "9ddb60db900aff3fdb091e3f1faba9c8601296d1ddb4822d170d210ff0238624"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v065/bosses/boss_ark@2x.png",
+          "bytes": 2525,
+          "sha256": "7f6d3ed18e337dc88e708c41aaf14ed55db17bd683a629521ad860d7c8702196"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v065/bosses/boss_ark@4x.png",
+          "bytes": 3347,
+          "sha256": "de907f30211e3d307a84a03a041c917da7893df7122eeabdd4a7c6379eb1a6cf"
+        }
+      ]
+    },
+    {
+      "id": "boss_judicator",
+      "kind": "actor",
+      "nativeSize": [
+        64,
+        64
+      ],
+      "displaySize": [
+        128,
+        128
+      ],
+      "center": [
+        32.0,
+        32.0
+      ],
+      "forward": [
+        0,
+        -1
+      ],
+      "collisionCenter": [
+        32.0,
+        32.0
+      ],
+      "collisionRadius": 5,
+      "collisionBasis": "Fallback circle covers the bridge core. Independent left/right spine circles keep both central longitudinal gaps empty.",
+      "nozzleCenters": [
+        [
+          18,
+          58
+        ],
+        [
+          46,
+          58
+        ]
+      ],
+      "exhaustAnchors": [
+        [
+          18,
+          61
+        ],
+        [
+          46,
+          61
+        ]
+      ],
+      "collisionCircles": [
+        {
+          "part": "bridge_core",
+          "x": 32,
+          "y": 34,
+          "r": 5
+        },
+        {
+          "part": "left_forward_spine",
+          "x": 18,
+          "y": 14,
+          "r": 6
+        },
+        {
+          "part": "left_mid_spine",
+          "x": 18,
+          "y": 28,
+          "r": 7
+        },
+        {
+          "part": "left_aft_spine",
+          "x": 18,
+          "y": 43,
+          "r": 6
+        },
+        {
+          "part": "left_engine",
+          "x": 18,
+          "y": 54,
+          "r": 5
+        },
+        {
+          "part": "right_forward_spine",
+          "x": 46,
+          "y": 14,
+          "r": 6
+        },
+        {
+          "part": "right_mid_spine",
+          "x": 46,
+          "y": 28,
+          "r": 7
+        },
+        {
+          "part": "right_aft_spine",
+          "x": 46,
+          "y": 43,
+          "r": 6
+        },
+        {
+          "part": "right_engine",
+          "x": 46,
+          "y": 54,
+          "r": 5
+        }
+      ],
+      "shotNozzles": [
+        [
+          18,
+          5
+        ],
+        [
+          46,
+          5
+        ]
+      ],
+      "openSpaceSamples": [
+        [
+          32,
+          14
+        ],
+        [
+          32,
+          23
+        ],
+        [
+          32,
+          47
+        ],
+        [
+          32,
+          55
+        ]
+      ],
+      "exhaustDirection": [
+        0,
+        1
+      ],
+      "contentBBox": [
+        10,
+        4,
+        54,
+        60
+      ],
+      "originalCrop": [
+        154,
+        79,
+        1053,
+        1229
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 64,
+          "height": 64,
+          "anchor": [
+            32.0,
+            32.0
+          ]
+        }
+      ],
+      "files": [
+        {
+          "path": "design/star-salvage/v065/production/bosses/native/boss_judicator@1x.png",
+          "bytes": 2953,
+          "sha256": "97a28eabf3726df3e38504518c1f77910a69a85fc4da23bd22c7dbb6a5552305"
+        },
+        {
+          "path": "design/star-salvage/v065/production/bosses/native/boss_judicator.ora",
+          "bytes": 7181,
+          "sha256": "4e595a4688921eb2ca1aa8804dc8facf87a1cd94dac49d388ca831c017a2c3b8"
+        },
+        {
+          "path": "design/star-salvage/v065/production/bosses/originals/boss_judicator-generated.png",
+          "bytes": 1132022,
+          "sha256": "d65743c9f335ad8d8497d45739331ef93600759d7cc280d858ba25e1972c91cb"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v065/bosses/boss_judicator@2x.png",
+          "bytes": 3447,
+          "sha256": "8a930afa12e78fb66524b500d28ea0769e5952d20d813ee306023048e957605e"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/v065/bosses/boss_judicator@4x.png",
+          "bytes": 4625,
+          "sha256": "93085b81ef1ac17f970dc12667ca311451bb9195447b7a1195f05d6e0d281942"
+        }
+      ]
+    }
+  ],
+  "sourceInputs": [
+    {
+      "path": "design/star-salvage/v065/production/bosses/export.py",
+      "bytes": 8170,
+      "sha256": "ff9cb88d8c74773cd08257e1d3703e1d8e1f6912a3c7a1e5c95c20485f80310e"
+    },
+    {
+      "path": "design/star-salvage/v065/production/bosses/verify.py",
+      "bytes": 6749,
+      "sha256": "4f57113b8c26f32fb4595e88a5e55e085558d42615145c3d35fe2b4804e9d47c"
+    },
+    {
+      "path": "design/star-salvage/v065/production/bosses/README.md",
+      "bytes": 3128,
+      "sha256": "2560856ff088edbe78aa4f73ec7117127b8cbbadf09f59b5fbff043af20ea9e0"
+    },
+    {
+      "path": "design/star-salvage/v065/production/bosses/prompts.json",
+      "bytes": 6391,
+      "sha256": "29c2fba02588994ea67e311f3d7ff676ec27884bb735a540e644bc00fcba58a1"
+    },
+    {
+      "path": "design/star-salvage/v065/production/bosses/palette.json",
+      "bytes": 628,
+      "sha256": "91e8df0e7efc6b842426b3520a99edc9d9cf61349a154cbb68d238c22f4ddf12"
+    },
+    {
+      "path": "design/star-salvage/v065/production/bosses/native-edits.json",
+      "bytes": 2188,
+      "sha256": "e0ea179521e3741a1845c2e9bcdd05ad3433ad08ece426a4b8bd140b59110c2d"
+    },
+    {
+      "path": "design/star-salvage/v065/production/bosses/geometry.json",
+      "bytes": 4932,
+      "sha256": "f48839cea1a73ac54f3cbee0d533a12e19d13d1a19276400bddec608048eb17e"
+    }
+  ],
+  "userVisualApproval": "PENDING",
+  "physicalPhoneTested": false
+}

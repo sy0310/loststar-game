@@ -1,0 +1,312 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-11-06T19:09:03.918975+00:00",
+  "sourceCommit": "06cb11f6a2eeb688e8014b7993267cd14d1f0e0a",
+  "zipSha256": "2aee2e4531d42873dca4e6a7706ead759e5bc71c7aac9b89d0ff676f676814f2",
+  "baselineSourceCommit": "7074cff043a239771acae1f0b7133db1225f797a",
+  "baselineZipSha256": "0df17916b640f7e28226f61b40279efb313e05810a57565ef493e17d28fc9349",
+  "inputs": [
+    {
+      "path": "artifacts/v045-a-exploration/performance.json",
+      "sha256": "592fd9dcbd9560993871ddca25a45d83d2325c07365f1c5af98d958315e7a93d"
+    },
+    {
+      "path": "artifacts/v044-execution-art/performance.json",
+      "sha256": "30edc9b4377bd4765701e16fc8106c1816f617a322e0a5d6013380a1bcf990f1"
+    }
+  ],
+  "method": {
+    "matchedBy": [
+      "engine",
+      "view"
+    ],
+    "comparableMethodFields": [
+      "viewport",
+      "dpr",
+      "concurrency",
+      "recording",
+      "warmupMs",
+      "sampleMs"
+    ],
+    "measurement": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "dpr": 2,
+      "concurrency": 1,
+      "recording": false,
+      "warmupMs": 1500,
+      "sampleMs": 10000,
+      "clockOverrides": false,
+      "heap": "Chromium coarse JS heap only; excludes texture, GPU and process memory.",
+      "requestedEngines": [
+        "chromium",
+        "webkit"
+      ],
+      "requestedViews": [
+        "explore",
+        "night",
+        "collection",
+        "receipt",
+        "tape-ii",
+        "bell-active"
+      ]
+    },
+    "hostCurrent": {
+      "cpu": "Apple M2 Pro",
+      "platform": "darwin",
+      "architecture": "arm64"
+    },
+    "hostBaseline": {
+      "cpu": "Apple M2 Pro",
+      "platform": "darwin",
+      "architecture": "arm64"
+    },
+    "limitations": "One serial 10-second desktop sample per scene and engine. Natural animation phases are not synchronized between versions. Differences are descriptive observations, not repeated-trial statistics or causal performance proof. No counterpart is fabricated for absent baseline scenes.",
+    "physicalPhone": false,
+    "stable60FpsClaimed": false,
+    "gpuMemoryMeasured": false
+  },
+  "matchedCaseCount": 8,
+  "comparisons": [
+    {
+      "engine": "chromium",
+      "view": "collection",
+      "baseline": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.69999998807907,
+          "p95Ms": 17.19999998807907,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.5785357735914716
+      },
+      "current": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.69999998807907,
+          "p95Ms": 16.900000035762787,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.6342762043194445
+      },
+      "deltaCurrentMinusBaseline": {
+        "paintSamples": 0,
+        "p95Ms": -0.2999999523162842,
+        "meanDrawMs": 0.05574043072797297
+      }
+    },
+    {
+      "engine": "chromium",
+      "view": "receipt",
+      "baseline": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.700000000000728,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.19933444202045433
+      },
+      "current": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.799999999999272,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.317304493881105
+      },
+      "deltaCurrentMinusBaseline": {
+        "paintSamples": 0,
+        "p95Ms": 0.09999999999854481,
+        "meanDrawMs": 0.11797005186065065
+      }
+    },
+    {
+      "engine": "chromium",
+      "view": "tape-ii",
+      "baseline": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.700000000000728,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 3.4321131464248884
+      },
+      "current": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.700000000000728,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 3.5585690517592155
+      },
+      "deltaCurrentMinusBaseline": {
+        "paintSamples": 0,
+        "p95Ms": 0.0,
+        "meanDrawMs": 0.12645590533432705
+      }
+    },
+    {
+      "engine": "chromium",
+      "view": "bell-active",
+      "baseline": {
+        "actualPaint": {
+          "samples": 601,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.799999999999272,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.44003322136362527
+      },
+      "current": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.700000000000728,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.22695507384377986
+      },
+      "deltaCurrentMinusBaseline": {
+        "paintSamples": -1,
+        "p95Ms": -0.09999999999854481,
+        "meanDrawMs": -0.2130781475198454
+      }
+    },
+    {
+      "engine": "webkit",
+      "view": "collection",
+      "baseline": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 17,
+          "p95Ms": 19,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 1.3394342762063227
+      },
+      "current": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 17,
+          "p95Ms": 18,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 1.3394342762063227
+      },
+      "deltaCurrentMinusBaseline": {
+        "paintSamples": 0,
+        "p95Ms": -1,
+        "meanDrawMs": 0.0
+      }
+    },
+    {
+      "engine": "webkit",
+      "view": "receipt",
+      "baseline": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 17,
+          "p95Ms": 19,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.43261231281198004
+      },
+      "current": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 17,
+          "p95Ms": 18,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.46755407653910147
+      },
+      "deltaCurrentMinusBaseline": {
+        "paintSamples": 0,
+        "p95Ms": -1,
+        "meanDrawMs": 0.03494176372712143
+      }
+    },
+    {
+      "engine": "webkit",
+      "view": "tape-ii",
+      "baseline": {
+        "actualPaint": {
+          "samples": 600,
+          "medianMs": 17,
+          "p95Ms": 19,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 3.252911813643927
+      },
+      "current": {
+        "actualPaint": {
+          "samples": 597,
+          "medianMs": 17,
+          "p95Ms": 18,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 3.511705685618729
+      },
+      "deltaCurrentMinusBaseline": {
+        "paintSamples": -3,
+        "p95Ms": -1,
+        "meanDrawMs": 0.25879387197480197
+      }
+    },
+    {
+      "engine": "webkit",
+      "view": "bell-active",
+      "baseline": {
+        "actualPaint": {
+          "samples": 599,
+          "medianMs": 17,
+          "p95Ms": 19,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.49666666666666665
+      },
+      "current": {
+        "actualPaint": {
+          "samples": 592,
+          "medianMs": 17,
+          "p95Ms": 18,
+          "over100Ms": 0
+        },
+        "meanDrawMs": 0.4873524451939292
+      },
+      "deltaCurrentMinusBaseline": {
+        "paintSamples": -7,
+        "p95Ms": -1,
+        "meanDrawMs": -0.009314221472737472
+      }
+    }
+  ],
+  "unmatchedCurrentCases": [
+    {
+      "engine": "chromium",
+      "view": "explore",
+      "reason": "No same-engine, same-scene sample exists in the recorded 7074 report."
+    },
+    {
+      "engine": "chromium",
+      "view": "night",
+      "reason": "No same-engine, same-scene sample exists in the recorded 7074 report."
+    },
+    {
+      "engine": "webkit",
+      "view": "explore",
+      "reason": "No same-engine, same-scene sample exists in the recorded 7074 report."
+    },
+    {
+      "engine": "webkit",
+      "view": "night",
+      "reason": "No same-engine, same-scene sample exists in the recorded 7074 report."
+    }
+  ]
+}

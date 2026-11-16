@@ -1,0 +1,4 @@
+import {defineConfig} from '@playwright/test';
+import {fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('../../',import.meta.url));
+export default defineConfig({testDir:'.',testMatch:'chapter.spec.ts',workers:2,retries:0,timeout:60000,reporter:[['list'],['json',{outputFile:root+'releases/chapter-e2e-results.json'}]],outputDir:root+'releases/chapter-test-results',use:{baseURL:'http://127.0.0.1:4271',hasTouch:true,screenshot:'only-on-failure'},projects:[{name:'chapter-360',use:{browserName:'chromium',viewport:{width:360,height:800}}},{name:'chapter-390',use:{browserName:'chromium',viewport:{width:390,height:844}}},{name:'chapter-webkit',use:{browserName:'webkit',viewport:{width:390,height:844}}},{name:'chapter-desktop',use:{browserName:'chromium',viewport:{width:1440,height:1000}}}],webServer:{cwd:root,command:'npx vite --config vite.chapter.config.ts --port 4271 --strictPort',url:'http://127.0.0.1:4271',reuseExistingServer:!process.env.CI}});

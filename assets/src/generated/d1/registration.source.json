@@ -1,0 +1,303 @@
+{
+  "schema": 1,
+  "status": "D1 review candidate, not user-approved final art",
+  "assets": [
+    {
+      "id": "receipt-base-l1",
+      "source": "receipt-base-l1-v1.png",
+      "crop": {
+        "left": 110,
+        "top": 52,
+        "width": 1951,
+        "height": 595
+      },
+      "outputWidth": 512,
+      "foot": {
+        "x": 1086,
+        "y": 638,
+        "width": 1935
+      },
+      "target": {
+        "anchor": {
+          "x": 175,
+          "y": 526
+        },
+        "footWidth": 124
+      },
+      "parts": {
+        "upperSocket": {
+          "left": 367,
+          "top": 59,
+          "width": 1432,
+          "height": 250
+        },
+        "leftLamp": {
+          "left": 417,
+          "top": 402,
+          "width": 257,
+          "height": 90
+        },
+        "rightLamp": {
+          "left": 1490,
+          "top": 402,
+          "width": 265,
+          "height": 90
+        },
+        "nameplate": {
+          "left": 702,
+          "top": 384,
+          "width": 772,
+          "height": 134
+        }
+      },
+      "notes": [
+        "Original isolated pedestal, no baked curio or glass; the visible blank plaque is part of the physical base.",
+        "Visible alpha16 source extent is x118..2052/y60..638. The explicit crop retains an 8px visual margin; very faint generator dust outside it is excluded.",
+        "At the requested 124px physical foot width, proportional height is 37.10px; do not squash it to an exact 34px.",
+        "Draw the existing rear bell glass above its old ring and register onto this base; never draw the old base and this base as two independent floors."
+      ]
+    },
+    {
+      "id": "receipt-mechanism-l2",
+      "source": "receipt-mechanism-l2-v2.png",
+      "assembly": {
+        "width": 306,
+        "height": 438,
+        "layers": [
+          {
+            "id": "leftRail",
+            "crop": {
+              "left": 170,
+              "top": 130,
+              "width": 75,
+              "height": 1078
+            },
+            "width": 18,
+            "left": 0,
+            "top": 103
+          },
+          {
+            "id": "rightRail",
+            "crop": {
+              "left": 805,
+              "top": 130,
+              "width": 75,
+              "height": 1078
+            },
+            "width": 18,
+            "left": 288,
+            "top": 103
+          },
+          {
+            "id": "sortingHeader",
+            "source": "receipt-mechanism-l2-v1.png",
+            "crop": {
+              "left": 286,
+              "top": 680,
+              "width": 748,
+              "height": 26
+            },
+            "width": 248,
+            "left": 29,
+            "top": 2
+          },
+          {
+            "id": "sortingDrawers0",
+            "source": "receipt-mechanism-l2-v1.png",
+            "crop": {
+              "left": 591,
+              "top": 705,
+              "width": 145,
+              "height": 118
+            },
+            "width": 80,
+            "left": 33,
+            "top": 12
+          },
+          {
+            "id": "sortingDrawers1",
+            "source": "receipt-mechanism-l2-v1.png",
+            "crop": {
+              "left": 591,
+              "top": 705,
+              "width": 145,
+              "height": 118
+            },
+            "width": 80,
+            "left": 113,
+            "top": 12
+          },
+          {
+            "id": "sortingDrawers2",
+            "source": "receipt-mechanism-l2-v1.png",
+            "crop": {
+              "left": 591,
+              "top": 705,
+              "width": 145,
+              "height": 118
+            },
+            "width": 80,
+            "left": 193,
+            "top": 12
+          },
+          {
+            "id": "floor",
+            "crop": {
+              "left": 175,
+              "top": 1221,
+              "width": 704,
+              "height": 191
+            },
+            "width": 280,
+            "left": 13,
+            "top": 362
+          }
+        ]
+      },
+      "outputWidth": 306,
+      "foot": {
+        "x": 153,
+        "y": 438,
+        "width": 280
+      },
+      "cavity": {
+        "left": 0,
+        "top": 0,
+        "width": 306,
+        "height": 438
+      },
+      "parts": {
+        "leftRail": {
+          "left": 0,
+          "top": 103,
+          "width": 18,
+          "height": 259
+        },
+        "rightRail": {
+          "left": 288,
+          "top": 103,
+          "width": 18,
+          "height": 259
+        },
+        "sortingCubby": {
+          "left": 29,
+          "top": 2,
+          "width": 248,
+          "height": 75
+        },
+        "floor": {
+          "left": 13,
+          "top": 362,
+          "width": 280,
+          "height": 76
+        },
+        "leftGear": {
+          "left": 31,
+          "top": 372,
+          "width": 48,
+          "height": 48
+        },
+        "rightGear": {
+          "left": 226,
+          "top": 372,
+          "width": 48,
+          "height": 48
+        },
+        "roller": {
+          "left": 99,
+          "top": 367,
+          "width": 111,
+          "height": 52
+        },
+        "ticketOutlet": {
+          "left": 112,
+          "top": 422,
+          "width": 89,
+          "height": 16
+        }
+      },
+      "target": {
+        "anchor": {
+          "x": 175,
+          "y": 499.109756097561
+        },
+        "footWidth": 70
+      },
+      "notes": [
+        "Built from cropped components of the original v2 transparent PNG. Every crop preserves its own aspect ratio with nearest-neighbour resize; the tall U image is not globally squashed.",
+        "The actual lower printer is 70x19 room pixels at world y480.109756..499.109756; receipt envelope ends at y479.390244, so its size and centre remain unchanged.",
+        "Both thin paper-feed rails remain outside the fixed 66.926829 receipt envelope. The wide sorting backplate is rebuilt from v1 original 3x3 drawer crops and a header beam, each proportional, repeated across62x18.75 room pixels at world x144..206/y390.109756..408.859756; it does not cover the receipt face.",
+        "Internal floor anchor is (175,499.109756), while the complete glass exhibit still has foot (175,526).",
+        "Parts gear/roller/ticketOutlet rectangles are in output atlas pixels, intended for independent visible rotation/feed overlays."
+      ]
+    },
+    {
+      "id": "receipt-vault-l3",
+      "source": "receipt-vault-l3-v3.png",
+      "crop": {
+        "left": 18,
+        "top": 15,
+        "width": 962,
+        "height": 1521
+      },
+      "outputWidth": 384,
+      "foot": {
+        "x": 499,
+        "y": 1527,
+        "width": 946
+      },
+      "cavity": {
+        "left": 245,
+        "top": 585,
+        "width": 510,
+        "height": 730
+      },
+      "parts": {
+        "crown": {
+          "left": 130,
+          "top": 23,
+          "width": 736,
+          "height": 381
+        },
+        "leftPylon": {
+          "left": 86,
+          "top": 399,
+          "width": 159,
+          "height": 963
+        },
+        "rightPylon": {
+          "left": 755,
+          "top": 399,
+          "width": 155,
+          "height": 963
+        },
+        "base": {
+          "left": 26,
+          "top": 1334,
+          "width": 946,
+          "height": 194
+        },
+        "centralFrame": {
+          "left": 26,
+          "top": 404,
+          "width": 946,
+          "height": 930
+        }
+      },
+      "target": {
+        "anchor": {
+          "x": 175,
+          "y": 526
+        },
+        "footWidth": 136
+      },
+      "notes": [
+        "V3 edit removes the opaque white panel from rejected v2. Actual source item-envelope alpha: max2/255, mean0.08693/255, zero pixels at alpha>=16 over 217622 pixels.",
+        "No curio, paper, room, glass fill or external ambient glow is baked into this independent metal frame. Fine low-alpha generator edge pixels remain and must be reviewed on the real room, not a black matte preview.",
+        "At physical foot136, proportional visible height216.36 fits the target208–218. The safe straight inner aperture is73.32 room pixels wide, leaving about3.2 room pixels each side of the fixed-size receipt.",
+        "Suggested horizontal cut lines: original source y404 at the crown/body boundary and y1334 at body/base. In cropped 384px export these are approximately155.28 and526.52; use the exact output parts values.",
+        "Source parts intentionally describe frame sections for installation; their union is the original silhouette, not additional duplicated bases. Central pane can use independent canvas reflections, never a second opaque glass image."
+      ]
+    }
+  ]
+}

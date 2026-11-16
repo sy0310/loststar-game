@@ -1,0 +1,6315 @@
+{
+  "scope": "Desktop Chromium390x844 touch emulation, actual elapsed recordings. QA imported27049 separately labelled. Not physical phone or enjoyment acceptance.",
+  "natural": {
+    "imported": false,
+    "seedOverridden": false,
+    "clockOverridden": false,
+    "checkpoints": [
+      {
+        "name": "before-voyage-1",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 0,
+          "seq": 0,
+          "rng": 639399953,
+          "phase": "port",
+          "runNo": 0,
+          "fuel": 60,
+          "hull": 100,
+          "money": 120,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": null,
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": []
+          },
+          "tools": [],
+          "archive": [],
+          "depth": 0,
+          "distance": 0,
+          "lastLeg": 0,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [],
+          "legs": [],
+          "log": [],
+          "telemetry": [],
+          "ledger": [],
+          "run": null,
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 1
+        }
+      },
+      {
+        "name": "voyage-1-event-1",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 2,
+          "seq": 2,
+          "rng": 2329911134,
+          "phase": "event",
+          "runNo": 1,
+          "fuel": 54,
+          "hull": 100,
+          "money": 120,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": []
+          },
+          "tools": [],
+          "archive": [],
+          "depth": 1,
+          "distance": 6,
+          "lastLeg": 6,
+          "route": [],
+          "event": {
+            "id": "tank",
+            "nonce": "1/1",
+            "context": {
+              "fuel": 54,
+              "hull": 100,
+              "cargo": [],
+              "missionSlot": null
+            }
+          },
+          "result": null,
+          "history": [
+            "tank"
+          ],
+          "legs": [
+            6
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            }
+          ],
+          "ledger": [],
+          "run": {
+            "startMoney": 120,
+            "startFuel": 60,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": false,
+            "account": {
+              "opening": 120,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 0,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 0,
+              "repairSpent": 0,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 1
+        }
+      },
+      {
+        "name": "voyage-1-event-2",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 5,
+          "seq": 5,
+          "rng": 3334869164,
+          "phase": "event",
+          "runNo": 1,
+          "fuel": 75,
+          "hull": 84,
+          "money": 120,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "ability": null,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "itemId": "toolbox",
+              "uid": 1,
+              "acquiredRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "ability": null,
+              "shapeId": "line2",
+              "shapeVersion": 1,
+              "itemId": "broken_engine",
+              "uid": 2,
+              "acquiredRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "ability": null,
+              "shapeId": "ell3",
+              "shapeVersion": 1,
+              "itemId": "metal_crate",
+              "uid": 3,
+              "acquiredRun": 1
+            }
+          ],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": [
+              {
+                "uid": 1,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 2,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 3,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 2,
+          "distance": 13,
+          "lastLeg": 7,
+          "route": [],
+          "event": {
+            "id": "station",
+            "nonce": "1/2",
+            "context": {
+              "fuel": 75,
+              "hull": 84,
+              "cargo": [
+                {
+                  "name": "熔边螺母",
+                  "value": 18,
+                  "cells": 1,
+                  "ability": null,
+                  "shapeId": "point1",
+                  "shapeVersion": 1,
+                  "itemId": "toolbox",
+                  "uid": 1,
+                  "acquiredRun": 1
+                },
+                {
+                  "name": "散落接头",
+                  "value": 22,
+                  "cells": 2,
+                  "ability": null,
+                  "shapeId": "line2",
+                  "shapeVersion": 1,
+                  "itemId": "broken_engine",
+                  "uid": 2,
+                  "acquiredRun": 1
+                },
+                {
+                  "name": "烧蚀回收板",
+                  "value": 30,
+                  "cells": 3,
+                  "ability": null,
+                  "shapeId": "ell3",
+                  "shapeVersion": 1,
+                  "itemId": "metal_crate",
+                  "uid": 3,
+                  "acquiredRun": 1
+                }
+              ],
+              "missionSlot": null
+            }
+          },
+          "result": null,
+          "history": [
+            "tank",
+            "station"
+          ],
+          "legs": [
+            6,
+            7
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            }
+          ],
+          "ledger": [],
+          "run": {
+            "startMoney": 120,
+            "startFuel": 60,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": false,
+            "account": {
+              "opening": 120,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 0,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 0,
+              "repairSpent": 0,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 4
+        }
+      },
+      {
+        "name": "voyage-1-event-3",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 8,
+          "seq": 8,
+          "rng": 2109254473,
+          "phase": "event",
+          "runNo": 1,
+          "fuel": 67,
+          "hull": 84,
+          "money": 120,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "ability": null,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "itemId": "toolbox",
+              "uid": 1,
+              "acquiredRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "ability": null,
+              "shapeId": "line2",
+              "shapeVersion": 1,
+              "itemId": "broken_engine",
+              "uid": 2,
+              "acquiredRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "ability": null,
+              "shapeId": "ell3",
+              "shapeVersion": 1,
+              "itemId": "metal_crate",
+              "uid": 3,
+              "acquiredRun": 1
+            }
+          ],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": [
+              {
+                "uid": 1,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 2,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 3,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 3,
+          "distance": 21,
+          "lastLeg": 8,
+          "route": [],
+          "event": {
+            "id": "engine",
+            "nonce": "1/3",
+            "context": {
+              "fuel": 67,
+              "hull": 84,
+              "cargo": [
+                {
+                  "name": "熔边螺母",
+                  "value": 18,
+                  "cells": 1,
+                  "ability": null,
+                  "shapeId": "point1",
+                  "shapeVersion": 1,
+                  "itemId": "toolbox",
+                  "uid": 1,
+                  "acquiredRun": 1
+                },
+                {
+                  "name": "散落接头",
+                  "value": 22,
+                  "cells": 2,
+                  "ability": null,
+                  "shapeId": "line2",
+                  "shapeVersion": 1,
+                  "itemId": "broken_engine",
+                  "uid": 2,
+                  "acquiredRun": 1
+                },
+                {
+                  "name": "烧蚀回收板",
+                  "value": 30,
+                  "cells": 3,
+                  "ability": null,
+                  "shapeId": "ell3",
+                  "shapeVersion": 1,
+                  "itemId": "metal_crate",
+                  "uid": 3,
+                  "acquiredRun": 1
+                }
+              ],
+              "missionSlot": null
+            }
+          },
+          "result": null,
+          "history": [
+            "tank",
+            "station",
+            "engine"
+          ],
+          "legs": [
+            6,
+            7,
+            8
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            }
+          ],
+          "ledger": [],
+          "run": {
+            "startMoney": 120,
+            "startFuel": 60,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": false,
+            "account": {
+              "opening": 120,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 0,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 0,
+              "repairSpent": 0,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 4
+        }
+      },
+      {
+        "name": "returned-voyage-1",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 11,
+          "seq": 11,
+          "rng": 2230070715,
+          "phase": "summary",
+          "runNo": 1,
+          "fuel": 53,
+          "hull": 84,
+          "money": 120,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "ability": null,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "itemId": "toolbox",
+              "uid": 1,
+              "acquiredRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "ability": null,
+              "shapeId": "line2",
+              "shapeVersion": 1,
+              "itemId": "broken_engine",
+              "uid": 2,
+              "acquiredRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "ability": null,
+              "shapeId": "ell3",
+              "shapeVersion": 1,
+              "itemId": "metal_crate",
+              "uid": 3,
+              "acquiredRun": 1
+            }
+          ],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": [
+              {
+                "uid": 1,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 2,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 3,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 3,
+          "distance": 21,
+          "lastLeg": 8,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [
+            "tank",
+            "station",
+            "engine"
+          ],
+          "legs": [
+            6,
+            7,
+            8
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "type": "choice",
+              "text": "仍在待机的发动机 · 放弃这台发动机"
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "kind": "choice",
+              "event": "engine",
+              "option": "leave",
+              "fuel": 67,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 53,
+              "hull": 84,
+              "money": 120,
+              "cargoValue": 70
+            }
+          ],
+          "ledger": [],
+          "run": {
+            "startMoney": 120,
+            "startFuel": 60,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": false,
+            "account": {
+              "opening": 120,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 0,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 0,
+              "repairSpent": 0,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": {
+            "run": 1,
+            "depth": 3,
+            "distance": 21,
+            "returnFuel": 14,
+            "rescue": false,
+            "lost": 0,
+            "lostUids": [],
+            "reward": 0,
+            "cashDelta": 0
+          },
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 4
+        }
+      },
+      {
+        "name": "saved-after-voyage-1",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 15,
+          "seq": 15,
+          "rng": 2230070715,
+          "phase": "port",
+          "runNo": 1,
+          "fuel": 100,
+          "hull": 100,
+          "money": 64,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": []
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 3,
+          "distance": 21,
+          "lastLeg": 8,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [
+            "tank",
+            "station",
+            "engine"
+          ],
+          "legs": [
+            6,
+            7,
+            8
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "type": "choice",
+              "text": "仍在待机的发动机 · 放弃这台发动机"
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "售出3件回收物，收到70零件。"
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满燃料53→100，实付94零件。"
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满耐久84→100，实付32零件。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "kind": "choice",
+              "event": "engine",
+              "option": "leave",
+              "fuel": 67,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 53,
+              "hull": 84,
+              "money": 120,
+              "cargoValue": 70
+            }
+          ],
+          "ledger": [
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 18,
+              "before": 120,
+              "after": 138,
+              "uid": 1,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 22,
+              "before": 138,
+              "after": 160,
+              "uid": 2,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 30,
+              "before": 160,
+              "after": 190,
+              "uid": 3,
+              "sourceRun": 1
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "kind": "supplySpent",
+              "delta": -94,
+              "before": 190,
+              "after": 96
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "kind": "repairSpent",
+              "delta": -32,
+              "before": 96,
+              "after": 64
+            }
+          ],
+          "run": {
+            "startMoney": 120,
+            "startFuel": 60,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": false,
+            "account": {
+              "opening": 120,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 70,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 94,
+              "repairSpent": 32,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": {
+            "run": 1,
+            "depth": 3,
+            "distance": 21,
+            "returnFuel": 14,
+            "rescue": false,
+            "lost": 0,
+            "lostUids": [],
+            "reward": 0,
+            "cashDelta": -56
+          },
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 4
+        }
+      },
+      {
+        "name": "reopened-before-second-voyage",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 15,
+          "seq": 15,
+          "rng": 2230070715,
+          "phase": "port",
+          "runNo": 1,
+          "fuel": 100,
+          "hull": 100,
+          "money": 64,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": []
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 3,
+          "distance": 21,
+          "lastLeg": 8,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [
+            "tank",
+            "station",
+            "engine"
+          ],
+          "legs": [
+            6,
+            7,
+            8
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "type": "choice",
+              "text": "仍在待机的发动机 · 放弃这台发动机"
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "售出3件回收物，收到70零件。"
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满燃料53→100，实付94零件。"
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满耐久84→100，实付32零件。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "kind": "choice",
+              "event": "engine",
+              "option": "leave",
+              "fuel": 67,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 53,
+              "hull": 84,
+              "money": 120,
+              "cargoValue": 70
+            }
+          ],
+          "ledger": [
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 18,
+              "before": 120,
+              "after": 138,
+              "uid": 1,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 22,
+              "before": 138,
+              "after": 160,
+              "uid": 2,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 30,
+              "before": 160,
+              "after": 190,
+              "uid": 3,
+              "sourceRun": 1
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "kind": "supplySpent",
+              "delta": -94,
+              "before": 190,
+              "after": 96
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "kind": "repairSpent",
+              "delta": -32,
+              "before": 96,
+              "after": 64
+            }
+          ],
+          "run": {
+            "startMoney": 120,
+            "startFuel": 60,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": false,
+            "account": {
+              "opening": 120,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 70,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 94,
+              "repairSpent": 32,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": {
+            "run": 1,
+            "depth": 3,
+            "distance": 21,
+            "returnFuel": 14,
+            "rescue": false,
+            "lost": 0,
+            "lostUids": [],
+            "reward": 0,
+            "cashDelta": -56
+          },
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 4
+        }
+      },
+      {
+        "name": "before-voyage-2",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 16,
+          "seq": 16,
+          "rng": 2230070715,
+          "phase": "port",
+          "runNo": 1,
+          "fuel": 100,
+          "hull": 100,
+          "money": 64,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [],
+          "missionSlot": {
+            "uid": 4,
+            "name": "航区测绘记录箱",
+            "cells": 4,
+            "value": 0,
+            "contract": true,
+            "shapeId": "square4",
+            "shapeVersion": 1,
+            "acquiredRun": 2
+          },
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [
+            {
+              "uid": 1,
+              "type": "survey",
+              "status": "accepted",
+              "acceptedRun": 1,
+              "targetRun": 2,
+              "legacyAutoSettlement": false
+            }
+          ],
+          "activeMissionId": 1,
+          "nextMissionUid": 2,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": []
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 3,
+          "distance": 21,
+          "lastLeg": 8,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [
+            "tank",
+            "station",
+            "engine"
+          ],
+          "legs": [
+            6,
+            7,
+            8
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "type": "choice",
+              "text": "仍在待机的发动机 · 放弃这台发动机"
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "售出3件回收物，收到70零件。"
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满燃料53→100，实付94零件。"
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满耐久84→100，实付32零件。"
+            },
+            {
+              "seq": 16,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "已接取：航区测绘"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "kind": "choice",
+              "event": "engine",
+              "option": "leave",
+              "fuel": 67,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 53,
+              "hull": 84,
+              "money": 120,
+              "cargoValue": 70
+            }
+          ],
+          "ledger": [
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 18,
+              "before": 120,
+              "after": 138,
+              "uid": 1,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 22,
+              "before": 138,
+              "after": 160,
+              "uid": 2,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 30,
+              "before": 160,
+              "after": 190,
+              "uid": 3,
+              "sourceRun": 1
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "kind": "supplySpent",
+              "delta": -94,
+              "before": 190,
+              "after": 96
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "kind": "repairSpent",
+              "delta": -32,
+              "before": 96,
+              "after": 64
+            }
+          ],
+          "run": {
+            "startMoney": 120,
+            "startFuel": 60,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": false,
+            "account": {
+              "opening": 120,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 70,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 94,
+              "repairSpent": 32,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": {
+            "run": 1,
+            "depth": 3,
+            "distance": 21,
+            "returnFuel": 14,
+            "rescue": false,
+            "lost": 0,
+            "lostUids": [],
+            "reward": 0,
+            "cashDelta": -56
+          },
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 5
+        }
+      },
+      {
+        "name": "voyage-2-event-1",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 18,
+          "seq": 18,
+          "rng": 707981270,
+          "phase": "event",
+          "runNo": 2,
+          "fuel": 94,
+          "hull": 100,
+          "money": 64,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [],
+          "missionSlot": {
+            "uid": 4,
+            "name": "航区测绘记录箱",
+            "cells": 4,
+            "value": 0,
+            "contract": true,
+            "shapeId": "square4",
+            "shapeVersion": 1,
+            "acquiredRun": 2
+          },
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [
+            {
+              "uid": 1,
+              "type": "survey",
+              "status": "active",
+              "acceptedRun": 1,
+              "targetRun": 2,
+              "legacyAutoSettlement": false
+            }
+          ],
+          "activeMissionId": 1,
+          "nextMissionUid": 2,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": []
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 1,
+          "distance": 6,
+          "lastLeg": 6,
+          "route": [],
+          "event": {
+            "id": "tank",
+            "nonce": "2/1",
+            "context": {
+              "fuel": 94,
+              "hull": 100,
+              "cargo": [],
+              "missionSlot": {
+                "uid": 4,
+                "name": "航区测绘记录箱",
+                "cells": 4,
+                "value": 0,
+                "contract": true,
+                "shapeId": "square4",
+                "shapeVersion": 1,
+                "acquiredRun": 2
+              }
+            }
+          },
+          "result": null,
+          "history": [
+            "tank"
+          ],
+          "legs": [
+            6
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "type": "choice",
+              "text": "仍在待机的发动机 · 放弃这台发动机"
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "售出3件回收物，收到70零件。"
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满燃料53→100，实付94零件。"
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满耐久84→100，实付32零件。"
+            },
+            {
+              "seq": 16,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "已接取：航区测绘"
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，测绘记录箱随船。"
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "kind": "choice",
+              "event": "engine",
+              "option": "leave",
+              "fuel": 67,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 53,
+              "hull": 84,
+              "money": 120,
+              "cargoValue": 70
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 100,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 88
+            }
+          ],
+          "ledger": [
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 18,
+              "before": 120,
+              "after": 138,
+              "uid": 1,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 22,
+              "before": 138,
+              "after": 160,
+              "uid": 2,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 30,
+              "before": 160,
+              "after": 190,
+              "uid": 3,
+              "sourceRun": 1
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "kind": "supplySpent",
+              "delta": -94,
+              "before": 190,
+              "after": 96
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "kind": "repairSpent",
+              "delta": -32,
+              "before": 96,
+              "after": 64
+            }
+          ],
+          "run": {
+            "startMoney": 64,
+            "startFuel": 100,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": true,
+            "account": {
+              "opening": 64,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 0,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 0,
+              "repairSpent": 0,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 5
+        }
+      },
+      {
+        "name": "voyage-2-event-2",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 21,
+          "seq": 21,
+          "rng": 1276328496,
+          "phase": "event",
+          "runNo": 2,
+          "fuel": 93,
+          "hull": 84,
+          "money": 64,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "ability": null,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "itemId": "toolbox",
+              "uid": 5,
+              "acquiredRun": 2
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "ability": null,
+              "shapeId": "line2",
+              "shapeVersion": 1,
+              "itemId": "broken_engine",
+              "uid": 6,
+              "acquiredRun": 2
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "ability": null,
+              "shapeId": "ell3",
+              "shapeVersion": 1,
+              "itemId": "metal_crate",
+              "uid": 7,
+              "acquiredRun": 2
+            }
+          ],
+          "missionSlot": {
+            "uid": 4,
+            "name": "航区测绘记录箱",
+            "cells": 4,
+            "value": 0,
+            "contract": true,
+            "shapeId": "square4",
+            "shapeVersion": 1,
+            "acquiredRun": 2
+          },
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [
+            {
+              "uid": 1,
+              "type": "survey",
+              "status": "active",
+              "acceptedRun": 1,
+              "targetRun": 2,
+              "legacyAutoSettlement": false
+            }
+          ],
+          "activeMissionId": 1,
+          "nextMissionUid": 2,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": [
+              {
+                "uid": 5,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 6,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 7,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 2,
+          "distance": 13,
+          "lastLeg": 7,
+          "route": [],
+          "event": {
+            "id": "station",
+            "nonce": "2/2",
+            "context": {
+              "fuel": 93,
+              "hull": 84,
+              "cargo": [
+                {
+                  "name": "熔边螺母",
+                  "value": 18,
+                  "cells": 1,
+                  "ability": null,
+                  "shapeId": "point1",
+                  "shapeVersion": 1,
+                  "itemId": "toolbox",
+                  "uid": 5,
+                  "acquiredRun": 2
+                },
+                {
+                  "name": "散落接头",
+                  "value": 22,
+                  "cells": 2,
+                  "ability": null,
+                  "shapeId": "line2",
+                  "shapeVersion": 1,
+                  "itemId": "broken_engine",
+                  "uid": 6,
+                  "acquiredRun": 2
+                },
+                {
+                  "name": "烧蚀回收板",
+                  "value": 30,
+                  "cells": 3,
+                  "ability": null,
+                  "shapeId": "ell3",
+                  "shapeVersion": 1,
+                  "itemId": "metal_crate",
+                  "uid": 7,
+                  "acquiredRun": 2
+                }
+              ],
+              "missionSlot": {
+                "uid": 4,
+                "name": "航区测绘记录箱",
+                "cells": 4,
+                "value": 0,
+                "contract": true,
+                "shapeId": "square4",
+                "shapeVersion": 1,
+                "acquiredRun": 2
+              }
+            }
+          },
+          "result": null,
+          "history": [
+            "tank",
+            "station"
+          ],
+          "legs": [
+            6,
+            7
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "type": "choice",
+              "text": "仍在待机的发动机 · 放弃这台发动机"
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "售出3件回收物，收到70零件。"
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满燃料53→100，实付94零件。"
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满耐久84→100，实付32零件。"
+            },
+            {
+              "seq": 16,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "已接取：航区测绘"
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，测绘记录箱随船。"
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 19,
+              "run": 2,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+6，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 21,
+              "run": 2,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "kind": "choice",
+              "event": "engine",
+              "option": "leave",
+              "fuel": 67,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 53,
+              "hull": 84,
+              "money": 120,
+              "cargoValue": 70
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 100,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 88
+            },
+            {
+              "seq": 19,
+              "run": 2,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 100,
+              "hull": 84,
+              "money": 64,
+              "cargo": [
+                5,
+                6,
+                7
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 21,
+              "run": 2,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 83
+            }
+          ],
+          "ledger": [
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 18,
+              "before": 120,
+              "after": 138,
+              "uid": 1,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 22,
+              "before": 138,
+              "after": 160,
+              "uid": 2,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 30,
+              "before": 160,
+              "after": 190,
+              "uid": 3,
+              "sourceRun": 1
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "kind": "supplySpent",
+              "delta": -94,
+              "before": 190,
+              "after": 96
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "kind": "repairSpent",
+              "delta": -32,
+              "before": 96,
+              "after": 64
+            }
+          ],
+          "run": {
+            "startMoney": 64,
+            "startFuel": 100,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": true,
+            "account": {
+              "opening": 64,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 0,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 0,
+              "repairSpent": 0,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 8
+        }
+      },
+      {
+        "name": "voyage-2-event-3",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 24,
+          "seq": 24,
+          "rng": 1964758881,
+          "phase": "event",
+          "runNo": 2,
+          "fuel": 85,
+          "hull": 84,
+          "money": 64,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "ability": null,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "itemId": "toolbox",
+              "uid": 5,
+              "acquiredRun": 2
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "ability": null,
+              "shapeId": "line2",
+              "shapeVersion": 1,
+              "itemId": "broken_engine",
+              "uid": 6,
+              "acquiredRun": 2
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "ability": null,
+              "shapeId": "ell3",
+              "shapeVersion": 1,
+              "itemId": "metal_crate",
+              "uid": 7,
+              "acquiredRun": 2
+            }
+          ],
+          "missionSlot": {
+            "uid": 4,
+            "name": "航区测绘记录箱",
+            "cells": 4,
+            "value": 0,
+            "contract": true,
+            "shapeId": "square4",
+            "shapeVersion": 1,
+            "acquiredRun": 2
+          },
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [
+            {
+              "uid": 1,
+              "type": "survey",
+              "status": "active",
+              "acceptedRun": 1,
+              "targetRun": 2,
+              "legacyAutoSettlement": false
+            }
+          ],
+          "activeMissionId": 1,
+          "nextMissionUid": 2,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": [
+              {
+                "uid": 5,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 6,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 7,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 3,
+          "distance": 21,
+          "lastLeg": 8,
+          "route": [],
+          "event": {
+            "id": "luggage",
+            "nonce": "2/3",
+            "context": {
+              "fuel": 85,
+              "hull": 84,
+              "cargo": [
+                {
+                  "name": "熔边螺母",
+                  "value": 18,
+                  "cells": 1,
+                  "ability": null,
+                  "shapeId": "point1",
+                  "shapeVersion": 1,
+                  "itemId": "toolbox",
+                  "uid": 5,
+                  "acquiredRun": 2
+                },
+                {
+                  "name": "散落接头",
+                  "value": 22,
+                  "cells": 2,
+                  "ability": null,
+                  "shapeId": "line2",
+                  "shapeVersion": 1,
+                  "itemId": "broken_engine",
+                  "uid": 6,
+                  "acquiredRun": 2
+                },
+                {
+                  "name": "烧蚀回收板",
+                  "value": 30,
+                  "cells": 3,
+                  "ability": null,
+                  "shapeId": "ell3",
+                  "shapeVersion": 1,
+                  "itemId": "metal_crate",
+                  "uid": 7,
+                  "acquiredRun": 2
+                }
+              ],
+              "missionSlot": {
+                "uid": 4,
+                "name": "航区测绘记录箱",
+                "cells": 4,
+                "value": 0,
+                "contract": true,
+                "shapeId": "square4",
+                "shapeVersion": 1,
+                "acquiredRun": 2
+              }
+            }
+          },
+          "result": null,
+          "history": [
+            "tank",
+            "station",
+            "luggage"
+          ],
+          "legs": [
+            6,
+            7,
+            8
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "type": "choice",
+              "text": "仍在待机的发动机 · 放弃这台发动机"
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "售出3件回收物，收到70零件。"
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满燃料53→100，实付94零件。"
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满耐久84→100，实付32零件。"
+            },
+            {
+              "seq": 16,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "已接取：航区测绘"
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，测绘记录箱随船。"
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 19,
+              "run": 2,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+6，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 21,
+              "run": 2,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 22,
+              "run": 2,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 24,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：漂流客舱。航行耗油8，当前返航需14。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "kind": "choice",
+              "event": "engine",
+              "option": "leave",
+              "fuel": 67,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 53,
+              "hull": 84,
+              "money": 120,
+              "cargoValue": 70
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 100,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 88
+            },
+            {
+              "seq": 19,
+              "run": 2,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 100,
+              "hull": 84,
+              "money": 64,
+              "cargo": [
+                5,
+                6,
+                7
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 21,
+              "run": 2,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 83
+            },
+            {
+              "seq": 22,
+              "run": 2,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 93,
+              "hull": 84,
+              "money": 64,
+              "cargo": [
+                5,
+                6,
+                7
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 24,
+              "run": 2,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "luggage",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 71
+            }
+          ],
+          "ledger": [
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 18,
+              "before": 120,
+              "after": 138,
+              "uid": 1,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 22,
+              "before": 138,
+              "after": 160,
+              "uid": 2,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 30,
+              "before": 160,
+              "after": 190,
+              "uid": 3,
+              "sourceRun": 1
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "kind": "supplySpent",
+              "delta": -94,
+              "before": 190,
+              "after": 96
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "kind": "repairSpent",
+              "delta": -32,
+              "before": 96,
+              "after": 64
+            }
+          ],
+          "run": {
+            "startMoney": 64,
+            "startFuel": 100,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": true,
+            "account": {
+              "opening": 64,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 0,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 0,
+              "repairSpent": 0,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 8
+        }
+      },
+      {
+        "name": "returned-voyage-2",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 27,
+          "seq": 27,
+          "rng": 4014595782,
+          "phase": "summary",
+          "runNo": 2,
+          "fuel": 71,
+          "hull": 84,
+          "money": 64,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "ability": null,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "itemId": "toolbox",
+              "uid": 5,
+              "acquiredRun": 2
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "ability": null,
+              "shapeId": "line2",
+              "shapeVersion": 1,
+              "itemId": "broken_engine",
+              "uid": 6,
+              "acquiredRun": 2
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "ability": null,
+              "shapeId": "ell3",
+              "shapeVersion": 1,
+              "itemId": "metal_crate",
+              "uid": 7,
+              "acquiredRun": 2
+            }
+          ],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [
+            {
+              "uid": 1,
+              "type": "survey",
+              "status": "complete",
+              "acceptedRun": 1,
+              "targetRun": 2,
+              "legacyAutoSettlement": false,
+              "completedRun": 2
+            }
+          ],
+          "activeMissionId": 1,
+          "nextMissionUid": 2,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": [
+              {
+                "uid": 5,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 6,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 7,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 3,
+          "distance": 21,
+          "lastLeg": 8,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [
+            "tank",
+            "station",
+            "luggage"
+          ],
+          "legs": [
+            6,
+            7,
+            8
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "type": "choice",
+              "text": "仍在待机的发动机 · 放弃这台发动机"
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "售出3件回收物，收到70零件。"
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满燃料53→100，实付94零件。"
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满耐久84→100，实付32零件。"
+            },
+            {
+              "seq": 16,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "已接取：航区测绘"
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，测绘记录箱随船。"
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 19,
+              "run": 2,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+6，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 21,
+              "run": 2,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 22,
+              "run": 2,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 24,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：漂流客舱。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 25,
+              "run": 2,
+              "depth": 3,
+              "type": "choice",
+              "text": "会呼吸的行李箱 · 让它睡着"
+            },
+            {
+              "seq": 27,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "kind": "choice",
+              "event": "engine",
+              "option": "leave",
+              "fuel": 67,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 53,
+              "hull": 84,
+              "money": 120,
+              "cargoValue": 70
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 100,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 88
+            },
+            {
+              "seq": 19,
+              "run": 2,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 100,
+              "hull": 84,
+              "money": 64,
+              "cargo": [
+                5,
+                6,
+                7
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 21,
+              "run": 2,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 83
+            },
+            {
+              "seq": 22,
+              "run": 2,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 93,
+              "hull": 84,
+              "money": 64,
+              "cargo": [
+                5,
+                6,
+                7
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 24,
+              "run": 2,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "luggage",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 71
+            },
+            {
+              "seq": 25,
+              "run": 2,
+              "depth": 3,
+              "kind": "choice",
+              "event": "luggage",
+              "option": "leave",
+              "fuel": 85,
+              "hull": 84,
+              "money": 64,
+              "cargo": [
+                5,
+                6,
+                7
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 27,
+              "run": 2,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 71,
+              "hull": 84,
+              "money": 64,
+              "cargoValue": 70
+            }
+          ],
+          "ledger": [
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 18,
+              "before": 120,
+              "after": 138,
+              "uid": 1,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 22,
+              "before": 138,
+              "after": 160,
+              "uid": 2,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 30,
+              "before": 160,
+              "after": 190,
+              "uid": 3,
+              "sourceRun": 1
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "kind": "supplySpent",
+              "delta": -94,
+              "before": 190,
+              "after": 96
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "kind": "repairSpent",
+              "delta": -32,
+              "before": 96,
+              "after": 64
+            }
+          ],
+          "run": {
+            "startMoney": 64,
+            "startFuel": 100,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": true,
+            "account": {
+              "opening": 64,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 0,
+              "salesCarried": 0,
+              "reward": 0,
+              "rescueFee": 0,
+              "supplySpent": 0,
+              "repairSpent": 0,
+              "toolSpent": 0,
+              "debtPaid": 0,
+              "legacy": false
+            }
+          },
+          "summary": {
+            "run": 2,
+            "depth": 3,
+            "distance": 21,
+            "returnFuel": 14,
+            "rescue": false,
+            "lost": 0,
+            "lostUids": [],
+            "reward": 0,
+            "cashDelta": 0
+          },
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 8
+        }
+      },
+      {
+        "name": "saved-after-voyage-2",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 33,
+          "seq": 33,
+          "rng": 4014595782,
+          "phase": "port",
+          "runNo": 2,
+          "fuel": 100,
+          "hull": 100,
+          "money": 124,
+          "debt": 11900,
+          "capacity": 4,
+          "cargo": [],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [
+            {
+              "uid": 1,
+              "type": "survey",
+              "status": "claimed",
+              "acceptedRun": 1,
+              "targetRun": 2,
+              "legacyAutoSettlement": false,
+              "completedRun": 2,
+              "claimedRun": 2
+            }
+          ],
+          "activeMissionId": null,
+          "nextMissionUid": 2,
+          "voyageShip": {
+            "shipId": "starter",
+            "cargoLevel": 0,
+            "fuelPercent": 100,
+            "damagePercent": 100
+          },
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": []
+          },
+          "tools": [],
+          "archive": [
+            {
+              "name": "熔边螺母",
+              "value": 18,
+              "cells": 1,
+              "firstRun": 1
+            },
+            {
+              "name": "散落接头",
+              "value": 22,
+              "cells": 2,
+              "firstRun": 1
+            },
+            {
+              "name": "烧蚀回收板",
+              "value": 30,
+              "cells": 3,
+              "firstRun": 1
+            }
+          ],
+          "depth": 3,
+          "distance": 21,
+          "lastLeg": 8,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [
+            "tank",
+            "station",
+            "luggage"
+          ],
+          "legs": [
+            6,
+            7,
+            8
+          ],
+          "log": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，航行与返港由你决定。"
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+28，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：大型残骸。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "type": "choice",
+              "text": "仍在待机的发动机 · 放弃这台发动机"
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "售出3件回收物，收到70零件。"
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满燃料53→100，实付94零件。"
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满耐久84→100，实付32零件。"
+            },
+            {
+              "seq": 16,
+              "run": 1,
+              "depth": 3,
+              "type": "info",
+              "text": "已接取：航区测绘"
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "type": "info",
+              "text": "已出发，测绘记录箱随船。"
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "type": "info",
+              "text": "抵达第1航点：回收点。航行耗油6，当前返航需6。"
+            },
+            {
+              "seq": 19,
+              "run": 2,
+              "depth": 1,
+              "type": "choice",
+              "text": "被压住的储油罐 · 用飞船强拖；燃料+6，耐久-16，装入：熔边螺母，装入：散落接头，装入：烧蚀回收板"
+            },
+            {
+              "seq": 21,
+              "run": 2,
+              "depth": 2,
+              "type": "info",
+              "text": "抵达第2航点：补给浮标。航行耗油7，当前返航需10。"
+            },
+            {
+              "seq": 22,
+              "run": 2,
+              "depth": 2,
+              "type": "choice",
+              "text": "航道补给浮标 · 不采购，继续航行"
+            },
+            {
+              "seq": 24,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "抵达第3航点：漂流客舱。航行耗油8，当前返航需14。"
+            },
+            {
+              "seq": 25,
+              "run": 2,
+              "depth": 3,
+              "type": "choice",
+              "text": "会呼吸的行李箱 · 让它睡着"
+            },
+            {
+              "seq": 27,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "平安返港。返航油已扣，货物与港口操作由你决定。"
+            },
+            {
+              "seq": 28,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "委托已领取：航区测绘"
+            },
+            {
+              "seq": 29,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "售出3件回收物，收到70零件。"
+            },
+            {
+              "seq": 31,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满燃料71→100，实付58零件。"
+            },
+            {
+              "seq": 32,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "一次补满耐久84→100，实付32零件。"
+            },
+            {
+              "seq": 33,
+              "run": 2,
+              "depth": 3,
+              "type": "info",
+              "text": "归还船款100，剩余11900。"
+            }
+          ],
+          "telemetry": [
+            {
+              "seq": 1,
+              "run": 1,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 60,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 2,
+              "run": 1,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 48
+            },
+            {
+              "seq": 3,
+              "run": 1,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 82,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 5,
+              "run": 1,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 65
+            },
+            {
+              "seq": 6,
+              "run": 1,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 75,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 8,
+              "run": 1,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "engine",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 53
+            },
+            {
+              "seq": 9,
+              "run": 1,
+              "depth": 3,
+              "kind": "choice",
+              "event": "engine",
+              "option": "leave",
+              "fuel": 67,
+              "hull": 84,
+              "money": 120,
+              "cargo": [
+                1,
+                2,
+                3
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 11,
+              "run": 1,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 53,
+              "hull": 84,
+              "money": 120,
+              "cargoValue": 70
+            },
+            {
+              "seq": 17,
+              "run": 2,
+              "depth": 0,
+              "kind": "depart",
+              "fuel": 100,
+              "hull": 100,
+              "cargo": []
+            },
+            {
+              "seq": 18,
+              "run": 2,
+              "depth": 1,
+              "kind": "travel",
+              "signal": "tank",
+              "burn": 6,
+              "returnFuel": 6,
+              "spare": 88
+            },
+            {
+              "seq": 19,
+              "run": 2,
+              "depth": 1,
+              "kind": "choice",
+              "event": "tank",
+              "option": "force",
+              "fuel": 100,
+              "hull": 84,
+              "money": 64,
+              "cargo": [
+                5,
+                6,
+                7
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 21,
+              "run": 2,
+              "depth": 2,
+              "kind": "travel",
+              "signal": "station",
+              "burn": 7,
+              "returnFuel": 10,
+              "spare": 83
+            },
+            {
+              "seq": 22,
+              "run": 2,
+              "depth": 2,
+              "kind": "choice",
+              "event": "station",
+              "option": "leave",
+              "fuel": 93,
+              "hull": 84,
+              "money": 64,
+              "cargo": [
+                5,
+                6,
+                7
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 24,
+              "run": 2,
+              "depth": 3,
+              "kind": "travel",
+              "signal": "luggage",
+              "burn": 8,
+              "returnFuel": 14,
+              "spare": 71
+            },
+            {
+              "seq": 25,
+              "run": 2,
+              "depth": 3,
+              "kind": "choice",
+              "event": "luggage",
+              "option": "leave",
+              "fuel": 85,
+              "hull": 84,
+              "money": 64,
+              "cargo": [
+                5,
+                6,
+                7
+              ],
+              "discarded": []
+            },
+            {
+              "seq": 27,
+              "run": 2,
+              "depth": 3,
+              "kind": "return",
+              "rescue": false,
+              "fuel": 71,
+              "hull": 84,
+              "money": 64,
+              "cargoValue": 70
+            }
+          ],
+          "ledger": [
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 18,
+              "before": 120,
+              "after": 138,
+              "uid": 1,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 22,
+              "before": 138,
+              "after": 160,
+              "uid": 2,
+              "sourceRun": 1
+            },
+            {
+              "seq": 12,
+              "run": 1,
+              "kind": "sale",
+              "delta": 30,
+              "before": 160,
+              "after": 190,
+              "uid": 3,
+              "sourceRun": 1
+            },
+            {
+              "seq": 14,
+              "run": 1,
+              "kind": "supplySpent",
+              "delta": -94,
+              "before": 190,
+              "after": 96
+            },
+            {
+              "seq": 15,
+              "run": 1,
+              "kind": "repairSpent",
+              "delta": -32,
+              "before": 96,
+              "after": 64
+            },
+            {
+              "seq": 28,
+              "run": 2,
+              "kind": "reward",
+              "delta": 180,
+              "before": 64,
+              "after": 244,
+              "missionId": 1
+            },
+            {
+              "seq": 29,
+              "run": 2,
+              "kind": "sale",
+              "delta": 18,
+              "before": 244,
+              "after": 262,
+              "uid": 5,
+              "sourceRun": 2
+            },
+            {
+              "seq": 29,
+              "run": 2,
+              "kind": "sale",
+              "delta": 22,
+              "before": 262,
+              "after": 284,
+              "uid": 6,
+              "sourceRun": 2
+            },
+            {
+              "seq": 29,
+              "run": 2,
+              "kind": "sale",
+              "delta": 30,
+              "before": 284,
+              "after": 314,
+              "uid": 7,
+              "sourceRun": 2
+            },
+            {
+              "seq": 31,
+              "run": 2,
+              "kind": "supplySpent",
+              "delta": -58,
+              "before": 314,
+              "after": 256
+            },
+            {
+              "seq": 32,
+              "run": 2,
+              "kind": "repairSpent",
+              "delta": -32,
+              "before": 256,
+              "after": 224
+            },
+            {
+              "seq": 33,
+              "run": 2,
+              "kind": "debtPaid",
+              "delta": -100,
+              "before": 224,
+              "after": 124
+            }
+          ],
+          "run": {
+            "startMoney": 64,
+            "startFuel": 100,
+            "startHull": 100,
+            "spent": 0,
+            "earned": 0,
+            "contractActive": true,
+            "account": {
+              "opening": 64,
+              "eventIncome": 0,
+              "eventSpent": 0,
+              "salesCurrent": 70,
+              "salesCarried": 0,
+              "reward": 180,
+              "rescueFee": 0,
+              "supplySpent": 58,
+              "repairSpent": 32,
+              "toolSpent": 0,
+              "debtPaid": 100,
+              "legacy": false
+            }
+          },
+          "summary": {
+            "run": 2,
+            "depth": 3,
+            "distance": 21,
+            "returnFuel": 14,
+            "rescue": false,
+            "lost": 0,
+            "lostUids": [],
+            "reward": 180,
+            "cashDelta": 60
+          },
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 8
+        }
+      }
+    ]
+  },
+  "qa": {
+    "imported": true,
+    "checkpoints": [
+      {
+        "name": "QA27049-start",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 0,
+          "seq": 0,
+          "rng": 42,
+          "phase": "port",
+          "runNo": 0,
+          "fuel": 13,
+          "hull": 45,
+          "money": 27049,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "uid": 1,
+              "itemId": "metal_crate",
+              "name": "金属箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 2,
+              "itemId": "energy_battery",
+              "name": "能源电池",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 3,
+              "itemId": "nav_chip",
+              "name": "导航芯片",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 4,
+              "itemId": "broken_engine",
+              "name": "损坏引擎件",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 5,
+              "itemId": "medkit",
+              "name": "医疗箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 6,
+              "itemId": "fuel_can",
+              "name": "备用燃料罐",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 7,
+              "itemId": "sample",
+              "name": "观测样本",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 8,
+              "itemId": "toolbox",
+              "name": "维修工具箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            }
+          ],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter"
+            ],
+            "equippedShipId": "starter",
+            "cargoLevels": {
+              "starter": 0
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": null,
+          "cargoGrid": {
+            "width": 4,
+            "height": 4,
+            "placements": [
+              {
+                "uid": 1,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 2,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 3,
+                "x": 2,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 4,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 5,
+                "x": 0,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 6,
+                "x": 1,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 7,
+                "x": 2,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 8,
+                "x": 3,
+                "y": 1,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [],
+          "depth": 0,
+          "distance": 0,
+          "lastLeg": 0,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [],
+          "legs": [],
+          "log": [],
+          "telemetry": [],
+          "ledger": [],
+          "run": null,
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 9
+        }
+      },
+      {
+        "name": "QA-bought-equipped-expanded",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 9,
+          "seq": 9,
+          "rng": 42,
+          "phase": "port",
+          "runNo": 0,
+          "fuel": 100,
+          "hull": 100,
+          "money": 17565,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "uid": 1,
+              "itemId": "metal_crate",
+              "name": "金属箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 2,
+              "itemId": "energy_battery",
+              "name": "能源电池",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 3,
+              "itemId": "nav_chip",
+              "name": "导航芯片",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 4,
+              "itemId": "broken_engine",
+              "name": "损坏引擎件",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 5,
+              "itemId": "medkit",
+              "name": "医疗箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 6,
+              "itemId": "fuel_can",
+              "name": "备用燃料罐",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 7,
+              "itemId": "sample",
+              "name": "观测样本",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 8,
+              "itemId": "toolbox",
+              "name": "维修工具箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            }
+          ],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter",
+              "cargo",
+              "scout",
+              "heavy"
+            ],
+            "equippedShipId": "heavy",
+            "cargoLevels": {
+              "starter": 0,
+              "cargo": 0,
+              "scout": 0,
+              "heavy": 1
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": null,
+          "cargoGrid": {
+            "width": 5,
+            "height": 6,
+            "placements": [
+              {
+                "uid": 1,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 2,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 3,
+                "x": 2,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 4,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 5,
+                "x": 0,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 6,
+                "x": 1,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 7,
+                "x": 2,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 8,
+                "x": 3,
+                "y": 1,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [],
+          "depth": 0,
+          "distance": 0,
+          "lastLeg": 0,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [],
+          "legs": [],
+          "log": [
+            {
+              "seq": 1,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "一次补满燃料13→100，实付174零件。"
+            },
+            {
+              "seq": 2,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "一次补满耐久45→100，实付110零件。"
+            },
+            {
+              "seq": 3,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "已购入：中型货船；可免费换装。"
+            },
+            {
+              "seq": 4,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "现役飞船：中型货船"
+            },
+            {
+              "seq": 5,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "已购入：深航探测船；可免费换装。"
+            },
+            {
+              "seq": 6,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "现役飞船：深航探测船"
+            },
+            {
+              "seq": 7,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "已购入：重型工程船；可免费换装。"
+            },
+            {
+              "seq": 8,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "现役飞船：重型工程船"
+            },
+            {
+              "seq": 9,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "货舱增加一排：30格。"
+            }
+          ],
+          "telemetry": [],
+          "ledger": [
+            {
+              "seq": 1,
+              "run": 0,
+              "kind": "supplySpent",
+              "delta": -174,
+              "before": 27049,
+              "after": 26875
+            },
+            {
+              "seq": 2,
+              "run": 0,
+              "kind": "repairSpent",
+              "delta": -110,
+              "before": 26875,
+              "after": 26765
+            },
+            {
+              "seq": 3,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -1800,
+              "before": 26765,
+              "after": 24965,
+              "category": "shipPurchase",
+              "shipId": "cargo"
+            },
+            {
+              "seq": 5,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -2400,
+              "before": 24965,
+              "after": 22565,
+              "category": "shipPurchase",
+              "shipId": "scout"
+            },
+            {
+              "seq": 7,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -3400,
+              "before": 22565,
+              "after": 19165,
+              "category": "shipPurchase",
+              "shipId": "heavy"
+            },
+            {
+              "seq": 9,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -1600,
+              "before": 19165,
+              "after": 17565,
+              "category": "cargoUpgrade",
+              "shipId": "heavy"
+            }
+          ],
+          "run": null,
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 9
+        }
+      },
+      {
+        "name": "QA-before-refresh",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 9,
+          "seq": 9,
+          "rng": 42,
+          "phase": "port",
+          "runNo": 0,
+          "fuel": 100,
+          "hull": 100,
+          "money": 17565,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "uid": 1,
+              "itemId": "metal_crate",
+              "name": "金属箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 2,
+              "itemId": "energy_battery",
+              "name": "能源电池",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 3,
+              "itemId": "nav_chip",
+              "name": "导航芯片",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 4,
+              "itemId": "broken_engine",
+              "name": "损坏引擎件",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 5,
+              "itemId": "medkit",
+              "name": "医疗箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 6,
+              "itemId": "fuel_can",
+              "name": "备用燃料罐",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 7,
+              "itemId": "sample",
+              "name": "观测样本",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 8,
+              "itemId": "toolbox",
+              "name": "维修工具箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            }
+          ],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter",
+              "cargo",
+              "scout",
+              "heavy"
+            ],
+            "equippedShipId": "heavy",
+            "cargoLevels": {
+              "starter": 0,
+              "cargo": 0,
+              "scout": 0,
+              "heavy": 1
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": null,
+          "cargoGrid": {
+            "width": 5,
+            "height": 6,
+            "placements": [
+              {
+                "uid": 1,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 2,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 3,
+                "x": 2,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 4,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 5,
+                "x": 0,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 6,
+                "x": 1,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 7,
+                "x": 2,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 8,
+                "x": 3,
+                "y": 1,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [],
+          "depth": 0,
+          "distance": 0,
+          "lastLeg": 0,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [],
+          "legs": [],
+          "log": [
+            {
+              "seq": 1,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "一次补满燃料13→100，实付174零件。"
+            },
+            {
+              "seq": 2,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "一次补满耐久45→100，实付110零件。"
+            },
+            {
+              "seq": 3,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "已购入：中型货船；可免费换装。"
+            },
+            {
+              "seq": 4,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "现役飞船：中型货船"
+            },
+            {
+              "seq": 5,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "已购入：深航探测船；可免费换装。"
+            },
+            {
+              "seq": 6,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "现役飞船：深航探测船"
+            },
+            {
+              "seq": 7,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "已购入：重型工程船；可免费换装。"
+            },
+            {
+              "seq": 8,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "现役飞船：重型工程船"
+            },
+            {
+              "seq": 9,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "货舱增加一排：30格。"
+            }
+          ],
+          "telemetry": [],
+          "ledger": [
+            {
+              "seq": 1,
+              "run": 0,
+              "kind": "supplySpent",
+              "delta": -174,
+              "before": 27049,
+              "after": 26875
+            },
+            {
+              "seq": 2,
+              "run": 0,
+              "kind": "repairSpent",
+              "delta": -110,
+              "before": 26875,
+              "after": 26765
+            },
+            {
+              "seq": 3,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -1800,
+              "before": 26765,
+              "after": 24965,
+              "category": "shipPurchase",
+              "shipId": "cargo"
+            },
+            {
+              "seq": 5,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -2400,
+              "before": 24965,
+              "after": 22565,
+              "category": "shipPurchase",
+              "shipId": "scout"
+            },
+            {
+              "seq": 7,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -3400,
+              "before": 22565,
+              "after": 19165,
+              "category": "shipPurchase",
+              "shipId": "heavy"
+            },
+            {
+              "seq": 9,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -1600,
+              "before": 19165,
+              "after": 17565,
+              "category": "cargoUpgrade",
+              "shipId": "heavy"
+            }
+          ],
+          "run": null,
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 9
+        }
+      },
+      {
+        "name": "QA-refresh-preserved",
+        "state": {
+          "schema": 5,
+          "version": "0.4.0",
+          "revision": 9,
+          "seq": 9,
+          "rng": 42,
+          "phase": "port",
+          "runNo": 0,
+          "fuel": 100,
+          "hull": 100,
+          "money": 17565,
+          "debt": 12000,
+          "capacity": 4,
+          "cargo": [
+            {
+              "uid": 1,
+              "itemId": "metal_crate",
+              "name": "金属箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 2,
+              "itemId": "energy_battery",
+              "name": "能源电池",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 3,
+              "itemId": "nav_chip",
+              "name": "导航芯片",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 4,
+              "itemId": "broken_engine",
+              "name": "损坏引擎件",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 5,
+              "itemId": "medkit",
+              "name": "医疗箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 6,
+              "itemId": "fuel_can",
+              "name": "备用燃料罐",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 7,
+              "itemId": "sample",
+              "name": "观测样本",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            },
+            {
+              "uid": 8,
+              "itemId": "toolbox",
+              "name": "维修工具箱",
+              "cells": 1,
+              "shapeId": "point1",
+              "shapeVersion": 1,
+              "value": 40,
+              "acquiredRun": 0
+            }
+          ],
+          "missionSlot": null,
+          "fleet": {
+            "ownedShipIds": [
+              "starter",
+              "cargo",
+              "scout",
+              "heavy"
+            ],
+            "equippedShipId": "heavy",
+            "cargoLevels": {
+              "starter": 0,
+              "cargo": 0,
+              "scout": 0,
+              "heavy": 1
+            }
+          },
+          "missions": [],
+          "activeMissionId": null,
+          "nextMissionUid": 1,
+          "voyageShip": null,
+          "cargoGrid": {
+            "width": 5,
+            "height": 6,
+            "placements": [
+              {
+                "uid": 1,
+                "x": 0,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 2,
+                "x": 1,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 3,
+                "x": 2,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 4,
+                "x": 3,
+                "y": 0,
+                "rotation": 0
+              },
+              {
+                "uid": 5,
+                "x": 0,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 6,
+                "x": 1,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 7,
+                "x": 2,
+                "y": 1,
+                "rotation": 0
+              },
+              {
+                "uid": 8,
+                "x": 3,
+                "y": 1,
+                "rotation": 0
+              }
+            ]
+          },
+          "tools": [],
+          "archive": [],
+          "depth": 0,
+          "distance": 0,
+          "lastLeg": 0,
+          "route": [],
+          "event": null,
+          "result": null,
+          "history": [],
+          "legs": [],
+          "log": [
+            {
+              "seq": 1,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "一次补满燃料13→100，实付174零件。"
+            },
+            {
+              "seq": 2,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "一次补满耐久45→100，实付110零件。"
+            },
+            {
+              "seq": 3,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "已购入：中型货船；可免费换装。"
+            },
+            {
+              "seq": 4,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "现役飞船：中型货船"
+            },
+            {
+              "seq": 5,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "已购入：深航探测船；可免费换装。"
+            },
+            {
+              "seq": 6,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "现役飞船：深航探测船"
+            },
+            {
+              "seq": 7,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "已购入：重型工程船；可免费换装。"
+            },
+            {
+              "seq": 8,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "现役飞船：重型工程船"
+            },
+            {
+              "seq": 9,
+              "run": 0,
+              "depth": 0,
+              "type": "info",
+              "text": "货舱增加一排：30格。"
+            }
+          ],
+          "telemetry": [],
+          "ledger": [
+            {
+              "seq": 1,
+              "run": 0,
+              "kind": "supplySpent",
+              "delta": -174,
+              "before": 27049,
+              "after": 26875
+            },
+            {
+              "seq": 2,
+              "run": 0,
+              "kind": "repairSpent",
+              "delta": -110,
+              "before": 26875,
+              "after": 26765
+            },
+            {
+              "seq": 3,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -1800,
+              "before": 26765,
+              "after": 24965,
+              "category": "shipPurchase",
+              "shipId": "cargo"
+            },
+            {
+              "seq": 5,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -2400,
+              "before": 24965,
+              "after": 22565,
+              "category": "shipPurchase",
+              "shipId": "scout"
+            },
+            {
+              "seq": 7,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -3400,
+              "before": 22565,
+              "after": 19165,
+              "category": "shipPurchase",
+              "shipId": "heavy"
+            },
+            {
+              "seq": 9,
+              "run": 0,
+              "kind": "toolSpent",
+              "delta": -1600,
+              "before": 19165,
+              "after": 17565,
+              "category": "cargoUpgrade",
+              "shipId": "heavy"
+            }
+          ],
+          "run": null,
+          "summary": null,
+          "helpUsed": false,
+          "flags": {},
+          "nextUid": 9
+        }
+      }
+    ],
+    "itemDecodes": [
+      {
+        "src": "./assets/v04/item_metal_crate@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_energy_battery@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_nav_chip@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_broken_engine@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_medkit@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_fuel_can@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_sample@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_toolbox@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_metal_crate@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_energy_battery@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_nav_chip@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_broken_engine@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_medkit@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_fuel_can@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_sample@2x.png",
+        "decoded": true
+      },
+      {
+        "src": "./assets/v04/item_toolbox@2x.png",
+        "decoded": true
+      }
+    ]
+  },
+  "errors": [],
+  "performance": [
+    {
+      "engine": "chromium",
+      "build": {
+        "version": "0.4.0",
+        "commit": "ba90efbd01143533018f08a28f4221d9c36178c1",
+        "dirty": false,
+        "blindTest": true
+      },
+      "navigation": [
+        {
+          "domContentLoaded": 36.39999997615814,
+          "load": 36.5,
+          "duration": 36.5
+        }
+      ],
+      "resources": [
+        {
+          "name": "/loststar-salvage/src/style.css",
+          "transfer": 12799,
+          "duration": 5.399999976158142
+        },
+        {
+          "name": "/loststar-salvage/src/route-view.css",
+          "transfer": 8470,
+          "duration": 6.300000071525574
+        },
+        {
+          "name": "/loststar-salvage/src/cargo-view.css",
+          "transfer": 8662,
+          "duration": 7
+        },
+        {
+          "name": "/loststar-salvage/src/port-view.css",
+          "transfer": 12898,
+          "duration": 7.700000047683716
+        },
+        {
+          "name": "/loststar-salvage/src/balance.js",
+          "transfer": 2356,
+          "duration": 8.200000047683716
+        },
+        {
+          "name": "/loststar-salvage/src/port-balance.js",
+          "transfer": 2390,
+          "duration": 8.899999976158142
+        },
+        {
+          "name": "/loststar-salvage/src/cargo-layout.js",
+          "transfer": 7251,
+          "duration": 9.799999952316284
+        },
+        {
+          "name": "/loststar-salvage/src/engine.js",
+          "transfer": 51969,
+          "duration": 10.799999952316284
+        },
+        {
+          "name": "/loststar-salvage/src/store.js",
+          "transfer": 6154,
+          "duration": 11.5
+        },
+        {
+          "name": "/loststar-salvage/src/icons.js",
+          "transfer": 4419,
+          "duration": 12.200000047683716
+        },
+        {
+          "name": "/loststar-salvage/src/route-view.js",
+          "transfer": 7979,
+          "duration": 13.100000023841858
+        },
+        {
+          "name": "/loststar-salvage/src/port-view.js",
+          "transfer": 11722,
+          "duration": 13.700000047683716
+        },
+        {
+          "name": "/loststar-salvage/src/cargo-view.js",
+          "transfer": 29455,
+          "duration": 14.700000047683716
+        },
+        {
+          "name": "/loststar-salvage/src/app.js",
+          "transfer": 34547,
+          "duration": 15.5
+        },
+        {
+          "name": "/loststar-salvage/assets/v04/harbor_bg@2x.png",
+          "transfer": 34933,
+          "duration": 4
+        },
+        {
+          "name": "/loststar-salvage/assets/v04/ship_starter@2x.png",
+          "transfer": 3790,
+          "duration": 4.699999928474426
+        },
+        {
+          "name": "/loststar-salvage/assets/v04/item_metal_crate@2x.png",
+          "transfer": 1208,
+          "duration": 5.599999904632568
+        },
+        {
+          "name": "/loststar-salvage/assets/v04/harbor_front@2x.png",
+          "transfer": 3733,
+          "duration": 5.799999952316284
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "build": {
+        "version": "0.4.0",
+        "commit": "ba90efbd01143533018f08a28f4221d9c36178c1",
+        "dirty": false,
+        "blindTest": true
+      },
+      "navigation": [
+        {
+          "domContentLoaded": 40,
+          "load": 40,
+          "duration": 40
+        }
+      ],
+      "resources": [
+        {
+          "name": "/loststar-salvage/src/style.css",
+          "transfer": 12799,
+          "duration": 6
+        },
+        {
+          "name": "/loststar-salvage/src/route-view.css",
+          "transfer": 8470,
+          "duration": 7
+        },
+        {
+          "name": "/loststar-salvage/src/cargo-view.css",
+          "transfer": 8662,
+          "duration": 8
+        },
+        {
+          "name": "/loststar-salvage/src/port-view.css",
+          "transfer": 12898,
+          "duration": 9
+        },
+        {
+          "name": "/loststar-salvage/src/balance.js",
+          "transfer": 2356,
+          "duration": 10
+        },
+        {
+          "name": "/loststar-salvage/src/port-balance.js",
+          "transfer": 2390,
+          "duration": 12
+        },
+        {
+          "name": "/loststar-salvage/src/cargo-layout.js",
+          "transfer": 7251,
+          "duration": 13
+        },
+        {
+          "name": "/loststar-salvage/src/engine.js",
+          "transfer": 51969,
+          "duration": 13
+        },
+        {
+          "name": "/loststar-salvage/src/store.js",
+          "transfer": 6154,
+          "duration": 14
+        },
+        {
+          "name": "/loststar-salvage/src/icons.js",
+          "transfer": 4419,
+          "duration": 15
+        },
+        {
+          "name": "/loststar-salvage/src/route-view.js",
+          "transfer": 7979,
+          "duration": 15
+        },
+        {
+          "name": "/loststar-salvage/src/port-view.js",
+          "transfer": 11722,
+          "duration": 15
+        },
+        {
+          "name": "/loststar-salvage/src/cargo-view.js",
+          "transfer": 29455,
+          "duration": 16
+        },
+        {
+          "name": "/loststar-salvage/src/app.js",
+          "transfer": 34547,
+          "duration": 17
+        },
+        {
+          "name": "/loststar-salvage/assets/v04/harbor_bg@2x.png",
+          "transfer": 34933,
+          "duration": 5
+        },
+        {
+          "name": "/loststar-salvage/assets/v04/ship_starter@2x.png",
+          "transfer": 3790,
+          "duration": 9
+        },
+        {
+          "name": "/loststar-salvage/assets/v04/harbor_front@2x.png",
+          "transfer": 3733,
+          "duration": 9
+        },
+        {
+          "name": "/loststar-salvage/assets/v04/item_metal_crate@2x.png",
+          "transfer": 1208,
+          "duration": 10
+        }
+      ]
+    }
+  ],
+  "build": {
+    "version": "0.4.0",
+    "commit": "ba90efbd01143533018f08a28f4221d9c36178c1",
+    "dirty": false,
+    "blindTest": true
+  },
+  "completed": true
+}

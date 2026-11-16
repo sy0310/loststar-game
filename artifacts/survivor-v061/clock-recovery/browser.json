@@ -1,0 +1,5429 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+      "/Users/shuhuayu/loststar-game/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.config.cjs"
+    ],
+    "configFile": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/playwright.config.cjs",
+    "rootDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/v061-clock-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium360",
+        "name": "chromium360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/v061-clock-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium390",
+        "name": "chromium390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/v061-clock-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit360",
+        "name": "webkit360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/v061-clock-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit390",
+        "name": "webkit390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/v061-clock-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "chromium360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4408/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/v061-clock-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "chromium390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4408/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "chromium",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium390"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/v061-clock-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "webkit360",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4408/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "webkit",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "webkit360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/shuhuayu/loststar-game/releases/v061-clock-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "webkit390",
+        "testDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "snapshotDir": "/Users/shuhuayu/loststar-game/prototypes/salvage-survivor-demo/tests/browser",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4408/",
+          "hasTouch": true,
+          "screenshot": "only-on-failure",
+          "browserName": "webkit",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "webkit390"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Users/shuhuayu/loststar-game/artifacts/survivor-v061/clock-recovery/browser.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "audio.spec.cjs",
+      "file": "audio.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "music is gesture-started, streams approved tracks and does not change game RNG",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1005,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:23.383Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-15b0cba2971ac7c4f512",
+          "file": "audio.spec.cjs",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "independent music and SFX controls survive refresh and keep the run paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 905,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:24.564Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-0082f956f1470c74798e",
+          "file": "audio.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "a permanently pending audio permission never blocks start, pause or resume",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 521,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:25.480Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-75f0a5b6d97f14468471",
+          "file": "audio.spec.cjs",
+          "line": 65,
+          "column": 1
+        },
+        {
+          "title": "real musical byte ranges include correct MIME, length and immutable source bytes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 188,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:26.011Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-54e981c7159e2dfa5b2d",
+          "file": "audio.spec.cjs",
+          "line": 81,
+          "column": 1
+        },
+        {
+          "title": "music is gesture-started, streams approved tracks and does not change game RNG",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 731,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:32.055Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-4f4d5c3b1771263df33a",
+          "file": "audio.spec.cjs",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "independent music and SFX controls survive refresh and keep the run paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 743,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:32.952Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-d45d822cb8e201541dbd",
+          "file": "audio.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "a permanently pending audio permission never blocks start, pause or resume",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 537,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:33.708Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-e0846ea9d305ad69dca4",
+          "file": "audio.spec.cjs",
+          "line": 65,
+          "column": 1
+        },
+        {
+          "title": "real musical byte ranges include correct MIME, length and immutable source bytes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 201,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:34.258Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-63cfdf65f1233c8c0091",
+          "file": "audio.spec.cjs",
+          "line": 81,
+          "column": 1
+        },
+        {
+          "title": "music is gesture-started, streams approved tracks and does not change game RNG",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1365,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:42.293Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-ead56e4c8f081373c4ae",
+          "file": "audio.spec.cjs",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "independent music and SFX controls survive refresh and keep the run paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1041,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:44.039Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-62b9f2557e4d1488d1e0",
+          "file": "audio.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "a permanently pending audio permission never blocks start, pause or resume",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 739,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:45.101Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-c47273762b0de480415c",
+          "file": "audio.spec.cjs",
+          "line": 65,
+          "column": 1
+        },
+        {
+          "title": "real musical byte ranges include correct MIME, length and immutable source bytes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 389,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:45.862Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-633e1e4664ca6bd77abf",
+          "file": "audio.spec.cjs",
+          "line": 81,
+          "column": 1
+        },
+        {
+          "title": "music is gesture-started, streams approved tracks and does not change game RNG",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1063,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:57.562Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-4994f2a5cc788b771a86",
+          "file": "audio.spec.cjs",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "independent music and SFX controls survive refresh and keep the run paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1066,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:58.913Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-ecf57f38c19e77042c0f",
+          "file": "audio.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "a permanently pending audio permission never blocks start, pause or resume",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 727,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:00.014Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-991be0d08cbbddb18a59",
+          "file": "audio.spec.cjs",
+          "line": 65,
+          "column": 1
+        },
+        {
+          "title": "real musical byte ranges include correct MIME, length and immutable source bytes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 414,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:00.770Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1702a97f84fc69fd6be7-9e6a6c9931c831d26e01",
+          "file": "audio.spec.cjs",
+          "line": 81,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "combat.spec.cjs",
+      "file": "combat.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "piercebeam changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 466,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:23.392Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJwaWVyY2ViZWFtIiwKICAiZGFtYWdlIjogNDgzLjg0MDAwMDAwMDAwMDAzLAogICJlbmVteUhQIjogWwogICAgOTk1MTYuMTYsCiAgICAxMDAwMDAKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-56da863d4b22c1cf93d0",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "hunterswarm changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 235,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:24.026Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJodW50ZXJzd2FybSIsCiAgImRhbWFnZSI6IDUwMS4xMTk5OTk5OTk5OTk5NSwKICAiZW5lbXlIUCI6IFsKICAgIDk5NDk4Ljg4LAogICAgMTAwMDAwCiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-282fad695abb8d2b5d44",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "chainstorm changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 243,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:24.278Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJjaGFpbnN0b3JtIiwKICAiZGFtYWdlIjogMjIyLjcxOTk5OTk5OTk5OTk3LAogICJlbmVteUhQIjogWwogICAgOTk4ODguNjQwMDAwMDAwMDEsCiAgICA5OTg4OC42NDAwMDAwMDAwMQogIF0sCiAgImFydCI6IDUwLAogICJzbG90cyI6IDEsCiAgInNoaWVsZCI6IDAKfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-bcbb5b5f0a7b154f4a24",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "meteorbarrage changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 315,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:24.531Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJtZXRlb3JiYXJyYWdlIiwKICAiZGFtYWdlIjogNjYwLjgsCiAgImVuZW15SFAiOiBbCiAgICA5OTE5Ny41OTk5OTk5OTk5OCwKICAgIDk5NjY5LjU5OTk5OTk5OTk4CiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-b9e0ef99a5d33ebc8ac3",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "spiralsaw changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 215,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:24.867Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJzcGlyYWxzYXciLAogICJkYW1hZ2UiOiA0My43NSwKICAiZW5lbXlIUCI6IFsKICAgIDk5OTU2LjI1LAogICAgMTAwMDAwCiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-3e67cdeb89952c40ca86",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "reactiveaegis changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 255,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:25.096Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJyZWFjdGl2ZWFlZ2lzIiwKICAiZGFtYWdlIjogNTgsCiAgImVuZW15SFAiOiBbCiAgICA5OTk0MiwKICAgIDEwMDAwMAogIF0sCiAgImFydCI6IDUwLAogICJzbG90cyI6IDEsCiAgInNoaWVsZCI6IDAKfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-61a35b58e042db623ece",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "kaleidoscope changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 177,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:25.359Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJrYWxlaWRvc2NvcGUiLAogICJkYW1hZ2UiOiAzODguNzk5OTk5OTk5OTk5OTUsCiAgImVuZW15SFAiOiBbCiAgICA5OTc0MC43OTk5OTk5OTk5OSwKICAgIDk5ODcwLjQKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-e40af4bfa3840b8ff9ed",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "collapse changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 199,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:25.543Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJjb2xsYXBzZSIsCiAgImRhbWFnZSI6IDQyOCwKICAiZW5lbXlIUCI6IFsKICAgIDk5Nzg2LAogICAgOTk3ODYKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-16e8002d67f104e62142",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "thunderhive releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 213,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:25.751Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjozNjQsInJlYWNxdWlyZSI6ZmFsc2V9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-39132d25e5852b234810",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "blastwheel releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 209,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:25.974Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjo4MywicmVhY3F1aXJlIjpmYWxzZX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-b55fbc2843170ad0dece",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "eventhorizon releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 208,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:26.191Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjo3MzQsInJlYWNxdWlyZSI6ZmFsc2V9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-ee3ea34ca4404e32a2a4",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "early cannon/arc, drone/arc, shield/arc and marked drone links actually affect combat",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 175,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:26.410Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-a3586f2e29d937ede829",
+          "file": "combat.spec.cjs",
+          "line": 142,
+          "column": 1
+        },
+        {
+          "title": "default launch has no QA hooks and naturally attacks approaching enemies",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1745,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:26.591Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-eb70022ea8ec5cbde3ae",
+          "file": "combat.spec.cjs",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "keyboard and diagonal movement, camera follow and release reflect actual world position",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 911,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:28.342Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-a08aeaddf9ae8def36ee",
+          "file": "combat.spec.cjs",
+          "line": 209,
+          "column": 1
+        },
+        {
+          "title": "real browser touch tap and synthetic drag/cancel cleanly release the floating joystick",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 593,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:29.262Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-1431ab9f68dddc75d31f",
+          "file": "combat.spec.cjs",
+          "line": 233,
+          "column": 1
+        },
+        {
+          "title": "three choices, icons and level changes fit synthetic phone safe areas without overlap",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 361,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:29.864Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-1a920209f06ec56549ed",
+          "file": "combat.spec.cjs",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "background, reduced motion and orientation pause the real timer and input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1018,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:30.239Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-acb63d79eceb0ee7a3e6",
+          "file": "combat.spec.cjs",
+          "line": 323,
+          "column": 1
+        },
+        {
+          "title": "the 600-second deadline settles before a same-frame XP upgrade can interrupt it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 368,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:31.267Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-e6ccd852c649006611e1",
+          "file": "combat.spec.cjs",
+          "line": 348,
+          "column": 1
+        },
+        {
+          "title": "piercebeam changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 196,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:34.485Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJwaWVyY2ViZWFtIiwKICAiZGFtYWdlIjogNDgzLjg0MDAwMDAwMDAwMDAzLAogICJlbmVteUhQIjogWwogICAgOTk1MTYuMTYsCiAgICAxMDAwMDAKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-89878277a5731f9afbae",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "hunterswarm changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:34.691Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJodW50ZXJzd2FybSIsCiAgImRhbWFnZSI6IDUwMS4xMTk5OTk5OTk5OTk5NSwKICAiZW5lbXlIUCI6IFsKICAgIDk5NDk4Ljg4LAogICAgMTAwMDAwCiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-f755ccc326b6cbbbe821",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "chainstorm changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 163,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:34.865Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJjaGFpbnN0b3JtIiwKICAiZGFtYWdlIjogMjIyLjcxOTk5OTk5OTk5OTk3LAogICJlbmVteUhQIjogWwogICAgOTk4ODguNjQwMDAwMDAwMDEsCiAgICA5OTg4OC42NDAwMDAwMDAwMQogIF0sCiAgImFydCI6IDUwLAogICJzbG90cyI6IDEsCiAgInNoaWVsZCI6IDAKfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-b70db8128f3636487d7b",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "meteorbarrage changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 192,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:35.034Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJtZXRlb3JiYXJyYWdlIiwKICAiZGFtYWdlIjogNjYwLjgsCiAgImVuZW15SFAiOiBbCiAgICA5OTE5Ny41OTk5OTk5OTk5OCwKICAgIDk5NjY5LjU5OTk5OTk5OTk4CiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-3b0211bc6542e684722e",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "spiralsaw changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 192,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:35.232Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJzcGlyYWxzYXciLAogICJkYW1hZ2UiOiA0My43NSwKICAiZW5lbXlIUCI6IFsKICAgIDk5OTU2LjI1LAogICAgMTAwMDAwCiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-51946fc8b3434de68427",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "reactiveaegis changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 167,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:35.433Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJyZWFjdGl2ZWFlZ2lzIiwKICAiZGFtYWdlIjogNTgsCiAgImVuZW15SFAiOiBbCiAgICA5OTk0MiwKICAgIDEwMDAwMAogIF0sCiAgImFydCI6IDUwLAogICJzbG90cyI6IDEsCiAgInNoaWVsZCI6IDAKfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-29200b46af08236aa4cb",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "kaleidoscope changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 211,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:35.608Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJrYWxlaWRvc2NvcGUiLAogICJkYW1hZ2UiOiAzODguNzk5OTk5OTk5OTk5OTUsCiAgImVuZW15SFAiOiBbCiAgICA5OTc0MC43OTk5OTk5OTk5OSwKICAgIDk5ODcwLjQKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-9f652254fe89b9d8af36",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "collapse changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 182,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:35.832Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJjb2xsYXBzZSIsCiAgImRhbWFnZSI6IDQyOCwKICAiZW5lbXlIUCI6IFsKICAgIDk5Nzg2LAogICAgOTk3ODYKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-05bee4b22eb63fdb1fa0",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "thunderhive releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 239,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:36.023Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjozNjQsInJlYWNxdWlyZSI6ZmFsc2V9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-413299e115e2771b0d2c",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "blastwheel releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 192,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:36.271Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjo4MywicmVhY3F1aXJlIjpmYWxzZX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-8e430e31e4ca19ab3027",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "eventhorizon releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 230,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:36.482Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjo3MzQsInJlYWNxdWlyZSI6ZmFsc2V9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-a6ee007d86133f9b0271",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "early cannon/arc, drone/arc, shield/arc and marked drone links actually affect combat",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 223,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:36.727Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-274db4a22ec6b2658214",
+          "file": "combat.spec.cjs",
+          "line": 142,
+          "column": 1
+        },
+        {
+          "title": "default launch has no QA hooks and naturally attacks approaching enemies",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1547,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:36.962Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-446a567305f34baa57f6",
+          "file": "combat.spec.cjs",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "keyboard and diagonal movement, camera follow and release reflect actual world position",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 820,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:38.524Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-7b835dc4c382ad1eaf28",
+          "file": "combat.spec.cjs",
+          "line": 209,
+          "column": 1
+        },
+        {
+          "title": "real browser touch tap and synthetic drag/cancel cleanly release the floating joystick",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 698,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:39.356Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-5b8b8030ca31934a952e",
+          "file": "combat.spec.cjs",
+          "line": 233,
+          "column": 1
+        },
+        {
+          "title": "three choices, icons and level changes fit synthetic phone safe areas without overlap",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 385,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:40.066Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-758f3ac09dba77eda6e0",
+          "file": "combat.spec.cjs",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "background, reduced motion and orientation pause the real timer and input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1011,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:40.459Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-361658879f9ab01015a0",
+          "file": "combat.spec.cjs",
+          "line": 323,
+          "column": 1
+        },
+        {
+          "title": "the 600-second deadline settles before a same-frame XP upgrade can interrupt it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 405,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:41.479Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-19b03f3ccd31a24f5121",
+          "file": "combat.spec.cjs",
+          "line": 348,
+          "column": 1
+        },
+        {
+          "title": "piercebeam changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 664,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:45.036Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJwaWVyY2ViZWFtIiwKICAiZGFtYWdlIjogNDgzLjg0MDAwMDAwMDAwMDAzLAogICJlbmVteUhQIjogWwogICAgOTk1MTYuMTYsCiAgICAxMDAwMDAKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-2123e504c96e532223d2",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "hunterswarm changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 372,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:46.037Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJodW50ZXJzd2FybSIsCiAgImRhbWFnZSI6IDUwMS4xMTk5OTk5OTk5OTk5NSwKICAiZW5lbXlIUCI6IFsKICAgIDk5NDk4Ljg4LAogICAgMTAwMDAwCiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-f4ac68853511dd8b769e",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "chainstorm changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 422,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:46.420Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJjaGFpbnN0b3JtIiwKICAiZGFtYWdlIjogMjIyLjcxOTk5OTk5OTk5OTk3LAogICJlbmVteUhQIjogWwogICAgOTk4ODguNjQwMDAwMDAwMDEsCiAgICA5OTg4OC42NDAwMDAwMDAwMQogIF0sCiAgImFydCI6IDUwLAogICJzbG90cyI6IDEsCiAgInNoaWVsZCI6IDAKfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-094f038be44ad1141854",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "meteorbarrage changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 424,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:46.849Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJtZXRlb3JiYXJyYWdlIiwKICAiZGFtYWdlIjogNjYwLjgsCiAgImVuZW15SFAiOiBbCiAgICA5OTE5Ny41OTk5OTk5OTk5OCwKICAgIDk5NjY5LjU5OTk5OTk5OTk4CiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-f6832a915f56229352a6",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "spiralsaw changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 418,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:47.284Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJzcGlyYWxzYXciLAogICJkYW1hZ2UiOiA0My43NSwKICAiZW5lbXlIUCI6IFsKICAgIDk5OTU2LjI1LAogICAgMTAwMDAwCiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-1cef11bd98e577070ff9",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "reactiveaegis changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 453,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:47.715Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJyZWFjdGl2ZWFlZ2lzIiwKICAiZGFtYWdlIjogNTgsCiAgImVuZW15SFAiOiBbCiAgICA5OTk0MiwKICAgIDEwMDAwMAogIF0sCiAgImFydCI6IDUwLAogICJzbG90cyI6IDEsCiAgInNoaWVsZCI6IDAKfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-5cb70fc9174faf7503e9",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "kaleidoscope changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 491,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:48.177Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJrYWxlaWRvc2NvcGUiLAogICJkYW1hZ2UiOiAzODguNzk5OTk5OTk5OTk5OTUsCiAgImVuZW15SFAiOiBbCiAgICA5OTc0MC43OTk5OTk5OTk5OSwKICAgIDk5ODcwLjQKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-d05e3d38e9691420e93b",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "collapse changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 383,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:48.682Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJjb2xsYXBzZSIsCiAgImRhbWFnZSI6IDQyOCwKICAiZW5lbXlIUCI6IFsKICAgIDk5Nzg2LAogICAgOTk3ODYKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-1f02a33c114ac6057ea2",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "thunderhive releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 486,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:49.076Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjozNjQsInJlYWNxdWlyZSI6ZmFsc2V9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-b8e4bbb2591bc360166c",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "blastwheel releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 380,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:49.571Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjo4MywicmVhY3F1aXJlIjpmYWxzZX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-1643e7b3f8a72b9eb71b",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "eventhorizon releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 351,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:49.958Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjo3MzQsInJlYWNxdWlyZSI6ZmFsc2V9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-81f109b12ec3435a14ed",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "early cannon/arc, drone/arc, shield/arc and marked drone links actually affect combat",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 336,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:50.316Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-c664f046981b0d5b4be4",
+          "file": "combat.spec.cjs",
+          "line": 142,
+          "column": 1
+        },
+        {
+          "title": "default launch has no QA hooks and naturally attacks approaching enemies",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:50.658Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-d434186cb7001a8fc45c",
+          "file": "combat.spec.cjs",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "keyboard and diagonal movement, camera follow and release reflect actual world position",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1453,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:51.937Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-c89b922bfeec574651b1",
+          "file": "combat.spec.cjs",
+          "line": 209,
+          "column": 1
+        },
+        {
+          "title": "real browser touch tap and synthetic drag/cancel cleanly release the floating joystick",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 852,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:53.456Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-0e75a81dc9aa4401deb2",
+          "file": "combat.spec.cjs",
+          "line": 233,
+          "column": 1
+        },
+        {
+          "title": "three choices, icons and level changes fit synthetic phone safe areas without overlap",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 632,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:54.339Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-185e8e25513b371dffd6",
+          "file": "combat.spec.cjs",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "background, reduced motion and orientation pause the real timer and input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1521,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:54.993Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-809ed31be3eb847f501c",
+          "file": "combat.spec.cjs",
+          "line": 323,
+          "column": 1
+        },
+        {
+          "title": "the 600-second deadline settles before a same-frame XP upgrade can interrupt it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 574,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:56.526Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-fefbe6700602fbc9e917",
+          "file": "combat.spec.cjs",
+          "line": 348,
+          "column": 1
+        },
+        {
+          "title": "piercebeam changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 628,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:59.985Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJwaWVyY2ViZWFtIiwKICAiZGFtYWdlIjogNDgzLjg0MDAwMDAwMDAwMDAzLAogICJlbmVteUhQIjogWwogICAgOTk1MTYuMTYsCiAgICAxMDAwMDAKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-4c52f3dfbb7df4fcb989",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "hunterswarm changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 385,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:00.911Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJodW50ZXJzd2FybSIsCiAgImRhbWFnZSI6IDUwMS4xMTk5OTk5OTk5OTk5NSwKICAiZW5lbXlIUCI6IFsKICAgIDk5NDk4Ljg4LAogICAgMTAwMDAwCiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-e3b711ca40c46e8476ea",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "chainstorm changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 399,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:01.312Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJjaGFpbnN0b3JtIiwKICAiZGFtYWdlIjogMjIyLjcxOTk5OTk5OTk5OTk3LAogICJlbmVteUhQIjogWwogICAgOTk4ODguNjQwMDAwMDAwMDEsCiAgICA5OTg4OC42NDAwMDAwMDAwMQogIF0sCiAgImFydCI6IDUwLAogICJzbG90cyI6IDEsCiAgInNoaWVsZCI6IDAKfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-b3facb9e77af6156eb8a",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "meteorbarrage changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 455,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:01.721Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJtZXRlb3JiYXJyYWdlIiwKICAiZGFtYWdlIjogNjYwLjgsCiAgImVuZW15SFAiOiBbCiAgICA5OTE5Ny41OTk5OTk5OTk5OCwKICAgIDk5NjY5LjU5OTk5OTk5OTk4CiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-3b674c2dfb0be256f38e",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "spiralsaw changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 482,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:02.190Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJzcGlyYWxzYXciLAogICJkYW1hZ2UiOiA0My43NSwKICAiZW5lbXlIUCI6IFsKICAgIDk5OTU2LjI1LAogICAgMTAwMDAwCiAgXSwKICAiYXJ0IjogNTAsCiAgInNsb3RzIjogMSwKICAic2hpZWxkIjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-6f377fab834b52b004f9",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "reactiveaegis changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 381,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:02.691Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJyZWFjdGl2ZWFlZ2lzIiwKICAiZGFtYWdlIjogNTgsCiAgImVuZW15SFAiOiBbCiAgICA5OTk0MiwKICAgIDEwMDAwMAogIF0sCiAgImFydCI6IDUwLAogICJzbG90cyI6IDEsCiAgInNoaWVsZCI6IDAKfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-4ed4fbe11f81e61c8c0b",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "kaleidoscope changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 436,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:03.089Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJrYWxlaWRvc2NvcGUiLAogICJkYW1hZ2UiOiAzODguNzk5OTk5OTk5OTk5OTUsCiAgImVuZW15SFAiOiBbCiAgICA5OTc0MC43OTk5OTk5OTk5OSwKICAgIDk5ODcwLjQKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-972bc01f727f757e8aee",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "collapse changes actual combat with decoded native art",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 389,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:03.537Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-evolution",
+                      "contentType": "application/json",
+                      "body": "ewogICJpZCI6ICJjb2xsYXBzZSIsCiAgImRhbWFnZSI6IDQyOCwKICAiZW5lbXlIUCI6IFsKICAgIDk5Nzg2LAogICAgOTk3ODYKICBdLAogICJhcnQiOiA1MCwKICAic2xvdHMiOiAxLAogICJzaGllbGQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-ac2650d9d5948edb8e5e",
+          "file": "combat.spec.cjs",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "thunderhive releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 486,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:03.950Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjozNjQsInJlYWNxdWlyZSI6ZmFsc2V9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-79250ff8e403bcd44d10",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "blastwheel releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 382,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:04.449Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjo4MywicmVhY3F1aXJlIjpmYWxzZX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-652ee8cca9bf8f4f09d8",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "eventhorizon releases a real slot and causes fusion damage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 356,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:04.841Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "actual-fusion",
+                      "contentType": "application/json",
+                      "body": "eyJiZWZvcmUiOjIsImFmdGVyIjoxLCJjb21wb25lbnRzIjpbbnVsbCxudWxsXSwiZGFtYWdlIjo3MzQsInJlYWNxdWlyZSI6ZmFsc2V9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-4d3dc5912b10e0b8d9a5",
+          "file": "combat.spec.cjs",
+          "line": 91,
+          "column": 3
+        },
+        {
+          "title": "early cannon/arc, drone/arc, shield/arc and marked drone links actually affect combat",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 322,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:05.206Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-ed8edc5b45fcfc8a7872",
+          "file": "combat.spec.cjs",
+          "line": 142,
+          "column": 1
+        },
+        {
+          "title": "default launch has no QA hooks and naturally attacks approaching enemies",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1714,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:05.534Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-57f4bbb4b308dbd1c8a0",
+          "file": "combat.spec.cjs",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "keyboard and diagonal movement, camera follow and release reflect actual world position",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1187,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:07.263Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-a61103107ff0107bae95",
+          "file": "combat.spec.cjs",
+          "line": 209,
+          "column": 1
+        },
+        {
+          "title": "real browser touch tap and synthetic drag/cancel cleanly release the floating joystick",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 733,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:08.515Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-c35982da692e21e3374f",
+          "file": "combat.spec.cjs",
+          "line": 233,
+          "column": 1
+        },
+        {
+          "title": "three choices, icons and level changes fit synthetic phone safe areas without overlap",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 592,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:09.266Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-1fd6940a3e28c535f564",
+          "file": "combat.spec.cjs",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "background, reduced motion and orientation pause the real timer and input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1258,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:09.872Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-4a3e575ad2a5c1c110f4",
+          "file": "combat.spec.cjs",
+          "line": 323,
+          "column": 1
+        },
+        {
+          "title": "the 600-second deadline settles before a same-frame XP upgrade can interrupt it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 597,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:11.156Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de54e3fb3ad59045bc70-99e93955740acf5d7a3f",
+          "file": "combat.spec.cjs",
+          "line": 348,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "storage.spec.cjs",
+      "file": "storage.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "refresh continues the same world, loadout and selected random choices",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1093,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:26.221Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-4d054b7596ab06b08ed8",
+          "file": "storage.spec.cjs",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "a pickup consumed just before an upgrade is absent from the persisted snapshot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 545,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:27.320Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-b8d75986f13d86619529",
+          "file": "storage.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "settlement replay and refresh credit the run once; the next run uses saved upgrades",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 485,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:27.875Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-fc03977c0caae88f539f",
+          "file": "storage.spec.cjs",
+          "line": 79,
+          "column": 1
+        },
+        {
+          "title": "rapid permanent-upgrade input charges only the displayed tier",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1305,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:28.371Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-f457420c755d40a8bd81",
+          "file": "storage.spec.cjs",
+          "line": 108,
+          "column": 1
+        },
+        {
+          "title": "two IndexedDB clients cannot both buy the same displayed upgrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 306,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:29.687Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-0633cbf809e04b148abc",
+          "file": "storage.spec.cjs",
+          "line": 123,
+          "column": 1
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 822,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:30.001Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-1e400c0fe9a0ece80049",
+          "file": "storage.spec.cjs",
+          "line": 144,
+          "column": 1
+        },
+        {
+          "title": "checkpoint failure preserves the previous record and can be retried",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 443,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:30.834Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-11ae7c58dcd4427901dc",
+          "file": "storage.spec.cjs",
+          "line": 177,
+          "column": 1
+        },
+        {
+          "title": "failed settlement retains the run and blocks retry play until one successful save",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 509,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:31.282Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-15a9a4c2bf9193e7794f",
+          "file": "storage.spec.cjs",
+          "line": 192,
+          "column": 1
+        },
+        {
+          "title": "failed permanent purchase changes neither cash nor level",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 353,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:31.802Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-0133a38acb916c0ce947",
+          "file": "storage.spec.cjs",
+          "line": 211,
+          "column": 1
+        },
+        {
+          "title": "own legacy prototype profile is copied with raw backup and no extra charge",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 313,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:32.161Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-c556d949ec76c5aef763",
+          "file": "storage.spec.cjs",
+          "line": 225,
+          "column": 1
+        },
+        {
+          "title": "invalid own profile or impossible evolution keeps raw data and blocks launch",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 448,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:32.483Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-97e9f89ce3a084885e53",
+          "file": "storage.spec.cjs",
+          "line": 277,
+          "column": 1
+        },
+        {
+          "title": "all legacy planet, chapter and route namespaces remain byte-for-byte untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 533,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:32.940Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-62d6dcbcd9ded0c3b960",
+          "file": "storage.spec.cjs",
+          "line": 307,
+          "column": 1
+        },
+        {
+          "title": "old v0.6 short-run snapshots retain180seconds,4/3slots and the original cash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 568,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:33.483Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-d99d87b75cb50f96bdc2",
+          "file": "storage.spec.cjs",
+          "line": 389,
+          "column": 1
+        },
+        {
+          "title": "a long-run repair pickup restores HP once and adds no currency",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium360",
+              "projectName": "chromium360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 564,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:34.060Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-44c575f7ef5bcd09a78b",
+          "file": "storage.spec.cjs",
+          "line": 444,
+          "column": 1
+        },
+        {
+          "title": "refresh continues the same world, loadout and selected random choices",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1455,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:35.008Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-28dfb914150470344804",
+          "file": "storage.spec.cjs",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "a pickup consumed just before an upgrade is absent from the persisted snapshot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 848,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:36.653Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-45e8363d78c65fd04a39",
+          "file": "storage.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "settlement replay and refresh credit the run once; the next run uses saved upgrades",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 514,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:37.544Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-0524a3e089a4f3175334",
+          "file": "storage.spec.cjs",
+          "line": 79,
+          "column": 1
+        },
+        {
+          "title": "rapid permanent-upgrade input charges only the displayed tier",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1288,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:38.065Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-83aa2e3cd0260f41e52b",
+          "file": "storage.spec.cjs",
+          "line": 108,
+          "column": 1
+        },
+        {
+          "title": "two IndexedDB clients cannot both buy the same displayed upgrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 379,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:39.358Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-5bf57fefdadd3b60a0ff",
+          "file": "storage.spec.cjs",
+          "line": 123,
+          "column": 1
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 809,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:39.761Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-ac1289601227cf85c19e",
+          "file": "storage.spec.cjs",
+          "line": 144,
+          "column": 1
+        },
+        {
+          "title": "checkpoint failure preserves the previous record and can be retried",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 457,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:40.582Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-15b2c5df2ed5165f17fc",
+          "file": "storage.spec.cjs",
+          "line": 177,
+          "column": 1
+        },
+        {
+          "title": "failed settlement retains the run and blocks retry play until one successful save",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 451,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:41.054Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-5d642186a00a50f1e4af",
+          "file": "storage.spec.cjs",
+          "line": 192,
+          "column": 1
+        },
+        {
+          "title": "failed permanent purchase changes neither cash nor level",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 444,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:41.511Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-b803077255787a5a45a5",
+          "file": "storage.spec.cjs",
+          "line": 211,
+          "column": 1
+        },
+        {
+          "title": "own legacy prototype profile is copied with raw backup and no extra charge",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 221,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:41.963Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-83b9b4e19ed397cbf9f4",
+          "file": "storage.spec.cjs",
+          "line": 225,
+          "column": 1
+        },
+        {
+          "title": "invalid own profile or impossible evolution keeps raw data and blocks launch",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 401,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:42.192Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-e39b227a61195742a7da",
+          "file": "storage.spec.cjs",
+          "line": 277,
+          "column": 1
+        },
+        {
+          "title": "all legacy planet, chapter and route namespaces remain byte-for-byte untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 520,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:42.599Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-b85feebfa8aec56d3a20",
+          "file": "storage.spec.cjs",
+          "line": 307,
+          "column": 1
+        },
+        {
+          "title": "old v0.6 short-run snapshots retain180seconds,4/3slots and the original cash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 592,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:43.126Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-412845da516e322be114",
+          "file": "storage.spec.cjs",
+          "line": 389,
+          "column": 1
+        },
+        {
+          "title": "a long-run repair pickup restores HP once and adds no currency",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium390",
+              "projectName": "chromium390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 702,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:43.727Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-22eff65de51dc1847027",
+          "file": "storage.spec.cjs",
+          "line": 444,
+          "column": 1
+        },
+        {
+          "title": "refresh continues the same world, loadout and selected random choices",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1500,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:46.269Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-54df249ab56b7961286b",
+          "file": "storage.spec.cjs",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "a pickup consumed just before an upgrade is absent from the persisted snapshot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1036,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:47.778Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-8ee8553500e5e6cec4bf",
+          "file": "storage.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "settlement replay and refresh credit the run once; the next run uses saved upgrades",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 791,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:48.837Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-8acadd6cbba87faaed41",
+          "file": "storage.spec.cjs",
+          "line": 79,
+          "column": 1
+        },
+        {
+          "title": "rapid permanent-upgrade input charges only the displayed tier",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1447,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:49.641Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-8614003f6aba6bd32548",
+          "file": "storage.spec.cjs",
+          "line": 108,
+          "column": 1
+        },
+        {
+          "title": "two IndexedDB clients cannot both buy the same displayed upgrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 457,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:51.113Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-889b5d7ad7ec947fd768",
+          "file": "storage.spec.cjs",
+          "line": 123,
+          "column": 1
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1555,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:51.602Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-036127aaff0e4116ba4d",
+          "file": "storage.spec.cjs",
+          "line": 144,
+          "column": 1
+        },
+        {
+          "title": "checkpoint failure preserves the previous record and can be retried",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 682,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:53.251Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-c2609091b1a65468e4a4",
+          "file": "storage.spec.cjs",
+          "line": 177,
+          "column": 1
+        },
+        {
+          "title": "failed settlement retains the run and blocks retry play until one successful save",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 698,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:53.995Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-b5e0500e3e2fab106464",
+          "file": "storage.spec.cjs",
+          "line": 192,
+          "column": 1
+        },
+        {
+          "title": "failed permanent purchase changes neither cash nor level",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 784,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:54.714Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-ea1f2080514da8f013e1",
+          "file": "storage.spec.cjs",
+          "line": 211,
+          "column": 1
+        },
+        {
+          "title": "own legacy prototype profile is copied with raw backup and no extra charge",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 417,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:55.518Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-f64cbc655218862ea055",
+          "file": "storage.spec.cjs",
+          "line": 225,
+          "column": 1
+        },
+        {
+          "title": "invalid own profile or impossible evolution keeps raw data and blocks launch",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 679,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:55.944Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-e659c5e34840b492c81b",
+          "file": "storage.spec.cjs",
+          "line": 277,
+          "column": 1
+        },
+        {
+          "title": "all legacy planet, chapter and route namespaces remain byte-for-byte untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 757,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:56.631Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-899b1c4f43c57a829caa",
+          "file": "storage.spec.cjs",
+          "line": 307,
+          "column": 1
+        },
+        {
+          "title": "old v0.6 short-run snapshots retain180seconds,4/3slots and the original cash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 865,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:57.394Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-4976e64967aa4734f878",
+          "file": "storage.spec.cjs",
+          "line": 389,
+          "column": 1
+        },
+        {
+          "title": "a long-run repair pickup restores HP once and adds no currency",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit360",
+              "projectName": "webkit360",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 989,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:34:58.266Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-1ac60dc19928d496170a",
+          "file": "storage.spec.cjs",
+          "line": 444,
+          "column": 1
+        },
+        {
+          "title": "refresh continues the same world, loadout and selected random choices",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1549,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:01.212Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-ae0c42325040d859a87c",
+          "file": "storage.spec.cjs",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "a pickup consumed just before an upgrade is absent from the persisted snapshot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 903,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:02.786Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-bea6f750f90786030788",
+          "file": "storage.spec.cjs",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "settlement replay and refresh credit the run once; the next run uses saved upgrades",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 800,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:03.725Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-39c024c4920ac5b29f3e",
+          "file": "storage.spec.cjs",
+          "line": 79,
+          "column": 1
+        },
+        {
+          "title": "rapid permanent-upgrade input charges only the displayed tier",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1487,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:04.541Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-ed9e240e45cb4c81c2c5",
+          "file": "storage.spec.cjs",
+          "line": 108,
+          "column": 1
+        },
+        {
+          "title": "two IndexedDB clients cannot both buy the same displayed upgrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 498,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:06.040Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-56c479189e8047dab198",
+          "file": "storage.spec.cjs",
+          "line": 123,
+          "column": 1
+        },
+        {
+          "title": "a second tab claims a saved run and a stale writer cannot settle it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1181,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:06.584Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-64271848d4dd80451f97",
+          "file": "storage.spec.cjs",
+          "line": 144,
+          "column": 1
+        },
+        {
+          "title": "checkpoint failure preserves the previous record and can be retried",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 569,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:07.778Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-0f8f4165913a88440dc5",
+          "file": "storage.spec.cjs",
+          "line": 177,
+          "column": 1
+        },
+        {
+          "title": "failed settlement retains the run and blocks retry play until one successful save",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 739,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:08.382Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-6de5e805e81f284382c4",
+          "file": "storage.spec.cjs",
+          "line": 192,
+          "column": 1
+        },
+        {
+          "title": "failed permanent purchase changes neither cash nor level",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 521,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:09.149Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-f0d57279c5924e0b1a03",
+          "file": "storage.spec.cjs",
+          "line": 211,
+          "column": 1
+        },
+        {
+          "title": "own legacy prototype profile is copied with raw backup and no extra charge",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 511,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:09.676Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-e512429b22a5907ea444",
+          "file": "storage.spec.cjs",
+          "line": 225,
+          "column": 1
+        },
+        {
+          "title": "invalid own profile or impossible evolution keeps raw data and blocks launch",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 591,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:10.193Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-7465aaafae69c23723d2",
+          "file": "storage.spec.cjs",
+          "line": 277,
+          "column": 1
+        },
+        {
+          "title": "all legacy planet, chapter and route namespaces remain byte-for-byte untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 833,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:10.790Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-1f6c9e0138b203a06b92",
+          "file": "storage.spec.cjs",
+          "line": 307,
+          "column": 1
+        },
+        {
+          "title": "old v0.6 short-run snapshots retain180seconds,4/3slots and the original cash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 807,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:11.631Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-8c9f34e23b3263c996bb",
+          "file": "storage.spec.cjs",
+          "line": 389,
+          "column": 1
+        },
+        {
+          "title": "a long-run repair pickup restores HP once and adds no currency",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit390",
+              "projectName": "webkit390",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 689,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T00:35:12.456Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f65d1e1c0da1925874d1-d2a520ac3580df84df81",
+          "file": "storage.spec.cjs",
+          "line": 444,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-12T00:34:22.992Z",
+    "duration": 50223.937,
+    "expected": 144,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,1867 @@
+{
+  "schema": 1,
+  "style": "Original purple-grey metal, warm-gold mechanisms and ice-blue energy. Native24px grid, integer2x/4x.",
+  "scope": "20 icons,9 component sprites,6-frame explosion,4-frame hit,4-frame thruster. Art pending parent review.",
+  "provenance": {
+    "icons": "Original deterministic code-native pixel artwork extending the previous project icon vocabulary.",
+    "explosion": "Built-in imagegen source, reduced to a fixed native palette with binary alpha; prompt retained.",
+    "runtimeExports": "Exact NEAREST exports from editable native PNG and ORA."
+  },
+  "sourceInputs": [
+    {
+      "path": "design/star-salvage/v06/production/weapons/export.py",
+      "bytes": 22422,
+      "sha256": "aa852d2d62448ebcd2ae48bb109a19304832e2e9b988ae40acd725b54be80c2e"
+    },
+    {
+      "path": "design/star-salvage/v06/production/weapons/generated/explosion-source.png",
+      "bytes": 1373177,
+      "sha256": "a59d33b9b9f48f2d6353c140c0b36014d9ab3196c80f6972ec409cb7ab358ce3"
+    },
+    {
+      "path": "design/star-salvage/v06/production/weapons/generated/explosion-prompt.json",
+      "bytes": 1632,
+      "sha256": "9151a6fef7f884b380dc62321c5998adc74ef0c87f240e70be00df4f7f28e10d"
+    }
+  ],
+  "assets": [
+    {
+      "id": "cannon",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            5,
+            3,
+            20,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/cannon@1x.png",
+          "bytes": 361,
+          "sha256": "82a1852f3927d8059540a5734fcd56e1f358e7ddd0a2748737f02dc5bd973fbe"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/cannon.ora",
+          "bytes": 2068,
+          "sha256": "d9487ba2c8b2e1c1e96c5a7706716f90fbfd1d0a9285144e5210e12d0f52b021"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/cannon@2x.png",
+          "bytes": 398,
+          "sha256": "bd83c47da845adf8faef8d660300b9d98ee34696b32de16c85dcae2b1b50b9eb"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/cannon@4x.png",
+          "bytes": 537,
+          "sha256": "de7684a3da06f20a684d12cb4be8363f8089469e54bdb5e4eb864566465fe858"
+        }
+      ]
+    },
+    {
+      "id": "drone",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            3,
+            21,
+            20
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/drone@1x.png",
+          "bytes": 297,
+          "sha256": "9a206aef6965e9120aade1c31c14c8348ea202d678410f83e2d513b6bf55dae6"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/drone.ora",
+          "bytes": 1891,
+          "sha256": "84a40acf35e74add47d659e68907db09c20fece584a2a0b73e33d606abe2c898"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/drone@2x.png",
+          "bytes": 378,
+          "sha256": "de0e7f1d1c39fac588dcc233b6ae4744d4756d3144548485b1c4f73e4a8cfe39"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/drone@4x.png",
+          "bytes": 489,
+          "sha256": "d7e71c5c62dd2b9deeb31c84b0d5f05c352c4b6517e8998d42450e1173dd46fb"
+        }
+      ]
+    },
+    {
+      "id": "arc",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            3,
+            22,
+            21
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/arc@1x.png",
+          "bytes": 336,
+          "sha256": "8413c5c3a899076af3bcd70ab3a4765936d649b914edb6730afe42490a957b2a"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/arc.ora",
+          "bytes": 2034,
+          "sha256": "4f920d9b5f940908117d7198a2501b0ff1ad5b7249e3e02b8fceb3fe98e9f6d1"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/arc@2x.png",
+          "bytes": 396,
+          "sha256": "85b5ce994b29c60233314a5828d8b22c970885f13da931b8bbe375397bf587e8"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/arc@4x.png",
+          "bytes": 556,
+          "sha256": "6250a0ff13b36833097e9d941926e3c9c085d6540bd0ec31e531bb03a29e85cf"
+        }
+      ]
+    },
+    {
+      "id": "missile",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            4,
+            2,
+            21,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/missile@1x.png",
+          "bytes": 261,
+          "sha256": "29409e342110034e8b5c779d06ec8ebca9a3870ac801bf62da296139dcb2ca7b"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/missile.ora",
+          "bytes": 1815,
+          "sha256": "dbc2a6bbc2a10206f8ec56a140c42674c8c43060afddc7e18bfdcc8ac8fd72d6"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/missile@2x.png",
+          "bytes": 362,
+          "sha256": "3725a97c3712e296a9d5b0fe1739fa5d61576dec8654d895fe5c09d1fe362538"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/missile@4x.png",
+          "bytes": 483,
+          "sha256": "0dce4a797533160963e27686f01a3f51a907b10a9bb1b89bd698a2fcf77d8714"
+        }
+      ]
+    },
+    {
+      "id": "blade",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            3,
+            22,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/blade@1x.png",
+          "bytes": 343,
+          "sha256": "bbcf510d43f1abc5e872de0ec955d352e682ffab088b906011aeea6705beb0b8"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/blade.ora",
+          "bytes": 2077,
+          "sha256": "b9978af53b40f1ca2eca02ac403e59ac91f09ccab996644ee5f817b54cb09dde"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/blade@2x.png",
+          "bytes": 439,
+          "sha256": "761bfd8a8186716c0b078956bde94050bc6d010a9fd61d2765c666fe2eae3ca1"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/blade@4x.png",
+          "bytes": 583,
+          "sha256": "fae36183bfbcc8384b4496a8f96828230585a692ec21a5b54837c80eeb254c66"
+        }
+      ]
+    },
+    {
+      "id": "shield",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            2,
+            22,
+            23
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/shield@1x.png",
+          "bytes": 354,
+          "sha256": "64f8950474256c7f84770f9b50b50ea869e733439f23a8f715e2af271974fd00"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/shield.ora",
+          "bytes": 2088,
+          "sha256": "6a2f845ff825149d1b5b06e8a8edff81a1d22556eb9f7818e1f268580c26a55a"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/shield@2x.png",
+          "bytes": 429,
+          "sha256": "7882139fa92b6c955964737fea516991e5eb9c27842b23e60ea6f3869d273042"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/shield@4x.png",
+          "bytes": 571,
+          "sha256": "b7280330a01415127c45004521fd240777be485281c1db66f82a48ab5b678f46"
+        }
+      ]
+    },
+    {
+      "id": "lens",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            4,
+            4,
+            21,
+            21
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/lens@1x.png",
+          "bytes": 355,
+          "sha256": "c8faa401febf0f6658354a65c4f071980426e2af705dd4cc18ccfe771d42e3c7"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/lens.ora",
+          "bytes": 2040,
+          "sha256": "6f994f4d4ebfb8380f6da2573deb32ea655abaa6f3f058c7bc8a1f1c6f620a72"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/lens@2x.png",
+          "bytes": 402,
+          "sha256": "55ba4bc55cad363fa9cd114502255e4628fa41ff9edecadc41df814eb5684b6d"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/lens@4x.png",
+          "bytes": 523,
+          "sha256": "34da3d1c36c0c9e92b457a656d668a14f3f3d05695da38a64c99afa2542e1837"
+        }
+      ]
+    },
+    {
+      "id": "lock",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            3,
+            22,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/lock@1x.png",
+          "bytes": 267,
+          "sha256": "11432767a49d5eb8f66026ee59c0d152a34a9c1055cb003240d40157bf12e130"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/lock.ora",
+          "bytes": 1821,
+          "sha256": "4bc20b1cb9da51429fdd116b7c2a360c78cb7a8fdd532b0d313ec43525524503"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/lock@2x.png",
+          "bytes": 336,
+          "sha256": "9d21f89051fc4530901df81aaae45eaba2ff87d71349d28b031990d745fef24c"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/lock@4x.png",
+          "bytes": 480,
+          "sha256": "bd4593ca50e69409332cac0428edccae6051527d11af159fe029f8020ba864b3"
+        }
+      ]
+    },
+    {
+      "id": "capacitor",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            3,
+            22,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/capacitor@1x.png",
+          "bytes": 310,
+          "sha256": "1c5214a80df983a2ce7bc01d67a02c3758c8ccad28595d74393cf48b6ba85158"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/capacitor.ora",
+          "bytes": 1926,
+          "sha256": "4d8ab1b2be8d0cc116ef0f4d628d77452ed7ed020bb1790224bf8cec87295f6d"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/capacitor@2x.png",
+          "bytes": 366,
+          "sha256": "b83e58c65c24c465b15928fa15a5b6591d4e013a052eb1a2af3963abe631bb62"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/capacitor@4x.png",
+          "bytes": 494,
+          "sha256": "4a880c218a8732d5b92dfdc4ad1e33619e6199bfacf6de7786878cea54132def"
+        }
+      ]
+    },
+    {
+      "id": "cooler",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            4,
+            22,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/cooler@1x.png",
+          "bytes": 243,
+          "sha256": "5b935e3a2225962c9217079a518fd23198ecaf2592d3a76d97b28a23a80eafa1"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/cooler.ora",
+          "bytes": 1726,
+          "sha256": "8fdb7dfe1ee78c42961b591cde10a7515be5df2d17c655d2ee8d92f548e7e25f"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/cooler@2x.png",
+          "bytes": 335,
+          "sha256": "c436aace72b2cef9fee25aae325f474f7957b811797c8b6de51d69ecb54b0c36"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/cooler@4x.png",
+          "bytes": 431,
+          "sha256": "ebeaf050e74a96abf56585c8e40a88968310427d330947c1a6e8e0afb7d3d985"
+        }
+      ]
+    },
+    {
+      "id": "magnet",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            4,
+            4,
+            21,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/magnet@1x.png",
+          "bytes": 315,
+          "sha256": "f8c2614f10c6c98712ed8ff22013264413652adebfe5d2aebd4d8f98c460dc17"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/magnet.ora",
+          "bytes": 1959,
+          "sha256": "5a94235d5428b47f08d09d25f29305015d7176eaa27676f992600f29ea378357"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/magnet@2x.png",
+          "bytes": 398,
+          "sha256": "3c67c86e7296b980764680274b176cb6dba915a46a30be2211541196d457bc25"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/magnet@4x.png",
+          "bytes": 520,
+          "sha256": "d6b67605ef222a257451ad02ee5dfcdfaac17b2f327bd46e65ceb3d32c3081b4"
+        }
+      ]
+    },
+    {
+      "id": "armor",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            3,
+            22,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/armor@1x.png",
+          "bytes": 378,
+          "sha256": "1957706bf19fe19b2a47fa70d09305b2dc47964ed1ea8425a66d7fd44b8f70c0"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/armor.ora",
+          "bytes": 2145,
+          "sha256": "509c029d0ebb6cdd0030783c24b6489cf2fb79f06fbb708849fc1607dc4b6b93"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/armor@2x.png",
+          "bytes": 433,
+          "sha256": "4265c6d725dbfaae02e0e258e6d05e0137b7d83e6fddac177d8b215bb5144db2"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/armor@4x.png",
+          "bytes": 581,
+          "sha256": "0051b3d8d476a614d72d13bb2df0b4bb3ab9ac751c4a28313b2061e46f48261f"
+        }
+      ]
+    },
+    {
+      "id": "piercebeam",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            5,
+            2,
+            20,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/piercebeam@1x.png",
+          "bytes": 294,
+          "sha256": "03cb35d691cb7a7afec73e1358a2d04ed2d9c66203581fa05427caa94e8eb2ac"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/piercebeam.ora",
+          "bytes": 1890,
+          "sha256": "a02cd6471fdc18f10a7aea94ab9f19b87a50a38460520b809d313ba804daf337"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/piercebeam@2x.png",
+          "bytes": 367,
+          "sha256": "638ad96abb67680833cf8fb009d67cd374c5cbd68e51b855311d2ccbe0605f29"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/piercebeam@4x.png",
+          "bytes": 489,
+          "sha256": "f421df57efdf4dffa9cd10c0542752161c8c06b9d00d5f5b54c5fb557d695f3d"
+        }
+      ]
+    },
+    {
+      "id": "hunterswarm",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            3,
+            23,
+            20
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/hunterswarm@1x.png",
+          "bytes": 255,
+          "sha256": "ccd11e53553388e846509ded2d44b82658b70ba852a297c8932f4bd9394d3cdd"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/hunterswarm.ora",
+          "bytes": 1771,
+          "sha256": "b436fe9bd52aba8f34fb14f847498f8e6656c903266be99c786235155ec5f35e"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/hunterswarm@2x.png",
+          "bytes": 332,
+          "sha256": "f7cd6be3bcffd085ec6037ee221a7b6bd537448fc643f1bec91d7f0903e667eb"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/hunterswarm@4x.png",
+          "bytes": 447,
+          "sha256": "ed8fd4a96f56d8ea2e26e7aa787db0da7fbd9941a0b061c5bf6dbb11000c4bf7"
+        }
+      ]
+    },
+    {
+      "id": "chainstorm",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            3,
+            22,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/chainstorm@1x.png",
+          "bytes": 354,
+          "sha256": "24d21576e85578786f2f19d0da92f717538ec224c1d7f8455ceb1916fb329922"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/chainstorm.ora",
+          "bytes": 2095,
+          "sha256": "6ae04838e8c7a0c5ec3aa1be96173e85d62c9eeaa3decc3ab9790188b915a187"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/chainstorm@2x.png",
+          "bytes": 431,
+          "sha256": "b9409eb855b4fdc9779c9dcf2e1507d3f4e56558741694e66b6ac72eda30ae57"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/chainstorm@4x.png",
+          "bytes": 574,
+          "sha256": "634115cd3d8746d2b0d0526b38c3381be520ed56d50fb1df0d673f674a8b3000"
+        }
+      ]
+    },
+    {
+      "id": "meteorbarrage",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            2,
+            23,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/meteorbarrage@1x.png",
+          "bytes": 507,
+          "sha256": "a63c9da51973931209423ff7eda02d5ae91a0317f9314fffe27f3b305003f7a6"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/meteorbarrage.ora",
+          "bytes": 2573,
+          "sha256": "e930f2c8f0cc2aa9baabdde1763747312e5872af031da10225cf4d5e7a925825"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/meteorbarrage@2x.png",
+          "bytes": 584,
+          "sha256": "015d034c239507691eea16bcee9710bc8b46321d871c41e7f7291651b1800890"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/meteorbarrage@4x.png",
+          "bytes": 743,
+          "sha256": "fac94959e92a5e7f81c874c7ce457024814c7eea6a80c317d43551a0b141b2d9"
+        }
+      ]
+    },
+    {
+      "id": "spiralsaw",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            3,
+            22,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/spiralsaw@1x.png",
+          "bytes": 358,
+          "sha256": "f6169238c0c0354b03743d5df9cfde971735d13b78d33dc4d6a937514607b133"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/spiralsaw.ora",
+          "bytes": 2108,
+          "sha256": "71187eed750ebdab01a9ac1d7110ce51a299768025232a4dfe8b631e88ef9db7"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/spiralsaw@2x.png",
+          "bytes": 431,
+          "sha256": "9442f20c9b42940ab3efd9fb835dcd9e714c29e20271471019fd6cc26162d29d"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/spiralsaw@4x.png",
+          "bytes": 580,
+          "sha256": "70c034ecec8184db7f9a09130226f461d52dcfd09e044eac5788e88601e56c33"
+        }
+      ]
+    },
+    {
+      "id": "reactiveaegis",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            1,
+            2,
+            23,
+            23
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/reactiveaegis@1x.png",
+          "bytes": 422,
+          "sha256": "a55f5eef56c00a37ef8fce0be5b7a8be496b1f203e824e6a8d1b3ab3ff3a6a36"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/reactiveaegis.ora",
+          "bytes": 2343,
+          "sha256": "dc61e0203189051ea78e19755cd2484fd7247c95086070436f8422b4b36a75cb"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/reactiveaegis@2x.png",
+          "bytes": 524,
+          "sha256": "9c58c4e6966c8776968d9a05fa7a14e516cd5830060866f99a657f6019cd081c"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/reactiveaegis@4x.png",
+          "bytes": 683,
+          "sha256": "38eda896bbd4a1df07460f73a6cf7577d381b762e5a14edecadcb4d2b45e6fc4"
+        }
+      ]
+    },
+    {
+      "id": "thunderhive",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            3,
+            22,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/thunderhive@1x.png",
+          "bytes": 367,
+          "sha256": "fdb107ce6b4f8d13db7e7a0305fcc57d340c427b3258bbb94b78e0d24001836a"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/thunderhive.ora",
+          "bytes": 2158,
+          "sha256": "9858c02be65f61f07d661f2509c07e692c17660c41a9a8ad7a783edcb1c1fba4"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/thunderhive@2x.png",
+          "bytes": 466,
+          "sha256": "66b28a7a833af1d1de72879b69281d958d7d7c5d081565571ba11834eb99650d"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/thunderhive@4x.png",
+          "bytes": 610,
+          "sha256": "e76c9f7372f236edcf1bed1679d42473665d405c6a35b11d895a1de2b2ee5773"
+        }
+      ]
+    },
+    {
+      "id": "blastwheel",
+      "kind": "icon",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            2,
+            23,
+            23
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/blastwheel@1x.png",
+          "bytes": 366,
+          "sha256": "0cb8315184c437e88473ee9ad6b85705758348c6e0c916cb29fdde6ef4b8ec9c"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/blastwheel.ora",
+          "bytes": 2134,
+          "sha256": "c84df8a5eae14d03a40de38ac28e92cb77d3eb31253085c575e448d9f8d52857"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/blastwheel@2x.png",
+          "bytes": 424,
+          "sha256": "2f9331aefdfda661a0c8aa67380e794bba1f33d79ede78448b059ecaaa2d7535"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/blastwheel@4x.png",
+          "bytes": 589,
+          "sha256": "7264f56d477b755eb1c87d757fe394f7f213915f90c7acd03918f4433e16e6bd"
+        }
+      ]
+    },
+    {
+      "id": "xp_crystal",
+      "kind": "sprite",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            7,
+            4,
+            18,
+            21
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/xp_crystal@1x.png",
+          "bytes": 268,
+          "sha256": "214109f4d0c99bf5dc22e25127ad40702e688e39d3978bc00b517ff843725fb0"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/xp_crystal.ora",
+          "bytes": 1819,
+          "sha256": "5196a877e32746ac161a8070fee997dbee26e2ffacfc45d22848f11ee708b646"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/xp_crystal@2x.png",
+          "bytes": 348,
+          "sha256": "92df456fddf7ff22bf7a38c96716c4f0c30b1e69b099f72bcc935eb164b24f9d"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/xp_crystal@4x.png",
+          "bytes": 476,
+          "sha256": "fe3e1aababb9db6e7382ed80187240603f75fa3f528f7aa004e1c97b9f036dd2"
+        }
+      ]
+    },
+    {
+      "id": "scrap",
+      "kind": "sprite",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            4,
+            5,
+            20,
+            21
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/scrap@1x.png",
+          "bytes": 244,
+          "sha256": "c4f08e625c286c79d07e4fac2ea5a2b9b129f14182bc13e5c2289c73f27b183c"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/scrap.ora",
+          "bytes": 1682,
+          "sha256": "ec06b5149731cfdc70a1ec9787a5a30d2254579a62bdee6444e242f9e4ec69f2"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/scrap@2x.png",
+          "bytes": 290,
+          "sha256": "f2a8208c9b2134b4266bc657c40064ab528d589ecc26ff0aae133ff33fdd9646"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/scrap@4x.png",
+          "bytes": 392,
+          "sha256": "d0fae071c14b182edc32e11f2f8fc06d2a84915798f81814ce05aa32f93a9ce5"
+        }
+      ]
+    },
+    {
+      "id": "pulse",
+      "kind": "sprite",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            9,
+            3,
+            16,
+            20
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/pulse@1x.png",
+          "bytes": 163,
+          "sha256": "76d744dd00bede4a6822852946077bbad5576b024c58ee7f39be88859c4b62e3"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/pulse.ora",
+          "bytes": 1457,
+          "sha256": "ccbb47d7c2d0bf812d4b44e6111eb4d3aaa36fc4eda721d18da00dafc4ea3c91"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/pulse@2x.png",
+          "bytes": 240,
+          "sha256": "a8939feaa317b2d7176850770a10bd7a4c5776c8ed377da94e4ad4fd8f16cda5"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/pulse@4x.png",
+          "bytes": 329,
+          "sha256": "a3747282d3b118de5ddb06ab7679c8c9f4ce4acd17ffb24725ba6a30ad1dceba"
+        }
+      ]
+    },
+    {
+      "id": "threat",
+      "kind": "sprite",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            7,
+            5,
+            18,
+            20
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/threat@1x.png",
+          "bytes": 197,
+          "sha256": "dad63b80812d7cf24c74b22805f6cbd6244f3fadd9d186ee54b84c6e2b6c20fb"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/threat.ora",
+          "bytes": 1561,
+          "sha256": "b32846274af4641651a5b50cb2133e1129279ee2107d615711c353e3092731b1"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/threat@2x.png",
+          "bytes": 267,
+          "sha256": "762fc0ae8c4877d4d2156bafd05fa9579f12e74bc45405bb312521264c172432"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/threat@4x.png",
+          "bytes": 364,
+          "sha256": "a9731a74b0acb73fb3734a4f01ad8a9e10602105135c511ef93db3a29298f951"
+        }
+      ]
+    },
+    {
+      "id": "missile_body",
+      "kind": "sprite",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            4,
+            2,
+            21,
+            23
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/missile_body@1x.png",
+          "bytes": 288,
+          "sha256": "453ba475d888ecdbd1a267e40d5bd74af161bcc185566ca28b08e53a931ff2c3"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/missile_body.ora",
+          "bytes": 1904,
+          "sha256": "dc4ec96b5af2c422f36699afa535e0242314712933c2004d1d75798d1d70e2d3"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/missile_body@2x.png",
+          "bytes": 397,
+          "sha256": "ce3464f7f5a0f93984bd5037c00b64ddc8b4c0d027fb71d46fa3b9b6b673e024"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/missile_body@4x.png",
+          "bytes": 519,
+          "sha256": "bc46bf698a5ef1a787513fdc968aa42685f3ce0916fd0bbb1601d69c1edf5d3c"
+        }
+      ]
+    },
+    {
+      "id": "blade_body",
+      "kind": "sprite",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            3,
+            22,
+            22
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/blade_body@1x.png",
+          "bytes": 343,
+          "sha256": "bbcf510d43f1abc5e872de0ec955d352e682ffab088b906011aeea6705beb0b8"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/blade_body.ora",
+          "bytes": 2076,
+          "sha256": "ee1c67db0614065ce6da612893cc23bc92992268d0c1e174e55ef6fc6c65b266"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/blade_body@2x.png",
+          "bytes": 439,
+          "sha256": "761bfd8a8186716c0b078956bde94050bc6d010a9fd61d2765c666fe2eae3ca1"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/blade_body@4x.png",
+          "bytes": 583,
+          "sha256": "fae36183bfbcc8384b4496a8f96828230585a692ec21a5b54837c80eeb254c66"
+        }
+      ]
+    },
+    {
+      "id": "drone_body",
+      "kind": "sprite",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            6,
+            9,
+            19,
+            18
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/drone_body@1x.png",
+          "bytes": 233,
+          "sha256": "c243ced1695737810d100b62ecaf9055ab8deef69f43511852a4a4e33fa74f3b"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/drone_body.ora",
+          "bytes": 1638,
+          "sha256": "8e5ab733d8d7c63b0c7521c5afc076b775f285419a4151cf4cd335805bf3eeec"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/drone_body@2x.png",
+          "bytes": 285,
+          "sha256": "b62e335a1d9df9766233567f2047eb51318b67b4db847a6d3a08819bb3295251"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/drone_body@4x.png",
+          "bytes": 365,
+          "sha256": "413ad4cf07ae0b7534d03876b1ad609c7a058946fceabfb1c927d0b1605b689d"
+        }
+      ]
+    },
+    {
+      "id": "shield_piece",
+      "kind": "sprite",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            4,
+            22,
+            21
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/shield_piece@1x.png",
+          "bytes": 319,
+          "sha256": "4da04a20697f658c0b14d66a01e23e4323f2a8803806336944b502093ffadf1e"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/shield_piece.ora",
+          "bytes": 1921,
+          "sha256": "5ba9d10febf0f8de4e49ebb80618e70eb169e46857fd2465b1d301c70235ea2f"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/shield_piece@2x.png",
+          "bytes": 369,
+          "sha256": "9f8f4e7fa26f64dbbba3b4843ec561b7f05ac3cfa9b44e47c7c3f8d770e18e62"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/shield_piece@4x.png",
+          "bytes": 474,
+          "sha256": "abb45732776ff0f6f3d30cb4865289c344b05808bda7f63e51f49bfdf00882f3"
+        }
+      ]
+    },
+    {
+      "id": "beam_cap",
+      "kind": "sprite",
+      "nativeSize": [
+        24,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            4,
+            2,
+            21,
+            23
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/beam_cap@1x.png",
+          "bytes": 265,
+          "sha256": "9be8ce9f3e15f782d1c2090c52d587a8f6c5d16c2893a06d4abde5b18b7e639a"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/beam_cap.ora",
+          "bytes": 1810,
+          "sha256": "5162d15d2e7e5ab7d60ca337dd41de4452519395a615802af08775af8a414652"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/beam_cap@2x.png",
+          "bytes": 336,
+          "sha256": "08f2fac0a6317241c32db72f6756073b11fbb6d4873c9a04c68104b30384f086"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/beam_cap@4x.png",
+          "bytes": 475,
+          "sha256": "70542ade08a22e22c5a4e80bfe89ea69eca0b37cebd849fb6cfa2d40d60b7f51"
+        }
+      ]
+    },
+    {
+      "id": "explosion",
+      "kind": "atlas",
+      "nativeSize": [
+        144,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            10,
+            11,
+            14,
+            13
+          ],
+          "durationMs": 65
+        },
+        {
+          "x": 24,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            7,
+            7,
+            17,
+            15
+          ],
+          "durationMs": 65
+        },
+        {
+          "x": 48,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            3,
+            4,
+            20,
+            19
+          ],
+          "durationMs": 65
+        },
+        {
+          "x": 72,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            2,
+            2,
+            22,
+            21
+          ],
+          "durationMs": 65
+        },
+        {
+          "x": 96,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            4,
+            5,
+            19,
+            19
+          ],
+          "durationMs": 65
+        },
+        {
+          "x": 120,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            6,
+            6,
+            18,
+            11
+          ],
+          "durationMs": 65
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/explosion@1x.png",
+          "bytes": 1088,
+          "sha256": "816528f5efde1c9eaf10cbffc90ee690b7734f6d9d58aaf0037f022e1607389d"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/explosion.ora",
+          "bytes": 8032,
+          "sha256": "37c1a204e689934eec7bfded7bd3db5662148a75fa406dbecfc7604b05d3deb8"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/explosion@2x.png",
+          "bytes": 1245,
+          "sha256": "544b70e9a41bd2b5fd07d5c474b6b1e42e8acca646f5389574ce809f1c63f225"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/explosion@4x.png",
+          "bytes": 1670,
+          "sha256": "1aa009bcda930cee94b8fce86fe340a276195b9595ea8291af72a9b0b1e85e46"
+        }
+      ]
+    },
+    {
+      "id": "hit",
+      "kind": "atlas",
+      "nativeSize": [
+        96,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            10,
+            7,
+            17,
+            14
+          ],
+          "durationMs": 45
+        },
+        {
+          "x": 24,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            7,
+            6,
+            20,
+            18
+          ],
+          "durationMs": 45
+        },
+        {
+          "x": 48,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            5,
+            4,
+            22,
+            21
+          ],
+          "durationMs": 45
+        },
+        {
+          "x": 72,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            4,
+            3,
+            22,
+            22
+          ],
+          "durationMs": 45
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/hit@1x.png",
+          "bytes": 283,
+          "sha256": "ec33a8766c56bfe97426e057cdd4b35850e4c9c3ee298660a841c619fae855e0"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/hit.ora",
+          "bytes": 2856,
+          "sha256": "681e6ee3d1e59f0945eb47a12e6614f438fbe7d9e3afa87d5fbbaab823b1bd29"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/hit@2x.png",
+          "bytes": 419,
+          "sha256": "5e944ca51ab8d2539bd995d9cd2f7e23c95c0e54a4c847c3c2700446235cda17"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/hit@4x.png",
+          "bytes": 617,
+          "sha256": "e5981c44f9083af7604ef0bf1abba45b6530a4a15ccdf23126157f5db93fbec1"
+        }
+      ]
+    },
+    {
+      "id": "thruster",
+      "kind": "atlas",
+      "nativeSize": [
+        96,
+        24
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            7,
+            3,
+            18,
+            19
+          ],
+          "durationMs": 65,
+          "nozzleAnchor": [
+            12,
+            3
+          ],
+          "exhaustDirection": [
+            0,
+            1
+          ]
+        },
+        {
+          "x": 24,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            7,
+            3,
+            18,
+            22
+          ],
+          "durationMs": 65,
+          "nozzleAnchor": [
+            12,
+            3
+          ],
+          "exhaustDirection": [
+            0,
+            1
+          ]
+        },
+        {
+          "x": 48,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            7,
+            3,
+            18,
+            20
+          ],
+          "durationMs": 65,
+          "nozzleAnchor": [
+            12,
+            3
+          ],
+          "exhaustDirection": [
+            0,
+            1
+          ]
+        },
+        {
+          "x": 72,
+          "y": 0,
+          "width": 24,
+          "height": 24,
+          "anchor": [
+            12,
+            12
+          ],
+          "bounds": [
+            7,
+            3,
+            18,
+            23
+          ],
+          "durationMs": 65,
+          "nozzleAnchor": [
+            12,
+            3
+          ],
+          "exhaustDirection": [
+            0,
+            1
+          ]
+        }
+      ],
+      "alpha": "binary",
+      "runtimeScale": 2,
+      "files": [
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/thruster@1x.png",
+          "bytes": 366,
+          "sha256": "b8221540a97a20766b0ccfdb8fdd9a2e20b934b4e4ead85409d611d29bc897d7"
+        },
+        {
+          "path": "design/star-salvage/v06/production/weapons/source/thruster.ora",
+          "bytes": 3390,
+          "sha256": "af259b7fd37551c1aa8617e3396bbcb141d9415678c82b9e2e322c3b668fd379"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/thruster@2x.png",
+          "bytes": 497,
+          "sha256": "551750182511b0d10f31c27dc781681e4993a41d01b009323ee6918eb11559ce"
+        },
+        {
+          "path": "prototypes/salvage-survivor-demo/assets/weapons/thruster@4x.png",
+          "bytes": 729,
+          "sha256": "4517f30ac7445835c84b8ba3be7ce6a2a2c94fb2f0af3883504fa8bef626574d"
+        }
+      ],
+      "nozzleAnchor": [
+        12,
+        3
+      ],
+      "exhaustDirection": [
+        0,
+        1
+      ],
+      "shipForward": [
+        0,
+        -1
+      ],
+      "nozzleSpan": [
+        8,
+        16
+      ]
+    }
+  ]
+}

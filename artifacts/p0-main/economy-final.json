@@ -1,0 +1,1319 @@
+{
+  "stage": "Final live purchase simulation",
+  "method": "Deterministic live engine at 1-second steps, one purchase opportunity per 15 seconds, 4-minute exploration / 1-minute automated guarding, no ad reward or premium currency; intermediate plans are modelled choices, not user behaviour.",
+  "prices": [
+    {
+      "id": "case-0",
+      "costs": [
+        160,
+        480,
+        1100
+      ],
+      "effect": "柔光底座 → 星尘内景 → 珍藏铭牌与彩色轮廓光"
+    },
+    {
+      "id": "case-1",
+      "costs": [
+        160,
+        480,
+        1100
+      ],
+      "effect": "柔光底座 → 星尘内景 → 珍藏铭牌与彩色轮廓光"
+    },
+    {
+      "id": "case-2",
+      "costs": [
+        160,
+        480,
+        1100
+      ],
+      "effect": "柔光底座 → 星尘内景 → 珍藏铭牌与彩色轮廓光"
+    },
+    {
+      "id": "case-3",
+      "costs": [
+        160,
+        480,
+        1100
+      ],
+      "effect": "柔光底座 → 星尘内景 → 珍藏铭牌与彩色轮廓光"
+    },
+    {
+      "id": "case-4",
+      "costs": [
+        160,
+        480,
+        1100
+      ],
+      "effect": "柔光底座 → 星尘内景 → 珍藏铭牌与彩色轮廓光"
+    },
+    {
+      "id": "case-5",
+      "costs": [
+        160,
+        480,
+        1100
+      ],
+      "effect": "柔光底座 → 星尘内景 → 珍藏铭牌与彩色轮廓光"
+    },
+    {
+      "id": "habitat-0",
+      "costs": [
+        240,
+        700
+      ],
+      "effect": "栖息地暖灯 → 丰富纸植与微型景观"
+    },
+    {
+      "id": "habitat-1",
+      "costs": [
+        240,
+        700
+      ],
+      "effect": "栖息地暖灯 → 丰富纸植与微型景观"
+    },
+    {
+      "id": "habitat-2",
+      "costs": [
+        240,
+        700
+      ],
+      "effect": "栖息地暖灯 → 丰富纸植与微型景观"
+    },
+    {
+      "id": "light",
+      "costs": [
+        280,
+        720,
+        1400
+      ],
+      "effect": "逐级增添温暖环境光；可见亮度与灯带"
+    },
+    {
+      "id": "dock",
+      "costs": [
+        320,
+        850,
+        1600
+      ],
+      "effect": "每级增加 30 分钟离线承载，基地泊位亮灯"
+    },
+    {
+      "id": "guard-0",
+      "costs": [
+        280,
+        760,
+        1500
+      ],
+      "effect": "每级提高胶带减速或签收铃停顿时长；预演中可见光环"
+    },
+    {
+      "id": "guard-1",
+      "costs": [
+        280,
+        760,
+        1500
+      ],
+      "effect": "每级提高胶带减速或签收铃停顿时长；预演中可见光环"
+    },
+    {
+      "id": "receiver",
+      "costs": [
+        420,
+        1050,
+        2200
+      ],
+      "effect": "每级星际采样速度 +15%；增亮接收器，缩短真实扫描"
+    },
+    {
+      "id": "drive",
+      "costs": [
+        480,
+        1200,
+        2600
+      ],
+      "effect": "每级增加 20 分钟离线承载，星际采样速度 +5%"
+    },
+    {
+      "id": "deco-0",
+      "costs": [
+        450
+      ],
+      "effect": "星窗增加暖光像素串灯"
+    },
+    {
+      "id": "deco-1",
+      "costs": [
+        900
+      ],
+      "effect": "入口增加纸叶植物景观"
+    },
+    {
+      "id": "deco-2",
+      "costs": [
+        1500
+      ],
+      "effect": "收藏室增添 LR–01 纪念铭牌"
+    },
+    {
+      "id": "deco-3",
+      "costs": [
+        2400
+      ],
+      "effect": "星窗增加缓慢运行的微型星仪"
+    }
+  ],
+  "profiles": [
+    {
+      "plan": "no-spend",
+      "oldBalance": false,
+      "coreFinishedMinute": null,
+      "rows": [
+        {
+          "minute": 0,
+          "opening": 120,
+          "income": 0,
+          "spent": 0,
+          "remaining": 120,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 5,
+          "opening": 120,
+          "income": 178,
+          "spent": 0,
+          "remaining": 298,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 15,
+          "opening": 120,
+          "income": 540,
+          "spent": 0,
+          "remaining": 660,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 30,
+          "opening": 120,
+          "income": 1080,
+          "spent": 0,
+          "remaining": 1200,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 60,
+          "opening": 120,
+          "income": 2160,
+          "spent": 0,
+          "remaining": 2280,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 120,
+          "opening": 120,
+          "income": 4320,
+          "spent": 0,
+          "remaining": 4440,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        }
+      ]
+    },
+    {
+      "plan": "old-workshop",
+      "oldBalance": false,
+      "coreFinishedMinute": 25.25,
+      "rows": [
+        {
+          "minute": 0,
+          "opening": 120,
+          "income": 0,
+          "spent": 0,
+          "remaining": 120,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 5,
+          "opening": 120,
+          "income": 322,
+          "spent": 411,
+          "remaining": 31,
+          "core": {
+            "radar": 2,
+            "scanner": 2,
+            "recycler": 2,
+            "cargo": 1
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 15,
+          "opening": 120,
+          "income": 1459,
+          "spent": 1450,
+          "remaining": 129,
+          "core": {
+            "radar": 3,
+            "scanner": 4,
+            "recycler": 4,
+            "cargo": 3
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 30,
+          "opening": 120,
+          "income": 4238,
+          "spent": 3396,
+          "remaining": 962,
+          "core": {
+            "radar": 5,
+            "scanner": 5,
+            "recycler": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 60,
+          "opening": 120,
+          "income": 10304,
+          "spent": 3396,
+          "remaining": 7028,
+          "core": {
+            "radar": 5,
+            "scanner": 5,
+            "recycler": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 120,
+          "opening": 120,
+          "income": 22436,
+          "spent": 3396,
+          "remaining": 19160,
+          "core": {
+            "radar": 5,
+            "scanner": 5,
+            "recycler": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {}
+        }
+      ]
+    },
+    {
+      "plan": "gentle-collector",
+      "oldBalance": false,
+      "coreFinishedMinute": null,
+      "rows": [
+        {
+          "minute": 0,
+          "opening": 120,
+          "income": 0,
+          "spent": 0,
+          "remaining": 120,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 5,
+          "opening": 120,
+          "income": 322,
+          "spent": 411,
+          "remaining": 31,
+          "core": {
+            "radar": 2,
+            "scanner": 2,
+            "recycler": 2,
+            "cargo": 1
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 15,
+          "opening": 120,
+          "income": 1180,
+          "spent": 1128,
+          "remaining": 172,
+          "core": {
+            "radar": 2,
+            "scanner": 2,
+            "recycler": 2,
+            "cargo": 2
+          },
+          "newUpgrades": {
+            "case-0": 1,
+            "case-1": 1,
+            "case-2": 1,
+            "case-3": 1
+          }
+        },
+        {
+          "minute": 30,
+          "opening": 120,
+          "income": 2488,
+          "spent": 2448,
+          "remaining": 160,
+          "core": {
+            "radar": 2,
+            "scanner": 2,
+            "recycler": 2,
+            "cargo": 2
+          },
+          "newUpgrades": {
+            "case-0": 1,
+            "case-1": 1,
+            "case-2": 1,
+            "case-3": 1,
+            "case-4": 1,
+            "case-5": 1,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "habitat-2": 1,
+            "light": 1
+          }
+        },
+        {
+          "minute": 60,
+          "opening": 120,
+          "income": 5076,
+          "spent": 4818,
+          "remaining": 378,
+          "core": {
+            "radar": 2,
+            "scanner": 2,
+            "recycler": 2,
+            "cargo": 2
+          },
+          "newUpgrades": {
+            "case-0": 2,
+            "case-1": 2,
+            "case-2": 2,
+            "case-3": 2,
+            "case-4": 1,
+            "case-5": 1,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "habitat-2": 1,
+            "light": 1,
+            "deco-0": 1
+          }
+        },
+        {
+          "minute": 120,
+          "opening": 120,
+          "income": 10280,
+          "spent": 9698,
+          "remaining": 702,
+          "core": {
+            "radar": 2,
+            "scanner": 2,
+            "recycler": 2,
+            "cargo": 2
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 2,
+            "case-2": 2,
+            "case-3": 2,
+            "case-4": 2,
+            "case-5": 2,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "habitat-2": 2,
+            "light": 2,
+            "deco-0": 1
+          }
+        }
+      ]
+    },
+    {
+      "plan": "stellar-research",
+      "oldBalance": false,
+      "coreFinishedMinute": 35.75,
+      "rows": [
+        {
+          "minute": 0,
+          "opening": 120,
+          "income": 0,
+          "spent": 0,
+          "remaining": 120,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 5,
+          "opening": 120,
+          "income": 322,
+          "spent": 411,
+          "remaining": 31,
+          "core": {
+            "radar": 2,
+            "scanner": 2,
+            "recycler": 2,
+            "cargo": 1
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 15,
+          "opening": 120,
+          "income": 1459,
+          "spent": 1450,
+          "remaining": 129,
+          "core": {
+            "radar": 3,
+            "scanner": 4,
+            "recycler": 4,
+            "cargo": 3
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 30,
+          "opening": 120,
+          "income": 3819,
+          "spent": 3572,
+          "remaining": 367,
+          "core": {
+            "radar": 4,
+            "scanner": 4,
+            "recycler": 4,
+            "cargo": 4
+          },
+          "newUpgrades": {
+            "case-0": 1,
+            "case-1": 1,
+            "case-2": 1,
+            "case-3": 1,
+            "case-4": 1,
+            "case-5": 1,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "habitat-2": 1
+          }
+        },
+        {
+          "minute": 60,
+          "opening": 120,
+          "income": 9822,
+          "spent": 9506,
+          "remaining": 436,
+          "core": {
+            "radar": 5,
+            "scanner": 5,
+            "recycler": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 2,
+            "case-1": 2,
+            "case-2": 2,
+            "case-3": 2,
+            "case-4": 1,
+            "case-5": 1,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "habitat-2": 1,
+            "light": 1,
+            "guard-0": 1,
+            "guard-1": 1,
+            "dock": 1,
+            "receiver": 1,
+            "deco-0": 1,
+            "drive": 1
+          }
+        },
+        {
+          "minute": 120,
+          "opening": 120,
+          "income": 21954,
+          "spent": 20906,
+          "remaining": 1168,
+          "core": {
+            "radar": 5,
+            "scanner": 5,
+            "recycler": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "case-2": 3,
+            "case-3": 2,
+            "case-4": 2,
+            "case-5": 2,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "habitat-2": 2,
+            "light": 2,
+            "guard-0": 2,
+            "guard-1": 2,
+            "dock": 2,
+            "receiver": 2,
+            "deco-0": 1,
+            "drive": 1,
+            "deco-1": 1
+          }
+        }
+      ]
+    },
+    {
+      "plan": "museum-guardian",
+      "oldBalance": false,
+      "coreFinishedMinute": 35.75,
+      "rows": [
+        {
+          "minute": 0,
+          "opening": 120,
+          "income": 0,
+          "spent": 0,
+          "remaining": 120,
+          "core": {
+            "radar": 0,
+            "scanner": 0,
+            "recycler": 0,
+            "cargo": 0
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 5,
+          "opening": 120,
+          "income": 322,
+          "spent": 411,
+          "remaining": 31,
+          "core": {
+            "radar": 2,
+            "scanner": 2,
+            "recycler": 2,
+            "cargo": 1
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 15,
+          "opening": 120,
+          "income": 1459,
+          "spent": 1450,
+          "remaining": 129,
+          "core": {
+            "radar": 3,
+            "scanner": 4,
+            "recycler": 4,
+            "cargo": 3
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 30,
+          "opening": 120,
+          "income": 3819,
+          "spent": 3572,
+          "remaining": 367,
+          "core": {
+            "radar": 4,
+            "scanner": 4,
+            "recycler": 4,
+            "cargo": 4
+          },
+          "newUpgrades": {
+            "case-0": 1,
+            "case-1": 1,
+            "case-2": 1,
+            "case-3": 1,
+            "case-4": 1,
+            "case-5": 1,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "habitat-2": 1
+          }
+        },
+        {
+          "minute": 60,
+          "opening": 120,
+          "income": 9822,
+          "spent": 9506,
+          "remaining": 436,
+          "core": {
+            "radar": 5,
+            "scanner": 5,
+            "recycler": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 2,
+            "case-1": 2,
+            "case-2": 2,
+            "case-3": 2,
+            "case-4": 1,
+            "case-5": 1,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "habitat-2": 1,
+            "guard-0": 1,
+            "guard-1": 1,
+            "light": 1,
+            "dock": 1,
+            "receiver": 1,
+            "deco-0": 1,
+            "drive": 1
+          }
+        },
+        {
+          "minute": 120,
+          "opening": 120,
+          "income": 21954,
+          "spent": 20906,
+          "remaining": 1168,
+          "core": {
+            "radar": 5,
+            "scanner": 5,
+            "recycler": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "case-2": 3,
+            "case-3": 2,
+            "case-4": 2,
+            "case-5": 2,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "habitat-2": 2,
+            "guard-0": 2,
+            "guard-1": 2,
+            "light": 2,
+            "dock": 2,
+            "receiver": 2,
+            "deco-0": 1,
+            "drive": 1,
+            "deco-1": 1
+          }
+        }
+      ]
+    }
+  ],
+  "legacy": [
+    {
+      "plan": "museum-guardian",
+      "oldBalance": true,
+      "coreFinishedMinute": 0,
+      "rows": [
+        {
+          "minute": 0,
+          "opening": 5000,
+          "income": 0,
+          "spent": 0,
+          "remaining": 5000,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 5,
+          "opening": 5000,
+          "income": 1008,
+          "spent": 5570,
+          "remaining": 438,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 2,
+            "case-1": 1,
+            "guard-0": 1,
+            "guard-1": 1,
+            "case-2": 1,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "case-3": 1,
+            "light": 1,
+            "habitat-2": 1,
+            "dock": 1,
+            "receiver": 1,
+            "case-4": 1,
+            "drive": 1,
+            "deco-0": 1,
+            "case-5": 1,
+            "deco-1": 1
+          }
+        },
+        {
+          "minute": 15,
+          "opening": 5000,
+          "income": 3030,
+          "spent": 7490,
+          "remaining": 540,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 2,
+            "case-1": 2,
+            "guard-0": 1,
+            "guard-1": 1,
+            "case-2": 2,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "case-3": 2,
+            "light": 1,
+            "habitat-2": 1,
+            "dock": 1,
+            "receiver": 1,
+            "case-4": 2,
+            "drive": 1,
+            "deco-0": 1,
+            "case-5": 1,
+            "deco-1": 1
+          }
+        },
+        {
+          "minute": 30,
+          "opening": 5000,
+          "income": 6066,
+          "spent": 10790,
+          "remaining": 276,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 2,
+            "case-1": 2,
+            "guard-0": 1,
+            "guard-1": 1,
+            "case-2": 2,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 2,
+            "light": 2,
+            "habitat-2": 2,
+            "dock": 1,
+            "receiver": 1,
+            "case-4": 2,
+            "drive": 1,
+            "deco-0": 1,
+            "case-5": 2,
+            "deco-1": 1
+          }
+        },
+        {
+          "minute": 60,
+          "opening": 5000,
+          "income": 12132,
+          "spent": 16410,
+          "remaining": 722,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 2,
+            "guard-1": 2,
+            "case-2": 2,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 2,
+            "light": 2,
+            "habitat-2": 2,
+            "dock": 2,
+            "receiver": 2,
+            "case-4": 2,
+            "drive": 1,
+            "deco-0": 1,
+            "case-5": 2,
+            "deco-1": 1
+          }
+        },
+        {
+          "minute": 120,
+          "opening": 5000,
+          "income": 24264,
+          "spent": 27910,
+          "remaining": 1354,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 3,
+            "guard-1": 3,
+            "case-2": 3,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 3,
+            "light": 3,
+            "habitat-2": 2,
+            "dock": 2,
+            "receiver": 2,
+            "case-4": 3,
+            "drive": 2,
+            "deco-0": 1,
+            "case-5": 3,
+            "deco-1": 1,
+            "deco-2": 1
+          }
+        }
+      ]
+    },
+    {
+      "plan": "museum-guardian",
+      "oldBalance": true,
+      "coreFinishedMinute": 0,
+      "rows": [
+        {
+          "minute": 0,
+          "opening": 20000,
+          "income": 0,
+          "spent": 0,
+          "remaining": 20000,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 5,
+          "opening": 20000,
+          "income": 1008,
+          "spent": 9470,
+          "remaining": 11538,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 2,
+            "case-1": 1,
+            "guard-0": 1,
+            "guard-1": 1,
+            "case-2": 1,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "case-3": 1,
+            "light": 1,
+            "habitat-2": 1,
+            "dock": 1,
+            "receiver": 1,
+            "case-4": 1,
+            "drive": 1,
+            "deco-0": 1,
+            "case-5": 1,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        },
+        {
+          "minute": 15,
+          "opening": 20000,
+          "income": 3030,
+          "spent": 22610,
+          "remaining": 420,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 2,
+            "guard-1": 2,
+            "case-2": 3,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 2,
+            "light": 2,
+            "habitat-2": 2,
+            "dock": 2,
+            "receiver": 2,
+            "case-4": 2,
+            "drive": 2,
+            "deco-0": 1,
+            "case-5": 2,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        },
+        {
+          "minute": 30,
+          "opening": 20000,
+          "income": 6066,
+          "spent": 25910,
+          "remaining": 156,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 2,
+            "guard-1": 2,
+            "case-2": 3,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 3,
+            "light": 2,
+            "habitat-2": 2,
+            "dock": 2,
+            "receiver": 2,
+            "case-4": 3,
+            "drive": 2,
+            "deco-0": 1,
+            "case-5": 3,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        },
+        {
+          "minute": 60,
+          "opening": 20000,
+          "income": 12132,
+          "spent": 31910,
+          "remaining": 222,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 3,
+            "guard-1": 3,
+            "case-2": 3,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 3,
+            "light": 3,
+            "habitat-2": 2,
+            "dock": 3,
+            "receiver": 2,
+            "case-4": 3,
+            "drive": 2,
+            "deco-0": 1,
+            "case-5": 3,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        },
+        {
+          "minute": 120,
+          "opening": 20000,
+          "income": 24264,
+          "spent": 36710,
+          "remaining": 7554,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 3,
+            "guard-1": 3,
+            "case-2": 3,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 3,
+            "light": 3,
+            "habitat-2": 2,
+            "dock": 3,
+            "receiver": 3,
+            "case-4": 3,
+            "drive": 3,
+            "deco-0": 1,
+            "case-5": 3,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        }
+      ]
+    },
+    {
+      "plan": "museum-guardian",
+      "oldBalance": true,
+      "coreFinishedMinute": 0,
+      "rows": [
+        {
+          "minute": 0,
+          "opening": 50000,
+          "income": 0,
+          "spent": 0,
+          "remaining": 50000,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {}
+        },
+        {
+          "minute": 5,
+          "opening": 50000,
+          "income": 1008,
+          "spent": 9470,
+          "remaining": 41538,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 2,
+            "case-1": 1,
+            "guard-0": 1,
+            "guard-1": 1,
+            "case-2": 1,
+            "habitat-0": 1,
+            "habitat-1": 1,
+            "case-3": 1,
+            "light": 1,
+            "habitat-2": 1,
+            "dock": 1,
+            "receiver": 1,
+            "case-4": 1,
+            "drive": 1,
+            "deco-0": 1,
+            "case-5": 1,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        },
+        {
+          "minute": 15,
+          "opening": 50000,
+          "income": 3030,
+          "spent": 36710,
+          "remaining": 16320,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 3,
+            "guard-1": 3,
+            "case-2": 3,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 3,
+            "light": 3,
+            "habitat-2": 2,
+            "dock": 3,
+            "receiver": 3,
+            "case-4": 3,
+            "drive": 3,
+            "deco-0": 1,
+            "case-5": 3,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        },
+        {
+          "minute": 30,
+          "opening": 50000,
+          "income": 6066,
+          "spent": 36710,
+          "remaining": 19356,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 3,
+            "guard-1": 3,
+            "case-2": 3,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 3,
+            "light": 3,
+            "habitat-2": 2,
+            "dock": 3,
+            "receiver": 3,
+            "case-4": 3,
+            "drive": 3,
+            "deco-0": 1,
+            "case-5": 3,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        },
+        {
+          "minute": 60,
+          "opening": 50000,
+          "income": 12132,
+          "spent": 36710,
+          "remaining": 25422,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 3,
+            "guard-1": 3,
+            "case-2": 3,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 3,
+            "light": 3,
+            "habitat-2": 2,
+            "dock": 3,
+            "receiver": 3,
+            "case-4": 3,
+            "drive": 3,
+            "deco-0": 1,
+            "case-5": 3,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        },
+        {
+          "minute": 120,
+          "opening": 50000,
+          "income": 24264,
+          "spent": 36710,
+          "remaining": 37554,
+          "core": {
+            "scanner": 5,
+            "recycler": 5,
+            "radar": 5,
+            "cargo": 5
+          },
+          "newUpgrades": {
+            "case-0": 3,
+            "case-1": 3,
+            "guard-0": 3,
+            "guard-1": 3,
+            "case-2": 3,
+            "habitat-0": 2,
+            "habitat-1": 2,
+            "case-3": 3,
+            "light": 3,
+            "habitat-2": 2,
+            "dock": 3,
+            "receiver": 3,
+            "case-4": 3,
+            "drive": 3,
+            "deco-0": 1,
+            "case-5": 3,
+            "deco-1": 1,
+            "deco-2": 1,
+            "deco-3": 1
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,407 @@
+{
+  "version": "v039-art-1",
+  "status": "candidate-awaiting-root-render-and-user-visual-review",
+  "mode": "built-in image_gen.imagegen",
+  "canvas": {
+    "width": 192,
+    "height": 192
+  },
+  "baseTransforms": {
+    "tape": {
+      "source": "assets/runtime/tape.webp",
+      "sourceSha256": "d17cdb2293b53af0a7e5232a6dea007f9a3620d7c5d5d3f0cb3c2170e59fe3b1",
+      "sourceSize": {
+        "width": 192,
+        "height": 169
+      },
+      "scale": 1,
+      "x": 0,
+      "y": 11.5
+    },
+    "bell": {
+      "source": "assets/runtime/bell.webp",
+      "sourceSha256": "9c759d1dee8b60a11b08682a789930b2d3974adf8da112104f4fba8f2d0e411a",
+      "sourceSize": {
+        "width": 256,
+        "height": 241
+      },
+      "scale": 0.75,
+      "x": 0,
+      "y": 5.625
+    }
+  },
+  "sources": {
+    "tape-adhesive-fibers-v1.png": {
+      "file": "assets/source/v039/tape-adhesive-fibers-v1.png",
+      "sha256": "5d021538cb017178622625016e3869f1aff77b6ae55d7ae705079fa0b5b7a4b9",
+      "bytes": 246589,
+      "width": 1774,
+      "height": 887,
+      "alpha": {
+        "zero": 1483655,
+        "solid": 35735,
+        "partial": 54148
+      },
+      "visibleBounds": {
+        "x": 268,
+        "y": 237,
+        "width": 1235,
+        "height": 433,
+        "count": 52664
+      }
+    },
+    "tape-adhesive-fibers-v2.png": {
+      "file": "assets/source/v039/tape-adhesive-fibers-v2.png",
+      "sha256": "da753d2d06f1bb4cf8a2e2db445e14a30f3d544cca191e41316ca62f16232dc0",
+      "bytes": 1682118,
+      "width": 2048,
+      "height": 768,
+      "alpha": {
+        "zero": 1031218,
+        "solid": 438013,
+        "partial": 103633
+      },
+      "visibleBounds": {
+        "x": 203,
+        "y": 95,
+        "width": 1610,
+        "height": 560,
+        "count": 496602
+      }
+    },
+    "bell-corrosion-v1.png": {
+      "file": "assets/source/v039/bell-corrosion-v1.png",
+      "sha256": "05b650acb4c5d401b0fb4993bb9a38e415857fe99897f6f37101beb688438f37",
+      "bytes": 289324,
+      "width": 1983,
+      "height": 793,
+      "alpha": {
+        "zero": 1460842,
+        "solid": 88819,
+        "partial": 22858
+      },
+      "visibleBounds": {
+        "x": 411,
+        "y": 249,
+        "width": 1153,
+        "height": 338,
+        "count": 97229
+      }
+    },
+    "restoration-tweezers-v1.png": {
+      "file": "assets/source/v039/restoration-tweezers-v1.png",
+      "sha256": "3f8e84756f59c6a451ec34b85af28afa0cb608829c16f616f870d5ecf68f15ee",
+      "bytes": 1226094,
+      "width": 1536,
+      "height": 1024,
+      "alpha": {
+        "zero": 1353585,
+        "solid": 188202,
+        "partial": 31077
+      },
+      "visibleBounds": {
+        "x": 139,
+        "y": 63,
+        "width": 1315,
+        "height": 915,
+        "count": 197285
+      }
+    },
+    "restoration-screwdriver-v1.png": {
+      "file": "assets/source/v039/restoration-screwdriver-v1.png",
+      "sha256": "122225eed5ae3c987fafae267e4ce7294de3c2fb18d953b0d3911a13d6605df9",
+      "bytes": 1169716,
+      "width": 1536,
+      "height": 1024,
+      "alpha": {
+        "zero": 1373639,
+        "solid": 167254,
+        "partial": 31971
+      },
+      "visibleBounds": {
+        "x": 48,
+        "y": 48,
+        "width": 1445,
+        "height": 941,
+        "count": 173933
+      }
+    }
+  },
+  "layers": {
+    "tapeAdhesiveDust": {
+      "file": "assets/runtime/v039/tape-adhesive-dust.webp",
+      "bytes": 2238,
+      "sha256": "741d7c816a3cfc0a6fe48d86d8f55a6742cf570b1a2a47028481435dae4bd7c5",
+      "width": 192,
+      "height": 192,
+      "alpha": {
+        "zero": 36192,
+        "solid": 565,
+        "partial": 107
+      },
+      "visibleBounds": {
+        "x": 15,
+        "y": 109,
+        "width": 149,
+        "height": 47,
+        "count": 646
+      },
+      "source": "tape-adhesive-fibers-v2.png",
+      "sourceRect": {
+        "left": 203,
+        "top": 95,
+        "width": 1610,
+        "height": 560
+      },
+      "placements": [
+        {
+          "x": 13,
+          "y": 138,
+          "width": 52
+        },
+        {
+          "x": 139,
+          "y": 108,
+          "width": 25
+        }
+      ],
+      "contactTargets": [
+        {
+          "x": 38,
+          "y": 150
+        },
+        {
+          "x": 151,
+          "y": 118
+        }
+      ],
+      "material": "Removable sticky paper lint and adhesive dust; never reused as soil or rust."
+    },
+    "tapeTailDust": {
+      "file": "assets/runtime/v039/tape-adhesive-dust-tail.webp",
+      "bytes": 1848,
+      "sha256": "9206f8689bc6bdd0ddb4ab331825e83285c0fe04b9c3f359dd0c473b53a5ca21",
+      "width": 192,
+      "height": 192,
+      "alpha": {
+        "zero": 36313,
+        "solid": 467,
+        "partial": 84
+      },
+      "visibleBounds": {
+        "x": 15,
+        "y": 138,
+        "width": 49,
+        "height": 18,
+        "count": 531
+      },
+      "source": "tape-adhesive-fibers-v2.png",
+      "sourceRect": {
+        "left": 203,
+        "top": 95,
+        "width": 1610,
+        "height": 560
+      },
+      "contactTargets": [
+        {
+          "x": 38,
+          "y": 150
+        }
+      ],
+      "movementRule": "Follow only the original tape tail/loose-end rig, sharing its mask and pivot."
+    },
+    "tapeRollDust": {
+      "file": "assets/runtime/v039/tape-adhesive-dust-roll.webp",
+      "bytes": 594,
+      "sha256": "dd49f929f4feee9b9bc30e2a3349425a7f74f33e55f629dc60fca1830f13490b",
+      "width": 192,
+      "height": 192,
+      "alpha": {
+        "zero": 36743,
+        "solid": 98,
+        "partial": 23
+      },
+      "visibleBounds": {
+        "x": 139,
+        "y": 109,
+        "width": 25,
+        "height": 8,
+        "count": 115
+      },
+      "source": "tape-adhesive-fibers-v2.png",
+      "sourceRect": {
+        "left": 203,
+        "top": 95,
+        "width": 1610,
+        "height": 560
+      },
+      "contactTargets": [
+        {
+          "x": 151,
+          "y": 118
+        }
+      ],
+      "movementRule": "Stay on the fixed roll outer wall. Never follow the loose tail rotation."
+    },
+    "bellRust": {
+      "file": "assets/runtime/v039/bell-rust.webp",
+      "bytes": 2798,
+      "sha256": "4d7784456ba515d2e15e93014c8f1579f51626b2fb07b6579a7263a39c8fe5fb",
+      "width": 192,
+      "height": 192,
+      "alpha": {
+        "zero": 36041,
+        "solid": 683,
+        "partial": 140
+      },
+      "visibleBounds": {
+        "x": 44,
+        "y": 48,
+        "width": 97,
+        "height": 89,
+        "count": 761
+      },
+      "source": "bell-corrosion-v1.png",
+      "sourceRect": {
+        "left": 411,
+        "top": 249,
+        "width": 1153,
+        "height": 338
+      },
+      "placements": [
+        {
+          "x": 42,
+          "y": 108,
+          "width": 99
+        },
+        {
+          "x": 76,
+          "y": 47,
+          "width": 25
+        }
+      ],
+      "contactTargets": [
+        {
+          "x": 91,
+          "y": 129
+        },
+        {
+          "x": 128,
+          "y": 127
+        },
+        {
+          "x": 87,
+          "y": 56
+        }
+      ],
+      "material": "Brass oxidation crust with pitting; never reused as mud or generic scratch lines."
+    }
+  },
+  "tools": {
+    "tweezers": {
+      "file": "assets/runtime/v039/restoration-tweezers.webp",
+      "bytes": 12148,
+      "sha256": "ad2045fa3ec9c7794e6cda8cfb6cfa7753a57018bf1f290df5b904bfea8eb6dc",
+      "width": 192,
+      "height": 134,
+      "alpha": {
+        "zero": 21084,
+        "solid": 4011,
+        "partial": 633
+      },
+      "visibleBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 192,
+        "height": 134,
+        "count": 4211
+      },
+      "source": "restoration-tweezers-v1.png",
+      "sourceRect": {
+        "left": 139,
+        "top": 63,
+        "width": 1315,
+        "height": 915
+      },
+      "contact": {
+        "x": 7.008365019011407,
+        "y": 129.1672131147541
+      },
+      "pivot": {
+        "x": 161.48441064638783,
+        "y": 21.527868852459015
+      },
+      "contactDefinition": "Grip center between the two bent tips. The fiber is held in the transparent jaw gap; do not align the handle with the target.",
+      "suggestedWorldWidth": 24,
+      "sourceContact": {
+        "x": 187,
+        "y": 945
+      },
+      "sourcePivot": {
+        "x": 1245,
+        "y": 210
+      }
+    },
+    "screwdriver": {
+      "file": "assets/runtime/v039/restoration-screwdriver.webp",
+      "bytes": 9558,
+      "sha256": "c3343f120257587f829e3bccdb5c49679ba922411c95a5f98ce46ca088218863",
+      "width": 192,
+      "height": 125,
+      "alpha": {
+        "zero": 20504,
+        "solid": 2939,
+        "partial": 557
+      },
+      "visibleBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 192,
+        "height": 125,
+        "count": 3068
+      },
+      "source": "restoration-screwdriver-v1.png",
+      "sourceRect": {
+        "left": 48,
+        "top": 48,
+        "width": 1445,
+        "height": 941
+      },
+      "contact": {
+        "x": 2.2588235294117647,
+        "y": 122.07757704569606
+      },
+      "pivot": {
+        "x": 164.0968858131488,
+        "y": 23.910733262486715
+      },
+      "contactDefinition": "Solid leading flat blade edge at the lower-left end; align this point with the base fastener.",
+      "suggestedWorldWidth": 24,
+      "sourceContact": {
+        "x": 65,
+        "y": 967
+      },
+      "sourcePivot": {
+        "x": 1283,
+        "y": 228
+      }
+    }
+  },
+  "reuse": {
+    "receipt": [
+      "assets/runtime/v034/receipt-paper-damaged.webp",
+      "assets/runtime/v034/receipt-surviving-paper-mask.webp",
+      "assets/runtime/v034-refine/receipt-patch-back.webp",
+      "assets/runtime/v034-refine/receipt-patch-front.webp"
+    ],
+    "softBrush": "assets/runtime/v034-refine/registration.json#tools.brush",
+    "spatula": "assets/runtime/v034-refine/registration.json#tools.spatula",
+    "identityRule": "The approved original receipt gaps/ink, amber tape and brass bell remain the object. Generated materials are independent overlays, never replacement full-object pictures."
+  },
+  "reviewBoundaries": [
+    "This JSON registers textures; it is not proof of actual animation, integration, phone performance or user approval.",
+    "Tool contact and removal masks must be verified by the root agent in the actual Canvas renderer.",
+    "Corrosion is visually removable crust; do not imply restoration erased the history, star engraving or missing receipt records.",
+    "The bell has no physical lamp. Red RGB at original (215,108) has alpha 1/255, a transparent-color artifact between ribbons; never draw a dark/bright lamp there."
+  ]
+}

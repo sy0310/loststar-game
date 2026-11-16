@@ -1,0 +1,353 @@
+{
+  "schema": 1,
+  "preservedPrefix": 365,
+  "baseline": "9c82a78832de9d84d7b9a1c5da2a735b10f5aaca",
+  "added": 6,
+  "total": 371,
+  "rows": [
+    {
+      "id": "SALVAGE068-LAUNCH",
+      "parent": null,
+      "requirement": "起始武器选择使用独立整备面板、六张真实武器图片卡、选中物件大图、进化／融合方向和明确200零件预约。选卡不扣款，确认后事务扣款，取消一次全额退回，下局只消费一次预约，默认主炮免费。",
+      "acceptanceCriteria": "起始武器选择使用独立整备面板、六张真实武器图片卡、选中物件大图、进化／融合方向和明确200零件预约。选卡不扣款，确认后事务扣款，取消一次全额退回，下局只消费一次预约，默认主炮免费。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v068/README.md",
+          "startLine": 7,
+          "endLine": 7
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v068.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v068-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v068/production/fusion/manifest.json",
+        "design/star-salvage/v068/store-media/manifest.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "十五分钟生存、飞船整备、下局武器与真实融合"
+        }
+      ],
+      "checks": [
+        "survivor-v068-model",
+        "survivor-v068-browser",
+        "survivor-v068-economy",
+        "survivor-v068-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v068/verification.json",
+        "design/star-salvage/v068/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Promotional candidates await user approval. Finite engineering still yields net cash accumulation after max.",
+      "nextAction": "Scan TapTap479820 /5066bd0. New-run combat7; continue legacy runs under saved rules.",
+      "reviewBasis": "Frozen84files/74PNG,105model,672full HTTP,80claims,20legacy repeats,38audio,180policies,12old ZIP migrations,ordinary656.33sec defeat with earned next-run preparations,QA actual fusion damage and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "5066bd01154f2901305e5263b6c048b39dce109f",
+        "zipSha256": "52b756b77bb1f4be236bd51eb70e9f2cfaed8a36e2ab6774c2d51893744b697a",
+        "previewZipSha256": "5a84086be31d767ddb5c399d487e69addd4d1a5d9bf4a1035834173b288e8df4",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 479820,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE068-FUSION",
+      "parent": null,
+      "requirement": "四条融合保留真实伤害、冷却与命中。星环奇点使用独立吸积盘与反向旋转晶环，具有生成、牵引和收缩爆发阶段。雷暴蜂群有实体电极与副机导电连接，爆裂刃环有机械轮毂及真实刀轨，星舰壁垒保留炮座并强化轨炮能流。真实动态与普通游玩分开留证。",
+      "acceptanceCriteria": "四条融合保留真实伤害、冷却与命中。星环奇点使用独立吸积盘与反向旋转晶环，具有生成、牵引和收缩爆发阶段。雷暴蜂群有实体电极与副机导电连接，爆裂刃环有机械轮毂及真实刀轨，星舰壁垒保留炮座并强化轨炮能流。真实动态与普通游玩分开留证。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v068/README.md",
+          "startLine": 8,
+          "endLine": 8
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v068.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v068-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v068/production/fusion/manifest.json",
+        "design/star-salvage/v068/store-media/manifest.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "十五分钟生存、飞船整备、下局武器与真实融合"
+        }
+      ],
+      "checks": [
+        "survivor-v068-model",
+        "survivor-v068-browser",
+        "survivor-v068-economy",
+        "survivor-v068-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v068/verification.json",
+        "design/star-salvage/v068/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Promotional candidates await user approval. Finite engineering still yields net cash accumulation after max.",
+      "nextAction": "Scan TapTap479820 /5066bd0. New-run combat7; continue legacy runs under saved rules.",
+      "reviewBasis": "Frozen84files/74PNG,105model,672full HTTP,80claims,20legacy repeats,38audio,180policies,12old ZIP migrations,ordinary656.33sec defeat with earned next-run preparations,QA actual fusion damage and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "5066bd01154f2901305e5263b6c048b39dce109f",
+        "zipSha256": "52b756b77bb1f4be236bd51eb70e9f2cfaed8a36e2ab6774c2d51893744b697a",
+        "previewZipSha256": "5a84086be31d767ddb5c399d487e69addd4d1a5d9bf4a1035834173b288e8df4",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 479820,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE068-ECONOMY",
+      "parent": null,
+      "requirement": "根据真实战斗样本重算整备费用。新档船体与主炮三阶合计7000，三条六阶工程合计36450，全部永久43450。已有等级、余额及权益保留，新费率只用于后续购买。0／5／15／30／60／120分钟账本覆盖新档和27049旧钱包，前台收费、重复输入、失败回滚与实际收入逐项核对。",
+      "acceptanceCriteria": "根据真实战斗样本重算整备费用。新档船体与主炮三阶合计7000，三条六阶工程合计36450，全部永久43450。已有等级、余额及权益保留，新费率只用于后续购买。0／5／15／30／60／120分钟账本覆盖新档和27049旧钱包，前台收费、重复输入、失败回滚与实际收入逐项核对。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v068/README.md",
+          "startLine": 9,
+          "endLine": 9
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v068.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v068-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v068/production/fusion/manifest.json",
+        "design/star-salvage/v068/store-media/manifest.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "十五分钟生存、飞船整备、下局武器与真实融合"
+        }
+      ],
+      "checks": [
+        "survivor-v068-model",
+        "survivor-v068-browser",
+        "survivor-v068-economy",
+        "survivor-v068-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v068/verification.json",
+        "design/star-salvage/v068/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Promotional candidates await user approval. Finite engineering still yields net cash accumulation after max.",
+      "nextAction": "Scan TapTap479820 /5066bd0. New-run combat7; continue legacy runs under saved rules.",
+      "reviewBasis": "Frozen84files/74PNG,105model,672full HTTP,80claims,20legacy repeats,38audio,180policies,12old ZIP migrations,ordinary656.33sec defeat with earned next-run preparations,QA actual fusion damage and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "5066bd01154f2901305e5263b6c048b39dce109f",
+        "zipSha256": "52b756b77bb1f4be236bd51eb70e9f2cfaed8a36e2ab6774c2d51893744b697a",
+        "previewZipSha256": "5a84086be31d767ddb5c399d487e69addd4d1a5d9bf4a1035834173b288e8df4",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 479820,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE068-PICKUP",
+      "parent": null,
+      "requirement": "新局零整备经验吸附半径190，零件150；原初始经验半径150。回收天线每级仍加8、磁场辅助仍生效。晶体在接触前开始牵引，有短像素尾迹和开局短暂范围提示。保存被吸附状态、刷新和升级同帧领取不能重复计入。",
+      "acceptanceCriteria": "新局零整备经验吸附半径190，零件150；原初始经验半径150。回收天线每级仍加8、磁场辅助仍生效。晶体在接触前开始牵引，有短像素尾迹和开局短暂范围提示。保存被吸附状态、刷新和升级同帧领取不能重复计入。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v068/README.md",
+          "startLine": 10,
+          "endLine": 10
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v068.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v068-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v068/production/fusion/manifest.json",
+        "design/star-salvage/v068/store-media/manifest.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "十五分钟生存、飞船整备、下局武器与真实融合"
+        }
+      ],
+      "checks": [
+        "survivor-v068-model",
+        "survivor-v068-browser",
+        "survivor-v068-economy",
+        "survivor-v068-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v068/verification.json",
+        "design/star-salvage/v068/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Promotional candidates await user approval. Finite engineering still yields net cash accumulation after max.",
+      "nextAction": "Scan TapTap479820 /5066bd0. New-run combat7; continue legacy runs under saved rules.",
+      "reviewBasis": "Frozen84files/74PNG,105model,672full HTTP,80claims,20legacy repeats,38audio,180policies,12old ZIP migrations,ordinary656.33sec defeat with earned next-run preparations,QA actual fusion damage and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "5066bd01154f2901305e5263b6c048b39dce109f",
+        "zipSha256": "52b756b77bb1f4be236bd51eb70e9f2cfaed8a36e2ab6774c2d51893744b697a",
+        "previewZipSha256": "5a84086be31d767ddb5c399d487e69addd4d1a5d9bf4a1035834173b288e8df4",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 479820,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE068-MEDIA",
+      "parent": null,
+      "requirement": "准备方形游戏图标、横／方宣传插画、真实运行截图及实际战斗视频。模型图逐项保留原件和提示，仅作图标或宣传插画。游戏截图和视频来自实际运行，QA布置与自然输入分开标注，回读当前TapTap字段规格后验证尺寸和格式。",
+      "acceptanceCriteria": "准备方形游戏图标、横／方宣传插画、真实运行截图及实际战斗视频。模型图逐项保留原件和提示，仅作图标或宣传插画。游戏截图和视频来自实际运行，QA布置与自然输入分开标注，回读当前TapTap字段规格后验证尺寸和格式。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v068/README.md",
+          "startLine": 11,
+          "endLine": 11
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v068.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v068-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v068/production/fusion/manifest.json",
+        "design/star-salvage/v068/store-media/manifest.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "十五分钟生存、飞船整备、下局武器与真实融合"
+        }
+      ],
+      "checks": [
+        "survivor-v068-model",
+        "survivor-v068-browser",
+        "survivor-v068-economy",
+        "survivor-v068-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v068/verification.json",
+        "design/star-salvage/v068/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Promotional candidates await user approval. Finite engineering still yields net cash accumulation after max.",
+      "nextAction": "Scan TapTap479820 /5066bd0. New-run combat7; continue legacy runs under saved rules.",
+      "reviewBasis": "Frozen84files/74PNG,105model,672full HTTP,80claims,20legacy repeats,38audio,180policies,12old ZIP migrations,ordinary656.33sec defeat with earned next-run preparations,QA actual fusion damage and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "5066bd01154f2901305e5263b6c048b39dce109f",
+        "zipSha256": "52b756b77bb1f4be236bd51eb70e9f2cfaed8a36e2ab6774c2d51893744b697a",
+        "previewZipSha256": "5a84086be31d767ddb5c399d487e69addd4d1a5d9bf4a1035834173b288e8df4",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 479820,
+        "formalIntegration": false
+      }
+    },
+    {
+      "id": "SALVAGE068-COMPAT",
+      "parent": null,
+      "requirement": "新局规则7。旧规则2～6及180／600／900秒对局继续保存规则。六版真实旧ZIP双引擎替换后完整记录相等。原命名空间、备份、已购工程与主炮／船体等级不重置。冻结普通包、TapTap封装、Mac原入口、原生Safari、双引擎双竖屏、性能与用户真机分别登记。",
+      "acceptanceCriteria": "新局规则7。旧规则2～6及180／600／900秒对局继续保存规则。六版真实旧ZIP双引擎替换后完整记录相等。原命名空间、备份、已购工程与主炮／船体等级不重置。冻结普通包、TapTap封装、Mac原入口、原生Safari、双引擎双竖屏、性能与用户真机分别登记。",
+      "sourceRefs": [
+        {
+          "path": "design/star-salvage/v068/README.md",
+          "startLine": 12,
+          "endLine": 12
+        }
+      ],
+      "scope": "IN_SCOPE",
+      "implementation": "IMPLEMENTED",
+      "evidence": "CURRENT_VERIFIED",
+      "visual": "INTERNAL_PASS",
+      "phone": "NOT_TESTED",
+      "code": [
+        "prototypes/salvage-survivor-demo/src/game.js",
+        "prototypes/salvage-survivor-demo/src/persistence.js",
+        "prototypes/salvage-survivor-demo/tests/engineering.test.cjs",
+        "prototypes/salvage-survivor-demo/tests/browser/v068.spec.cjs",
+        "prototypes/salvage-survivor-demo/tests/verify-v068-evidence.cjs"
+      ],
+      "assets": [
+        "design/star-salvage/v068/production/fusion/manifest.json",
+        "design/star-salvage/v068/store-media/manifest.json"
+      ],
+      "entrypoints": [
+        {
+          "route": "/",
+          "label": "十五分钟生存、飞船整备、下局武器与真实融合"
+        }
+      ],
+      "checks": [
+        "survivor-v068-model",
+        "survivor-v068-browser",
+        "survivor-v068-economy",
+        "survivor-v068-migration"
+      ],
+      "proofs": [
+        "artifacts/survivor-v068/verification.json",
+        "design/star-salvage/v068/DELIVERY.md"
+      ],
+      "pendingProofs": [],
+      "gap": "Physical phone, cross-package persistence, lockscreen, heat, hearing, visual and fun pending. Promotional candidates await user approval. Finite engineering still yields net cash accumulation after max.",
+      "nextAction": "Scan TapTap479820 /5066bd0. New-run combat7; continue legacy runs under saved rules.",
+      "reviewBasis": "Frozen84files/74PNG,105model,672full HTTP,80claims,20legacy repeats,38audio,180policies,12old ZIP migrations,ordinary656.33sec defeat with earned next-run preparations,QA actual fusion damage and nativeSafari.",
+      "sandboxBinding": {
+        "sourceCommit": "5066bd01154f2901305e5263b6c048b39dce109f",
+        "zipSha256": "52b756b77bb1f4be236bd51eb70e9f2cfaed8a36e2ab6774c2d51893744b697a",
+        "previewZipSha256": "5a84086be31d767ddb5c399d487e69addd4d1a5d9bf4a1035834173b288e8df4",
+        "database": "loststar.survivor.demo.v06",
+        "taptapVersion": 479820,
+        "formalIntegration": false
+      }
+    }
+  ],
+  "userVisual": "PENDING",
+  "physicalPhone": "NOT_TESTED"
+}

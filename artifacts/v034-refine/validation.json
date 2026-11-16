@@ -1,0 +1,315 @@
+{
+  "at": "2026-11-04T04:58:19.594171+00:00",
+  "status": "V034 P0 motion refinement candidate. User visual approval and long-term spending value remain open.",
+  "sourceCommit": "8ffad813eca5f0bc71ffa3f98216869b60aca637",
+  "build": "0.3.4 · 8ffad81",
+  "review": "https://github.com/sy0310/loststar-game/pull/2#pullrequestreview-5762917402",
+  "sourceCI": [
+    {
+      "event": "pull_request",
+      "id": 41774728061,
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/41774728061"
+    },
+    {
+      "event": "push",
+      "id": 41774722814,
+      "conclusion": "success",
+      "url": "https://github.com/sy0310/loststar-game/actions/runs/41774722814"
+    }
+  ],
+  "localCheck": {
+    "command": "npm run check",
+    "originalAssetsPassed": 20,
+    "originalAssetsTotal": 20,
+    "unitPassed": 164,
+    "unitFiles": 27,
+    "browser": {
+      "startTime": "2026-11-04T04:37:20.288Z",
+      "duration": 113775.223,
+      "expected": 168,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "builds": [
+      "normal",
+      "d1",
+      "v034"
+    ],
+    "coverage": {
+      "scope": "Selected pure models and layout from vite.config.ts. Canvas/UI are outside the coverage summary.",
+      "statements": 96.82,
+      "branches": 94.75,
+      "functions": 98.12,
+      "lines": 99.33
+    }
+  },
+  "isolation": {
+    "recordingContexts": 9,
+    "zipTouchContexts": 3,
+    "lightingContexts": 4,
+    "drawerContexts": 2,
+    "storageCalls": 0,
+    "oldSaveSentinelsPreserved": true,
+    "formalSaveMigration": "Pending visual approval",
+    "memoryBudgets": "Restoration and night ledgers separately labeled",
+    "residents": "Three existing residents seeded only in review views"
+  },
+  "motion": {
+    "excavateSeconds": 6.2,
+    "cleanSeconds": 3.8,
+    "repairSeconds": 3.9,
+    "paperSupports": "Bottom material anchor fixed during .25/.5/.75 progress. Only after complete release, short 7px lift and landing.",
+    "receiptCharges": [
+      40,
+      120
+    ],
+    "physicalRepairMissingEvidence": 2,
+    "actualP03AfterIdentificationMissingEvidence": 1,
+    "signature": "Missing, unchanged by payment",
+    "nightBasic": {
+      "damage": 6,
+      "repair": 18
+    },
+    "nightComplete": {
+      "damage": 0,
+      "repair": 0
+    }
+  },
+  "screenshots": {
+    "390×844": 63,
+    "360×800": 8
+  },
+  "videos": [
+    {
+      "file": "receipt-lifecycle-and-proof-live.mp4",
+      "seconds": 39.966667,
+      "bytes": 1969798,
+      "playbackRate": 1
+    },
+    {
+      "file": "night-basic-36s-live.mp4",
+      "seconds": 37.166667,
+      "bytes": 2684239,
+      "playbackRate": 1
+    },
+    {
+      "file": "night-complete-36s-live.mp4",
+      "seconds": 37.466667,
+      "bytes": 2652484,
+      "playbackRate": 1
+    },
+    {
+      "file": "resident-daily-15s-live.mp4",
+      "seconds": 16.466667,
+      "bytes": 1928222,
+      "playbackRate": 1
+    },
+    {
+      "file": "day-night-cycle-308s-live.mp4",
+      "seconds": 309.133333,
+      "bytes": 40301966,
+      "playbackRate": 1
+    }
+  ],
+  "recordingMethod": "Actual wall-clock continuous mobile touch emulation. No injected player save, simulation clock, money, or evidence. The 30-second event deliberately observes source night 40.2–60 seconds through the documented piecewise mapping, followed by six-second dawn. The complete cycle uses real 240-second day and 60-second night.",
+  "lighting": {
+    "method": "Controlled renderer time, same event posture and camera, only environment.light changes. Separate from real wall-clock recordings.",
+    "source": "lighting-comparison.json",
+    "matchedTimes": [
+      4,
+      12
+    ],
+    "sameActorShipCameraAndSkyCorners": true
+  },
+  "package": {
+    "version": "0.3.4",
+    "sourceCommit": "8ffad813eca5f0bc71ffa3f98216869b60aca637",
+    "archive": "releases/taptap/loststar-0.3.4-8ffad81-week1-h5.zip",
+    "bytes": 4069679,
+    "sha256": "b5366f704b29b916e3b3a0fad3b3143ff9317b94b62a004fc3e7eb97b545130b",
+    "files": 77,
+    "uncompressedBytes": 4209801,
+    "entry": "loststar-week1/index.html"
+  },
+  "packageChecks": {
+    "raw": "package-smoke.json",
+    "engines": [
+      {
+        "engine": "chromium",
+        "viewport": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      {
+        "engine": "chromium",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      {
+        "engine": "webkit",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      }
+    ],
+    "relativePath": "/loststar-week1/",
+    "errors": 0
+  },
+  "assets": {
+    "newRuntimeFiles": 10,
+    "newRuntimeBytes": 62569,
+    "sourcePngFiles": 5,
+    "sourcePngBytes": 4407764,
+    "independentReexportHashesMatch": true,
+    "generator": "OpenAI image_gen built-in via art subagent",
+    "promptsAndHistory": "assets/src/generated/v034-refine/README.md"
+  },
+  "economy": {
+    "actualEngineReport": "economy.json",
+    "checks": {
+      "profiles": 192,
+      "rows": 1344,
+      "negativeBalances": 0,
+      "accountingErrors": 0,
+      "duplicateCharges": 0,
+      "maintenanceOverIncomeBudget": 0,
+      "firstHourAccumulationDeficits": 0,
+      "legacyRestorationCharges": 0,
+      "floorEfficiency": 0.8
+    },
+    "finiteBudgetProjection": "budget-route.json",
+    "projectionChecks": {
+      "profiles": 48,
+      "rows": 336,
+      "negativeBalances": 0,
+      "accountingErrors": 0,
+      "expenditureOverCeiling": 0,
+      "duplicateProjectFees": 0
+    },
+    "proposedCeiling": 12000,
+    "projectContent": "Pending review and implementation",
+    "longTermValueApproved": false
+  },
+  "performance": {
+    "host": {
+      "cpu": "Apple M2 Pro",
+      "platform": "darwin"
+    },
+    "scope": "Desktop separate sampling after all video recording, no simultaneous recording. Daytime residents and active night scanning are each sampled for six seconds. Paper is sampled for eight seconds including the real 6.2-second excavation and idle remainder. Scene CPU excludes the inspection-copy and GPU completion, while requestAnimationFrame intervals observe the whole page. WebKit short samples may be quantized.",
+    "results": [
+      {
+        "engine": "chromium",
+        "day": {
+          "windowMs": 6011.100000023842,
+          "p95RafMs": 16.799999999999272,
+          "over50ms": 0,
+          "scene": {
+            "frames": 360,
+            "medianFrameMs": 16.69999998807907,
+            "p95FrameMs": 17.600000023841858,
+            "meanDrawMs": 1.4326869800810669,
+            "canvasPixels": 615680,
+            "canvasSize": {
+              "width": 832,
+              "height": 740
+            },
+            "renderer": "Canvas2D / independent 2.5D layers"
+          }
+        },
+        "night": {
+          "windowMs": 6012.5,
+          "p95RafMs": 16.700000000000728,
+          "over50ms": 0,
+          "scene": {
+            "frames": 360,
+            "medianFrameMs": 16.69999998807907,
+            "p95FrameMs": 17.5,
+            "meanDrawMs": 7.9337950130909105,
+            "canvasPixels": 615680,
+            "canvasSize": {
+              "width": 832,
+              "height": 740
+            },
+            "renderer": "Canvas2D / independent 2.5D layers"
+          }
+        },
+        "paper": {
+          "windowMs": 8004.399999976158,
+          "uniqueFrames": 152,
+          "actualHz": 18.989555744397176,
+          "meanDrawMs": 3.5184210526315787,
+          "p95DrawMs": 5.3,
+          "maxDrawMs": 6.2
+        }
+      },
+      {
+        "engine": "webkit",
+        "day": {
+          "windowMs": 6007,
+          "p95RafMs": 18,
+          "over50ms": 1,
+          "scene": {
+            "frames": 275,
+            "medianFrameMs": 17,
+            "p95FrameMs": 19,
+            "meanDrawMs": 0.6245487364620939,
+            "canvasPixels": 615680,
+            "canvasSize": {
+              "width": 832,
+              "height": 740
+            },
+            "renderer": "Canvas2D / independent 2.5D layers"
+          }
+        },
+        "night": {
+          "windowMs": 6014,
+          "p95RafMs": 18,
+          "over50ms": 0,
+          "scene": {
+            "frames": 360,
+            "medianFrameMs": 17,
+            "p95FrameMs": 18,
+            "meanDrawMs": 0.5124653739612188,
+            "canvasPixels": 615680,
+            "canvasSize": {
+              "width": 832,
+              "height": 740
+            },
+            "renderer": "Canvas2D / independent 2.5D layers"
+          }
+        },
+        "paper": {
+          "windowMs": 8014,
+          "uniqueFrames": 150,
+          "actualHz": 18.717244821562268,
+          "meanDrawMs": 1.9066666666666667,
+          "p95DrawMs": 3,
+          "maxDrawMs": 4
+        }
+      }
+    ],
+    "raw": "recordings.json"
+  },
+  "rootReview": {
+    "method": "Original source PNG, native 67px composites, actual 390px screenshots, sampled strips from continuous DEV and frozen-source recordings including the full-cycle handoff",
+    "rejected": [
+      "Metallic and nearly invisible patch variants",
+      "First extraction revision dominated by vertical translation",
+      "First night revision lost material contrast under a blue-gray veil"
+    ],
+    "inspectionWindow": "Synchronized pixel crop of the same final world Canvas, framing hands and field contacts while the main view retains the full globe"
+  },
+  "pending": [
+    "User phone review of material, extraction, night brightness, lock-screen recovery and thermal behavior",
+    "First two legacy patrol routines and two additional anomaly standards",
+    "Long-term content value, project component credits and cancellation/refund design",
+    "Formal condition/evidence/currency migration after approval",
+    "Paper local normals and tool actuator presentation refinements"
+  ]
+}

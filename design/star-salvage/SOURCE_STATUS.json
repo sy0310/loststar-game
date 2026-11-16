@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "date": "2026-11-08",
+  "state": "source_handoff_not_deployed",
+  "prototypePath": "prototypes/salvage-route-demo/",
+  "upstreamBeforeHandoff": "874d5459e938a5bc9bf663457dc574a57bf15d58",
+  "sourceArchive": {
+    "name": "失物号_渐进油耗_Demo_v01_源码包.zip",
+    "sha256": "ea492d2376c0037c98902b99d5ea244f149f9fb8b038369073fcf2fb6198e409",
+    "availableAsConversationAttachment": true,
+    "uploadedToRepoAsArchive": false
+  },
+  "transferredText": [
+    "src/engine.js",
+    "src/app.js",
+    "src/style.css",
+    "index.html",
+    "build.py",
+    "package.json",
+    "tests/engine.test.js",
+    "README.md"
+  ],
+  "verifiedRemoteBlobs": {
+    "src/engine.js": "49b0c6d81f1ccc3eb3b358923056bdaebb0f31c8",
+    "src/app.js": "873432b54d377a61be335fe811c01c99688bc146"
+  },
+  "binaryArtImportedThisHandoff": false,
+  "artFallback": "Built-in geometry render in app.js when ART[name] is absent; not final art acceptance.",
+  "optionalSourceArt": [
+    {
+      "name": "port.webp",
+      "archivePath": "lostcargo-demo/assets/port.webp",
+      "bytes": 25594,
+      "sha256": "21e8e45f7fa7768acec26ca935e3549f17a2369340a03f6115a52c9ed0c330b4"
+    },
+    {
+      "name": "wreck.webp",
+      "archivePath": "lostcargo-demo/assets/wreck.webp",
+      "bytes": 17688,
+      "sha256": "f4c7576a396f82c6943a0d1885695510c83624e22502bb03bff9c6fda0179591"
+    },
+    {
+      "name": "harbor.webp",
+      "archivePath": "lostcargo-demo/assets/harbor.webp",
+      "bytes": 6190,
+      "sha256": "acfbfee91b83bf881a783347824f2ba26421ff8f780c010c38bda77cb3ea4e47"
+    }
+  ],
+  "approvedConceptAttachments": [
+    "失物号_星海拾荒_游戏界面概念板.png",
+    "失物号_星海拾荒试玩航路设计_board.png"
+  ],
+  "checks": {
+    "localRulesRechecked": 30,
+    "deterministicPolicyVoyages": 600,
+    "nodeSyntaxChecked": [
+      "engine.js",
+      "app.js"
+    ],
+    "newRuntimeHttpBrowserTested": false,
+    "newRuntimeTapTapUploaded": false,
+    "newRuntimePhysicalPhoneTested": false,
+    "balanceAccepted": false,
+    "newRemoteCiVerified": false
+  },
+  "historicalBrowserBoundary": "Previous 47 checks injected HTML into a blank document and used an explicit mock Storage. They are not real HTTP navigation or physical-device persistence evidence.",
+  "instructions": "Read DEMO_CODEX_HANDOFF.md; fix known limitations, validate real URL and storage, then provide an actual accessible development preview and TapTap self-test. Do not turn absent binary files or historical checks into completed delivery claims.",
+  "runtimeDevelopment": {
+    "version": "0.1.1",
+    "previousStateRetainedAsHandoffHistory": true,
+    "conceptOriginalsLocated": false,
+    "optionalConceptCropsImported": false,
+    "fallback": {
+      "path": "prototypes/salvage-route-demo/assets/ship.webp",
+      "source": "assets/runtime/ship.webp",
+      "bytes": 23232,
+      "sha256": "2c1ec76989f1e8dc379ecbe3ce7e7f82fe15dded83d0a7f7cad25f03f50e9028",
+      "role": "existing repository original runtime sprite over geometry fallback; not concept reproduction"
+    },
+    "deliveryEvidence": "artifacts/salvage-route/verification.json",
+    "physicalPhoneTested": false
+  },
+  "runtimeDelivery": {
+    "sourceCommit": "b317c8a5ca7fa6acfa7d7d9d91d9e93c349e1f87",
+    "version": "0.1.1",
+    "taptapDevelopmentVersion": 453037,
+    "status": "playable_development_self_test_pending_phone_art_and_enjoyment",
+    "evidence": "artifacts/salvage-route/verification.json",
+    "originalHandoffFactsRetained": true,
+    "formalMainBound": false
+  }
+}

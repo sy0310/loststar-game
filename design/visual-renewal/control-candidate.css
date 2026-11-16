@@ -1,0 +1,36 @@
+/* Skin only: border paint stays inside the original box; no padding/size/grid changes. */
+.refined button{
+ border-image-source:url('../../assets/runtime/visual-renewal/ui/control-frame.svg');border-image-slice:12;border-image-width:6px;border-image-outset:0;border-image-repeat:stretch;
+ border-radius:2px;
+ box-shadow:inset 0 1px #fff0b329,inset 0 -3px #170e2d77,0 2px #120b22;
+ text-shadow:0 1px #1a0e2d66;
+}
+.refined .fu-primary{
+ border-image-source:url('../../assets/runtime/visual-renewal/ui/control-primary.svg')!important;
+ background:linear-gradient(#fff1c32b,#fff1c300 44%),linear-gradient(#efbc73,#cb8a52);
+ box-shadow:inset 0 1px #fff0b388,inset 0 -3px #a25c52,0 2px #160d25;
+ color:#38213b;text-shadow:0 1px #ffe8ad44;
+ --fu-icon-ink:#38203e;--fu-icon-metal:#60394f;--fu-icon-light:#b16b5c;--fu-icon-shade:#42263e;--fu-icon-paper:#ffe7b1;
+}
+.refined button:active:not(:disabled){border-image-source:url('../../assets/runtime/visual-renewal/ui/control-pressed.svg');box-shadow:inset 0 2px #160c2c99,inset 0 -1px #bd8f6755;}
+.refined button.fu-primary:active:not(:disabled){border-image-source:url('../../assets/runtime/visual-renewal/ui/control-primary-pressed.svg')!important;background:linear-gradient(#cf945c,#e3ad67);box-shadow:inset 0 2px #713f4c88,inset 0 -1px #ffe0a055;}
+.refined button[aria-pressed="true"],.refined button[aria-current="page"],.refined button[aria-expanded="true"]{
+ border-image-source:url('../../assets/runtime/visual-renewal/ui/control-selected.svg');
+ box-shadow:inset 0 1px #ffe8ab55,inset 0 -3px #a87355,0 2px #120a22;
+ background:linear-gradient(120deg,#674360,#402b53);color:#ffe4ad;
+}
+.refined button:disabled{box-shadow:inset 0 1px #f0dfc116,inset 0 -2px #160b2966,0 1px #10091e;}
+.refined .fu-nav button:not([aria-current="page"]){border-image-source:none;box-shadow:none;}
+.refined .fu-nav button:not([aria-current="page"]) .fu-pixel-icon{filter:saturate(.5) brightness(.8);}
+.refined .fu-location,.refined .exhibit-hits button,.refined .fu-field-drawer>header button,.refined .fu-journey-intro button{border-image:none!important;box-shadow:none!important;text-shadow:none;}
+.refined .fu-switch input[type="checkbox"]{
+ appearance:none;-webkit-appearance:none;flex-shrink:0;border:1px solid #9d735e;border-radius:1px;
+ background:#2c1b3d;box-shadow:inset 0 1px #10091e,inset 0 0 0 3px #170e2c,0 1px #ba866655;
+}
+.refined .fu-switch input[type="checkbox"]:checked{
+ background-image:url('../../assets/runtime/visual-renewal/ui/control-check.svg'),linear-gradient(#574661,#34314d);
+ background-size:22px 22px,auto;background-position:center;background-repeat:no-repeat;
+ border-color:#e2b879;box-shadow:inset 0 0 0 2px #23162d,0 1px #ba866655;
+}
+/* A physical plate behind big section/device glyphs, at the same original dimensions. */
+.refined .fu-chapter>span,.refined .fu-equipment-glyph{box-shadow:inset 0 1px #ffe4b044,inset 0 -3px #1c102f99,inset 0 0 0 3px #281730;}

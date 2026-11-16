@@ -1,0 +1,97 @@
+{
+  "sourceCommit": "e584d3edec98b28e92b4f66ceb64cb97de1db4e8",
+  "runtimeVersion": "0.6.10-wx.2",
+  "targetUploadVersion": "0.6.10.3",
+  "reviewFinding": {
+    "device": "小米11",
+    "os": "HyperOS 2.0.2.0",
+    "wechat": "8.0.78",
+    "error": "无法加载素材 ./assets/actors/player@2x.png",
+    "effect": "Asset initialization rejects and startBtn remains disabled"
+  },
+  "rootCauseScope": "Screenshot confirms image load failure. Package-root paths, asset inclusion and image alias names are corrected. The precise underlying Android decoder/path rejection requires physical-device recheck.",
+  "reproduction": [
+    {
+      "case": "missing Array.findLast",
+      "result": "zones.findLast is not a function",
+      "log": "before-touch-failure.txt"
+    },
+    {
+      "case": "package loader rejects dot-relative paths",
+      "result": "无法加载素材 ./assets/actors/player@2x.png",
+      "log": "before-image-failure.txt"
+    }
+  ],
+  "checks": {
+    "modelGroups": 118,
+    "h5Storage": {
+      "passed": 60,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "nativeDimensions": [
+      [
+        360,
+        800
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "nativeCases": [
+      "package-root paths",
+      "player image failure blocks launch",
+      "visible reload recovers and launches",
+      "74 images",
+      "menus",
+      "scroll",
+      "move",
+      "cancel",
+      "pause",
+      "restart",
+      "settle",
+      "failed-write UI retry",
+      "level-up",
+      "reroll",
+      "corrupt record preservation"
+    ],
+    "graphicalCases": 4,
+    "missingArrayAPIs": [
+      "findLast",
+      "at"
+    ],
+    "imagePaths": "package-root paths without ./ prefix",
+    "imageFiles": 74,
+    "allImageBytesMatchOriginals": true,
+    "packageFiles": 125,
+    "fileSizesAndSHA256Verified": true,
+    "imageFailureReloadDimensions": [
+      [
+        360,
+        800
+      ],
+      [
+        390,
+        844
+      ]
+    ]
+  },
+  "physicalPhoneVerified": false,
+  "platformReviewPassed": false,
+  "screenshots": "Desktop Chromium/WebKit with WeChat API compatibility bindings",
+  "uploadStatus": "WeChat Devtools displayed code upload success for 0.6.10.3",
+  "nativeDevtools": {
+    "sourceCommit": "e584d3edec98b28e92b4f66ceb64cb97de1db4e8",
+    "readyObserved": true,
+    "startupErrorsObserved": 0,
+    "manualStartConfirmedByUser": true,
+    "artObserved": [
+      "player on home",
+      "dock icons"
+    ],
+    "automatedCanvasInputVerified": false
+  },
+  "uploadRecord": "upload.json"
+}

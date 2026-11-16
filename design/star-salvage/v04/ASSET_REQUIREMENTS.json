@@ -1,0 +1,652 @@
+{
+  "schema": 1,
+  "game": "失物号：星海拾荒",
+  "round": "v04_port_visual_2026-11-09",
+  "implementation": "IMPLEMENTED_DEVELOPMENT_SELF_TEST_PENDING_USER_PHONE",
+  "baseline": {
+    "runtime": "0.3.0",
+    "source": "799a36e78cbd5397d671901fded19c10517429f9",
+    "taptapSelfTest": 454472,
+    "pr": 2
+  },
+  "approvedReference": {
+    "name": "失物号_星海拾荒像素界面概念板.png",
+    "source": "Current conversation generated original PNG",
+    "status": "SOURCE_PRESENT_IN_GIT_BYTE_VERIFIED",
+    "expectedRepoPath": "design/star-salvage/v04/concepts/salvage_v04_approved_full.png",
+    "width": 1122,
+    "height": 1402,
+    "bytes": 2142727,
+    "sha256": "16289e481145f9c781d5ecf353de0f00861fb17fbc3df2185d94e77b978cacb0",
+    "disclaimer": "Flat concept board. Do not treat as production sprite/UI atlas.",
+    "gitBlobSha": "c101690bd726f303cb7244d81baf954637466cb8",
+    "repoCommit": "56cb81ef86ab7d46cb3c4a83ba18c0df552a68ed"
+  },
+  "visualSystem": {
+    "logicalScene": {
+      "width": 192,
+      "height": 320
+    },
+    "exportScale": [
+      2,
+      4
+    ],
+    "shipSource": {
+      "width": 96,
+      "height": 48
+    },
+    "itemSource": {
+      "width": 24,
+      "height": 24
+    },
+    "uiIconSource": {
+      "width": 24,
+      "height": 24
+    },
+    "rendering": "nearest_neighbor_pixelated",
+    "pixelGrid": "common_1x_grid",
+    "paletteHint": [
+      "#171728",
+      "#242039",
+      "#38304D",
+      "#665778",
+      "#9B83AB",
+      "#F4C785",
+      "#FFE0A6",
+      "#8ECFCF",
+      "#F2EDF4"
+    ],
+    "targetViewport": [
+      {
+        "w": 360,
+        "h": 800
+      },
+      {
+        "w": 390,
+        "h": 844
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "id": "harbor_background",
+      "path": "prototypes/salvage-route-demo/assets/v04/harbor_bg@2x.png",
+      "source": "192x320",
+      "export": "384x640",
+      "alpha": false,
+      "layers": "background without UI or ship",
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/harbor/source/harbor_bg@1x.png",
+        "bytes": 28723,
+        "sha256": "6c4b7608e4adc7bb360e779f8689ccff0b0d5001d4086a8f1801e34f16605605"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/harbor/source/harbor_bg.ora",
+        "bytes": 58113,
+        "sha256": "5300def7f1cc320e6141a28863ec95e41fb2225fb1d1364ca6e319127a6ecc66"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/harbor_bg@2x.png",
+          "bytes": 34633,
+          "sha256": "7ed22321542bf02dced7d24432eccf21fa4c4716cc8b693c573f5e830eba38de"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/harbor_bg@4x.png",
+          "bytes": 47230,
+          "sha256": "48ee3c14759a36c1b5c2332d2d98704b89eba59b27e6c9520ae1fc5186dde97a"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "harbor_foreground",
+      "path": "prototypes/salvage-route-demo/assets/v04/harbor_front@2x.png",
+      "source": "192x320",
+      "export": "384x640",
+      "alpha": true,
+      "layers": "optional rail/crates occlusion",
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/harbor/source/harbor_front@1x.png",
+        "bytes": 2449,
+        "sha256": "b250556dee36d596acd756c5b9ceb426575a932ede4e96ac236c9a38c223ad15"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/harbor/source/harbor_front.ora",
+        "bytes": 5571,
+        "sha256": "11a5c31867ddc6a729dfbd69e3f60dd385bc6d75ea949a1d1fdbe415052f125c"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/harbor_front@2x.png",
+          "bytes": 3433,
+          "sha256": "ee305d311117efc98a3dac263d76ba9edf0c17011d8ac5b046664c7d7e937dac"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/harbor_front@4x.png",
+          "bytes": 6751,
+          "sha256": "9af97f85ede7d80e51f3c000c7131bbdfd4e14d75e23e2d71f1e509b489eee73"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "ship_starter",
+      "name": "轻型拾荒船",
+      "role": "balanced",
+      "path": "prototypes/salvage-route-demo/assets/v04/ship_starter@2x.png",
+      "source": "96x48",
+      "export": "192x96",
+      "alpha": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/ships/ship_starter@1x.png",
+        "bytes": 3096,
+        "sha256": "434c7dc8d349a476cbd97a9d392459d877f8cec7d6441187ca29202cb8a25192"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/ships/ship_starter.ora",
+        "bytes": 11178,
+        "sha256": "5e243b9aa9400762d630e8b090abd0522782e829f3ef89abccdeec2dff2d624d"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/ship_starter@2x.png",
+          "bytes": 3490,
+          "sha256": "21f08e8dfffbef477c521657c1b0025d27bca0306e3fa634a6f860edd0e2326a"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/ship_starter@4x.png",
+          "bytes": 4453,
+          "sha256": "df51da9b3fe6c855be78c0cb52035ac963c80a8c4a32841b14fe1bdf58a19769"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "ship_cargo",
+      "name": "中型货船",
+      "role": "capacity",
+      "path": "prototypes/salvage-route-demo/assets/v04/ship_cargo@2x.png",
+      "source": "96x48",
+      "export": "192x96",
+      "alpha": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/ships/ship_cargo@1x.png",
+        "bytes": 3122,
+        "sha256": "40e7d689131289c696697a2a99c37cc11ba1ae0bb42ae9f839b91db0539a0123"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/ships/ship_cargo.ora",
+        "bytes": 11080,
+        "sha256": "de2a202826bef79c0d9eb93126ba5f15e4ea588b913185169c37be6214b28853"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/ship_cargo@2x.png",
+          "bytes": 3445,
+          "sha256": "6a10198e6155a9a8d6c08039e14e1e2d13d847bddf2608dd13e026ceb2811b0a"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/ship_cargo@4x.png",
+          "bytes": 4431,
+          "sha256": "18ee60601122626118cfc8c0b3a013e4837ae8cd659a984f11c1d6eacdaad683"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "ship_scout",
+      "name": "深航探测船",
+      "role": "fuel_efficient",
+      "path": "prototypes/salvage-route-demo/assets/v04/ship_scout@2x.png",
+      "source": "96x48",
+      "export": "192x96",
+      "alpha": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/ships/ship_scout@1x.png",
+        "bytes": 2216,
+        "sha256": "ff3c18f58580a6a2052f37803de837c2e46d487b2dedce30eb48a117651c6f28"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/ships/ship_scout.ora",
+        "bytes": 8253,
+        "sha256": "8a73f29b56c0c23650565cde63f0e22e8ac8aa312c0d2a5503eb99ca9a7236a8"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/ship_scout@2x.png",
+          "bytes": 2535,
+          "sha256": "59e4cce0aafd6b772100a9f85b7f39bab26521f2dc2b256e20b301ef5a756427"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/ship_scout@4x.png",
+          "bytes": 3282,
+          "sha256": "ecdf600ac41282d31b8f02cebd185b49b07f74016db37e38b8facc3bde24d57f"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "ship_heavy",
+      "name": "重型工程船",
+      "role": "durability",
+      "path": "prototypes/salvage-route-demo/assets/v04/ship_heavy@2x.png",
+      "source": "96x48",
+      "export": "192x96",
+      "alpha": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/ships/ship_heavy@1x.png",
+        "bytes": 3596,
+        "sha256": "88f709910c08c3f43fce83588ca8031caebd0b54535d736cb68e7b5c8ccbadc7"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/ships/ship_heavy.ora",
+        "bytes": 12813,
+        "sha256": "2f224a1936d0bf210b177c79bf7c736302e6f20a3c7138024476658a6e66e10d"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/ship_heavy@2x.png",
+          "bytes": 4018,
+          "sha256": "da44bb2a016d2af50aae913cc2c9cfeb60931eaa49a4c62bf620e5b407f8c56e"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/ship_heavy@4x.png",
+          "bytes": 5093,
+          "sha256": "656cc055a548c88ab4539b1d4a4b93f9601a4bd7f4ded0a00e1cb310189b3d15"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "metal_crate",
+      "name": "金属箱",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_metal_crate@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/items/item_metal_crate@1x.png",
+        "bytes": 824,
+        "sha256": "09e6855e55e1119dec1a49b03fa22d20d5515c1d16d0afca906098f5ffc28d1c"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/items/item_metal_crate.ora",
+        "bytes": 4159,
+        "sha256": "f388eaa20f09939bca8de53ed15fa5b34504100a43c77e218b18b89fa2f40031"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_metal_crate@2x.png",
+          "bytes": 908,
+          "sha256": "f2f17d3f1845b05834f0c37a0108fb9d7d436a1621666cf60a26f49ba49a1585"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_metal_crate@4x.png",
+          "bytes": 1149,
+          "sha256": "82c1c4c4df6bfac5d9209b1adfef19ff553dd341b2330e148f762e9ebd8deb90"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "energy_battery",
+      "name": "能源电池",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_energy_battery@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/items/item_energy_battery@1x.png",
+        "bytes": 553,
+        "sha256": "9f06452043fcdbdf287bbdedfbdb340ddbc3f35cd890f0fd7328a84af181e2b9"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/items/item_energy_battery.ora",
+        "bytes": 3427,
+        "sha256": "6aeeb2b0eff715f2ae4d4743c08efc82793bfeb4be53d99a96e934750f761e19"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_energy_battery@2x.png",
+          "bytes": 704,
+          "sha256": "407a3483394fee3a8ea6ee6b29d975c5bc7eba16bd8826c1351f7fd2706693d0"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_energy_battery@4x.png",
+          "bytes": 902,
+          "sha256": "fba4a1fab4ecde6e1caa6da1483875764c60ef767c443ffaaca2872d8a86ac68"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "nav_chip",
+      "name": "导航芯片",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_nav_chip@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/items/item_nav_chip@1x.png",
+        "bytes": 763,
+        "sha256": "fdd794d00e6735bed19fa4ab3a62f65456624bbf48ddaad4f1500ecbbc6503f4"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/items/item_nav_chip.ora",
+        "bytes": 3995,
+        "sha256": "364f63fc6f6aac38cff704b5db0e3f34db7de93a328d4fd5ae91b0f9e30d5385"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_nav_chip@2x.png",
+          "bytes": 879,
+          "sha256": "37626f4ebeefeb9721910c003dccd181e08cd6ed1c5d31f2191f51415c366e7e"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_nav_chip@4x.png",
+          "bytes": 1077,
+          "sha256": "5af417b30c6d5979d6928c4c90e6bb7ad883f11db90b0b4a59347587aff1368a"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "broken_engine",
+      "name": "损坏引擎件",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_broken_engine@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/items/item_broken_engine@1x.png",
+        "bytes": 992,
+        "sha256": "470ad357274a56de97e5ae1d08efe982d443d5c044b8700603365522f99ba0cc"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/items/item_broken_engine.ora",
+        "bytes": 4650,
+        "sha256": "8735774fc7b5c4efcae707c514086e436dfcc0b1ac8cd02779b544ba24631e0f"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_broken_engine@2x.png",
+          "bytes": 1158,
+          "sha256": "b96cb947711f9f1402c5a5382705c849e1b15ef68c04c139139c2524e4496e4d"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_broken_engine@4x.png",
+          "bytes": 1385,
+          "sha256": "66d083fac266494742df1eab040f3eb77c82a090161408c72d3a91b7169158ac"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "medkit",
+      "name": "医疗箱",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_medkit@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/items/item_medkit@1x.png",
+        "bytes": 692,
+        "sha256": "f3c20d3a018ddd818263394f3964af6d5b466e4b8552ec22b2e8782a142695b5"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/items/item_medkit.ora",
+        "bytes": 3757,
+        "sha256": "cf1e0e2e7e914e137632a3220a6f81792a04ea5ec9afc2111a80391df32f81a6"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_medkit@2x.png",
+          "bytes": 788,
+          "sha256": "587606345ab47aaaaca111b38a9fe86c37c0f9dee5e4bd9f8dfc838bec23ba16"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_medkit@4x.png",
+          "bytes": 996,
+          "sha256": "361669e8be1e243c8abb7ab65567124879137df7b66d2cc58cb75cc8f950a1eb"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "fuel_can",
+      "name": "备用燃料罐",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_fuel_can@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/items/item_fuel_can@1x.png",
+        "bytes": 491,
+        "sha256": "14a51b19a145f6ea25e3561edb3c054a278d49518731a1fd50961eb7437cb8ad"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/items/item_fuel_can.ora",
+        "bytes": 3081,
+        "sha256": "aedd74f2c0ddd3ab0b7296c1380d8eb30ae9c9136e713d5dec6e10356469d085"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_fuel_can@2x.png",
+          "bytes": 606,
+          "sha256": "df89a314b1637bf271bd6a233c7d7876855fb36e6bf518a0ecd942636d3cc687"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_fuel_can@4x.png",
+          "bytes": 801,
+          "sha256": "c5030942b84aec656f6b129040f69c67ac0f0a40e3c89893ae9e7ad46d39b590"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "sample",
+      "name": "观测样本",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_sample@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/items/item_sample@1x.png",
+        "bytes": 733,
+        "sha256": "ed2496deab84d1eff84d8e808a67137e269ce993d357af19ab087bfae9aa8832"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/items/item_sample.ora",
+        "bytes": 4017,
+        "sha256": "65068eace3226a30633bba57d080fcc09199b9efda1b37c0bdab8c57fa51fcaa"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_sample@2x.png",
+          "bytes": 923,
+          "sha256": "b7346f139d534bf024e85ada99cbd9de1dbdd573b2b1e8381085c662c561d620"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_sample@4x.png",
+          "bytes": 1113,
+          "sha256": "a2ffc7abf50bec74c09ef31074c8edd6326ca6662104352915d3248cadaa5bbe"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    },
+    {
+      "id": "toolbox",
+      "name": "维修工具箱",
+      "path": "prototypes/salvage-route-demo/assets/v04/item_toolbox@2x.png",
+      "source": "24x24",
+      "export": "48x48",
+      "alpha": true,
+      "stableIdRequired": true,
+      "independentOfCargoShape": true,
+      "status": "PRODUCED_INTEGRATED_INTERNAL_REVIEW",
+      "source1x": {
+        "path": "design/star-salvage/v04/production/items/item_toolbox@1x.png",
+        "bytes": 701,
+        "sha256": "9d22e85aac9d13a973185e6d73a7fd7d18befef2b3e13ab1e8fc201abcc1b4c8"
+      },
+      "editable": {
+        "path": "design/star-salvage/v04/production/items/item_toolbox.ora",
+        "bytes": 3804,
+        "sha256": "f116c611600b0738f2caea17784fe211f60c5d29defdfe483208342640b6e29f"
+      },
+      "exports": [
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_toolbox@2x.png",
+          "bytes": 828,
+          "sha256": "fc7559f98d8feb97463904efc4fd1718f7035e7c30d77df29900106f0818d85a"
+        },
+        {
+          "path": "prototypes/salvage-route-demo/assets/v04/item_toolbox@4x.png",
+          "bytes": 998,
+          "sha256": "80eba264b03d59f821f0faf5a45e81960bf25d44aa929de8709181f8bf8079fd"
+        }
+      ],
+      "browserDecode": "Verified during same-package capture and real browser matrix; final delivery proof binds version",
+      "userVisual": "PENDING",
+      "physicalPhone": "NOT_TESTED"
+    }
+  ],
+  "uiComponents": [
+    "hud_resources",
+    "floating_action_cargo",
+    "floating_action_shop",
+    "floating_action_fleet",
+    "floating_action_missions",
+    "launch_button",
+    "shop_supply_panel",
+    "ship_store_card",
+    "ship_upgrade_panel",
+    "mission_accept_card",
+    "cargo_board",
+    "cargo_quick_confirmation",
+    "route_signal_overlay",
+    "return_summary"
+  ],
+  "interactionRules": [
+    "one_main_home_screen",
+    "no_fixed_four_tab_nav",
+    "manual_mission_accept",
+    "multi_ship_purchase_and_equip",
+    "one_click_full_supply_quotes_actual_cost",
+    "cargo_area_and_upgrade_are_real",
+    "no_hidden_spoilers",
+    "single_source_quotes",
+    "atomic_purchases_and_rewards",
+    "migration_schema4_to_next"
+  ],
+  "evidenceRequired": [
+    "source_files_1x",
+    "exported_png_2x",
+    "asset_decoding",
+    "mobile_screenshots",
+    "screenshot_comparison_to_approved_reference",
+    "two_voyage_video",
+    "smoke_and_regression_logs",
+    "schema_migration_replay",
+    "actual_taptap_development_receipt_or_explicit_blocker"
+  ],
+  "note": "Prices, ship capacity, mission reward and progression displayed in concept art are non-authoritative design placeholders.",
+  "referenceFiles": [
+    {
+      "path": "design/star-salvage/v04/concepts/salvage_v04_style_predecessor.png",
+      "sha256": "c731179efefbb6f95e92fb347fd4a451cc067c56883f4e4935581e446e7b3e66",
+      "gitBlobSha": "c533e47a23426ce87da3ba9c2b94ac2017ee4ad8",
+      "bytes": 1949814,
+      "status": "SOURCE_PRESENT_IN_GIT_BYTE_VERIFIED"
+    },
+    {
+      "path": "design/star-salvage/v04/concepts/reference_crops/home_screen_reference.png",
+      "sha256": "6ea3b5ceb2abd0e866b312f7c531a0b04ad6e044ef70508d2a542a56c96fbc10",
+      "bytes": 742853,
+      "status": "CONCEPT_CROP_IN_GIT"
+    },
+    {
+      "path": "design/star-salvage/v04/concepts/reference_crops/ship_shop_reference.png",
+      "sha256": "567a005770b2d0f0ced353b1fe5b8059e60dc924c2b7df8dbdd029d2433e1f78",
+      "bytes": 331334,
+      "status": "CONCEPT_CROP_IN_GIT"
+    },
+    {
+      "path": "design/star-salvage/v04/concepts/reference_crops/mission_board_reference.png",
+      "sha256": "4ed76757965812172f5ac1726dce42f9ca9c4d3b482ed7ee0399e376ff1d21b1",
+      "bytes": 287343,
+      "status": "CONCEPT_CROP_IN_GIT"
+    },
+    {
+      "path": "design/star-salvage/v04/concepts/reference_crops/ship_variants_reference.png",
+      "sha256": "e055e6a512a6e1aca97d065c02696fa913e608b5f38a3eea929ec0bd3347a80f",
+      "bytes": 169841,
+      "status": "CONCEPT_CROP_IN_GIT"
+    },
+    {
+      "path": "design/star-salvage/v04/concepts/reference_crops/cargo_icons_reference.png",
+      "sha256": "cc066485033503b058c5101b7c837475f91b5df811c63367873fe150dba56d4d",
+      "bytes": 207476,
+      "status": "CONCEPT_CROP_IN_GIT"
+    }
+  ],
+  "productionManifest": [
+    "design/star-salvage/v04/production/harbor-art-manifest.json",
+    "design/star-salvage/v04/production/ship-art-manifest.json",
+    "design/star-salvage/v04/production/items-art-manifest.json"
+  ]
+}

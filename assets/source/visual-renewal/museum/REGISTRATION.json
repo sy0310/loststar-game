@@ -1,0 +1,787 @@
+{
+  "schema": 1,
+  "tool": "image_gen built-in",
+  "camera": "near-frontal slight top-down",
+  "palette": {
+    "purple": "#241342",
+    "brass": "#e3a454",
+    "paper": "#f5c986",
+    "eye": "#68dafa"
+  },
+  "mainLight": "upper-left",
+  "roomCanvas": [
+    768,
+    960
+  ],
+  "runtimeRegistration": {
+    "caseContacts": [
+      [
+        104,
+        500
+      ],
+      [
+        384,
+        500
+      ],
+      [
+        664,
+        500
+      ],
+      [
+        104,
+        825
+      ],
+      [
+        384,
+        825
+      ],
+      [
+        664,
+        825
+      ]
+    ],
+    "aisleCenters": [
+      244,
+      524
+    ],
+    "aisleFootprintWidth": 80,
+    "caseLayers": [
+      "rear hood and interior",
+      "moving fitted tray and registered specimen",
+      "fixed near posts and base face",
+      "five telescoping transparent panes and fixed rails",
+      "real Canvas Chinese nameplate inside the base face"
+    ],
+    "caseInnerHeight": 168,
+    "caseBaseHeights": [
+      44,
+      54,
+      62,
+      72
+    ],
+    "specimenContact": "curio-renewal-model.support aligned with floor-13; cell centre is not the contact",
+    "robot": "shared renewal-robot rig; width136 world unchanged; rebase -2/+2 after measured alpha+joint transit envelope; stowed transit; museum-only finite 49/48 local links; real same-side two-point specimen grips",
+    "registrationSource": "src/render/museum-space.ts",
+    "caseWidth": 172,
+    "caseInnerWidth": 128,
+    "aisleClearWidth": 108,
+    "transitBodyWidth": 96,
+    "handlingRegistration": "src/fusion/curio-museum-handling.ts",
+    "paneRegistration": "assets/source/visual-renewal/museum/PANE_REGISTRATION.json"
+  },
+  "exportCommand": "node scripts/export_renewal_museum.mjs",
+  "assets": [
+    {
+      "id": "room",
+      "source": "assets/source/visual-renewal/museum/room-empty-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/room.webp",
+      "width": 768,
+      "height": 960,
+      "sha256": "d9e8fa8775871ca6f6602c347a9efba199f1c22acbea1d47abb93702f7736726",
+      "sourceSha256": "73601dc332601aa20f58362faa74507e39b2b0eb2c0cf89b44b80111a3755a7a",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "pivot": [
+        384,
+        960
+      ],
+      "layers": [
+        "architecture",
+        "unobstructed floor"
+      ],
+      "floorBoundaryY": 354,
+      "aisles": {
+        "hub": [
+          384,
+          918
+        ],
+        "verticalX": [
+          244,
+          524
+        ],
+        "cabinetContacts": [
+          [
+            104,
+            500
+          ],
+          [
+            384,
+            500
+          ],
+          [
+            664,
+            500
+          ],
+          [
+            104,
+            825
+          ],
+          [
+            384,
+            825
+          ],
+          [
+            664,
+            825
+          ]
+        ]
+      }
+    },
+    {
+      "id": "case-0-back",
+      "source": "assets/source/visual-renewal/museum/case-0-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/case-0-back.webp",
+      "width": 320,
+      "height": 400,
+      "sha256": "69a646257804a467d948919f99304f4d9a7d6a5bd11513a2b05b6be5cd35a66e",
+      "sourceSha256": "db939ab19012081963aee840fd4c4169850f7005e335f9fb1892cdb327546bd1",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "level": 0,
+      "pivot": [
+        160,
+        394
+      ],
+      "base": {
+        "x": 160,
+        "y": 394,
+        "w": 296
+      },
+      "cavity": {
+        "x": 59,
+        "y": 59,
+        "w": 201,
+        "h": 215,
+        "floor": 300
+      },
+      "layers": [
+        "rear glass",
+        "base",
+        "frame"
+      ],
+      "empty": true
+    },
+    {
+      "id": "case-0-front",
+      "source": "assets/source/visual-renewal/museum/case-0-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/case-0-front.webp",
+      "width": 320,
+      "height": 400,
+      "sha256": "51ce879925603a6ba20bed59c0b35c0f84686982d9cfab063c5de69bac1e6f6c",
+      "sourceSha256": "db939ab19012081963aee840fd4c4169850f7005e335f9fb1892cdb327546bd1",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "level": 0,
+      "pivot": [
+        160,
+        394
+      ],
+      "cavity": {
+        "x": 59,
+        "y": 59,
+        "w": 201,
+        "h": 215,
+        "floor": 300
+      },
+      "layers": [
+        "front reflection only"
+      ],
+      "opacity": 0.38,
+      "pairedWith": "case-0-back.webp"
+    },
+    {
+      "id": "case-1-back",
+      "source": "assets/source/visual-renewal/museum/case-1-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/case-1-back.webp",
+      "width": 320,
+      "height": 400,
+      "sha256": "ba011ff43ac9c04d7858d6048818800d8a5232c2cb1d2a58050c51c8cf07f998",
+      "sourceSha256": "a9a9fb2e8683ce09393cef4ee16a84471de9c7f86718ab303d56f57eb34e2546",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "level": 1,
+      "pivot": [
+        160,
+        394
+      ],
+      "base": {
+        "x": 160,
+        "y": 394,
+        "w": 296
+      },
+      "cavity": {
+        "x": 63,
+        "y": 72,
+        "w": 186,
+        "h": 169,
+        "floor": 270
+      },
+      "layers": [
+        "rear glass",
+        "base",
+        "frame"
+      ],
+      "empty": true
+    },
+    {
+      "id": "case-1-front",
+      "source": "assets/source/visual-renewal/museum/case-1-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/case-1-front.webp",
+      "width": 320,
+      "height": 400,
+      "sha256": "754fef04656c90f8cbdbf8abc0034782b32fd6e2967a847fe549c096bcb40217",
+      "sourceSha256": "a9a9fb2e8683ce09393cef4ee16a84471de9c7f86718ab303d56f57eb34e2546",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "level": 1,
+      "pivot": [
+        160,
+        394
+      ],
+      "cavity": {
+        "x": 63,
+        "y": 72,
+        "w": 186,
+        "h": 169,
+        "floor": 270
+      },
+      "layers": [
+        "front reflection only"
+      ],
+      "opacity": 0.38,
+      "pairedWith": "case-1-back.webp"
+    },
+    {
+      "id": "case-2-back",
+      "source": "assets/source/visual-renewal/museum/case-2-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/case-2-back.webp",
+      "width": 320,
+      "height": 400,
+      "sha256": "efcf08fa7688df2caf9de85667682f5dc61c78cba23e0a2fb292f2cd89c5ddbe",
+      "sourceSha256": "3b5933005d426734a640a986125e5876d2292890f515e447b811ad3c0feb9dc0",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "level": 2,
+      "pivot": [
+        160,
+        394
+      ],
+      "base": {
+        "x": 160,
+        "y": 394,
+        "w": 296
+      },
+      "cavity": {
+        "x": 60,
+        "y": 77,
+        "w": 179,
+        "h": 150,
+        "floor": 248
+      },
+      "layers": [
+        "rear glass",
+        "base",
+        "frame"
+      ],
+      "empty": true
+    },
+    {
+      "id": "case-2-front",
+      "source": "assets/source/visual-renewal/museum/case-2-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/case-2-front.webp",
+      "width": 320,
+      "height": 400,
+      "sha256": "17d3d030f61682eb07157ce731523025709e31975aa13836d711d5ea0ff8fe6e",
+      "sourceSha256": "3b5933005d426734a640a986125e5876d2292890f515e447b811ad3c0feb9dc0",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "level": 2,
+      "pivot": [
+        160,
+        394
+      ],
+      "cavity": {
+        "x": 60,
+        "y": 77,
+        "w": 179,
+        "h": 150,
+        "floor": 248
+      },
+      "layers": [
+        "front reflection only"
+      ],
+      "opacity": 0.38,
+      "pairedWith": "case-2-back.webp"
+    },
+    {
+      "id": "case-3-back",
+      "source": "assets/source/visual-renewal/museum/case-3-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/case-3-back.webp",
+      "width": 320,
+      "height": 400,
+      "sha256": "7b921be2ce9ce492246a90252b157fdd38735d8f21fbe9685074ffee7a40a088",
+      "sourceSha256": "181534b01cefe9c626921728f0f28df6869b0375525feee8e406a9d7d74fbbe3",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "level": 3,
+      "pivot": [
+        160,
+        394
+      ],
+      "base": {
+        "x": 160,
+        "y": 394,
+        "w": 296
+      },
+      "cavity": {
+        "x": 70,
+        "y": 80,
+        "w": 164,
+        "h": 131,
+        "floor": 232
+      },
+      "layers": [
+        "rear glass",
+        "base",
+        "frame"
+      ],
+      "empty": true
+    },
+    {
+      "id": "case-3-front",
+      "source": "assets/source/visual-renewal/museum/case-3-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/case-3-front.webp",
+      "width": 320,
+      "height": 400,
+      "sha256": "8a946da1a07b8487400cd2e1130909cc0e0893e66daa279d38c2b6fea0b2ec34",
+      "sourceSha256": "181534b01cefe9c626921728f0f28df6869b0375525feee8e406a9d7d74fbbe3",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "level": 3,
+      "pivot": [
+        160,
+        394
+      ],
+      "cavity": {
+        "x": 70,
+        "y": 80,
+        "w": 164,
+        "h": 131,
+        "floor": 232
+      },
+      "layers": [
+        "front reflection only"
+      ],
+      "opacity": 0.38,
+      "pairedWith": "case-3-back.webp"
+    },
+    {
+      "id": "mouse-0",
+      "source": "assets/source/visual-renewal/museum/mouse-poses-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/mouse-0.webp",
+      "width": 176,
+      "height": 176,
+      "sha256": "f1a0497bf8a9146143f132153d1cdecd0c94821991e5e3e81da5de1419498e86",
+      "sourceSha256": "f738319681403114de6f354b6c47766610c3689f60ff10d7f52f8a2b24d34dfa",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "species": "mouse",
+      "pose": 0,
+      "pivot": [
+        88,
+        158
+      ],
+      "feet": [
+        88,
+        158
+      ],
+      "sourceCell": 0,
+      "sourceBounds": {
+        "left": 68,
+        "top": 81,
+        "width": 605,
+        "height": 545
+      },
+      "layers": [
+        "resident"
+      ],
+      "frames": 1
+    },
+    {
+      "id": "mouse-1",
+      "source": "assets/source/visual-renewal/museum/mouse-poses-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/mouse-1.webp",
+      "width": 176,
+      "height": 176,
+      "sha256": "20cf3a5dc20c863b38bbef44000f871a6bac0b6d62a884d6fa83601c8e07e43d",
+      "sourceSha256": "f738319681403114de6f354b6c47766610c3689f60ff10d7f52f8a2b24d34dfa",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "species": "mouse",
+      "pose": 1,
+      "pivot": [
+        88,
+        158
+      ],
+      "feet": [
+        88,
+        158
+      ],
+      "sourceCell": 1,
+      "sourceBounds": {
+        "left": 787,
+        "top": 119,
+        "width": 572,
+        "height": 492
+      },
+      "layers": [
+        "resident"
+      ],
+      "frames": 1
+    },
+    {
+      "id": "mouse-2",
+      "source": "assets/source/visual-renewal/museum/mouse-poses-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/mouse-2.webp",
+      "width": 176,
+      "height": 176,
+      "sha256": "2824b871e10542c5b6fd3aac1288fe88a3385765a9ddda485482c822bafc09d7",
+      "sourceSha256": "f738319681403114de6f354b6c47766610c3689f60ff10d7f52f8a2b24d34dfa",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "species": "mouse",
+      "pose": 2,
+      "pivot": [
+        88,
+        158
+      ],
+      "feet": [
+        88,
+        158
+      ],
+      "sourceCell": 2,
+      "sourceBounds": {
+        "left": 1522,
+        "top": 203,
+        "width": 572,
+        "height": 423
+      },
+      "layers": [
+        "resident"
+      ],
+      "frames": 1
+    },
+    {
+      "id": "habitat-mouse",
+      "source": "assets/source/visual-renewal/museum/habitat-mouse-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/habitat-mouse.webp",
+      "width": 600,
+      "height": 200,
+      "sha256": "ce3f4224657fd31af2d01af8ac1bd406630bc392622f2b6193ee52d11808ad23",
+      "sourceSha256": "be622115f33e8936a233b49f84fd339e8cd99a9dc196a8a9147d4bc8f11d4a52",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "pivot": [
+        300,
+        200
+      ],
+      "layers": [
+        "habitat rear",
+        "ground contact"
+      ]
+    },
+    {
+      "id": "hermit-0",
+      "source": "assets/source/visual-renewal/museum/hermit-poses-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/hermit-0.webp",
+      "width": 176,
+      "height": 176,
+      "sha256": "4b4a5328e527fb9885ff812c30cb47e47b539c5c3805af3eb7fbc502a4938f74",
+      "sourceSha256": "c476c9858d8709de260e46f90a6b7a2fc64996f684f9cffa75b2a689e3c0cad7",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "species": "hermit",
+      "pose": 0,
+      "pivot": [
+        88,
+        158
+      ],
+      "feet": [
+        88,
+        158
+      ],
+      "sourceCell": 0,
+      "sourceBounds": {
+        "left": 81,
+        "top": 136,
+        "width": 529,
+        "height": 441
+      },
+      "layers": [
+        "resident"
+      ],
+      "frames": 1
+    },
+    {
+      "id": "hermit-1",
+      "source": "assets/source/visual-renewal/museum/hermit-poses-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/hermit-1.webp",
+      "width": 176,
+      "height": 176,
+      "sha256": "0e632f8d8c16a5540ed59dd13e0c5bfca7e16b590bc678c5f88f4ddf94f284fb",
+      "sourceSha256": "c476c9858d8709de260e46f90a6b7a2fc64996f684f9cffa75b2a689e3c0cad7",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "species": "hermit",
+      "pose": 1,
+      "pivot": [
+        88,
+        158
+      ],
+      "feet": [
+        88,
+        158
+      ],
+      "sourceCell": 1,
+      "sourceBounds": {
+        "left": 791,
+        "top": 136,
+        "width": 574,
+        "height": 433
+      },
+      "layers": [
+        "resident"
+      ],
+      "frames": 1
+    },
+    {
+      "id": "hermit-2",
+      "source": "assets/source/visual-renewal/museum/hermit-poses-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/hermit-2.webp",
+      "width": 176,
+      "height": 176,
+      "sha256": "027c48c5976349b03eebaedf4a396dfab57e5d60619de4ae1f0aac010c9ea577",
+      "sourceSha256": "c476c9858d8709de260e46f90a6b7a2fc64996f684f9cffa75b2a689e3c0cad7",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "species": "hermit",
+      "pose": 2,
+      "pivot": [
+        88,
+        158
+      ],
+      "feet": [
+        88,
+        158
+      ],
+      "sourceCell": 2,
+      "sourceBounds": {
+        "left": 1530,
+        "top": 151,
+        "width": 559,
+        "height": 402
+      },
+      "layers": [
+        "resident"
+      ],
+      "frames": 1
+    },
+    {
+      "id": "habitat-hermit",
+      "source": "assets/source/visual-renewal/museum/habitat-hermit-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/habitat-hermit.webp",
+      "width": 600,
+      "height": 200,
+      "sha256": "62aa8c156c3267f7c4a7b22c60f3c8139b6de3e7629e65870f92b4510ef3a936",
+      "sourceSha256": "f115d3f65107d51bb1067c34f48068fccf0242d6ebc1fba26d5c7cbbfbc08a70",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "pivot": [
+        300,
+        200
+      ],
+      "layers": [
+        "habitat rear",
+        "ground contact"
+      ]
+    },
+    {
+      "id": "tagbird-0",
+      "source": "assets/source/visual-renewal/museum/tagbird-poses-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/tagbird-0.webp",
+      "width": 176,
+      "height": 176,
+      "sha256": "15236e743eff2df4528486f7487b8225c9a82eb4c2551c0059e6fa3eb08c91ce",
+      "sourceSha256": "12aaa61de36ef440f40c788954e95f427cc3ba2c69801b81f49247c205e1bec7",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "species": "tagbird",
+      "pose": 0,
+      "pivot": [
+        88,
+        142
+      ],
+      "feet": [
+        88,
+        142
+      ],
+      "sourceCell": 0,
+      "sourceBounds": {
+        "left": 66,
+        "top": 129,
+        "width": 605,
+        "height": 569
+      },
+      "layers": [
+        "resident"
+      ],
+      "frames": 1
+    },
+    {
+      "id": "tagbird-1",
+      "source": "assets/source/visual-renewal/museum/tagbird-poses-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/tagbird-1.webp",
+      "width": 176,
+      "height": 176,
+      "sha256": "2b1b804037b10894a1be80d11665d5cf2af14b785ac40891c5583307e5a14821",
+      "sourceSha256": "12aaa61de36ef440f40c788954e95f427cc3ba2c69801b81f49247c205e1bec7",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "species": "tagbird",
+      "pose": 1,
+      "pivot": [
+        88,
+        142
+      ],
+      "feet": [
+        88,
+        142
+      ],
+      "sourceCell": 1,
+      "sourceBounds": {
+        "left": 800,
+        "top": 16,
+        "width": 622,
+        "height": 663
+      },
+      "layers": [
+        "resident"
+      ],
+      "frames": 1
+    },
+    {
+      "id": "tagbird-2",
+      "source": "assets/source/visual-renewal/museum/tagbird-poses-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/tagbird-2.webp",
+      "width": 176,
+      "height": 176,
+      "sha256": "0bf40e55148027df32ab5e5d3d3029a93f184bf271cf945dfe68d4889b4cf001",
+      "sourceSha256": "12aaa61de36ef440f40c788954e95f427cc3ba2c69801b81f49247c205e1bec7",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "species": "tagbird",
+      "pose": 2,
+      "pivot": [
+        88,
+        142
+      ],
+      "feet": [
+        88,
+        142
+      ],
+      "sourceCell": 2,
+      "sourceBounds": {
+        "left": 1519,
+        "top": 140,
+        "width": 557,
+        "height": 566
+      },
+      "layers": [
+        "resident"
+      ],
+      "frames": 1
+    },
+    {
+      "id": "habitat-tagbird",
+      "source": "assets/source/visual-renewal/museum/habitat-tagbird-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/habitat-tagbird.webp",
+      "width": 600,
+      "height": 200,
+      "sha256": "1113efefd50068b1d81668ef5007abaad71991fc08694d57cd48908e10a39843",
+      "sourceSha256": "ebb3657d644fe3157279c53a7cbd52b81404483b0b09ca60946faba27678e1ed",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "pivot": [
+        300,
+        200
+      ],
+      "layers": [
+        "habitat rear",
+        "ground contact"
+      ]
+    },
+    {
+      "id": "string-lights",
+      "source": "assets/source/visual-renewal/museum/furnishings-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/string-lights.webp",
+      "width": 200,
+      "height": 76,
+      "sha256": "6d885590b72d4afba6cb1ed82020b82d72706f6dc24c431f58b963b684e95550",
+      "sourceSha256": "abb2522f2b28e815821179bdc79af43784120e4b5640ffc40103bc2be70f3beb",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "growthId": "deco-0",
+      "layers": [
+        "furnishing"
+      ],
+      "sourceCell": 0,
+      "alpha": "below128 removed to eliminate generation haze; no opaque background",
+      "pivot": [
+        100.0,
+        0
+      ],
+      "pivotHint": "top bracket"
+    },
+    {
+      "id": "paper-garden",
+      "source": "assets/source/visual-renewal/museum/furnishings-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/paper-garden.webp",
+      "width": 144,
+      "height": 113,
+      "sha256": "4b37d9d606461b7e92c3f3d5c0e16f51926dc2e7f103d6edaab97eeb26372ec6",
+      "sourceSha256": "abb2522f2b28e815821179bdc79af43784120e4b5640ffc40103bc2be70f3beb",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "growthId": "deco-1",
+      "layers": [
+        "furnishing"
+      ],
+      "sourceCell": 1,
+      "alpha": "below128 removed to eliminate generation haze; no opaque background",
+      "pivot": [
+        72.0,
+        56.5
+      ],
+      "pivotHint": "floor or wall centre"
+    },
+    {
+      "id": "memorial-plaque",
+      "source": "assets/source/visual-renewal/museum/furnishings-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/memorial-plaque.webp",
+      "width": 166,
+      "height": 72,
+      "sha256": "a01f98bd8cf1391e5085cdc206ffddd190f60007216be6b3083afe08a72c44f1",
+      "sourceSha256": "abb2522f2b28e815821179bdc79af43784120e4b5640ffc40103bc2be70f3beb",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "growthId": "deco-2",
+      "layers": [
+        "furnishing"
+      ],
+      "sourceCell": 2,
+      "alpha": "below128 removed to eliminate generation haze; no opaque background",
+      "pivot": [
+        83.0,
+        36.0
+      ],
+      "pivotHint": "floor or wall centre"
+    },
+    {
+      "id": "armillary",
+      "source": "assets/source/visual-renewal/museum/furnishings-source.png",
+      "runtime": "assets/runtime/visual-renewal/museum/armillary.webp",
+      "width": 124,
+      "height": 159,
+      "sha256": "32e15714408c0ad9122519d3723473f14dad07564f226282eeb0cd6babc7e542",
+      "sourceSha256": "abb2522f2b28e815821179bdc79af43784120e4b5640ffc40103bc2be70f3beb",
+      "provenance": "Original generated production art using built-in image_gen; approved boards are style reference only. Deterministic nearest-neighbour registration export.",
+      "growthId": "deco-3",
+      "layers": [
+        "furnishing"
+      ],
+      "sourceCell": 3,
+      "alpha": "below128 removed to eliminate generation haze; no opaque background",
+      "pivot": [
+        62.0,
+        79.5
+      ],
+      "pivotHint": "floor or wall centre"
+    }
+  ]
+}

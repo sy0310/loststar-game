@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "currency": "parts",
+  "baseRules": "BALANCE_V01.json unchanged: debt12000, fuel/hull100, unit supplies2, survey180",
+  "ships": {
+    "starter": {
+      "name": "轻型拾荒船",
+      "price": 0,
+      "width": 4,
+      "height": 4,
+      "fuelPercent": 100,
+      "damagePercent": 100,
+      "cargoUpgradeCosts": [
+        600,
+        1100
+      ],
+      "spriteId": "ship_starter"
+    },
+    "cargo": {
+      "name": "中型货船",
+      "price": 1800,
+      "width": 5,
+      "height": 4,
+      "fuelPercent": 100,
+      "damagePercent": 90,
+      "cargoUpgradeCosts": [
+        800,
+        1400
+      ],
+      "spriteId": "ship_cargo"
+    },
+    "scout": {
+      "name": "深航探测船",
+      "price": 2400,
+      "width": 4,
+      "height": 4,
+      "fuelPercent": 80,
+      "damagePercent": 100,
+      "cargoUpgradeCosts": [
+        700,
+        1300
+      ],
+      "spriteId": "ship_scout"
+    },
+    "heavy": {
+      "name": "重型工程船",
+      "price": 3400,
+      "width": 5,
+      "height": 5,
+      "fuelPercent": 110,
+      "damagePercent": 80,
+      "cargoUpgradeCosts": [
+        1600
+      ],
+      "spriteId": "ship_heavy"
+    }
+  },
+  "missions": {
+    "survey": {
+      "name": "航区测绘",
+      "goal": "携记录箱探测3站并安全返港",
+      "minimumNodes": 3,
+      "minimumItems": 0,
+      "reward": 180,
+      "recordBox": true
+    },
+    "recovery": {
+      "name": "回收物资",
+      "goal": "带回本趟回收的3件物资",
+      "minimumNodes": 1,
+      "minimumItems": 3,
+      "reward": 120,
+      "recordBox": false
+    },
+    "deep": {
+      "name": "远端勘探",
+      "goal": "探测4站并安全返港",
+      "minimumNodes": 4,
+      "minimumItems": 0,
+      "reward": 220,
+      "recordBox": false
+    }
+  },
+  "products": {
+    "toolbox": {
+      "name": "便携维修工具箱",
+      "price": 55,
+      "value": 35,
+      "cells": 1,
+      "shapeId": "point1",
+      "itemId": "toolbox",
+      "ability": "patch",
+      "effect": "修复22耐久，使用后消耗"
+    },
+    "fuel_can": {
+      "name": "备用燃料罐",
+      "price": 50,
+      "value": 30,
+      "cells": 1,
+      "shapeId": "point1",
+      "itemId": "fuel_can",
+      "ability": "fuel",
+      "effect": "补充20燃料，使用后消耗，不改变航行距离"
+    },
+    "medkit": {
+      "name": "密封医疗箱",
+      "price": 70,
+      "value": 45,
+      "cells": 2,
+      "shapeId": "line2",
+      "itemId": "medkit",
+      "ability": null,
+      "effect": "常规回收货，可保留或出售；不引入船员/生命值系统"
+    }
+  },
+  "notes": "Prototype prices selected below concept labels. Survey reward and base ship fuel unchanged. One active task. No external tray sold. Permanent cargo upgrades belong to each ship and add one real row. Validate progression in fixed-seed simulations before freeze."
+}
