@@ -1,0 +1,638 @@
+{
+  "sourceCommit": "4ba48981fa2b63ed6e26ebc5f658a92cc643a9a5",
+  "runtimeFiles": [
+    {
+      "path": "index.html",
+      "sha256": "74a19db6b9b01abc46b157c3a34f5ea1bfdc35890c6a248421d5eb945d91beef"
+    },
+    {
+      "path": "src/art-catalog.js",
+      "sha256": "da8a07e4552b744c034eaf229fc97b001ebdbe0d0fb6078c1037f8ad738e8320"
+    },
+    {
+      "path": "src/art.js",
+      "sha256": "836440b97f69405d047dd14132c9a78ae5748b58bc47fed93a90e51543023d48"
+    },
+    {
+      "path": "src/audio-engine.js",
+      "sha256": "70d13d4a2e593efa977a5a683cc3add57215b002c678c47e64c85fb6527b9e3e"
+    },
+    {
+      "path": "src/balance.js",
+      "sha256": "fcd0322cb243a9a14cb8e4a6b26e2fd4aef8c258fd5d00c490ccc2c1b4b210c2"
+    },
+    {
+      "path": "src/game.js",
+      "sha256": "86c71c4f6164be9fb0583d319a85e5c4c69cfcab3e7967d1a04300c2fee05b36"
+    },
+    {
+      "path": "src/persistence.js",
+      "sha256": "d5335fc39157d36824e15c7d52660b1dd7b0d04484855389b010180f82c4e118"
+    },
+    {
+      "path": "src/style.css",
+      "sha256": "62e5220d0ca472da05476615d0cc4f8e8b2ad7765d23dd9d35b6be39f985e3f0"
+    },
+    {
+      "path": "assets/actors/boss@2x.png",
+      "sha256": "077fdf64918a9693d01ea9b0e041551aea3c4951fc82ed008dfb802b17cbb5c9"
+    },
+    {
+      "path": "assets/actors/boss@4x.png",
+      "sha256": "87dd1915907669f710f21be82b81896c856fee3bcbd07fef74c347035a4e00db"
+    },
+    {
+      "path": "assets/actors/elite@2x.png",
+      "sha256": "f0c35ff3c35b42b1252105e651e29a807a37c9bd4027c4cc5bcb8983c898a96c"
+    },
+    {
+      "path": "assets/actors/elite@4x.png",
+      "sha256": "48de37849cda5e480c81c109b7a59567dc009c4e28a4b9a5f2baeb7d619ba8b3"
+    },
+    {
+      "path": "assets/actors/player@2x.png",
+      "sha256": "db12105c3e4eaeae53217512d6ab5edf9602e7893cdc6b8a15dc8d20e3bcfeae"
+    },
+    {
+      "path": "assets/actors/player@4x.png",
+      "sha256": "2eb7e9a803286c39dfd64c257c9b62db147317d2c623d0aa88b6c50a2f38c378"
+    },
+    {
+      "path": "assets/actors/ranger@2x.png",
+      "sha256": "7d754bf2f372e6a592e167d384a38a5a5606869ba55ae094849d1c3d60568121"
+    },
+    {
+      "path": "assets/actors/ranger@4x.png",
+      "sha256": "822ef73b6f7f0ac200c2cbc7a64ca8b21a9daa0da412f91be034be9491f8e971"
+    },
+    {
+      "path": "assets/actors/skimmer@2x.png",
+      "sha256": "808cae887a46d2d23177c5dce7274144e0400a0b35e06379f0a2805dc04ae26f"
+    },
+    {
+      "path": "assets/actors/skimmer@4x.png",
+      "sha256": "758db4c9f86be8be410da2788cc4616ae51f1322ab08805f16a7d2095b20884f"
+    },
+    {
+      "path": "assets/actors/tank@2x.png",
+      "sha256": "9b7986b26d86519f8fd60b1f01a53990358b9633be5b672e12bdbcc4fc79fb6f"
+    },
+    {
+      "path": "assets/actors/tank@4x.png",
+      "sha256": "2b6a04b4e96c2c96c26cd29f27a5da9cddfa1bc492b1a3fb2005f74a57b31ef0"
+    },
+    {
+      "path": "assets/actors/wisp@2x.png",
+      "sha256": "45b8332b4074e7c5c104cd23a37bbf5b5dd2f2243cdfda382e3924f6f5e74368"
+    },
+    {
+      "path": "assets/actors/wisp@4x.png",
+      "sha256": "2a58ae0d2b0d93bdd46b714064ecaa4566863885a84c420e0ba12770f3e955a1"
+    },
+    {
+      "path": "assets/v061/collapse@2x.png",
+      "sha256": "7cfc4bec55cc4670046179f592aef3b2c44d2ecb405315d290f359b14966f8f2"
+    },
+    {
+      "path": "assets/v061/collapse@4x.png",
+      "sha256": "1356761db4e6c7b4da0271d33f00458493d81c2dfd12bf9d24ce219f931d458c"
+    },
+    {
+      "path": "assets/v061/eventhorizon@2x.png",
+      "sha256": "aae96d0f8555c52fd5c4248b6eba1a9ef89314fb696d99ecedae4b39c8e2c3e9"
+    },
+    {
+      "path": "assets/v061/eventhorizon@4x.png",
+      "sha256": "8afd25e25da1919c62aa3377bd3bf3e0837d962006c5ea0cd859134a868cf9e1"
+    },
+    {
+      "path": "assets/v061/evolution_corona@2x.png",
+      "sha256": "80ede63e36084a291a0763cc5b740ed84030ba5917289c6a01f05b0574df4a78"
+    },
+    {
+      "path": "assets/v061/evolution_corona@4x.png",
+      "sha256": "5f8b58548eed6153e7524bec5409268030a51d1f779920759eecfd276b1bf6fe"
+    },
+    {
+      "path": "assets/v061/fusion_nova@2x.png",
+      "sha256": "df4f1bc89a22c29ebf3283607d26dda0c022f07a54b6e2e5e30075997e11a18f"
+    },
+    {
+      "path": "assets/v061/fusion_nova@4x.png",
+      "sha256": "2a5cde346be3c9c7cc0814ddbc7fb06d3c24d42271a3dd4a9b37e676752c1ec0"
+    },
+    {
+      "path": "assets/v061/gravity@2x.png",
+      "sha256": "d8459475b2d5232aaab11e67ab89b9ba2ae84e8e87372b309d73d9b2afabe7bf"
+    },
+    {
+      "path": "assets/v061/gravity@4x.png",
+      "sha256": "eaf518d05f3c6978c55b646b208b68f89bc1f131946cc9148fb3d933ade817db"
+    },
+    {
+      "path": "assets/v061/gravity_burst@2x.png",
+      "sha256": "80f5144f345d80b927e8dce17556adee3472d2f33463aa18491b60ab93d9ad1c"
+    },
+    {
+      "path": "assets/v061/gravity_burst@4x.png",
+      "sha256": "f21e8fb52e8bfd98a16ca8445972c8fc79be2cce439904ca9142254d2cd76b4c"
+    },
+    {
+      "path": "assets/v061/kaleidoscope@2x.png",
+      "sha256": "66f21e10f7bf63c587d67500cfec9fec386fe469ee853015cad389fc0cb87a01"
+    },
+    {
+      "path": "assets/v061/kaleidoscope@4x.png",
+      "sha256": "e2a3fa7306e5b57fe78bce1b0047c699fbdee731c5a698eb476c4aef430f5606"
+    },
+    {
+      "path": "assets/v061/prism@2x.png",
+      "sha256": "a1aa2fd4bc8375442e03b70629e30fa1ad44c3261790c55b49ef274b3b33fb59"
+    },
+    {
+      "path": "assets/v061/prism@4x.png",
+      "sha256": "28e81da7c7ff00fda4e7f163cb1fa70d13e3fd487ab30cb854e9f8e421edb1dd"
+    },
+    {
+      "path": "assets/v061/rail_muzzle@2x.png",
+      "sha256": "86ce889ee304b35c701919caa201200365c5331414780d6f20bc580377717cd5"
+    },
+    {
+      "path": "assets/v061/rail_muzzle@4x.png",
+      "sha256": "f3ac5aa22a64349fdaa6024b38a355c29d1534570658a833124e7f1f2caeb5a9"
+    },
+    {
+      "path": "assets/v061/refraction@2x.png",
+      "sha256": "bde465db80f5b3cc8b1c7a1184786195e5231b5eda05bec11ef48c1be1e5dea0"
+    },
+    {
+      "path": "assets/v061/refraction@4x.png",
+      "sha256": "24c83ab72ceddacf626e47dce211b959db060e0704f0987a3487fd3c4d3ff205"
+    },
+    {
+      "path": "assets/v061/singularity@2x.png",
+      "sha256": "188adcf805877d80f33aec0015e2031308df33a27365da6a0843d4d73ef581be"
+    },
+    {
+      "path": "assets/v061/singularity@4x.png",
+      "sha256": "3ef055582862a3dd2f51f0a68d1c9ea22e04ec932ef8b4eacf9ab49cce23441d"
+    },
+    {
+      "path": "assets/v062/actors/courier@2x.png",
+      "sha256": "decf45cfa83b808b634fa9c061ab04cc0dcc6ddd3047de9264e8eca7f642b4c9"
+    },
+    {
+      "path": "assets/v062/actors/courier@4x.png",
+      "sha256": "e399aad2a274eadb56841e8c74542ff3d1aae91c54fdea38ee1529523fba4739"
+    },
+    {
+      "path": "assets/v062/actors/lancer@2x.png",
+      "sha256": "a7e2941750c9400ca1ec96c3da39b69f6d57ab9487fe7ef608b6a36753d3769d"
+    },
+    {
+      "path": "assets/v062/actors/lancer@4x.png",
+      "sha256": "d78159a2f22d0f0f40e89ab652f48a37d21805b1ec0fb7d41f9aefae79b97fe8"
+    },
+    {
+      "path": "assets/v062/actors/minelayer@2x.png",
+      "sha256": "3e13bfabdede7a6cd4f540f6b186dff594b8d5818a332c883cafef68fd38b97e"
+    },
+    {
+      "path": "assets/v062/actors/minelayer@4x.png",
+      "sha256": "11f05d1c6c84b0148b0faf400bbba328c28cd5f847237ce3b075536e5e849b4e"
+    },
+    {
+      "path": "assets/v062/actors/sentinel@2x.png",
+      "sha256": "87585b555480978ada2b6660c31485a57823fcc8fc31cc8a0333cadef583fa83"
+    },
+    {
+      "path": "assets/v062/actors/sentinel@4x.png",
+      "sha256": "753f689028c6ebb1f5e03eb19f74071d210e328a63d8a40805c6b7443c39c720"
+    },
+    {
+      "path": "assets/v062/actors/watcher@2x.png",
+      "sha256": "274e8a2f3ea663d469186815fb53917b835ba0d5635e97a0a434b67c72af1e7d"
+    },
+    {
+      "path": "assets/v062/actors/watcher@4x.png",
+      "sha256": "a9a6df127c61610210219a76f1ca6958b743fe0beeaf93802af3ec73e8236eae"
+    },
+    {
+      "path": "assets/v062/space/deep_space@2x.png",
+      "sha256": "fed3ee5844a08915d82e5cb41800d029187feb2e0ed2e21fbd4595ddac79dcf9"
+    },
+    {
+      "path": "assets/v062/space/deep_space@4x.png",
+      "sha256": "d5eea5f5da68b53e429e5f1c8a6b69a94c1bdfb8c44376e3d0d2e8c51b416fd1"
+    },
+    {
+      "path": "assets/v064/actors/elite_raider@2x.png",
+      "sha256": "1efaa114eb249332819c93f166f63d8a561f3b0be27bbed3f3ed7b9b06d180da"
+    },
+    {
+      "path": "assets/v064/actors/elite_raider@4x.png",
+      "sha256": "0c4a8fc256f771bd362b978bc56e8123770bcbab202548d41e8ce5e924be0afe"
+    },
+    {
+      "path": "assets/v064/actors/elite_warden@2x.png",
+      "sha256": "219c721ce4ea09658d98499f42b1e7959431242407a95e1346559c286004e9aa"
+    },
+    {
+      "path": "assets/v064/actors/elite_warden@4x.png",
+      "sha256": "95b6dc777a0915ef1d21790a64625a6574c501646d887c351b7a0ff35090fcf3"
+    },
+    {
+      "path": "assets/v064/weapons/prism_crystal@2x.png",
+      "sha256": "a32512d81751380ce03c7561508b4f46c1b57fe88ac75a100394f240817809ac"
+    },
+    {
+      "path": "assets/v064/weapons/prism_crystal@4x.png",
+      "sha256": "f91ab18457527783a4c14db16bdb6a55aff4432d5403245e860f794b72cc94a2"
+    },
+    {
+      "path": "assets/v065/bosses/boss_ark@2x.png",
+      "sha256": "7f6d3ed18e337dc88e708c41aaf14ed55db17bd683a629521ad860d7c8702196"
+    },
+    {
+      "path": "assets/v065/bosses/boss_ark@4x.png",
+      "sha256": "de907f30211e3d307a84a03a041c917da7893df7122eeabdd4a7c6379eb1a6cf"
+    },
+    {
+      "path": "assets/v065/bosses/boss_judicator@2x.png",
+      "sha256": "8a930afa12e78fb66524b500d28ea0769e5952d20d813ee306023048e957605e"
+    },
+    {
+      "path": "assets/v065/bosses/boss_judicator@4x.png",
+      "sha256": "93085b81ef1ac17f970dc12667ca311451bb9195447b7a1195f05d6e0d281942"
+    },
+    {
+      "path": "assets/v065/bosses/boss_weaver@2x.png",
+      "sha256": "2fea428b0bbd8880f0d88a3726a4a74af24229e4755bb6ebd08964b285913566"
+    },
+    {
+      "path": "assets/v065/bosses/boss_weaver@4x.png",
+      "sha256": "0548648c17f87e7c967a71a904dcad7e410efaf273be97aa681b2b21c1b61bdb"
+    },
+    {
+      "path": "assets/v065/elites/elite_hive@2x.png",
+      "sha256": "dd649e6c9ff7662296ab0cb6e1d865a45b03e47a40319a7b25dccbcb83b0dbd7"
+    },
+    {
+      "path": "assets/v065/elites/elite_hive@4x.png",
+      "sha256": "facebe74137505df18f44c5a251a8e7823f2dd86e007bcff25eb138e679f64b7"
+    },
+    {
+      "path": "assets/v065/elites/elite_reaver@2x.png",
+      "sha256": "976a5f0dac600e871f38fccb7b3913cd8cea498e4a710cb9940bdd7d23a2545a"
+    },
+    {
+      "path": "assets/v065/elites/elite_reaver@4x.png",
+      "sha256": "8d42aba50173cae031d8872e907192c68213e02cd29157471ac25d2d6f6b23dd"
+    },
+    {
+      "path": "assets/v065/weapons/bastion_mount@2x.png",
+      "sha256": "bc51bb6e5f2230e937082a4c20443d3b2bde8ee3fbd0d6ba37cecec340bd7a3b"
+    },
+    {
+      "path": "assets/v065/weapons/bastion_mount@4x.png",
+      "sha256": "974a13891543853ed5588f42fd18deb9ca005e0f42cc037b8df84eb884dfd397"
+    },
+    {
+      "path": "assets/v065/weapons/hive_drone@2x.png",
+      "sha256": "7cea71ce5cb37d6f64414b6f999cc7166cf8953f286edda888e85e90940d4365"
+    },
+    {
+      "path": "assets/v065/weapons/hive_drone@4x.png",
+      "sha256": "684410b088babb98cb81f6acb8526dfb4f153fa790b404201fc2f46febd6b120"
+    },
+    {
+      "path": "assets/v065/weapons/hunter_drone@2x.png",
+      "sha256": "09cc7ef68e6aff96bef1e2204be60ff2d4adbdb70631c6eaa10b5a93578e6974"
+    },
+    {
+      "path": "assets/v065/weapons/hunter_drone@4x.png",
+      "sha256": "2f0e91018542b93adf2530fb131a13a66f7ff2695b40235643286810cbc11ef8"
+    },
+    {
+      "path": "assets/v065/weapons/ionbastion@2x.png",
+      "sha256": "4c8b4d9599176fa92a2bf20e76cf899797ba3c27d4c397619cf9339626c87255"
+    },
+    {
+      "path": "assets/v065/weapons/ionbastion@4x.png",
+      "sha256": "094bcd00b91442efe66521855f1615cbb435880b4f66b77ca3ced5a78405b96d"
+    },
+    {
+      "path": "assets/v067/repair/repair_pod@2x.png",
+      "sha256": "1e9c74edc24c1d0a5e120b9218c869dc7fd63a79e4e5b3800657f618957fb2bf"
+    },
+    {
+      "path": "assets/v067/repair/repair_pod@4x.png",
+      "sha256": "11caa730346dd6702a16ed91f614bc1726436593a4a48907db67e6f3b282d868"
+    },
+    {
+      "path": "assets/v067/repair/repairpod@2x.png",
+      "sha256": "54794c3228b3e8e323ac994d2338620999730a24d221a3f758e02be7490f1b6d"
+    },
+    {
+      "path": "assets/v067/repair/repairpod@4x.png",
+      "sha256": "d25a32ce6a75bb86a1614b51153e38f87e2b472e0548921181acb9b847a94778"
+    },
+    {
+      "path": "assets/v068/fusion/blastwheel_hub@2x.png",
+      "sha256": "8eb586613d20ff6e83b2bc783b416ad9ea3591cd78f38312aed240a70d588750"
+    },
+    {
+      "path": "assets/v068/fusion/blastwheel_hub@4x.png",
+      "sha256": "00ed46857446c7ecdcef3f2f7c14ec17bacbe67443a8ce43916aa128f47cba74"
+    },
+    {
+      "path": "assets/v068/fusion/eventhorizon_core@2x.png",
+      "sha256": "ce5d14337edf49e5e0296ca926aca4b1de39ec84913c5df996ec17c646c7019a"
+    },
+    {
+      "path": "assets/v068/fusion/eventhorizon_core@4x.png",
+      "sha256": "3315564fd0bdc7f491969f833f45ef86fd115347457f23b11820e2052e3b3cab"
+    },
+    {
+      "path": "assets/v068/fusion/eventhorizon_ring@2x.png",
+      "sha256": "91c8e23a55157f184e8abf78c7ebca0ef142a8dfe99bcdc7b0e68a89346f0ef5"
+    },
+    {
+      "path": "assets/v068/fusion/eventhorizon_ring@4x.png",
+      "sha256": "60e1c3803a878ff040be2b53721ca1d9a55a1129e859034811510b1f9f853400"
+    },
+    {
+      "path": "assets/v068/fusion/thunder_relay@2x.png",
+      "sha256": "f760786a4464b04a69d8caeeacd88b027d236339bc43c063ef0ebb4ed0178174"
+    },
+    {
+      "path": "assets/v068/fusion/thunder_relay@4x.png",
+      "sha256": "507aeabf995603c3c7881e1968942655bd9ccc75f97d903ac536f38e05dede85"
+    },
+    {
+      "path": "assets/weapons/arc@2x.png",
+      "sha256": "85b5ce994b29c60233314a5828d8b22c970885f13da931b8bbe375397bf587e8"
+    },
+    {
+      "path": "assets/weapons/arc@4x.png",
+      "sha256": "6250a0ff13b36833097e9d941926e3c9c085d6540bd0ec31e531bb03a29e85cf"
+    },
+    {
+      "path": "assets/weapons/armor@2x.png",
+      "sha256": "4265c6d725dbfaae02e0e258e6d05e0137b7d83e6fddac177d8b215bb5144db2"
+    },
+    {
+      "path": "assets/weapons/armor@4x.png",
+      "sha256": "0051b3d8d476a614d72d13bb2df0b4bb3ab9ac751c4a28313b2061e46f48261f"
+    },
+    {
+      "path": "assets/weapons/beam_cap@2x.png",
+      "sha256": "08f2fac0a6317241c32db72f6756073b11fbb6d4873c9a04c68104b30384f086"
+    },
+    {
+      "path": "assets/weapons/beam_cap@4x.png",
+      "sha256": "70542ade08a22e22c5a4e80bfe89ea69eca0b37cebd849fb6cfa2d40d60b7f51"
+    },
+    {
+      "path": "assets/weapons/blade@2x.png",
+      "sha256": "761bfd8a8186716c0b078956bde94050bc6d010a9fd61d2765c666fe2eae3ca1"
+    },
+    {
+      "path": "assets/weapons/blade@4x.png",
+      "sha256": "fae36183bfbcc8384b4496a8f96828230585a692ec21a5b54837c80eeb254c66"
+    },
+    {
+      "path": "assets/weapons/blade_body@2x.png",
+      "sha256": "761bfd8a8186716c0b078956bde94050bc6d010a9fd61d2765c666fe2eae3ca1"
+    },
+    {
+      "path": "assets/weapons/blade_body@4x.png",
+      "sha256": "fae36183bfbcc8384b4496a8f96828230585a692ec21a5b54837c80eeb254c66"
+    },
+    {
+      "path": "assets/weapons/blastwheel@2x.png",
+      "sha256": "2f9331aefdfda661a0c8aa67380e794bba1f33d79ede78448b059ecaaa2d7535"
+    },
+    {
+      "path": "assets/weapons/blastwheel@4x.png",
+      "sha256": "7264f56d477b755eb1c87d757fe394f7f213915f90c7acd03918f4433e16e6bd"
+    },
+    {
+      "path": "assets/weapons/cannon@2x.png",
+      "sha256": "bd83c47da845adf8faef8d660300b9d98ee34696b32de16c85dcae2b1b50b9eb"
+    },
+    {
+      "path": "assets/weapons/cannon@4x.png",
+      "sha256": "de7684a3da06f20a684d12cb4be8363f8089469e54bdb5e4eb864566465fe858"
+    },
+    {
+      "path": "assets/weapons/capacitor@2x.png",
+      "sha256": "b83e58c65c24c465b15928fa15a5b6591d4e013a052eb1a2af3963abe631bb62"
+    },
+    {
+      "path": "assets/weapons/capacitor@4x.png",
+      "sha256": "4a880c218a8732d5b92dfdc4ad1e33619e6199bfacf6de7786878cea54132def"
+    },
+    {
+      "path": "assets/weapons/chainstorm@2x.png",
+      "sha256": "b9409eb855b4fdc9779c9dcf2e1507d3f4e56558741694e66b6ac72eda30ae57"
+    },
+    {
+      "path": "assets/weapons/chainstorm@4x.png",
+      "sha256": "634115cd3d8746d2b0d0526b38c3381be520ed56d50fb1df0d673f674a8b3000"
+    },
+    {
+      "path": "assets/weapons/cooler@2x.png",
+      "sha256": "c436aace72b2cef9fee25aae325f474f7957b811797c8b6de51d69ecb54b0c36"
+    },
+    {
+      "path": "assets/weapons/cooler@4x.png",
+      "sha256": "ebeaf050e74a96abf56585c8e40a88968310427d330947c1a6e8e0afb7d3d985"
+    },
+    {
+      "path": "assets/weapons/drone@2x.png",
+      "sha256": "de0e7f1d1c39fac588dcc233b6ae4744d4756d3144548485b1c4f73e4a8cfe39"
+    },
+    {
+      "path": "assets/weapons/drone@4x.png",
+      "sha256": "d7e71c5c62dd2b9deeb31c84b0d5f05c352c4b6517e8998d42450e1173dd46fb"
+    },
+    {
+      "path": "assets/weapons/drone_body@2x.png",
+      "sha256": "b62e335a1d9df9766233567f2047eb51318b67b4db847a6d3a08819bb3295251"
+    },
+    {
+      "path": "assets/weapons/drone_body@4x.png",
+      "sha256": "413ad4cf07ae0b7534d03876b1ad609c7a058946fceabfb1c927d0b1605b689d"
+    },
+    {
+      "path": "assets/weapons/explosion@2x.png",
+      "sha256": "544b70e9a41bd2b5fd07d5c474b6b1e42e8acca646f5389574ce809f1c63f225"
+    },
+    {
+      "path": "assets/weapons/explosion@4x.png",
+      "sha256": "1aa009bcda930cee94b8fce86fe340a276195b9595ea8291af72a9b0b1e85e46"
+    },
+    {
+      "path": "assets/weapons/hit@2x.png",
+      "sha256": "5e944ca51ab8d2539bd995d9cd2f7e23c95c0e54a4c847c3c2700446235cda17"
+    },
+    {
+      "path": "assets/weapons/hit@4x.png",
+      "sha256": "e5981c44f9083af7604ef0bf1abba45b6530a4a15ccdf23126157f5db93fbec1"
+    },
+    {
+      "path": "assets/weapons/hunterswarm@2x.png",
+      "sha256": "f7cd6be3bcffd085ec6037ee221a7b6bd537448fc643f1bec91d7f0903e667eb"
+    },
+    {
+      "path": "assets/weapons/hunterswarm@4x.png",
+      "sha256": "ed8fd4a96f56d8ea2e26e7aa787db0da7fbd9941a0b061c5bf6dbb11000c4bf7"
+    },
+    {
+      "path": "assets/weapons/lens@2x.png",
+      "sha256": "55ba4bc55cad363fa9cd114502255e4628fa41ff9edecadc41df814eb5684b6d"
+    },
+    {
+      "path": "assets/weapons/lens@4x.png",
+      "sha256": "34da3d1c36c0c9e92b457a656d668a14f3f3d05695da38a64c99afa2542e1837"
+    },
+    {
+      "path": "assets/weapons/lock@2x.png",
+      "sha256": "9d21f89051fc4530901df81aaae45eaba2ff87d71349d28b031990d745fef24c"
+    },
+    {
+      "path": "assets/weapons/lock@4x.png",
+      "sha256": "bd4593ca50e69409332cac0428edccae6051527d11af159fe029f8020ba864b3"
+    },
+    {
+      "path": "assets/weapons/magnet@2x.png",
+      "sha256": "3c67c86e7296b980764680274b176cb6dba915a46a30be2211541196d457bc25"
+    },
+    {
+      "path": "assets/weapons/magnet@4x.png",
+      "sha256": "d6b67605ef222a257451ad02ee5dfcdfaac17b2f327bd46e65ceb3d32c3081b4"
+    },
+    {
+      "path": "assets/weapons/meteorbarrage@2x.png",
+      "sha256": "015d034c239507691eea16bcee9710bc8b46321d871c41e7f7291651b1800890"
+    },
+    {
+      "path": "assets/weapons/meteorbarrage@4x.png",
+      "sha256": "fac94959e92a5e7f81c874c7ce457024814c7eea6a80c317d43551a0b141b2d9"
+    },
+    {
+      "path": "assets/weapons/missile@2x.png",
+      "sha256": "3725a97c3712e296a9d5b0fe1739fa5d61576dec8654d895fe5c09d1fe362538"
+    },
+    {
+      "path": "assets/weapons/missile@4x.png",
+      "sha256": "0dce4a797533160963e27686f01a3f51a907b10a9bb1b89bd698a2fcf77d8714"
+    },
+    {
+      "path": "assets/weapons/missile_body@2x.png",
+      "sha256": "ce3464f7f5a0f93984bd5037c00b64ddc8b4c0d027fb71d46fa3b9b6b673e024"
+    },
+    {
+      "path": "assets/weapons/missile_body@4x.png",
+      "sha256": "bc46bf698a5ef1a787513fdc968aa42685f3ce0916fd0bbb1601d69c1edf5d3c"
+    },
+    {
+      "path": "assets/weapons/piercebeam@2x.png",
+      "sha256": "638ad96abb67680833cf8fb009d67cd374c5cbd68e51b855311d2ccbe0605f29"
+    },
+    {
+      "path": "assets/weapons/piercebeam@4x.png",
+      "sha256": "f421df57efdf4dffa9cd10c0542752161c8c06b9d00d5f5b54c5fb557d695f3d"
+    },
+    {
+      "path": "assets/weapons/pulse@2x.png",
+      "sha256": "a8939feaa317b2d7176850770a10bd7a4c5776c8ed377da94e4ad4fd8f16cda5"
+    },
+    {
+      "path": "assets/weapons/pulse@4x.png",
+      "sha256": "a3747282d3b118de5ddb06ab7679c8c9f4ce4acd17ffb24725ba6a30ad1dceba"
+    },
+    {
+      "path": "assets/weapons/reactiveaegis@2x.png",
+      "sha256": "9c58c4e6966c8776968d9a05fa7a14e516cd5830060866f99a657f6019cd081c"
+    },
+    {
+      "path": "assets/weapons/reactiveaegis@4x.png",
+      "sha256": "38eda896bbd4a1df07460f73a6cf7577d381b762e5a14edecadcb4d2b45e6fc4"
+    },
+    {
+      "path": "assets/weapons/scrap@2x.png",
+      "sha256": "f2a8208c9b2134b4266bc657c40064ab528d589ecc26ff0aae133ff33fdd9646"
+    },
+    {
+      "path": "assets/weapons/scrap@4x.png",
+      "sha256": "d0fae071c14b182edc32e11f2f8fc06d2a84915798f81814ce05aa32f93a9ce5"
+    },
+    {
+      "path": "assets/weapons/shield@2x.png",
+      "sha256": "7882139fa92b6c955964737fea516991e5eb9c27842b23e60ea6f3869d273042"
+    },
+    {
+      "path": "assets/weapons/shield@4x.png",
+      "sha256": "b7280330a01415127c45004521fd240777be485281c1db66f82a48ab5b678f46"
+    },
+    {
+      "path": "assets/weapons/shield_piece@2x.png",
+      "sha256": "9f8f4e7fa26f64dbbba3b4843ec561b7f05ac3cfa9b44e47c7c3f8d770e18e62"
+    },
+    {
+      "path": "assets/weapons/shield_piece@4x.png",
+      "sha256": "abb45732776ff0f6f3d30cb4865289c344b05808bda7f63e51f49bfdf00882f3"
+    },
+    {
+      "path": "assets/weapons/spiralsaw@2x.png",
+      "sha256": "9442f20c9b42940ab3efd9fb835dcd9e714c29e20271471019fd6cc26162d29d"
+    },
+    {
+      "path": "assets/weapons/spiralsaw@4x.png",
+      "sha256": "70c034ecec8184db7f9a09130226f461d52dcfd09e044eac5788e88601e56c33"
+    },
+    {
+      "path": "assets/weapons/threat@2x.png",
+      "sha256": "762fc0ae8c4877d4d2156bafd05fa9579f12e74bc45405bb312521264c172432"
+    },
+    {
+      "path": "assets/weapons/threat@4x.png",
+      "sha256": "a9731a74b0acb73fb3734a4f01ad8a9e10602105135c511ef93db3a29298f951"
+    },
+    {
+      "path": "assets/weapons/thruster@2x.png",
+      "sha256": "551750182511b0d10f31c27dc781681e4993a41d01b009323ee6918eb11559ce"
+    },
+    {
+      "path": "assets/weapons/thruster@4x.png",
+      "sha256": "4517f30ac7445835c84b8ba3be7ce6a2a2c94fb2f0af3883504fa8bef626574d"
+    },
+    {
+      "path": "assets/weapons/thunderhive@2x.png",
+      "sha256": "66b28a7a833af1d1de72879b69281d958d7d7c5d081565571ba11834eb99650d"
+    },
+    {
+      "path": "assets/weapons/thunderhive@4x.png",
+      "sha256": "e76c9f7372f236edcf1bed1679d42473665d405c6a35b11d895a1de2b2ee5773"
+    },
+    {
+      "path": "assets/weapons/xp_crystal@2x.png",
+      "sha256": "92df456fddf7ff22bf7a38c96716c4f0c30b1e69b099f72bcc935eb164b24f9d"
+    },
+    {
+      "path": "assets/weapons/xp_crystal@4x.png",
+      "sha256": "fe3e1aababb9db6e7382ed80187240603f75fa3f528f7aa004e1c97b9f036dd2"
+    },
+    {
+      "path": "assets/audio/nebula-groove.mp3",
+      "sha256": "083be2f981666c602f73e675027f30329da4529f06aa9d2ea4484a966095bcf2"
+    },
+    {
+      "path": "assets/audio/nebula-loop.mp3",
+      "sha256": "52917efb585979c615cbf35ad84d6ba62b9b5593197be5aff736ebfc0290f0cb"
+    }
+  ],
+  "scope": "Private copy for video recording. Original runtime, packages and player profiles are untouched."
+}
