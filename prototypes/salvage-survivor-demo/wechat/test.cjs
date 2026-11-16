@@ -7,10 +7,11 @@ const folder = path.resolve(__dirname, "../../../releases/wechat-minigame");
 const bundle = fs.readFileSync(path.join(folder, "game.js"), "utf8");
 const flush = () => new Promise((resolve) => setImmediate(resolve));
 
-async function boot(storage = new Map(), dimensions = { windowWidth: 390, windowHeight: 844 }) {
+async function boot(storage = new Map(), dimensions = { windowWidth: 390, windowHeight: 844 }, options = {}) {
   let now = 0;
   let nextFrame;
   let failWrites = false;
+  let failPlayerImage = !!options.failPlayerImage;
   let labels = [];
   const callbacks = {};
   const audio = [];
@@ -29,9 +30,17 @@ async function boot(storage = new Map(), dimensions = { windowWidth: 390, window
     createImage() {
       return {
         set src(value) {
+          this.path = value;
+          if (failPlayerImage && value.includes("/player-2x.png")) {
+            queueMicrotask(() => this.onerror({ errMsg: "Deliberate image load failure" }));
+            return;
+          }
+          if (value.startsWith("./")) {
+            queueMicrotask(() => this.onerror({ errMsg: "Package loader requires a path from the game root" }));
+            return;
+          }
           const data = fs.readFileSync(path.join(folder, value));
           this.width = data.readUInt32BE(16); this.height = data.readUInt32BE(20);
-          this.path = value;
           queueMicrotask(() => this.onload());
         },
         get src() { return this.path; },
@@ -51,8 +60,10 @@ async function boot(storage = new Map(), dimensions = { windowWidth: 390, window
   vm.runInContext(bundle, scope);
   for (let index = 0; index < 10 && !scope.GameGlobal.Loststar.SurvivorDemo.ready(); index++) await flush();
   const root = scope.GameGlobal.Loststar;
-  assert(root.SurvivorDemo.ready(), root.SurvivorNative.element("saveStatus").textContent);
-  assert.equal(root.SurvivorArt.loaded(), 74);
+  if (!options.failPlayerImage) {
+    assert(root.SurvivorDemo.ready(), root.SurvivorNative.element("saveStatus").textContent);
+    assert.equal(root.SurvivorArt.loaded(), 74);
+  }
   function tick(seconds = 0.05) { now += seconds * 1000; labels = []; nextFrame(now); }
   const emit = (name, event = {}) => callbacks[name].forEach((handler) => handler(event));
   async function tap(value) {
@@ -69,11 +80,22 @@ async function boot(storage = new Map(), dimensions = { windowWidth: 390, window
     emit("TouchStart", { changedTouches: [a] }); emit("TouchMove", { changedTouches: [b] }); tick(); emit("TouchEnd", { changedTouches: [b] }); tick();
   }
   tick();
-  return { root, storage, callbacks, tick, tap, drag, emit, labels: () => labels, fail: (value) => { failWrites = value; } };
+  return { root, storage, callbacks, tick, tap, drag, emit, labels: () => labels, fail: (value) => { failWrites = value; }, failPlayerImage: (value) => { failPlayerImage = value; } };
 }
 
 async function main() {
   for (const dimensions of [{ windowWidth: 360, windowHeight: 800 }, { windowWidth: 390, windowHeight: 844 }]) {
+    const loading = await boot(new Map(), dimensions, { failPlayerImage: true });
+    assert.equal(loading.root.SurvivorDemo.ready(), false);
+    assert.equal(loading.root.SurvivorNative.element("startBtn").disabled, true);
+    assert.match(loading.root.SurvivorNative.element("saveStatus").textContent, /player-2x.png/);
+    loading.failPlayerImage(false);
+    await loading.tap("重新加载");
+    assert.equal(loading.root.SurvivorDemo.ready(), true);
+    assert.equal(loading.root.SurvivorArt.loaded(), 74);
+    await loading.tap("开始一局");
+    assert.equal(loading.root.SurvivorDemo.state().mode, "play");
+    console.log("PASS package-root image paths, failed player image blocks launch, visible reload recovers all 74 images and starts battle", dimensions.windowWidth);
     const game = await boot(new Map(), dimensions);
     const node = (id) => game.root.SurvivorNative.element(id);
     await game.tap("飞船整备"); assert.equal(node("dock").hidden, false);
@@ -118,9 +140,7 @@ async function main() {
     assert.equal(reloaded.root.SurvivorNative.element("retrySaveBtn").hidden, false);
     assert.deepEqual([...game.storage.values()], previous);
     reloaded.fail(false);
-    // Normal retry uses the visible error button at the bottom of the viewport.
-    reloaded.root.SurvivorNative.element("retrySaveBtn").onclick();
-    await flush(); reloaded.tick();
+    await reloaded.tap("重试保存");
     assert.equal(reloaded.root.SurvivorDemo.store().profile.runs, 2);
     assert.equal(reloaded.root.SurvivorDemo.store().receipts.length, 2);
     console.log("PASS WeChat entry, 74 images, menus, scrolling, touch, cancel, background, resume, restart, settlement and failed-write retry", dimensions.windowWidth);

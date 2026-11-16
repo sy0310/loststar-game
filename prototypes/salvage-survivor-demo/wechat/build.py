@@ -57,11 +57,15 @@ def main():
     subprocess.run(["python3", str(SOURCE / "sync_runtime.py"), "--check"], check=True)
     catalog_source = (SOURCE / "src/art-catalog.js").read_text()
     catalog = json.loads(catalog_source.split("=", 1)[1].strip().removesuffix(";"))
+    for prior_image in (OUTPUT / "assets").rglob("*.png"):
+        prior_image.unlink()
     for entry in catalog.values():
-        relative = entry["src"].removeprefix("./")
+        original = entry["src"].removeprefix("./")
+        relative = original.replace("@2x", "-2x")
         target = OUTPUT / relative
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(SOURCE / relative, target)
+        shutil.copyfile(SOURCE / original, target)
+        entry["src"] = relative
     for name in ["nebula-groove", "nebula-loop"]:
         target = OUTPUT / name
         target.mkdir(exist_ok=True)
@@ -76,7 +80,8 @@ def main():
     sections += ["(function () {", "const window = SurvivorPlatform;", "const document = window.document;", "const localStorage = window.localStorage;", "const Image = window.Image;", "const crypto = window.crypto;", "const structuredClone = window.structuredClone;", "const location = window.location;", "const URLSearchParams = window.URLSearchParams;", "const performance = window.performance;", "const requestAnimationFrame = window.requestAnimationFrame;"]
     sections += ["window.SurvivorBuild = " + json.dumps(stamp) + ";"]
     sections += ["for (const [id, state] of Object.entries(" + json.dumps(initial.elements, ensure_ascii=False) + ")) Object.assign(document.getElementById(id), state);"]
-    sections += [(SOURCE / "src" / filename).read_text() for filename in ["balance.js", "art-catalog.js", "art.js", "persistence.js"]]
+    sections += [(SOURCE / "src/balance.js").read_text(), "window.SurvivorArtCatalog = " + json.dumps(catalog, ensure_ascii=False) + ";"]
+    sections += [(SOURCE / "src" / filename).read_text() for filename in ["art.js", "persistence.js"]]
     sections += [(HERE / "audio.js").read_text(), (HERE / "ui.js").read_text(), (SOURCE / "src/game.js").read_text(), "})();", "GameGlobal.Loststar = SurvivorPlatform;\n"]
     (OUTPUT / "game.js").write_text("\n".join(sections))
     config = {
@@ -88,10 +93,18 @@ def main():
     project = {
         "appid": "wx69a4de5574460d86", "projectname": "失物号·星海生存", "compileType": "game",
         "description": "v0.6.10 微信小游戏适配", "libVersion": "3.18.0",
-        "setting": {"es6": True, "minified": True, "urlCheck": True},
-        "packOptions": {"ignore": [{"type": "file", "value": "build-info.json"}]},
+        "setting": {"es6": True, "minified": True, "urlCheck": True, "ignoreUploadUnusedFiles": False, "ignoreDevUnusedFiles": False},
+        "packOptions": {
+            "ignore": [{"type": "file", "value": "build-info.json"}],
+            "include": [{"type": "folder", "value": "assets"}],
+        },
     }
     (OUTPUT / "project.config.json").write_text(json.dumps(project, ensure_ascii=False, indent=2) + "\n")
+    private_config = OUTPUT / "project.private.config.json"
+    if private_config.exists():
+        private = json.loads(private_config.read_text())
+        private.setdefault("setting", {}).update(ignoreDevUnusedFiles=False, ignoreUploadUnusedFiles=False)
+        private_config.write_text(json.dumps(private, ensure_ascii=False, indent=2) + "\n")
     files = [{"path": str(path.relative_to(OUTPUT)), "bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in sorted(OUTPUT.rglob("*")) if path.is_file() and path.name not in {"build-info.json", "project.private.config.json"}]
     main_bytes = sum(file["bytes"] for file in files if not file["path"].startswith(("nebula-groove/", "nebula-loop/")))
     if main_bytes >= 4 * 1024 * 1024:

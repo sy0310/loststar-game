@@ -92,7 +92,11 @@
     let rejectImage;
     const loaded = new Promise((resolve, reject) => { resolveImage = resolve; rejectImage = reject; });
     image.onload = resolveImage;
-    image.onerror = () => rejectImage(Error("无法加载素材 " + image.src));
+    image.onerror = (event) => {
+      const detail = event?.errMsg || event?.message || "";
+      console.error("无法加载素材", image.src, detail);
+      rejectImage(Error("无法加载素材 " + image.src + (detail ? " · " + detail : "")));
+    };
     image.decode = () => loaded;
     Object.defineProperties(image, {
       naturalWidth: { get: () => image.width },

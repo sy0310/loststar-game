@@ -274,9 +274,9 @@
     }
     label(text("saveStatus"), left, canvas.height - safeBottom - 17, 10, element("saveBar").classList.contains("error") ? "#ff7597" : colors.muted, width - 90);
     if (!element("retrySaveBtn").hidden) {
-      const y = canvas.height - safeBottom - 48;
+      const y = clipBottom - 46;
       panel(canvas.width - 100, y, 90, 44);
-      label("重试保存", canvas.width - 91, y + 13, 13);
+      label(root.SurvivorDemo?.ready() ? "重试保存" : "重新加载", canvas.width - 91, y + 13, 13);
       zone("retrySaveBtn", canvas.width - 100, y, 90, 44, () => click("retrySaveBtn"));
     }
     ctx.restore();

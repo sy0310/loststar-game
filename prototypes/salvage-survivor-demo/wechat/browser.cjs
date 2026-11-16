@@ -41,7 +41,19 @@ async function installBindings(page, dimensions) {
       getStorageInfoSync: () => ({ keys: Object.keys(localStorage) }),
       getStorageSync: (key) => JSON.parse(localStorage.getItem(key)),
       setStorageSync: (key, value) => localStorage.setItem(key, JSON.stringify(value)),
-      createImage: () => new Image(),
+      createImage() {
+        const image = new Image();
+        const source = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "src");
+        Object.defineProperty(image, "src", {
+          get() { return source.get.call(this); },
+          set(value) {
+            if (value.startsWith("./")) {
+              queueMicrotask(() => this.onerror({ errMsg: "Package loader requires a path from the game root" }));
+            } else source.set.call(this, value);
+          },
+        });
+        return image;
+      },
       createCanvas() {
         const canvas = document.createElement("canvas");
         if (!mainCanvas) {
