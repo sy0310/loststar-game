@@ -108,7 +108,7 @@
     paragraph(value, 28, colors.ink);
   }
   function start() {
-    title("星海生存", "失物号");
+    title("星海突进", "失物号");
     const y = cursor + 12;
     root.SurvivorArt?.draw(ctx, "player", canvas.width / 2, y + 52, { scale: 4 });
     cursor = y + 124;
@@ -266,6 +266,7 @@
         ctx.fillRect(canvas.width - 7, clipTop + scroll / (contentHeight - track) * (track - handle), 3, handle);
       }
     } else hud(clipTop);
+    label("失物号-星海突进", left, clipTop - 25, 12, colors.gold, width - 90);
     if (element("toast").classList.contains("visible")) {
       const value = text("toast");
       const h = lines(value, width - 20, 13).length * 20 + 16;

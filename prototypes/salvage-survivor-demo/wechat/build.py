@@ -75,7 +75,7 @@ def main():
     initial.feed((SOURCE / "index.html").read_text())
     for node in initial.elements.values():
         node["textContent"] = " ".join(node["textContent"].split())
-    stamp = {"version": "0.6.10-wx.2", "commit": commit, "dirty": dirty}
+    stamp = {"version": "0.6.10-wx.3", "commit": commit, "dirty": dirty}
     sections = ["const SurvivorPlatform = {};", (HERE / "platform.js").read_text()]
     sections += ["(function () {", "const window = SurvivorPlatform;", "const document = window.document;", "const localStorage = window.localStorage;", "const Image = window.Image;", "const crypto = window.crypto;", "const structuredClone = window.structuredClone;", "const location = window.location;", "const URLSearchParams = window.URLSearchParams;", "const performance = window.performance;", "const requestAnimationFrame = window.requestAnimationFrame;"]
     sections += ["window.SurvivorBuild = " + json.dumps(stamp) + ";"]
@@ -91,7 +91,7 @@ def main():
     }
     (OUTPUT / "game.json").write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n")
     project = {
-        "appid": "wx69a4de5574460d86", "projectname": "失物号·星海生存", "compileType": "game",
+        "appid": "wx69a4de5574460d86", "projectname": "失物号-星海突进", "compileType": "game",
         "description": "v0.6.10 微信小游戏适配", "libVersion": "3.18.0",
         "setting": {"es6": True, "minified": True, "urlCheck": True, "ignoreUploadUnusedFiles": False, "ignoreDevUnusedFiles": False},
         "packOptions": {
@@ -103,6 +103,7 @@ def main():
     private_config = OUTPUT / "project.private.config.json"
     if private_config.exists():
         private = json.loads(private_config.read_text())
+        private["projectname"] = project["projectname"]
         private.setdefault("setting", {}).update(ignoreDevUnusedFiles=False, ignoreUploadUnusedFiles=False)
         private_config.write_text(json.dumps(private, ensure_ascii=False, indent=2) + "\n")
     files = [{"path": str(path.relative_to(OUTPUT)), "bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in sorted(OUTPUT.rglob("*")) if path.is_file() and path.name not in {"build-info.json", "project.private.config.json"}]
