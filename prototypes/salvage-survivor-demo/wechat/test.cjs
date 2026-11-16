@@ -46,6 +46,8 @@ async function boot(storage = new Map(), dimensions = { windowWidth: 390, window
   for (const name of ["Hide", "Show", "WindowResize", "MemoryWarning", "TouchStart", "TouchMove", "TouchEnd", "TouchCancel"]) wx["on" + name] = (handler) => { (callbacks[name] ||= []).push(handler); };
   const scope = { wx, GameGlobal: {}, console, setTimeout, clearTimeout, queueMicrotask, requestAnimationFrame: (fn) => { nextFrame = fn; return 1; } };
   vm.createContext(scope);
+  // These APIs are absent in older Android game engines, even when ES6 transpilation is enabled.
+  vm.runInContext("delete Array.prototype.findLast; delete Array.prototype.at;", scope);
   vm.runInContext(bundle, scope);
   for (let index = 0; index < 10 && !scope.GameGlobal.Loststar.SurvivorDemo.ready(); index++) await flush();
   const root = scope.GameGlobal.Loststar;

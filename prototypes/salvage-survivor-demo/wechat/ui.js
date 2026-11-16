@@ -281,7 +281,15 @@
     }
     ctx.restore();
   }
-  const hit = (x, y) => zones.findLast((item) => x >= item.x && x <= item.x + item.w && y >= item.y && y <= item.y + item.h);
+  function hit(x, y) {
+    for (let index = zones.length - 1; index >= 0; index--) {
+      const item = zones[index];
+      if (
+        x >= item.x && x <= item.x + item.w &&
+        y >= item.y && y <= item.y + item.h
+      ) return item;
+    }
+  }
   function pointer(type, point) {
     element("game").handlers.get(type)?.({ type, pointerId: point.identifier, clientX: point.clientX, clientY: point.clientY });
   }

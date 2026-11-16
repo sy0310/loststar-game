@@ -6,7 +6,7 @@ const path = require("node:path");
 const { chromium, webkit } = require("@playwright/test");
 const source = path.resolve(__dirname, "..");
 const built = path.resolve(source, "../../releases/wechat-minigame");
-const output = path.resolve(source, "../../artifacts/wechat-v0610");
+const output = path.resolve(source, "../../artifacts/wechat-v0610-wx2");
 const types = { ".js": "text/javascript", ".html": "text/html", ".css": "text/css", ".png": "image/png", ".mp3": "audio/mpeg" };
 const server = http.createServer((request, response) => {
   const name = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
@@ -26,6 +26,8 @@ const server = http.createServer((request, response) => {
 
 async function installBindings(page, dimensions) {
   await page.evaluate(({ width, height }) => {
+    delete Array.prototype.findLast;
+    delete Array.prototype.at;
     const callbacks = {};
     let mainCanvas;
     let labels = [];
@@ -99,10 +101,12 @@ async function main() {
           await page.waitForFunction(() => !GameGlobal.Loststar.SurvivorNative.element("dock").hidden);
           await page.screenshot({ path: path.join(output, prefix + "-native-dock.png") });
           for (let repeat = 0; repeat < 3; repeat++) await page.evaluate(() => {
+            GameGlobal.Loststar.SurvivorNativeUI.draw();
             const p = { identifier: 90, clientX: 300, clientY: 650 };
             const q = { ...p, clientY: 180 };
             for (const handler of wechatTest.callbacks.TouchStart) handler({ changedTouches: [p] });
             for (const handler of wechatTest.callbacks.TouchMove) handler({ changedTouches: [q] });
+            GameGlobal.Loststar.SurvivorNativeUI.draw();
             for (const handler of wechatTest.callbacks.TouchEnd) handler({ changedTouches: [q] });
           });
           await tap(page, "返回");
@@ -122,7 +126,7 @@ async function main() {
           await page.waitForFunction(() => SurvivorDemo.ready());
           await page.screenshot({ path: path.join(output, prefix + "-h5-start.png") });
           assert.deepEqual(errors, []);
-          report.push({ engine, ...dimensions, art, errors, tested: ["native entry", "canvas menu", "scroll", "battle", "background pause", "serialized restart", "H5 entry"], evidenceKind: "WeChat API compatibility harness, desktop browser" });
+          report.push({ engine, ...dimensions, art, errors, missingArrayAPIs: ["findLast", "at"], tested: ["native entry", "canvas menu", "scroll", "battle", "background pause", "serialized restart", "H5 entry"], evidenceKind: "WeChat API compatibility harness, desktop browser" });
           await context.close();
         }
       } finally { await browser.close(); }

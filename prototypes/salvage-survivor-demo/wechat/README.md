@@ -1,5 +1,7 @@
 # 微信小游戏 v0.6.10
 
+当前修复候选为 `0.6.10-wx.2`，用于处理审核反馈的首页触摸失效。菜单命中采用倒序循环，波次读取采用兼容的末项访问。原生入口和图形回归均在删除 `Array.prototype.findLast` 与 `Array.prototype.at` 的环境中运行。
+
 AppID 为 `wx69a4de5574460d86`。导入目录为仓库下的 `releases/wechat-minigame`，开发者工具选择小游戏模式。
 
 ```bash

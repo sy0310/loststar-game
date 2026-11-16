@@ -1152,7 +1152,7 @@
     if (!type && newCombat()) {
       const pool = (assaultCombat() ? B.assault.waves : B.combat.waves)
         .filter((entry) => g.time >= entry.from)
-        .at(-1).pool;
+        .slice(-1)[0].pool;
       type = pool[Math.floor(rand() * pool.length)];
       const cap = B.combat.populationCaps[type];
       if (
@@ -3320,7 +3320,7 @@
           : "精英追猎 · 侧向避让"
         : (assaultCombat() ? B.assault.waves : B.combat.waves)
             .filter((entry) => g.time >= entry.from)
-            .at(-1).hint;
+            .slice(-1)[0].hint;
     $("bossBar").hidden = !special || g.mode === "results";
     if (special) {
       $("bossName").textContent =

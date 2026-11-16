@@ -71,7 +71,7 @@ def main():
     initial.feed((SOURCE / "index.html").read_text())
     for node in initial.elements.values():
         node["textContent"] = " ".join(node["textContent"].split())
-    stamp = {"version": "0.6.10-wx.1", "commit": commit, "dirty": dirty}
+    stamp = {"version": "0.6.10-wx.2", "commit": commit, "dirty": dirty}
     sections = ["const SurvivorPlatform = {};", (HERE / "platform.js").read_text()]
     sections += ["(function () {", "const window = SurvivorPlatform;", "const document = window.document;", "const localStorage = window.localStorage;", "const Image = window.Image;", "const crypto = window.crypto;", "const structuredClone = window.structuredClone;", "const location = window.location;", "const URLSearchParams = window.URLSearchParams;", "const performance = window.performance;", "const requestAnimationFrame = window.requestAnimationFrame;"]
     sections += ["window.SurvivorBuild = " + json.dumps(stamp) + ";"]
