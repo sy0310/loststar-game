@@ -432,7 +432,9 @@
         curve.linear * growth +
         curve.powerScale * Math.pow(growth, curve.power),
     );
-    return onboardingRun() ? Math.round(base * (B.onboarding.levelXPScale[level - 2] ?? 1)) : base;
+    if (!onboardingRun()) return base;
+    const scale = B.onboarding.levelXPScale[level - 2] ?? B.onboarding.levelXPLateScale;
+    return Math.round(base * scale);
   };
   function availableUpgrades(game = g) {
     if (!game) return [];
@@ -2264,11 +2266,15 @@
                 : g.time > 12
                   ? 2
                   : 1;
-      for (let index = 0; index < count; index++) spawnEnemy();
+      const followUp = onboardingRun() && g.time < B.onboarding.followUp.until
+        ? B.onboarding.followUp : null;
+      const waveSize = count + (followUp?.extraCount || 0);
+      for (let index = 0; index < waveSize; index++) spawnEnemy();
       g.spawnTime =
         Math.max(0.46, 1.05 - g.time * 0.0033) *
         (newCombat() ? B.combat.spawnIntervalScale : 1) *
-        (assaultCombat() && g.time < 180 ? B.assault.earlySpawnScale : 1);
+        (assaultCombat() && g.time < 180 ? B.assault.earlySpawnScale : 1) *
+        (followUp?.intervalScale ?? 1);
     }
     if (newCombat()) updateEncounters(dt);
   }
@@ -2467,7 +2473,7 @@
     for (const pickup of g.pickups) {
       if (pickup.t <= 0) continue;
       pickup.t -= dt;
-      if (pickup.type === "xp" && onboardingRun()) {
+      if (pickup.type === "xp" && onboardingRun() && g.time < B.onboarding.recall.until) {
         const recall = B.onboarding.recall;
         const delay = g.time < recall.earlyUntil ? recall.earlyAfter : recall.lateAfter;
         if (30 - pickup.t >= delay || pickup.t <= recall.expiryGuard) {

@@ -51,7 +51,7 @@ test("legacy seed 413 retains the v0.6.10 trajectory at five-second intervals", 
   ]);
 });
 
-test("later levels use the onboarding multiplier and the damage ramp ends at two minutes", async () => {
+test("only new voyages scale later XP and ramp damage until fullAt", async () => {
   const { SurvivorQA: q, SurvivorBalance: b } = await createModel();
   assert(b.onboarding.levelXPLateScale > 1);
   for (const legacy of [false, true]) {
@@ -67,11 +67,15 @@ test("later levels use the onboarding multiplier and the damage ramp ends at two
       assert.equal(
         g.xpNext,
         Math.round(
-          cost * (legacy ? 1 : (b.onboarding.levelXPScale[growth] ?? b.onboarding.levelXPLateScale)),
+          cost *
+            (legacy
+              ? 1
+              : (b.onboarding.levelXPScale[growth] ??
+                b.onboarding.levelXPLateScale)),
         ),
       );
     }
-    for (const time of [0, 60, 120, 300]) {
+    for (const time of [0, 60, 120, b.onboarding.damageRamp.fullAt, 300]) {
       g.time = time;
       g.mode = "play";
       g.p.inv = 0;
@@ -87,7 +91,7 @@ test("later levels use the onboarding multiplier and the damage ramp ends at two
 });
 
 test("new XP radius, magnet and age-based recall leave other drops and legacy XP alone", async () => {
-  const { SurvivorQA: q } = await createModel();
+  const { SurvivorQA: q, SurvivorBalance: b } = await createModel();
   function drop({
     distance = 2000,
     life = 30,
@@ -123,7 +127,7 @@ test("new XP radius, magnet and age-based recall leave other drops and legacy XP
     assert(!drop({ life: 30 - after + 0.1, time }).magnetized);
     assert(drop({ life: 30 - after, time }).magnetized);
   }
-  const cutoff = 120;
+  const cutoff = b.onboarding.recall.until;
   assert(drop({ time: cutoff - 0.1, life: 0.01 }).magnetized);
   assert.equal(drop({ time: cutoff, life: 0.01 }), undefined);
   assert(!drop({ time: cutoff, life: 18 }).magnetized);
@@ -156,19 +160,21 @@ test("opening streams are one-shot skimmers and normal waves return after eighte
 });
 
 test("follow-up spawns more standard enemies, only inside the new-run window", async () => {
-  const {SurvivorQA: q} = await createModel();
+  const { SurvivorQA: q, SurvivorBalance: b } = await createModel();
   function wave(time, legacy) {
     const g = q.startModel(413);
     if (legacy) q.legacyV0610();
     g.time = time;
     g.spawnTime = 0;
     q.step(1 / 60);
-    return {count: g.enemy.length, interval: g.spawnTime};
+    return { count: g.enemy.length, interval: g.spawnTime };
   }
-  for (const time of [18, 30, 119.95]) {
-    const current = wave(time, false), old = wave(time, true);
+  const end = b.onboarding.followUp.until;
+  for (const time of [b.onboarding.opening.until, 30, end - 0.05]) {
+    const current = wave(time, false),
+      old = wave(time, true);
     assert(current.count > old.count);
     assert(current.interval < old.interval);
   }
-  assert.deepEqual(wave(120, false), wave(120, true));
+  assert.deepEqual(wave(end, false), wave(end, true));
 });

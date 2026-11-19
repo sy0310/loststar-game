@@ -3,7 +3,9 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
-const folder = path.resolve(__dirname, "../../../releases/wechat-minigame");
+const folder = path.resolve(
+  process.env.SURVIVOR_WECHAT_DIR || path.join(__dirname, "../../../releases/wechat-minigame"),
+);
 const bundle = fs.readFileSync(path.join(folder, "game.js"), "utf8");
 const flush = () => new Promise((resolve) => setImmediate(resolve));
 

@@ -2,16 +2,16 @@ window.SurvivorBalance = {
   "version": "0.6.11",
   "onboarding": {
     "version": 1,
-    "firstLevelXP": 30,
+    "firstLevelXP": 40,
     "levelXPScale": [
-      0.86,
-      0.86,
-      0.86,
-      0.86,
-      0.86,
-      0.88,
-      0.92,
-      0.96
+      1.8,
+      2.0,
+      2.15,
+      2.25,
+      2.25,
+      2.2,
+      2.1,
+      2.0
     ],
     "experienceRadius": 96,
     "magnetPerLevel": 40,
@@ -19,11 +19,12 @@ window.SurvivorBalance = {
       "earlyUntil": 60,
       "earlyAfter": 1.2,
       "lateAfter": 8,
-      "expiryGuard": 2
+      "expiryGuard": 2,
+      "until": 120
     },
     "opening": {
       "until": 18,
-      "interval": 0.8,
+      "interval": 0.58,
       "count": 2,
       "pool": [
         "skimmer"
@@ -32,10 +33,16 @@ window.SurvivorBalance = {
       "streamSeconds": 3
     },
     "damageRamp": {
-      "start": 0.3,
-      "fullAt": 120
+      "start": 0.15,
+      "fullAt": 160
     },
-    "hintSeconds": 8
+    "hintSeconds": 8,
+    "levelXPLateScale": 2,
+    "followUp": {
+      "until": 120,
+      "extraCount": 1,
+      "intervalScale": 0.8
+    }
   },
   "runSeconds": 900,
   "eliteAt": 70,
