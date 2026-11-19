@@ -165,6 +165,7 @@
   const polishedCombat = (game = g) =>
     [7, 8].includes(runRules(game).combatVersion);
   const selectionCombat = (game = g) => runRules(game).combatVersion === 8;
+  const onboardingRun = (game = g) => runRules(game).onboardingVersion === 1;
   function upgradeRepairAmount(game = g) {
     const rules = runRules(game);
     let capacity = 28;
@@ -290,6 +291,7 @@
         passiveSlots: B.passiveSlots,
         combatVersion: 8,
         repairScalingVersion: 1,
+        onboardingVersion: B.onboarding.version,
         progressionVersion: 2,
       },
       time: 0,
@@ -306,7 +308,7 @@
       camera: { x: 0, y: 0 },
       level: 1,
       xp: 0,
-      xpNext: B.firstLevelXP,
+      xpNext: B.onboarding.firstLevelXP,
       credits: 0,
       kills: 0,
       active: { cannon: 1 },
@@ -425,11 +427,14 @@
       : newProgression()
         ? B.levelXP
         : B.legacyLevelXP;
-    return Math.round(
+    const base = Math.round(
       curve.base +
         curve.linear * growth +
         curve.powerScale * Math.pow(growth, curve.power),
     );
+    if (!onboardingRun()) return base;
+    const scale = B.onboarding.levelXPScale[level - 2] ?? B.onboarding.levelXPLateScale;
+    return Math.round(base * scale);
   };
   function availableUpgrades(game = g) {
     if (!game) return [];
@@ -732,8 +737,8 @@
           );
         }
         const type = {
-          active: "主动武器",
-          passive: "辅助配件",
+          active: "武器",
+          passive: "配件",
           evo: "满级进化",
           fusion: newProgression() ? "终极融合" : "双武器融合",
           bonus: "应急补给",
@@ -787,24 +792,11 @@
         else if (option.id === "repair" && g.rules.repairScalingVersion === 1)
           hint = "消耗本次升级 · 随战斗时间与船体上限增加";
         else if (pair) {
-          const weaponLevel =
-            option.id === pair[0] ? option.level : g.active[pair[0]] || 0;
-          const passiveLevel =
-            option.id === pair[1] ? option.level : g.passive[pair[1]] || 0;
-          hint =
-            "双满级进化 · " +
-            NAMES[pair[0]] +
-            " " +
-            weaponLevel +
-            "/" +
-            activeMaximum() +
-            " ＋ " +
-            NAMES[pair[1]] +
-            " " +
-            passiveLevel +
-            "/" +
-            passiveMaximum() +
-            (newProgression() ? " · 精英战利品中抽取" : "");
+          const weaponCard = option.kind === "active";
+          const partner = weaponCard ? pair[1] : pair[0];
+          const level = (weaponCard ? g.passive : g.active)[partner] || 0;
+          hint = "进化搭档：" + NAMES[partner] + " " + level + "/" +
+            (weaponCard ? passiveMaximum() : activeMaximum());
         }
         const icon =
           { repair: "armor", reserveShield: "shield", salvage: "scrap" }[
@@ -838,16 +830,14 @@
       .join("");
     updateRerollButton();
     $("upgradeBuild").textContent =
-      "主动 " +
+      "武器 " +
       (Object.keys(g.active).length + Object.keys(g.fused).length) +
       "/" +
       runRules().activeSlots +
-      (selectionCombat() ? "（" + ACTIVE.length + "种）" : "") +
-      " · 增强 " +
+      " · 配件 " +
       Object.keys(g.passive).length +
       "/" +
-      runRules().passiveSlots +
-      (selectionCombat() ? "（" + PASSIVE.length + "种）" : "");
+      runRules().passiveSlots;
     const bossReward = g.upgradeSource?.kind === "boss";
     const lottery = recoveryCombat() && bossReward;
     $("upgradeTitle").textContent = lottery
@@ -862,13 +852,14 @@
           : "已装备装置均已满级 · 选择一项补给或进化"
         : bossReward
           ? "符合满级条件时，75%机会出现进化／融合"
-          : "武器与专属辅助各5级，击退精英抽取进化"
+          : "武器和搭档都满5级后，击败精英可进化"
       : "选一项，继续出击";
     const fusion = FUSION.find(
       ([a, b, id]) => !g.fused[id] && (g.active[a] || g.active[b]),
     );
+    $("fusionGuide").hidden = !Object.keys(g.evolved).length;
     $("fusionGuide").textContent =
-      newProgression() && fusion
+      newProgression() && fusion && !$("fusionGuide").hidden
         ? NAMES[fusion[0]] +
           " ＋ " +
           NAMES[fusion[1]] +
@@ -1143,6 +1134,7 @@
     tier = 1,
     eliteProfile = "hunter",
     bossProfile = "core",
+    stream,
   ) {
     if (!g) return null;
     const special = force === "boss" || force === "elite" || !!VISITORS[force];
@@ -1196,7 +1188,7 @@
       ? Math.max(0, g.time - B.assault.lateHealthAfter) ** 2 *
         B.assault.lateHealthQuadratic
       : 0;
-    const side = Math.floor(rand() * 4),
+    const side = stream?.side ?? Math.floor(rand() * 4),
       ex = VW / 2 + 30,
       ey = VH / 2 + 35;
     const enemy = {
@@ -1232,6 +1224,17 @@
       pattern: 0,
       charge: 0,
     };
+    if (stream) {
+      const offset = stream.index * enemy.radius * 2;
+      if (side < 2) {
+        enemy.x += side === 0 ? -offset : offset;
+        enemy.y = g.p.y;
+      } else {
+        enemy.x = g.p.x;
+        enemy.y += side === 2 ? -offset : offset;
+      }
+      enemy.hp = enemy.maxhp = Math.round(enemy.maxhp * B.onboarding.opening.hpScale);
+    }
     if (showcaseCombat() && ["boss", "elite"].includes(type)) {
       enemy.facing = angle(enemy, g.p) + Math.PI / 2;
       if (type === "boss") enemy.bossProfile = bossProfile;
@@ -1563,6 +1566,10 @@
   }
   function damageShip(amount) {
     if (!g || g.mode !== "play" || g.p.inv > 0) return;
+    if (onboardingRun()) {
+      const {start, fullAt} = B.onboarding.damageRamp;
+      amount *= start + (1 - start) * Math.min(1, g.time / fullAt);
+    }
     if (assaultCombat()) amount *= 1 + Math.max(0, g.time - 300) / 1800;
     if (g.p.shield > 0) {
       g.p.shield = 0;
@@ -2238,7 +2245,15 @@
       notify("碎星回波 · 敌群正在集结");
     }
     g.spawnTime -= dt;
-    if (g.spawnTime <= 0) {
+    const opening = B.onboarding.opening;
+    if (g.spawnTime <= 0 && onboardingRun() && g.time < opening.until) {
+      const side = Math.floor(g.time / opening.streamSeconds) % 4;
+      for (let index = 0; index < opening.count; index++) {
+        const type = opening.pool[Math.floor(rand() * opening.pool.length)];
+        spawnEnemy(type, 1, "hunter", "core", {side, index});
+      }
+      g.spawnTime = opening.interval;
+    } else if (g.spawnTime <= 0) {
       const count =
         g.time > 420
           ? 6
@@ -2251,11 +2266,18 @@
                 : g.time > 12
                   ? 2
                   : 1;
-      for (let index = 0; index < count; index++) spawnEnemy();
+      const followUp = onboardingRun() && g.time < B.onboarding.followUp.until
+        ? B.onboarding.followUp : null;
+      const waveSize = followUp
+        ? Math.max(count + followUp.extraCount,
+            Math.min(followUp.maxBatch, followUp.targetEnemies - g.enemy.length))
+        : count;
+      for (let index = 0; index < waveSize; index++) spawnEnemy();
       g.spawnTime =
         Math.max(0.46, 1.05 - g.time * 0.0033) *
         (newCombat() ? B.combat.spawnIntervalScale : 1) *
-        (assaultCombat() && g.time < 180 ? B.assault.earlySpawnScale : 1);
+        (assaultCombat() && g.time < 180 ? B.assault.earlySpawnScale : 1) *
+        (followUp?.intervalScale ?? 1);
     }
     if (newCombat()) updateEncounters(dt);
   }
@@ -2454,6 +2476,14 @@
     for (const pickup of g.pickups) {
       if (pickup.t <= 0) continue;
       pickup.t -= dt;
+      if (pickup.type === "xp" && onboardingRun() && g.time < B.onboarding.recall.until) {
+        const recall = B.onboarding.recall;
+        const delay = g.time < recall.earlyUntil ? recall.earlyAfter : recall.lateAfter;
+        if (30 - pickup.t >= delay || pickup.t <= recall.expiryGuard) {
+          pickup.magnetized = true;
+          pickup.t = Math.max(pickup.t, recall.expiryGuard);
+        }
+      }
       const distance = dist(pickup, g.p);
       if (distance < pickupRadius(pickup.type) || pickup.magnetized) {
         pickup.magnetized = true;
@@ -2704,16 +2734,16 @@
     }
   }
   function pickupRadius(type) {
-    const base = polishedCombat()
-      ? type === "xp"
-        ? selectionCombat()
-          ? B.pickup.baseExperienceRadius
-          : B.pickup.legacyExperienceRadius
-        : B.pickup.basePartsRadius
-      : 150;
+    const onboardingXP = type === "xp" && onboardingRun();
+    const base = onboardingXP ? B.onboarding.experienceRadius
+      : !polishedCombat() ? 150
+      : type !== "xp" ? B.pickup.basePartsRadius
+      : selectionCombat() ? B.pickup.baseExperienceRadius : B.pickup.legacyExperienceRadius;
+    const magnetBonus = onboardingXP
+      ? (g.passive.magnet || 0) * B.onboarding.magnetPerLevel
+      : passivePower("magnet") * 55;
     return (
-      base +
-      passivePower("magnet") * 55 +
+      base + magnetBonus +
       (g.evolved.blade ? 65 : 0) +
       (engineeringCombat()
         ? g.engineering.salvage * B.engineering.magnetPerLevel
@@ -3278,7 +3308,9 @@
         : g.time < B.bossAt
           ? "精英追猎"
           : "守卫来袭";
-    $("footHint").hidden = QA || g.time > 8 || g.mode !== "play";
+    const showOpeningHint = onboardingRun() && g.time < B.onboarding.hintSeconds;
+    $("footHint").textContent = showOpeningHint ? "拖动躲避 · 经验会自动飞回" : "按住并拖动 · 自动攻击";
+    $("footHint").hidden = QA || (!showOpeningHint && g.time > 8) || g.mode !== "play";
     const events = g.encounters;
     const eventKind = events?.pending?.kind || events?.active?.kind;
     const activeVisitor = events?.active
@@ -3389,8 +3421,8 @@
       );
     }
     $("loadout").innerHTML =
-      row("武装", active, runRules().activeSlots) +
-      row("增强", passive, runRules().passiveSlots);
+      row("武器", active, runRules().activeSlots) +
+      row("配件", passive, runRules().passiveSlots);
   }
   async function finish(victory) {
     if (!g || ["results", "settling"].includes(g.mode)) return;
@@ -3463,6 +3495,17 @@
     $("dockGunBtn").innerHTML = $("upgradeGunBtn").innerHTML;
     $("dockGunBtn").disabled = $("upgradeGunBtn").disabled;
     $("progressText").textContent = profile.credits + "零件";
+    const cheapest = ["hull", "gun"]
+      .filter(kind => profile[kind] < B.permanentMaxLevel)
+      .sort((a, b) => B.permanentCosts[a][profile[a]] - B.permanentCosts[b][profile[b]])[0];
+    const gap = cheapest ? B.permanentCosts[cheapest][profile[cheapest]] - profile.credits : 0;
+    const affordable = cheapest && gap <= 0 && !storeView?.active;
+    const hint = !cheapest || storeView?.active ? "" : affordable
+      ? "零件够了：可以强化 " + (cheapest === "hull" ? "船体加固" : "主炮校准")
+      : "还差 " + gap + " 零件可强化";
+    $("resultPerkHint").textContent = $("dockPerkHint").textContent = hint;
+    for (const [kind, buttons] of [["hull", ["upgradeHullBtn", "dockHullBtn"]], ["gun", ["upgradeGunBtn", "dockGunBtn"]]])
+      for (const button of buttons) $(button).classList.toggle("affordable", !!affordable && cheapest === kind);
     renderEngineering();
   }
   let dockReturn = "start";
@@ -5073,7 +5116,8 @@
     return result;
   }
   function savedMessage() {
-    $("saveStatus").textContent = "已保存";
+    $("saveStatus").textContent = storage?.volatile ? "本机存档不可用 · 本次进度不会保存" : "已保存";
+    $("retrySaveBtn").textContent = "重试保存";
     $("saveBar").classList.remove("error");
     $("retrySaveBtn").hidden = true;
   }
@@ -5138,6 +5182,8 @@
       ![180, 600, 900].includes(rules.runSeconds) ||
       (rules.combatVersion !== undefined &&
         ![2, 3, 4, 5, 6, 7, 8].includes(rules.combatVersion)) ||
+      (rules.onboardingVersion !== undefined &&
+        (rules.onboardingVersion !== 1 || rules.combatVersion !== 8)) ||
       (rules.repairScalingVersion !== undefined &&
         rules.repairScalingVersion !== 1) ||
       (rules.progressionVersion !== undefined &&
@@ -5613,12 +5659,8 @@
         ? "开始一局 · " + NAMES[profile.launchPlan.weapon]
         : "开始一局";
     $("recordText").textContent =
-      "完成 " + profile.runs + " 局 · 最佳 " + profile.best + " 击落";
-    $("buildStamp").textContent =
-      "v" +
-      window.SurvivorBuild.version +
-      " · " +
-      window.SurvivorBuild.commit.slice(0, 7);
+      profile.runs === 0 ? "第一次出航" : "完成 " + profile.runs + " 局 · 最佳 " + profile.best + " 击落";
+    $("buildStamp").textContent = "v" + window.SurvivorBuild.version;
   }
   function showResults(summary, committed = true) {
     if (!summary) {
@@ -5676,7 +5718,9 @@
     $("menuBtn").disabled = !committed;
   }
   async function retrySaving() {
-    if (!storage) {
+    if (!ready) {
+      storage?.close();
+      storage = null;
       await initialize();
       return;
     }
@@ -5693,8 +5737,11 @@
     await saveCheckpoint();
   }
   async function initialize() {
+    $("retrySaveBtn").disabled = true;
+    let artReady = false;
     try {
       await window.SurvivorArt.load();
+      artReady = true;
       storage = await window.SurvivorPersistence.create({ qa: QA });
       applyStored((await storage.read()).record);
       if (storeView.active) validateSnapshot(storeView.active.snapshot);
@@ -5723,7 +5770,10 @@
     } catch (error) {
       ready = false;
       showStart();
-      storageWarning(error);
+      storageWarning(artReady ? error : Error("素材没加载完整，点重新加载再试一次"));
+      $("retrySaveBtn").textContent = "重新加载";
+    } finally {
+      $("retrySaveBtn").disabled = false;
     }
   }
 
@@ -5823,6 +5873,11 @@
     store: () => (storeView ? structuredClone(storeView) : null),
     artCount: () => window.SurvivorArt.loaded(),
   };
+  function legacyV0610() {
+    delete g.rules.onboardingVersion;
+    g.xpNext = B.firstLevelXP;
+    return g;
+  }
   if (QA)
     window.SurvivorQA = {
       start: reset,
@@ -5834,7 +5889,9 @@
         g.persisted = false;
         return g;
       },
+      legacyV0610,
       legacyProgression: () => {
+        legacyV0610();
         g.rules.combatVersion = 2;
         g.rules.runSeconds = 600;
         g.endTime = 600;
@@ -5843,17 +5900,20 @@
         return g;
       },
       legacyV068: () => {
+        legacyV0610();
         g.rules.version = "0.6.8";
         g.rules.combatVersion = 7;
         return g;
       },
       reroll: () => rerollOptions(true),
       legacyV067: () => {
+        legacyV0610();
         g.rules.version = "0.6.7";
         g.rules.combatVersion = 6;
         return g;
       },
       legacyV066: () => {
+        legacyV0610();
         g.rules.version = "0.6.6";
         g.rules.combatVersion = 5;
         return g;
@@ -5868,17 +5928,20 @@
         bladeRadius: bladeRadius(),
       }),
       legacyV065: () => {
+        legacyV0610();
         g.rules.version = "0.6.5";
         g.rules.combatVersion = 4;
         return g;
       },
       spawn: spawnEnemy,
       legacyV064: () => {
+        legacyV0610();
         g.rules.version = "0.6.4";
         g.rules.combatVersion = 3;
         return g;
       },
       legacyV063: () => {
+        legacyV0610();
         g.rules.version = "0.6.3";
         g.rules.combatVersion = 2;
         g.rules.runSeconds = 600;

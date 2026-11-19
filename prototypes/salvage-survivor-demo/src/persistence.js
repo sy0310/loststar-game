@@ -75,20 +75,48 @@
     return record;
   }
 
+  function memoryStore() {
+    let current;
+    return {
+      volatile: true,
+      async transaction(change, validate, freshProfile) {
+        const record = current ? structuredClone(current) : {
+          schema: 1, revision: 0, profile: freshProfile(),
+          active: null, receipts: [], lastResult: null,
+        };
+        validate(record);
+        const result = change(record);
+        if (result.write) {
+          record.revision++;
+          validate(record);
+          current = structuredClone(record);
+        }
+        return {...result, record: structuredClone(record)};
+      },
+    };
+  }
+
   async function create({ qa = false } = {}) {
     const name = B.database + (qa ? ".qa" : "");
-    const nativeStore = root.SurvivorNativeStorage?.open(name);
+    let nativeStore = root.SurvivorNativeStorage?.open(name);
     const db = nativeStore ? null : await new Promise((resolve, reject) => {
+      let blocked = false;
       const request = indexedDB.open(name, 1);
       request.onupgradeneeded = () => request.result.createObjectStore("state");
-      request.onsuccess = () => resolve(request.result);
+      request.onsuccess = () => blocked ? request.result.close() : resolve(request.result);
       request.onerror = () =>
         reject(request.error || Error("无法读取本地试玩档"));
-      request.onblocked = () => reject(Error("请关闭其他旧试玩窗口后重试"));
+      request.onblocked = () => {
+        blocked = true;
+        reject(Error("请关闭其他旧试玩窗口后重试"));
+      };
+    }).catch(() => {
+      nativeStore = memoryStore();
+      return null;
     });
     let channel;
     const listeners = new Set();
-    if (typeof BroadcastChannel === "function") {
+    if (!nativeStore?.volatile && typeof BroadcastChannel === "function") {
       channel = new BroadcastChannel(name);
       channel.onmessage = () => listeners.forEach((listener) => listener());
     }
@@ -155,6 +183,7 @@
 
     return {
       name,
+      volatile: !!nativeStore?.volatile,
       read: () => transaction(() => ({ write: false })),
       subscribe(listener) {
         listeners.add(listener);

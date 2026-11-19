@@ -5,8 +5,12 @@ const http = require("node:http");
 const path = require("node:path");
 const { chromium, webkit } = require("@playwright/test");
 const source = path.resolve(__dirname, "..");
-const built = path.resolve(source, "../../releases/wechat-minigame");
-const output = path.resolve(source, "../../artifacts/wechat-v0610-wx2");
+const built = path.resolve(
+  process.env.SURVIVOR_WECHAT_DIR || path.join(source, "../../releases/wechat-minigame"),
+);
+const output = path.resolve(
+  process.env.SURVIVOR_WECHAT_REPORT_DIR || path.join(source, "../../artifacts/wechat-v0610-wx2"),
+);
 const types = { ".js": "text/javascript", ".html": "text/html", ".css": "text/css", ".png": "image/png", ".mp3": "audio/mpeg" };
 const server = http.createServer((request, response) => {
   const name = decodeURIComponent(new URL(request.url, "http://localhost").pathname);

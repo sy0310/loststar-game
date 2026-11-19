@@ -1,0 +1,95 @@
+{
+  "source": "releases/full-run/v0611-cc2812c/simulation.json",
+  "movement": "adaptive",
+  "seeds": 6,
+  "targets": {
+    "newPlayer": {
+      "perks": 0,
+      "clearRate": {
+        "min": 0.1,
+        "max": 0.35
+      },
+      "medianSurvival": {
+        "min": 360,
+        "max": 720
+      },
+      "medianLevelAt300": {
+        "min": 12,
+        "max": 20
+      }
+    },
+    "veteran": {
+      "perks": 3,
+      "clearRate": {
+        "min": 0.5,
+        "max": 0.9
+      }
+    }
+  },
+  "groups": {
+    "newPlayer": {
+      "perks": 0,
+      "metrics": {
+        "runs": 30,
+        "clearRate": 0.967,
+        "medianSurvival": 900,
+        "medianLevelAt300": 27
+      },
+      "checks": [
+        {
+          "key": "clearRate",
+          "value": 0.967,
+          "target": {
+            "min": 0.1,
+            "max": 0.35
+          },
+          "pass": false
+        },
+        {
+          "key": "medianSurvival",
+          "value": 900,
+          "target": {
+            "min": 360,
+            "max": 720
+          },
+          "pass": false
+        },
+        {
+          "key": "medianLevelAt300",
+          "value": 27,
+          "target": {
+            "min": 12,
+            "max": 20
+          },
+          "pass": false
+        }
+      ]
+    },
+    "veteran": {
+      "perks": 3,
+      "metrics": {
+        "runs": 30,
+        "clearRate": 1,
+        "medianSurvival": 900,
+        "medianLevelAt300": 26
+      },
+      "checks": [
+        {
+          "key": "clearRate",
+          "value": 1,
+          "target": {
+            "min": 0.5,
+            "max": 0.9
+          },
+          "pass": false
+        }
+      ]
+    }
+  },
+  "failures": [
+    "newPlayer.clearRate",
+    "newPlayer.medianSurvival",
+    "newPlayer.medianLevelAt300",
+    "veteran.clearRate"
+  ]
+}

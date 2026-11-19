@@ -4,8 +4,12 @@
 
 AppID 为 `wx69a4de5574460d86`。导入目录为仓库下的 `releases/wechat-minigame`，开发者工具选择小游戏模式。
 
+在仓库根目录运行本地回归，测试包与截图分别写入独立目录：
+
 ```bash
-npm --prefix prototypes/salvage-survivor-demo run build:wechat
+export SURVIVOR_WECHAT_DIR="$PWD/releases/wechat-minigame-test"
+export SURVIVOR_WECHAT_REPORT_DIR="$PWD/releases/wechat-graphics-test"
+npm --prefix prototypes/salvage-survivor-demo run build:wechat -- --output "$SURVIVOR_WECHAT_DIR"
 npm --prefix prototypes/salvage-survivor-demo run test:wechat
 node prototypes/salvage-survivor-demo/wechat/browser.cjs
 ```

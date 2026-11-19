@@ -3,7 +3,9 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
-const folder = path.resolve(__dirname, "../../../releases/wechat-minigame");
+const folder = path.resolve(
+  process.env.SURVIVOR_WECHAT_DIR || path.join(__dirname, "../../../releases/wechat-minigame"),
+);
 const bundle = fs.readFileSync(path.join(folder, "game.js"), "utf8");
 const flush = () => new Promise((resolve) => setImmediate(resolve));
 
@@ -88,7 +90,7 @@ async function main() {
     const loading = await boot(new Map(), dimensions, { failPlayerImage: true });
     assert.equal(loading.root.SurvivorDemo.ready(), false);
     assert.equal(loading.root.SurvivorNative.element("startBtn").disabled, true);
-    assert.match(loading.root.SurvivorNative.element("saveStatus").textContent, /player-2x.png/);
+    assert.match(loading.root.SurvivorNative.element("saveStatus").textContent, /素材没加载完整，点重新加载再试一次/);
     loading.failPlayerImage(false);
     await loading.tap("重新加载");
     assert.equal(loading.root.SurvivorDemo.ready(), true);

@@ -1,0 +1,546 @@
+{
+  "url": "http://127.0.0.1:4472/",
+  "cap": 180,
+  "runsPerStrategy": 3,
+  "targets": {
+    "wanderer": {
+      "firstLevelUp": {
+        "max": 8
+      },
+      "levelAt60": {
+        "min": 5,
+        "max": 8
+      },
+      "survival": {
+        "min": 90
+      },
+      "enemiesAt10": {
+        "min": 6
+      },
+      "killsAt20": {
+        "min": 15
+      },
+      "affordsFirstUpgrade": {
+        "min": 1
+      },
+      "invalidRuns": {
+        "max": 0
+      }
+    },
+    "dodger": {
+      "firstLevelUp": {
+        "max": 15
+      },
+      "levelAt60": {
+        "min": 4
+      },
+      "levelAt180": {
+        "min": 7
+      },
+      "survival": {
+        "min": 180
+      },
+      "invalidRuns": {
+        "max": 0
+      }
+    }
+  },
+  "build": {
+    "version": "0.6.10",
+    "commit": "development",
+    "dirty": true
+  },
+  "permanentCosts": {
+    "hull": [
+      400,
+      1000,
+      1800
+    ],
+    "gun": [
+      500,
+      1200,
+      2100
+    ]
+  },
+  "home": {
+    "title": "失物号 · 星海生存",
+    "heading": "星海生存",
+    "text": "失物号 · 开发自测\n星海生存\n✧\n✦\n\n拖动飞船躲避，武器自动开火。\n武器与辅助各5级，击退精英抽取进化。\n\n360°星海\n15分钟挑战\n9种武装选6 · 8种增强选6\n开始一局\n飞船整备\n\n完成 0 局 · 最佳 0 击落\n\nv0.6.10 · develop",
+    "checks": [
+      {
+        "key": "noDevLabel",
+        "pass": false
+      },
+      {
+        "key": "noCommitHash",
+        "pass": true
+      },
+      {
+        "key": "storeTitle",
+        "pass": false
+      }
+    ]
+  },
+  "startup": [
+    {
+      "key": "playsWithoutStorage",
+      "pass": false,
+      "status": "Cannot read properties of undefined (reading 'open')",
+      "errors": []
+    },
+    {
+      "key": "imageFailureRetry",
+      "pass": false,
+      "offered": false,
+      "recovered": false,
+      "errors": []
+    }
+  ],
+  "strategies": {
+    "wanderer": {
+      "runs": [
+        {
+          "strategy": "wanderer",
+          "index": 0,
+          "levelUps": [
+            {
+              "time": 29.26649999999954,
+              "level": 2
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 1,
+              "kills": 4,
+              "enemies": 3,
+              "hp": 88
+            },
+            "20": {
+              "level": 1,
+              "kills": 12,
+              "enemies": 12,
+              "hp": 58
+            },
+            "30": {
+              "level": 2,
+              "kills": 20,
+              "enemies": 21,
+              "hp": 39
+            }
+          },
+          "firstCards": [
+            "应急补给 船体修补 恢复29船体 消耗本次升级 · 随战斗时间与船体上限增加 应急补给",
+            "主动武器 自动维修舱 占1武器槽 · 每秒修复 0.25 船体 Lv0 → 1",
+            "辅助配件 聚能透镜 增加贯穿，提高武器伤害 双满级进化 · 脉冲主炮 1/5 ＋ 聚能透镜 1/5 · 精英战利品中抽取 Lv0 → 1"
+          ],
+          "end": {
+            "reason": "destroyed",
+            "time": 39.894600000000054,
+            "level": 2,
+            "kills": 25,
+            "credits": 21
+          },
+          "errors": []
+        },
+        {
+          "strategy": "wanderer",
+          "index": 1,
+          "levelUps": [
+            {
+              "time": 31.131999999999554,
+              "level": 2
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 1,
+              "kills": 6,
+              "enemies": 3,
+              "hp": 100
+            },
+            "20": {
+              "level": 1,
+              "kills": 13,
+              "enemies": 12,
+              "hp": 76
+            },
+            "30": {
+              "level": 1,
+              "kills": 17,
+              "enemies": 26,
+              "hp": 34
+            }
+          },
+          "firstCards": [
+            "应急补给 船体修补 恢复29船体 消耗本次升级 · 随战斗时间与船体上限增加 应急补给",
+            "主动武器 自动维修舱 占1武器槽 · 每秒修复 0.25 船体 Lv0 → 1",
+            "主动武器 旋刃护卫 环绕切割，保护近处空域 双满级进化 · 旋刃护卫 1/5 ＋ 回收磁场 0/5 · 精英战利品中抽取 Lv0 → 1"
+          ],
+          "end": {
+            "reason": "destroyed",
+            "time": 44.842600000000346,
+            "level": 2,
+            "kills": 24,
+            "credits": 16
+          },
+          "errors": []
+        },
+        {
+          "strategy": "wanderer",
+          "index": 2,
+          "levelUps": [
+            {
+              "time": 39.63170000000008,
+              "level": 2
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 1,
+              "kills": 7,
+              "enemies": 2,
+              "hp": 100
+            },
+            "20": {
+              "level": 1,
+              "kills": 14,
+              "enemies": 11,
+              "hp": 76
+            },
+            "30": {
+              "level": 1,
+              "kills": 18,
+              "enemies": 24,
+              "hp": 34
+            }
+          },
+          "firstCards": [
+            "应急补给 船体修补 恢复30船体 消耗本次升级 · 随战斗时间与船体上限增加 应急补给",
+            "主动武器 自动维修舱 占1武器槽 · 每秒修复 0.25 船体 Lv0 → 1",
+            "主动武器 护航无人机 环绕副机，锁定位置后直射 双满级进化 · 护航无人机 1/5 ＋ 锁定芯片 0/5 · 精英战利品中抽取 Lv0 → 1"
+          ],
+          "end": {
+            "reason": "destroyed",
+            "time": 48.893600000000674,
+            "level": 2,
+            "kills": 32,
+            "credits": 16
+          },
+          "errors": []
+        }
+      ],
+      "metrics": {
+        "firstLevelUp": 31.131999999999554,
+        "levelAt60": 0,
+        "levelAt180": 0,
+        "survival": 44.842600000000346,
+        "enemiesAt10": 3,
+        "killsAt20": 13,
+        "levelUpsBy60": 1,
+        "invalidRuns": 0,
+        "partsAtEnd": 16,
+        "cheapestUpgrade": 400,
+        "affordsFirstUpgrade": 0
+      },
+      "checks": [
+        {
+          "key": "firstLevelUp",
+          "value": 31.131999999999554,
+          "target": {
+            "max": 8
+          },
+          "pass": false
+        },
+        {
+          "key": "levelAt60",
+          "value": 0,
+          "target": {
+            "min": 5,
+            "max": 8
+          },
+          "pass": false
+        },
+        {
+          "key": "survival",
+          "value": 44.842600000000346,
+          "target": {
+            "min": 90
+          },
+          "pass": false
+        },
+        {
+          "key": "enemiesAt10",
+          "value": 3,
+          "target": {
+            "min": 6
+          },
+          "pass": false
+        },
+        {
+          "key": "killsAt20",
+          "value": 13,
+          "target": {
+            "min": 15
+          },
+          "pass": false
+        },
+        {
+          "key": "affordsFirstUpgrade",
+          "value": 0,
+          "target": {
+            "min": 1
+          },
+          "pass": false
+        },
+        {
+          "key": "invalidRuns",
+          "value": 0,
+          "target": {
+            "max": 0
+          },
+          "pass": true
+        }
+      ]
+    },
+    "dodger": {
+      "runs": [
+        {
+          "strategy": "dodger",
+          "index": 0,
+          "levelUps": [],
+          "marks": {
+            "10": {
+              "level": 1,
+              "kills": 7,
+              "enemies": 2,
+              "hp": 100
+            },
+            "20": {
+              "level": 1,
+              "kills": 15,
+              "enemies": 11,
+              "hp": 94
+            },
+            "30": {
+              "level": 1,
+              "kills": 24,
+              "enemies": 15,
+              "hp": 94
+            },
+            "60": {
+              "level": 1,
+              "kills": 48,
+              "enemies": 36,
+              "hp": 88
+            },
+            "120": {
+              "level": 1,
+              "kills": 78,
+              "enemies": 34,
+              "hp": 82
+            },
+            "180": {
+              "level": 1,
+              "kills": 88,
+              "enemies": 38,
+              "hp": 52
+            }
+          },
+          "firstCards": null,
+          "end": {
+            "reason": "cap",
+            "time": 180.00950000002595,
+            "level": 1,
+            "kills": 88,
+            "credits": 63
+          },
+          "errors": []
+        },
+        {
+          "strategy": "dodger",
+          "index": 1,
+          "levelUps": [
+            {
+              "time": 67.76400000000207,
+              "level": 2
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 1,
+              "kills": 4,
+              "enemies": 3,
+              "hp": 100
+            },
+            "20": {
+              "level": 1,
+              "kills": 13,
+              "enemies": 11,
+              "hp": 100
+            },
+            "30": {
+              "level": 1,
+              "kills": 21,
+              "enemies": 20,
+              "hp": 100
+            },
+            "60": {
+              "level": 1,
+              "kills": 44,
+              "enemies": 38,
+              "hp": 88
+            },
+            "120": {
+              "level": 2,
+              "kills": 98,
+              "enemies": 38,
+              "hp": 76
+            },
+            "180": {
+              "level": 2,
+              "kills": 125,
+              "enemies": 38,
+              "hp": 37
+            }
+          },
+          "firstCards": [
+            "主动武器 电弧线圈 连锁电击，扫开成群目标 双满级进化 · 电弧线圈 1/5 ＋ 超导电容 0/5 · 精英战利品中抽取 Lv0 → 1",
+            "主动武器 脉冲主炮 增强齐射火力，自动瞄准近敌 双满级进化 · 脉冲主炮 2/5 ＋ 聚能透镜 0/5 · 精英战利品中抽取 Lv1 → 2",
+            "辅助配件 锁定芯片 副机锁定更快，伤害提高 双满级进化 · 护航无人机 0/5 ＋ 锁定芯片 1/5 · 精英战利品中抽取 Lv0 → 1"
+          ],
+          "end": {
+            "reason": "cap",
+            "time": 180.022000000026,
+            "level": 2,
+            "kills": 125,
+            "credits": 77
+          },
+          "errors": []
+        },
+        {
+          "strategy": "dodger",
+          "index": 2,
+          "levelUps": [],
+          "marks": {
+            "10": {
+              "level": 1,
+              "kills": 5,
+              "enemies": 3,
+              "hp": 100
+            },
+            "20": {
+              "level": 1,
+              "kills": 13,
+              "enemies": 12,
+              "hp": 100
+            },
+            "30": {
+              "level": 1,
+              "kills": 22,
+              "enemies": 17,
+              "hp": 100
+            },
+            "60": {
+              "level": 1,
+              "kills": 46,
+              "enemies": 32,
+              "hp": 100
+            },
+            "120": {
+              "level": 1,
+              "kills": 85,
+              "enemies": 38,
+              "hp": 88
+            },
+            "180": {
+              "level": 1,
+              "kills": 95,
+              "enemies": 37,
+              "hp": 49
+            }
+          },
+          "firstCards": null,
+          "end": {
+            "reason": "cap",
+            "time": 180.00930000002603,
+            "level": 1,
+            "kills": 95,
+            "credits": 62
+          },
+          "errors": []
+        }
+      ],
+      "metrics": {
+        "firstLevelUp": null,
+        "levelAt60": 1,
+        "levelAt180": 1,
+        "survival": 180,
+        "enemiesAt10": 3,
+        "killsAt20": 13,
+        "levelUpsBy60": 0,
+        "invalidRuns": 0,
+        "partsAtEnd": 63,
+        "cheapestUpgrade": 400,
+        "affordsFirstUpgrade": 0
+      },
+      "checks": [
+        {
+          "key": "firstLevelUp",
+          "value": null,
+          "target": {
+            "max": 15
+          },
+          "pass": false
+        },
+        {
+          "key": "levelAt60",
+          "value": 1,
+          "target": {
+            "min": 4
+          },
+          "pass": false
+        },
+        {
+          "key": "levelAt180",
+          "value": 1,
+          "target": {
+            "min": 7
+          },
+          "pass": false
+        },
+        {
+          "key": "survival",
+          "value": 180,
+          "target": {
+            "min": 180
+          },
+          "pass": true
+        },
+        {
+          "key": "invalidRuns",
+          "value": 0,
+          "target": {
+            "max": 0
+          },
+          "pass": true
+        }
+      ]
+    }
+  },
+  "partial": false,
+  "failures": [
+    "home.noDevLabel",
+    "home.storeTitle",
+    "startup.playsWithoutStorage",
+    "startup.imageFailureRetry",
+    "wanderer.firstLevelUp",
+    "wanderer.levelAt60",
+    "wanderer.survival",
+    "wanderer.enemiesAt10",
+    "wanderer.killsAt20",
+    "wanderer.affordsFirstUpgrade",
+    "dodger.firstLevelUp",
+    "dodger.levelAt60",
+    "dodger.levelAt180"
+  ]
+}

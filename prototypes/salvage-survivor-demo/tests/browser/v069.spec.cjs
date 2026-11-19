@@ -105,18 +105,19 @@ test("v069 elite result cannot reroll its saved grants or evolution chance", asy
     before.active.snapshot.game.upgradeSource,
   );
 });
-test("v069 UI states six slots and a wider equipment pool, with a genuinely small starting XP radius", async ({
+test("compact slot counts and legacy v069 pickup radius", async ({
   page,
 }) => {
   await upgrade(page);
-  await expect(page.locator("#upgradeBuild")).toContainText("9种");
-  await expect(page.locator("#upgradeBuild")).toContainText("8种");
+  await expect(page.locator("#upgradeBuild")).toContainText("武器 1/6");
+  await expect(page.locator("#upgradeBuild")).toContainText("配件 0/6");
   const result = await page.evaluate(() => {
     const Q = SurvivorQA,
       g = Q.state();
     g.mode = "play";
     g.spawnTime = 9999;
     g.enemy = [];
+    Q.legacyV0610();
     const pickups = [
       { x: g.p.x + 80, y: g.p.y, t: 20, type: "xp", value: 1 },
       { x: g.p.x + 30, y: g.p.y, t: 20, type: "xp", value: 1 },

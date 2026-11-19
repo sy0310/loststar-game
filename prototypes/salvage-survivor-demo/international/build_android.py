@@ -65,14 +65,18 @@ def main():
     run([args.gradle, '--no-daemon', '--console=plain', *tasks], cwd=PROJECT, env=env)
     source = PROJECT / 'app/build/outputs/apk/release/app-release.apk'
     build = json.loads((release / 'web-build-info.json').read_text())
+    metadata = json.loads((source.parent / 'output-metadata.json').read_text())
+    package = next(item for item in metadata['elements'] if item['outputFile'] == source.name)
+    if package['versionName'] != build['version']:
+        raise RuntimeError('Android and bundled game versions differ')
     artifact = release / ('lostship-star-surge-' + build['sourceCommit'][:7] + '.apk')
     shutil.copy2(source, artifact)
     result = run([args.sdk / 'build-tools/35.0.0/apksigner', 'verify', '--verbose', '--print-certs', artifact],
                  env=env, text=True, stdout=subprocess.PIPE)
     run([args.sdk / 'build-tools/35.0.0/zipalign', '-c', '-P', '16', '4', artifact], env=env)
     report = {
-        'version': '0.6.10-global.1', 'versionCode': 1,
-        'packageName': 'com.shuhua.lostship.starsurge',
+        'version': package['versionName'], 'versionCode': package['versionCode'],
+        'packageName': metadata['applicationId'],
         'sourceCommit': build['sourceCommit'], 'dirty': build['dirty'],
         'apk': artifact.name, 'bytes': artifact.stat().st_size,
         'sha256': hashlib.sha256(artifact.read_bytes()).hexdigest(),

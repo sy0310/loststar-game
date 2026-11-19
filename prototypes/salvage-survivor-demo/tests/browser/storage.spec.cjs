@@ -93,7 +93,7 @@ test("settlement replay and refresh credit the run once; the next run uses saved
   await page.locator("#upgradeHullBtn").click();
   await page.waitForFunction(() => !SurvivorDemo.saving());
   expect((await stored(page)).profile).toMatchObject({
-    credits: 200,
+    credits: 540,
     hull: 1,
     runs: 1,
   });
@@ -115,12 +115,12 @@ test("rapid permanent-upgrade input charges only the displayed tier", async ({
   await page.waitForFunction(() => !SurvivorDemo.saving());
   expect((await stored(page)).profile).toMatchObject({
     hull: 1,
-    credits: 1600,
+    credits: 1940,
   });
   await page.waitForTimeout(600);
   await page.locator("#upgradeHullBtn").click();
   await page.waitForFunction(() => !SurvivorDemo.saving());
-  expect((await stored(page)).profile).toMatchObject({ hull: 2, credits: 600 });
+  expect((await stored(page)).profile).toMatchObject({ hull: 2, credits: 940 });
 });
 
 test("two IndexedDB clients cannot both buy the same displayed upgrade", async ({
@@ -141,7 +141,7 @@ test("two IndexedDB clients cannot both buy the same displayed upgrade", async (
     return results.map((result) => result.status);
   });
   expect(results.sort()).toEqual(["fulfilled", "rejected"]);
-  expect((await stored(page)).profile).toMatchObject({ gun: 1, credits: 500 });
+  expect((await stored(page)).profile).toMatchObject({ gun: 1, credits: 910 });
 });
 
 for (const storageDelay of [0, 700])

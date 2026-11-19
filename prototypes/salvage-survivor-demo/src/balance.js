@@ -1,5 +1,51 @@
 window.SurvivorBalance = {
-  "version": "0.6.10",
+  "version": "0.6.11",
+  "onboarding": {
+    "version": 1,
+    "firstLevelXP": 48,
+    "levelXPScale": [
+      1.72,
+      1.6,
+      1.3,
+      1.6,
+      1.85,
+      2.2,
+      2.0,
+      1.85
+    ],
+    "experienceRadius": 96,
+    "magnetPerLevel": 40,
+    "recall": {
+      "earlyUntil": 60,
+      "earlyAfter": 1.2,
+      "lateAfter": 8,
+      "expiryGuard": 2,
+      "until": 180
+    },
+    "opening": {
+      "until": 18,
+      "interval": 0.58,
+      "count": 2,
+      "pool": [
+        "skimmer"
+      ],
+      "hpScale": 0.6,
+      "streamSeconds": 3
+    },
+    "damageRamp": {
+      "start": 0.1,
+      "fullAt": 200
+    },
+    "hintSeconds": 8,
+    "levelXPLateScale": 1.7,
+    "followUp": {
+      "until": 120,
+      "extraCount": 1,
+      "intervalScale": 0.8,
+      "targetEnemies": 18,
+      "maxBatch": 8
+    }
+  },
   "runSeconds": 900,
   "eliteAt": 70,
   "bossAt": 130,
@@ -662,12 +708,12 @@ window.SurvivorBalance = {
   },
   "permanentCosts": {
     "hull": [
-      400,
+      60,
       1000,
       1800
     ],
     "gun": [
-      500,
+      90,
       1200,
       2100
     ]

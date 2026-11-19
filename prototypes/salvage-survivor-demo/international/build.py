@@ -56,10 +56,10 @@ def main():
     if len(payload) != 84:
         raise RuntimeError('Unexpected base runtime file inventory')
     html = payload['index.html'].decode()
-    html = html.replace('<title>失物号 · 星海生存</title>', '<title>Lostship: Star Surge</title>')
+    html = html.replace('<title>失物号：星海突进</title>', '<title>Lostship: Star Surge</title>')
     html = html.replace('</head>', '<link rel="stylesheet" href="./src/locale.css" /></head>')
     html = re.sub(r'window.SurvivorBuild = \{.*?\};', 'window.SurvivorBuild = ' + json.dumps({
-        'version': '0.6.10-global.1', 'commit': commit, 'dirty': dirty,
+        'version': '0.6.11-global.1', 'commit': commit, 'dirty': dirty,
     }) + ';', html, flags=re.S)
     html = html.replace('<script src="./src/balance.js">',
                         '<script src="./src/english.js"></script>\n'
@@ -78,7 +78,7 @@ def main():
         path = output / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(raw)
-    report = {'version': '0.6.10-global.1', 'sourceCommit': commit, 'dirty': dirty,
+    report = {'version': '0.6.11-global.1', 'sourceCommit': commit, 'dirty': dirty,
               'defaultLanguage': 'en', 'languages': ['en', 'zh-CN'],
               'files': [{'path': name, 'bytes': len(raw), 'sha256': sha(raw)} for name, raw in sorted(payload.items())],
               'sourceFiles': source_files, 'translatedTokens': len(dictionary),

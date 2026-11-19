@@ -1,0 +1,90 @@
+{
+  "source": "releases/full-run/claude-verify-rework/simulation.json",
+  "movement": "adaptive",
+  "seeds": 6,
+  "targets": {
+    "newPlayer": {
+      "perks": 0,
+      "clearRate": {
+        "min": 0.1,
+        "max": 0.35
+      },
+      "medianSurvival": {
+        "min": 360,
+        "max": 720
+      },
+      "medianLevelAt300": {
+        "min": 12,
+        "max": 20
+      }
+    },
+    "veteran": {
+      "perks": 3,
+      "clearRate": {
+        "min": 0.5,
+        "max": 0.9
+      }
+    }
+  },
+  "groups": {
+    "newPlayer": {
+      "perks": 0,
+      "metrics": {
+        "runs": 30,
+        "clearRate": 0.133,
+        "medianSurvival": 454.4333333332487,
+        "medianLevelAt300": 13
+      },
+      "checks": [
+        {
+          "key": "clearRate",
+          "value": 0.133,
+          "target": {
+            "min": 0.1,
+            "max": 0.35
+          },
+          "pass": true
+        },
+        {
+          "key": "medianSurvival",
+          "value": 454.4333333332487,
+          "target": {
+            "min": 360,
+            "max": 720
+          },
+          "pass": true
+        },
+        {
+          "key": "medianLevelAt300",
+          "value": 13,
+          "target": {
+            "min": 12,
+            "max": 20
+          },
+          "pass": true
+        }
+      ]
+    },
+    "veteran": {
+      "perks": 3,
+      "metrics": {
+        "runs": 30,
+        "clearRate": 0.767,
+        "medianSurvival": 900,
+        "medianLevelAt300": 17
+      },
+      "checks": [
+        {
+          "key": "clearRate",
+          "value": 0.767,
+          "target": {
+            "min": 0.5,
+            "max": 0.9
+          },
+          "pass": true
+        }
+      ]
+    }
+  },
+  "failures": []
+}
