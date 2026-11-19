@@ -51,8 +51,9 @@ test("legacy seed 413 retains the v0.6.10 trajectory at five-second intervals", 
   ]);
 });
 
-test("discounts end at level ten and the damage ramp ends at two minutes", async () => {
+test("later levels use the onboarding multiplier and the damage ramp ends at two minutes", async () => {
   const { SurvivorQA: q, SurvivorBalance: b } = await createModel();
+  assert(b.onboarding.levelXPLateScale > 1);
   for (const legacy of [false, true]) {
     const g = q.startModel(92);
     if (legacy) q.legacyV0610();
@@ -66,7 +67,7 @@ test("discounts end at level ten and the damage ramp ends at two minutes", async
       assert.equal(
         g.xpNext,
         Math.round(
-          cost * (legacy ? 1 : (b.onboarding.levelXPScale[growth] ?? 1)),
+          cost * (legacy ? 1 : (b.onboarding.levelXPScale[growth] ?? b.onboarding.levelXPLateScale)),
         ),
       );
     }
@@ -122,6 +123,11 @@ test("new XP radius, magnet and age-based recall leave other drops and legacy XP
     assert(!drop({ life: 30 - after + 0.1, time }).magnetized);
     assert(drop({ life: 30 - after, time }).magnetized);
   }
+  const cutoff = 120;
+  assert(drop({ time: cutoff - 0.1, life: 0.01 }).magnetized);
+  assert.equal(drop({ time: cutoff, life: 0.01 }), undefined);
+  assert(!drop({ time: cutoff, life: 18 }).magnetized);
+  assert(drop({ time: cutoff, distance: 95 }).magnetized);
   assert(drop({ life: 0.01 }).magnetized);
   assert.equal(drop({ life: 0.01, legacy: true }), undefined);
   assert.equal(drop({ life: 0.01, type: "scrap" }), undefined);
@@ -147,4 +153,22 @@ test("opening streams are one-shot skimmers and normal waves return after eighte
     }
   }
   assert(types.size > 1);
+});
+
+test("follow-up spawns more standard enemies, only inside the new-run window", async () => {
+  const {SurvivorQA: q} = await createModel();
+  function wave(time, legacy) {
+    const g = q.startModel(413);
+    if (legacy) q.legacyV0610();
+    g.time = time;
+    g.spawnTime = 0;
+    q.step(1 / 60);
+    return {count: g.enemy.length, interval: g.spawnTime};
+  }
+  for (const time of [18, 30, 119.95]) {
+    const current = wave(time, false), old = wave(time, true);
+    assert(current.count > old.count);
+    assert(current.interval < old.interval);
+  }
+  assert.deepEqual(wave(120, false), wave(120, true));
 });
