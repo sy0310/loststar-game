@@ -735,8 +735,8 @@
           );
         }
         const type = {
-          active: "主动武器",
-          passive: "辅助配件",
+          active: "武器",
+          passive: "配件",
           evo: "满级进化",
           fusion: newProgression() ? "终极融合" : "双武器融合",
           bonus: "应急补给",
@@ -790,24 +790,11 @@
         else if (option.id === "repair" && g.rules.repairScalingVersion === 1)
           hint = "消耗本次升级 · 随战斗时间与船体上限增加";
         else if (pair) {
-          const weaponLevel =
-            option.id === pair[0] ? option.level : g.active[pair[0]] || 0;
-          const passiveLevel =
-            option.id === pair[1] ? option.level : g.passive[pair[1]] || 0;
-          hint =
-            "双满级进化 · " +
-            NAMES[pair[0]] +
-            " " +
-            weaponLevel +
-            "/" +
-            activeMaximum() +
-            " ＋ " +
-            NAMES[pair[1]] +
-            " " +
-            passiveLevel +
-            "/" +
-            passiveMaximum() +
-            (newProgression() ? " · 精英战利品中抽取" : "");
+          const weaponCard = option.kind === "active";
+          const partner = weaponCard ? pair[1] : pair[0];
+          const level = (weaponCard ? g.passive : g.active)[partner] || 0;
+          hint = "进化搭档：" + NAMES[partner] + " " + level + "/" +
+            (weaponCard ? passiveMaximum() : activeMaximum());
         }
         const icon =
           { repair: "armor", reserveShield: "shield", salvage: "scrap" }[
@@ -841,16 +828,14 @@
       .join("");
     updateRerollButton();
     $("upgradeBuild").textContent =
-      "主动 " +
+      "武器 " +
       (Object.keys(g.active).length + Object.keys(g.fused).length) +
       "/" +
       runRules().activeSlots +
-      (selectionCombat() ? "（" + ACTIVE.length + "种）" : "") +
-      " · 增强 " +
+      " · 配件 " +
       Object.keys(g.passive).length +
       "/" +
-      runRules().passiveSlots +
-      (selectionCombat() ? "（" + PASSIVE.length + "种）" : "");
+      runRules().passiveSlots;
     const bossReward = g.upgradeSource?.kind === "boss";
     const lottery = recoveryCombat() && bossReward;
     $("upgradeTitle").textContent = lottery
@@ -865,13 +850,14 @@
           : "已装备装置均已满级 · 选择一项补给或进化"
         : bossReward
           ? "符合满级条件时，75%机会出现进化／融合"
-          : "武器与专属辅助各5级，击退精英抽取进化"
+          : "武器和搭档都满5级后，击败精英可进化"
       : "选一项，继续出击";
     const fusion = FUSION.find(
       ([a, b, id]) => !g.fused[id] && (g.active[a] || g.active[b]),
     );
+    $("fusionGuide").hidden = !Object.keys(g.evolved).length;
     $("fusionGuide").textContent =
-      newProgression() && fusion
+      newProgression() && fusion && !$("fusionGuide").hidden
         ? NAMES[fusion[0]] +
           " ＋ " +
           NAMES[fusion[1]] +
@@ -3303,7 +3289,9 @@
         : g.time < B.bossAt
           ? "精英追猎"
           : "守卫来袭";
-    $("footHint").hidden = QA || g.time > 8 || g.mode !== "play";
+    const showOpeningHint = onboardingRun() && g.time < B.onboarding.hintSeconds;
+    $("footHint").textContent = showOpeningHint ? "拖动躲避 · 经验会自动飞回" : "按住并拖动 · 自动攻击";
+    $("footHint").hidden = QA || (!showOpeningHint && g.time > 8) || g.mode !== "play";
     const events = g.encounters;
     const eventKind = events?.pending?.kind || events?.active?.kind;
     const activeVisitor = events?.active
@@ -3414,8 +3402,8 @@
       );
     }
     $("loadout").innerHTML =
-      row("武装", active, runRules().activeSlots) +
-      row("增强", passive, runRules().passiveSlots);
+      row("武器", active, runRules().activeSlots) +
+      row("配件", passive, runRules().passiveSlots);
   }
   async function finish(victory) {
     if (!g || ["results", "settling"].includes(g.mode)) return;
@@ -3488,6 +3476,17 @@
     $("dockGunBtn").innerHTML = $("upgradeGunBtn").innerHTML;
     $("dockGunBtn").disabled = $("upgradeGunBtn").disabled;
     $("progressText").textContent = profile.credits + "零件";
+    const cheapest = ["hull", "gun"]
+      .filter(kind => profile[kind] < B.permanentMaxLevel)
+      .sort((a, b) => B.permanentCosts[a][profile[a]] - B.permanentCosts[b][profile[b]])[0];
+    const gap = cheapest ? B.permanentCosts[cheapest][profile[cheapest]] - profile.credits : 0;
+    const affordable = cheapest && gap <= 0 && !storeView?.active;
+    const hint = !cheapest || storeView?.active ? "" : affordable
+      ? "零件够了：可以强化 " + (cheapest === "hull" ? "船体加固" : "主炮校准")
+      : "还差 " + gap + " 零件可强化";
+    $("resultPerkHint").textContent = $("dockPerkHint").textContent = hint;
+    for (const [kind, buttons] of [["hull", ["upgradeHullBtn", "dockHullBtn"]], ["gun", ["upgradeGunBtn", "dockGunBtn"]]])
+      for (const button of buttons) $(button).classList.toggle("affordable", !!affordable && cheapest === kind);
     renderEngineering();
   }
   let dockReturn = "start";
@@ -5640,12 +5639,8 @@
         ? "开始一局 · " + NAMES[profile.launchPlan.weapon]
         : "开始一局";
     $("recordText").textContent =
-      "完成 " + profile.runs + " 局 · 最佳 " + profile.best + " 击落";
-    $("buildStamp").textContent =
-      "v" +
-      window.SurvivorBuild.version +
-      " · " +
-      window.SurvivorBuild.commit.slice(0, 7);
+      profile.runs === 0 ? "第一次出航" : "完成 " + profile.runs + " 局 · 最佳 " + profile.best + " 击落";
+    $("buildStamp").textContent = "v" + window.SurvivorBuild.version;
   }
   function showResults(summary, committed = true) {
     if (!summary) {

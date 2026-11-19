@@ -156,6 +156,7 @@
   }
   function dock() {
     title("飞船整备", text("dockCredits"));
+    paragraph(text("dockPerkHint"), 12);
     button("dockHullBtn");
     button("dockGunBtn");
     list("engineeringList");
@@ -179,6 +180,7 @@
     paragraph("生存 " + text("statTime") + "   击落 " + text("statKills") + "\n零件 " + text("statScrap") + "   等级 " + text("statLevel"), 17, colors.ice);
     html("resultBuild", 12);
     if (!element("resultEncounters").hidden) paragraph(text("resultEncounters"), 12);
+    paragraph(text("resultPerkHint"), 12);
     paragraph(text("progressText"), 15, colors.gold);
     button("upgradeHullBtn");
     button("upgradeGunBtn");

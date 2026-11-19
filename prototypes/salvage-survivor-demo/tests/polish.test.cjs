@@ -94,8 +94,8 @@ const { createModel } = require("./model-harness.cjs");
   });
   await test("new prices span multiple real runs and keep all original effect caps", () => {
     const B = context.SurvivorBalance;
-    assert.deepEqual(Array.from(B.permanentCosts.hull), [400, 1000, 1800]);
-    assert.deepEqual(Array.from(B.permanentCosts.gun), [500, 1200, 2100]);
+    assert.deepEqual(Array.from(B.permanentCosts.hull), [60, 1000, 1800]);
+    assert.deepEqual(Array.from(B.permanentCosts.gun), [90, 1200, 2100]);
     assert.equal(
       Array.from(B.engineering.costs).reduce((a, b) => a + b, 0),
       12150,
