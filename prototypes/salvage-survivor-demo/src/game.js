@@ -165,6 +165,7 @@
   const polishedCombat = (game = g) =>
     [7, 8].includes(runRules(game).combatVersion);
   const selectionCombat = (game = g) => runRules(game).combatVersion === 8;
+  const onboardingRun = (game = g) => runRules(game).onboardingVersion === 1;
   function upgradeRepairAmount(game = g) {
     const rules = runRules(game);
     let capacity = 28;
@@ -290,6 +291,7 @@
         passiveSlots: B.passiveSlots,
         combatVersion: 8,
         repairScalingVersion: 1,
+        onboardingVersion: B.onboarding.version,
         progressionVersion: 2,
       },
       time: 0,
@@ -306,7 +308,7 @@
       camera: { x: 0, y: 0 },
       level: 1,
       xp: 0,
-      xpNext: B.firstLevelXP,
+      xpNext: B.onboarding.firstLevelXP,
       credits: 0,
       kills: 0,
       active: { cannon: 1 },
@@ -425,11 +427,12 @@
       : newProgression()
         ? B.levelXP
         : B.legacyLevelXP;
-    return Math.round(
+    const base = Math.round(
       curve.base +
         curve.linear * growth +
         curve.powerScale * Math.pow(growth, curve.power),
     );
+    return onboardingRun() ? Math.round(base * (B.onboarding.levelXPScale[level - 2] ?? 1)) : base;
   };
   function availableUpgrades(game = g) {
     if (!game) return [];
@@ -1143,6 +1146,7 @@
     tier = 1,
     eliteProfile = "hunter",
     bossProfile = "core",
+    streamSide,
   ) {
     if (!g) return null;
     const special = force === "boss" || force === "elite" || !!VISITORS[force];
@@ -1196,7 +1200,7 @@
       ? Math.max(0, g.time - B.assault.lateHealthAfter) ** 2 *
         B.assault.lateHealthQuadratic
       : 0;
-    const side = Math.floor(rand() * 4),
+    const side = streamSide ?? Math.floor(rand() * 4),
       ex = VW / 2 + 30,
       ey = VH / 2 + 35;
     const enemy = {
@@ -1563,6 +1567,10 @@
   }
   function damageShip(amount) {
     if (!g || g.mode !== "play" || g.p.inv > 0) return;
+    if (onboardingRun()) {
+      const {start, fullAt} = B.onboarding.damageRamp;
+      amount *= start + (1 - start) * Math.min(1, g.time / fullAt);
+    }
     if (assaultCombat()) amount *= 1 + Math.max(0, g.time - 300) / 1800;
     if (g.p.shield > 0) {
       g.p.shield = 0;
@@ -2238,7 +2246,16 @@
       notify("碎星回波 · 敌群正在集结");
     }
     g.spawnTime -= dt;
-    if (g.spawnTime <= 0) {
+    const opening = B.onboarding.opening;
+    if (g.spawnTime <= 0 && onboardingRun() && g.time < opening.until) {
+      const side = Math.floor(g.time / opening.streamSeconds) % 4;
+      for (let index = 0; index < opening.count; index++) {
+        const type = opening.pool[Math.floor(rand() * opening.pool.length)];
+        const enemy = spawnEnemy(type, 1, "hunter", "core", side);
+        if (enemy) enemy.hp = enemy.maxhp = Math.round(enemy.maxhp * opening.hpScale);
+      }
+      g.spawnTime = opening.interval;
+    } else if (g.spawnTime <= 0) {
       const count =
         g.time > 420
           ? 6
@@ -2454,6 +2471,14 @@
     for (const pickup of g.pickups) {
       if (pickup.t <= 0) continue;
       pickup.t -= dt;
+      if (pickup.type === "xp" && onboardingRun()) {
+        const recall = B.onboarding.recall;
+        const delay = g.time < recall.earlyUntil ? recall.earlyAfter : recall.lateAfter;
+        if (30 - pickup.t >= delay || pickup.t <= recall.expiryGuard) {
+          pickup.magnetized = true;
+          pickup.t = Math.max(pickup.t, recall.expiryGuard);
+        }
+      }
       const distance = dist(pickup, g.p);
       if (distance < pickupRadius(pickup.type) || pickup.magnetized) {
         pickup.magnetized = true;
@@ -2707,13 +2732,13 @@
     const base = polishedCombat()
       ? type === "xp"
         ? selectionCombat()
-          ? B.pickup.baseExperienceRadius
+          ? onboardingRun() ? B.onboarding.experienceRadius : B.pickup.baseExperienceRadius
           : B.pickup.legacyExperienceRadius
         : B.pickup.basePartsRadius
       : 150;
     return (
       base +
-      passivePower("magnet") * 55 +
+      passivePower("magnet") * (onboardingRun() && type === "xp" ? B.onboarding.magnetPerLevel : 55) +
       (g.evolved.blade ? 65 : 0) +
       (engineeringCombat()
         ? g.engineering.salvage * B.engineering.magnetPerLevel
@@ -5138,6 +5163,8 @@
       ![180, 600, 900].includes(rules.runSeconds) ||
       (rules.combatVersion !== undefined &&
         ![2, 3, 4, 5, 6, 7, 8].includes(rules.combatVersion)) ||
+      (rules.onboardingVersion !== undefined &&
+        (rules.onboardingVersion !== 1 || rules.combatVersion !== 8)) ||
       (rules.repairScalingVersion !== undefined &&
         rules.repairScalingVersion !== 1) ||
       (rules.progressionVersion !== undefined &&
@@ -5834,7 +5861,14 @@
         g.persisted = false;
         return g;
       },
+      legacyV0610: () => {
+        delete g.rules.onboardingVersion;
+        g.xpNext = B.firstLevelXP;
+        return g;
+      },
       legacyProgression: () => {
+        delete g.rules.onboardingVersion;
+        g.xpNext = B.firstLevelXP;
         g.rules.combatVersion = 2;
         g.rules.runSeconds = 600;
         g.endTime = 600;
@@ -5843,17 +5877,23 @@
         return g;
       },
       legacyV068: () => {
+        delete g.rules.onboardingVersion;
+        g.xpNext = B.firstLevelXP;
         g.rules.version = "0.6.8";
         g.rules.combatVersion = 7;
         return g;
       },
       reroll: () => rerollOptions(true),
       legacyV067: () => {
+        delete g.rules.onboardingVersion;
+        g.xpNext = B.firstLevelXP;
         g.rules.version = "0.6.7";
         g.rules.combatVersion = 6;
         return g;
       },
       legacyV066: () => {
+        delete g.rules.onboardingVersion;
+        g.xpNext = B.firstLevelXP;
         g.rules.version = "0.6.6";
         g.rules.combatVersion = 5;
         return g;
@@ -5868,17 +5908,23 @@
         bladeRadius: bladeRadius(),
       }),
       legacyV065: () => {
+        delete g.rules.onboardingVersion;
+        g.xpNext = B.firstLevelXP;
         g.rules.version = "0.6.5";
         g.rules.combatVersion = 4;
         return g;
       },
       spawn: spawnEnemy,
       legacyV064: () => {
+        delete g.rules.onboardingVersion;
+        g.xpNext = B.firstLevelXP;
         g.rules.version = "0.6.4";
         g.rules.combatVersion = 3;
         return g;
       },
       legacyV063: () => {
+        delete g.rules.onboardingVersion;
+        g.xpNext = B.firstLevelXP;
         g.rules.version = "0.6.3";
         g.rules.combatVersion = 2;
         g.rules.runSeconds = 600;
