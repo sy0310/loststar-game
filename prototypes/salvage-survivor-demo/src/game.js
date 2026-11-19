@@ -5097,7 +5097,8 @@
     return result;
   }
   function savedMessage() {
-    $("saveStatus").textContent = "已保存";
+    $("saveStatus").textContent = storage?.volatile ? "本机存档不可用 · 本次进度不会保存" : "已保存";
+    $("retrySaveBtn").textContent = "重试保存";
     $("saveBar").classList.remove("error");
     $("retrySaveBtn").hidden = true;
   }
@@ -5698,7 +5699,9 @@
     $("menuBtn").disabled = !committed;
   }
   async function retrySaving() {
-    if (!storage) {
+    if (!ready) {
+      storage?.close();
+      storage = null;
       await initialize();
       return;
     }
@@ -5715,8 +5718,11 @@
     await saveCheckpoint();
   }
   async function initialize() {
+    $("retrySaveBtn").disabled = true;
+    let artReady = false;
     try {
       await window.SurvivorArt.load();
+      artReady = true;
       storage = await window.SurvivorPersistence.create({ qa: QA });
       applyStored((await storage.read()).record);
       if (storeView.active) validateSnapshot(storeView.active.snapshot);
@@ -5745,7 +5751,10 @@
     } catch (error) {
       ready = false;
       showStart();
-      storageWarning(error);
+      storageWarning(artReady ? error : Error("素材没加载完整，点重新加载再试一次"));
+      $("retrySaveBtn").textContent = "重新加载";
+    } finally {
+      $("retrySaveBtn").disabled = false;
     }
   }
 
