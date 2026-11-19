@@ -37,25 +37,40 @@ const VIEWPORT = { width: 390, height: 844 };
 
 /* Medians over RUNS. A run that never levels up counts as Infinity.
  * affordsFirstUpgrade compares parts carried out of the run with the cheapest
- * first-tier permanent upgrade read from the running build. */
+ * first-tier permanent upgrade read from the running build.
+ * Targets v2 (2026-11-19, after the first v0.6.11 acceptance): at most three
+ * card screens in the first 20 s, level 5-7 at 60 s, and live enemies inside
+ * the 390x844 view at 20 s and 30 s, not just anywhere in the world. */
 const TARGETS = {
   wanderer: {
     firstLevelUp: { max: 8 },
-    levelAt60: { min: 5, max: 8 },
+    levelUpsBy20: { max: 3 },
+    levelAt60: { min: 5, max: 7 },
     survival: { min: 90 },
     enemiesAt10: { min: 6 },
+    onScreenAt20: { min: 6 },
+    onScreenAt30: { min: 6 },
     killsAt20: { min: 15 },
     affordsFirstUpgrade: { min: 1 },
     invalidRuns: { max: 0 },
   },
   dodger: {
     firstLevelUp: { max: 15 },
-    levelAt60: { min: 4 },
+    levelUpsBy20: { max: 3 },
+    levelAt60: { min: 4, max: 7 },
     levelAt180: { min: 7 },
     survival: { min: 180 },
     invalidRuns: { max: 0 },
   },
 };
+/* Same mapping as render(): x - camera.x + VW / 2, y - camera.y + VH * 0.51. */
+const onScreen = (g) =>
+  g.enemy.filter((enemy) => {
+    if (!(enemy.hp > 0)) return false;
+    const x = enemy.x - g.camera.x + VIEWPORT.width / 2;
+    const y = enemy.y - g.camera.y + VIEWPORT.height * 0.51;
+    return x >= 0 && x <= VIEWPORT.width && y >= 0 && y <= VIEWPORT.height;
+  }).length;
 
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const median = (values) => {
@@ -142,6 +157,7 @@ async function playRun(browser, strategy, index) {
               level: g.level,
               kills: g.kills,
               enemies: g.enemy.length,
+              onScreen: onScreen(g),
               hp: Math.round(g.p.hp),
             };
             if (shots && SHOT_MARKS.has(mark))
@@ -230,7 +246,12 @@ function summarize(strategy, runs, cheapestUpgrade) {
     levelAt180: median(runs.map((run) => levelAt(run, 180) ?? 0)),
     survival: median(runs.map(survival)),
     enemiesAt10: median(runs.map((run) => run.marks[10]?.enemies ?? 0)),
+    onScreenAt20: median(runs.map((run) => run.marks[20]?.onScreen ?? 0)),
+    onScreenAt30: median(runs.map((run) => run.marks[30]?.onScreen ?? 0)),
     killsAt20: median(runs.map((run) => run.marks[20]?.kills ?? 0)),
+    levelUpsBy20: median(
+      runs.map((run) => run.levelUps.filter((up) => up.time <= 20).length),
+    ),
     levelUpsBy60: median(
       runs.map((run) => run.levelUps.filter((up) => up.time <= 60).length),
     ),
