@@ -20,7 +20,7 @@ window.SurvivorBalance = {
       "earlyAfter": 1.2,
       "lateAfter": 8,
       "expiryGuard": 2,
-      "until": 150
+      "until": 180
     },
     "opening": {
       "until": 18,
