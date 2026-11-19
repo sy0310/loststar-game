@@ -22,7 +22,7 @@ def main():
     parser.add_argument('--freeze', action='store_true')
     args = parser.parse_args()
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    relevant = [str(HERE.relative_to(ROOT)), 'design/star-salvage/v06/BALANCE_V06.json', 'design/star-salvage/v06/production', 'design/star-salvage/v061', 'design/star-salvage/v062', 'design/star-salvage/v063', 'design/star-salvage/v064', 'design/star-salvage/v065', 'design/star-salvage/v066', 'design/star-salvage/v067', 'design/star-salvage/v068', 'design/star-salvage/v069', 'design/star-salvage/v0610']
+    relevant = [str(HERE.relative_to(ROOT)), 'design/star-salvage/v06/BALANCE_V06.json', 'design/star-salvage/v06/production', 'design/star-salvage/v061', 'design/star-salvage/v062', 'design/star-salvage/v063', 'design/star-salvage/v064', 'design/star-salvage/v065', 'design/star-salvage/v066', 'design/star-salvage/v067', 'design/star-salvage/v068', 'design/star-salvage/v069', 'design/star-salvage/v0610', 'design/star-salvage/v0611/BALANCE_V0611.json']
     dirty_paths = subprocess.check_output(['git', 'status', '--porcelain', '--', *relevant], cwd=ROOT, text=True).strip()
     dirty = bool(dirty_paths)
     if args.freeze and dirty:

@@ -108,6 +108,13 @@ async function stored(page) {
       activeMax: 5,
       passiveMax: 5,
     },
+    {
+      version: "0.6.10",
+      commit: "ea26e29d3061542913e7a587a1fe6cc889250d33",
+      archive: "artifacts/survivor-v0610/loststar-survivor-ea26e29.zip",
+      activeMax: 5,
+      passiveMax: 5,
+    },
   ]) {
     execFileSync("python3", [
       "-c",
@@ -139,7 +146,7 @@ async function stored(page) {
             SurvivorQA.state().credits = amount;
             await SurvivorQA.end(false);
           },
-          ["0.6.8", "0.6.9"].includes(baseline.version)
+          ["0.6.8", "0.6.9", "0.6.10"].includes(baseline.version)
             ? 35699
             : baseline.version === "0.6.7"
               ? 28909
@@ -152,7 +159,7 @@ async function stored(page) {
             await page.waitForFunction(() => !SurvivorDemo.saving());
             await delay(600);
           }
-        if (["0.6.7", "0.6.8", "0.6.9"].includes(baseline.version)) {
+        if (["0.6.7", "0.6.8", "0.6.9", "0.6.10"].includes(baseline.version)) {
           await page.locator("#resultDockBtn").click();
           for (const id of ["thrusters", "salvage", "plating"]) {
             await delay(600);
@@ -197,7 +204,7 @@ async function stored(page) {
         assert.equal(before.profile.credits, 27049);
         assert.equal(before.profile.hull, 3);
         assert.equal(before.profile.gun, 3);
-        if (["0.6.7", "0.6.8", "0.6.9"].includes(baseline.version))
+        if (["0.6.7", "0.6.8", "0.6.9", "0.6.10"].includes(baseline.version))
           assert.deepEqual(before.profile.engineering, {
             version: 1,
             thrusters: 1,
@@ -214,19 +221,20 @@ async function stored(page) {
         await page.reload();
         await page.waitForFunction(() => SurvivorDemo.ready());
         const newBuild = await page.evaluate(() => SurvivorBuild);
-        assert.equal(newBuild.version, "0.6.10");
+        assert.equal(newBuild.version, "0.6.11");
         assert.deepEqual(await stored(page), before);
         await page.locator("#continueBtn").click();
         await page.waitForFunction(
           () => SurvivorDemo.state()?.mode === "play" && !SurvivorDemo.saving(),
         );
         const oldRun = await page.evaluate(() => SurvivorDemo.state());
+        assert.equal(oldRun.rules.onboardingVersion, undefined);
         assert.equal(oldRun.active.cannon, baseline.activeMax);
         assert.equal(oldRun.evolved.cannon, "piercebeam");
         assert.equal(oldRun.fused.thunderhive, true);
         assert.equal(
           oldRun.endTime,
-          ["0.6.4", "0.6.5", "0.6.6", "0.6.7", "0.6.8", "0.6.9"].includes(
+          ["0.6.4", "0.6.5", "0.6.6", "0.6.7", "0.6.8", "0.6.9", "0.6.10"].includes(
             baseline.version,
           )
             ? 900
@@ -249,11 +257,12 @@ async function stored(page) {
         assert.equal(next.rules.progressionVersion, 2);
         assert.equal(next.rules.combatVersion, 8);
         assert.equal(next.rules.repairScalingVersion, 1);
+        assert.equal(next.rules.onboardingVersion, 1);
         assert.equal(next.rerollsRemaining, 3);
         assert.equal(next.endTime, 900);
         assert.equal((await stored(page)).profile.credits, 27049);
         assert.equal(next.p.maxhp, 148);
-        if (["0.6.7", "0.6.8", "0.6.9"].includes(baseline.version)) {
+        if (["0.6.7", "0.6.8", "0.6.9", "0.6.10"].includes(baseline.version)) {
           assert.deepEqual(next.engineering, before.profile.engineering);
           assert(Math.abs(next.p.speed - 178.5) < 0.001);
         }
@@ -280,7 +289,7 @@ async function stored(page) {
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
   console.log(
-    "PASS both engines actual v062/v063/v064/v065/v066/v067/v068/v069 ZIP -> v0610 HTTP, old27049/rights/EVO/fusion and new900-second run",
+    "PASS both engines actual v062/v063/v064/v065/v066/v067/v068/v069/v0610 ZIP -> v0611 HTTP, old27049/rights/EVO/fusion and new900-second run",
   );
 })()
   .catch((e) => {

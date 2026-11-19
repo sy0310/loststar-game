@@ -4,14 +4,14 @@ window.SurvivorBalance = {
     "version": 1,
     "firstLevelXP": 30,
     "levelXPScale": [
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.76,
-      0.82,
+      0.86,
+      0.86,
+      0.86,
+      0.86,
+      0.86,
       0.88,
-      0.94
+      0.92,
+      0.96
     ],
     "experienceRadius": 96,
     "magnetPerLevel": 40,
@@ -32,7 +32,7 @@ window.SurvivorBalance = {
       "streamSeconds": 3
     },
     "damageRamp": {
-      "start": 0.5,
+      "start": 0.3,
       "fullAt": 120
     },
     "hintSeconds": 8
