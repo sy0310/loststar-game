@@ -1,0 +1,977 @@
+{
+  "url": "http://127.0.0.1:4472/",
+  "cap": 180,
+  "runsPerStrategy": 3,
+  "targets": {
+    "wanderer": {
+      "firstLevelUp": {
+        "max": 8
+      },
+      "levelUpsBy20": {
+        "max": 3
+      },
+      "levelAt60": {
+        "min": 5,
+        "max": 7
+      },
+      "survival": {
+        "min": 90
+      },
+      "enemiesAt10": {
+        "min": 6
+      },
+      "onScreenAt20": {
+        "min": 6
+      },
+      "onScreenAt30": {
+        "min": 6
+      },
+      "killsAt20": {
+        "min": 15
+      },
+      "affordsFirstUpgrade": {
+        "min": 1
+      },
+      "invalidRuns": {
+        "max": 0
+      }
+    },
+    "dodger": {
+      "firstLevelUp": {
+        "max": 15
+      },
+      "levelUpsBy20": {
+        "max": 3
+      },
+      "levelAt60": {
+        "min": 4,
+        "max": 7
+      },
+      "levelAt180": {
+        "min": 7
+      },
+      "survival": {
+        "min": 180
+      },
+      "invalidRuns": {
+        "max": 0
+      }
+    }
+  },
+  "build": {
+    "version": "0.6.11",
+    "commit": "development",
+    "dirty": true
+  },
+  "permanentCosts": {
+    "hull": [
+      60,
+      1000,
+      1800
+    ],
+    "gun": [
+      90,
+      1200,
+      2100
+    ]
+  },
+  "home": {
+    "title": "失物号：星海突进",
+    "heading": "星海突进",
+    "text": "失物号\n星海突进\n✧\n✦\n\n拖动飞船躲避，武器自动开火。\n击落敌机掉落经验，三选一越打越强。\n\n15分钟生存\n9种武器\n进化与融合\n开始一局\n飞船整备\n\n第一次出航\n\nv0.6.11",
+    "checks": [
+      {
+        "key": "noDevLabel",
+        "pass": true
+      },
+      {
+        "key": "noCommitHash",
+        "pass": true
+      },
+      {
+        "key": "storeTitle",
+        "pass": true
+      }
+    ]
+  },
+  "startup": [
+    {
+      "key": "playsWithoutStorage",
+      "pass": true,
+      "status": "本机存档不可用 · 本次进度不会保存",
+      "errors": []
+    },
+    {
+      "key": "imageFailureRetry",
+      "pass": true,
+      "offered": true,
+      "recovered": true,
+      "errors": []
+    }
+  ],
+  "strategies": {
+    "wanderer": {
+      "runs": [
+        {
+          "strategy": "wanderer",
+          "index": 0,
+          "levelUps": [
+            {
+              "time": 4.092100000143047,
+              "level": 2
+            },
+            {
+              "time": 9.005800000286133,
+              "level": 3
+            },
+            {
+              "time": 14.336000000429095,
+              "level": 4
+            },
+            {
+              "time": 20.066300000524325,
+              "level": 5
+            },
+            {
+              "time": 27.929500000619488,
+              "level": 6
+            },
+            {
+              "time": 40.99250000061991,
+              "level": 7
+            },
+            {
+              "time": 54.805200000668485,
+              "level": 8
+            },
+            {
+              "time": 68.08400000081292,
+              "level": 9
+            },
+            {
+              "time": 77.21320000076723,
+              "level": 10
+            },
+            {
+              "time": 85.87550000086455,
+              "level": 11
+            },
+            {
+              "time": 98.07100000101026,
+              "level": 12
+            },
+            {
+              "time": 106.73330000110755,
+              "level": 13
+            },
+            {
+              "time": 118.81300000111024,
+              "level": 14
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 3,
+              "kills": 17,
+              "enemies": 9,
+              "onScreen": 5,
+              "hp": 98
+            },
+            "20": {
+              "level": 5,
+              "kills": 45,
+              "enemies": 3,
+              "onScreen": 1,
+              "hp": 91
+            },
+            "30": {
+              "level": 6,
+              "kills": 63,
+              "enemies": 3,
+              "onScreen": 1,
+              "hp": 89
+            },
+            "60": {
+              "level": 8,
+              "kills": 120,
+              "enemies": 7,
+              "onScreen": 4,
+              "hp": 81
+            },
+            "120": {
+              "level": 14,
+              "kills": 318,
+              "enemies": 19,
+              "onScreen": 19,
+              "hp": 31
+            }
+          },
+          "firstCards": [
+            "配件 引力透镜 扩大引力范围，延长牵引 进化搭档：引力锚 0/5 Lv0 → 1",
+            "配件 锁定芯片 副机锁定更快，伤害提高 进化搭档：护航无人机 0/5 Lv0 → 1",
+            "武器 震荡导弹 直射目标区域，命中范围爆炸 进化搭档：冷却矩阵 0/5 Lv0 → 1"
+          ],
+          "end": {
+            "reason": "destroyed",
+            "time": 125.30940000120704,
+            "level": 14,
+            "kills": 346,
+            "credits": 339
+          },
+          "errors": []
+        },
+        {
+          "strategy": "wanderer",
+          "index": 1,
+          "levelUps": [
+            {
+              "time": 4.099799999999996,
+              "level": 2
+            },
+            {
+              "time": 7.619199999952356,
+              "level": 3
+            },
+            {
+              "time": 13.765999999856902,
+              "level": 4
+            },
+            {
+              "time": 19.562999999856764,
+              "level": 5
+            },
+            {
+              "time": 29.80929999985655,
+              "level": 6
+            },
+            {
+              "time": 43.82139999966651,
+              "level": 7
+            },
+            {
+              "time": 55.83389999966725,
+              "level": 8
+            },
+            {
+              "time": 68.66269999957326,
+              "level": 9
+            },
+            {
+              "time": 77.04129999938436,
+              "level": 10
+            },
+            {
+              "time": 86.50089999924342,
+              "level": 11
+            },
+            {
+              "time": 95.98049999915015,
+              "level": 12
+            },
+            {
+              "time": 106.85989999910491,
+              "level": 13
+            },
+            {
+              "time": 116.90649999896412,
+              "level": 14
+            },
+            {
+              "time": 128.701499998871,
+              "level": 15
+            },
+            {
+              "time": 137.46349999887266,
+              "level": 16
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 3,
+              "kills": 19,
+              "enemies": 7,
+              "onScreen": 3,
+              "hp": 98
+            },
+            "20": {
+              "level": 5,
+              "kills": 44,
+              "enemies": 4,
+              "onScreen": 4,
+              "hp": 96
+            },
+            "30": {
+              "level": 6,
+              "kills": 60,
+              "enemies": 5,
+              "onScreen": 4,
+              "hp": 98
+            },
+            "60": {
+              "level": 8,
+              "kills": 115,
+              "enemies": 8,
+              "onScreen": 7,
+              "hp": 88
+            },
+            "120": {
+              "level": 14,
+              "kills": 317,
+              "enemies": 17,
+              "onScreen": 11,
+              "hp": 48
+            }
+          },
+          "firstCards": [
+            "武器 电弧线圈 连锁电击，扫开成群目标 进化搭档：超导电容 0/5 Lv0 → 1",
+            "配件 回收磁场 扩大经验与零件的吸附范围 进化搭档：旋刃护卫 0/5 Lv0 → 1",
+            "配件 聚能透镜 增加贯穿，提高武器伤害 进化搭档：脉冲主炮 1/5 Lv0 → 1"
+          ],
+          "end": {
+            "reason": "destroyed",
+            "time": 147.30819999877954,
+            "level": 16,
+            "kills": 458,
+            "credits": 396
+          },
+          "errors": []
+        },
+        {
+          "strategy": "wanderer",
+          "index": 2,
+          "levelUps": [
+            {
+              "time": 4.066499999999994,
+              "level": 2
+            },
+            {
+              "time": 9.005399999952344,
+              "level": 3
+            },
+            {
+              "time": 14.318499999809207,
+              "level": 4
+            },
+            {
+              "time": 24.446999999665916,
+              "level": 5
+            },
+            {
+              "time": 51.87429999952398,
+              "level": 6
+            },
+            {
+              "time": 67.66719999952547,
+              "level": 7
+            },
+            {
+              "time": 86.59559999957729,
+              "level": 8
+            },
+            {
+              "time": 101.7241999994853,
+              "level": 9
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 3,
+              "kills": 17,
+              "enemies": 9,
+              "onScreen": 5,
+              "hp": 98
+            },
+            "20": {
+              "level": 4,
+              "kills": 36,
+              "enemies": 12,
+              "onScreen": 10,
+              "hp": 95
+            },
+            "30": {
+              "level": 5,
+              "kills": 44,
+              "enemies": 22,
+              "onScreen": 17,
+              "hp": 82
+            },
+            "60": {
+              "level": 6,
+              "kills": 70,
+              "enemies": 37,
+              "onScreen": 35,
+              "hp": 33
+            },
+            "120": {
+              "level": 9,
+              "kills": 136,
+              "enemies": 36,
+              "onScreen": 35,
+              "hp": 13
+            }
+          },
+          "firstCards": [
+            "配件 超导电容 电链更远，连锁更强 进化搭档：电弧线圈 0/5 Lv0 → 1",
+            "武器 折跃棱镜 晶体环绕，射出折射晶片 进化搭档：折射晶核 0/5 Lv0 → 1",
+            "配件 聚能透镜 增加贯穿，提高武器伤害 进化搭档：脉冲主炮 1/5 Lv0 → 1"
+          ],
+          "end": {
+            "reason": "destroyed",
+            "time": 126.91939999953864,
+            "level": 9,
+            "kills": 144,
+            "credits": 126
+          },
+          "errors": []
+        }
+      ],
+      "metrics": {
+        "firstLevelUp": 4.092100000143047,
+        "levelAt60": 8,
+        "levelAt180": 0,
+        "survival": 126.91939999953864,
+        "enemiesAt10": 9,
+        "onScreenAt20": 4,
+        "onScreenAt30": 4,
+        "killsAt20": 44,
+        "levelUpsBy20": 3,
+        "levelUpsBy60": 7,
+        "invalidRuns": 0,
+        "partsAtEnd": 339,
+        "cheapestUpgrade": 60,
+        "affordsFirstUpgrade": 1
+      },
+      "checks": [
+        {
+          "key": "firstLevelUp",
+          "value": 4.092100000143047,
+          "target": {
+            "max": 8
+          },
+          "pass": true
+        },
+        {
+          "key": "levelUpsBy20",
+          "value": 3,
+          "target": {
+            "max": 3
+          },
+          "pass": true
+        },
+        {
+          "key": "levelAt60",
+          "value": 8,
+          "target": {
+            "min": 5,
+            "max": 7
+          },
+          "pass": false
+        },
+        {
+          "key": "survival",
+          "value": 126.91939999953864,
+          "target": {
+            "min": 90
+          },
+          "pass": true
+        },
+        {
+          "key": "enemiesAt10",
+          "value": 9,
+          "target": {
+            "min": 6
+          },
+          "pass": true
+        },
+        {
+          "key": "onScreenAt20",
+          "value": 4,
+          "target": {
+            "min": 6
+          },
+          "pass": false
+        },
+        {
+          "key": "onScreenAt30",
+          "value": 4,
+          "target": {
+            "min": 6
+          },
+          "pass": false
+        },
+        {
+          "key": "killsAt20",
+          "value": 44,
+          "target": {
+            "min": 15
+          },
+          "pass": true
+        },
+        {
+          "key": "affordsFirstUpgrade",
+          "value": 1,
+          "target": {
+            "min": 1
+          },
+          "pass": true
+        },
+        {
+          "key": "invalidRuns",
+          "value": 0,
+          "target": {
+            "max": 0
+          },
+          "pass": true
+        }
+      ]
+    },
+    "dodger": {
+      "runs": [
+        {
+          "strategy": "dodger",
+          "index": 0,
+          "levelUps": [
+            {
+              "time": 4.0331999999999955,
+              "level": 2
+            },
+            {
+              "time": 8.863300000047705,
+              "level": 3
+            },
+            {
+              "time": 15.292600000047612,
+              "level": 4
+            },
+            {
+              "time": 22.738099999904414,
+              "level": 5
+            },
+            {
+              "time": 41.14619999990482,
+              "level": 6
+            },
+            {
+              "time": 54.34139999995339,
+              "level": 7
+            },
+            {
+              "time": 79.23529999995723,
+              "level": 8
+            },
+            {
+              "time": 98.96319999991391,
+              "level": 9
+            },
+            {
+              "time": 116.30809999991777,
+              "level": 10
+            },
+            {
+              "time": 131.35229999992004,
+              "level": 11
+            },
+            {
+              "time": 143.91379999997056,
+              "level": 12
+            },
+            {
+              "time": 159.8092999999742,
+              "level": 13
+            },
+            {
+              "time": 163.33739999983197,
+              "level": 14
+            },
+            {
+              "time": 174.54979999983453,
+              "level": 15
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 3,
+              "kills": 17,
+              "enemies": 9,
+              "onScreen": 7,
+              "hp": 100
+            },
+            "20": {
+              "level": 4,
+              "kills": 37,
+              "enemies": 11,
+              "onScreen": 8,
+              "hp": 100
+            },
+            "30": {
+              "level": 5,
+              "kills": 50,
+              "enemies": 13,
+              "onScreen": 3,
+              "hp": 100
+            },
+            "60": {
+              "level": 7,
+              "kills": 90,
+              "enemies": 20,
+              "onScreen": 20,
+              "hp": 100
+            },
+            "120": {
+              "level": 10,
+              "kills": 191,
+              "enemies": 34,
+              "onScreen": 25,
+              "hp": 91
+            },
+            "180": {
+              "level": 15,
+              "kills": 425,
+              "enemies": 26,
+              "onScreen": 13,
+              "hp": 75
+            }
+          },
+          "firstCards": [
+            "配件 引力透镜 扩大引力范围，延长牵引 进化搭档：引力锚 0/5 Lv0 → 1",
+            "配件 聚能透镜 增加贯穿，提高武器伤害 进化搭档：脉冲主炮 1/5 Lv0 → 1",
+            "武器 脉冲主炮 增强齐射火力，自动瞄准近敌 进化搭档：聚能透镜 0/5 Lv1 → 2"
+          ],
+          "end": {
+            "reason": "cap",
+            "time": 180.09589999988347,
+            "level": 15,
+            "kills": 425,
+            "credits": 154
+          },
+          "errors": []
+        },
+        {
+          "strategy": "dodger",
+          "index": 1,
+          "levelUps": [
+            {
+              "time": 4.116600000047678,
+              "level": 2
+            },
+            {
+              "time": 7.183100000047712,
+              "level": 3
+            },
+            {
+              "time": 13.54549999999995,
+              "level": 4
+            },
+            {
+              "time": 18.108499999999886,
+              "level": 5
+            },
+            {
+              "time": 31.80540000004722,
+              "level": 6
+            },
+            {
+              "time": 45.29929999990504,
+              "level": 7
+            },
+            {
+              "time": 54.427499999762595,
+              "level": 8
+            },
+            {
+              "time": 78.82249999962346,
+              "level": 9
+            },
+            {
+              "time": 96.18389999957961,
+              "level": 10
+            },
+            {
+              "time": 114.0968999996312,
+              "level": 11
+            },
+            {
+              "time": 128.32509999949116,
+              "level": 12
+            },
+            {
+              "time": 137.28849999944478,
+              "level": 13
+            },
+            {
+              "time": 153.28359999930538,
+              "level": 14
+            },
+            {
+              "time": 157.86329999921105,
+              "level": 15
+            },
+            {
+              "time": 163.642299999117,
+              "level": 16
+            },
+            {
+              "time": 176.42109999897684,
+              "level": 17
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 3,
+              "kills": 19,
+              "enemies": 7,
+              "onScreen": 5,
+              "hp": 100
+            },
+            "20": {
+              "level": 5,
+              "kills": 45,
+              "enemies": 3,
+              "onScreen": 2,
+              "hp": 100
+            },
+            "30": {
+              "level": 5,
+              "kills": 58,
+              "enemies": 8,
+              "onScreen": 6,
+              "hp": 97
+            },
+            "60": {
+              "level": 8,
+              "kills": 115,
+              "enemies": 12,
+              "onScreen": 8,
+              "hp": 94
+            },
+            "120": {
+              "level": 11,
+              "kills": 257,
+              "enemies": 16,
+              "onScreen": 12,
+              "hp": 94
+            },
+            "180": {
+              "level": 17,
+              "kills": 525,
+              "enemies": 21,
+              "onScreen": 8,
+              "hp": 84
+            }
+          },
+          "firstCards": [
+            "武器 电弧线圈 连锁电击，扫开成群目标 进化搭档：超导电容 0/5 Lv0 → 1",
+            "配件 折射晶核 晶片命中后折射，提高伤害 进化搭档：折跃棱镜 0/5 Lv0 → 1",
+            "武器 自动维修舱 占1武器槽 · 每秒修复 0.25 船体 Lv0 → 1"
+          ],
+          "end": {
+            "reason": "cap",
+            "time": 180.00079999892998,
+            "level": 17,
+            "kills": 525,
+            "credits": 355
+          },
+          "errors": []
+        },
+        {
+          "strategy": "dodger",
+          "index": 2,
+          "levelUps": [
+            {
+              "time": 3.483600000095361,
+              "level": 2
+            },
+            {
+              "time": 8.161300000143088,
+              "level": 3
+            },
+            {
+              "time": 14.188200000286043,
+              "level": 4
+            },
+            {
+              "time": 18.05140000042901,
+              "level": 5
+            },
+            {
+              "time": 33.090100000428734,
+              "level": 6
+            },
+            {
+              "time": 42.73500000038171,
+              "level": 7
+            },
+            {
+              "time": 58.31290000052587,
+              "level": 8
+            },
+            {
+              "time": 75.07490000057626,
+              "level": 9
+            },
+            {
+              "time": 89.50490000057947,
+              "level": 10
+            },
+            {
+              "time": 106.40020000058325,
+              "level": 11
+            },
+            {
+              "time": 122.01230000053906,
+              "level": 12
+            },
+            {
+              "time": 142.10740000068586,
+              "level": 13
+            },
+            {
+              "time": 152.55260000064055,
+              "level": 14
+            },
+            {
+              "time": 161.28250000069025,
+              "level": 15
+            },
+            {
+              "time": 179.79520000078983,
+              "level": 16
+            }
+          ],
+          "marks": {
+            "10": {
+              "level": 3,
+              "kills": 20,
+              "enemies": 6,
+              "onScreen": 4,
+              "hp": 100
+            },
+            "20": {
+              "level": 5,
+              "kills": 45,
+              "enemies": 3,
+              "onScreen": 3,
+              "hp": 100
+            },
+            "30": {
+              "level": 5,
+              "kills": 57,
+              "enemies": 9,
+              "onScreen": 8,
+              "hp": 100
+            },
+            "60": {
+              "level": 8,
+              "kills": 111,
+              "enemies": 15,
+              "onScreen": 5,
+              "hp": 97
+            },
+            "120": {
+              "level": 11,
+              "kills": 258,
+              "enemies": 33,
+              "onScreen": 6,
+              "hp": 93
+            },
+            "180": {
+              "level": 16,
+              "kills": 404,
+              "enemies": 37,
+              "onScreen": 17,
+              "hp": 57
+            }
+          },
+          "firstCards": [
+            "武器 旋刃护卫 环绕切割，保护近处空域 进化搭档：回收磁场 0/5 Lv0 → 1",
+            "武器 离子护盾 抵挡伤害，自动恢复护盾 进化搭档：反应装甲 0/5 Lv0 → 1",
+            "配件 回收磁场 扩大经验与零件的吸附范围 进化搭档：旋刃护卫 0/5 Lv0 → 1"
+          ],
+          "end": {
+            "reason": "cap",
+            "time": 180.0543000007899,
+            "level": 16,
+            "kills": 404,
+            "credits": 372
+          },
+          "errors": []
+        }
+      ],
+      "metrics": {
+        "firstLevelUp": 4.0331999999999955,
+        "levelAt60": 8,
+        "levelAt180": 16,
+        "survival": 180,
+        "enemiesAt10": 7,
+        "onScreenAt20": 3,
+        "onScreenAt30": 6,
+        "killsAt20": 45,
+        "levelUpsBy20": 4,
+        "levelUpsBy60": 7,
+        "invalidRuns": 0,
+        "partsAtEnd": 355,
+        "cheapestUpgrade": 60,
+        "affordsFirstUpgrade": 1
+      },
+      "checks": [
+        {
+          "key": "firstLevelUp",
+          "value": 4.0331999999999955,
+          "target": {
+            "max": 15
+          },
+          "pass": true
+        },
+        {
+          "key": "levelUpsBy20",
+          "value": 4,
+          "target": {
+            "max": 3
+          },
+          "pass": false
+        },
+        {
+          "key": "levelAt60",
+          "value": 8,
+          "target": {
+            "min": 4,
+            "max": 7
+          },
+          "pass": false
+        },
+        {
+          "key": "levelAt180",
+          "value": 16,
+          "target": {
+            "min": 7
+          },
+          "pass": true
+        },
+        {
+          "key": "survival",
+          "value": 180,
+          "target": {
+            "min": 180
+          },
+          "pass": true
+        },
+        {
+          "key": "invalidRuns",
+          "value": 0,
+          "target": {
+            "max": 0
+          },
+          "pass": true
+        }
+      ]
+    }
+  },
+  "partial": false,
+  "failures": [
+    "wanderer.levelAt60",
+    "wanderer.onScreenAt20",
+    "wanderer.onScreenAt30",
+    "dodger.levelUpsBy20",
+    "dodger.levelAt60"
+  ]
+}
