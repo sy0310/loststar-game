@@ -43,24 +43,24 @@ test("v068 exact current upgrade fees preserve old paid levels and prevent dupli
   page,
 }) => {
   await dock(page);
-  await expect(page.locator("#dockHullBtn")).toContainText("400");
+  await expect(page.locator("#dockHullBtn")).toContainText("60");
   await page.locator("#dockHullBtn").tap();
   await page.waitForFunction(() => !SurvivorDemo.saving());
   expect((await stored(page)).profile.hull).toBe(1);
-  expect((await stored(page)).profile.credits).toBe(26649);
+  expect((await stored(page)).profile.credits).toBe(26989);
   await expect(page.locator('[data-engineering="salvage"]')).toContainText(
     "550",
   );
   await page.waitForTimeout(560);
   await page.locator('[data-engineering="salvage"]').tap();
   await page.waitForFunction(() => !SurvivorDemo.saving());
-  expect((await stored(page)).profile.credits).toBe(26099);
+  expect((await stored(page)).profile.credits).toBe(26439);
   await page.reload();
   await page.waitForFunction(() => SurvivorDemo.ready());
   const p = (await stored(page)).profile;
   expect(p.hull).toBe(1);
   expect(p.engineering.salvage).toBe(1);
-  expect(p.credits).toBe(26099);
+  expect(p.credits).toBe(26439);
 });
 
 test("v068 new ship pulls a visible experience crystal before contact and refresh cannot credit it twice", async ({

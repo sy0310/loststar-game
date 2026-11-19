@@ -1132,7 +1132,7 @@
     tier = 1,
     eliteProfile = "hunter",
     bossProfile = "core",
-    streamSide,
+    stream,
   ) {
     if (!g) return null;
     const special = force === "boss" || force === "elite" || !!VISITORS[force];
@@ -1186,7 +1186,7 @@
       ? Math.max(0, g.time - B.assault.lateHealthAfter) ** 2 *
         B.assault.lateHealthQuadratic
       : 0;
-    const side = streamSide ?? Math.floor(rand() * 4),
+    const side = stream?.side ?? Math.floor(rand() * 4),
       ex = VW / 2 + 30,
       ey = VH / 2 + 35;
     const enemy = {
@@ -1222,6 +1222,17 @@
       pattern: 0,
       charge: 0,
     };
+    if (stream) {
+      const offset = stream.index * enemy.radius * 2;
+      if (side < 2) {
+        enemy.x += side === 0 ? -offset : offset;
+        enemy.y = g.p.y;
+      } else {
+        enemy.x = g.p.x;
+        enemy.y += side === 2 ? -offset : offset;
+      }
+      enemy.hp = enemy.maxhp = Math.round(enemy.maxhp * B.onboarding.opening.hpScale);
+    }
     if (showcaseCombat() && ["boss", "elite"].includes(type)) {
       enemy.facing = angle(enemy, g.p) + Math.PI / 2;
       if (type === "boss") enemy.bossProfile = bossProfile;
@@ -2237,8 +2248,7 @@
       const side = Math.floor(g.time / opening.streamSeconds) % 4;
       for (let index = 0; index < opening.count; index++) {
         const type = opening.pool[Math.floor(rand() * opening.pool.length)];
-        const enemy = spawnEnemy(type, 1, "hunter", "core", side);
-        if (enemy) enemy.hp = enemy.maxhp = Math.round(enemy.maxhp * opening.hpScale);
+        spawnEnemy(type, 1, "hunter", "core", {side, index});
       }
       g.spawnTime = opening.interval;
     } else if (g.spawnTime <= 0) {
@@ -2715,16 +2725,16 @@
     }
   }
   function pickupRadius(type) {
-    const base = polishedCombat()
-      ? type === "xp"
-        ? selectionCombat()
-          ? onboardingRun() ? B.onboarding.experienceRadius : B.pickup.baseExperienceRadius
-          : B.pickup.legacyExperienceRadius
-        : B.pickup.basePartsRadius
-      : 150;
+    const onboardingXP = type === "xp" && onboardingRun();
+    const base = onboardingXP ? B.onboarding.experienceRadius
+      : !polishedCombat() ? 150
+      : type !== "xp" ? B.pickup.basePartsRadius
+      : selectionCombat() ? B.pickup.baseExperienceRadius : B.pickup.legacyExperienceRadius;
+    const magnetBonus = onboardingXP
+      ? (g.passive.magnet || 0) * B.onboarding.magnetPerLevel
+      : passivePower("magnet") * 55;
     return (
-      base +
-      passivePower("magnet") * (onboardingRun() && type === "xp" ? B.onboarding.magnetPerLevel : 55) +
+      base + magnetBonus +
       (g.evolved.blade ? 65 : 0) +
       (engineeringCombat()
         ? g.engineering.salvage * B.engineering.magnetPerLevel
@@ -5854,6 +5864,11 @@
     store: () => (storeView ? structuredClone(storeView) : null),
     artCount: () => window.SurvivorArt.loaded(),
   };
+  function legacyV0610() {
+    delete g.rules.onboardingVersion;
+    g.xpNext = B.firstLevelXP;
+    return g;
+  }
   if (QA)
     window.SurvivorQA = {
       start: reset,
@@ -5865,14 +5880,9 @@
         g.persisted = false;
         return g;
       },
-      legacyV0610: () => {
-        delete g.rules.onboardingVersion;
-        g.xpNext = B.firstLevelXP;
-        return g;
-      },
+      legacyV0610,
       legacyProgression: () => {
-        delete g.rules.onboardingVersion;
-        g.xpNext = B.firstLevelXP;
+        legacyV0610();
         g.rules.combatVersion = 2;
         g.rules.runSeconds = 600;
         g.endTime = 600;
@@ -5881,23 +5891,20 @@
         return g;
       },
       legacyV068: () => {
-        delete g.rules.onboardingVersion;
-        g.xpNext = B.firstLevelXP;
+        legacyV0610();
         g.rules.version = "0.6.8";
         g.rules.combatVersion = 7;
         return g;
       },
       reroll: () => rerollOptions(true),
       legacyV067: () => {
-        delete g.rules.onboardingVersion;
-        g.xpNext = B.firstLevelXP;
+        legacyV0610();
         g.rules.version = "0.6.7";
         g.rules.combatVersion = 6;
         return g;
       },
       legacyV066: () => {
-        delete g.rules.onboardingVersion;
-        g.xpNext = B.firstLevelXP;
+        legacyV0610();
         g.rules.version = "0.6.6";
         g.rules.combatVersion = 5;
         return g;
@@ -5912,23 +5919,20 @@
         bladeRadius: bladeRadius(),
       }),
       legacyV065: () => {
-        delete g.rules.onboardingVersion;
-        g.xpNext = B.firstLevelXP;
+        legacyV0610();
         g.rules.version = "0.6.5";
         g.rules.combatVersion = 4;
         return g;
       },
       spawn: spawnEnemy,
       legacyV064: () => {
-        delete g.rules.onboardingVersion;
-        g.xpNext = B.firstLevelXP;
+        legacyV0610();
         g.rules.version = "0.6.4";
         g.rules.combatVersion = 3;
         return g;
       },
       legacyV063: () => {
-        delete g.rules.onboardingVersion;
-        g.xpNext = B.firstLevelXP;
+        legacyV0610();
         g.rules.version = "0.6.3";
         g.rules.combatVersion = 2;
         g.rules.runSeconds = 600;

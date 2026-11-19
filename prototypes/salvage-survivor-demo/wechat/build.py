@@ -1,4 +1,4 @@
-"""Export the existing v0.6.10 controller, art and native WeChat bindings."""
+"""Export the existing v0.6.11 controller, art and native WeChat bindings."""
 import argparse
 import hashlib
 import json
@@ -75,7 +75,7 @@ def main():
     initial.feed((SOURCE / "index.html").read_text())
     for node in initial.elements.values():
         node["textContent"] = " ".join(node["textContent"].split())
-    stamp = {"version": "0.6.10-wx.3", "commit": commit, "dirty": dirty}
+    stamp = {"version": "0.6.11-wx.1", "commit": commit, "dirty": dirty}
     sections = ["const SurvivorPlatform = {};", (HERE / "platform.js").read_text()]
     sections += ["(function () {", "const window = SurvivorPlatform;", "const document = window.document;", "const localStorage = window.localStorage;", "const Image = window.Image;", "const crypto = window.crypto;", "const structuredClone = window.structuredClone;", "const location = window.location;", "const URLSearchParams = window.URLSearchParams;", "const performance = window.performance;", "const requestAnimationFrame = window.requestAnimationFrame;"]
     sections += ["window.SurvivorBuild = " + json.dumps(stamp) + ";"]
@@ -92,7 +92,7 @@ def main():
     (OUTPUT / "game.json").write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n")
     project = {
         "appid": "wx69a4de5574460d86", "projectname": "失物号-星海突进", "compileType": "game",
-        "description": "v0.6.10 微信小游戏适配", "libVersion": "3.18.0",
+        "description": "v0.6.11 微信小游戏适配", "libVersion": "3.18.0",
         "setting": {"es6": True, "minified": True, "urlCheck": True, "ignoreUploadUnusedFiles": False, "ignoreDevUnusedFiles": False},
         "packOptions": {
             "ignore": [{"type": "file", "value": "build-info.json"}],

@@ -3,12 +3,38 @@ window.SurvivorBalance = {
   "onboarding": {
     "version": 1,
     "firstLevelXP": 30,
-    "levelXPScale": [0.7, 0.7, 0.7, 0.7, 0.76, 0.82, 0.88, 0.94],
+    "levelXPScale": [
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.76,
+      0.82,
+      0.88,
+      0.94
+    ],
     "experienceRadius": 96,
     "magnetPerLevel": 40,
-    "recall": { "earlyUntil": 60, "earlyAfter": 1.2, "lateAfter": 8, "expiryGuard": 2 },
-    "opening": { "until": 18, "interval": 0.8, "count": 2, "pool": ["skimmer"], "hpScale": 0.6, "streamSeconds": 3 },
-    "damageRamp": { "start": 0.5, "fullAt": 120 },
+    "recall": {
+      "earlyUntil": 60,
+      "earlyAfter": 1.2,
+      "lateAfter": 8,
+      "expiryGuard": 2
+    },
+    "opening": {
+      "until": 18,
+      "interval": 0.8,
+      "count": 2,
+      "pool": [
+        "skimmer"
+      ],
+      "hpScale": 0.6,
+      "streamSeconds": 3
+    },
+    "damageRamp": {
+      "start": 0.5,
+      "fullAt": 120
+    },
     "hintSeconds": 8
   },
   "runSeconds": 900,

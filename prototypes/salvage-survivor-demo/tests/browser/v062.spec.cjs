@@ -202,6 +202,7 @@ test("old v061 ten-minute snapshot preserves profile and old combat through resu
   await page.evaluate(async () => {
     const Q = SurvivorQA,
       g = Q.state();
+    Q.legacyV0610();
     g.time = 169;
     g.rules.version = "0.6.1";
     g.rules.runSeconds = 600;

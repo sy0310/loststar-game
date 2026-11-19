@@ -39,7 +39,7 @@ test('Refits, starting weapons and prices remain bilingual without changing cred
   await boot(page, false);
   const before = await stored(page);
   await page.locator('#dockBtn').tap();
-  await expect(page.locator('#dock')).toContainText('400 Parts');
+  await expect(page.locator('#dock')).toContainText('60 Parts');
   await expect(page.locator('#dock')).toContainText('550 Parts');
   await audit(page);
   await page.locator('#chooseLaunchBtn').tap();

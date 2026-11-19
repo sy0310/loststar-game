@@ -119,6 +119,7 @@ const { createModel } = require("./model-harness.cjs");
   await test("small starting XP radius grows independently through paid antenna or in-run magnet", () => {
     function pull(distance, perks = {}, magnet = 0, rule = 8) {
       const g = start(91, perks);
+      Q.legacyV0610();
       g.rules.combatVersion = rule;
       g.passive = magnet ? { magnet } : {};
       const p = { x: distance, y: 0, t: 20, type: "xp", value: 1 };
@@ -147,8 +148,7 @@ const { createModel } = require("./model-harness.cjs");
       s.game.rerollsRemaining = value;
       assert.throws(() => Q.validate(s));
     }
-    g.rules.combatVersion = 7;
-    g.rules.version = "0.6.8";
+    Q.legacyV068();
     delete g.rerollsRemaining;
     Q.validate(Q.snapshot());
   });

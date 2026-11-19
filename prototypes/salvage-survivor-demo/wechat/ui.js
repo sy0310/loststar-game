@@ -94,7 +94,7 @@
   function button(id, primary = false) {
     const node = element(id);
     if (node.hidden) return;
-    buttonCard(id, node.innerHTML ? plain(node.innerHTML) : text(id), () => click(id), { disabled: node.disabled, primary, html: node.innerHTML });
+    buttonCard(id, node.innerHTML ? plain(node.innerHTML) : text(id), () => click(id), { disabled: node.disabled, primary: primary || node.classList.contains("affordable"), html: node.innerHTML });
   }
   function list(id) {
     for (const [index, item] of htmlButtons(id).entries()) {
@@ -112,8 +112,8 @@
     const y = cursor + 12;
     root.SurvivorArt?.draw(ctx, "player", canvas.width / 2, y + 52, { scale: 4 });
     cursor = y + 124;
-    paragraph("拖动飞船躲避，武器自动开火。\n拾取晶体，三选一强化，尝试进化武装。", 15);
-    paragraph("15分钟挑战 · 武器与辅助各6槽", 13, colors.ice);
+    paragraph("拖动飞船躲避，武器自动开火。\n击落敌机掉落经验，三选一越打越强。", 15);
+    paragraph("15分钟生存 · 9种武器 · 进化与融合", 13, colors.ice);
     button("continueBtn", true);
     button("startBtn", true);
     button("dockBtn");
@@ -155,8 +155,7 @@
     paragraph("切换应用或锁屏时自动暂停。", 12);
   }
   function dock() {
-    title("飞船整备", text("dockCredits"));
-    paragraph(text("dockPerkHint"), 12);
+    title("飞船整备", [text("dockCredits"), text("dockPerkHint")].filter(Boolean).join(" · "));
     button("dockHullBtn");
     button("dockGunBtn");
     list("engineeringList");
@@ -227,7 +226,7 @@
       panel(20, canvas.height - h - 110, width, h, "#252139ed");
       label(value, 30, canvas.height - h - 100, 12, colors.gold, width - 20);
     }
-    if (!element("footHint").hidden) label("按住并拖动 · 自动攻击", 20, canvas.height - 80, 12, colors.muted);
+    if (!element("footHint").hidden) label(text("footHint"), 20, canvas.height - 80, 12, colors.muted);
     if (!element("joystick").hidden) {
       const node = element("joystick");
       const x = parseFloat(node.style.left) + 44;
