@@ -5,13 +5,13 @@
     "firstLevelXP": 40,
     "levelXPScale": [
       1.8,
-      2.0,
+      2,
       2.15,
       2.25,
-      2.25,
-      2.2,
-      2.1,
-      2.0
+      2.15,
+      1.75,
+      1.5,
+      1.35
     ],
     "experienceRadius": 96,
     "magnetPerLevel": 40,
@@ -20,7 +20,7 @@
       "earlyAfter": 1.2,
       "lateAfter": 8,
       "expiryGuard": 2,
-      "until": 120
+      "until": 150
     },
     "opening": {
       "until": 18,
@@ -33,15 +33,17 @@
       "streamSeconds": 3
     },
     "damageRamp": {
-      "start": 0.15,
-      "fullAt": 160
+      "start": 0.1,
+      "fullAt": 200
     },
     "hintSeconds": 8,
-    "levelXPLateScale": 2,
+    "levelXPLateScale": 1.2,
     "followUp": {
       "until": 120,
       "extraCount": 1,
-      "intervalScale": 0.8
+      "intervalScale": 0.8,
+      "targetEnemies": 18,
+      "maxBatch": 8
     }
   },
   "runSeconds": 900,

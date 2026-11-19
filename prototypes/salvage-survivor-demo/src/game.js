@@ -2268,7 +2268,10 @@
                   : 1;
       const followUp = onboardingRun() && g.time < B.onboarding.followUp.until
         ? B.onboarding.followUp : null;
-      const waveSize = count + (followUp?.extraCount || 0);
+      const waveSize = followUp
+        ? Math.max(count + followUp.extraCount,
+            Math.min(followUp.maxBatch, followUp.targetEnemies - g.enemy.length))
+        : count;
       for (let index = 0; index < waveSize; index++) spawnEnemy();
       g.spawnTime =
         Math.max(0.46, 1.05 - g.time * 0.0033) *
