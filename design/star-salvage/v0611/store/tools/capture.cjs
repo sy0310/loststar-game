@@ -12,6 +12,8 @@ const source = "2322f30a696d90a73e4105bdff2049392eca2eeb";
 const url = process.env.STORE_URL || "http://127.0.0.1:4486/loststar-survivor/";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function record(scene) {
+  const weave = scene === "opening-weave";
+  const fresh = scene === "opening" || weave;
   const folder = path.join(raw, scene);
   fs.mkdirSync(folder, { recursive: true });
   const browser = await chromium.launch();
@@ -31,7 +33,7 @@ async function record(scene) {
     assert.equal(build.dirty, false);
     assert(await page.evaluate(() => !window.SurvivorQA));
     let checkpoint = null;
-    if (scene !== "opening") {
+    if (!fresh) {
       const { snapshot, ...info } = JSON.parse(
         fs.readFileSync(path.join(raw, "../checkpoints", scene + ".json")),
       );
@@ -90,7 +92,7 @@ async function record(scene) {
     await page.waitForTimeout(450);
     const start = Date.now() / 1000;
     await page
-      .locator(scene === "opening" ? "#startBtn" : "#continueBtn")
+      .locator(fresh ? "#startBtn" : "#continueBtn")
       .tap();
     await page.waitForFunction(() => SurvivorDemo.state()?.mode === "play");
     if (scene === "opening") {
@@ -123,7 +125,7 @@ async function record(scene) {
       held = false,
       cardSince = 0,
       lastPhoto = 0;
-    while (Date.now() / 1000 - start < (scene === "opening" ? 37 : 7)) {
+    while (Date.now() / 1000 - start < (fresh ? 37 : 7)) {
       const g = await page.evaluate(() => SurvivorDemo.state());
       const now = Date.now() / 1000;
       const sample = {
@@ -151,7 +153,7 @@ async function record(scene) {
       };
       samples.push(sample);
       if (
-        (scene !== "opening" && now - lastPhoto > 0.65) ||
+        (!fresh && now - lastPhoto > 0.65) ||
         (scene === "opening" && g.mode === "upgrade" && !cardSince)
       ) {
         sample.still =
@@ -174,7 +176,8 @@ async function record(scene) {
           await page.mouse.down();
           held = true;
         }
-        direction = steer(g, direction, true);
+        // For the early wave, keep the drag within the fight with a short circular route.
+        direction = weave ? Math.floor(g.time / 0.62) % 8 : steer(g, direction, true);
         await page.mouse.move(
           282 + 40 * Math.cos((direction * Math.PI) / 4),
           582 + 40 * Math.sin((direction * Math.PI) / 4),
