@@ -30,7 +30,7 @@
 
 ## 拍摄依据
 
-- **开局和选卡**来自无存档的新浏览器会话，点普通的出击按钮开始，用拖动输入操作，按画面实际给出的三张卡选取。连续录屏从首页开始，含开局和前段战斗，中间保留选卡停顿。录屏没有字幕、画中画、跳剪或加速。
+- **开局和选卡**来自无存档的新浏览器会话，点普通的出击按钮开始，用拖动输入操作，按画面实际给出的三张卡选取。连续录屏从首页开始，含开局和前段战斗，中间保留选卡停顿。录屏没有字幕、画中画、跳剪或加速。预告片第 3.0–6.2 秒另取新档走位实录 `opening-weave` 的 19.8–23.0 秒，HUD 航时从 00:18 走到 00:21。
 - **敌潮和裁决舰**取自种子 1，**星链雷网配猎手蜂群**取自种子 4，**星环奇点**取自种子 5。准备程序逐帧运行原游戏模型，躲避、击落、获得经验，且只从实际给出的选项里选卡。采用可获得的满永久强化（船体与主炮各 3 级，三项工程各 6 级）；这些镜头展示的是进阶配装。存档经验证后载入独立浏览器档案，从普通「继续」按钮续玩。没有摆放敌人、重写计数器或在拍摄页开启 QA。成图 HUD 实读依次为敌潮 09:41／2810 击落／30 级，电网 13:56／3686／34 级，裁决舰 14:17／4256／39 级，融合 14:51／5207／33 级。清单的采样值取自截图请求发出前，拍摄瞬间战斗继续运行。
 - **版式**保留完整飞船、HUD 和竖屏画面。五张截图都是 1080 × 2210，另加标题区。标题使用项目内的得意黑和既有紫金字效，小字用系统黑体。横版预告片的两侧用同帧模糊背景，结尾使用已批准的无字主视觉及项目字标。封面取自预告片正片。
 - **声音**来自游戏本身。预告片配乐为项目内 `SurvivorAudio.renderOffline('music')` 合成曲的第 3–27 秒。连续录屏使用当局录到的游戏混音。字体、音乐、主视觉文件和每个镜头的入点都列在清单中。
@@ -52,7 +52,7 @@ S=design/star-salvage/v0611/store
 node "$S/tools/checkpoints.cjs" swarm 1
 node "$S/tools/checkpoints.cjs" electric 4
 node "$S/tools/checkpoints.cjs" void 5
-node "$S/tools/capture.cjs" opening horde electric fusion boss
+node "$S/tools/capture.cjs" opening opening-weave horde electric fusion boss
 python3 "$S/tools/render.py"
 python3 "$S/verify_store.py" "$S/listing.json" --enforce
 git diff codex/v0611-first-minute -- prototypes/salvage-survivor-demo/src prototypes/salvage-survivor-demo/index.html
