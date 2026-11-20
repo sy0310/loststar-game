@@ -1,0 +1,22 @@
+{
+  "compared": {
+    "before": "fdf5599:design/star-salvage/v0611/store/trailer/trailer-16x9.mp4",
+    "after": "66527a3:design/star-salvage/v0611/store/trailer/trailer-16x9.mp4"
+  },
+  "method": "ffmpeg -map 0:v -f framemd5 on decoded frames; ffmpeg -map 0:a -f md5 on decoded audio",
+  "fps": 30,
+  "frames": {
+    "before": 720,
+    "after": 720,
+    "changed": 96,
+    "identical": 624
+  },
+  "changedRange": {
+    "firstFrame": 90,
+    "lastFrame": 185,
+    "startSeconds": 3.0,
+    "endSeconds": 6.2,
+    "contiguous": true
+  },
+  "audioIdentical": true
+}
