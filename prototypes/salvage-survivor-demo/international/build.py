@@ -6,6 +6,7 @@ import re
 import shutil
 import subprocess
 import sys
+from zipfile import ZIP_DEFLATED, ZipFile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -19,10 +20,18 @@ def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+def replace_once(source, original, replacement):
+    if source.count(original) != 1:
+        raise RuntimeError(f'Expected one occurrence of {original!r}')
+    return source.replace(original, replacement, 1)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, default=ROOT / 'releases/survivor-global/web')
     parser.add_argument('--freeze', action='store_true')
+    parser.add_argument('--crazygames-zip', type=Path,
+                        help='Export the Basic Launch web build and ZIP')
     args = parser.parse_args()
     output = args.output.resolve()
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
@@ -55,30 +64,49 @@ def main():
     source_files = [{'path': str(p.relative_to(ROOT)), 'sha256': sha(p.read_bytes())} for p in paths]
     if len(payload) != 84:
         raise RuntimeError('Unexpected base runtime file inventory')
+    version = '0.6.11-crazygames.1' if args.crazygames_zip else '0.6.11-global.1'
     html = payload['index.html'].decode()
     html = html.replace('<title>失物号：星海突进</title>', '<title>Lostship: Star Surge</title>')
     html = html.replace('</head>', '<link rel="stylesheet" href="./src/locale.css" /></head>')
     html = re.sub(r'window.SurvivorBuild = \{.*?\};', 'window.SurvivorBuild = ' + json.dumps({
-        'version': '0.6.11-global.1', 'commit': commit, 'dirty': dirty,
+        'version': version, 'commit': commit, 'dirty': dirty,
     }) + ';', html, flags=re.S)
     html = html.replace('<script src="./src/balance.js">',
                         '<script src="./src/english.js"></script>\n'
                         '<script src="./src/international-i18n.js"></script>\n'
                         '<script src="./src/balance.js">')
-    payload['index.html'] = html.encode()
     game = payload['src/game.js'].decode()
     if game.count('ctx.fillText(text.s,') != 2:
         raise RuntimeError('Canvas label sites changed; review localization bindings')
-    payload['src/game.js'] = game.replace('ctx.fillText(text.s,', 'ctx.fillText(window.SurvivorI18n.text(text.s),').encode()
+    game = game.replace('ctx.fillText(text.s,', 'ctx.fillText(window.SurvivorI18n.text(text.s),')
+    if args.crazygames_zip:
+        html = replace_once(html, '<body>', '<body class="crazygames">')
+        game = replace_once(game, '  const QA = new URLSearchParams(location.search).has("qa");', '  const QA = false;')
+        game = replace_once(game, 'if (["escape", "p"].includes(key))', 'if (key === "p")')
+        dictionary['拖动躲避'] = 'Drag or use WASD / arrows'
+    payload['index.html'] = html.encode()
+    payload['src/game.js'] = game.encode()
     payload['src/english.js'] = ('window.SurvivorEnglish = ' + json.dumps(dictionary, ensure_ascii=False) + ';\n').encode()
     payload['src/international-i18n.js'] = (HERE / 'i18n.js').read_bytes()
     payload['src/locale.css'] = (HERE / 'locale.css').read_bytes()
+    if args.crazygames_zip:
+        payload['src/locale.css'] += b'\nbody.crazygames { -webkit-user-select: none; user-select: none; }\n'
+        payload['src/international-i18n.js'] = replace_once(
+            payload['src/international-i18n.js'].decode(),
+            'Drag to dodge. Weapons fire automatically.',
+            'Drag or use WASD / arrow keys. Weapons fire automatically.',
+        ).encode()
+        archive = args.crazygames_zip.resolve()
+        archive.parent.mkdir(parents=True, exist_ok=True)
+        with ZipFile(archive, 'w', ZIP_DEFLATED) as bundle:
+            for name, raw in sorted(payload.items()):
+                bundle.writestr(name, raw)
     output.mkdir(parents=True, exist_ok=True)
     for name, raw in payload.items():
         path = output / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(raw)
-    report = {'version': '0.6.11-global.1', 'sourceCommit': commit, 'dirty': dirty,
+    report = {'version': version, 'sourceCommit': commit, 'dirty': dirty,
               'defaultLanguage': 'en', 'languages': ['en', 'zh-CN'],
               'files': [{'path': name, 'bytes': len(raw), 'sha256': sha(raw)} for name, raw in sorted(payload.items())],
               'sourceFiles': source_files, 'translatedTokens': len(dictionary),
